@@ -1,0 +1,84 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/csvimport-step3.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'25');$output .= '
+
+';$output .= '
+';$stash->set('Api2',$context->plugin('Api2'));$stash->set('put_the_rv_here_instead_of_printing_it_out_a',$stash->get(['Api2',0,'exec',['CSVImport','loaddata',{'csvimportid'=>$stash->get(['FORM',0,'item',['csvimportid' ]])}]]));$stash->set('put_the_rv_here_instead_of_printing_it_out_b',$stash->get(['Api2',0,'exec',['CSVImport','configimport',{'defaultdomain'=>$stash->get(['FORM',0,'domain',0]),'type'=>$stash->get(['FORM',0,'importtype',0])}]]));$stash->set('fetch_import_data',$stash->get(['Api2',0,'exec',['CSVImport','fetchimportdata',{}]]));$stash->set('return_link','csvimport-step2.html?importtype=' .$stash->get(['RAW_FORM',0,'importtype',0,'uri',0]).'&csvimportid=' .$stash->get(['RAW_FORM',0,'csvimportid',0,'uri',0]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (($stash->get(['FORM',0,'importtype',0])eq 'fwd')){$output .= '
+        <h2 id="hdrImportFwds">';$output .= $stash->get(['locale',0,'maketext',['Import Forwarders' ]]);$output .= '</h2>
+    '}$output .= '
+    ';if (($stash->get(['FORM',0,'importtype',0])eq 'email')){$output .= '
+        <h2 id="hdrImportAddrs">';$output .= $stash->get(['locale',0,'maketext',['Import Email Accounts' ]]);$output .= '</h2>
+    '}$output .= '
+
+    <p id="csvInformationMsg">
+        ';if (($stash->get(['FORM',0,'importtype',0])eq 'fwd')){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Review the following forwarders.' ]]);$output .= '
+        '}$output .= '
+
+        ';if (($stash->get(['FORM',0,'importtype',0])eq 'email')){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Review the following email accounts.' ]]);$output .= '
+        '}$output .= '
+    </p>
+
+    <div class="section">
+        <table class="nonsortable table table-striped">
+            <tr>
+            ';if (($stash->get(['FORM',0,'importtype',0])eq 'email')){$output .= '
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Email Address' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Quota (MB)' ]]);$output .= '</th>
+            '}$output .= '
+            ';if (($stash->get(['FORM',0,'importtype',0])eq 'fwd')){$output .= '
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Source' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= '</th>
+            '}$output .= '
+            </tr>
+
+            ';if (($stash->get(['FORM',0,'importtype',0])eq 'email')){$output .= '
+                ';if ($stash->get(['fetch_import_data',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('fetch_import_data');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['hashref',0,'password',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['hashref',0,'quota',0,'html',0]);$output .= '</td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr>
+                        <td colspan="3">
+                            ';$output .= $stash->get(['locale',0,'maketext',['No data could be extracted.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+            '}$output .= '
+
+            ';if (($stash->get(['FORM',0,'importtype',0])eq 'fwd')){$output .= '
+                ';if ($stash->get(['fetch_import_data',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('fetch_import_data');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>';$output .= $stash->get(['hashref',0,'source',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['hashref',0,'target',0,'html',0]);$output .= '</td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr>
+                        <td colspan="3">
+                            ';$output .= $stash->get(['locale',0,'maketext',['No data could be extracted.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+            '}$output .= '
+        </table>
+
+        <div class="form-group">
+            <a id="lnkFinish" href="csvimport-step4.html?importtype=';$output .= $stash->get(['RAW_FORM',0,'importtype',0,'uri',0]);$output .= '&csvimportid=';$output .= $stash->get(['RAW_FORM',0,'csvimportid',0,'uri',0]);$output .= '&domain=';$output .= $stash->get(['RAW_FORM',0,'domain',0,'uri',0]);$output .= '" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Finish' ]]);$output .= '</a>
+        </div>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'address_importer','content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

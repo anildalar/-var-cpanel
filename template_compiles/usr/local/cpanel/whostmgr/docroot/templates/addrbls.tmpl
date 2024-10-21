@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/addrbls.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPSort',$context->plugin('CPSort'));$output .= '
+<style type="text/css">
+td {
+    padding-left: 3px ! important;
+    padding-right: 3px ! important;
+}
+</style>
+
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/js/validate_optimized.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/js/sorttable.js' ]]);$output .= "\"></script>\n<script>\nfunction register_validators() {\n    register_validator('match','alphanum',[document.addrblform.name],'The rbl name must be alpha numeric.');\n    register_validator('nomatch',/[\\_\\-]/,[document.addrblform.name],'The rbl name must not contain a dash or underscore.');\n    register_validator('nomatch','empty',[document.addrblform.name],'The rbl name must not be empty.');\n    register_validator('nomatch','empty',[document.addrblform.dnslists],'The rbl dnslists must not be empty.  It should be a colon (:) separated list of dnsrbl hosts to check.');\n    register_validator('maxlength',16,[document.addrblform.name],'The rbl name must be 16 characters or less.');\n    register_validator('maxlength',256,[document.addrblform.url],'The rbl url must be 256 characters or less.');\n    register_validator('minlength',2,[document.addrblform.url],'The rbl url must be 2 characters or more.');\n    register_validator('maxlength',256,[document.addrblform.dnslists],'The rbl dnslists must be 256 characters or less.');\n    register_validator('minlength',5,[document.addrblform.dnslists],'The rbl dnslists is not long enough to be valid.');\n    realtime_validate_init('addrblform');\n}\nYAHOO.util.Event.addListener(window, \"load\", register_validators, false);\n\n</script>\n<h2>Current RBLs</h2>\n<table class=\"sortable\" id=\"rbls\">\n<tr>\n    <th>Origin</th>\n    <th>RBL name</th>\n    <th>DNS list</th>\n    <th>Info URL</th>\n    <th>Action</th>\n</tr>\n\n";do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['rbls',0,'cpsort',['dist','name' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'rbl_data'}=$_tt_value;$output .= '<tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade2_noborder' : 'tdshade1_noborder';$output .= '">
+<td>';$output .= $stash->get(['rbl_data',0,'dist',0])? 'System' : 'Custom';$output .= '</td>
+<td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['rbl_data',0,'name',0]);&$_tt_filter($output)};$output .= '</td>
+<td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['rbl_data',0,'dnslists',0,'join',[', ' ]]);&$_tt_filter($output)};$output .= '</td>
+<td><a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['rbl_data',0,'url',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['rbl_data',0,'url',0]);&$_tt_filter($output)};$output .= '</a></td>
+<td>';if (!$stash->get(['rbl_data',0,'dist',0])){$output .= '    <form method="POST" action="../cgi/addrbl.cgi">
+    <input type="hidden" name="action" value="delrbl">
+    <input type="hidden" name="name" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['rbl_data',0,'name',0]);&$_tt_filter($output)};$output .= '">
+    <input type="submit" class="btn-primary" value="Delete">
+    </form>
+'}$output .= '</td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+
+
+<form onSubmit="return do_validate(this.id);" id="addrblform" name="addrblform" method="POST" action="../cgi/addrbl.cgi">
+<input type="hidden" name="action" value="addrbl">
+
+<h2>Add a new RBL</h2>
+<table>
+    <tr><td>Rbl Name</td><td><input size="16" maxlength="16" type="text" name="name" value=""> (please choose a name that will remind you of what is in the dns list for this rbl.)</td></tr>
+    <tr><td>Rbl Info URL</td><td><input maxlength="256" size="100" type="text" name="url" value=""></td></tr>
+    <tr><td>Dns List</td><td><input type="text" size="60" maxlength="256" name="dnslists" value=""></td></tr>
+</table>
+<input type="submit" class="btn-primary" value="Add">
+    </form>
+
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

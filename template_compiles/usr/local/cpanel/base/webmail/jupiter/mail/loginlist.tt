@@ -1,0 +1,46 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/loginlist.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('FORM_LIST',$stash->get(['RAW_FORM',['email' ]]));$stash->set('listsp',$stash->get(['FORM_LIST',0,'split',['@' ]]));$stash->set('listname',$stash->get(['listsp',0,0,0]));$stash->set('listdomain',$stash->get(['listsp',0,1,0]));$stash->set('otp',$stash->get(['execute',['Email','generate_mailman_otp',{'list'=>($stash->get('listname').'@' .$stash->get('listdomain'))}]]));if ($stash->get(['otp',0,'status',0])eq 1){$stash->set('result',{'status'=>1,'statusmsg'=>'OK' })}else {$stash->set('result',{'status'=>0,'statusmsg'=>$stash->get(['otp',0,'errors',0,0,0])})}$stash->set('goto_uri','/3rdparty/mailman/' .($stash->get(['RAW_FORM',['action' ]])eq 'admindb' ? 'admindb' : 'admin').'/' .$stash->get('listname').'_' .$stash->get('listdomain').'/');if ($stash->get(['CPANEL',0,'is_webmail',0])){$stash->set('url',$stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).$stash->get('goto_uri'))}else {$stash->set('WebmailRedirect',$context->plugin('WebmailRedirect'));$stash->set('webmail_session',$stash->get(['WebmailRedirect',0,'create_webmail_session',[$stash->get(['CPANEL',0,'user',0]),$stash->get(['RAW_FORM',0,'return_url',0])]]));$stash->set('session',$stash->get(['webmail_session',0,'session',0]));$stash->set('url',$stash->get(['webmail_session',0,'url',0]))}$stash->set('adminpw',$stash->get(['otp',0,'data',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrAutoLogin">
+      ';$output .= $stash->get(['locale',0,'maketext',['Auto Login' ]]);$output .= '
+    </h2>
+    ';if ($stash->get(['result',0,'status',0])){$output .= '
+        <div class="center-block">
+            <img id="imgLoadingProgress" src="../images/loader.gif" alt="Loading progress image" />
+        </div>
+        <div class="section">
+            <form action="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('url');&$_tt_filter($output)};$output .= '" method="POST" id="loginForm">
+                <input id="hdnAdminPw" type="hidden" name="adminpw" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('adminpw');&$_tt_filter($output)};$output .= '" />
+                ';if ($stash->get(['CPANEL',0,'is_cpanel',0])){$output .= '                    <input type="hidden" name="session" value="';$output .= $stash->get(['session',0,'html',0]);$output .= '" />
+                    <input type="hidden" name="goto_uri" value="';$output .= $stash->get(['goto_uri',0,'html',0]);$output .= '">
+                '}$output .= '
+                <div class="form-group">
+                    <input id="btnLogin" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Log in' ]]);$output .= '" />
+                </div>
+            </form>
+        </div>
+    '}else {$output .= '
+        <div id="loginListErrorMsg" class="alert alert-danger">
+            <span id="loginListErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="loginListErrorMsg" class="alert-message">
+            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['result',0,'statusmsg',0]);&$_tt_filter($output)};$output .= '
+            </div>
+        </div>
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'mailing_lists','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var submitForm = function() {
+        var passThroughForm = CPANEL.Y.one("#loginForm");
+        if (passThroughForm !== null) {
+            passThroughForm.submit();
+        }
+    }
+
+    YAHOO.util.Event.onDOMReady(submitForm);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

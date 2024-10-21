@@ -1,0 +1,35 @@
+Template::Document->new({METADATA=>{'modtime'=>'1724630400','name'=>'/usr/local/cpanel/base/frontend/jupiter/koality/signup/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$stash->set('JSON',$context->plugin('JSON'));$stash->set('SQM',$context->plugin('SQM'));$stash->set('sqm_health',$stash->get(['SQM',0,'health_check',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('user_theme',$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('TEMPLATE_PATH','koality/signup/');$stash->set('APP_KEY','cpanel-koality-plugin');$stash->set('ROUTER_PATH',$stash->get('cp_security_token').'/frontend/' .$stash->get('user_theme').'/' .$stash->get('TEMPLATE_PATH'));$stash->set('style_sheets',[]);$stash->set('scripts',[]);$stash->set('user_is_enrolled_response',$stash->get(['execute',['SiteQuality','has_site_quality_user' ]]));$stash->set('user_is_enrolled',$stash->get(['user_is_enrolled_response',0,'data',0,'has_site_quality_user',0]));if ($stash->get('user_is_enrolled')){$stash->set('user_enabled_response',$stash->get(['execute',['SiteQuality','is_site_quality_user_enabled' ]]));$stash->set('user_is_enabled',$stash->get(['user_enabled_response',0,'data',0,'enabled',0]))}$output .= $stash->get(['Api2',0,'pre_exec',['CustInfo','contactemails' ]]);$stash->set('contact_emails',$stash->get(['Api2',0,'exec',['CustInfo','contactemails',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['CustInfo','contactemails' ]]);$stash->set('primary_contact_email','');if ($stash->get(['contact_emails',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('contact_emails');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'contact_email'}=$_tt_value;if ($stash->get(['contact_email',0,'name',0])eq 'email'){$stash->set('primary_contact_email',$stash->get(['contact_email',0,'value',0]))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$stash->set('domains',$stash->get(['execute',['DomainInfo','list_domains' ]]));$stash->set('result',$stash->get(['execute',['SiteQuality','get_environment' ]]));$stash->set('environment',$stash->get(['result',0,'data',0,'environment',0]));$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['koality' ]]));if (!$stash->get('user_is_enrolled')||!$stash->get('user_is_enabled')){$output .= $stash->get(['style_sheets',0,'push',[$stash->get('TEMPLATE_PATH').'styles.18ef7c9a31c24a6a.css' ]]);$output .= $stash->get(['scripts',0,'push',[$stash->get('TEMPLATE_PATH').'runtime.8b82e9c3ab9608f4.js' ]]);$output .= $stash->get(['scripts',0,'push',[$stash->get('TEMPLATE_PATH').'vendor-c0d76f48.b4369bc572d1507e.js' ]]);$output .= $stash->get(['scripts',0,'push',[$stash->get('TEMPLATE_PATH').'vendor-6b948b9f.74e553bcbb20db3d.js' ]]);$output .= $stash->get(['scripts',0,'push',[$stash->get('TEMPLATE_PATH').'polyfills.fe7579cf9fe704cd.js' ]]);$output .= $stash->get(['scripts',0,'push',[$stash->get('TEMPLATE_PATH').'main.c3f5406088c86b6b.js' ]])}$output .= do {my$output='';$output .= '
+    ';if (!$stash->get('has_feature')){$output .= '
+    <div class="body-content">
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error:] This feature, “[_1]”, is not enabled on your account. Please contact your hosting provider for access.','Site Quality Monitoring' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+    <meta http-equiv="refresh" content="0;url=\'../../index.html\'"/>
+    '}elsif ($stash->get('user_is_enrolled')&& $stash->get('user_is_enabled')){$output .= '
+    <div class="body-content">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Logging in to Site Quality Monitoring …' ]]);$output .= '
+        </p>
+    </div>
+    <meta http-equiv="refresh" content="0; URL=../index.html#/dashboard">
+    '}else {$output .= '
+    <cp-koality-signup-root></cp-koality-signup-root>
+    <script>
+        window.PAGE = {
+            ...window.PAGE,
+            base: ';$output .= $stash->get(['ROUTER_PATH',0,'json',0]);$output .= ',
+            default_contact_email: ';$output .= $stash->get(['primary_contact_email',0,'json',0]);$output .= ',
+            domains: ';$output .= $stash->get(['domains',0,'data',0,'json',0]);$output .= ',
+            environment: ';$output .= $stash->get(['environment',0,'json',0]);$output .= ',
+            defaultRoute: ';if (!$stash->get('user_is_enrolled')){$output .= '"signup"'}elsif (!$stash->get('user_is_enabled')){$output .= '"confirm"'}$output .= ',
+        };
+    </script>
+    '}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('APP_KEY'),'base'=>$stash->get('ROUTER_PATH'),'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>2,'page_stylesheets'=>$stash->get('style_sheets'),'page_scripts'=>$stash->get('scripts'),'is_ng'=>1,'page_title'=>'Site Quality Monitoring','page_sub_heading'=>'Powered by koality','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

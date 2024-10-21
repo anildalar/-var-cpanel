@@ -1,0 +1,94 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/twofactorauth/views/usersView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-md-6" id="usersTableContainer">
+        <table id="usersTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="mass_edit_checkbox">
+                        <input type="checkbox"
+                            id="selectAllCheckbox"
+                            name="selectAllCheckbox"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to select all items on this page.' ]]);$output .= '"
+                            ng-disabled="!uc.users.length"
+                            ng-click="uc.toggleSelectAll()">
+                    </th>
+                    <th class="user_column">
+                        <span toggle-sort id="sortUsers" onsort="uc.sortList" sort-meta="uc.meta" sort-field="user_name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="domain_column">
+                        <span toggle-sort id="sortDomains" onsort="uc.sortList" sort-meta="uc.meta" sort-field="primary_domain">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Primary Domain' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="actions_header">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                    <th class="gear_column">
+                        <span class="dropdown" uib-dropdown>
+                        <a href class="dropdown-toggle" uib-dropdown-toggle>
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                            <li ng-class="{disabled: uc.allUsersSelected()}">
+                                <a href ng-click="uc.selectAllUsers()">';$output .= $stash->get(['locale',0,'maketext',['Select All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !uc.atLeastOneUserIsSelected()}">
+                                <a href ng-click="uc.clearSelection()">';$output .= $stash->get(['locale',0,'maketext',['Clear Selection' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{disabled: !uc.atLeastOneUserIsSelected()}">
+                                <a href ng-click="uc.confirmDisableTFAFor()">';$output .= $stash->get(['locale',0,'maketext',['Remove Selected' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !uc.users.length}">
+                                <a href ng-click="uc.confirmDisableAll()">';$output .= $stash->get(['locale',0,'maketext',['Disable All' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-click="uc.forceReload()">';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= "</a>\n                            </li>\n                        </ul>\n                      </span>\n                    </th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr ng-repeat=\"user in uc.meta.filteredList track by \$index\">\n                    <td class=\"mass_edit_checkbox\">\n                        <input type=\"checkbox\"\n                            id=\"user_{{ \$index }}_checked\"\n                            class=\"userSelect\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Click to select “[_1]”.','{{ user.user_name }}' ]]);$output .= "\"\n                            data-user=\"{{ user }}\">\n                    </td>\n                    <td class=\"user_column\">\n                        {{ user.user_name }}\n                    </td>\n                    <td class=\"domain_column\">\n                        {{ user.primary_domain }}\n                    </td>\n                    <td class=\"actions_cell\">\n                        <button class=\"btn btn-link\"\n                            ng-click=\"uc.confirmDisableTFAFor(user)\"\n                            id=\"user_{{ \$index }}_disable\">\n                        <span class=\"fas fa-ban\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Disable' ]]);$output .= '
+                        </button>
+                    </td>
+                    <td class="gear_column"></td>
+                </tr>
+                <tr id="emptyListNotice" class="info empty-row ng-hide" ng-show="!uc.users.length" ng-switch="uc.loadingUsers">
+                    <td colspan="5" id="loadingMessage" ng-switch-when="true">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </td>
+                    <td colspan="5" id="emptyMessage" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['There are no users with two-factor authentication configured.' ]]);$output .= '</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-6">
+        <div id="paginator" class="pagination-container">
+            <page-size id="topPageSize"
+                allowed-sizes="uc.meta.pageSizes"
+                total-items="uc.meta.totalRows"
+                ng-model="uc.meta.pageSize"
+                show-all="true"
+                ng-change="uc.fetchPage()">
+            </page-size>
+            <uib-pagination id="topPager"
+                ng-change="uc.fetchPage()"
+                ng-model="uc.meta.pageNumber"
+                max-size="uc.meta.maxPages"
+                items-per-page="uc.meta.pageSize"
+                total-items="uc.meta.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-sm">
+            </uib-pagination>
+        </div>
+        <div id="paginationMessage">
+            {{uc.paginationMessage()}}
+        </div>
+    </div>
+    </div>
+</div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

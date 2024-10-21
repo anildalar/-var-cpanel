@@ -1,0 +1,153 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/external_auth/views/providers.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+<div class="list-container">
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="pagination-container hidden-xs hidden-sm">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row hidden-xs hidden-sm">
+        <div class="col-xs-8">
+        </div>
+        <div class="col-xs-4">
+            <div class="page-stats pull-right">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Showing] [_1] - [_2] of [_3] items','{{ meta.start }}','{{ meta.limit }}','{{ meta.totalItems }}' ]]);$output .= '</div>
+        </div>
+    </div>
+    <table class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th class="authIconColumn"></th>
+                <th>
+                    <span toggle-sort id="sortName" sort-meta="meta"
+                              sort-field="display_name"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Authentication Provider' ]]);$output .= '
+                    </span>
+                </th>
+                <th ng-repeat="service in allowed_authentication_services">
+                    <span toggle-sort id="sort_{{ service }}" sort-meta="meta"
+                              sort-field="{{ service }}_enabled"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Status ([_1])','{{ service }}' ]]);$output .= '
+                    </span>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="provider in filteredList">
+                <td class="hidden-xs">
+                    <span
+                        class=\'provider-label-icon\'
+                        title="{{provider.display_name}}"
+                        ng-style="{
+                            \'background-color\': \'#\'+provider.color,
+                            \'background-image\': \'url(data:{{provider.icon_type}};base64,{{provider.icon}})\'
+                        }"
+                    >
+                    </span>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Authentication Provider' ]]);$output .= '" >
+                    <span class="provider-label">{{ provider.label }}</span>
+                    <span class="help-block provider-not-configured-message" ng-if="!provider.configured">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The provider is not configured.' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['You cannot enable this provider until you configure it.' ]]);$output .= '</span>
+                </td>
+                <td ng-repeat="service in allowed_authentication_services"
+                    data-title="';$output .= $stash->get(['locale',0,'maketext',['Status ([_1])','{{ service }}' ]]);$output .= '">
+                    <toggle-switch
+                        id="{{provider.id}}_{{ service }}"
+                        ng-model="provider[ service + \'_enabled\']"
+                        on-toggle="provider.toggle_status(service)"
+                        ng-disabled="!provider.configured"
+                        enabled-label ="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '"
+                    ></toggle-switch>
+                </td>
+                <td>
+                    <button class="btn btn-link" ng-click="configureProvider(provider)">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="providers" ng-hide="filteredList.length" class="info empty-row">
+                <td colspan="5">';$output .= $stash->get(['locale',0,'maketext',['No results found' ]]);$output .= '</td>
+            </tr>
+            <tr ng-hide="providers.length" class="info empty-row">
+                <td colspan="5">';$output .= $stash->get(['locale',0,'maketext',['No providers available.' ]]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-4">
+            <div class="page-stats selected-stats">
+                <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Selected' ]]);$output .= '</span>
+                <span id="selectedCounter" class="badge badge-info">
+                    {{totalSelectedProviders}}
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-8">
+            <div class="page-stats pull-right">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Showing] [_1] - [_2] of [_3] items','{{ meta.start }}','{{ meta.limit }}','{{ meta.totalItems}}' ]]);$output .= '</div>
+        </div>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div class="pagination-container">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+'}else {$output .= '
+<div>';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this interface.' ]]);$output .= '</div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

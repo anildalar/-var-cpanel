@@ -1,0 +1,390 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/emailstats_search.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('DataURI',$context->plugin('DataURI'));$stash->set('HTMLOptions',$context->plugin('HTMLOptions'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$stash->set('spinner_url','/images/whm-spinner.gif');if ($stash->get(['CPANEL',0,'ua_is_ie',0])&& $stash->get(['CPANEL',0,'ua_is_ie',0])< 8){$stash->set('spinner_url',$stash->get(['MagicRevision',[$stash->get('spinner_url')]]));$output .= ('<img src=\'' .$stash->get('spinner_url').'\' style=\'display:none\'>')}else {$stash->set('spinner_url',$stash->get(['DataURI',0,'datauri',[$stash->get('spinner_url'),'image/gif' ]]))}$stash->set('lexicon',{'Page [numf,_1]'=>$stash->get(['locale',0,'text',['Page [numf,_1]' ]]),'Page [numf,_1] of [numf,_2]'=>$stash->get(['locale',0,'text',['Page [numf,_1] of [numf,_2]' ]]),'Show [quant,_1,Record,Records]'=>$stash->get(['locale',0,'text',['Show [quant,_1,Record,Records]' ]])});$stash->set('nvdata',$stash->get(['NVData',0,'get_page_nvdata',0]));$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+<script type="text/javascript">
+CPANEL.nvdata.initial = ';$output .= $stash->get(['nvdata',0,'json',0])|| 'undefined';$output .= ';
+
+YAHOO.lang.augmentObject( CPANEL.Locale.prototype.LEXICON, {page1:\'page1\'} || ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+
+LOCALETEXT = {
+    event : ';$output .= $stash->get(['locale',0,'maketext',['Event' ],'json',0]);$output .= ',
+    email : ';$output .= $stash->get(['locale',0,'maketext',['From Address' ],'json',0]);$output .= ',
+    sender : ';$output .= $stash->get(['locale',0,'maketext',['Sender' ],'json',0]);$output .= ',
+    user : ';$output .= $stash->get(['locale',0,'maketext',['Sender User' ],'json',0]);$output .= ',
+    domain : ';$output .= $stash->get(['locale',0,'maketext',['Sender Domain' ],'json',0]);$output .= ',
+    sent : ';$output .= $stash->get(['locale',0,'maketext',['Sent Time' ],'json',0]);$output .= ',
+    sender_host : ';$output .= $stash->get(['locale',0,'maketext',['Sender Host' ],'json',0]);$output .= ',
+    recipient : ';$output .= $stash->get(['locale',0,'maketext',['Recipient' ],'json',0]);$output .= ',
+    delivered_to : ';$output .= $stash->get(['locale',0,'maketext',['Delivered To' ],'json',0]);$output .= ',
+    delivery_user : ';$output .= $stash->get(['locale',0,'maketext',['Delivery User' ],'json',0]);$output .= ',
+    delivery_domain : ';$output .= $stash->get(['locale',0,'maketext',['Delivery Domain' ],'json',0]);$output .= ',
+    transport : ';$output .= $stash->get(['locale',0,'maketext',['Transport' ],'json',0]);$output .= ',
+    router : ';$output .= $stash->get(['locale',0,'maketext',['Router' ],'json',0]);$output .= ',
+    out : ';$output .= $stash->get(['locale',0,'maketext',['Out Time' ],'json',0]);$output .= ',
+    ID : ';$output .= $stash->get(['locale',0,'maketext',['ID' ],'json',0]);$output .= ',
+    delivery_host : ';$output .= $stash->get(['locale',0,'maketext',['Delivery Host' ],'json',0]);$output .= ',
+    delivery_ip : ';$output .= $stash->get(['locale',0,'maketext',['Delivery IP' ],'json',0]);$output .= ',
+    size : ';$output .= $stash->get(['locale',0,'maketext',['Size' ],'json',0]);$output .= ',
+    sender_ip : ';$output .= $stash->get(['locale',0,'maketext',['Sender IP' ],'json',0]);$output .= ',
+    sender_auth : ';$output .= $stash->get(['locale',0,'maketext',['Authentication' ],'json',0]);$output .= ',
+    spam_score : ';$output .= $stash->get(['locale',0,'maketext',['Spam Score' ],'json',0]);$output .= ',
+    result : ';$output .= $stash->get(['locale',0,'maketext',['Result' ],'json',0]);$output .= ',
+    actions : ';$output .= $stash->get(['locale',0,'maketext',['Actions' ],'json',0]);$output .= '
+};
+</script>
+
+<script type="text/plain" id="actions_template">
+<div class="icon_holder">
+    <a href="javascript:void(0)" onclick="show_details(this)" title="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '">
+        <img src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/view-icon-24.png' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '">
+    </a>
+</div>
+</script>
+
+<script type="text/plain" id="local_actions_template">
+<div class="icon_holder">
+    <a href="javascript:void(0)" onclick="show_details(this)" title="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '">
+        <img src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/view-icon-24.png' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '">
+    </a>
+    <a target="_blank" href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/vieweximmsg?msgid={msgid}&transport={transport}&address={address}&path={path}" title="';$output .= $stash->get(['locale',0,'maketext',['Read the mail message.' ]]);$output .= '">
+        <img id="archive_icon" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/open-mail.png' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Read Mail Message' ]]);$output .= '">
+    </a>
+</div>
+</script>
+
+<style type="text/css">
+#archive_icon {
+    width: 26px;
+}
+.float_left {
+    float: left;
+}
+.radio_width {
+    width: 175px;
+    margin-top:3px;
+}
+.full_clear {
+    clear: both;
+    margin-top: 15px;
+}
+.br {
+    clear: both;
+    font-size: 0px;
+    line-height: 0px;
+    height: 0px;
+    overflow:hidden;
+}
+
+#cjt_static_notice_container {
+    margin-top: 20px;
+    margin-left: 30px;
+    max-width: 902px;
+}
+#contentContainer {
+    position: relative;
+}
+</style>
+
+';if (!$stash->get(['cfg',0,'db_err',0])){$output .= '
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['This screen allows you to find and review messages sent from and received by your server. You can see whether each message was delivered successfully. You can also view details about each delivery attempt.' ]]);$output .= '<br/>
+    ';$output .= $context->process('_date_format_copy.tmpl');$output .= '</p>
+<div id="cjt_static_notice_container"></div>
+
+<script>
+    new CPANEL.widgets.Page_Notice( {
+        container: "cjt_static_notice_container",
+        level: "info",
+        content: "';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: Queries can only return a maximum of [quant,_1,entry,entries] per type.',1000 ]]);$output .= '"
+    } );
+</script>
+
+';$output .= $context->process('_emailstats_status_include.tmpl');$output .= '
+<div id="main_content">
+    <div class="option_box">
+        <div>
+            <div class="top-heading group">
+                <div class="left_float"><h4>';$output .= $stash->get(['locale',0,'maketext',['Report Inquiry' ]]);$output .= '</h4></div>
+                <div class="right_float" id="hide_inquiry"><a href="javascript:void(0)" onclick=\'toggle_inquiry()\' id="toggle_inquiry_text">';$output .= $stash->get(['locale',0,'maketext',['Hide' ]]);$output .= '</a></div>
+            </div>
+        </div>
+        <div id=\'container_box\'>
+            <form action="javascript:void(0)" name=\'search-fields\' id="search-fields" onsubmit="setSpinner(); doupdate();">
+                <input type="hidden" name="max_results_by_type" id="max_results_by_type" value="1000">
+                <div class="option_contents" id=\'option_contents\'>
+                    <div class="form-contain group">
+                        <div class="search-content">
+                            <div class="search-me">
+                                <input type="text" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search …' ]]);$output .= '" id="freeform" name="freeform" /> &nbsp;
+                                <select id="type-select" name=\'mainkey\' onchange="sync_type_select(this)">
+                                    <option value="sender">';$output .= $stash->get(['locale',0,'maketext',['Sender' ]]);$output .= '</option>
+                                    <option value="email">';$output .= $stash->get(['locale',0,'maketext',['From Address' ]]);$output .= '</option>
+                                    <option value="recipient" selected>';$output .= $stash->get(['locale',0,'maketext',['Recipient' ]]);$output .= '</option>
+                                    <option value="msgid">';$output .= $stash->get(['locale',0,'maketext',['Message ID' ]]);$output .= '</option>
+                                    <option value="domain">';$output .= $stash->get(['locale',0,'maketext',['Sender Domain' ]]);$output .= '</option>
+                                    <option value="user">';$output .= $stash->get(['locale',0,'maketext',['Sender User' ]]);$output .= '</option>
+                                    <!-- Advanced Options -->
+                                    <option value="senderip">';$output .= $stash->get(['locale',0,'maketext',['Sender IP' ]]);$output .= '</option>
+                                    <option value="senderhost">';$output .= $stash->get(['locale',0,'maketext',['Sender Host' ]]);$output .= '</option>
+                                    <option value="senderauth">';$output .= $stash->get(['locale',0,'maketext',['Sender Auth' ]]);$output .= '</option>
+                                    ';if (!$stash->get(['data',0,'hide_spam',0])){$output .= '
+                                    <option value="spamscore">';$output .= $stash->get(['locale',0,'maketext',['Spam Score' ]]);$output .= '</option>
+                                    '}$output .= '
+                                    <option value="deliveryuser">';$output .= $stash->get(['locale',0,'maketext',['Delivery User' ]]);$output .= '</option>
+                                    <option value="deliverydomain">';$output .= $stash->get(['locale',0,'maketext',['Delivery Domain' ]]);$output .= '</option>
+                                    <option value="ip">';$output .= $stash->get(['locale',0,'maketext',['Delivery IP' ]]);$output .= '</option>
+                                    <option value="host">';$output .= $stash->get(['locale',0,'maketext',['Delivery Host' ]]);$output .= '</option>
+                                    <option value="router">';$output .= $stash->get(['locale',0,'maketext',['Router' ]]);$output .= '</option>
+                                    <option value="transport">';$output .= $stash->get(['locale',0,'maketext',['Transport' ]]);$output .= '</option>
+                                    <option value="message">';$output .= $stash->get(['locale',0,'maketext',['Result Message' ]]);$output .= '</option>
+                                    <option value=\'deliveredto\'>';$output .= $stash->get(['locale',0,'maketext',['Delivered To' ]]);$output .= '</option>
+                                    <!-- Special No Filter -->
+                                    <option value="">';$output .= $stash->get(['locale',0,'maketext',['No Filter' ]]);$output .= '</option>
+
+                                </select>
+                            </div>
+                            <div class="full_clear">
+                                <div class="br"></div>
+                                <div class="float_left radio_width">
+                                   <span class="report-label"> ';$output .= $stash->get(['locale',0,'maketext',['Search Type:' ]]);$output .= '</span>
+                                    <div style="padding-left: 10px; padding-top: 5px;">
+                                        <label><input type="radio" name="searchmatch" value="begins" checked="checked"> ';$output .= $stash->get(['locale',0,'maketext',['Begins With' ]]);$output .= '</label><div class="br"></div>
+                                        <label><input type="radio" name="searchmatch" value="eq"> ';$output .= $stash->get(['locale',0,'maketext',['Exact' ]]);$output .= '</label><div class="br"></div>
+                                        <label><input type="radio" name="searchmatch" value="contains"> ';$output .= $stash->get(['locale',0,'maketext',['Partial' ]]);$output .= '</label>&nbsp;<img src="';$output .= $stash->get(['MagicRevision',['/images/info.png' ]]);$output .= '" id="Partial_ToolTip" style="cursor:help"/><div class="br"></div>
+                                    </div>
+                                </div>
+                                <div class="float_left">
+                                    <span class="report-label"> ';$output .= $stash->get(['locale',0,'maketext',['Delivery Type:' ]]);$output .= '</span>
+                                    <div style="padding-left: 10px; padding-top: 5px;">
+                                        <label><input type="radio" name="deliverytype" onclick="restrictAdvanced(false)" value="all" checked="checked"> ';$output .= $stash->get(['locale',0,'maketext',['All Delivery Events' ]]);$output .= '</label><div class="br"></div>
+                                        <label><input type="radio" name="deliverytype" onclick="restrictAdvanced(true)" value="remote"> ';$output .= $stash->get(['locale',0,'maketext',['Relayed Emails' ]]);$output .= '</label><div class="br"></div>
+                                        <label><input type="radio" name="deliverytype" onclick="restrictAdvanced(true)" value="local"> ';$output .= $stash->get(['locale',0,'maketext',['Local Emails' ]]);$output .= '</label><div class="br"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="starts">
+                            <div class="report-head">';$output .= $stash->get(['locale',0,'maketext',['Start Date:' ]]);$output .= '</div>
+                            <div class="group">
+                                <input type="text" name="startdate" id="startdate" size="12" />
+                                <span id=\'start_cal\' onclick="show_start_cal()"><img src="';$output .= $stash->get(['MagicRevision',['/images/calendar.png' ]]);$output .= '" alt="select date" /></span>
+                            </div>
+                            <div class="time-wrap">
+                                <div id="startcal">
+                                    <div class="bd"><div id="cal1Container"></div></div>
+                                </div>
+                                <div class="report-head">';$output .= $stash->get(['locale',0,'maketext',['Start Time:' ]]);$output .= '</div>
+                                <input type="text" name="starttime" id="starttime"/>
+                            </div>
+                            <div class="full_clear"></div>
+                        </div>
+                        <div class="ends">
+                            <div class="report-head">';$output .= $stash->get(['locale',0,'maketext',['End Date:' ]]);$output .= '</div>
+                            <div class="group">
+                                <input type="text" name="enddate" id="enddate" size="12" />
+                                <span id=\'end_cal\' onclick="show_end_cal()"><img src="';$output .= $stash->get(['MagicRevision',['/images/calendar.png' ]]);$output .= '" alt="select date" /></span>
+                            </div>
+                            <div class="time-wrap">
+                                <div class="report-head">';$output .= $stash->get(['locale',0,'maketext',['End Time:' ]]);$output .= '</div>
+                                <input type="text" name="endtime" id="endtime"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="the-button">
+                        ';$stash->set('retention',$stash->get(['CPANEL',0,'CPCONF',0,'exim_retention_days',0]));$output .= '
+                        ';if ((!$stash->get('retention'))){$output .= '
+                        ';$stash->set('retention',90);$output .= '
+                        '}$output .= '
+                        <span class="data90" style="margin-left: 5px;">';$output .= $stash->get(['locale',0,'maketext',['Data is retained for [quant,_1,day,days].',$stash->get('retention')]]);$output .= '</span>
+                        <button type="submit" class="input-btn btn-primary" id="run-button" onclick="setSpinner(); doupdate(); return false">
+                            <div id="spinner"><img src="';$output .= $stash->get('spinner_url');$output .= '"/></div>
+                            <div id="spinner-text">';$output .= $stash->get(['locale',0,'maketext',['Run Report' ]]);$output .= '</div>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="cjt_pagenotice_container"></div>
+
+<a name="report"></a>
+<div id=\'table_container\'>
+    <div id=\'page-control\'>
+        <div class="results-output">
+            <div class="results-header">
+            </div>
+            <div class="total-items">
+                <div id="results-header"></div>
+            </div>
+        </div>
+        <div id="floater">
+            <div id="top-page-nav"></div>
+        </div>
+    </div>
+    <div class="br"></div>
+    <div id="option_header" style="display:none;">
+        <div class="table-box">
+            <div class="table-top group">
+                <div style="float: left;width:500px;">
+                    <form action="javascript:void(0)" class="input-with-button-wrapper" onsubmit="setSpinner(); doupdate()"><input id=\'quicksearch\' type="text" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search …' ]]);$output .= '" /><button type="submit">';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '</button></form>
+                    <div class="advanced"><img src="';$output .= $stash->get(['MagicRevision',['/images/info.png' ]]);$output .= '" id="Search_TT" style="cursor:help"/> &nbsp; <a href="javascript:void(0)" onclick=\'return toggle_filter()\' id="adv_search_text">';$output .= $stash->get(['locale',0,'maketext',['Advanced Search' ]]);$output .= '</a></div>
+                </div>
+                <div style=\'float: right;margin-top:5px;margin-right:5px;\' id=\'toggle_col_options\'><a href=\'javascript:void(0)\' onclick=\'return toggle_options()\'><img src="';$output .= $stash->get(['MagicRevision',['/images/edit-table.png' ]]);$output .= '" alt="table options" title="Table Options" /></a></div>
+                <div class="br"></div>
+                <div id=\'filterItems\' ';$output .= $stash->get(['nvdata',0,'show_advanced',0])? '' : 'style="display:none"';$output .= '>
+                    <div class="top-filterItems">
+                        <div class="filterItems-Arrow"></div>
+                    </div>
+                    <form class="advanced-section" id="advanced-form" action="javascript:void(0)">
+                        <!-- TODO: 11.34 change x to icon -->
+                        <div class="close-me"><a href="javascript:void(0)" onclick=\'return toggle_filter()\'>X ';$output .= $stash->get(['locale',0,'maketext',['CLOSE' ]]);$output .= '</a></div>
+                        <span class="inputs"><label><input type="checkbox" name="success" value="1" ';if ($stash->get(['nvdata',0,'show_success',0])||!$stash->get(['nvdata',0,'defined',['show_success' ]])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' /> ';$output .= $stash->get(['locale',0,'maketext',['Show Deliveries' ]]);$output .= '</label></span>
+                        &nbsp;<img src="';$output .= $stash->get(['MagicRevision',['/images/info.png' ]]);$output .= '" id="Success_ToolTip" style="cursor:help"/>
+
+                        <span class="inputs"><label><input type="checkbox" name="defer" value="1" ';if ($stash->get(['nvdata',0,'show_defer',0])||!$stash->get(['nvdata',0,'defined',['show_defer' ]])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' /> ';$output .= $stash->get(['locale',0,'maketext',['Show Deferrals' ]]);$output .= '</label></span>
+                        <span class="inputs"><label><input type="checkbox" name="failure" value="1" ';if ($stash->get(['nvdata',0,'show_failure',0])||!$stash->get(['nvdata',0,'defined',['show_failure' ]])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' /> ';$output .= $stash->get(['locale',0,'maketext',['Show Failures' ]]);$output .= '</label></span>
+                        &nbsp;<img src="';$output .= $stash->get(['MagicRevision',['/images/info.png' ]]);$output .= '" id="Failure_ToolTip" style="cursor:help"/>
+                        <span class="inputs"><label><input type="checkbox" name="inprogress" value="1" ';if ($stash->get(['nvdata',0,'show_inprogress',0])||!$stash->get(['nvdata',0,'defined',['show_inprogress' ]])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' /> ';$output .= $stash->get(['locale',0,'maketext',['Show In-Progress' ]]);$output .= '</label></span>
+                    </form>
+                </div>
+            </div>
+            <div id="deliveryreport" class="deliveryreport"></div>
+            </div>
+        </div>
+        <div id=\'bottom-nav\'>
+            <div id=\'floater-bottom\' style="float:right; padding:0px; margin:0px">
+                <div id="bottom-page-nav"></div>
+            </div>
+            <div class="br"></div>
+        </div>
+        <div class="br"></div>
+    </div>
+    <div id="col_options">
+    <div class="options-top group">
+        <div class="options-header">';$output .= $stash->get(['locale',0,'maketext',['Table Options' ]]);$output .= '</div>
+        <div class="closeit"><a href=\'javascript:void(0)\' title="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '" onclick=\'header_panel.hide(); return false\'>X</a></div>
+    </div>
+    <div class="hd"></div>
+    <div class="options-bd">
+        <div class="info-blurb">';$output .= $stash->get(['locale',0,'maketext',['Select the columns you wish to display in the table.' ]]);$output .= '</div>
+        <div id="option_area">
+        </div>
+    </div>
+</div>
+
+<div class="br"></div>
+<div id="emailreport"></div>
+<!-- TODOl See if this can be standardized & move into cjt -->
+<div style="width: 1px; height: 1px; position:absolute; top:-999999px; left:-999999px;" id="printpanel"></div>
+<div id="dateSelect" style="display:none"></div>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+<script>
+    ';$output .= $context->insert('/usr/local/cpanel/base/yui-gen/data/data.js');$output .= '
+</script>
+
+<!-- see if this can use PROCESS -->
+';$output .= $context->include('_calendar.tmpl');$output .= '
+
+<script type="text/javascript">
+    var TIMESELECTOR_STYLESHEET = ';$output .= $stash->get(['MagicRevision',['/cjt/css/timeSelector-whm.css' ],'json',0]);$output .= ';
+    ';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/emailstats_search_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/emailstats_search_optimized.js');$output .= '
+    ';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/email_ui_control_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/email_ui_control_optimized.js');$output .= '
+    ';$output .= $context->insert('/usr/local/cpanel/base/cjt/datasource-min.js');$output .= '
+</script>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var retention = ';$output .= $stash->get('retention');$output .= ';
+    var cfg= {
+        deliverystats: 1,
+        columns: [\'type\',\'user\',\'domain\',\'email\',\'sender\',\'sendunixtime\',\'senderhost\',\'senderip\',\'senderauth\',';if (!$stash->get(['data',0,'hide_spam',0])){$output .= '\'spamscore\','}$output .= '\'recipient\',\'deliveredto\',\'deliveryuser\',\'deliverydomain\',\'router\',\'transport\',\'actionunixtime\',\'msgid\',\'host\',\'ip\',\'size\',\'message\'],
+        timebuffer: ';$output .= $stash->get(['cfg',0,'timebuffer',0])|| '(60*60*4*1000)';$output .= ',
+        user: ';$output .= $stash->get(['data',0,'user',0,'json',0])|| '""';$output .= ',
+        ';if ($stash->get(['cfg',0,'unixstarttime',0])){$output .= 'unixstarttime: ';$output .= $stash->get(['cfg',0,'unixstarttime',0]);$output .= ','}$output .= '
+        ';if ($stash->get(['cfg',0,'unixendtime',0])){$output .= 'unixendtime: ';$output .= $stash->get(['cfg',0,'unixendtime',0]);$output .= ','}$output .= '
+        ';if ($stash->get(['cfg',0,'mode',0])){$output .= 'mode: "';$output .= $stash->get(['cfg',0,'mode',0]);$output .= '",'}$output .= '
+        ';if ($stash->get(['cfg',0,'delayeddisplay',0])){$output .= 'delayeddisplay: ';$output .= $stash->get(['cfg',0,'delayeddisplay',0]);$output .= ','}$output .= '
+        starttime: "today"
+    };
+    cfg.columns.push(\'actions\');
+
+    var eximstatstbl = new CPANEL.EximStatsDataTable(cfg);
+
+    // A few light hooks into the exim.js code....
+    resetColumns = ["senderip","senderauth", "ip", "senderhost", "user", "domain", "deliveredto", "deliveryuser","deliverydomain", "router", "transport", "actionunixtime", "host", "size"];
+    default_initial_hidden_columns = ';$output .= $stash->get(['nvdata',0,'hidden_columns',0,'json',0])|| '["sender","senderip","senderauth", "ip", "senderhost", "user", "domain", "deliveredto", "deliveryuser","deliverydomain", "router", "transport", "actionunixtime", "host", "size"]';$output .= ';
+
+    // And stuff unique to this page.
+    default_minimum_columns = 0;
+
+    var tt2= new YAHOO.widget.Tooltip("tt2", {
+            context:"Search_TT",
+            text: ';$output .= $stash->get(['locale',0,'maketext',['This search persists until you clear it. Because searching updates the report, new data may appear after you click [output,class,Go,_1].','ui-term-reference' ],'json',0]);$output .= ',
+            autodismissdelay: 100000, xyoffset: [5,10]
+    });
+    var search_tooltip = new YAHOO.widget.Tooltip("tt3", {
+            context:"Partial_ToolTip",
+            text: "';$output .= $stash->get(['locale',0,'maketext',['This search type may take longer to complete.' ]]);$output .= '",
+            autodismissdelay: 100000, xyoffset: [5,10]
+   });
+   var success_includes_filtered_tooltip = new YAHOO.widget.Tooltip("tt6", {
+            context:"Success_ToolTip",
+            text:"';$output .= $stash->get(['locale',0,'maketext',['Deliveries include messages rejected by spam software after being processed by the mail server.' ]]);$output .= '",
+            autodismissdelay: 100000, xyoffset: [5,10]
+   });
+   var failure_includes_rejected_tooltip = new YAHOO.widget.Tooltip("tt7", {
+            context:"Failure_ToolTip",
+            text:"';$output .= $stash->get(['locale',0,'maketext',['Failures include messages rejected by spam software while being processed by the mail server.' ]]);$output .= '",
+            autodismissdelay: 100000, xyoffset: [5,10]
+   });
+
+    var URL_QUERY = CPANEL.util.parse_query_string( location.search.substr(1) ) || {};
+    if ("unixstarttime" in URL_QUERY) {
+        if (URL_QUERY.unixstarttime) {
+            var time_startdate = new Date(1000 * URL_QUERY.unixstarttime);
+            DOM.get(\'startdate\').value = time_startdate.to_ymd_string();
+            DOM.get(\'starttime\').value = time_startdate.getHours() + \':\' + time_startdate.getMinutes();
+        }
+        else {
+            DOM.get("startdate").value = "";
+        }
+    }
+    if ("unixendtime" in URL_QUERY) {
+        if (URL_QUERY.unixendtime) {
+            var time_endtime = new Date(1000 * URL_QUERY.unixendtime);
+            DOM.get(\'enddate\').value = time_endtime.to_ymd_string();
+            DOM.get(\'endtime\').value = time_endtime.getHours() + \':\' + time_endtime.getMinutes();
+        }
+        else {
+            DOM.get("enddate").value = "";
+        }
+    }
+    if (URL_QUERY.deliverytype) {
+        CPANEL.dom.set_form_el_value( DOM.get("search-fields").deliverytype, URL_QUERY.deliverytype );
+    }
+    if (URL_QUERY.user) { // Sender
+        CPANEL.dom.set_form_el_value( "type-select", "user" );
+        DOM.get("freeform").value = URL_QUERY.user;
+    }
+    else if (URL_QUERY.msgid) {
+        CPANEL.dom.set_form_el_value( "type-select", "msgid" );
+        DOM.get(\'freeform\').value = URL_QUERY.msgid;
+    }
+
+    if (URL_QUERY.user || URL_QUERY.msgid) {
+        CPANEL.dom.set_form_el_value( DOM.get("search-fields").searchmatch, "eq" );
+        EVENT.onDOMReady( DOM.get("run-button").click, DOM.get("run-button"), true );
+    }
+
+function sync_type_select(sel) {
+    var to_disable = !sel.value;
+    DOM.get(\'freeform\').disabled = to_disable;
+    [].forEach.call( sel.form.searchmatch, function(radio) {
+        radio.disabled = to_disable;
+    } );
+}
+//]]>
+</script>
+'}else {$output .= '
+    ';$output .= $context->process('_emailstats_unavailable.tmpl')}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'mail_delivery_reports','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['yui/assets/skins/sam/calendar.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/mail.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/cjt/css/wrapped-select.css' ]])],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

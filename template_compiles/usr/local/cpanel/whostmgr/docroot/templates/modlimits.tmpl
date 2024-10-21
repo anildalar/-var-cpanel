@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/modlimits.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'limits_enabled',0])){$stash->set('limit_status',$stash->get(['locale',0,'maketext',['Enabled' ]]));$stash->set('status_class','greenstatus');$stash->set('modlimits_button',$stash->get(['locale',0,'maketext',['Disable Protection' ]]));$stash->set('action_val',0)}else {$stash->set('limit_status',$stash->get(['locale',0,'maketext',['Disabled' ]]));$stash->set('status_class','redstatus');$stash->set('modlimits_button',$stash->get(['locale',0,'maketext',['Enable Protection' ]]));$stash->set('action_val',1)}$output .= '	<div>
+	<table class="layouttblmain">
+	<tr>
+';if (!$stash->get(['data',0,'cloud_linux_installed',0])){$output .= '
+	    <td valign="top">
+	    <table class="layouttbl">
+	        <tr><th abbr="';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '" align="left">';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th></tr>
+	        <tr>
+	            <td class="description"><p>';$output .= $stash->get(['locale',0,'maketext',['Fork Bomb Protection denies users who have terminal access ([output,acronym,SSH,Secure Shell]/Telnet) the ability to use all of the resources on the server. To prevent server crashes, do [output,strong,not] allow unlimited resource allocation.' ]]);$output .= '</p></td>
+	        </tr>
+	        <tr>
+	            <td class="description"><p>';$output .= $stash->get(['locale',0,'maketext',['We recommend that you enable this protection for servers that provide terminal access.' ]]);$output .= '</p></td>
+	        </tr>
+			<tr>
+				<td>
+				<div>
+				<table class="layouttblstatus">
+				<tr>
+				<td class="statuscelltext"><p>';$output .= $stash->get(['locale',0,'maketext',['Status:' ]]);$output .= ' <span class="';$output .= $stash->get('status_class');$output .= '">';$output .= $stash->get('limit_status');$output .= '<span></p></td>
+				<td class="statuscellbutton"><form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/modlimits">
+												<input type="hidden" name="limits" value="';$output .= $stash->get('action_val');$output .= '">
+												<input type="submit" class="btn-primary" value="';$output .= $stash->get('modlimits_button');$output .= '"></form></td>
+				</tr>
+				</table>
+				</div>
+				</td>
+			</tr>
+		</table>
+		</td>
+'}else {$output .= '
+    <td>';$output .= $stash->get(['locale',0,'maketext',['Fork Bomb Protection is not available on [asis,CloudLinux]' ]]);$output .= '</td>
+'}$output .= '
+	</tr>
+	</table>
+	</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'shell_fork_bomb_protection','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,74 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/editfilter.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('feature_spam_assassin',!$stash->get(['CONF',0,'skipspamassassin',0])&& $stash->get(['CPANEL',0,'feature',['spamassassin' ]]));if ($stash->get('feature_spam_assassin')){$stash->set('spam_setting_result',$stash->get(['execute',['Email','get_spam_settings' ]]));$stash->set('spam_enabled',$stash->get(['spam_setting_result',0,'status',0])? $stash->get(['spam_setting_result',0,'data',0,'spam_enabled',0]): 0);$stash->set('has_spam_as_acl',$stash->get(['spam_setting_result',0,'status',0])? $stash->get(['spam_setting_result',0,'data',0,'spam_as_acl',0]): 0);$stash->set('errors_list',$stash->get(['spam_setting_result',0,'errors',0]))}else {$stash->set('spam_enabled',0);$stash->set('has_spam_as_acl',0);$stash->set('errors_list',[])}$stash->set('email_acct',$stash->get(['execute',['Email','account_name',{'account'=>$stash->get(['RAW_FORM',0,'account',0]),'display'=>'0' }],'data',0]));if ($stash->get(['FORM',0,'account',0])ne '' || $stash->get('email_acct')ne ''){$stash->set('app_name','email_filters')}else {$stash->set('app_name','global_email_filters')}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+    ';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+
+    <div class="body-content">
+        ';$output .= $context->include('mail/filters/filter.html.tt');$output .= '
+
+        ';if ($stash->get('has_spam_as_acl')&& $stash->get('spam_enabled')){$output .= '
+        <p id="descSpamStatus" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Hint:] To filter all mail that [asis,Apache SpamAssassin™] has marked as spam, just choose “[_1]” and “[_2]”, then enter “[_3]” in the box.',$stash->get(['locale',0,'maketext',['Spam Status' ]]),$stash->get(['locale',0,'maketext',['[comment]begins with[comment,comparison option]' ]]),$stash->get(['locale',0,'maketext',['Yes' ]])]]);$output .= '
+        </p>
+        <p id="descSpamBar" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Hint]: To filter all mail that [asis,Apache SpamAssassin™] has marked with a spam score of 5.0 or greater, choose [output,em,Spam Bar] and [output,em,contains], then enter “[asis,+++++]” in the box (Note: If you wanted to match a spam score of 4, you would use [asis,++++]`. A spam score of 3 would be [asis,+++], etc).' ]]);$output .= '
+        </p>
+        '}$output .= '
+
+        ';if ($stash->get('spam_setting_result')&&!$stash->get(['spam_setting_result',0,'status',0])&& $stash->get(['errors_list',0,'size',0])){$output .= '
+            ';$output .= $context->include('_assets/errors.html.tt',{'error_list'=>$stash->get('errors_list')});$output .= '
+        '}$output .= '
+
+        ';if ($stash->get(['FORM',0,'account',0])){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html?account=' .$stash->get(['FORM',0,'account',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}$output .= '
+    </div>
+
+    ';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('app_name'),'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'page_stylesheets'=>['/yui/treeview/assets/skins/sam/treeview.css','mail/filters/assets/css/folders/tree.min.css' ],'embed_scripts'=>['js2/mail/filters/editfilter.js' ],'page_scripts'=>['/yui/treeview/treeview.js' ],'embed_stylesheets'=>['css2-min/mail/filters/editfilter.css' ],'feature'=>'blockers','content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var WE_ARE_EDITING = !!';$output .= $stash->get(['RAW_FORM',0,'filtername',0,'json',0])|| 'null';$output .= ';
+
+    var HAS_SPAM_AS_ACL = "';$output .= $stash->get('has_spam_as_acl');$output .= '" == "1";
+    var SPAM_ASSASSIN_ENABLED = "';$output .= $stash->get('spam_enabled');$output .= '" == "1";
+
+    var ACCOUNT_NAME = ';$output .= $stash->get(['email_acct',0,'json',0]);$output .= ';
+
+    var GO_BACK_URL = "userfilters.html?account=" + encodeURIComponent(';$output .= $stash->get(['RAW_FORM',0,'account',0,'json',0])|| 'null';$output .= ');
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    .filter-col {
+        padding-top: 3px;
+        padding-bottom: 3px;
+    }
+    #ruletbl tr {
+        height: 50px;
+    }
+    .tree-view-container {
+        border: 1px solid #ccc;
+        background-color: #fff;
+        padding: 0;
+        margin: 4px 0 0 0;
+    }
+    .tree-view {
+        overflow: auto;
+        padding: 0;
+        margin: 0;
+    }
+    #filterform {
+        padding: 8px;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

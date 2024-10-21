@@ -1,0 +1,41 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/setupresolvconf3.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Encoder',$context->plugin('Encoder'));if (!$stash->get('end')){$output .= $context->process('master_templates/_defheader.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts2/setupresolvconf','extrahtml'=>'<h3>Step 3</h3>','status'=>'Setting up resolvers','statusapp'=>'Resolver Setup','app_key'=>'resolver_configuration' })}else {$output .= $context->process('_setstatusdone.tmpl');$output .= '
+';if ($stash->get(['data',0,'status',0])){$stash->set('nameservers',$stash->get(['data',0,'messages',0,'slice',[1 ]]));$output .= '<div class="okmsg">
+Your resolvers have been successfully configured.
+</div>
+
+<div class="statusmsg">
+Listed in order, they are:<br />
+<ol>
+';$output .= '<li>' .$stash->get(['nameservers',0,'join',['</li><li>' ]]).'</li>';$output .= '
+</ol>
+</div>
+
+'}else {$output .= '<div class="errormsg">
+';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['data',0,'statusmsg',0])]]);$output .= '
+</div>
+
+
+<div id="msgs">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'messages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+<div class="statusmsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get('msg')]]);$output .= '</div>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</div>
+
+<div id="warns">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'warnings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+<div class="warningmsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get('msg')]]);$output .= '</div>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</div>
+'}$output .= '
+';if ($stash->get(['data',0,'redirect',0])){$output .= '
+<META HTTP-EQUIV=Refresh CONTENT="10; URL=';$output .= $stash->get('cp_security_token');$output .= '/">
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/"><table width="100%">
+<tr>
+<td>
+</td>
+<td align="right">
+<input type="submit" class="btn-primary" value="Continue">
+</td>
+</table></form>
+'}$output .= '
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

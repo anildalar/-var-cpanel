@@ -1,0 +1,13 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Team/TeamUserExpired.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'task_error',0,'defined',0])&& $stash->get(['NOTICE',0,'task_error',0,'length',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to expire team user “[_1]”.',$stash->get(['NOTICE',0,'team_user',0])]]);$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For details, check this error log, or contact your hosting provider: /usr/local/cpanel/logs/error_log' ]]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Team user “[_1]” has expired successfully.',$stash->get(['NOTICE',0,'team_user',0])]]);$output .= '
+    '}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'font_style'=>$stash->get('font_style'),'',$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Team User “[_1]” Expire Status',$stash->get(['NOTICE',0,'team_user',0])]])),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

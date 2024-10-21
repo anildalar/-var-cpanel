@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/userrights/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('page_css',do {my$output='';$output .= $context->process('page_css_block');$output});$output .= do {my$output='';$stash->set('dbusername',$stash->get(['RAW_FORM',['user' ]]));$stash->set('dbname',$stash->get(['RAW_FORM',['db' ]]));$stash->set('page_data',{'username'=>$stash->get('dbusername'),'dbname'=>$stash->get('dbname')});$output .= '
+<div class="body-content">
+    <div id="ng_content"
+        ng-controller="BaseController"
+        ng-cloak
+    >
+    <!-- NOTE: leave the alert-group in single quotes -->
+    <cp-alert-list alert-group="\'userrights\'"></cp-alert-list>
+
+        <h2 id="hdrManageUserPrivs">';$output .= $stash->get(['locale',0,'maketext',['Manage User Privileges' ]]);$output .= '</h2>
+
+        <p>';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= ': <b ng-non-bindable>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('dbusername');&$_tt_filter($output)};$output .= '</b></p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= ': <b ng-non-bindable>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('dbname');&$_tt_filter($output)};$output .= '</b></p>
+        <div class="row">
+            <div class="col-xs-12 col-sm-10 col-md-8">
+                <form id="privs_form" name="privs_form" cp-form-waiting="save_privs(privs_form)">
+                    ';$output .= $context->process('sql/userrights_include.html.tt');$output .= '                </form>
+            </div>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    </div>
+</div>
+
+<script>
+CPANEL.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('page_data')]]);$output .= ';
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_databases','use_master_bootstrap'=>0,'page_styles'=>$stash->get('page_css'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'page_css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<style type="text/css">
+form .cp-form-waiting-wrapper .ng-transclude {
+    padding: 0 6px;
+}
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

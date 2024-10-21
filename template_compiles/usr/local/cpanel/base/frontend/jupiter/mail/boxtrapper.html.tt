@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/boxtrapper.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+
+';$output .= do {my$output='';$output .= '
+
+';if ($stash->get(['FORM',0,'item',['itemsperpage' ]])){$output .= '
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'item',['itemsperpage' ]]));$output .= '
+'}$output .= '
+';if ((!$stash->get(['FORM',0,'item',['itemsperpage' ]])||!$stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]]))){$output .= '
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10');$output .= '
+'}$output .= '
+
+<div class="body-content">
+<p id="boxTrapperDesc" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['BoxTrapper protects your inbox from spam by requiring all email senders not on your Whitelist reply to a verification email before you can receive their mail.' ]]);$output .= '
+</p>
+
+<div id="boxTrapperWarning" class="alert alert-warning">
+    <span id="boxTrapperWarningImg" class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Users will need to keep an eye on their BoxTrapper Queues to ensure that mail they wish to receive is not trapped.' ]]);$output .= '
+    </div>
+</div>
+<div class="section">
+<div class="search-panel">
+    <form action="" method="post">
+        <div class="row">
+            <div class="col-xs-9 col-sm-4">
+                <input id="txtSearchRegex" type="text" class="form-control" size="15" name="searchregex" value="';$output .= $stash->get(['FORM',0,'item',['searchregex' ]]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"/>
+            </div>
+            <div class="col-xs-3 col-sm-8">
+                <input id="btnGo" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                <input id="hideItems" type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ],'html',0]);$output .= '" />
+            </div>
+        </div>
+    </form>
+</div>
+
+<table id="mailtbl" class="sortable table table-striped responsive-table">
+    <thead>
+        <tr id="boxtrapper-tableheader">
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+        <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+        </tr>
+    </thead>
+ ';$output .= $stash->get(['Api2',0,'pre_exec',['BoxTrapper','accountmanagelist' ]]);$stash->set('api2_result_BoxTrapper_accountmanagelist',$stash->get(['Api2',0,'exec',['BoxTrapper','accountmanagelist',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ],'html',0]),'api2_paginate'=>'1','regex'=>($stash->get(['RAW_FORM',0,'item',['searchregex' ]])),'api2_paginate_start'=>($stash->get(['FORM',0,'item',['api2_paginate_start' ]]))}]]));$output .= $stash->get(['Api2',0,'post_exec',['BoxTrapper','accountmanagelist' ]]);if ($stash->get(['api2_result_BoxTrapper_accountmanagelist',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_BoxTrapper_accountmanagelist');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+    <tr>
+        <form method="post" action="manage.html">
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'account',0,'html',0]);$output .= '</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'status',0,'html',0]);$output .= '</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+            <button class="btn btn-link" id="btnManage_';$output .= $stash->get(['hashref',0,'account',0,'html',0]);$output .= '" name="account" value="';$output .= $stash->get(['hashref',0,'account',0,'html',0]);$output .= '">
+                <span class="fas fa-wrench"></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+            </button>
+            </td>
+        </form>
+    </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+</table>
+
+';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+</div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

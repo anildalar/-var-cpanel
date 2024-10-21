@@ -1,0 +1,159 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/site_publisher/views/publishView.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <section id="txtPageDescription" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['You can use this interface to quickly create a website from a set of available templates.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['This allows visitors to see some basic information while you continue to develop your website.' ]]);$output .= '
+    </section>
+
+    <div growl limit-messages="1"></div>
+
+    <uib-accordion close-others="true">
+        <uib-accordion-group is-open="status.isDomainSelectOpen" panel-class="{{getPanelClass(\'domain\')}}">
+            <uib-accordion-heading class="title">
+                    <span id="lblSelectDomain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[numf,1].' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Select a Domain' ]]);$output .= '
+                    </span>
+                    <span ng-show="selectedDomain">
+                        <i id="selectedDomainIndicator" class="fas fa-check" ng-show="selectedDomain"></i>
+                        <span id="lblSelectedDomain" class="label label-success pull-right flip">{{selectedDomain.domain}}</span>
+                    </span>
+            </uib-accordion-heading>
+
+            <div class="panel-description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Select the domain, subdomain, or addon domain to use to create a website.' ]]);$output .= "\n            </div>\n\n\n            <div class=\"row search-page-container\">\n                <div class=\"col-xs-6\">\n                    <!-- Search -->\n                    <search ng-model=\"meta.filterValue\" ng-change=\"selectPage(1)\" debounce=\"500\"></search>\n                </div>\n\n                <div class=\"col-xs-6\">\n                    <div class=\"pagination-container\">\n                        <!-- Pagination -->\n                        <page-size id=\"pageSize\" allowed-sizes=\"meta.pageSizes\" total-items=\"meta.totalItems\"\n                            ng-model=\"meta.pageSize\" ng-show=\"showPager\" ng-change=\"selectPage(1)\">\n                        </page-size>\n                        <uib-pagination id=\"paginateItems\" total-items=\"meta.totalItems\" ng-model=\"meta.currentPage\"\n                            max-size=\"meta.maxPages\" boundary-links=\"true\" rotate=\"false\"\n                            previous-text=\"<\" next-text=\">\" first-text=\"<<\" last-text=\">>\"\n                            items-per-page=\"meta.pageSize\" ng-show=\"showPager\" ng-change=\"selectPage()\">\n                        </uib-pagination>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 text-right\">\n                    <span class=\"page-stats item-stats\" ng-bind-html=\"locale.maketext('[output,strong,Showing] [_1] - [_2] of [_3] items', meta.start, meta.limit, meta.totalItems)\"></span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12\">\n                    <ul class=\"list-group\">\n                        <li id=\"lnk{{domain.domain}}\" class=\"list-group-item list-group-item-radio\" ng-repeat=\"domain in domainList\" ng-class=\"{ 'list-group-item-info': domain.selected }\" >\n                            <label ng-click=\"selectDomain(\$index)\">\n                                <input type=\"radio\" id=\"rbtn{{domain.domain}}\" class=\"no-text-radio\" name=\"selectedDomain\" ng-model=\"domain.selected\" ng-value=\"true\">\n                            </label>\n                            <div class=\"domain-info-block\">\n                                <h4 class=\"list-group-item-heading\">\n                                    <a id=\"lnkExternal_{{domain.domain}}\" ng-href=\"{{getSiteAddress(domain)}}\" target=\"{{domain.domain}}\">\n                                        <span ng-bind-html=\"domain.domain | wrap: '[-./]'\"></span>\n                                        <i class=\"fas fa-external-link-alt\"></i>\n                                    </a>\n                                    <span id=\"lblPrimaryDomainTag\" class=\"label label-primary pull-right flip\" ng-show=\"domain.type ==='main_domain'\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Main Domain' ]]);$output .= '
+                                    </span>
+                                </h4>
+                                <p class="list-group-item-text" ng-show="domain.template_settings.template">
+                                    <i class="fas fa-file-alt"></i>
+                                    <span id="lbl_{{domain.domain}}_template_name" ng-bind-html="locale.maketext(\'This domain uses the [output,strong,_1] template.\' ,domain.template_settings.template)"></span>
+                                </p>
+                                <p class="list-group-item-text" ng-show="domain.template_settings.is_empty == 1">
+                                    <i class="far fa-file"></i>
+                                    <span id="lbl_{{domain.domain}}_is_empty">';$output .= $stash->get(['locale',0,'maketext',['This domain’s directory is empty.' ]]);$output .= '</span>
+                                </p>
+                                <p class="list-group-item-text" ng-show="domain.template_settings.is_empty == 0 && !domain.template_settings.template">
+                                    <i class="far fa-copy"></i>
+                                    <span id="lbl_{{domain.domain}}_user_files">';$output .= $stash->get(['locale',0,'maketext',['This domain’s directory contains other files.' ]]);$output .= '</span>
+                                </p>
+                                <p class="list-group-item-text" ng-if="fileManagerObj">
+                                    <strong id="lbl_{{domain.domain}}_FileManagerLink" title="';$output .= $stash->get(['locale',0,'maketext',['Website Directory (Document Root)' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Website Directory' ]]);$output .= '</strong>
+                                    <a id="lnk_{{domain.domain}}_FileManager" ng-href="{{getFileManagerLink(domain)}}" target="{{domain.domain}}_FileManager">
+                                        <span ng-bind-html="domain.documentroot | wrap: \'[-./]\'"></span>
+                                        <i class="far fa-copy"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </li>
+                        <li id="listEmpty" ng-hide="domainList.length" class="list-group-item list-group-item-info empty-list">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The system could not find any domains that match your criteria.' ]]);$output .= '
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="status.isTemplateSelectOpen" is-disabled="!selectedDomain" panel-class="{{getPanelClass(\'template\')}}">
+            <uib-accordion-heading class="title">
+                    <span id="lblSelectTemplate">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[numf,2].' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Select a Template' ]]);$output .= '
+                    </span>
+                    <span ng-show="selectedTemplate">
+                        <i id="selectedTemplateIndicator" class="fas fa-check"></i>
+                        <span id="lblSelectedTemplate" class="label label-success pull-right flip">{{selectedTemplate.meta.information.name}}</span>
+                    </span>
+            </uib-accordion-heading>
+
+            <div id="descTemplateSelect" class="panel-description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Select a website template.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The template that you select determines which content you will enter in the next step.' ]]);$output .= '
+            </div>
+            <div class="row">
+                <ul class="template columns-3">
+                    <li id="{{template.path}}/{{template.template}}" ng-repeat="template in templateList" class="template-item">
+                        <label class="template-info-label" title="';$output .= $stash->get(['locale',0,'maketext',['Click to select a template.' ]]);$output .= '">
+                            <div class="template-preview">
+                                <img id="img_{{template.path}}/{{template.template}}_Preview" alt="';$output .= $stash->get(['locale',0,'maketext',['Preview Image' ]]);$output .= '" class="template-image" ng-src="/site_templates{{template.path}}/{{template.template}}/preview.png" ng-show=\' "{{template.preview}}" != "0"\'/>
+                                <span  id="img_{{template.path}}/{{template.template}}_PreviewMissing" class="far fa-image fa-5x" ng-show=\' "{{template.preview}}" == "0"\'></span>
+                                <div id="lbl_{{template.path}}/{{template.template}}_PreviewMissing" class="preview-missing-text" ng-show=\' "{{template.preview}}" == "0"\'>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Preview Not Available' ]]);$output .= "\n                                </div>\n                            </div>\n                            <div class=\"template-info\" ng-class=\"{ 'selected': template.selected }\">\n                                    <input  type=\"radio\"\n                                            id=\"rbtn_{{template.path}}/{{template.template}}\"\n                                            class=\"hidden-radio\"\n                                            name=\"selectedTemplate\"\n                                            ng-click=\"selectTemplate(\$index);\"\n                                            ng-model=\"template.selected\"\n                                            ng-value=\"true\">\n                                        <span class=\"template-name\" id=\"lbl_{{template.path}}/{{template.template}}_Name\">{{template.meta.information.name}}</span>\n                                        <span class=\"template-desc\" id=\"txt_{{template.path}}/{{template.template}}_Description\">{{template.meta.information.description}}</p>\n                            </div>\n                        </label>\n                    </li>\n                    <li id=\"listTemplateEmpty\" ng-hide=\"templateList.length\" class=\"empty-list list-group-item list-group-item-info\">\n                        ";$output .= $stash->get(['locale',0,'maketext',['The system could not find any templates.' ]]);$output .= '
+                    </li>
+                </ul>
+            </div>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="status.isTemplateFormOpen" is-disabled="!selectedTemplate" panel-class="{{getPanelClass(\'publish\')}}">
+            <uib-accordion-heading class="title">
+                    <span id="lblPublishSite">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[numf,3].' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Customize and Publish' ]]);$output .= '
+                    </span>
+                    <span ng-show="status.isPublished">
+                        <i id="TemplateFormIndicator" class="fas fa-check"></i>
+                    </span>
+            </uib-accordion-heading>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <form id="publish_form" name="publish_form" class="layout-medium">
+                        <div class="form-group" ng-repeat="field in selectedTemplate.meta.fields" ng-class="{ \'has-error\': hasError(field) }">
+                            <div class="row">
+                                <div class="col-xs-12 col-lg-6">
+                                    <label id="lbl_{{field.id}}" for="{{field.id}}" class="control-label">
+                                        {{field.label}}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-lg-6">
+                                    <json-field model="field"><json-field/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="txtNotEmptyWarning" class="alert alert-warning" ng-show="selectedDomain.template_settings.is_empty == 0">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <div class="alert-message">
+                                <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= ':</strong> ';$output .= $stash->get(['locale',0,'maketext',['The subdirectory that will contain your website already contains other files or directories.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If they use the same filenames as your new website’s files, the system will automatically overwrite them when you click Publish.' ]]);$output .= '
+                            </div>
+                        </div>
+
+                        <div class="form-group action-group">
+                            <button id="btnPublish" type="submit" class="btn btn-primary" cp-action="publishTemplate(selectedTemplate,selectedDomain)">';$output .= $stash->get(['locale',0,'maketext',['Publish' ]]);$output .= '</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 hidden-xs hidden-sm">
+                    <div class="publish-template-preview">
+                        <img id="imgPreview_{{selectedTemplate.path}}/{{selectedTemplate.template}}_Preview" alt="';$output .= $stash->get(['locale',0,'maketext',['Preview Image' ]]);$output .= '" class="template-image" ng-src="/site_templates{{selectedTemplate.path}}/{{selectedTemplate.template}}/preview.png" ng-show=\' "{{selectedTemplate.preview}}" != "0"\'/>
+                        <span  id="imgPreview_{{selectedTemplate.path}}/{{selectedTemplate.template}}_PreviewMissing" class="far fa-image fa-5x" ng-show=\' "{{selectedTemplate.preview}}" == "0"\'></span>
+                        <div id="lblPreview_{{selectedTemplate.path}}/{{selectedTemplate.template}}_PreviewMissing" class="preview-missing-text" ng-show=\' "{{selectedTemplate.preview}}" == "0"\'>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Preview Not Available' ]]);$output .= '
+                        </div>
+                        <div class="preview-image-text">
+                            <span id="lblPreview_{{selectedTemplate.path}}/{{selectedTemplate.template}}_Name">
+                                {{selectedTemplate.meta.information.name}}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion-group>
+
+        <div class="panel panel-primary" id="txtPublishConfirmation" ng-if="status.isPublished">
+            <div class="panel-heading">
+                <h2 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Congratulations!' ]]);$output .= ' <i class="fas fa-thumbs-up"></i></h2>
+            </div>
+            <div class="panel-body">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['You successfully published your website to [output,url,_1,_2,target,_2,id,_3]','{{getSiteAddress(selectedDomain)}}','{{selectedDomain.domain}}','lnk_success_{{selectedDomain.domain}}_Url' ]]);$output .= '</p>
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['What would you like to do next?' ]]);$output .= '</h3>
+            </div>
+            <div class="list-group additional-links">
+                <a ng-if="accountsObj" href="{{deprefix}}{{accountsObj.url}}" target="{{selectedDomain.domain}}_Email" id="lnk_success_{{selectedDomain.domain}}_Email" class="list-group-item">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Add an email account.' ]]);$output .= '
+                </a>
+                <a ng-if="fileManagerObj" ng-href="{{getFileManagerLink(selectedDomain)}}" target="{{selectedDomain.domain}}_FileManager" id="lnk_success_{{selectedDomain.domain}}_FileManager" class="list-group-item">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Manage my website’s files.' ]]);$output .= '
+                </a>
+                <a ng-if="webdiskObj" href="{{deprefix}}{{webdiskObj.url}}" target="{{selectedDomain.domain}}_WebDisk" id="lnk_success_{{selectedDomain.domain}}_WebDisk" class="list-group-item">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Connect to this website with Web Disk.' ]]);$output .= '
+                </a>
+                <button id="lnk_success_{{selectedDomain.domain}}_PublishAnother" class="list-group-item" ng-click="resetSteps()">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Publish another website.' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,394 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/views/profile.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <p ng-show="isLoading()"
+            class="alert alert-info"
+            ng-cloak
+            role="alert">
+            <span id="spinner_profile" class="fas fa-spinner fa-spin" title="';$output .= $stash->get(['locale',0,'maketext',['Loading profiles …' ]]);$output .= '"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading profiles …' ]]);$output .= '
+        </p>
+
+
+        <section ng-show="!isLoading()">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row currentPackagePanel">
+                        <div class="col-xs-12 col-md-7">
+                            <div class="row">
+                                <div class="col-xs-12 currentPackageLabel" aria-describedby="active_profile_tags">
+                                    <h3>';$output .= $stash->get(['locale',0,'maketext',['Currently Installed Packages' ]]);$output .= '</h3>
+                                    <a id="toggleRecommendations" class="label label-warning"
+                                        href="javascript:void(0)"
+                                        ng-show="activeProfile.recommendationsExist"
+                                        ng-click="showRecommendations(activeProfile)"
+                                        tabindex="0">
+                                        {{ activeProfile.recommendationLabel }}
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <span class="contains-title">';$output .= $stash->get(['locale',0,'maketext',['Contains' ]]);$output .= '</span>
+                                    <span class="contains-item" id="active_profile_tags">
+                                        {{ activeProfile.tagsAsString }}
+                                    </span>
+                                    <button class="btn btn-link"
+                                        id="viewProfileButton_activeProfile"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Show all packages currently installed on the system.' ]]);$output .= '"
+                                        ng-click="viewProfile(activeProfile)">
+                                        <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['View all packages[comment,no punctuation needed for button text]' ]]);$output .= '
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-5 text-dir-right">
+                            <button type="button"
+                                id="customizeButton_activeProfile"
+                                class="btn btn-primary"
+                                ng-click="customizeCurrentProfile(activeProfile)">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Customize' ]]);$output .= '
+                            </button>
+                            <button id="btnConvertToProfile"
+                                class="btn btn-default"
+                                ng-class="{ \'active\': convertProfile.show }"
+                                ng-click="showPopover(\'convert\');"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#convertProfilePopup"
+                                aria-expanded="false"
+                                aria-controls="convertProfilePopup">
+                                <span class="glyphicon glyphicon-export"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Convert to profile[comment,button title]' ]]);$output .= '
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Convert to Profile popover section -->
+                    <div class="row">
+                        <div class="col-xs-12" ng-show="convertProfile.show">
+                            <div class="pop-over right top">
+                                <save-as-profile id-prefix="convertProfile"
+                                    packages="activeProfile.pkgs"
+                                    action-handler="convertProfile"
+                                    save-button-text="';$output .= $stash->get(['locale',0,'maketext',['Convert' ]]);$output .= '"
+                                    show="{{ convertProfile.show }}"
+                                    on-save-success="loadProfiles()"
+                                    on-cancel="convertProfile.show = false">
+                                </save-as-profile>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Recommendation container -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <section id="recommendations_container" ng-show="activeProfile.showRecommendations" class="alert alert-warning alert-dismissable" tabindex="-1">
+                                <button type="button"
+                                        aria-hidden="true"
+                                        id="btnHideRecos"
+                                        class="close pull-right flip"
+                                        ng-click="hideRecommendations(activeProfile)"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Hide Recommendations' ]]);$output .= "\">\n                                    <span class=\"fas fa-times\" ></span>\n                                </button>\n                                <div id=\"reco_pkg_{{ pkg }}\" ng-repeat-start=\"(pkg, recosData) in activeProfile.recommendations track by pkg\">\n                                    <div id=\"reco_item_{{\$index}}\" class=\"reco-item\" ng-repeat=\"reco in recosData.recosList track by \$index\" ng-show=\"reco.show\">\n                                        <h4 aria-describedby=\"foot_note_{{\$index}}\">{{reco.displayName}} *</h4>\n                                        <p>\n                                            <span ng-class=\"{'text-danger': reco.level == 'danger'}\" ng-bind-html=\"reco.desc\"></span>\n                                            <a href=\"{{ reco.url }}\" target=\"_blank\" ng-show=\"reco.url\">\n                                                ";$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= "\n                                            </a>\n                                        </p>\n                                        <ul class=\"fa-ul\">\n                                            <li ng-repeat=\"option in reco.options track by \$index\"\n                                                class=\"bullet\"\n                                                ng-show=\"option.show\">\n                                                <span class=\"fa-stack\" title=\"{{option.title}}\" ng-class=\"{'text-success': option.recommended}\">\n                                                  <i class=\"fa-li fas fa-certificate fa-stack-1x\"></i>\n                                                  <i class=\"fa-li fas fa-ban fa-stack-2x text-danger\"\n                                                    ng-show=\"option.recommended == false\"></i>\n                                                </span>\n                                                <span class=\"bullet-item\" ng-class=\"{'text-danger': option.level == 'danger'}\" ng-bind-html=\"option.text\">\n                                                </span>\n                                                <a href=\"{{ option.url }}\" target=\"_blank\" ng-show=\"option.url\">\n                                                    ";$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= "\n                                                </a>\n                                                <ul>\n                                                    <li id=\"reco_option_item_{{ item }}\"\n                                                        class=\"res-pkg-item reco-option-list-item\"\n                                                        ng-repeat=\"item in option.items track by \$index\"\n                                                        ng-bind-html=\"item\">\n                                                    </li>\n                                                </ul>\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                                <div class=\"foot-note\" id=\"foot_note_{{\$index}}\">*{{ recosData.footNote }}</div>\n                                <hr class=\"reco-separator\" ng-repeat-end />\n                                <button class=\"btn btn-default\"\n                                    ng-click=\"hideRecommendations(activeProfile)\"\n                                    aria-label=\"";$output .= $stash->get(['locale',0,'maketext',['Hide Recommendations' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Hide Recommendations' ]]);$output .= '
+                                </button>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Available Profiles Section -->
+            <div class="row">
+                <div class="col-xs-6">
+                    <h3>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Available Profiles' ]]);$output .= '
+                    </h3>
+                </div>
+                <div class="col-xs-6 text-dir-right">
+                    <!-- Upload Profile section -->
+                    <button class="btn btn-default upload-btn"
+                        ng-class="{ \'active\': upload.show }"
+                        type="button"
+                        data-toggle="collapse"
+                        data-target="#uploadPopup"
+                        aria-expanded="false"
+                        aria-controls="uploadPopup"
+                        ng-click="showPopover(\'upload\');">
+                        <span class="fas fa-upload"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Upload a profile[comment,button title]' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-4"></div>
+                <!-- UPLOAD PROFILES CONTAINER -->
+                <div class="col-xs-12 col-sm-8" ng-show="upload.show">
+                    <div class="pop-over right top-upload">
+                        <div id="uploadPopup"
+                            class="upload-popover well">
+                            <form id="form_upload_profile" name="formUpload">
+                                <div class="section">
+                                    <button type="button"
+                                            id="btnCloseUpload"
+                                            class="close pull-right flip"
+                                            ng-click="cancelUpload()"
+                                            uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '"
+                                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+                                        <span aria-hidden="true" class="fas fa-times"></span>
+                                    </button>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                <label id="lblUploadProfile" for="style">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Profile to Upload' ]]);$output .= '
+                                                </label>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                            </div>
+                                        </div>
+                                        <uib-accordion close-others="true">
+                                            <div uib-accordion-group
+                                                class="panel-default"
+                                                heading="';$output .= $stash->get(['locale',0,'maketext',['Browse local file[comment,heading title]' ]]);$output .= '"
+                                                is-disabled="upload.disableLocalSec"
+                                                is-open="upload.localSecIsOpen">
+                                                <!-- Upload from local file system. -->
+                                                <div class="row">
+                                                    <div class="col-xs-12">
+                                                        <div class="upload-field">
+                                                            <span class="btn-wrap">
+                                                                <input id="profile_file"
+                                                                    name="profile_file"
+                                                                    type="file"
+                                                                    required
+                                                                    ng-change="readValidateContent()"
+                                                                    ng-model="upload.profile"
+                                                                    file-model="upload.profile"
+                                                                    file-type="[\'application/json\', \'text/json\']"
+                                                                    file-size />
+                                                                <span id="btnProfileBrowse" class="btn btn-default">';$output .= $stash->get(['locale',0,'maketext',['Browse' ]]);$output .= '</span>
+                                                            </span>
+                                                            <span trigger-for="profile_file">
+                                                                <span class="far fa-file-alt fa-lg" ng-show="upload.profile.name"></span>
+                                                                <span id="profile_filename" class="filename">{{upload.profile.name}}</span>
+                                                            </span>
+                                                            <span class="help-block">
+                                                                ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The file [output,strong,must] contain a name and at least one package.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Learn more on [output,url,_1,How to create a Profile,target,_blank].','https://go.cpanel.net/EA4profile' ]]);$output .= "\n                                                            </span>\n                                                        </div>\n                                                    </div>\n                                                </div>\n                                                <!-- Validation section (Upload from local file system) -->\n                                                <div class=\"row\">\n                                                    <div id=\"profile_upload_errors\"\n                                                        class=\"col-xs-12\">\n                                                        <ul class=\"validation-container\"\n                                                            ng-show=\"formUpload.profile_file.\$invalid && formUpload.profile_file.\$dirty\">\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.required\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.filetype\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.fileSize\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,cannot] upload an empty file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.content\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['The file [output,strong,must] contain a name and at least one package.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.invalidformat\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['Invalid JSON.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file.\$error.invalidfilename\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] include the following characters: [list_and,_1]',['/','NUL' ]]]);$output .= '
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div uib-accordion-group
+                                                class="panel-default"
+                                                heading="';$output .= $stash->get(['locale',0,'maketext',['Retrieve from URL[comment,heading title]' ]]);$output .= '"
+                                                is-disabled="upload.disableUrlSec"
+                                                is-open="upload.urlSecIsOpen">
+                                                <!-- Upload from URL -->
+                                                <section id="urlInputSection" ng-hide="upload.url.showFilenameInput">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="input-group">
+                                                                <input id="profile_file_url"
+                                                                    name="profile_file_url"
+                                                                    ng-required="upload.urlSecIsOpen"
+                                                                    class="form-control"
+                                                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Type or Paste URL' ]]);$output .= "\"\n                                                                    type=\"url\"\n                                                                    ng-pattern=\"/^(http|https):\\/\\/(.*)/\"\n                                                                    ng-model=\"upload.url.value\" />\n                                                                <span class=\"input-group-btn\">\n                                                                    <button type=\"button\"\n                                                                        class=\"btn btn-default\"\n                                                                        ng-disabled-=\"formUpload.profile_file_url.\$dirty\"\n                                                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Click to retrieve data from URL.' ]]);$output .= '"
+                                                                        ng-click="getAndValidateUploadDataFromURL()">
+                                                                        <span class=\'fas fa-check\'></span>
+                                                                    </button>
+                                                                </span>
+                                                            </div>
+                                                            <span class="help-block">
+                                                                ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The file [output,strong,must] contain a name and at least one package.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Learn more on [output,url,_1,How to create a Profile,target,_blank].','https://go.cpanel.net/EA4profile' ]]);$output .= '
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </section>
+                                                <section id="urlUploadFilenameInputSection" ng-show="upload.url.showFilenameInput">
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <p>
+                                                                <span class="far fa-check-circle fa-lg text-success"></span>
+                                                                ';$output .= $stash->get(['locale',0,'maketext',['Retrieved content from url.' ]]);$output .= '
+                                                                <a href="javascript:void(0)"
+                                                                    ng-click="resetUploadUrl()">
+                                                                    <span class="fas fa-pencil-alt fa-lg"></span>
+                                                                    ';$output .= $stash->get(['locale',0,'maketext',['Change URL' ]]);$output .= '                                                                </a>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-xs-12">
+                                                            <div class="form-group">
+                                                                <label for="txtUploadUrlFilename" class="sr-only">
+                                                                    ';$output .= $stash->get(['locale',0,'maketext',['Filename' ]]);$output .= '
+                                                                </label>
+                                                                <div class="input-group">
+                                                                    <input type="text"
+                                                                        name="txtUploadUrlFilename"
+                                                                        id="txtUploadUrlFilename"
+                                                                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filename' ]]);$output .= '"
+                                                                        ng-required="upload.urlSecIsOpen"
+                                                                        ng-model="upload.url.filename"
+                                                                        class="form-control"
+                                                                        ng-change="validateFilenameInput()" />
+                                                                    <div class="input-group-addon">
+                                                                        ';$output .= $stash->get(['locale',0,'maketext',['[asis,.json]' ]]);$output .= '
+                                                                    </div>
+                                                                </div>
+                                                                <span class="help-block">
+                                                                    ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                                                                    ';$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] be [list_or_quoted,_1].',['.','..' ]]]);$output .= '
+                                                                    ';$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] include the following characters: [list_and,_1]',['/','NUL' ]]]);$output .= "\n                                                                </span>\n                                                            </div>\n                                                        </div>\n                                                    </div>\n                                                </section>\n                                                <!-- Upload URL validations -->\n                                                <div class=\"row\">\n                                                    <div id=\"profile_upload_errors\"\n                                                        class=\"col-xs-12\">\n                                                        <ul id=\"valFileUploadUrl\" class=\"validation-container\"\n                                                            ng-show=\"formUpload.profile_file_url.\$invalid && formUpload.profile_file_url.\$dirty\">\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.required\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.url\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['URL [output,strong,must] start with a protocol ([output,abbr,HTTP,Hyper Text Transfer Protocol] or [output,abbr,HTTPS,Hyper Text Transfer Protocol Secure]).' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.filetype\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] upload your profile as a “[output,em,.json]” file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.fileSize\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,cannot] upload an empty file.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.content\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['The file [output,strong,must] contain a name and at least one package.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.invalidformat\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['Invalid JSON.' ]]);$output .= "\n                                                                </span>\n                                                            </li>\n                                                            <li class=\"validation validation-error\"\n                                                                ng-show=\"formUpload.profile_file_url.\$error.invalidfilename\">\n                                                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                                                <span class=\"validation-message\">\n                                                                    ";$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] include the following characters: [list_and,_1]',['/','NUL' ]]]);$output .= '
+                                                                </span>
+                                                            </li>
+                                                        </ul>
+                                                        <ul id="valUploadUrlFilename"
+                                                            validation-container
+                                                            field-name="txtUploadUrlFilename">
+                                                            <validation-item
+                                                                field-name="txtUploadUrlFilename"
+                                                                validation-name="required">
+                                                                ';$output .= $stash->get(['locale',0,'maketext',['Filename is required.' ]]);$output .= '
+                                                            </validation-item>
+                                                            <validation-item
+                                                                field-name="txtUploadUrlFilename"
+                                                                validation-name="valFilename">
+                                                                    <span ng-bind-html="upload.url.filenameValMsg"></span>
+                                                            </validation-item>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </uib-accordion>
+                                        <div class="row">
+                                            <div class="col-xs-12" ng-class="{ \'animate-highlight\' : upload.highlightOverwrite }">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" ng-model="upload.overwrite">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Overwrite an existing profile[comment,checkbox title.]' ]]);$output .= "\n                                                    </label>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"form-group\">\n                                        <button id=\"btnUpload\"\n                                                type=\"submit\"\n                                                spinner-id=\"spinnerUpload\"\n                                                cp-action=\"uploadProfile()\"\n                                                ng-disabled=\"formUpload.\$invalid || !formUpload.\$dirty\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '
+                                        </button>
+                                        <button id="btnCancelStyleUpload"
+                                                type="button"
+                                                class="btn btn-link"
+                                                ng-click="cancelUpload()">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <p class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Click [output,class,Provision,highlight] to install packages in a profile. Click [output,class,Customize,highlight] to use a profile as template and add or remove packages. For more information about profiles read [output,url,_1,EasyApache 4 - Create a Profile,target,_blank].','https://go.cpanel.net/EA4profile' ]]);$output .= '
+                    </p>
+                </div>
+            </div>
+            <!-- Alert when no profiles are available -->
+            <div class="row">
+                <div class="col-xs-12" ng-show="noProfiles">
+                    <p id="noProfilesText" class="alert alert-warning" role="alert">
+                        ';$output .= $stash->get(['locale',0,'maketext',['No profiles are installed on your machine.' ]]);$output .= '
+                        <br>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Please install [asis,ea-profiles-cpanel] to install the default cPanel profiles.' ]]);$output .= "\n                    </p>\n                </div>\n            </div>\n\n            <!-- Available Profiles List -->\n            <div class=\"row profilesSection\" ng-hide=\"errorOccurred\">\n                <div class=\"col-xs-12 profile-col\"\n                    ng-if=\"profileList.length\"\n                    ng-repeat=\"profile in profileList track by \$index\">\n                    <div class=\"panel panel-default profile-panel\"\n                        ng-class=\"{ 'callout callout-warning' : !profile.isValid }\">\n                        <div class=\"panel-body\">\n                            <div class=\"row\">\n                                <div class=\"col-xs-12 col-md-9\">\n                                    <div class=\"row\">\n                                        <div class=\"col-xs-12 profile-title\">\n                                            {{ profile.name }}\n                                            <span class=\"label label-info\">{{ profile.profileType }}</span>\n                                           <span id=\"toggleInfo_{{ profile.id }}\"\n                                                class=\"glyphicon glyphicon-info-sign text-primary\"\n                                                aria-hidden=\"true\"\n                                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Toggle this profile description.' ]]);$output .= '"
+                                                ng-click="profile.showDescription = !profile.showDescription"> </span>
+                                            <button class="sr-only"
+                                                ng-click="profile.showDescription = !profile.showDescription">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Toggle this profile description.' ]]);$output .= '
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <span class="contains-title">';$output .= $stash->get(['locale',0,'maketext',['Contains' ]]);$output .= '</span>
+                                            <span class="contains-item">
+                                                {{ profile.tagsAsString }}
+                                            </span>
+                                            <button id="viewProfileButton_{{ profile.id }}"
+                                                class="btn btn-link"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Show all packages provided by this profile.' ]]);$output .= '"
+                                                ng-click="viewProfile(profile)">
+                                                <span class="glyphicon glyphicon-list-alt"></span>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['View all packages[comment,no punctuation needed for button text]' ]]);$output .= '
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-3">
+                                    <div class="row" ng-hide="profile.showValidationWarning">
+                                        <div class="col-xs-12 text-dir">
+                                            <button type="button"
+                                                id="customizeButton_{{ profile.id }}"
+                                                class="btn btn-default"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Use this profile as a template.' ]]);$output .= '"
+                                                ng-click="proceedNext(profile, true)">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Customize' ]]);$output .= '
+                                            </button>
+                                            <button type="button"
+                                                id="provisionButton_{{ profile.id }}"
+                                                class="btn btn-default"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Provide all the packages in this profile.' ]]);$output .= '"
+                                                ng-click="proceedNext(profile, false)">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Provision' ]]);$output .= '
+                                            </button>
+                                            <a id="download_{{ profile.id }}"
+                                                class="btn"
+                                                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/{{ profile.downloadUrl }}">
+                                                <span class="fas fa-download"></span>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-show="profile.showDescription" role="alert">
+                                <div class="col-xs-12 description">
+                                    {{ profile.desc }}
+                                </div>
+                            </div>
+                            <!-- List unsupported packages in profile -->
+                            <div id="unsupportedPkgs_{{ profile.id }}" class="row" ng-hide="profile.isValid">
+                                <div class="col-xs-12 text-warning">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['This profile includes the following packages that are not supported on this server:' ]]);$output .= "\n                                    <ul>\n                                        <li ng-repeat=\"pkg in profile.validation_data.not_on_server_without_prefix track by \$index\">\n                                            {{ pkg }}\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                            <!-- Prompt to warn of unsupported packages -->\n                            <div class=\"row\" ng-show=\"profile.showValidationWarning\">\n                                <div class=\"col-xs-12 col-md-8 text-warning\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['The system will not install the unsupported packages. Do you wish to continue?' ]]);$output .= '
+                                </div>
+                                <div class="col-xs-12 col-md-4 text-dir">
+                                    <button id="yes_{{ profile.id }}" class="btn btn-primary"
+                                        ng-click="continueAction(profile)">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+                                    </button>
+                                    <a id="cancelLink_{{ profile.id }}"
+                                        href="javascript:void(0)"
+                                        ng-click="reset(profile)"
+                                        class="btn btn-link">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<!-- View Profile Modal box -->
+<script type="text/ng-template" id="profileModalContent.tmpl">
+<div class="modal-header">
+    <h3 class="modal-title" id="profileModalLabel">';$output .= $stash->get(['locale',0,'maketext',['View Profile' ]]);$output .= '</h3>
+</div>
+<div class="modal-body">
+    <h3>{{ modalData.name }}</h3>
+    <p>{{ modalData.desc }}</p>
+    <hr>
+    <!-- List missing profiles -->
+    <div id="missingPkgs_{{ modalData.id }}" class="row" ng-hide="modalData.isValid">
+        <div class="col-xs-12">
+            <div class="text-warning alert alert-warning" role="alert">
+                ';$output .= $stash->get(['locale',0,'maketext',['This profile includes the following packages that are not supported on this server:' ]]);$output .= "\n                <ul>\n                    <li ng-repeat=\"pkg in modalData.validation_data.not_on_server_without_prefix track by \$index\">\n                        {{ pkg }}\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div id=\"group_{{type}}\" class=\"list-group\"\n        ng-repeat=\"(type, packageInfo) in modalData.pkgs track by \$index\">\n        <div class=\"list-group-item ea-profile-category\">\n            <h4 class=\"list-group-item-heading\">\n                {{ packageInfo.name }}\n            </h4>\n            <ul class=\"list-unstyled\">\n            <li id=\"item_{{package}}\" class=\"list-group-item-text package\"\n                ng-repeat=\"package in packageInfo.packages  track by \$index\">\n                {{ package }}\n            </li>\n            </ul>\n        </div>\n    </div>\n\n</div>\n<div class=\"modal-footer\">\n    <button class=\"btn btn-primary\" ng-click=\"closeModal()\">";$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</button>
+</div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

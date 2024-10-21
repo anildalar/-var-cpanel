@@ -1,0 +1,154 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/passwdmysqllist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'theme'=>'yui','app_key'=>$stash->get(['data',0,'app_key',0]),'extrastyle'=>'
+    .align-div-with-table {
+        margin-left: 120px;
+        padding: 10px 0;
+    }
+
+    .highlight-section {
+        background: #faebcc;
+        border-radius: 2px;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05) inset;
+        min-height: 20px;
+        padding: 19px;
+        border: 1px solid #faebcc;
+    }
+
+    .highlight-section p {
+        margin: 0 0 10px 0;
+        font-weight: bold;
+    }
+
+    .label-column {
+        width: 120px;
+        text-align: right;
+    }
+
+    ' });$output .= '
+';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+';if (!$stash->get(['data',0,'root_user',0])&&!$stash->get(['data',0,'users',0,'size',0])){$output .= '
+<div>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['No users available.' ]]);$output .= '</p>
+</div>
+'}else {$output .= '
+<script type="text/javascript">
+    var REQUIRED_PASSWORD_STRENGTH = ';$output .= $stash->get(['data',0,'minpwstrength',0]);$output .= ';
+    var validUserSelected = function(el) {
+        return el.selectedIndex > 0;
+    };
+
+    var init_page = function() {
+        var is_root_user = ';$output .= ($stash->get(['data',0,'root_user',0]))? 1 : 0;$output .= ';
+        var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+        if (!is_root_user) {
+            var select_user = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Database User' ]]);$output .= '");
+            select_user.add(\'user\', validUserSelected, "';$output .= $stash->get(['locale',0,'maketext',['You must select a user.' ]]);$output .= '");
+            select_user.attach();
+            password_validators.push(select_user);
+        }
+        CPANEL.validate.attach_to_form("submit", password_validators);
+        YAHOO.util.Dom.get("password").focus();
+    };
+    YAHOO.util.Event.onDOMReady(init_page);
+</script>
+
+
+<div>
+    <div id="why_strong_passwords_text" style="display: none">
+        ';$output .= $stash->get(['data',0,'password_why',0]);$output .= '
+        <br /><br />
+        ';$output .= $stash->get(['data',0,'password_tip',0]);$output .= '
+    </div>
+
+    <div class="span12">
+        <form method="post" action="../scripts/passwdmysql">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+
+            <table>
+                <tr>
+                    ';if (!$stash->get(['data',0,'root_user',0])){$output .= '
+                        <td class="label-column">';$output .= $stash->get(['locale',0,'maketext',['Database User:' ]]);$output .= '</td>
+                        <td>
+                            <select name="user" id="user">
+                                <option value="">';$output .= $stash->get(['locale',0,'maketext',['Select' ]]);$output .= '</option>
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'users',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '
+                                    ';if ($stash->get(['user',0,'user',0,'length',0])){$output .= '
+                                    <option value="';$output .= $stash->get(['user',0,'user',0,'html',0]);$output .= '">';$output .= $stash->get(['user',0,'user',0,'html',0]);$output .= '</option>
+                                    '}$output .= '
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                        </td>
+                        <td><div id="user_error"></div></td>
+                    '}else {$output .= '
+                        <input type="hidden" name="user" id="user" value="root" />
+                    '}$output .= '
+                </tr>
+                <tr>
+                    <td class="label-column">';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '</td>
+                    <td><input type="password" autocomplete=\'off\' id="password" name="password" style="width: 150px" /></td>
+                    <td><div id="password_error"></div></td>
+                </tr>
+                <tr>
+                    <td class="label-column">';$output .= $stash->get(['locale',0,'maketext',['Password (again):' ]]);$output .= '</td>
+                    <td><input type="password" autocomplete=\'off\' id="password2" name="password2" style="width: 150px" /></td>
+                    <td><div id="password2_error"></div></td>
+                </tr>
+                <tr>
+                    <td class="label-column">';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' (
+                        <div style="display: inline" id="why_strong_passwords_link" class="action_link">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Why?' ]]);$output .= '
+                        </div>):
+                    </td>
+                    <td>
+                        ';$output .= '
+                        <div id="password_strength" style="width: 156px; height: 20px; border: 1px solid black; margin: 5px 0px 3px 0px"></div>
+                    </td>
+                    <td>
+                        <input type="button" id="create_strong_password" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" class="btn-secondary" style="vertical-align: middle;" />
+                    </td>
+                </tr>
+            </table>
+
+            ';if ($stash->get(['data',0,'root_user',0])&& $stash->get(['data',0,'defined',['using_remote_host' ]])&& $stash->get(['data',0,'using_remote_host',0])){$output .= '
+            <div class="align-div-with-table">
+                <div class="highlight-section">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['You are currently using a remote database server. Which server’s password do you want to change?' ]]);$output .= '</p>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                id="local_host"
+                                name="mysqlhost"
+                                value="1" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Local database server' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio"
+                                id="remote_host"
+                                name="mysqlhost"
+                                checked="checked"
+                                value="0" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Remote database server' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+            </div>
+            '}$output .= '
+
+            <div class="align-div-with-table">
+                <input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '" name="submit" class="btn-primary" />
+            </div>
+        </form>
+        ';if ($stash->get(['data',0,'root_user',0])){$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: By default, the database root password is set to a random string. You should set this to something that is very hard to guess. You do not need to remember this password unless you plan to connect manually to the database server as the root user.' ]]);$output .= '
+            </p>
+        '}$output .= '
+    </div>
+</div>
+'}$output .= '
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' });$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

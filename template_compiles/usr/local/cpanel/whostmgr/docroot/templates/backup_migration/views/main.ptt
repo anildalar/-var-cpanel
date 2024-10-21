@@ -1,0 +1,40 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_migration/views/main.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- Migration Section -->
+<div class="row">
+    <div class="col-xs-12">
+        <p class="info-block">';$output .= $stash->get(['locale',0,'maketext',['This action will convert the Legacy Backup System to the new Backup System.' ]]);$output .= '</p>
+        <div class="alert alert-info" ng-show="allowKeepConfig">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['You have both the [output,em,Legacy Backup System] and the new [output,em,Backup System] configured and enabled on your server. When you click [output,em,Migrate], the system will overwrite your current [output,em,Backup System Configuration]. To keep your current [output,em,Backup] configuration, select the checkbox below.' ]]);$output .= '</p>
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" ng-model="keepConfig" id="keepConfig">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Keep existing configuration' ]]);$output .= '
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-lg btn-primary" id="migrateButton" ng-click="migrate()" ng-show="!running && !finished" ng-disabled="finished">';$output .= $stash->get(['locale',0,'maketext',['Migrate' ]]);$output .= '</button>
+        <p ng-show="running"><span spinner id="runningSpinner" class="addSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Running migration …' ]]);$output .= '"></span> ';$output .= $stash->get(['locale',0,'maketext',['Running migration …' ]]);$output .= '</p>
+        <div class="alert alert-success" id="resultText_success" ng-show="finished && !errorDetected">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['The system successfully migrated your server from the Legacy Backup system to the new Backup system.' ]]);$output .= '</div>
+        </div>
+        <div class="alert alert-danger" id="resultText_fail" ng-show="finished && errorDetected">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['The system failed to migrate from the Legacy Backup system to the new Backup system. Refresh your page and try again.' ]]);$output .= '<br>{{ errorMessage }}</div>
+        </div>
+        <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/backupconfig" id="doneButton" class="btn btn-primary" ng-show="finished">';$output .= $stash->get(['locale',0,'maketext',['Done' ]]);$output .= '</a>
+    </div>
+</div>
+<script type="text/ng-template" id="migrationModalContent.tmpl">
+<div class="modal-header">
+    <h3 class="modal-title" id="migrateModalLabel">';$output .= $stash->get(['locale',0,'maketext',['Confirm Your Action' ]]);$output .= '</h3>
+</div>
+<div class="modal-body">
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Run Backup System Migration?' ]]);$output .= '</h3>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Confirm that you wish for the system to convert from Legacy Backup System to new Backup System.' ]]);$output .= '</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-link" ng-click="closeModal()">';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</button>
+    <button class="btn btn-primary" ng-click="runIt()">';$output .= $stash->get(['locale',0,'maketext',['Yes, run Migration.' ]]);$output .= '</button>
+</div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

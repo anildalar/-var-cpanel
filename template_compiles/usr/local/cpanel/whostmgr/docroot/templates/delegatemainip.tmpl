@@ -1,0 +1,88 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/delegatemainip.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('Net',$context->plugin('Net'));$output .= do {my$output='';if (!$stash->get(['data',0,'valid_user',0])){$output .= '
+Invalid user (';$output .= $stash->get(['data',0,'user',0]);$output .= ')!
+'}else {$output .= '
+';$stash->set('html_safe_user',$stash->get(['data',0,'user',0,'html',0]));$output .= '
+';$stash->set('uri_safe_user',$stash->get(['data',0,'user',0,'uri',0]));$output .= '
+
+<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['[output,class,Shared IP for,title] “[_1]”',$stash->get('html_safe_user')]]);$output .= '</h3>
+<p>
+';$output .= $stash->get(['locale',0,'maketext',['The Shared IP address is used for “[_1]”’s accounts that do not have a dedicated IP address.',$stash->get('html_safe_user')]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Your server supports [output,abbr,SNI,Server Name Indication].' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['For most users, a shared IP address should be sufficient.' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['If your user needs to host SSL content to clients that do not support [output,abbr,SNI,Server Name Indication], that user will need a dedicated IP address.' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Microsoft® Internet Explorer™ on Windows XP™ is the most widely used web browser that does not support SNI.' ]]);$output .= '
+</p>
+<p>
+';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/changeip');$output .= '
+<br>
+';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: This change does [output,strong,not] affect accounts that already exist. These accounts can be updated to the new shared IP using the “[output,url,_1,Change Site’s IP Address]” interface.',$stash->get('url_html')]]);$output .= '
+<p>
+';$output .= $stash->get(['locale',0,'maketext',['Choose the new shared IP for “[_1]”:',$stash->get('html_safe_user')]]);$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/dodelegatemainip">
+<select name="mainip">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'ipdata',0,'keys',0,'cpsort',[{'code'=>$stash->getref(['Net',0,'inet_aton',0]),'num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ip'}=$_tt_value;$stash->set('delegated_to_user',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,$stash->get(['data',0,'user',0]),0]));$stash->set('dedicated',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'dedicated_user',0]));$stash->set('nameserver',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'nameserver',0]));$stash->set('reserved',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'reserved',0]));$output .= '<option ';$output .= $stash->get('ip')eq $stash->get(['data',0,'sharedip',0])? 'selected="selected"' : '';$output .= $stash->get('input_disabled')? 'disabled="disabled"' : '';$output .= ' value="';$output .= $stash->get('ip');$output .= '">';$output .= $stash->get('ip');if ($stash->get('ip')eq $stash->get(['data',0,'mainsrvip',0])){$output .= ' (Main Server IP)'}if ($stash->get('ip')eq $stash->get(['data',0,'mainip',0])){$output .= ' (Main Shared IP)'}if ($stash->get('ip')eq $stash->get(['data',0,'sharedip',0])){$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['([_1]’s Shared IP)',$stash->get('html_safe_user')]])}if ($stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'size',0])> 0){$stash->set('shared_list',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'ungrep',['\Aroot\z' ]]));if ($stash->get(['shared_list',0,'size',0])< $stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'size',0])){$output .= $stash->get(['shared_list',0,'unshift',['root' ]])}if ($stash->get(['shared_list',0,'size',0])> 5){$stash->set('others_count',$stash->get(['shared_list',0,'size',0])- 4);$output .= ' (' .$stash->get(['locale',0,'maketext',['Shared by [_1], [_2], [_3], [_4], and [quant,_5,other,others].',$stash->get(['shared_list',0,0,0]),$stash->get(['shared_list',0,1,0]),$stash->get(['shared_list',0,2,0]),$stash->get(['shared_list',0,3,0]),$stash->get('others_count')]]).')'}else {$output .= ' (' .$stash->get(['locale',0,'maketext',['Shared by [list_and,_1].',$stash->get('shared_list')]]).')'}}if ($stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'size',0])> 0){$stash->set('delegated_list',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'ungrep',['\Aroot\z' ]]));if ($stash->get(['delegated_list',0,'size',0])< $stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'size',0])){$output .= $stash->get(['delegated_list',0,'unshift',['root' ]])}if ($stash->get(['delegated_list',0,'size',0])> 5){$stash->set('others_count',$stash->get(['delegated_list',0,'size',0])- 4);$output .= ' (' .$stash->get(['locale',0,'maketext',['Delegated to [_1], [_2], [_3], [_4], and [quant,_5,other,others].',$stash->get(['delegated_list',0,0,0]),$stash->get(['delegated_list',0,1,0]),$stash->get(['delegated_list',0,2,0]),$stash->get(['delegated_list',0,3,0]),$stash->get('others_count')]]).')'}else {$output .= ' (' .$stash->get(['locale',0,'maketext',['Delegated to [list_and,_1].',$stash->get('delegated_list')]]).')'}}if ($stash->get('dedicated')){$output .= ' (' .$stash->get(['locale',0,'maketext',['Dedicated to [_1].',$stash->get('dedicated')]]).')'}if ($stash->get('nameserver')){$output .= (' (nameserver ' .$stash->get('nameserver').')')}if ($stash->get('reserved')){$output .= ' (reserved)'}$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+
+<input type="hidden" name="user" value="';$output .= $stash->get(['data',0,'user',0]);$output .= '" />
+<input type="submit" class="btn-primary" value="Save" />
+</form>
+
+<div id="ssl-install-require" style="display:none"></div>
+
+<div id="ftp-require" style="display:none"></div>
+
+<script id="ssl-install-require-template" type="text/html">
+';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/editres?res=' .$stash->get('uri_safe_user').'#privs_ssl');$output .= '
+';if ($stash->get(['data',0,'acls',0,'ssl',0])){$output .= '
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['User “[_1]” has the [output,url,_2,SSL Site Management] privilege.',$stash->get('html_safe_user'),$stash->get('url_html')]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['They may create SSL hosts for domains that are attached to an account they own as the primary, parked, sub-, or addon domain on:' ]]);$output .= '
+            <ul>
+                <li>';$output .= $stash->get(['locale',0,'maketext',['Dedicated IPs' ]]);$output .= '</li>
+                <li>';$output .= $stash->get(['locale',0,'maketext',['Shared IP addresses using [output,acronym,SNI,Server Name Indication]' ]]);$output .= '</li>
+                ';if ($stash->get(['data',0,'sharedip',0])ne $stash->get(['data',0,'mainip',0])){$output .= '
+                    ';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/delegatemainip?user=' .$stash->get('uri_safe_user'));$output .= '
+                    <li>';$output .= $stash->get(['locale',0,'maketext',['Their [output,url,_1,assigned Shared IP] “[_2]”[comment,this is a non-sentence option name]',$stash->get('url_html'),$stash->get(['data',0,'sharedip',0])]]);$output .= '</li>
+                '}$output .= '
+            </ul>
+    </p>
+    ';if ($stash->get(['data',0,'sharedip',0])eq $stash->get(['data',0,'mainip',0])){$output .= '
+    <p>
+       ';$output .= $stash->get(['locale',0,'maketext',['Note: “[_1]” may not create an SSL host on their shared IP address, [_2], because it is the same as the main shared IP.',$stash->get('html_safe_user'),$stash->get(['data',0,'sharedip',0])]]);$output .= '
+       ';$output .= $stash->get(['locale',0,'maketext',['If you wish to provide them with a unique shared IP address, please change their assigned shared IP above.' ]]);$output .= '
+    </p>
+    '}$output .= '
+
+'}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['For “[_1]” to setup SSL hosts through WHM, they must have the [output,url,_2,SSL Site Management] privilege.',$stash->get('html_safe_user'),$stash->get('url_html')]]);$output .= '
+'}$output .= '
+
+';$output .= $stash->get(['locale',0,'maketext',['Alternatively, if a cPanel user account has the “[_1]” feature, the user may set up SSL hosts through cPanel in the [output,strong,SSL/TLS Manager] interface.','SSL Host Installer' ]]);$output .= '
+</script>
+
+<script id="ftp-require-template" type="text/html">
+<p>
+';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/changeip');$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['If you later change the IP address of a domain through the “[output,url,_1,Change Site’s IP Address]” interface to an address other than the [output,strong,main] Shared IP address, users must connect to “[output,strong,ftp].theirdomain.com” instead of “theirdomain.com” in order to authenticate.',$stash->get('url_html')]]);$output .= '
+</p>
+</script>
+
+<script type="text/javascript">
+new CPANEL.widgets.Page_Notice( {
+    level: "info", //can also be "warn", "error", "success"
+    content: DOM.get(\'ssl-install-require-template\').text,
+    container: \'ssl-install-require\',
+} );
+DOM.setStyle(\'ssl-install-require\',\'display\',\'\');
+
+new CPANEL.widgets.Page_Notice( {
+    level: "warn", //can also be "warn", "error", "success"
+    content: DOM.get(\'ftp-require-template\').text,
+    container: \'ftp-require\',
+} );
+DOM.setStyle(\'ftp-require\',\'display\',\'\');
+</script>
+
+
+
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'manage_resellers_shared_ip','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

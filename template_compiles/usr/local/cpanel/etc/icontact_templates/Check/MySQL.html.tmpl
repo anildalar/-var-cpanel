@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/MySQL.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['check_mysql has determined that there are corrupted database tables' ]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] [output,amp] [asis,WHM] has determined that the following database tables are corrupt:' ]]);$output .= '
+</p>
+<p>
+    <table>
+        <thead>
+            <tr>
+                <th>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Database' ]]);$output .= '</th>
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Error' ]]);$output .= '</th>
+            </tr>
+        </thead>
+        <tbody>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'report',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$output .= '
+            <tr>
+                <th valign="top">
+                    ';$output .= $stash->get('db');$output .= '
+                </th>
+                <td>
+                    ';$output .= $stash->get(['code_inline',[{'term'=>$stash->get(['NOTICE',0,'report',0,$stash->get('db'),0])}]]);$output .= '
+                </td>
+            </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </tbody>
+    </table>
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['We recommend that you repair these tables with [asis,WHM]’s [_1] interface at: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Repair a [asis,MySQL]/[asis,MariaDB] Database' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/repairmysqllist' ]]),'_blank' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If the repair fails, contact [output,url,_1,cPanel Support,target,_2] for further assistance.','https://go.cpanel.net/support','_blank' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If the errors in this message indicate a problem with [asis,InnoDB], including [asis, “Unknown storage engine InnoDB”] errors, [asis,cPanel] Support cannot resolve your problem for you. Troubleshooting these issues involves advanced procedures that pose a high risk of data loss or production impact.' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['While we cannot assist you directly with [asis,InnoDB] issues, [asis,cPanel] Support technicians have created a guide for customers to determine how to move forward. You can find the guide at [output,url,_1,_1,target,_2]. You can also use the official [asis,InnoDB] Troubleshooting guide on the [asis,MySQL] documentation site, found at [output,url,_3,_3,target,_4]. We recommend that you contact a specialist or administrator familiar with [asis,InnoDB]','https://go.cpanel.net/fixinnodb','_blank','https://go.cpanel.net/mysqlinnodb','_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

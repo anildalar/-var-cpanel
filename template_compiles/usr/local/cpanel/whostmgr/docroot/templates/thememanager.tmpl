@@ -1,0 +1,79 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/thememanager.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '<h2>';$output .= $stash->get(['locale',0,'maketext',['Manage “[_1]”[comment,name of a theme] Themes',$stash->get(['data',0,'appname',0])]]);$output .= '</h2>
+
+<div class="highlight">
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Install Theme' ]]);$output .= '</h2>
+      <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/uptheme" method="post" enctype="multipart/form-data">
+      <input name="themetype" value="';$output .= $stash->get(['data',0,'app',0]);$output .= '" type="hidden">
+      Theme Ball: <input name="theme" type="file"><input class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '" type="submit">
+   </form>
+</div>
+
+';if ($stash->get(['data',0,'themes',0,'size',0])> 0){$output .= '
+<h2>';$output .= $stash->get(['locale',0,'maketext',['“[_1]” Themes',$stash->get(['data',0,'appname',0])]]);$output .= '</h2>
+
+<table id="icontbl" class="sortable" cellpadding="0" cellspacing="0"><thead><tr>
+
+            <th class="cell clickable" scope="col">';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '</th>
+            <th class="cell" scope="col" nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+            <th class="cell" scope="col" nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr></thead>
+            <tbody>
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'theme'}=$_tt_value;$output .= '
+            ';if (($stash->get('theme')eq 'jupiter')){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+            <tr>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&nbsp;<a onClick=\'dophotobox(';$output .= $stash->get(['theme',0,'html',0,'json',0,'html',0]);$output .= '); return false;\' id="preview-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '" href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/themeimage/';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '/preview?app=';$output .= $stash->get(['data',0,'app',0]);$output .= '"><img alt="Preview &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" title="Preview &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" src="/images/trace.gif" width="16" height="16" border="0" /></a></td>
+                <td><img title="';$output .= $stash->get(['data',0,'appname',0]);$output .= '" alt="';$output .= $stash->get(['data',0,'appname',0]);$output .= '" src="/images/';$output .= $stash->get(['data',0,'image',0]);$output .= '"></td>
+                <td>
+                <div class="tbl_but_wrap">
+                    ';if (!$stash->get(['data',0,'immutable',0,$stash->get('theme'),0])){$output .= '
+                    <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/suredeltheme?theme=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&themetype=';$output .= $stash->get(['data',0,'app',0]);$output .= '"><img title="Delete &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" alt="Delete &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" src="/images/remove.gif" width="18" height="18" border="0" /><br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</a>
+                    '}$output .= '
+                </div>
+                <div class="tbl_but_wrap">
+                     <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/clonetheme?theme=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&themetype=';$output .= $stash->get(['data',0,'app',0]);$output .= '"><img title="Clone &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" alt="Clone &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" src="/images/copy.gif" width="16" height="16" border="0" /><br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Clone' ]]);$output .= '</a>
+                </div>
+                <div class="tbl_but_wrap">
+                     <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/downtheme/';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '.';$output .= $stash->get(['data',0,'app',0]);$output .= 'theme"><img title="Download &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" alt="Download &ldquo;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '&rdquo;" src="/images/download.gif" width="16" height="16" border="0" /><br />
+                   ';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</a>
+                </div>
+                </td>
+
+                </tr>
+               ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+            </tbody><tfoot></tfoot></table>
+    <p><img src="/images/trace.gif" align="absmiddle" border="none">= ';$output .= $stash->get(['locale',0,'maketext',['Preview Theme' ]]);$output .= ' <br>
+<img src="/images/download.gif" align="absmiddle" border="0" height="21" width="21">= ';$output .= $stash->get(['locale',0,'maketext',['Download Theme' ]]);$output .= ' </p>
+'}$output .= '
+
+<h2>Addon ';$output .= $stash->get(['data',0,'appname',0]);$output .= ' Themes</h2>
+
+';$output .= $context->include('photobox.tmpl');$stash->set('jsphotos',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'theme'}=$_tt_value;if (($stash->get('theme')eq 'jupiter')){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= $stash->get(['jsphotos',0,'push',[{'src'=>($stash->get('cp_security_token').'/scripts/themeimage/' .$stash->get(['theme',0,'uri',0]).'/preview?app=' .$stash->get(['data',0,'app',0])),'caption'=>$stash->get(['theme',0,'html',0])}]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('jsphotosstring',$stash->get(['jsphotos',0,'json',0]));$output .= '<script>YAHOO.util.Event.addListener(window, "load", function() { init_photobox(';$output .= $stash->get('jsphotosstring');$output .= '); } );</script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts/thememanager_landing','scripts'=>['/js/photobox.js','/js/photobox_controller.js' ],'stylesheets'=>['/yui/container/assets/container.css','/photobox.css' ],'extrastyle'=>'
+    #doctitle h1 {
+color:#003541;
+font-size:14px;
+}
+h2{
+    font-size:12px;
+}
+.highlight{
+    background: #f3f3f3;
+    border: 1px solid #ACCCB8;
+    padding: 12px 5px 15px 5px;
+    margin-bottom:12px;
+    width:450px;
+}
+.tbl_but_wrap{
+    float:left;
+    font-size:7px;
+    margin:0 auto;
+    padding-bottom:2px;
+    padding-top:3px;
+    text-align:center;
+    width:54px;
+}
+    ','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

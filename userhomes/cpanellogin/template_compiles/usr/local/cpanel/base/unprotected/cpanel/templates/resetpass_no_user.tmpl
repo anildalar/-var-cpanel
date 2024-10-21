@@ -1,0 +1,58 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/resetpass_no_user.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('reset_url','/resetpass');if (!$stash->get('https')){$stash->set('ApplicationUrl',$context->plugin('ApplicationUrl'));$stash->set('secure_url',$stash->get(['ApplicationUrl',0,'get_secure_url',[{'host'=>$stash->get('SERVER_NAME'),'port'=>$stash->get('SERVER_PORT'),'proxysubdomains'=>$stash->get(['cpconf',0,'proxysubdomains',0])}]]));$stash->set('reset_url',$stash->get('secure_url').$stash->get('reset_url'))}$output .= '
+<div id="reset-forms">
+    ';if (!$stash->get('https')){$output .= '
+    <form id="reload_form" action="';$output .= $stash->get('reset_url');$output .= '">
+        ';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= '
+            <input type="hidden" name="debug" value="1">
+        '}$output .= '
+        <input type="hidden" name="start" value="1">
+        <div class="alert alert-warning">
+            <span class="fas fa-2x fa-exclamation-triangle" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['The Reset Password feature only supports the [asis,HTTPS] protocol.' ]]);$output .= '
+            </div>
+        </div>
+        <div class="controls">
+            <div class="login-btn">
+                <input id="login" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Reload with [asis,HTTPS]' ]]);$output .= '">
+            </div>
+        </div>
+        <div class="controls">
+            <div class="reset-pw">
+                <a href="/">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </form>
+    '}else {$output .= '
+    <form id="reset_form" action="/resetpass" method="POST">
+        <!-- Prevent submit via Enter if submit button is disabled -->
+        <input style="display:none" />
+
+        ';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= '
+            <input type="hidden" name="debug" value="1">
+        '}$output .= '
+
+        <div class="input-req-login">
+            <label for="username">';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</label>
+        </div>
+        <div class="input-field-login icon username-container">
+            <input name="user" id="username" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter your username.' ]]);$output .= '" type="text"  autocomplete="off" class="std_textbox" tabindex="1" required autofocus >
+        </div>
+        <div class="controls">
+            <div class="login-btn">
+                <input name="login" type="submit" id="login" value="';$output .= $stash->get(['locale',0,'maketext',['Reset Password' ]]);$output .= '" >
+            </div>
+        </div>
+        <div class="controls">
+            <div class="reset-pw">
+                <a href="/">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </form>
+    '}$output .= '
+    <span id="resetpass-no-user">';$output .= '</span>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

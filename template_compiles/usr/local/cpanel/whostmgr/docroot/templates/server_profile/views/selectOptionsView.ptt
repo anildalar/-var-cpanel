@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/server_profile/views/selectOptionsView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div ng-cloak>
+
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Select Options' ]]);$output .= '</h3>
+
+    <div class="alert alert-info" role="alert" ng-if="licenseBasedServerProfile">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['This server’s license is for the “[_1]” profile, which has optional roles. You can configure which optional roles the server uses.','{{selectedProfile.name}}' ]]);$output .= '
+        </p>
+        ';$stash->set('custom_url',$stash->get(['Whostmgr',0,'get_custom_url',0]));$stash->set('cpanel_url',$stash->get('cp_security_token').'/scripts12/license_purchase_status/checkout?upgrade=1');if ($stash->get('custom_url')){$stash->set('upgrade_link',$stash->get('custom_url'))}else {$stash->set('upgrade_link',$stash->get('cpanel_url'))}$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['To select a different profile, you must upgrade your server’s license.' ]]);$output .= '
+            <a href="';$output .= $stash->get('upgrade_link');$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Upgrade the server’s license and login again.' ]]);$output .= '"  rel=\'noopener\'>
+                ';$output .= $stash->get(['locale',0,'maketext',['Upgrade the server’s license and login again.' ]]);$output .= '
+                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+            </a>
+        </p>
+    </div>
+
+    <h4>{{ selectedProfile.name }}</h4>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div ng-if="selectedProfile.enabled_roles.length > 0">{{ selectedProfile.enabled_roles | rolesLocaleString:\'Enables [list_and,_1].\' }}</div>
+            <div ng-if="selectedProfile.disabled_roles.length > 0">{{ selectedProfile.disabled_roles | rolesLocaleString:\'Disables [list_and,_1].\' }}</div>
+            <div ng-if="selectedProfile.optional_roles.length > 0">{{ selectedProfile.optional_roles | rolesLocaleString:\'[list_and,_1] [numerate,_2,is,are] optional.\' }}</div>
+        </div>
+    </div>
+
+    <div cp-loading-panel id="determiningAvailableOptions" ng-show="loading">
+         ';$output .= $stash->get(['locale',0,'maketext',['Determining available options …' ]]);$output .= '
+    </div>
+
+    <div ng-if="!loading">
+
+        <div class="panel panel-info" ng-if="optional.length > 0">
+            <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['This profile has the following optional roles:' ]]);$output .= '</div>
+            <div class="panel-body role-select-table">
+                <div class="row" ng-repeat="role in optional">
+                    <div class="cell toggle-cell">
+                        <toggle-switch id="{{role.module}}Toggle" ng-model="role.selected" on-toggle="role.selected = !role.selected"
+                            enabled-label="{{role.name}}" disabled-label="{{role.name}}" aria-label="{{role.name}}" class="roleSwitch"/>
+                    </div>
+                    <div class="cell profileDescription">
+                        <div class="roleDescription">
+                            <span>{{ role.description }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button ng-if="loaded"
+                class="btn btn-primary"
+                cp-action="continue()"
+                >
+                ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+            </button>
+            <button ng-if="loaded && !licenseBasedServerProfile"
+                class="btn btn-link"
+                ng-disabled="settingProfile"
+                cp-action="cancel()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+            </button>
+        </div>
+
+    </div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ror/saverewrite.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';if ($stash->get(['FORM',0,'oldurl',0])){$output .= $stash->get(['Api2',0,'pre_exec',['RoR','removerewrite' ]]);$stash->set('remove_rails_old_rewrite_result',$stash->get(['Api2',0,'exec',['RoR','removerewrite',{'appname'=>$stash->get(['FORM',0,'appname',0]),'rewriteurl'=>$stash->get(['FORM',0,'oldurl',0]),'rewritedomain'=>$stash->get(['FORM',0,'domain',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['RoR','removerewrite' ]])}$output .= $stash->get(['Api2',0,'pre_exec',['RoR','setuprewrite' ]]);$stash->set('setup_rails_rewrite_result',$stash->get(['Api2',0,'exec',['RoR','setuprewrite',{'appname'=>$stash->get(['FORM',0,'appname',0]),'rewriteurl'=>$stash->get(['FORM',0,'url',0]),'rewritedomain'=>$stash->get(['FORM',0,'domain',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['RoR','setuprewrite' ]]);$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'item',['ror' ]])){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system cannot redirect your app due to an error.' ]]);$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'item',['ror' ],'html',0]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1] will now be transparently rewritten to [output,url,_2] ([_3]).','http://' .$stash->get(['FORM',0,'domain',0]).'/' .$stash->get(['FORM',0,'url',0]),'http://' .$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0]).':' .$stash->get(['CPANEL',0,'CPVAR',0,'ror_app_port',0,'html',0]),$stash->get(['FORM',0,'appname',0])]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ruby_on_rails','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

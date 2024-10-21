@@ -1,0 +1,22 @@
+
+# DO NOT MODIFY THE NEXT LINE:
+# This version of dovecot supports: wildcards, multi local_name, explict maincert local_name.
+
+# Main cert for SNI
+[% IF main_cert_domains && main_cert_domains.size %]
+local_name "[% main_cert_domains.join(' ') %]" {
+    ssl_cert = <[% ssl_cert_file %]
+    ssl_key = <[% ssl_key_file %]
+}
+[% END %]
+# END - Main cert for SNI
+
+# Domain TLS
+[% FOREACH domain_info IN mail_sni_domains -%]
+local_name "[% domain_info.cert_domains.join(' ') %]" {
+    [%- SET cert_path = get_domain_path(domain_info.domain_tls) %]
+    ssl_cert = <[% cert_path %]
+    ssl_key = <[% cert_path %]
+}
+[% END -%]
+# End Domain TLS

@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/email_deliverability/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('EximLocalOpts',$context->plugin('EximLocalOpts'));$stash->set('APP_KEY','email_deliverability');$stash->set('PAGE_BASE','/scripts11/' .$stash->get('APP_KEY'));$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$stash->set('REQUIRED_FEATURES',['emailauth' ]);$output .= '
+
+<div id="content"
+    class="ng-cloak"
+    ng-cloak>
+
+    <!-- NOTE: leave the alert-group in single quotes -->
+    <cp-alert-list id="mainAlertList"></cp-alert-list>
+
+    <div class="row" ng-controller="RouteController as routeController">
+        <div class="col-md-12">
+            <p class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to reduce the number of emails sent from this server that end up in spam folders. For more information, read our [output,url,_1,Email Deliverability,target,_blank] documentation.','https://go.cpanel.net/EmailDeliverabilityinWHM' ]]);$output .= '
+            </p>
+
+            <div id="body-content" class="body-content ng-cloak">
+
+                <cp-loading-panel id="loadingRoutePanel" ng-show="loading">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</cp-loading-panel>
+
+                <div ng-show="currentTab && !loading">
+                    <h2 ng-hide="currentTab.hideTitle" ng-bind="currentTab.title" class="break-on-mobile"></h2>
+                    <p ng-if="currentTab.description" class="current-tab-description" ng-bind-html="currentTab.description"></p>
+                    <div id="viewContent"
+                        class="ng-cloak section animate-view"
+                        ng-view
+                        ng-cloak>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <script id="views/additionalResourcesPanel.ptt" type="text/ng-template">';$output .= $context->process('email_deliverability/views/additionalResourcesPanel.ptt');$output .= '    </script>
+
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.CAN_SKIP_LISTER = true;
+    PAGE.domains = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'domains',0])]]);$output .= ';
+    PAGE.mainDomain = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'main_domain',0])]]);$output .= ';
+    PAGE.skipPTRLookups = ';$output .= $stash->get(['EximLocalOpts',0,'is_using_smart_host',0])? 'true' : 'false';$output .= ';
+    PAGE.zoneEditorUrl = "';$output .= $stash->get('cp_security_token');$output .= '/scripts7/zone_editor/manage/?domain=";
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>$stash->get('APP_KEY'),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE').'/','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/email_deliverability/index.min.css' ]])],'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

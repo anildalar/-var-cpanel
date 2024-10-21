@@ -1,0 +1,231 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/addipform.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';if ($stash->get(['data',0,'natmode',0])){$output .= '
+<div id="natWarning" class="notice-warning">
+<div class="notice-content">';$output .= $stash->get(['locale',0,'maketext',['NAT mode enabled! Please enter the local IP and not the corresponding public IP.' ]]);$output .= '</div>
+</div>
+<h3 id="natModeHeadline">';$output .= $stash->get(['locale',0,'maketext',['NAT Mode' ]]);$output .= '</h3>
+'}$output .= '
+';if ($stash->get(['data',0,'ipslocked',0])){$output .= '
+   <div class="callout callout-warning">
+       ';$output .= $stash->get(['locale',0,'maketext',['Your system appears to use a Host-Routed networking configuration. Changing the [output,acronym,IP,Internet Protocol]v4 Addresses assigned to your system is restricted to the host node. Please contact your Hosting Provider to make any changes to the [output,acronym,IP,Internet Protocol]v4 Addresses assigned to your system.' ]]);$output .= '
+    </div>
+'}else {$output .= '
+<br />
+
+<p class="description"><em>';$output .= $stash->get(['locale',0,'maketext',['Please contact your hosting or network provider for an IP address or range of IP addresses. They can also provide you with a subnet mask for the address or addresses.' ]]);$output .= '</em></p>
+
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['You may add one or more new IP addresses to the system below. To add multiple IP addresses, use one of the following IP range formats:' ]]);$output .= '</p>
+    <ul class="description-list">
+        <li>';$output .= $stash->get(['locale',0,'maketext',['Class C [output,acronym,CIDR,Classless Inter-Domain Routing] (e.g. 192.168.4.0/25).' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['IP Address Range (e.g. 192.168.4.128-255)' ]]);$output .= '</li>
+    </ul>
+
+
+<div id="cjt_pagenotice_container"></div>
+
+<div id="main_content">
+    <div class="option_box">
+        <div class="top-heading">
+            <h4>';$output .= $stash->get(['Whostmgr',0,'page_name',0]);$output .= '</h4>
+        </div>
+
+        <div id="container_box">
+        <form id="the_form" action="javascript:void(0)" onsubmit="save(this)">
+            <div class="option_contents">
+                <div class="form-contain group">
+                    <p><label for="ip-range">';$output .= $stash->get(['locale',0,'maketext',['New IP or IP range to add:' ]]);$output .= '</label><br /><input name="new_ip_range" id="ip-range" size="31" required="required" /><span id="ip-range_error"></span></p>
+
+                    <p><label for="netmask-select">';$output .= $stash->get(['locale',0,'maketext',['Select a subnet mask for the IP or IPs above to use:' ]]);$output .= '<br />
+                    <select name="netmask" id="netmask-select">
+                        <option value="0.0.0.0">0.0.0.0</option>
+                        <option value="128.0.0.0">128.0.0.0</option>
+                        <option value="192.0.0.0">192.0.0.0</option>
+                        <option value="224.0.0.0">224.0.0.0</option>
+                        <option value="240.0.0.0">240.0.0.0</option>
+                        <option value="248.0.0.0">248.0.0.0</option>
+                        <option value="252.0.0.0">252.0.0.0</option>
+                        <option value="254.0.0.0">254.0.0.0</option>
+                        <option value="255.0.0.0">255.0.0.0</option>
+                        <option value="255.128.0.0">255.128.0.0</option>
+                        <option value="255.192.0.0">255.192.0.0</option>
+                        <option value="255.224.0.0">255.224.0.0</option>
+                        <option value="255.240.0.0">255.240.0.0</option>
+                        <option value="255.248.0.0">255.248.0.0</option>
+                        <option value="255.252.0.0">255.252.0.0</option>
+                        <option value="255.254.0.0">255.254.0.0</option>
+                        <option value="255.255.0.0">255.255.0.0</option>
+                        <option value="255.255.128.0">255.255.128.0</option>
+                        <option value="255.255.192.0">255.255.192.0</option>
+                        <option value="255.255.224.0">255.255.224.0</option>
+                        <option value="255.255.240.0">255.255.240.0</option>
+                        <option value="255.255.248.0">255.255.248.0</option>
+                        <option value="255.255.252.0">255.255.252.0</option>
+                        <option value="255.255.254.0">255.255.254.0</option>
+                        <option value="255.255.255.0" selected="selected">255.255.255.0</option>
+                        <option value="255.255.255.128">255.255.255.128</option>
+                        <option value="255.255.255.192">255.255.255.192</option>
+                        <option value="255.255.255.224">255.255.255.224</option>
+                        <option value="255.255.255.240">255.255.255.240</option>
+                        <option value="255.255.255.248">255.255.255.248</option>
+                        <option value="255.255.255.252">255.255.255.252</option>
+                        <option value="255.255.255.254">255.255.255.254</option>
+                        <option value="255.255.255.255">255.255.255.255</option>
+                    </select>
+                    </label>
+                    </p>
+
+                    <p><div id="exclusions-area">
+                       <label>';$output .= $stash->get(['locale',0,'maketext',['IPs and IP ranges to exclude from the range of new IPs (optional):' ]]);$output .= '<br />
+                       <textarea name="ip-range-exclusions" id="ip-range-exclusions"></textarea>
+                       </label><span id="ip-range-exclusions_error"></span>
+                       </div>
+                    </p>
+
+                </div>
+
+            </div>
+                <button class="input-btn btn-primary" type="submit" id="submitter">';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '</button>
+                <div style="clear:both;"></div>
+                </form>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="';$output .= $stash->get(['MagicRevision',['/cjt/net.js' ]]);$output .= '"></script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'add_a_new_ip_address','stylesheets'=>['/cjt/css/wrapped-select.css' ],'extrastyle'=>'
+.sup {
+    font-size: x-small;
+    vertical-align: top;
+}
+
+p {font-size: 12px;}
+
+body .cjt_progress_overlay .bd {
+    background-color: rgba(0,0,0,0.2);
+}
+.cjt-progress-overlay-body-liner {
+    margin: 0 auto;
+    padding-top: 20px;
+    display:table;
+}
+
+span.cjt_validation_error {
+    margin-left: 5px;
+}
+
+#ip-range,
+#ip-range-exclusions {
+    border: 1px solid #c1d0d3;
+    padding: 5px;
+    margin-left: 0;
+
+    color: #666666;
+    font-size: 12px;
+    vertical-align: middle;
+}
+
+#main_content {
+    padding: 0 30px 30px 30px;
+    max-width: 900px;
+
+    font-size: 12px;
+    color: #666666;
+}
+
+ul.description-list {
+    font-size: 12px;
+    line-height: 20px;
+    color: #666666;
+}
+
+p.description {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+
+    line-height: 20px;
+    color: #666666;
+}
+
+.form-contain {
+    margin: 5px;
+    background-color: white;
+    padding: 10px;
+
+    border: 1px solid #C1D0D3;
+}
+
+.option_box {
+    width: 700px;
+    background-color: #DDDDDD;
+    border: 1px solid #FFFFFF;
+    outline: 1px solid #C1D0D3;
+    margin-top: 25px;
+    margin-bottom: 40px;
+}
+
+.top-heading {
+    border-bottom: 1px solid #C1D0D3;
+}
+
+h4 {
+    margin: 0 !important;
+    padding: 5px;
+
+    font-size: 15px;
+    font-weight: 600;
+    color: #4C5355;
+    text-shadow: 0 1px 0 #FFFFFF;
+}
+
+.option_contents {
+    border-top: 1px solid white;
+}
+
+#netmask-select {
+    margin-top: 2px;
+}
+
+body .cjt-page-progress-overlay .bd {  /* override */
+    border-radius: 0;
+}
+.notice-warning {
+    max-width: 700px;
+    min-height: 30px;
+    margin-left: 30px;
+    color: white;
+    border: 1px solid #DA961F;
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 30px;
+    position: relative;
+    background-color:#F6C167;
+    background: -moz-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6C167), color-stop(100%,#F3B03B)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* IE10+ */
+    background: linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* W3C */
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#F6C167",endColorstr="#F3B03B",GradientType=0);
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-background-clip:padding-box;
+    -moz-background-clip:padding;
+    background-clip:padding-box;
+}
+.notice-content {
+    background-image: url(/images/notice-warning.png);
+    background-position: 9px center;
+    background-repeat: no-repeat;
+    padding: 9px 30px 9px 45px;
+}
+
+#natModeHeadline {
+    margin-left: 30px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

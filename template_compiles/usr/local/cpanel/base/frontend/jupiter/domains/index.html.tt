@@ -1,0 +1,79 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/domains/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Master',$context->plugin('Master'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('file_manager_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'file_manager' ]]));if ($stash->get('file_manager_obj')){$stash->set(['file_manager_obj',0,'url',0],$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get(['file_manager_obj',0,'url',0]))}$stash->set('zone_editor_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'zone_editor' ]]));if ($stash->get('zone_editor_obj')){$stash->set(['zone_editor_obj',0,'url',0],$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get(['zone_editor_obj',0,'url',0]))}$stash->set('email_accounts_app',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'email_accounts' ]]));$stash->set('upgradeUrl',$stash->get(['CPBranding',0,'get_implementer_from_available_applications',[$cVC::S{'available_applications'},'upgrade' ],'url',0]));$stash->set('canRedirectHTTPS',$stash->get(['execute',['SSL','can_ssl_redirect' ],'data',0]));if ($stash->get('upgradeUrl')){$stash->set('upgradeUrl',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get('upgradeUrl'))}$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div id="body-content" class="body-content ng-cloak">
+    <div class="row" ng-controller="main">
+        <div class="col-md-12">
+            <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Use this interface to manage your domains. For more information, read the [output,url,_1,documentation,target,_blank].','https://go.cpanel.net/Domains' ]]);$output .= '
+            </p>
+            <cp-alert-list id="mainAlertList"></cp-alert-list>
+
+            <cp-loading-panel id="loadingDomains" ng-show="loading">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</cp-loading-panel>
+            <div ng-show="!loading">
+                <div id="viewContent"
+                    class="ng-cloak section animate-view"
+                    ng-view
+                    ng-cloak>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script id="views/listDomains.phtml" type="text/ng-template">
+';$output .= $context->insert('domains/views/listDomains.phtml');$output .= '
+</script>
+
+<script id="views/createDomain.ptt" type="text/ng-template">
+';$output .= $context->process('domains/views/createDomain.ptt');$output .= '
+</script>
+
+<script id="directives/tableShowingDirective.phtml" type="text/ng-template">
+';$output .= $context->insert('domains/directives/tableShowingDirective.phtml');$output .= '
+</script>
+
+<script id="directives/docrootDirective.phtml" type="text/ng-template">
+';$output .= $context->insert('domains/directives/docrootDirective.phtml');$output .= '
+</script>
+
+<script id="directives/domainListerViewDirective.ptt" type="text/ng-template">
+';$output .= $context->process('domains/directives/domainListerViewDirective.ptt');$output .= '
+</script>
+
+<script id="directives/itemLister.ptt" type="text/ng-template">
+';$output .= $context->process('domains/directives/itemLister.ptt');$output .= '
+</script>
+
+<script type="text/ng-template" id="additionalResourcesPanel.ptt">
+';$output .= $context->process('domains/additionalResourcesPanel.ptt');$output .= '
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'domains','feature'=>'','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>['domains/index.css','css/angular-chosen-spinner.css','libraries/chosen/1.5.1/chosen.min.css' ],'page_js'=>$stash->get('js_code'),'show_breadcrumb'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+        var PAGE = PAGE || {};
+        PAGE.requirePublicHTMLSubs = ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'publichtmlsubsonly',0,'json',0]);$output .= ';
+        PAGE.shareDocrootDefault = ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'share_docroot_default',0,'json',0]);$output .= ';
+        PAGE.upgradeUrl = ';$output .= $stash->get(['upgradeUrl',0,'json',0]);$output .= ';
+        PAGE.zoneEditorAppObj = ';$output .= $stash->get('zone_editor_obj')? $stash->get(['zone_editor_obj',0,'json',0]): 'false';$output .= ';
+        PAGE.mainDomain = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0,'json',0]);$output .= ';
+        PAGE.canRedirectHTTPS = ';$output .= $stash->get(['canRedirectHTTPS',0,'json',0]);$output .= ';
+        PAGE.fileManagerAppObj = ';$output .= $stash->get(['file_manager_obj',0,'json',0]);$output .= ';
+        PAGE.EMAIL_ACCOUNTS_APP_EXISTS = ';$output .= $stash->get(['email_accounts_app',0,'json',0]);$output .= "\n        // With the \$HASROLE EXPVar, TT will interpret it if in double ticks\n        PAGE.hasWebServerRole = ";$output .= $stash->get(['ExpVar',0,'expand',[('' ."\$HASROLE{'WebServer'}")],'json',0]);$output .= ';
+        PAGE.hasSSLInstall = ';$output .= $stash->get(['CPANEL',0,'feature',['sslinstall' ]]);$output .= '
+        PAGE.isRTL = document.getElementsByTagName("HTML")[0].getAttribute("dir") === "rtl";
+        PAGE.features = {
+            addon: ';$output .= $stash->get(['CPANEL',0,'feature',['addondomains' ]])? 'true' : 'false';$output .= ',
+            alias: ';$output .= $stash->get(['CPANEL',0,'feature',['parkeddomains' ]])? 'true' : 'false';$output .= ',
+            subdomain: ';$output .= $stash->get(['CPANEL',0,'feature',['subdomains' ]])? 'true' : 'false';$output .= '
+        };
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

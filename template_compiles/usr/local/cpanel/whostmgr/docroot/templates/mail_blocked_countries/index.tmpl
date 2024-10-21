@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mail_blocked_countries/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('APP_KEY','mail_blocked_countries');$stash->set('PAGE_BASE',('/scripts12/' .$stash->get('APP_KEY')));$stash->set('PAGE_NAME',$stash->get(['locale',0,'maketext',['Filter Incoming Emails by Country' ]]));$stash->set('templates',['views/countries.phtml','directives/countryCodesTable.ptt' ]);$output .= do {my$output='';$output .= '
+<div id="content" ng-controller="BaseController" class="ng-cloak" ng-cloak>
+
+    <cp-alert-list></cp-alert-list>
+
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Specify whether users in a particular country can send email to your server.' ]]);$output .= '</p>
+    <div ng-view ng-class="{\'view-disabled\':loading}"></div>
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('templates');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ptt'}=$_tt_value;$output .= '
+    <script id="';$output .= $stash->get('ptt');$output .= '" type="text/ng-template">';$output .= $context->process(($stash->get('APP_KEY').'/' .$stash->get('ptt')));$output .= '    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.blocked_incoming_email_countries = ';$output .= $stash->get(['data',0,'blocked_incoming_email_countries',0,'json',0]);$output .= ';
+    PAGE.countries_with_known_ip_ranges = ';$output .= $stash->get(['data',0,'countries_with_known_ip_ranges',0,'json',0]);$output .= ';
+    PAGE.security_token = ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get('PAGE_NAME'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/mail_blocked_countries/index.min.css' ]])],'breadcrumburl'=>('' .$stash->get('PAGE_BASE')),'base'=>($stash->get('PAGE_BASE').'/'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'warn_linked_nodes'=>1,'app_key'=>$stash->get('APP_KEY'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

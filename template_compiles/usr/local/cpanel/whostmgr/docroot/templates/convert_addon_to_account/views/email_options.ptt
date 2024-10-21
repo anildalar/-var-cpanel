@@ -1,0 +1,168 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/email_options.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('is_rtl',$stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl');$output .= '
+<div class="ng-hide" ng-show="email_selection_vm.ui.is_loading">
+    <div class="alert alert-info">
+        <div class="alert-message">
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+    </div>
+</div>
+<div class="ng-hide" ng-show="!email_selection_vm.ui.is_loading && !email_selection_vm.ui.domain_exists">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['The system could not find the addon domain “[_1]”.','{{ email_selection_vm.domain_name }}' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Go back,_2].','main',{'id'=>'backToMainView' }]]);$output .= '
+        </div>
+    </div>
+</div>
+<div ng-hide="email_selection_vm.ui.is_loading || !email_selection_vm.ui.domain_exists">
+<form class="layout-medium">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Email for “[_1]”','{{email_selection_vm.domain_name}}' ]]);$output .= '</span>
+                </div>
+                <div class="panel-body">
+                    <div class="callout callout-info callout-top">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The conversion process moves the following items even if you do not copy any email data:' ]]);$output .= '
+                        <ul>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Mailing Lists' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['[asis,Roundcube] webmail data' ]]);$output .= '</li>
+                        </ul>
+                        ';$output .= $stash->get(['locale',0,'maketext',['The addon domain’s new account will inherit the mailbox storage format of its original parent account.' ]]);$output .= '
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="alert-icon alert-icon__absolute">
+                            <i class="fas fa-exclamation-triangle ng-hide"
+                                 ng-show="email_selection_vm.this_domain.details.number_of_email_accounts == 0"
+                                 uib-tooltip="{{ email_selection_vm.noEmailAccountsTooltip }}"
+                                 ';if ($stash->get('is_rtl')){$output .= '
+                                 tooltip-placement="left"
+                                 '}else {$output .= '
+                                 tooltip-placement="right"
+                                 '}$output .= '
+                                 tooltip-append-to-body="true">
+                            </i>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                    id="moveEmailAccounts"
+                                    name="moveEmailAccounts"
+                                    ng-model="email_selection_vm.email_accounts"
+                                    ng-disabled="email_selection_vm.this_domain.details.number_of_email_accounts == 0">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy email accounts' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox-row">
+                        <ul>
+                            <li>{{ email_selection_vm.stats.accounts }}</li>
+                        </ul>
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="alert-icon alert-icon__absolute">
+                            <i class="fas fa-exclamation-triangle ng-hide"
+                                 ng-show="email_selection_vm.total_forwarders == 0"
+                                 uib-tooltip="{{ email_selection_vm.noForwardersTooltip }}"
+                                 ';if ($stash->get('is_rtl')){$output .= '
+                                 tooltip-placement="left"
+                                 '}else {$output .= '
+                                 tooltip-placement="right"
+                                 '}$output .= '
+                                 tooltip-append-to-body="true">
+                            </i>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                    id="moveEmailForwarders"
+                                    name="moveEmailForwarders"
+                                    ng-model="email_selection_vm.email_forwarders"
+                                    ng-disabled="email_selection_vm.total_forwarders == 0">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Move email forwarders' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox-row">
+                        <ul>
+                            <li>{{ email_selection_vm.stats.emailForwarders }}</li>
+                            <li>{{ email_selection_vm.stats.domainForwarders }}</li>
+                        </ul>
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="alert-icon alert-icon__absolute">
+                            <i class="fas fa-exclamation-triangle ng-hide"
+                                 ng-show="email_selection_vm.this_domain.details.number_of_autoresponders == 0"
+                                 uib-tooltip="{{ email_selection_vm.noAutorespondersTooltip }}"
+                                 ';if ($stash->get('is_rtl')){$output .= '
+                                 tooltip-placement="left"
+                                 '}else {$output .= '
+                                 tooltip-placement="right"
+                                 '}$output .= '
+                                 tooltip-append-to-body="true">
+                            </i>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                    id="moveAutoresponders"
+                                    name="moveAutoresponders"
+                                    ng-model="email_selection_vm.autoresponders"
+                                    ng-disabled="email_selection_vm.this_domain.details.number_of_autoresponders == 0">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy autoresponders' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox-row">
+                        <ul>
+                            <li>{{ email_selection_vm.stats.autoresponders}}</li>
+                        </ul>
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="alert-icon alert-icon__absolute">
+                            <i class="fas fa-exclamation-triangle ng-hide"
+                                 ng-show="email_selection_vm.this_domain.details.number_of_email_accounts == 0"
+                                 uib-tooltip="{{ email_selection_vm.noEmailAccountsTooltip }}"
+                                 ';if ($stash->get('is_rtl')){$output .= '
+                                 tooltip-placement="left"
+                                 '}else {$output .= '
+                                 tooltip-placement="right"
+                                 '}$output .= '
+                                 tooltip-append-to-body="true">
+                            </i>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                    id="moveWebmailData"
+                                    name="moveWebmailData"
+                                    ng-model="email_selection_vm.webmail_data"
+                                    ng-disabled="email_selection_vm.this_domain.details.number_of_email_accounts == 0">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy webmail data ([list_and,_1])',['Horde' ]]]);$output .= '</span>
+                            </label>
+                            <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The webmail data includes information such as address books, calendars, and signatures.' ]]);$output .= '</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group action-group">
+                <button type="button"
+                    id="save_options"
+                    name="save_options"
+                    class="btn btn-primary"
+                    ng-click="email_selection_vm.saveOptions()">';$output .= $stash->get(['locale',0,'maketext',['Save Selections' ]]);$output .= '</button>
+                <button type="button"
+                    id="go_back"
+                    name="go_back"
+                    ng-click="email_selection_vm.goBack()"
+                    class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

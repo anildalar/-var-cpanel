@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/i_tag_configure_form.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'i_tag_is_valid',0])){$output .= '
+   <p>You are editing the configuration for the \'';$output .= $stash->get(['data',0,'i_tag',0]);$output .= '\'</p>
+
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/i_tag_configure_form_save">
+  <input type="hidden" name="locale" value="';$output .= $stash->get(['data',0,'formref',0,'locale',0]);$output .= '"/>
+           <table border="0">
+              <tr><td>Display Name</td><td><input type="text" name="display_name" value="';$output .= $stash->get(['data',0,'formref',0,'display_name',0]);$output .= '"/></td></tr>';$stash->set('selected_locale_orig',$stash->get(['data',0,'selected_locale',0]));$stash->set(['data',0,'selected_locale',0],$stash->get(['data',0,'formref',0,'fallback_locale',0]));$output .= '              <tr><td>Fallback Locale</td><td><select name="fallback_locale"><option value="">Inherit (recommended)</option>';$output .= $context->process('_locale_option_tags.tmpl');$output .= '</select></td></tr>';$stash->set(['data',0,'selected_locale',0],$stash->get('selected_locale_orig'));$output .= '              <tr><td>Number Formatting</td><td><select name="numf_type"><option value="">Inherit (recommended)</option><option ';if ($stash->get(['data',0,'formref',0,'numf_type',0])eq '1'){$output .= 'selected="selected" '}$output .= 'value="1">Thousands separator: comma, Decimal: period</option><option ';if ($stash->get(['data',0,'formref',0,'numf_type',0])eq '2'){$output .= 'selected="selected" '}$output .= 'value="2">Thousands separator: period, Decimal: comma</option></select></td></tr>
+              <tr><td>Character Orientation</td><td><select name="character_orientation"><option value="">Inherit (recommended)</option><option ';if ($stash->get(['data',0,'formref',0,'character_orientation',0])eq 'left-to-right'){$output .= 'selected="selected" '}$output .= 'value="left-to-right">Left To Right</option><option ';if ($stash->get(['data',0,'formref',0,'character_orientation',0])eq 'right-to-left'){$output .= 'selected="selected" '}$output .= 'value="right-to-left">Right to Left</option></select></td></tr>
+              <tr><td colspan="2"><input type="submit" value="Save" class="btn-primary" /></td></tr>
+           </table>
+
+</form>
+'}else {$output .= '
+   <p class="error">Invalid locale.</p>
+'}$output .= '
+
+<p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_edit_options">Back</a></p>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

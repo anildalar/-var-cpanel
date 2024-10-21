@@ -1,0 +1,17 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/cpanel_log_rotation_form_header.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="description">
+    <p>
+        Files from ';$output .= $stash->get('app_path');$output .= ' selected below will be rotated based upon their size. The rotated files will be compressed and stored in ';$output .= $stash->get('app_path');$output .= '/archive/.
+        The files are named to include the month in which they are rotated. Consequently, the file names <b>do not relate</b> in any way to the content of the file being rotated.
+        ';if ($stash->get('dnsonly')){$output .= '
+            Files are only rotated when they grow larger than the Log&nbsp;Rotation&nbsp;Size&nbsp;Threshold setting or the default of 300MB.
+        '}else {$output .= '
+            Files are only rotated when they grow larger than the <a href="../scripts2/tweaksettings?find=rotatelogs_size_threshhold_in_megabytes">Log&nbsp;Rotation&nbsp;Size&nbsp;Threshold</a> setting or the default of 300MB.
+        '}$output .= '
+
+        The archived log files are left in place indefinitely. Files not chosen here will not ever be rotated by cPanel software.
+    </p>
+</div>
+<br />
+<form method="post">
+    <input type="hidden" name="action" value="save" />
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

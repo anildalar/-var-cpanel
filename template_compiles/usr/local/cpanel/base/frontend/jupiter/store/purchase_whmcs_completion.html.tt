@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/store/purchase_whmcs_completion.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('Dumper',$context->plugin('Dumper'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('matches',$stash->get(['CPANEL',0,'ENV',0,'REQUEST_URI',0,'match',['/purchase_(\w+)_completion' ]]));$stash->set('product_name',$stash->get(['matches',0,0,0]));$stash->set('product_info_result',$stash->get(['execute',['Market','get_product_info',{'product_name'=>$stash->get('product_name')}]]));$stash->set('redirect_url_success',$stash->get(['product_info_result',0,'data',0,'redirect_url_success',0]));$stash->set('success',($stash->get(['FORM',0,'order_status',0])eq 'success'));$output .= '
+';$output .= do {my$output='';if ($stash->get('success')){$output .= '
+    <meta http-equiv="refresh" content="1;url=';$output .= $stash->get('redirect_url_success');$output .= '">
+'}$output .= '
+
+<div class="row">
+    <div class="col-xs-12 col-sm-6">
+';if ($stash->get('success')){$output .= '
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The order was successful.' ]]);$output .= '
+                <br>
+                <i id="spinner" class="fas fa-sync fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system is redirecting you.' ]]);$output .= '
+                <span id="redirect-link" style="display:none;">
+                    <br>
+                    ';$output .= $stash->get(['locale',0,'maketext',['If the system does not redirect you, [output,url,_1,click here,target,_parent].',$stash->get('redirect_url_success')]]);$output .= '
+                </span>
+            </div>
+        </div>
+'}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['The order was unsuccessful.' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+    </div>
+</div>
+<script>
+    var redirectLink = document.getElementById("redirect-link");
+    var five_seconds = 5000;
+
+    if (redirectLink) {
+        setTimeout(function() {
+            redirectLink.style.display = "block";
+        }, five_seconds);
+    }
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'store','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

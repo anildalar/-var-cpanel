@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listparked.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '<div id="content">
+    ';if ($stash->get(['data',0,'show_list_subdomains',0])){$output .= '        <div class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['For Domains parked on top of Subdomains (addon domains), please view them with [output,url,_1,List Subdomains]','../listsubdomains' ]]);$output .= '
+        </div>
+    '}$output .= '    <section id="parked">
+
+        <table class="table table-striped table-condensed sortable" id="parkeddomains">
+            <thead>
+                <th>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Primary Domain' ]]);$output .= '
+                </th>
+                <th>
+                    ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+                </th>
+                <th>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Parked Domains' ]]);$output .= '
+                </th>
+            </thead>
+            <tbody>
+            ';$output .= '            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'parked',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '            <tr>
+                <td>';$output .= $stash->get('domain');$output .= '</td>
+                <td>';$output .= $stash->get(['data',0,'parked',0,$stash->get('domain'),0,'user',0]);$output .= '</td>
+                <td>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'parked',0,$stash->get('domain'),0,'parkedok',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'parked'}=$_tt_value;$output .= '                    <div>
+                        <span>';$output .= $stash->get('parked');$output .= '</span>
+                        <form action="../unpark"
+                            method="post"
+                            class="form-inline-block"
+                            id="unparkForm_';$output .= $stash->get('parked');$output .= '">
+                            <input type="hidden" name="pdomain" value="';$output .= $stash->get('parked');$output .= '">
+                            <button type="submit" class="btn btn-link" id="unpark_';$output .= $stash->get('parked');$output .= '">
+                                <span class="fas fa-times"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unpark' ]]);$output .= '
+                            </button>
+                        </form>';if (!$stash->get(['data',0,'parked',0,$stash->get('domain'),0,'parkedok',0,$stash->get('parked'),0])){$output .= '                        <form action="../addcpuserdns"
+                            method="post"
+                            class="form-inline-block"
+                            id="addcpuserdnsForm_';$output .= $stash->get('parked');$output .= '">
+                            <input type="hidden" name="pdomain" value="';$output .= $stash->get('parked');$output .= '">
+                            <input type="hidden" name="user" value="';$output .= $stash->get(['data',0,'parked',0,$stash->get('domain'),0,'user',0]);$output .= '">
+                            <button type="submit" class="btn btn-link" id="addToMailConfig_';$output .= $stash->get('parked');$output .= '">
+                                <span class="fas fa-plus"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Add to Mail Config' ]]);$output .= '
+                            </button>
+                        </form>'}$output .= '                    </div>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </tbody>
+        </table>
+    </section>
+</div>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'list_parked_domains','header'=>$stash->get(['locale',0,'maketext',['Parked Domains (Domain Aliases)' ]]),'breadcrumburl'=>'/scripts2/listparked','base'=>'/scripts2/listparked/','theme'=>'bootstrap','scripts'=>['/js/sorttable.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

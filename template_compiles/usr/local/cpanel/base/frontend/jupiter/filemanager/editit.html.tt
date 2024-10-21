@@ -1,0 +1,283 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/editit.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!DOCTYPE html>
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('detect_encoding',$stash->get(['FORM',0,'file_charset',0])eq '_DETECT_');$stash->set('use_legacy_editor',($stash->get(['FORM',0,'use_legacy_editor',0]))? 1 : 0);$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['Encoding','guess_file_opts' ]]);if ($stash->get('detect_encoding')){$stash->set('encoding_guess_file_opts',$stash->get(['Api2',0,'exec',['Encoding','guess_file_opts',{'file'=>$stash->get(['RAW_FORM',0,'dir',0]).'/' .$stash->get(['RAW_FORM',0,'file',0])}]]))}else {$stash->set('encoding_guess_file_opts',$stash->get(['Api2',0,'exec',['Encoding','guess_file_opts',{'file_charset'=>$stash->get(['RAW_FORM',0,'file_charset',0]),'file'=>$stash->get(['RAW_FORM',0,'dir',0]).'/' .$stash->get(['RAW_FORM',0,'file',0])}]]))}$output .= $stash->get(['Api2',0,'post_exec',['Encoding','guess_file_opts' ]]);$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['Fileman','getedittype' ]]);$stash->set('edittype_info',$stash->get(['Api2',0,'exec',['Fileman','getedittype',{'file'=>$stash->get(['RAW_FORM',0,'file',0]),'dir'=>$stash->get(['RAW_FORM',0,'dir',0])}],0,0,'type',0,'html',0]));$output .= $stash->get(['Api2',0,'post_exec',['Fileman','getedittype' ]]);if ($stash->get(['edittype_info',0,'size',0])){$stash->set('edit_type',$stash->get(['edittype_info',0,0,0,'type',0,'html',0]))}$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['Fileman','getedittype' ]]);$stash->set('editor_info',$stash->get(['Api2',0,'exec',['Fileman','getedittype',{'editor'=>'editarea','file'=>$stash->get(['RAW_FORM',0,'file',0]),'dir'=>$stash->get(['RAW_FORM',0,'dir',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Fileman','getedittype' ]]);if ($stash->get(['editor_info',0,'size',0])){$stash->set('editor_edit_type',$stash->get(['editor_info',0,0,0,'type',0,'html',0]))}$output .= '
+
+';$stash->set('file_info',$stash->get(['execute',['Fileman','get_file_content',{'dir'=>$stash->get(['RAW_FORM',0,'item',['dir' ]]),'file'=>$stash->get(['RAW_FORM',0,'item',['file' ]]),'from_charset'=>$stash->get(['RAW_FORM',0,'item',['file_charset' ]]),'to_charset'=>$stash->get(['RAW_FORM',0,'item',['charset' ]]),'update_html_document_encoding'=>0 }]]));$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['NVData','get' ]]);$stash->set('nvdata_info',$stash->get(['Api2',0,'exec',['NVData','get',{'names'=>'editor_nowrap|editor_fontsize','html_encoded'=>'1' }]]));$output .= $stash->get(['Api2',0,'post_exec',['NVData','get' ]]);$stash->set('nvdataObj',{});if ($stash->get(['nvdata_info',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('nvdata_info');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'nvdata'}=$_tt_value;$stash->set('key',$stash->get(['nvdata',0,'name',0,'html',0]));$stash->set(['nvdataObj',0,$stash->get('key'),0],$stash->get(['nvdata',0,'value',0,'uri',0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+<html>
+    <head>
+        <title>';$output .= $stash->get(['FORM',0,'file',0,'remove',[('' .'
+')],'remove',[('' .'
+')]]);$output .= ' - ';$output .= $stash->get(['locale',0,'maketext',['cPanel File Manager v3' ]]);$output .= '</title>
+        ';$output .= $context->include('_assets/charset.html.tt');$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap/optimized/css/bootstrap.min.css' ]]);$output .= '" />
+        ';if ($stash->get(['locale_attributes',0,'direction',0])eq 'rtl'){$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]]);$output .= '" />
+        '}$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/ui-fonts/open_sans/optimized/open_sans.min.css' ]]);$output .= '" />
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/fontawesome/css/all.min.css' ]]);$output .= '" />
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['filemanager/css/tree_styles2_optimized.css' ]]);$output .= '" />
+
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+        <script type="text/javascript" src="';$output .= $stash->get(['CPANEL',0,'get_cjt_url',0]);$output .= '"></script>
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/filemanager_editors_optimized.js' ]]);$output .= '"></script>
+
+        ';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= "\n        <style type=\"text/css\">\n            html, body, #maintbl {\n                height: 100%;\n                width: 100%;\n                margin: 0;\n                padding: 0;\n                background: none !important;\n            }\n\n            form { margin: 0 }\n\n            #maintbl, #maintbl tr, #maintbl td {\n                margin:0;\n                padding:0;\n                border-collapse: collapse;\n                border: none;\n            }\n\n            .cjt_progress_overlay .bd {\n                background: transparent;\n            }\n\n            /* Suppress inherited styles from global style sheets. */\n            .yui-panel .hd,\n            .yui-panel .bd,\n            .yui-panel .ft {\n                background-image: none;\n                font-size: 100%;\n\n            }\n            .yui-panel .ft {\n                background-color: #CCCCCC;\n            }\n\n            /* overrides from tree_styles2_optimized.css */\n            p {\n                line-height: normal;\n            }\n            .header {\n                background: #333333;\n                color: #FFFFFF;\n                padding: 5px;\n            }\n            .button-group .default {\n                background: none !important;\n                padding: 0;\n            }\n\n            .action-buttons {\n                text-align: right;\n            }\n\n            .editor-area {\n                position: absolute !important;\n                top: 94px;\n                right: 0;\n                left: 0;\n                bottom: 20px;\n                border: 1px solid #CCCCCC;\n            }\n\n            .editor-toolbar {\n                padding-top: 5px;\n                padding-bottom: 5px;\n            }\n\n            .editor-toolbar .fa-terminal {\n                font-size: inherit;\n            }\n\n            .btn-group-ddl {\n                padding: 1px;\n            }\n\n            .help-link {\n                padding: 14px;\n                display: block;\n            }\n\n            \@media (max-width: 503px) {\n                .editor-area {\n                    top: 245px;\n                }\n                .action-buttons {\n                    text-align: left;\n                }\n            }\n\n            \@media (min-width: 504px) and (max-width: 768px) {\n                .editor-area {\n                    top: 200px;\n                }\n            }\n\n            \@media (min-width: 769px) and (max-width: 1074px) {\n                .editor-area {\n                    top: 130px;\n                }\n            }\n        </style>\n\n        <!--[if IE]>\n        <style type=\"text/css\">\n            #legacy_codewindow {\n                width: 99.5%;\n            }\n        </style>\n        <![endif]-->\n\n    </head>\n    <body class=\"nomargins yui-skin-sam\">\n        <form action=\"javascript:void(0)\" name=\"sform\" onsubmit=\"loadfdata('sform_submit'); return false;\" class=\"form-inline\">\n            <table border=\"0\" id=\"maintbl\">\n                <tr class=\"header\">\n                    <td style=\"padding: 5px\">\n                        <div class=\"row\">\n                            <div class=\"col-xs-12 col-md-8\">\n                                <label style=\"font-weight: 900; font-size:13px;\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Editing' ]]);$output .= ':
+                                    <input  id="path" name="path" value="';$output .= $stash->get(['FORM',0,'dir',0,'remove',[('' .'
+')],'remove',[('' .'
+')]]);$output .= '/';$output .= $stash->get(['FORM',0,'file',0,'remove',[('' .'
+')],'remove',[('' .'
+')]]);$output .= '" class="form-control">
+                                </label>
+                                <label >';$output .= $stash->get(['locale',0,'maketext',['Encoding:' ]]);$output .= '
+                                    <select id="charset" name="charset" class="form-control">
+                                    ';if ($stash->get(['encoding_guess_file_opts',0,'size',0])){$output .= '
+                                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('encoding_guess_file_opts');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'file_opt'}=$_tt_value;$output .= '
+                                            <option value="';$output .= $stash->get(['file_opt',0,'map',0,'html',0]);$output .= '" ';$output .= $stash->get(['file_opt',0,'selected',0,'html',0]);$output .= '>
+                                                ';$output .= $stash->get(['file_opt',0,'map',0,'html',0]);$output .= '
+                                            </option>
+                                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                    '}$output .= '
+                                    </select>
+                                </label>
+                                <input type="button" onclick="loadfile(this);" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Re-open' ]]);$output .= '" id="btnReOpen">
+                            </div>
+                            <div class="col-xs-12 col-md-4 action-buttons">
+                                <button type="button" class="btn btn-default" id="switch_editor_control" onclick="try {toggle_EditArea(this)} catch(e) {} return false" title="';$output .= $stash->get(['locale',0,'maketext',['Switch to legacy editor.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Use legacy editor[comment,button title]' ]]);$output .= '
+                                </button>
+                                &nbsp;
+                                <button type="submit" id="sform_submit" class="btn btn-primary" style="font-weight:bold">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Save Changes' ]]);$output .= '
+                                </button>
+                                <input type="button" onclick="confirm_close(this);" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '" id="btnClose" />
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr class="show-ace-editor">
+                    <td>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4">
+                                <a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts"
+                                    target="_blank" class="help-link">
+                                    <span class="fas fa-external-link-alt"></span>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Keyboard shortcuts[comment,hyperlink title]' ]]);$output .= '
+                                </a>
+                            </div>
+                            <!-- Editor Toolbar -->
+                            <div class="col-xs-12 col-sm-8">
+                                <div class="btn-toolbar editor-toolbar" role="toolbar">
+                                    <div class="btn-group" role="group">
+                                        <button id="btnSearch"
+                                            type="button"
+                                            onclick="toolbarActions(\'search\')"
+                                            class="btn btn-default"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                        <button id="btnGoto"
+                                            type="button"
+                                            onclick="toolbarActions(\'goto\')"
+                                            class="btn btn-default"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Go to line.' ]]);$output .= '">
+                                            <i class="fas fa-terminal"></i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnUndo"
+                                            type="button"
+                                            onclick="toolbarActions(\'undo\')"
+                                            class="btn btn-default"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Undo' ]]);$output .= '">
+                                            <i class="fas fa-undo"></i>
+                                        </button>
+                                        <button id="btnRedo"
+                                            type="button"
+                                            onclick="toolbarActions(\'redo\')"
+                                            class="btn btn-default"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Redo' ]]);$output .= '">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <button id="btnLineWrap"
+                                            type="button"
+                                            onclick="toolbarActions(\'linewrap\')"
+                                            class="btn btn-default"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Wrap' ]]);$output .= '">
+                                            <i class="fas fa-arrows-alt-h"></i>
+                                        </button>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <select id="ddlFontSizes"
+                                            class="btn btn-default form-control btn-group-ddl">
+                                        </select>
+                                    </div>
+                                    <div class="btn-group" role="group">
+                                        <select id="ddlModes"
+                                            class="btn btn-default form-control btn-group-ddl">
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="codewindow_container">
+                        <!-- Editor -->
+                        <div id="codewindow" class="show-ace-editor editor-area"></div>
+                        <textarea id="legacy_codewindow" class="codepress ';$output .= $stash->get('edit_type');$output .= '" style="visibility:hidden" wrap="soft" name="page"></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+
+        <script type="text/plain" id="general_encoding_changed_template">
+            <p>
+                ';$stash->set('exectag0','{old_charset}');$output .= $stash->get(['locale',0,'maketext',['The system was unable to save your document in “[_1]” encoding. Most likely, your document contains characters incompatible with “[_1]”.',$stash->get('exectag0')]]);$output .= '
+            </p>
+
+            <p>
+                ';$stash->set('exectag0','{new_charset}');$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] has upgraded your document to “[_1]” encoding. Please verify that the file opens correctly in your application.',$stash->get('exectag0')]]);$output .= '
+            </p>
+
+            <p>
+                ';$stash->set('exectag0','https://go.cpanel.net/encoding');$output .= $stash->get(['locale',0,'maketext',['To learn more about file encoding, visit [output,url,_1,_1].',$stash->get('exectag0')]]);$output .= '
+            </p>
+        </script>
+
+        ';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+        <script type="text/javascript">
+            var savedContent = "";
+            var CHARSET = document.sform.charset.value;
+            var file_path_textbox = document.getElementById("path");
+            var file_path_initial_value = file_path_textbox.value;
+            var reopen_btn = document.getElementById("btnReOpen");
+            var USE_LEGACY_EDITOR = (';$output .= $stash->get('use_legacy_editor');$output .= ') ? true : false;
+
+            if ( !window.LEXICON ) {
+                LEXICON = {};
+            }
+
+            LEXICON.charset_changed = "';$output .= $stash->get(['locale',0,'maketext',['Character Encoding Change' ]]);$output .= '";
+            LEXICON.confirm_close   = "';$output .= $stash->get(['locale',0,'maketext',['You have unsaved changes. Are you sure you want to close this window?' ]]);$output .= '";
+            LEXICON.confirm_save    = "';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to save? The file will be overwritten.' ]]);$output .= '";
+            LEXICON.reloading       = "';$output .= $stash->get(['locale',0,'maketext',['Reloading…' ]]);$output .= '";
+
+            file_path_textbox.addEventListener("keydown", function(event) {
+                if ( event.keyCode == 13 ) {
+                    event.preventDefault(); // prevents default action of form submit
+                    reopen_btn.click();
+                }
+            });
+
+            function loadfile(clicked_el) {
+                var result = check_file_edits();
+                var isFileEdited = result.isFileModified;
+
+                if (isFileEdited) {
+                    var sure = confirm("';$output .= $stash->get(['locale',0,'maketext',['Are you sure you wish to open a new file? You will lose any changes you have made.' ]]);$output .= '");
+                    if (!sure) {
+                        file_path_textbox.value = file_path_initial_value;
+                        return;
+                    }
+                }
+
+                var filen = document.sform.path.value;
+                var fpath = filen.split("/");
+                var filename = fpath.pop();
+                var dir = fpath.join("/");
+                var sdir = encodeURIComponent(dir);
+                var sfilename = encodeURIComponent(filename);
+                var charset = document.getElementById("charset").value;
+
+                var pp = new CPANEL.ajax.Progress_Panel( DOM.generateId(), {
+                    status_html: "';$output .= $stash->get(['locale',0,'maketext',['Reloading…' ]]);$output .= "\",\n                    effect: CPANEL.ajax.FADE_MODAL,\n                } );\n\n                if (clicked_el) {\n                    pp.show_from_source(clicked_el);\n                } else {\n                    pp.show();\n                }\n                var tt_value = (USE_LEGACY_EDITOR) ? 1 : 0;\n                document.location.href = \"?dir=\" + sdir + \"&file=\" + sfilename + \"&file_charset=\" + charset + \"&use_legacy_editor=\" + tt_value;\n\n                // update the title\n                document.title = filename.replace(/\\n|\\r/, \"\").html_encode() + \" - ";$output .= $stash->get(['locale',0,'maketext',['cPanel File Manager v3' ]]);$output .= '";
+            }
+
+            var LAST_NOTICE = null;
+
+            function loadfdata(clicked_el) {
+                var path     = DOM.get("path");
+                var result = check_file_edits();
+                var changedContent = result.changedContent;
+                var isFileEdited = result.isFileModified;
+
+                if (!isFileEdited) {
+                    LAST_NOTICE = new CPANEL.ajax.Dynamic_Notice({content:"';$output .= $stash->get(['locale',0,'maketext',['You have made no changes to save.' ]]);$output .= "\", level:\"info\", replaces:LAST_NOTICE});\n                    return;\n                }\n\n                var match = path.value.match(/^(.+)\\/([^\\/]+)\$/);\n                if ( !match ) {\n                    LAST_NOTICE = new CPANEL.ajax.Dynamic_Notice({content:\"";$output .= $stash->get(['locale',0,'maketext',['Invalid path.' ]]);$output .= '", level:"error", replaces:LAST_NOTICE});
+                    return;
+                }
+
+                var api_params = {
+                    module: "Fileman",
+                    func: "savefile",
+                    data: {
+                        dir: match[1],
+                        filename: match[2],
+                        content: changedContent,
+                        utf8_fallback: 1,
+                        charset: CHARSET,
+                    },
+                    progress_panel: {
+                        zIndex: 2500,
+                        show_status: true,
+                        source_el: clicked_el,
+                        status_html: "';$output .= $stash->get(['locale',0,'maketext',['Saving “[_1]” …','{the_file}' ]]);$output .= '".replace(\'{the_file}\',match[2].html_encode()),
+                        success_notice_options: { replaces: LAST_NOTICE },
+                        before_success: function(result) {
+                            savedContent = (USE_LEGACY_EDITOR) ? editAreaLoader.getValue(editAreaEl) : ace_editor.getValue();
+                            return check_for_encoding_change.call(
+                                this,
+                                CPANEL.ajax.templates.general_encoding_changed_template,
+                                result.cpanel_data
+                            );
+                        },
+                    },
+                    callback: {
+                        success: function() {
+                            LAST_NOTICE = req.notice;
+                        },
+                    },
+                };
+
+                savedContent = changedContent;
+                var req = CPANEL.api( api_params );
+
+                return false;
+            }
+
+	</script>
+
+        <script type="text/javascript" charset="utf-8"
+                src="';$output .= $stash->get(['theme_magic_url',['libraries/ace-editor/optimized/src-min-noconflict/ace.js' ]]);$output .= '">
+        </script>
+        <script type="text/javascript" charset="utf-8"
+                src="';$output .= $stash->get(['theme_magic_url',['libraries/ace-editor/optimized/src-min-noconflict/ext-modelist.js' ]]);$output .= '">
+        </script>
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/editarea/0.8.2/edit_area/edit_area_full.js' ]]);$output .= '"></script>
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/edit_area_resizer.js' ]]);$output .= '"></script>
+
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/jquery/current/jquery.min.js' ]]);$output .= '"></script>
+        <script>
+        ';$output .= '
+
+        ';if ($stash->get(['file_info',0,'status',0])){$output .= '
+        var file_content = ';$output .= $stash->get(['file_info',0,'data',0,'content',0,'json',0])|| '""';$output .= ';
+        '}else {$output .= '
+        var file_content = "";
+        var LAST_NOTICE = new CPANEL.ajax.Dynamic_Notice({content:';$output .= $stash->get(['file_info',0,'errors',0,'join',[('' .'
+')],'html',0,'json',0])|| '""';$output .= ', level:"error", replaces:LAST_NOTICE});
+        '}$output .= '
+        var fileName = ';$output .= $stash->get(['RAW_FORM',0,'item',['file' ],'html',0,'json',0])|| '""';$output .= ';
+        var editAreaEl = "";
+        var lastResizeTime = 0;
+        var lastResizeRequestTime = 0;
+        var NVData = ';$output .= $stash->get(['nvdataObj',0,'json',0])|| '{}';$output .= ";\n\n        function load_EditArea(workingContent) {\n            workingContent = workingContent;\n            if(USE_LEGACY_EDITOR){\n                showAceEditorElements(false);\n\n                editAreaEl = 'legacy_codewindow';\n                CODEWINDOW = DOM.get(editAreaEl);\n                editAreaLoader.show(editAreaEl);\n                loadLegacyEditor(editAreaEl, workingContent);\n            } else {\n                editAreaLoader.hide(editAreaEl);\n\n                editAreaEl = 'codewindow';\n                CODEWINDOW = DOM.get(editAreaEl);\n                showAceEditorElements(true);\n                loadAceEditor(editAreaEl, workingContent);\n            }\n        }\n\n        function showAceEditorElements(show){\n            if(show){\n                \$(\".show-ace-editor\").show();\n            } else {\n                \$(\".show-ace-editor\").hide();\n            }\n        }\n\n        function loadLegacyEditor(editAreaId, editContent){\n            // Setting up the ids in js/edit_area_resizer.js file to\n            // use it for resizing purposes.\n            setElementIds(editAreaId);\n            var EditArea_config = {\n                id: editAreaEl,\n                start_highlight: true,\n                allow_resize: \"both\",\n                allow_toggle: false,\n                language: \"en\",\n                toolbar: \"search, go_to_line, |, undo, redo, |, select_font, |, syntax_selection, |, change_smooth_selection, highlight, reset_highlight, word_wrap, |, help\",\n                syntax: \"";$output .= $stash->get('editor_edit_type');$output .= "\",\n                word_wrap: true\n            };\n            editAreaLoader.setValue(editAreaId, editContent);\n\n            editAreaLoader.init(EditArea_config);\n            doResizeSoon();\n        }\n\n        function loadAceEditor(editAreaEl, editContent){\n            ace_editor = ace.edit(editAreaEl);\n            // The line below is added to disable a\n            // warning message as required by ace editor\n            // script.\n            ace_editor.\$blockScrolling = Infinity;\n            ace_editor.focus();\n\n            var editSession = ace.createEditSession(editContent);\n            ace_editor.setSession(editSession);\n            if(typeof(editSession) !== \"undefined\"){\n                var defaultFontSize = parseInt(NVData.editor_fontsize, 10) || 13;\n                // Load the modelist extension to identify the file\n                // type of the given file and open the file in that\n                // editor mode.\n                var modelist = ace.require(\"ace/ext/modelist\");\n                var modeObj = modelist.getModeForPath(fileName);\n\n                ace_editor.setOptions({\n                    \"fontSize\": defaultFontSize,\n                    \"mode\": modeObj.mode,\n                    \"theme\": \"ace/theme/chrome\"\n                });\n                updateWordWrapInterface();\n\n                // Fill mode list dropdown in the toolbar.\n                var \$modeEl = \$('#ddlModes');\n                fillModesDropdown(\$modeEl, modelist);\n                \$modeEl.val(modeObj.name);\n                // Bind change event.\n                \$modeEl.change(function(){\n                    var selectedMode = \$modeEl.find( \"option:selected\" ).first().val();\n                    ace_editor.getSession().setMode(modelist.modesByName[selectedMode].mode);\n                });\n\n                // Fill font size dropdown.\n                var \$fontEl = \$('#ddlFontSizes');\n                fillFontsDropdown(\$fontEl);\n                \$fontEl.val(defaultFontSize);\n                // Bind change event.\n                \$fontEl.change(function(){\n                    var selectedSize = parseInt(\$fontEl.find( \"option:selected\" ).first().val());\n                    SetNvData(\"editor_fontsize\", selectedSize);\n                    ace_editor.setFontSize(selectedSize);\n                });\n            }\n        }\n\n        function fillFontsDropdown(\$el) {\n            var arr = [10, 11, 12, 13, 14, 16, 18, 20, 24].map(function(size){\n                return {val: size, text: size + \"px\"};\n            });\n            arr.forEach(function(val){\n                \$el.append(\$(\"<option>\", val));\n            });\n        }\n\n        function fillModesDropdown(\$el, modeList) {\n            var arr = modeList.modes.map(function(oMode){\n                return {val: oMode.name, text: oMode.caption};\n            });\n            arr.forEach(function(val){\n                \$el.append(\$(\"<option>\", val));\n            });\n        }\n\n        function toolbarActions(action){\n            switch(action){\n                case \"search\":\n                ace_editor.execCommand(\"find\");\n                break;\n                case \"goto\":\n                ace_editor.execCommand(\"gotoline\");\n                break;\n                case \"undo\":\n                ace_editor.undo();\n                break;\n                case \"redo\":\n                ace_editor.redo();\n                break;\n                case \"linewrap\":\n                toggleWordWrap();\n                break;\n            }\n        }\n\n        function toggleWordWrap() {\n            if (NVData.editor_nowrap) {\n                SetNvData(\"editor_nowrap\", 0);\n            } else {\n                SetNvData(\"editor_nowrap\", 1);\n            }\n            updateWordWrapInterface();\n        }\n\n        function updateWordWrapInterface() {\n            var btnEl = document.querySelector(\"#btnLineWrap\");\n\n            if (btnEl && NVData.editor_nowrap) {\n                ace_editor.setOption(\"wrap\", false);\n                btnEl.classList.remove(\"active\");\n            } else {\n                ace_editor.setOption(\"wrap\", 80);\n                btnEl.classList.add(\"active\");\n            }\n            // Remove the focus button state for less UI confusion\n            btnEl.blur();\n        }\n\n        /*\n         * This function detects if the browser is in a mobile\n         * environment.\n         * Note: This is used to open the editor in legacy editor mode\n         * until Ace editor comes with the fixes for issues described in\n         * ZC-2558.\n        */\n        function detectmobile() {\n         if( navigator.userAgent.match(/Android/i)\n         || navigator.userAgent.match(/webOS/i)\n         || navigator.userAgent.match(/iPhone/i)\n         || navigator.userAgent.match(/iPad/i)\n         || navigator.userAgent.match(/iPod/i)\n         || navigator.userAgent.match(/BlackBerry/i)\n         || navigator.userAgent.match(/Windows Phone/i)\n         ){\n            return true;\n          }\n         else {\n            return false;\n          }\n        }\n\n        function toggle_EditArea(link) {\n            var workingContent = \"\";\n            if(USE_LEGACY_EDITOR){\n                USE_LEGACY_EDITOR = false;\n                // send working content to not loose working data\n                // when user switches between two editors.\n                workingContent = (editAreaLoader) ? editAreaLoader.getValue(editAreaEl) : \"\";\n            } else {\n                USE_LEGACY_EDITOR = true;\n                // Reset the word wrap\n                toggleWordWrap();\n                // send working content to not loose working data\n                // when user switches between two editors.\n                workingContent = (ace_editor) ? ace_editor.getSession().getValue() : \"\";\n            }\n            toggleSwitchButtonAttr(link);\n            load_EditArea(workingContent);\n        }\n\n        function toggleSwitchButtonAttr(btnEl) {\n            var \$switchButton = \$(btnEl);\n            if(USE_LEGACY_EDITOR){\n                \$switchButton.text(\"";$output .= $stash->get(['locale',0,'maketext',['Use latest editor[comment,button title]' ]]);$output .= '").prop("title", "';$output .= $stash->get(['locale',0,'maketext',['Switch to latest editor.' ]]);$output .= "\");\n            } else {\n                \$switchButton.text(\"";$output .= $stash->get(['locale',0,'maketext',['Use legacy editor[comment,button title]' ]]);$output .= '").prop("title", "';$output .= $stash->get(['locale',0,'maketext',['Switch to legacy editor.' ]]);$output .= "\");\n            }\n        }\n\n        var CODEWINDOW;\n        var ace_editor;\n\n        EVENT.throwErrors = true;\n\n        YAHOO.util.Event.addListener(window, \"load\", function(){\n            savedContent = file_content;\n            if(detectmobile()){\n                USE_LEGACY_EDITOR = true;\n            }\n            toggleSwitchButtonAttr(DOM.get(\"switch_editor_control\"));\n            load_EditArea(savedContent);\n        });\n        \$(window).resize(function(e) {\n            doResize();\n        });\n        </script>\n\n    </body>\n</html>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

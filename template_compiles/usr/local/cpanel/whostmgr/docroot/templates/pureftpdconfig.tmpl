@@ -1,0 +1,95 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/pureftpdconfig.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<script language="javascript" src="';$output .= $stash->get(['MagicRevision',['/js/validate_optimized.js' ]]);$output .= "\"></script>\n\n\n\n<script type=\"text/javascript\">\n\nfunction register_validators() {\n    register_validator('match','nonzero_numeric',[document.mainform.MaxLoad],'The input value for Maximum Load for Anonymous Downloads must be a whole number greater than zero');\n    register_validator('match','whole_nums',[document.mainform.MaxIdleTime],'The input value for Maximum Idle Time (minutes) must be whole numbers');\n    register_validator('match','nonzero_numeric',[document.mainform.MaxClientsNumber],'The input value for Maximum Connections must be a whole number greater than zero');\n    register_validator('match','nonzero_numeric',[document.mainform.MaxClientsPerIP],'The input value for Maximum Connections Per IP Address must be a whole number greater than zero');\n    register_validator('match','ssl_chars',[document.mainform.TLSCipherSuite],'The TLS/SSL Cipher List must be defined using alphanumeric characters with regular expressions ! + _ \@ ~ and use a colon (:) for a separator');\n    realtime_validate_init('mainform');\n\n}\nYAHOO.util.Event.addListener(window, \"load\", register_validators, false);\n\n</script>\n<style type=\"text/css\">\n\n.ftpserversetup {\nmargin: 0 20px;\n}\n\nselect.narrow {width: 300px;}\n* html select.narrow {width: auto;}\n*+html select.narrow {width: auto;}\n\n#pureftpdsetup {\n	border: 5px solid #ddd;\n	width: 570px;\n}\n\n#pureftpdsetup td {\n	border-bottom: 1px solid #eee;\n	padding: 10px;\n}\n\n#pureftpdsetup .label_title {\n	float: left;\n	font-weight: bold;\n	margin: 0 10px 0 0;\n	width: 200px;\n}\n\n#pureftpdsetup p {\n	color: #444;\n	line-height: 1.5;\n	margin: 5px 0 5px 210px;\n}\n</style>\n\n\n<div class=\"ftpserversetup\">\n<p>Pure-FTPd is a FTP server capable of handling normal and TLS encrypted connections.</p>\n<p>This interface allows you to configure various aspects of Pure-FTPd's behavior.</p>\n\n<form  onSubmit=\"return do_validate(this.id);\" action=\"";$output .= $stash->get(['data',0,'action',0]);$output .= '" name="mainform" id="mainform" method="POST">
+<table id="pureftpdsetup" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+			<label class="label_title">TLS Encryption Support</label>
+            <select name="TLS">
+                <option ';if (!$stash->get(['data',0,'TLS',0])){$output .= 'selected '}$output .= 'value="0">Disabled</option>
+                <option ';if ($stash->get(['data',0,'TLS',0])eq 1){$output .= 'selected '}$output .= 'value="1">Optional</option>';if ($stash->get(['data',0,'HasTLS3Support',0])){$output .= '
+                <option ';if ($stash->get(['data',0,'TLS',0])eq 2){$output .= 'selected '}$output .= 'value="2">Required (Command)</option>
+                <option ';if ($stash->get(['data',0,'TLS',0])eq 3){$output .= 'selected '}$output .= 'value="3">Required (Command/Data)</option>'}else {$output .= '
+                <option ';if ($stash->get(['data',0,'TLS',0])eq 2){$output .= 'selected '}$output .= 'value="2">Required</option>'}$output .= '
+            </select>
+			<p>This setting controls whether TLS encryption is disabled, optional or required for all connections to the FTP server.  Users should always use encryption if possible, but many older FTP clients are incapable of secure FTP sessions.  The \'Optional\' setting is recommended for best compatibility.';if ($stash->get(['data',0,'HasTLS3Support',0])){$output .= '  For the required settings, encryption of the command channel is sufficient to hide passwords and usernames while encryption of the command and data channels will hide all traffic from eavesdroppers.'}$output .= '</p>
+        </td>
+    </tr>';if ($stash->get(['data',0,'TLSCipherSuite',0,'defined',0])){$output .= '
+    <tr>
+        <td>
+			<label class="label_title">TLS Cipher Suite</label>
+			<input type="text" name="TLSCipherSuite" id="TLSCipherSuite" value="';$output .= $stash->get(['data',0,'TLSCipherSuite',0]);$output .= '" />
+			<p>This is a standard format list of the SSL/TLS ciphers Pure-FTPd should use.  Typically this will only need to be adjusted for PCI compliance.</p>
+        </td>
+    </tr>'}$output .= '
+    <tr>
+        <td>
+			<label class="label_title">Allow Anonymous Logins</label>
+            <select name="NoAnonymous">
+                <option ';if ($stash->get(['data',0,'NoAnonymous',0])ne 'yes'){$output .= 'selected '}$output .= ' value="no">Yes</option>
+                <option ';if ($stash->get(['data',0,'NoAnonymous',0])eq 'yes'){$output .= 'selected '}$output .= ' value="yes">No</option>
+            </select>
+			<p>Allowing anonymous FTP logins in generally considered to weaken the security of the server.  Setting this option to "No" is recommended.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Allow Anonymous Uploads</label>
+            <select name="AnonymousCantUpload">
+                <option ';if ($stash->get(['data',0,'AnonymousCantUpload',0])ne 'yes'){$output .= 'selected '}$output .= ' value="no">Yes</option>
+                <option ';if ($stash->get(['data',0,'AnonymousCantUpload',0])eq 'yes'){$output .= 'selected '}$output .= ' value="yes">No</option>
+            </select>
+			<p>Allowing anonymous FTP uploads in generally considered to weaken the security of the server.  Setting this option to "No" is recommended.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Maximum Load for Anonymous Downloads</label>
+			<input type="text" id="MaxLoad"name="MaxLoad" value="';$output .= $stash->get(['data',0,'MaxLoad',0]);$output .= '" />
+			<p>When the system load average goes above the specified amount, anonymous users will not be allowed to download.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Maximum Idle Time (minutes)</label>
+			<input type="text" name="MaxIdleTime" id="MaxIdleTime" value="';$output .= $stash->get(['data',0,'MaxIdleTime',0]);$output .= '" />
+			<p>Maximum amount of time in minutes that an FTP connection may spend idle before it is disconnected by the server.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Maximum Connections</label>
+			<input type="text" name="MaxClientsNumber" id="MaxClientsNumber" value="';$output .= $stash->get(['data',0,'MaxClientsNumber',0]);$output .= '" />
+			<p>Maximum number of FTP connections to accept.</p>
+		</td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Maximum Connections Per IP Address</label>
+			<input type="text" name="MaxClientsPerIP" id="MaxClientsPerIP" value="';$output .= $stash->get(['data',0,'MaxClientsPerIP',0]);$output .= '" />
+			<p>Maximum number of FTP connections to accept from a single IP address.</p>
+		</td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Allow Logins with Root Password</label>
+            <select name="RootPassLogins">
+                <option ';if ($stash->get(['data',0,'RootPassLogins',0])ne 'no'){$output .= 'selected '}$output .= ' value="yes">Yes</option>
+                <option ';if ($stash->get(['data',0,'RootPassLogins',0])eq 'no'){$output .= 'selected '}$output .= ' value="no">No</option>
+            </select>
+			<p>Allow FTP logins to all accounts using the root password.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+			<label class="label_title">Broken Clients Compatibility</label>
+            <select name="BrokenClientsCompatibility">
+                <option ';if ($stash->get(['data',0,'BrokenClientsCompatibility',0])ne 'no'){$output .= 'selected '}$output .= ' value="yes">Yes</option>
+                <option ';if ($stash->get(['data',0,'BrokenClientsCompatibility',0])eq 'no'){$output .= 'selected '}$output .= ' value="no">No</option>
+            </select>
+			<p>Ignore parts of the FTP protocol standards to improve compatibility with some buggy FTP clients and firewalls.</p>
+        </td>
+    </tr>
+</table>
+<p><input type="submit" value="Save" class="btn-primary" /></p>
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

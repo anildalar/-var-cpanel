@@ -1,0 +1,10 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/reallyemailall.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('breadcrumburl','/scripts/emailall' .($stash->get(['data',0,'resellers',0])? '?resellers=1' : ''));if ($stash->get(['data',0,'invalid_fromemail',0])){$output .= do {my$output='';$output .= 'Invalid "From Email".
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })}}elsif ($stash->get('start')){$output .= $context->process('master_templates/_defheader.tmpl',{'theme'=>'yui' });$output .= '<pre>
+'}elsif ($stash->get(['data',0,'email',0])){$output .= 'Sending mail to ';$output .= $stash->get(['data',0,'email',0,'html',0]);$output .= ' (';$output .= $stash->get(['data',0,'user',0,'html',0]);$output .= ')...'}elsif ($stash->get('error')){$output .= 'ERROR: ';$output .= $stash->get(['error',0,'html',0])}elsif ($stash->get('done')){$output .= 'Done.
+
+'}elsif ($stash->get(['data',0,'user',0])){$output .= 'Not mailing ';$output .= $stash->get(['data',0,'user',0,'html',0]);$output .= ': no contact email set.
+
+'}else {$output .= '</pre>
+<br />
+<b>Emails have been sent!</b>
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,49 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/bwday.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$stash->set('CPDate',$context->plugin('CPDate'));$stash->set('timezone',$stash->get(['CPANEL',0,'cookies',0,'timezone',0]));$stash->set('month_index',$stash->get(['RAW_FORM',['month' ]])- 1);$stash->set('starttime',$stash->get(['CPDate',0,'timezone_timelocal',[$stash->get('timezone'),0,0,0,$stash->get(['RAW_FORM',['day' ]]),$stash->get('month_index'),$stash->get(['RAW_FORM',['year' ]])]]));$stash->set('endtime',$stash->get(['CPDate',0,'add_local_interval',[$stash->get('starttime'),1,'day',$stash->get('timezone')]])- 1);$stash->set('PROTOCOLS',$stash->get(['execute_or_die',['Bandwidth','get_enabled_protocols' ],'data',0]));$stash->set('expirations',$stash->get(['execute',['Bandwidth','get_retention_periods',{'api.sort_column'=>'retention','api.sort_method'=>'numeric' }],'data',0]));$stash->set('now',$stash->get(['CPANEL',0,'now',0]));$stash->set('time_grouping','year_month_day_hour_minute');$stash->set('interval','5min');$stash->set('dumper',$context->plugin('dumper'));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('expirations');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'exp'}=$_tt_value;if (($stash->get(['exp',0,'interval',0])eq '5min')&& ($stash->get('starttime')< ($stash->get('now')- $stash->get(['exp',0,'retention',0])))){$stash->set('time_grouping','year_month_day_hour');$stash->set('interval','hourly')}if ($stash->get(['exp',0,'interval',0])eq 'hourly' && $stash->get('starttime')< ($stash->get('now')- $stash->get(['exp',0,'retention',0]))){$stash->set('time_grouping','year_month_day');$stash->set('interval','daily')};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('form_target',$stash->get(['RAW_FORM',['target' ]]));$stash->set('form_domain',$stash->get(['RAW_FORM',['domain' ]]));$stash->set('query_specific_domain_yn',($stash->get('form_domain')ne ''));$stash->set('query_specific_target_yn',($stash->get('form_target')ne $stash->get(['CPANEL',0,'authuser',0])));$stash->set('domains',$stash->get('query_specific_domain_yn')? $stash->get('form_domain'): $stash->get('query_specific_target_yn')? $stash->get('form_target'): '');$stash->set('bwdata',$stash->get(['execute',['Bandwidth','query',{'timezone'=>$stash->get('timezone'),'grouping'=>('protocol|' .$stash->get('time_grouping')),'interval'=>$stash->get('interval'),'domains'=>$stash->get('domains'),'start'=>$stash->get('starttime'),'end'=>$stash->get('endtime')}]]));$output .= $context->process('_bandwidth_graph_include.tmpl');$output .= '
+<!-- TODO: put somewhere separately -->
+<style type="text/css">
+.data-descriptor {
+    text-align: center;
+}
+</style>
+
+<div class="body-content">
+    <p class="description">';$output .= $stash->get('your_timezone_is');$output .= '</p>
+
+    <h4 class="data-descriptor">
+        ';$output .= $stash->get('query_specific_domain_yn')? $stash->get(['form_target',0,'html',0]).' — ' : '';$output .= '
+        ';$output .= $stash->get(['locale',0,'datetime',[$stash->get(['CPDate',0,'timegm',[0,0,0,$stash->get(['RAW_FORM',['day' ]]),$stash->get('month_index'),$stash->get(['RAW_FORM',['year' ]])]]),'date_format_full' ]]);$output .= '
+    </h4>
+    <div class="bw-time-graph" id="bwgraph_el"></div>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'javascript:history.go(-1)','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+<script>
+
+var PROTOCOLS = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('PROTOCOLS')]]);$output .= ';
+
+//XXX: LOCALE’s CLDR isn’t loading correctly on page load.
+wait_for_CLDR_to_load( function() {
+    var did_sth = Bandwidth_Graph.draw_protocols_time_graph( {
+        time_format: function(t) { return LOCALE.local_datetime(t, "time_format_short") },
+        container_path: "#bwgraph_el",
+        protocols_order: PROTOCOLS,
+        min_date: ';$output .= ($stash->get('starttime').'000');$output .= ',
+        max_date: ';$output .= ($stash->get('endtime').'000');$output .= ',
+        resolution: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('interval')]]);$output .= ',
+        api_protocol_data: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['bwdata',0,'data',0])]]);$output .= '
+    } );
+    ';if (!$stash->get('query_specific_domain_yn')){$output .= '        if (did_sth) {
+            Bandwidth_Graph.draw_protocols_time_graph_key({
+              container_path: "#bwgraph_el",
+              protocols_order: PROTOCOLS
+            });
+        }
+    '}$output .= '} );
+
+CPTimezone.show_cookie_timezone_mismatch_nodes();
+</script>
+
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Bandwidth' ]]),'app_key'=>'bandwidth','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

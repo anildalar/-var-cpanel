@@ -1,0 +1,87 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/lists/lists.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('domain',$stash->get(['RAW_FORM',0,'domain',0]));$output .= '
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Current Lists' ]]);$output .= '</h2>
+
+<cp-alert-list></cp-alert-list>
+<div ng-cloak class="ng-cloak">
+<section class="ng-cloak sg-example" ng-controller="mainController as main">
+    <div class="list-container">
+        <div class="row search-page-container">
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4" id="topSearchBox">
+                <search id="search_box" ng-model="main.model.filterValue"></search>
+            </div>
+            <div class="col-xs-1">
+                <span spinner
+                    id="tableDataSpinner"
+                    class="headerSpinner"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                </div>
+            <div class="col-xs-7 col-sm-7 col-md-7 col-lg-7" >
+                <div class="pagination-container">
+                    <page-size
+                        id="DEFAULT-page-itemsperpage"
+                        total-items="main.model.totalResults"
+                        show-all="true"
+                        ng-model="main.model.pageSize">
+                    </page-size>
+                    <div id="topPager"
+                        uib-pagination
+                        ng-if="main.model.pageSize > 0 && main.model.totalResults > main.model.pageSize"
+                        ng-change="main.model.selectPage(page)"
+                        ng-model="main.model.page"
+                        items-per-page="main.model.pageSize"
+                        total-items="main.model.totalResults"
+                        max-size="2"
+                        boundary-links="true"
+                        previous-text="<" next-text=">" first-text="<<" last-text=">>"
+                        class="pagination-small">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table id="mailingListsTable" class="table table-striped responsive-table ng-cloak" ng-controller="mailingListsController as listsController">
+            <thead>
+                <tr>
+                    <th ng-repeat="column in listsController.getHeaders()" class="lists-col-header lists-col-header-{{column.key}}">
+                        <span toggle-sort
+                            id="toggleSort_{{column.key | qaSafeID}}"
+                            ng-if="column.key != \'functions\'"
+                            onsort="main.model.dataSorted"
+                            sort-meta="main.model.meta.sort"
+                            sort-field="{{column.key}}">{{column.name}}</span>
+                        <span ng-if="column.key == \'functions\'">{{column.name}}</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="datarow_{{list.list | qaSafeID}}" ng-if="listsController.getLists().length" ng-repeat="list in listsController.getLists()" class=\'lists-row\'>
+                    <td data-title="{{column.name}}" ng-repeat-start="column in listsController.getHeaders()" data-title="{{column.name}}" ng-if="column.key != \'functions\' && column.key != \'listadmin\'" ng-repeat-start class="list-column-{{column.key}}">
+                        <p class="truncate" ng-bind="list.getAttribute(column.key)" title="{{list.getAttribute(column.key)}}"></p>
+                    </td>
+                    <td data-title="{{column.name}}" ng-if="column.key == \'functions\'" class=\'lists-function-cell\'>
+                        <a id="datarow_{{list.list | qaSafeID}}_manage_btn" class="btn btn-link" target="_blank" href="loginlist.html?email={{list.list | escape}}&amp;domain={{listsController.domain | escape}}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= "\n                        </a>\n                    </td>\n                    <td data-title=\"{{column.name}}\" ng-if=\"column.key == 'listadmin'\" ng-repeat-end>\n                        <span\n                            ng-bind-html='list.formatListAdmins({maxCols:30,maxItems:3,separator:\"<br />\"})'\n                            title='{{list.formatListAdmins({maxItems:3,separator:\"\\n\"})}}'></span>\n                    </td>\n                </tr >\n                <tr ng-if=\"!listsController.getLists().length && !main.model.loading\" class=\"info empty-row\">\n                    <td colspan=\"{{listsController.getHeaders().length}}\">No results found ...</td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</section>\n</div>\n<!-- table -->\n\n";$stash->set('JSON',$context->plugin('JSON'));$stash->set('application_dir',$stash->get(['ExpVar',0,'expand',['$basedir' ]]).'/lists');$stash->set('file',$stash->get(['ExpVar',0,'expand',['$basefilename' ]]));$stash->set('requirejs_url_base','/webmail/' .$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('listlists',$stash->get(['execute',['Email','list_lists',{'domain'=>$stash->get('domain'),'api.paginate_start'=>1,'api.paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])}]]));$output .= '
+
+<script>
+    var PAGE = {
+        THEME_PATH : ';$output .= $stash->get(['requirejs_url_base',0,'json',0]);$output .= ',
+        initData : {
+            lists: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['listlists',0,'data',0])]]);$output .= ',
+            totalPages: ';$output .= $stash->get(['listlists',0,'metadata',0,'paginate',0,'total_pages',0,'json',0]);$output .= ',
+            totalResults: ';$output .= $stash->get(['listlists',0,'metadata',0,'paginate',0,'total_results',0,'json',0]);$output .= ',
+            resultsPerPage: ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'json',0]);$output .= '        }
+    };
+
+    window.PAGE = PAGE;
+</script>
+
+<script type="text/javascript">
+    CPANEL.namespace("CPANEL.PAGE");
+    CPANEL.PAGE.domain = ';$output .= $stash->get(['domain',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<!-- end body-content -->
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

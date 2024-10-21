@@ -1,0 +1,66 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/iplist_tbl.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('Net',$context->plugin('Net'));$output .= '
+<style type="text/css">
+#delip_info ul {
+   max-height: 200px;
+   overflow: auto;
+}
+#iplist td {
+    padding: 6px;
+}
+.actionsCell {
+    text-align: center;
+}
+.btn-small {
+    font-size: 11px;
+    height: 21px;
+    min-width: 80px;
+    padding: 3px;
+}
+.deletePrompt {
+    padding-left: 5px;
+    font-weight: bold;
+    padding-top: 10px;
+}
+
+#iplist th {
+    font-weight: bold;
+    text-align: left;
+}
+
+#iplist th.actionsCell {
+    text-align: center;
+}
+
+html[dir=rtl] #iplist th {
+    text-align: right;
+}
+
+html[dir=rtl] th.actionsCell {
+    text-align: center;
+}
+
+</style>
+<div id="iplisttbl">
+<table class="sortable" id="iplist">
+<thead>
+<tr>
+    <th>';$output .= $stash->get(['locale',0,'maketext',['Interface' ]]);$output .= '</th>
+    <th>';if ($stash->get(['data',0,'is_nat',0])){$output .= $stash->get(['locale',0,'maketext',['Local IP' ]])}else {$output .= $stash->get(['locale',0,'maketext',['IP' ]])}$output .= '</th>
+    ';if ($stash->get(['data',0,'is_nat',0])){$output .= '<th>';$output .= $stash->get(['locale',0,'maketext',['Public IP' ]]);$output .= '</th>'}$output .= '    <th>';$output .= $stash->get(['locale',0,'maketext',['Notes' ]]);$output .= '</th>
+    <th class="actionsCell">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+</tr>
+</thead>
+<tbody>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'table_data',0,'cpsort',[{'field'=>'interface','code'=>$stash->getref(['Net',0,'inet_aton',0]),'num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ipinfo'}=$_tt_value;$output .= '<tr sorttable_customkey="';$output .= $stash->get(['Net',0,'inet_aton',[$stash->get(['ipinfo',0,'local_ip',0])]]);$output .= '" class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade2' : 'tdshade1';$output .= '">
+    <td>';$output .= $stash->get(['ipinfo',0,'interface',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['ipinfo',0,'local_ip',0]);$output .= '</td>
+    ';if ($stash->get(['data',0,'is_nat',0])){$output .= '<td>';$output .= $stash->get(['ipinfo',0,'public_ip',0]);$output .= '</td>'}$output .= '    <td class="notesCell">';$output .= $stash->get(['ipinfo',0,'notes',0]);$output .= '</td>
+    <td class="actionsCell">';if ($stash->get(['ipinfo',0,'removable',0])){$output .= '
+            <a class="action delete" title="';$output .= $stash->get(['locale',0,'maketext',['Remove “[_1]”[comment,used as hover text on a Remove button]',$stash->get(['ipinfo',0,'local_ip',0])]]);$output .= '" onClick="confirm_delip( \'';$output .= $stash->get(['ipinfo',0,'local_ip',0]);$output .= '\', \'';$output .= $stash->get(['ipinfo',0,'interface',0]);$output .= '\' );">';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '</a>
+        '}$output .= '
+    </td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</tbody>
+</table>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

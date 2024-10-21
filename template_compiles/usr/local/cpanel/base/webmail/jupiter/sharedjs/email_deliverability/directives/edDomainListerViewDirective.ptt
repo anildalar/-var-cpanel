@@ -1,0 +1,113 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/sharedjs/email_deliverability/directives/edDomainListerViewDirective.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<tbody>
+    <tr ng-repeat-start="domain in getDomains() track by domain.domain" id="{{domain.domain}}"
+        class="domain-lister-view data-row no-animate" ng-class="getDomainRowClasses(domain)" >
+        <td id="{{domain.domain}}_domain" class="name-column cutoff_with_ellipses">
+            <a id="{{domain.domain}}_domain_link"
+                class="btn btn-link domain-btn-link domain-link-span no-animate"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Click to display the “[_1]” website.','{{ domain.domain | htmlSafeString }}' ]]);$output .= '"
+                ng-if="!domain.isWildcard"
+                ng-href="{{ domain.protocol }}://{{ :: domain.domain }}"
+                target="_blank">
+                    <record-status id="recordStatus_{{domain.domain}}" records="::recordsToCheck" domain="domain" class="hidden-sm hidden-md hidden-lg"></record-status>
+                    {{ :: domain.domain }}
+                    <span><i class="fas fa-external-link-alt" aria-hidden="true"></i></span>
+            </a>
+            <span ng-if="domain.type === DOMAIN_TYPE_CONSTANTS.MAIN" class="label label-info hidden-xs no-animate">';$output .= $stash->get(['locale',0,'maketext',['Main Domain' ]]);$output .= '</span>
+        </td>
+        <td class="no-animate hidden-xs" id="{{domain.domain}}_{{ headerItems[1].field }}">
+            <record-status id="recordStatus_{{domain.domain}}" records="::recordsToCheck" domain="domain"></record-status>
+            <span ng-if="!domain.hadAnyNSErrors && getRecordTypesWithIssues(domain)" class="text-small">({{ getRecordTypesWithIssues(domain) }})</span>
+            <span ng-if="domain.hadAnyNSErrors && getRecordTypesWithNSErrors(domain)" class="text-small">({{ getRecordTypesWithNSErrors(domain) }})</span>
+            <span ng-if="showRecordsFilteredMessage(domain)" class="text-small"><em>( ';$output .= $stash->get(['locale',0,'maketext',['Some Records are Filtered' ]]);$output .= ' )</em></span>
+        </td>
+        <td
+            id="{{domain.domain}}_{{::headerItems[2].field}}"
+            class="domain-lister-view-actions no-animate">
+                <i class="fas fa-exclamation-triangle hidden-xs hidden-sm" ng-if="getDomainLockedMessage(domain)" tooltip-placement="top" uib-tooltip-html="getDomainLockedMessage(domain)"></i>
+                <button
+                    title="{{ whyCannotAutoRepairDomain(domain) }}"
+                    id="{{ :: domain.domain}}_requestRepairConfirmBtn"
+                    ng-disabled="!!whyCannotAutoRepairDomain(domain) || isConfirmingRepair(domain)"
+                    class="btn btn-sm btn-outline-primary no-animate hidden-xs"
+                    ng-click="confirmRepair(domain)">
+                    <i class="fas fa-sync" aria-hidden="true"></i>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Repair' ]]);$output .= '</span>
+                </button>
+                <button
+                    id="{{ :: domain.domain}}_manage_btn"
+                    class="btn btn-sm btn-outline-primary no-animate"
+                    ng-click="actionButtonClicked(\'manage\', domain)">
+                    <i class="fas fa-wrench" aria-hidden="true"></i>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '</span>
+                </button>
+        </td>
+    </tr>
+    <tr ng-repeat-end id="{{domain.domain}}_confirmRepair" ng-class="getDomainRowClasses(domain)">
+        <td class="expand-panel-data" colspan="{{ :: headerItems.length }}">
+            <div class="list-panel expand-panel" ng-if="isConfirmingRepair(domain)">
+                <div class="panel">
+                    <div class="panel-body">
+                        <div ng-if="!localDKIMExists(domain)">
+                            <div callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '" role="alert">
+                                <p>';$output .= $stash->get(['locale',0,'maketext',['A [asis,DKIM] key for “[_1]” does not exist on the local server.','{{ domain.domain | htmlSafeString}}' ]]);$output .= '</p>
+                                <button cp-action="ensureLocalDKIMKeyExists(domain)" class="btn btn-sm btn-primary">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Generate Local [asis,DKIM] Key' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                        <div ng-if="localDKIMExists(domain)">
+                            <p>';$output .= $stash->get(['locale',0,'maketext',['This will automatically perform the following actions:' ]]);$output .= '</p>
+                            <ul>
+                                <li ng-if="!domain.isRecordValid(\'spf\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['To properly configure your [output,abbr,SPF,Sender Policy Framework] record, you [output,strong,must] include this server’s [output,abbr,IP,Internet Protocol] address.' ]]);$output .= '
+                                </li>
+                                <li ng-if="!domain.isRecordValid(\'dkim\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Update the [output,acronym,DKIM,DomainKeys Identified Mail] record to use this server’s [output,acronym,DKIM,DomainKeys Identified Mail] key as the authoritative key.' ]]);$output .= '
+                                    <br />
+                                    <strong>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['If you send email from another server, you [output,strong,must] use this server’s [output,acronym,DKIM,DomainKeys Identified Mail] key on the remote server.' ]]);$output .= '
+                                    </strong>
+                                </li>
+                            </ul>
+                            <p>';$output .= $stash->get(['locale',0,'maketext',['The system will install the following records:' ]]);$output .= '</p>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <suggested-record-set
+                                        ng-if="!domain.isRecordValid(\'spf\')"
+                                        id="{{domain.domain}}_quickRepairSPFSet"
+                                        domain="domain"
+                                        record-type="spf"
+                                        record-zone-type="TXT"></suggested-record-set>
+                                    <suggested-record-set
+                                        ng-if="!domain.isRecordValid(\'dkim\')"
+                                        id="{{domain.domain}}_quickRepairDKIMSet"
+                                        domain="domain"
+                                        record-type="dkim"
+                                        record-zone-type="TXT"></suggested-record-set>
+                                </div>
+                            </div>
+                            <p ng-if="!domain.isRecordValid(\'ptr\')">';$output .= $stash->get(['locale',0,'maketext',['For instructions about how to fix reverse [asis,DNS] ([output,abbr,PTR,Pointer]), [output,url,_1,click here,ng-click,_2].','','actionButtonClicked(\'manage\', domain)' ]]);$output .= '</p>
+                        </div>
+                    </div>
+                    <div class="panel-footer">
+                        <button
+                            id="{{ :: domain.domain}}_confirmRepairConfirmBtn"
+                            class="btn btn-sm btn-outline-primary no-animate"
+                            ng-click="actionButtonClicked(\'repair\', domain) && cancelConfirmRepair(domain)">
+                            <i class="fas fa-sync" aria-hidden="true"></i>
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Repair' ]]);$output .= '</span>
+                        </button>
+                        <button
+                            id="{{ :: domain.domain}}_cancelRepairConfirmBtn"
+                            class="btn btn-sm btn-outline-primary no-animate"
+                            ng-click="cancelConfirmRepair(domain)">
+                            <i class="fas fa-times" aria-hidden="true"></i>
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</tbody>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

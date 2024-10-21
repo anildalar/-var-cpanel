@@ -1,0 +1,607 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/userlist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPHash',$context->plugin('CPHash'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('HTMLOptions',$context->plugin('HTMLOptions'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '<link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['MagicRevision',['/yui/autocomplete/assets/skins/sam/autocomplete.css' ]]);$output .= '" />
+<style type="text/css">
+.htable {
+    margin: 0 auto;
+    padding:0;
+    border-collapse: separate;
+    border-spacing: 1px;
+    height: 226px;
+}
+
+.htable td {
+    padding-left: 5px;
+    padding-right: 5px;
+    border-right: 0 none;
+}
+
+.htable th {
+    background: #ccc;
+    height: 22px;
+    white-space: nowrap;
+}
+
+.searchmod {
+    text-align:center;
+}
+
+#brick1, #brick2, #brick3 {
+    text-align: center;
+    padding: 0;
+    border-collapse: collapse;
+    width: 800px;
+}
+
+#brick2, #brick3 {
+    margin-top: 15px;
+}
+
+#brick1 td.col3 {
+    text-align: center;
+    border-right:0;
+}
+
+#brick1 td.col2 {
+    text-align: left;
+}
+
+#brick1 td.col2 table {
+    width: 100%;
+}
+
+.brick th {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#brick1 td.col2 td.scol1 {
+    text-align: left;
+    border-right: 0px;
+    vertical-align: top;
+    padding-top: 0px;
+    width: 65%;
+}
+
+#brick1 td.col2 td.scol1 table {
+    height: 183px;
+    width: 100%;
+}
+
+#brick1 td.col2 table {
+    height: 226px;
+}
+
+#brick1 td.col2 td.scol2 {
+    padding-top: 0;
+    border-right: 0;
+}
+
+#acctinfo {
+    text-align: center;
+    vertical-align: middle;
+    display: inline-block;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+#acctinfo span {
+    vertical-align: middle;
+    text-align: center;
+    width: 250px;
+    display: inline-block;
+}
+
+#brick1 td.col2 td.scol1 table {
+    text-align: left;
+    border-collapse: collapse;
+    margin-top: 1px;
+    height: 226px;
+}
+
+#brick1 td.col2 td.scol1 table td.heavybg,
+#brick1 td.col2 td.scol1 table td.lightbg {
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    font-weight: bold;
+    vertical-align: top;
+}
+
+#brick1 td.col2 td.scol1 table td.heavybg {
+    height: 16px;
+}
+
+#brick1 td.col2 td.scol1 table tr.search td.lightbg {
+    height: 18px;
+}
+
+select {
+    width: 99%;
+}
+
+.button-group button {
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: inherit;
+}
+.button-group button:hover,
+.button-group button.hover {
+    border-width: 1px;
+}
+
+';if ($stash->get(['cfg',0,'show_new_search',0])){$output .= '
+div#searchautocomplete,
+div#searchautocomplete2 {
+    text-align: left;
+}
+
+input#searchinput, input#searchinput2 {
+    position: relative;
+    width: 98%;
+}
+
+'}$output .= '
+';if (!$stash->get(['cfg',0,'skip_legacy_search',0])){$output .= '
+#brick2 tr th,
+#brick2 tr td {
+    text-align: left;
+}
+#brick2 tr td table {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+}
+#brick2 tr td table td.ls-col1 {
+    text-align: right;
+    vertical-align: middle;
+    width: 10%;
+    border-right: 0;
+    height: 26px;
+}
+#brick2 tr td table td.ls-col2 {
+    text-align: left;
+    vertical-align:top;
+    width: 40%;
+    border-right: 0;
+    height: 26px;
+}
+#brick2 tr td table td.ls-col3 {
+    text-align: right;
+    vertical-align: middle;
+    width: 10%;
+    border-right: 0;
+    height: 26px;
+}
+#brick2 tr td table td.ls-col4 {
+    text-align: left;
+    vertical-align: top;
+    width: 40%;
+    border-right: 0;
+    height: 26px;
+}
+
+.selectors td,
+.search td {
+    text-align: left;
+}
+
+#userselectEl,
+#domainselectEl {
+    width: 99%;
+}
+
+.section_title {
+    text-align: left;
+}
+'}$output .= '
+</style>
+
+';if (!$stash->get(['cfg',0,'skip_opening_form_tag',0])){$output .= '
+<form action="';$output .= $stash->get(['cfg',0,'form_tag_action_param',0]);$output .= '" name="fmain" onsubmit="return select_user();">
+<script type="text/javascript">
+    var dialog_opts = {
+        width: "400px",
+        fixedcenter: true,
+        visible: false,
+        modal: true,
+        draggable: false,
+        close: true,
+        constraintoviewport: true,
+        effect: {
+            effect: CPANEL.animate.ContainerEffect.FADE_MODAL,
+            duration: 0.25
+        }
+    };
+
+    var select_user_opts = YAHOO.lang.merge(dialog_opts, {
+        "buttons": [{
+            "text": "';$output .= $stash->get(['locale',0,'maketext',['OK' ]]);$output .= "\",\n            \"isDefault\": true,\n            \"handler\": function() {\n                select_user_dialog.hide();\n                return false;\n            }\n        }]\n    });\n\n    var select_user_dialog = new YAHOO.widget.SimpleDialog(\"sudlg\", select_user_opts);\n    select_user_dialog.setHeader(\"<div class=\\\"lt\\\"></div><span>\" + \"";$output .= $stash->get(['locale',0,'maketext',['Error' ]]);$output .= "\" +\n        \"</span><div class=\\\"rt\\\"></div>\");\n    select_user_dialog.cfg.queueProperty(\"text\", \"";$output .= $stash->get(['locale',0,'maketext',['You must select an account to proceed.' ]]);$output .= '");
+    select_user_dialog.render(document.body);
+
+    var select_user = function() {
+        var domainEl = DOM.get("domainselectEl");
+        var userEl = DOM.get("userselectEl");
+        var account_selected = (domainEl.selectedIndex !== -1) &&
+                               (userEl.selectedIndex !== -1);
+
+        if (!account_selected) {
+            select_user_dialog.show();
+            return false;
+        }
+    }
+</script>
+'}$output .= '
+
+';if ($stash->get(['data',0,'description_text',0])){$output .= '<div class="topdescriptionbox">
+    <p class=\'description\'>';$output .= $stash->get(['data',0,'description_text',0]);$output .= '</p>
+</div>
+'}$output .= '
+';if (!$stash->get(['cfg',0,'skip_outer_table',0])){$output .= '
+<table>
+    <tr>
+        <td>
+'}$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Whostmgr',0,'FORM',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '
+            <input type="hidden" name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'key',0]);&$_tt_filter($output)};$output .= '" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'value',0]);&$_tt_filter($output)};$output .= '" />
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+            <table id="brick1" class="datatable brick">
+                <tr>
+                    <th class="section_title">';$output .= $stash->get(['data',0,'selection_title',0])? $stash->get(['data',0,'selection_title',0]): $stash->get(['locale',0,'maketext',['Account Selection' ]]);$output .= '</th>
+                </tr>
+                <tr>
+                    <td class="cell col2">
+                        <table>
+                            <tr>
+                                <td class="scol1">
+                                    <table>
+                                        <tr>
+                                            <td class="heavybg">';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '</td>
+                                            <td class="heavybg">';$output .= $stash->get(['locale',0,'maketext',['Users' ]]);$output .= '</td>
+                                        </tr>
+                                        ';if ($stash->get(['cfg',0,'skip_legacy_search',0])&& $stash->get(['cfg',0,'show_new_search',0])){$output .= '
+                                        <!-- AutoComplete begins -->
+                                        <tr class="search">
+                                            <td class="lightbg">
+                                                <div id="searchautocomplete2">
+                                                    <input id="searchinput2">
+                                                    <div id="searchcontainer2"></div>
+                                                </div>
+                                            </td>
+                                            <td class="lightbg">
+                                                <div id="searchautocomplete">
+                                                    <input id="searchinput">
+                                                    <div id="searchcontainer"></div>
+                                               </div>
+                                            </td>
+                                        </tr>
+                                        <!-- AutoComplete ends -->
+                                        '}$output .= '
+                                        ';if ($stash->get(['cfg',0,'skip_legacy_search',0])&& $stash->get(['cfg',0,'show_new_search',0])){$output .= '
+                                        ';$stash->set('select_rows',10);$output .= '
+                                        '}$output .= '
+                                        ';if (!$stash->get(['cfg',0,'skip_legacy_search',0])&&!$stash->get(['cfg',0,'show_new_search',0])){$output .= '
+                                        ';$stash->set('select_rows',12);$output .= '
+                                        '}$output .= '
+                                        <tr class="selectors">
+                                            <td class="lightbg">
+                                                <select size="';$output .= $stash->get('select_rows');$output .= '" id="domainselectEl" name="domain" onChange="try { selectu(); } catch(e) { };">
+                                                    ';$output .= $stash->get(['cfg',0,'userdomains',0,'sort',['domain' ],'options_as_html',[{'value'=>'user','text'=>'domain','selected'=>$stash->get(['cfg',0,'selected_user',0])}]]);$output .= '                                                </select>
+                                            </td>
+                                            <td class="lightbg">
+                                                <select size="';$output .= $stash->get('select_rows');$output .= '"  id="userselectEl" name="user" onChange="try { selectd(); } catch (e) {};">
+                                                    ';$output .= $stash->get(['cfg',0,'userdomains',0,'sort',['user' ],'options_as_html',[{'value'=>'user','text'=>'user','selected'=>$stash->get(['cfg',0,'selected_user',0])}]]);$output .= '                                                </select>
+                                           </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                                <td class="scol2">
+                                    <div id=\'acctinfo\'><span>';$output .= $stash->get(['cfg',0,'username_handling_default_text',0]);$output .= '</span></div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+            ';if (!$stash->get(['cfg',0,'skip_legacy_search',0])){$output .= '
+            <table id="brick2" class="datatable brick">
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Account Search By' ]]);$output .= '</th>
+                </tr>
+                <tr>
+                    <td class="cell">
+                        <!-- AutoComplete begins -->
+                        <table>
+                            <tr>
+                                <td class="ls-col1">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Domain:' ]]);$output .= '
+                                </td>
+                                <td class="ls-col2">
+                                    <div id="searchautocomplete2">
+                                        <input id="searchinput2">
+                                        <div id="searchcontainer2"></div>
+                                    </div>
+                                </td>
+                                <td  class="ls-col3">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['User:' ]]);$output .= '
+                                </td>
+                                <td class="ls-col4">
+                                    <div id="searchautocomplete">
+                                        <input id="searchinput">
+                                        <div id="searchcontainer"></div>
+                                   </div>
+                                </td>
+                            </tr>
+                        </table>
+                        <!-- AutoComplete ends -->
+                        <br />
+                    </td>
+                </tr>
+            </table>
+            '}$output .= '
+
+        ';if ($stash->get(['html',0,'additional_tr_for_form',0])){$output .= '
+            <table id="brick3" class="datatable brick">
+                <tr>
+                    <th align="left">';$output .= $stash->get(['locale',0,'maketext',['Additional Options' ]]);$output .= '</th>
+                </tr>
+                <tr>
+                    <td align="left" class="cell">
+                        <table>
+                                ';$output .= $stash->get(['html',0,'additional_tr_for_form',0]);$output .= '
+                        </table>
+                      </td>
+                 </tr>
+            </table>
+        '}$output .= '
+';if (!$stash->get(['cfg',0,'skip_outer_table',0])){$output .= '
+        </td>
+    </tr>
+</table>
+'}$output .= '
+';$output .= '
+';if (!$stash->get(['data',0,'hide_submit',0])){$output .= '
+<br /><br />
+<div>
+    <input
+     type="submit"
+     class="btn-primary"
+     id="submit_userlist_form"
+     value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'button_text',0]);&$_tt_filter($output)};$output .= '"
+';if ($stash->get(['data',0,'confirmation_text',0,'length',0])> 0){$output .= '
+     onclick="return confirmChoice();"
+'}$output .= '
+    />
+</div>
+'}$output .= '
+
+';if (!$stash->get(['cfg',0,'skip_closing_form_tag',0])){$output .= '
+    </form>
+'}$output .= '
+
+';$stash->set('YUI_MODULES',['/yui/datasource/datasource.js','/yui/autocomplete/autocomplete.js','/yui/yahoo-dom-event/yahoo-dom-event.js','/yui/animation/animation-min.js','/yui/container/container-min.js' ]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('YUI_MODULES');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= $context->process('_loadjs.tmpl');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+';if ($stash->get(['cfg',0,'use_new_pkg_hover',0])|| $stash->get(['cfg',0,'pkg_hover_template',0])){$output .= '
+';$output .= $context->process('_pkg_hover.tmpl')}else {$output .= '
+';$output .= $context->process('_pkg_hover.tmpl')}$output .= '
+
+<script id="userdetails" type="text/html">
+    <table class=\'htable\'>
+        <tbody>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['IP' ]]);$output .= '</th>
+                <td>{ip}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '</th>
+                <td>{owner}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</th>
+                <td><a href=\'mailto:{email}\'>{email}</a></td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Start Date' ]]);$output .= '</th>
+                <td>{startdate}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '</th><td>{cpmod}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</th>
+                <td>
+                    <span id="ppkg_label">{ppkg}</span>
+                </td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Used' ]]);$output .= '</th>
+                <td>{diskused}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Limit' ]]);$output .= '</th>
+                <td>{disklimit}</td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script id="updateing-template" type="text/html">
+<span>';$output .= $stash->get(['locale',0,'maketext',['Updating Account Information …' ]]);$output .= '</span>
+</script>
+<script id="userdetails-pkg" type="text/html">
+    <table class=\'htable\'>
+        <tbody>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['IP' ]]);$output .= '</th>
+                <td>{ip}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '</th>
+                <td>{owner}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</th>
+                <td><a href=\'mailto:{email}\'>{email}</a></td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Start Date' ]]);$output .= '</th>
+                <td>{startdate}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '</th><td>{cpmod}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</th>
+                <td>
+                    <a id="ppkg_link" href="javascript:void(0)" style="cursor:crosshair; cursor:help;" onmouseover="hover_pkg(this,\'{ppkg_corrected}\');" onmouseout="dehover_pkg(this,\'{ppkg_corrected}\');">{ppkg}</a>
+                </td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Used' ]]);$output .= '</th>
+                <td>{diskused}</td>
+            </tr>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Limit' ]]);$output .= '</th>
+                <td>{disklimit}</td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+
+CPANEL.util.prevent_submit(\'searchinput\');
+CPANEL.util.prevent_submit(\'searchinput2\');
+
+var prefetchacctinfo = 0;
+var userNameChanged = ';$output .= $stash->get(['js',0,'username_handling_js_function_name',0])|| 'null';$output .= ";\n\nfunction selectd() {\n    var users = document.fmain.user;\n    var domains = document.fmain.domain;\n    var thisUser = (users.options[users.selectedIndex].value ||\n                    users.options[users.selectedIndex].text);\n    for(var i = 0, l = users.options.length; i < l; i++) {\n        if (domains.options[i].value == thisUser) {\n            domains.selectedIndex = i;\n            if(userNameChanged) {\n                userNameChanged(thisUser);\n            }\n            break;\n        }\n    }\n}\n\nfunction selectu() {\n    var users = document.fmain.user;\n    var domains = document.fmain.domain;\n    var thisDomain = domains.options[domains.selectedIndex].value\n    for(var i = 0, l = domains.options.length; i < l; i++) {\n        if (users.options[i].value == domains.options[domains.selectedIndex].value ||\n            users.options[i].text == domains.options[domains.selectedIndex].value) {\n            users.selectedIndex = i;\n            if(userNameChanged) {\n                userNameChanged(thisDomain);\n            }\n            break;\n        }\n    }\n}\n\nvar FRAGMENT_TEMPLATE_CACHE = {};\n\nfunction updateUserInfo(o) {\n    var jsonResponse = YAHOO.lang.JSON.parse(o.responseText);\n    var accts = jsonResponse.acct;\n    var acct;\n    if (accts) {\n         acct = accts[0];\n    }\n\n    var acctinfo = DOM.get('acctinfo');\n    if (acct) {\n        var owner = acct.owner;\n        var email = acct.email;\n        var startdate = acct.startdate;\n        var cpmod = acct.theme || acct.cpmod;\n        cpmod = cpmod.html_encode()\n        var ip = acct.ip;\n        var ppkg = acct.plan;\n        var ppkg_encoded = ppkg.html_encode();\n        var ppkg_corrected = ppkg_encoded.replace(/'/,\"\\\\'\");\n        var diskused = acct.diskused;\n        var disklimit = acct.disklimit;\n\n        var newhtml =  \"\";\n\n        if(typeof ppkg === \"undefined\") {\n            if(!FRAGMENT_TEMPLATE_CACHE[\"userdetails\"]) {\n                FRAGMENT_TEMPLATE_CACHE[\"userdetails\"] = DOM.get(\"userdetails\").text;\n            }\n            newhtml = FRAGMENT_TEMPLATE_CACHE[\"userdetails\"];\n        }\n        else {\n            if(!FRAGMENT_TEMPLATE_CACHE[\"userdetails-pkg\"]) {\n                FRAGMENT_TEMPLATE_CACHE[\"userdetails-pkg\"] = DOM.get(\"userdetails-pkg\").text;\n            }\n            newhtml = FRAGMENT_TEMPLATE_CACHE[\"userdetails-pkg\"];\n        }\n\n        newhtml = YAHOO.lang.substitute(newhtml, {\n                \"owner\" : owner,\n                \"email\" : email,\n                \"startdate\" : startdate,\n                \"cpmod\" : cpmod,\n                \"ip\" : ip,\n                \"ppkg\" : ppkg_encoded,\n                \"ppkg_corrected\" : ppkg_corrected,\n                \"diskused\" : diskused,\n                \"disklimit\" : disklimit\n            });\n        DOM.setStyle(acctinfo, \"vertical-align\", \"top\");\n        DOM.setStyle(acctinfo.parentNode, \"vertical-align\", \"top\");\n        acctinfo.innerHTML = newhtml;\n    }\n    else {\n        acctinfo.innerHTML = jsonResponse.statusmsg.html_encode();\n    }\n}\n\nvar acctinforequest;\n\nfunction showacctinfo(usernameXX) {\n    if ( acctinforequest ) {\n        YAHOO.util.Connect.abort(acctinforequest);\n    }\n\n    var url = '";$output .= $stash->get('cp_security_token');$output .= '/json-api/accountsummary?user=\' + usernameXX;
+    var callback = {
+        success:updateUserInfo
+    };
+    var acctinfo = DOM.get(\'acctinfo\');
+    if(!FRAGMENT_TEMPLATE_CACHE["updateing-template"]) {
+        FRAGMENT_TEMPLATE_CACHE["updateing-template"] = DOM.get("updateing-template").text;
+    }
+    newhtml = FRAGMENT_TEMPLATE_CACHE["updateing-template"];
+    DOM.setStyle(acctinfo, "vertical-align", "middle");
+    DOM.setStyle(acctinfo.parentNode, "vertical-align", "middle");
+    acctinfo.innerHTML = newhtml;
+    acctinforequest = YAHOO.util.Connect.asyncRequest(\'GET\', url, callback );
+}
+
+';$output .= $stash->get(['js',0,'username_handling_js',0]);$output .= '
+
+var UserListAutoComp, DomainListAutoComp, prompt;
+var promptText = ';$output .= $stash->get(['data',0,'confirmation_text',0,'json',0])|| 'null';$output .= ';
+
+function confirmChoice() {
+    var result = select_user();
+    if (result === false) {
+        // do not submit the form
+        return false;
+    }
+
+    if (typeof promptText === "undefined" || promptText === null || promptText === "") {
+        // submit the form since there is no prompt set up
+        return true;
+    }
+
+    prompt.show();
+    return false; // let the prompt handle submitting the form
+}
+
+function initOC () {
+    // Instantiate first JS Array DataSource
+    usersArray = ';$output .= $stash->get(['cfg',0,'users_array',0,'json',0]);$output .= ';
+    ';$output .= '    // slice copies the array
+    domainsArray = usersArray.map( function(ud) { return ud.slice(0).reverse() } ).sort_by(0);
+
+    // Process the uses
+    var userDS = new YAHOO.widget.DS_JSArray(usersArray);
+    userDS.responseSchema = {fields:[\'user\',\'domain\']};
+
+    UserListAutoComp = new YAHOO.widget.AutoComplete(\'searchinput\',\'searchcontainer\', userDS);
+    UserListAutoComp.queryDelay = 0;
+    UserListAutoComp.typeAhead = false;
+    UserListAutoComp.useShadow = true;
+    UserListAutoComp.minQueryLength = 2;
+    UserListAutoComp.forceSelection = true;
+    UserListAutoComp.itemSelectEvent.subscribe(
+       function(oSelf,elItem,oData){
+            var users = document.fmain.user;
+            var newuser = elItem[2].user;
+            for(var i = 0; i < users.options.length; i++) {
+                if (users.options[i].value == newuser || users.options[i].text == newuser ) {
+                    users.selectedIndex = i;
+                    DOM.get(\'searchinput2\').value = elItem[2].domain;
+                    selectd();
+                    break;
+                }
+            }
+        }
+    );
+
+    UserListAutoComp.resultTypeList = false;
+    UserListAutoComp.formatResult = function(oResultData, sQuery, sResultMatch) {
+        return oResultData.user + " (" + oResultData.domain + ")";
+    };
+
+    // Process the domains
+    var domainDS = new YAHOO.widget.DS_JSArray(domainsArray);
+    domainDS.responseSchema = {fields:[\'domain\',\'user\']};
+
+    DomainListAutoComp = new YAHOO.widget.AutoComplete(\'searchinput2\',\'searchcontainer2\', domainDS);
+    DomainListAutoComp.queryDelay = 0;
+    DomainListAutoComp.typeAhead = false;
+    DomainListAutoComp.useShadow = true;
+    DomainListAutoComp.minQueryLength = 2;
+    DomainListAutoComp.forceSelection = true;
+    DomainListAutoComp.itemSelectEvent.subscribe(
+       function(oSelf,elItem,oData){
+            var users = document.fmain.user;
+            var newuser = elItem[2].user;
+            for(var i = 0; i < users.options.length;i++) {
+                if (users.options[i].value == newuser || users.options[i].text == newuser ) {
+                    users.selectedIndex = i;
+                    DOM.get(\'searchinput\').value = elItem[2].user;
+                    selectd();
+                    break;
+                }
+            }
+        }
+    );
+
+    DomainListAutoComp.resultTypeList = false;
+    DomainListAutoComp.formatResult = function(oResultData, sQuery, sResultMatch) {
+        return oResultData.domain + " (" + oResultData.user + ")";
+    };
+
+    // Handle preloading
+    if (prefetchacctinfo) {
+        selectu();
+    }
+    else {
+        // Handle refreshes or back navigation
+        if(document.fmain.domain.selectedIndex != -1) {
+            selectd();
+        }
+        else if(document.fmain.user.selectedIndex != -1) {
+            selectu();
+        }
+    }
+
+    if (!(typeof promptText === "undefined" || promptText === null || promptText === "")) {
+        var prompt_opts = YAHOO.lang.merge(dialog_opts, {
+            "buttons": [{
+                "text": "';$output .= $stash->get(['locale',0,'maketext',['Proceed' ]]);$output .= '",
+                "handler": function() {
+                    prompt.hide();
+                    document.forms["fmain"].submit();
+                    return true;
+                },
+            },{
+                "text": "';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\",\n                \"isDefault\": true,\n                \"handler\": function() {\n                    prompt.hide();\n                    return false;\n                }\n            }]\n        });\n\n\n        prompt = new YAHOO.widget.SimpleDialog(\"sdlg\", prompt_opts);\n        prompt.setHeader(\"<div class=\\\"lt\\\"></div><span>\" + \"";$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= "\" +\n            \"</span><div class=\\\"rt\\\"></div>\");\n        prompt.cfg.queueProperty(\"text\", promptText);\n        prompt.render(document.body);\n    }\n}\n\nYAHOO.util.Event.addListener(this, 'load', initOC);\n";if ($stash->get(['cfg',0,'selected_user',0])){$output .= '
+prefetchacctinfo = 1;
+'}$output .= '
+//]]>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

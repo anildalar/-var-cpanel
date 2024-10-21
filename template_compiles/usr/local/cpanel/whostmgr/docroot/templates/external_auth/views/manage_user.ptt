@@ -1,0 +1,65 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/external_auth/views/manage_user.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="loading" ng-show="loadingUser">
+        <p class="alert alert-info col-xs-12">
+            <span><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+        </p>
+    </div>
+<div ng-if="user">
+    <div id="editor" class="panel panel-primary" ng-hide="loadingUser">
+        <div class="panel-heading">
+            <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Manage the authentication for “[_1]”','{{ user.username }}' ]]);$output .= '</h3>
+        </div>
+        <div class="panel-body">
+            <div class="section-body">
+                <table class="table table-striped responsive-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2">';$output .= $stash->get(['locale',0,'maketext',['Authentication Method' ]]);$output .= '</th>
+                            <th class="unlink-th">';$output .= $stash->get(['locale',0,'maketext',['Unlink' ]]);$output .= '</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="link in user_links">
+                            <td data-title="" class="auth-icon-td">
+                                <span
+                                    ng-if="!link.subject_unique_identifier"
+                                    ng-style="{
+                                        \'background-image\': \'url(data:{{link.icon_type}};base64,{{ link.icon }})\',
+                                        \'background-color\':\'#{{link.color}}\',
+                                        \'color\':\'#{{link.textcolor}}\'
+                                    }"
+                                    class=\'provider-link-icon provider-link-icon-large\'
+                                    title="{{provider.display_name}}"
+                                >
+                                </span>
+                            </td>
+                            <td data-title="Authentication Method" ng-bind="link.display_name"></td>
+                            <td data-title="">
+                                <button ng-if="link.subject_unique_identifier" class="btn btn-link" ng-click="unlink_provider(link.subject_unique_identifier, link.provider_key)">
+                                    <span class="glyphicon glyphicon-remove"></span>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Unlink' ]]);$output .= '
+                                </button>
+                            </td>
+                        </tr>
+                        <tr ng-hide="user_links.length" class="info empty-row">
+                            <td colspan="3">';$output .= $stash->get(['locale',0,'maketext',['There are no alternative authentication methods for this user.' ]]);$output .= '</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-primary" ng-hide="loadingUser" ng-click="return_to_list()">
+        ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+    </button>
+    <script type="text/ng-template" id="confirmproviderunlink.html">
+        <div class="modal-header">
+            <h4>
+            <span class="glyphicon glyphicon-check"></span>
+            <span class="confirmMessage">';$output .= $stash->get(['locale',0,'maketext',['Confirm Unlink' ]]);$output .= '</span></h4>
+        </div>
+        <div class="modal-body">
+            ';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to remove the “[_1]” authentication linkage for “[_2]”?','{{provider}}','{{username}}' ]]);$output .= "\n        </div>\n        <div class=\"modal-footer\">\n            <button type=\"button\"\n                id=\"modalContinueBtn\"\n                class=\"btn btn-primary btn-sm\"\n                ng-click=\"\$close(currentProfileName);\">";$output .= $stash->get(['locale',0,'maketext',['Unlink' ]]);$output .= "</button>\n            <button type=\"button\"\n                id=\"modalCancelBtn\"\n                class=\"btn btn-link btn-sm\"\n                ng-click=\"\$dismiss();\">";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+        </div>
+    </script>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

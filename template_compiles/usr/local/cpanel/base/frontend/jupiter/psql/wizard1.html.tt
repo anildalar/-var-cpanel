@@ -1,0 +1,82 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/wizard1.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('dbprefix',$stash->get(['ExpVar',0,'expand',['$dbprefix' ]]));$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('max_length',63 - $stash->get(['dbownerprefix',0,'length',0]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['PostgreSQL Databases allow you to store a large amount of information in an easy to access manner. The databases themselves are not easily read by humans. PostgreSQL databases are required by many web applications including some bulletin boards, content management systems, and others. To use a database, you’ll need to create it. Only PostgreSQL Users (different than mail or other users) that have privileges to access a database can read from or write to that database.' ]]);$output .= '
+    </p>
+
+    ';if (!$stash->get(['ExpVar',0,'expand',['$pgrunning' ]])){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['The PostgreSQL server is currently offline.' ]]);$output .= '
+        </div>
+    '}else {$output .= '
+    <div id="postgres_main">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['Step 1: Create A Database' ]]);$output .= '
+        </h2>
+        <form method="post" action="wizard2.html" name="mainform" id="mainform">
+            <div class="form-group">
+                <label for="db">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Database:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('dbprefix')){$output .= '
+                        <div class="input-group">
+                            <span class="input-group-addon">';$output .= $stash->get('dbownerprefix');$output .= '</span>
+                            <input type="text" class="form-control" name="db" id="db" maxlength="';$output .= $stash->get('max_length');$output .= '" />
+                        </div>
+                        '}else {$output .= '
+                            <input type="text" class="form-control" name="db" id="db" maxlength="';$output .= $stash->get('max_length');$output .= '" />
+                        '}$output .= '
+                    </div>
+                    <div id="db_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] [quant,_1,character,characters] max.',$stash->get('max_length')]]);$output .= '
+                </span>
+            </div>
+            <div class="form-group">
+                <input class="btn btn-primary" type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create Database' ]]);$output .= '" />
+            </div>
+        </form>
+
+    </div> <!-- end postgres_main -->
+    '}$output .= '
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_database_wizard','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    ';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/cjt/sql.js','/cjt/sql.js' ]]));$output .= '
+    ';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+    <script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/cjt/sql.js' ]]);$output .= '"></script>
+
+    <script type="text/javascript">
+        var max_length = ';$output .= $stash->get('max_length');$output .= ';
+
+        /**
+         * Initialize the page
+         */
+        var init_newdb_validation = function() {
+            var dbname_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['New Database' ]]);$output .= '");
+
+            dbname_validator.add_thrower( "db", function(el) {
+                return CPANEL.sql.verify_postgresql_database_name(el.value)
+            } );
+
+            dbname_validator.attach();
+
+            CPANEL.validate.attach_to_form("submit", dbname_validator);
+
+            YAHOO.util.Dom.get("db").focus();
+        };
+        YAHOO.util.Event.onDOMReady(init_newdb_validation);
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

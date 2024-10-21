@@ -1,0 +1,171 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/lists.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('mail_domains',$stash->get(['execute',['Email','list_mail_domains',{}]]));$stash->set('password_strength_required_strength',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'list' }]]));$output .= $context->process('_assets/resource_usage_macro.html.tt');if ($stash->get(['FORM',0,'item',['itemsperpage' ]])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'item',['itemsperpage' ]]))}if ((!($stash->get(['FORM',0,'item',['itemsperpage' ]]))||!($stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p id="descMailingList" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Use a single address to send email to multiple email addresses. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/MailingLists','_blank','lnkMailingListsDocumentation' ]]);$output .= '
+    </p>
+
+<div class="section">
+    <h2 id="hdrCreateMailingList">';$output .= $stash->get(['locale',0,'maketext',['Create a Mailing List' ]]);$output .= '</h2>
+        ';$stash->set('resource_usage_key','mailinglists');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');if (!$stash->get('resource_usage_limits')||!$stash->get(['resource_usage_limits',0,'is_maxed',0])){$output .= '
+        <div>
+    '}else {$output .= '
+        <div class="hide">
+    '}$output .= '
+            <form method="post" action="doaddlist.html" id="userform" name="userform">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+                <div class="form-group">
+                    <label id="lblListName" for="email">
+                        ';$output .= $stash->get(['locale',0,'maketext',['List Name' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" name="email" id="email" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="email_error"></div>
+                    </div>
+                </div>
+
+                ';if ($stash->get(['mail_domains',0,'data',0,'size',0])> 1){$output .= '
+                <div class="form-group">
+                    <label id="lblDomain" for="domain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="domain" id="domain" class="form-control">
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_domains',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                    <option value="';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '</option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                '}elsif ($stash->get(['mail_domains',0,'data',0,'size',0])){$output .= '
+                <input id="hidDomain" type="hidden" name="domain" value="';$output .= $stash->get(['mail_domains',0,'data',0,0,0,'domain',0,'html',0]);$output .= '" />
+                '}$output .= '
+
+                <div class="form-group">
+                    <label id="lblPassword" for="password">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="password" autocomplete=\'off\' size="15" name="password" id="password" class="form-control" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password_error"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblPasswordAgain" for="password2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="password" autocomplete=\'off\' size="15" name="password2" id="password2" class="form-control" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password2_error"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblStrength">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                    ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div id="password_strength" class="password_strength"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblAccessType" for="private">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Access Type' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="radio">
+                                <label id="lblPublic">
+                                    <input id="private_public" type="radio" name="private" value="0" checked="checked">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Public' ]]);$output .= '
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label id="lblPrivate">
+                                    <input id="private_private" type="radio" name="private" value="1">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Private' ]]);$output .= '
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" class="btn btn-primary" disabled="disabled" />
+                </div>
+
+            </form>
+        </div>
+</div>
+
+<!-- used as an anchor in other pages -->
+<a id="lnkListlists" name="listlists"></a>
+
+<div class="section">
+';$output .= $context->include('mail/lists/lists.tt');$output .= '
+</div>
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'mailing_lists','page_js'=>$stash->get('js_code'),'page_scripts'=>$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])? ['libraries/handlebars/handlebars.js' ]: ['libraries/handlebars/handlebars.min.js' ],'page_stylesheets'=>['css2/mail/lists.css' ],'use_master_bootstrap'=>0,'content',$output })};$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['password_strength_required_strength',0,'data',0,'strength',0,'html',0]);$output .= '\', 10) || 0;
+
+var init_lists = function() {
+    var lname_validator = new CPANEL.validate.validator("List Name");
+    lname_validator.add("email", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['List Name' ]])]]);$output .= "\");\n    lname_validator.add(\"email\", function() {\n        return !/[^a-zA-Z0-9\\.\\-\\_]/.test(DOM.get(\"email\").value)\n    }, \"";$output .= $stash->get(['locale',0,'maketext',['Mailing list names may contain only these characters: [join, ,_*]','a-z','0-9','_','.','-' ]]);$output .= "\");\n    lname_validator.add(\"email\", function() {\n        return !/^[\\.\\-\\_]/.test(DOM.get(\"email\").value)\n    }, \"";$output .= $stash->get(['locale',0,'maketext',['Mailing list names may not start with a special character.' ]]);$output .= '");
+    lname_validator.attach();
+
+    var validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+    validators.push(lname_validator);
+
+    var validationChanged = function() {
+        var isValid = validators.every(function(validator){
+            return validator.is_valid();
+        });
+
+        var submitEl = YAHOO.util.Dom.get("submit");
+        if (isValid) {
+            submitEl.removeAttribute("disabled");
+        } else {
+            submitEl.setAttribute("disabled", "disabled");
+        }
+
+    }
+
+    validators.forEach(function(validator) {
+        validator.validateFailure.subscribe(validationChanged, this);
+        validator.validateSuccess.subscribe(validationChanged, this);
+    } );
+
+    CPANEL.validate.attach_to_form("submit", validators);
+
+    YAHOO.util.Dom.get("email").focus();
+};
+
+YAHOO.util.Event.onDOMReady(init_lists);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/multiphp_manager/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('styleSheets',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/multiphp_manager/index.min.css' ]])]);$stash->set('locale_is_rtl',0);$output .= do {my$output='';$output .= '
+
+<div id="content"
+     ng-cloak
+     style="display:none">
+     <cp-alert-list></cp-alert-list>
+     <div class="row callout callout-info">
+        <div class="col-xs-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['A new version of this interface is available! To try out the new version, click “[output,url,_1,MultiPHP Manager (new)]”.',$stash->get('cp_security_token').'/scripts7/multiphp-manager-new/system' ]]);$output .= '</p>
+        </div>
+     </div>
+     <ul class="nav nav-tabs">
+         <li ng-class="{active: currentRoute === \'/config\'}">
+            <a ng-if="!editPoolOptionsMode" href="config">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Versions' ]]);$output .= '</a>
+            <a ng-if="editPoolOptionsMode" href="#">';$output .= $stash->get(['locale',0,'maketext',['Domain [asis,PHP-FPM] Configuration' ]]);$output .= '</a>
+        </li>
+         <li ng-class="{active: currentRoute === \'/handlers\'}">
+            <a ng-if="!editPoolOptionsMode" href="handlers">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Handlers' ]]);$output .= '</a>
+            <a ng-if="editPoolOptionsMode" class="disabled" href="#">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Handlers' ]]);$output .= '</a>
+        </li>
+         <li ng-class="{active: currentRoute === \'/poolOptions\'}">
+            <a href="poolOptions" ng-if="!litespeed_installed && !editPoolOptionsMode && php.versions.length !== 0 && !litespeedRunning" ng-click="setPoolOptionsDisplayMode(\'default\')">
+                ';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP-FPM] Configuration' ]]);$output .= '
+            </a>
+            <a href="#" ng-if="litespeed_installed || editPoolOptionsMode || php.versions.length === 0 || litespeedRunning" class="disabled">
+                ';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP-FPM] Configuration' ]]);$output .= '
+            </a>
+        </li>
+     </ul>
+     <div class="tab-content" ng-view></div>
+</div>
+<div growl></div>
+
+<script type="text/ng-template" id="directives/cloudLinuxBanner.ptt">
+';$output .= $context->process('multiphp_manager/directives/cloudLinuxBanner.ptt');$output .= '
+</script>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.litespeed_running = ';$output .= $stash->get(['data',0,'litespeed_running',0]);$output .= ';
+    PAGE.cp_security_token = ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ';
+    PAGE.php_versions = ';$output .= $stash->get(['data',0,'php_versions',0,'json',0]);$output .= ';
+    PAGE.cl_data = ';$output .= $stash->get(['data',0,'cl_data',0,'json',0]);$output .= ';
+    PAGE.fpm_conversion_in_progress = ';$output .= $stash->get(['data',0,'fpm_conversion_in_progress',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'multiphp_manager','header'=>$stash->get(['locale',0,'maketext',['[asis,MultiPHP] Manager' ]]),'breadcrumburl'=>'/scripts2/multiphp_manager','base'=>'/scripts2/multiphp_manager/','stylesheets'=>$stash->get('styleSheets'),'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

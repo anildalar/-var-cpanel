@@ -1,0 +1,39 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/domainfwd.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'ip',0])eq ''){$output .= '
+No Domain Forwarder has been setup!<br><br>
+           <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/createdomainfwd">
+<input type="submit" class="btn-primary" value="Click to Create" /></form>
+           <br /><br />
+'}elsif ($stash->get(['data',0,'invalid_ip',0])){$output .= '
+Bad Domain Forwarder detected!<br><br>The previous domain forwarder IP appeared to have been invalid and was removed.<br>
+            Please create a new domain forwarder.<br>
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/createdomainfwd">
+<input type="submit" class="btn-primary" value="Click to Create"></form>
+            <br /><br />
+'}else {$output .= '
+The domain forwarder is currently using the IP address <b>';$output .= $stash->get(['data',0,'ip',0]);$output .= '</b>.
+All domains that you want to be forwarded should resolve to this IP.<br />
+        Domains resolving to any IP other than <b>';$output .= $stash->get(['data',0,'ip',0]);$output .= '</b> will not be forwarded. <br />
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/killdomainfwd">
+<input type=\'submit\' class="btn-secondary" value="Click to remove domain forwarder" /></form>
+
+<form method=POST action=';$output .= $stash->get('cp_security_token');$output .= '/scripts/savedomainfwd><h3>Redirection Map</h3><table>
+<tr><td><b>Domain (*.cpanel.net is acceptable)</b></td><td><b>Redirection URL</b></td></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'domainurls',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain_data'}=$_tt_value;$output .= '
+<tr>
+	<td><input type=\'text\' name=\'line-';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '-1\' value=\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['domain_data',0,'domain',0]);&$_tt_filter($output)};$output .= '\' size=\'20\' /></td>
+	<td><input type=\'text\' name=\'line-';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '-2\' value=\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['domain_data',0,'url',0]);&$_tt_filter($output)};$output .= '\' size=\'60\' /></td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[1..5 ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'i'}=$_tt_value;$output .= '
+<tr>
+	<td><input type=\'text\' name=\'line-';$output .= $stash->get(['data',0,'domainurls',0,'size',0])+ $stash->get('i');$output .= '-1\' value=\'\' size=\'20\' /></td>
+	<td><input type=\'text\' name=\'line-';$output .= $stash->get(['data',0,'domainurls',0,'size',0])+ $stash->get('i');$output .= '-2\' value=\'http://\' size=\'60\' /></td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</table>
+<input type=\'hidden\' name=\'lines\' value=\'';$output .= $stash->get(['data',0,'domainurls',0,'size',0])+ 5;$output .= '\' />
+<input type=\'submit\' class=\'btn-primary\' value=\'Save Map\' />
+</form>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'setup_edit_domain_forwarding','header'=>$stash->get(['locale',0,'maketext',['Setup/Edit Domain Forwarding' ]]),'breadcrumburl'=>'/scripts/domainfwd','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

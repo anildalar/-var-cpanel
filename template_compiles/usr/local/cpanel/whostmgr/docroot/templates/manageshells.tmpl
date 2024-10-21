@@ -1,0 +1,127 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/manageshells.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';$stash->set('CPList',$context->plugin('CPList'));$stash->set('JSON',$context->plugin('JSON'));$output .= '
+<script type="text/javascript">
+// <![CDATA[
+
+var USER_DATA = ';$output .= $stash->get(['data',0,'userlist',0,'sort',['name' ],'json',0]);$output .= ';
+var USERS_COUNT = USER_DATA.length;
+
+var Search_Is_Active = false;
+
+var manageshells_users = [];
+var User_Shells = {};
+for (var d=0; d<USERS_COUNT; d++) {
+    var user_info = USER_DATA[d];
+    manageshells_users.push(user_info.name);
+    User_Shells[user_info.name] = user_info.shell;
+}
+
+var ANIM = [];
+function show_selection_status( user ) {
+    var status_box_id = user + "_status";
+    var status_box = document.getElementById( status_box_id );
+    status_box.innerHTML = CPANEL.icons.success + \' Saved\';
+
+    var hide_save = function () {
+        ANIM[user] = new YAHOO.util.Anim( status_box_id, { opacity: { to: 0 } }, 5 );
+        ANIM[user].onComplete.subscribe( function () {
+            document.getElementById( status_box_id ).innerHTML = "";
+            YAHOO.util.Dom.setStyle( status_box_id, "display", "");
+            YAHOO.util.Dom.setStyle( status_box_id, "opacity", "");
+        } );
+        ANIM[user].animate();
+    };
+
+    hide_save();
+}
+
+function _convert_shell_to_cache(shell) {
+    if      (shell === "jail")                         return "jailshell";
+    else if (shell === "disable")                      return "disabled";
+    else if (shell === ';$output .= $stash->get(['data',0,'normal_shell',0,'json',0]);$output .= ") return \"normal\";\n    else                                               return undefined;\n}\n\n\nfunction _convert_shell_to_radioid(shell) {\n    if      (shell === \"jail\")    return \"jail\";\n    else if (shell === \"disable\") return \"disable\";\n    else                          return \"normal\";\n}\n\nfunction _radio_id_for_user_and_shell(user, shell) {\n	return 'radio_' + user + '_shell_' + _convert_shell_to_radioid(shell);\n}\n\nvar waiting_for_save_timeout = null;\n/* wrapper around set_user_shell */\nvar SELECTED_SHELL = {};\nfunction click_for_set_user_shell ( elt, user, shell ) {\n	if ( SELECTED_SHELL['ready'] !== true ) {\n		return false;\n	}\n\n	/* block click if radio is already selected */\n	if (elt.id === SELECTED_SHELL[elt.name] ) {\n		return false;\n	}\n\n	SELECTED_SHELL[elt.name] = elt.id;\n	return set_user_shell( user, shell );\n}\n\nfunction set_user_shell( user, shell, conflict_res ) {\n    // stop animation if it's happening\n    if (ANIM[user]) {\n        if (ANIM[user].isAnimated() == true) {\n            ANIM[user].stop();\n        }\n    }\n\n    disable_row( user );\n    var status_id = user + \"_status\";\n\n    var success = function ( o ) {\n        clearTimeout(waiting_for_save_timeout);\n        try {\n            modifyacct = YAHOO.lang.JSON.parse( o.responseText );\n        }\n        catch ( e ) {\n            failure( o );\n            return;\n        }\n        if ( modifyacct.result[0].status == 1 ) {\n            // The API call can return true even if the shell was not modified.\n            // Detect this.\n            if (modifyacct.result[0].newcfg.setshell === \"unmodified\") {\n                document.getElementById( status_id ).innerHTML = CPANEL.icons.error + \" Shell could not be modified.\";\n            }\n            else {\n                enable_row( user );\n                show_selection_status( user );\n                User_Shells[user] = _convert_shell_to_cache(shell);\n            }\n        }\n        else {\n            failure( o );\n        }\n    };\n\n    var failure = function ( o ) {\n        clearTimeout(waiting_for_save_timeout);\n        document.getElementById( status_id ).innerHTML = CPANEL.icons.error + \" AJAX Failure: please refresh the page.\";\n    };\n\n    var shell_param = shell;\n    if ( shell === \"disable\" ) {\n        shell_param = 0;\n    }\n    else if ( shell === \"jail\" ) {\n        shell_param = \"jailshell\";\n    }\n\n    var do_save = function(modifyacct_data){\n        var url = CPANEL.urls.whm_api( \"modifyacct\", modifyacct_data );\n        YAHOO.util.Connect.asyncRequest( \"GET\", url, { success: success, failure: failure }, \"\" );\n        document.getElementById( status_id ).innerHTML = CPANEL.icons.ajax + \" Saving...\";\n\n        waiting_for_save_timeout = setTimeout(function() {\n            document.getElementById( status_id ).innerHTML = CPANEL.icons.ajax + \" Still saving.  This may take a while.\";\n        }, 5000);\n    };\n\n    var conflict_check_failed = function ( o ) {\n        clearTimeout(wait_for_conflict_check);\n        document.getElementById( status_id ).innerHTML = CPANEL.icons.error + \" AJAX Failure: please refresh the page.\";\n    };\n\n    var conflict_check_result = function ( o ) {\n        clearTimeout(wait_for_conflict_check);\n        var acctinfo;\n        try { acctinfo = YAHOO.lang.JSON.parse( o.responseText ); }\n        catch ( e ) {\n            failure( o );\n            return;\n        }\n\n        if ( acctinfo.acct[0].plan && acctinfo.acct[0].plan != \"undefined\" && acctinfo.acct[0].plan != \"default\"\n             && hasshell_changing(acctinfo.acct[0].shell, shell_param)\n        ){ /* conflict */\n            if (conflict_res === 'force'){\n                do_save( { \"user\": user, \"shell\": shell_param } );\n                return;\n            }\n            else if (conflict_res === 'noplan'){\n                do_save( { \"user\": user, \"shell\": shell_param, \"PLAN\": \"undefined\" } );\n                return;\n            }\n\n            document.getElementById( status_id ).innerHTML = CPANEL.icons.error +\n                \" Package conflict: Account is on package \" + acctinfo.acct[0].plan + \"<br />\" +\n                js_link(\"Set&nbsp;this&nbsp;account&nbsp;to&nbsp;have&nbsp;no&nbsp;package\", \"set_user_shell('\"+user+\"', '\"+shell+\"', 'noplan')\") + \" \" +\n                js_link(\"Keep&nbsp;this&nbsp;account&nbsp;on&nbsp;its&nbsp;package&nbsp;(Not&nbsp;recommended)\", \"set_user_shell('\"+user+\"', '\"+shell+\"', 'force')\");\n\n            return;\n        }\n\n        do_save( { \"user\": user, \"shell\": shell_param } );\n    };\n\n    var laurl = CPANEL.urls.whm_api( \"listaccts\", { searchmethod: \"exact\", searchtype: \"user\", search: user } );\n    YAHOO.util.Connect.asyncRequest( \"GET\", laurl, { success: conflict_check_result, failure: conflict_check_failed }, \"\" );\n    document.getElementById( status_id ).innerHTML = CPANEL.icons.ajax + \" Checking for conflicts...\";\n\n    wait_for_conflict_check = setTimeout(function() {\n        document.getElementById( status_id ).innerHTML = CPANEL.icons.ajax + \" Still checking.\";\n    }, 5000);\n}\n\nfunction js_link( name, js ){\n    return '[<a href=\"javascript:' + js + '\">' + name + '</a>]';\n}\n\nfunction hasshell_changing( current_shell, shell_param ){\n    return    current_shell === '/usr/local/cpanel/bin/noshell' && shell_param !== 0\n           || current_shell !== '/usr/local/cpanel/bin/noshell' && shell_param === 0;\n}\n\nfunction enable_row( user ) {\n    document.getElementById( \"radio_\" + user + \"_shell_normal\" ).disabled = false;\n    document.getElementById( \"radio_\" + user + \"_shell_jail\" ).disabled = false;\n    document.getElementById( \"radio_\" + user + \"_shell_disable\" ).disabled = false;\n}\n\nfunction disable_row( user ) {\n    document.getElementById( \"radio_\" + user + \"_shell_normal\" ).disabled = true;\n    document.getElementById( \"radio_\" + user + \"_shell_jail\" ).disabled = true;\n    document.getElementById( \"radio_\" + user + \"_shell_disable\" ).disabled = true;\n}\n\nfunction set_button_labels ( first, second ) {\n    var label = \"Apply to \" + first;\n    if ( null != second ) {\n        label += \" of \" + second;\n    }\n\n    document.getElementById( \"normal_all\" ).value = label;\n    document.getElementById( \"jail_all\" ).value = label;\n    document.getElementById( \"disable_all\" ).value = label;\n}\n\nvar _Hidden_Users = {};\nfunction execute_search() {\n    var search = document.getElementById( \"search_field\" );\n\n    var shells_to_hide = [];\n    if ( !DOM.get('show_normal').checked ) shells_to_hide.push('normal');\n    if ( !DOM.get('show_jailed').checked ) shells_to_hide.push('jailshell');\n    if ( !DOM.get('show_disabled').checked ) shells_to_hide.push('disabled');\n\n    var text_search = Search_Has_Gotten_Focus && ( search.value !== \"\" );\n\n    var new_display;\n    if ( !text_search && shells_to_hide.length === 0 ) {\n        Search_Is_Active = false;\n\n        for (var user in _Hidden_Users) {\n            document.getElementById( user + \"_row\" ).style.display = \"\";\n        }\n        _Hidden_Users = {};\n        set_button_labels( \"all\" );\n    }\n    else {\n        Search_Is_Active = true;\n        var count = 0;\n        for (var i=0; i<USERS_COUNT; i++) {\n            var user = manageshells_users[i];\n            var text_match = !text_search || ( user.indexOf(search.value) !== -1 );\n            var shell_match = ( shells_to_hide.indexOf( User_Shells[user] ) === -1 );\n            var to_show = text_match && shell_match;\n            var change_dom = ( to_show === (user in _Hidden_Users) );\n            if ( to_show ) {\n                count++;\n                delete _Hidden_Users[user];\n            }\n            else {\n                _Hidden_Users[user] = true;\n            }\n            if ( change_dom ) {\n                document.getElementById( user + \"_row\" ).style.display = (to_show ? \"\" : \"none\");\n            }\n        }\n        set_button_labels( count, manageshells_users.length );\n    }\n\n    restripe_rows();\n}\n\nfunction restripe_rows() {\n    var rows = document.getElementById('account_table_body').rows;\n\n    var even_row = true;\n    for (var u=0; u<USERS_COUNT; u++) {\n        var row = rows[u];\n        var cur_user = row.id.match(/(.*)_row/)[1];\n\n        if (cur_user in _Hidden_Users) continue;\n\n        if (even_row) {\n            row.className = row.className.replace(/\\btdshade2\\b/,\"tdshade1\");\n        }\n        else {\n            row.className = row.className.replace(/\\btdshade1\\b/,\"tdshade2\");\n        }\n\n        even_row = !even_row;\n    }\n}\n\nfunction apply_to_multiple( shell ) {\n    var form_users = document.getElementById( \"form_users\" );\n    var form_shell = document.getElementById( \"form_shell\" );\n    var count = 0;\n\n    form_shell.value = shell;\n\n    if ( !Search_Is_Active ) {\n        form_users.value = \"\";\n    }\n    else {\n        var users_to_submit = [];\n        for (var i=0; i<USERS_COUNT; i++) {\n            if ( !(manageshells_users[i] in _Hidden_Users) ) {\n                users_to_submit.push(manageshells_users[i]);\n            }\n        }\n        if ( count == manageshells_users.length ) {\n            form_users.value = \"\";\n        }\n        else {\n            form_users.value = users_to_submit.join(',');\n        }\n    }\n\n    if (confirm(\"Are you sure?\")) document.multiple_user_form.submit();\n}\n\nfunction clear_default_search() {\n    var search = document.getElementById( \"search_field\" );\n    if ( !Search_Has_Gotten_Focus ) {\n        YAHOO.util.Dom.setStyle(search, \"color\", \"black\");\n        search.value = \"\";\n    }\n}\n\nvar Search_Has_Gotten_Focus = false;\nfunction reset_default_search_if_necessary() {\n    var search = document.getElementById( \"search_field\" );\n    if ( \"\" == search.value ) {\n        Search_Is_Active = false;\n        YAHOO.util.Dom.setStyle(search, \"color\", \"#888888\");\n        search.value = search.defaultValue;\n        Search_Has_Gotten_Focus = false;\n    }\n}\n\n// ]]>\n</script>\n\n<style type=\"text/css\">\n\nth {\n    padding:8px;\n}\ntd.invisible_column, th.invisible_column {\n    border: 0px;\n    background: white;\n}\n.fake_tr_border {\n    border-bottom: 1px solid #ccc;\n}\n#shell_table td{\n	padding:8px;\n}\n</style>\n\n<div style=\"margin:15px\">\n<table style=\"border-collapse:collapse;margin-bottom:5px;\">\n		<thead>\n	    <tr>\n		    <th>&nbsp;</th>\n			<th>Normal Shell</th>\n	      <th>Jailed Shell</th>\n		   <th>Disabled Shell</th>\n		 </tr>\n		</thead>\n		<tbody>\n		<tr>\n	      <td align=\"left\" style=\"border: 0px; width: 235px\">\n	        <input\n	         id=\"search_field\"\n	         value=\"Search Users\"\n	         onfocus=\"clear_default_search(); Search_Has_Gotten_Focus=true;\"\n	         onblur=\"reset_default_search_if_necessary()\"\n	         onkeyup=\"execute_search()\"\n	         style=\"color: #888888\"\n	        />\n            <br />\n            <label><input id=\"show_normal\" style=\"margin-left:0\" type=\"checkbox\" checked=\"checked\" onclick=\"execute_search()\" /> Normal</label>\n            <label><input id=\"show_jailed\" type=\"checkbox\" checked=\"checked\" onclick=\"execute_search()\" /> Jailed</label>\n            <label><input id=\"show_disabled\" type=\"checkbox\" checked=\"checked\" onclick=\"execute_search()\" /> Disabled</label>\n	      </td>\n		<td>\n	        <input\n	         id=\"normal_all\"\n	         type=\"button\"\n	         value=\"Apply to all\"\n	         onclick=\"apply_to_multiple( 'normal' )\"\n             class=\"btn-primary\"\n	        />\n	      </td>\n	      <td>\n	        <input\n	         id=\"jail_all\"\n	         type=\"button\"\n	         value=\"Apply to all\"\n	         onclick=\"apply_to_multiple( 'jail' )\"\n             class=\"btn-primary\"\n	        />\n	      </td>\n		   <td>\n	        <input\n	         id=\"disable_all\"\n	         type=\"button\"\n	         value=\"Apply to all\"\n	         onclick=\"apply_to_multiple( 'disable' )\"\n             class=\"btn-primary\"\n	        />\n	      </td>\n		 </tr>\n		</tbody>\n</table>\n<br/>\n<p><em>* Normal shell is currently ";$output .= $stash->get(['data',0,'normal_shell',0]);$output .= '.</em></p>
+<table class="sortable" style="border-bottom: 0px" id="shell_table">
+  <thead>
+       <tr>
+       <th>User</th>
+       <th>Domain</th>
+       <th class="sorttable_nosort">
+         Normal Shell*
+       </th>
+       <th class="sorttable_nosort">
+         Jailed Shell
+       </th>
+       <th class="sorttable_nosort">
+         Disabled Shell
+       </th>
+       <th class="invisible_column"></th>
+     </tr>
+
+
+ </thead>
+ <tbody id="account_table_body">
+
+';$stash->set('user_id',0);$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userlist',0,'sort',['name' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '    <tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade2' : 'tdshade1';$output .= '" id="';$output .= $stash->get(['user',0,'name',0]);$output .= '_row" style="border: 0px;">
+      <td class="fake_tr_border">';$output .= $stash->get(['user',0,'name',0]);$output .= '</td>
+      <td class="fake_tr_border">';$output .= $stash->get(['user',0,'domain',0]);$output .= '</td>
+      <td class="fake_tr_border">
+        <input
+         type="radio"
+         name="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell"
+         id="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell_normal"
+         onclick="click_for_set_user_shell( this, \'';$output .= $stash->get(['user',0,'name',0]);$output .= '\', \'';$output .= $stash->get(['data',0,'normal_shell',0]);$output .= '\' )"
+    ';if ($stash->get(['user',0,'shell',0])eq 'normal'){$output .= '
+         checked="checked"
+    '}$output .= '
+        />
+      </td>
+      <td class="fake_tr_border">
+        <input
+         type="radio"
+         name="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell"
+         id="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell_jail"
+         onclick="click_for_set_user_shell( this, \'';$output .= $stash->get(['user',0,'name',0]);$output .= '\', \'jail\' )"
+    ';if ($stash->get(['user',0,'shell',0])eq 'jailshell'){$output .= '
+         checked="checked"
+    '}$output .= '
+        />
+      </td>
+      <td class="fake_tr_border">
+        <input
+         type="radio"
+         name="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell"
+         id="radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell_disable"
+         onclick="click_for_set_user_shell( this, \'';$output .= $stash->get(['user',0,'name',0]);$output .= '\', \'disable\' )"
+    ';if ($stash->get(['user',0,'shell',0])eq 'disabled'){$output .= '
+         checked="checked"
+    '}$output .= '
+        />
+      </td>
+      <td class="invisible_column">
+        <div id="';$output .= $stash->get(['user',0,'name',0]);$output .= '_status" style="padding-left: 5px"></div>
+      </td>
+    </tr>
+    ';$stash->set('user_id',$stash->get('user_id')+ 1);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+  </tbody>
+</table>
+<br/>
+
+<script type="text/javascript">
+// <![CDATA[
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userlist',0,'sort',['name' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$stash->set('shell',$stash->get(['user',0,'shell',0]));if ($stash->get('shell')eq 'jailshell'){$stash->set('shell','jail')}elsif ($stash->get('shell')eq 'disabled'){$stash->set('shell','disable')}$output .= '
+SELECTED_SHELL[\'radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell\'] = \'radio_';$output .= $stash->get(['user',0,'name',0]);$output .= '_shell_';$output .= $stash->get('shell');$output .= '\';';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+SELECTED_SHELL[\'ready\'] = true;
+
+// ]]>
+</script>
+
+<div style="display:none">
+  <form name="multiple_user_form" method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/domanageshells">
+    <input id="form_shell" name="shell" />
+    <input id="form_users" name="users" />
+  </form>
+</div></div>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'manage_shell_access','scripts'=>['/js/sorttable.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

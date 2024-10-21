@@ -1,0 +1,190 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/external_auth/views/configure_provider.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+<div ng-if="provider">
+    <div id="editor" class="panel panel-primary" ng-hide="loadingProvider">
+        <div class="panel-heading" ng-if="provider.display_name">
+            <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Configure the “[_1]” Provider','{{ provider.display_name }}' ]]);$output .= '</h3>
+        </div>
+        <div class="panel-body">
+            <form id="editorForm" name="editorForm" novalidate>
+                <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Provider Settings' ]]);$output .= '</h4>
+                <div class="callout callout-info"
+                    ng-if="provider.documentation_url">
+                    ';$output .= $stash->get(['locale',0,'maketext',['For information regarding configuration of the “[_1]” provider, [output,url,_2,click here,_3] for the documentation.','{{ provider.display_name }}','{{ provider.documentation_url }}',{'target'=>'_blank' }]]);$output .= '
+                </div>
+                <div class="section-body">
+                    <div class="form-group">
+                        <label for="txtField_buttons">';$output .= $stash->get(['locale',0,'maketext',['Configure Login Buttons' ]]);$output .= '</label>
+                        <span class="glyphicon glyphicon-info-sign"
+                            role="tooltip"
+                            tabindex="0"
+                            uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Configure the way the login buttons appear on the login interfaces.' ]]);$output .= '"
+                            tooltip-trigger="focus"
+                            tooltip-placement="top"></span>
+                        <div class="row">
+                            <div class="col-md-4 config-login-button-block" ng-repeat="service in services" >
+                                <div class="row tab-block {{service.service}}-tab-block">
+                                    <div class="col-md-8">
+                                        <div class="external-auth-btn" >
+                                            <span class="external-auth-link" style="background-color:#{{ service.color }};color:#{{ service.textcolor }}">
+                                                <i class="external-auth-icon" style="background-image:url(data:{{ service.icon_type }};base64,{{ service.icon }})"></i>
+                                                <span class="external-auth-btn-label">{{ service.label }}</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 tab-edit-icon text-center">
+                                        {{ service_names[service.service] }}
+                                    </div>
+                                </div>
+                                <div class="button-config-fields">
+                                        <div class="form-group">
+                                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Button Label' ]]);$output .= '</label>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <input type="text"
+                                                        id="{{service.service}}_txtField_button_label"
+                                                        name="{{service.service}}_txtField_button_label"
+                                                        value=""
+                                                        ng-model="service.label"
+                                                        class="form-control" />
+                                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The provider’s button label.' ]]);$output .= '</span>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <ul validation-container field-name="txtField_button_color"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Button color' ]]);$output .= '</label>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">#</span>
+                                                        <input type="text"
+                                                            id="{{service.service}}_txtField_button_color"
+                                                            name="{{service.service}}_txtField_button_color"
+                                                            value=""
+                                                            ng-model="service.color"
+                                                            class="form-control"
+                                                            hex-color />
+                                                    </div>
+                                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The primary color on the button.' ]]);$output .= '</span>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <ul validation-container field-name="txtField_button_color"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Button text color' ]]);$output .= '</label>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">#</span>
+                                                        <input type="text"
+                                                            id="{{service.service}}_txtField_button_text_color"
+                                                            name="{{service.service}}_txtField_button_text_color"
+                                                            value=""
+                                                            ng-model="service.textcolor"
+                                                            class="form-control"
+                                                            hex-color />
+                                                    </div>
+                                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The primary text color on the button.' ]]);$output .= '</span>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <ul validation-container field-name="txtField_button_text_color">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Button icon' ]]);$output .= '</label>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <input type="text"
+                                                        id="{{service.service}}_txtField_button_icon"
+                                                        name="{{service.service}}_txtField_button_icon"
+                                                        value=""
+                                                        class="form-control"
+                                                        ng-model="service.icon"/>
+                                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['A [asis,Base64] encoded image.' ]]);$output .= '</span>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <ul validation-container field-name="txtField_button_icon">
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Button icon type' ]]);$output .= '</label>
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <input type="text"
+                                                        id="{{service.service}}_txtField_button_icon_type"
+                                                        name="{{service.service}}_txtField_button_icon"
+                                                        value=""
+                                                        class="form-control"
+                                                        ng-model="service.icon_type"/>
+                                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The image format for the button icon.' ]]);$output .= '</span>
+                                                </div>
+                                                <div class="col-xs-12">
+                                                    <ul validation-container field-name="txtField_button_icon_type"></ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="callout callout-info">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The redirect [asis,URIs] for this provider are generated based upon the [asis,SSL] certificate for the [asis,cpsrvd] service. You can [output,url,_1,click here,_2] to update that certificate.','../manageservicecrts',{'target'=>'_blank' }]]);$output .= '
+                        </div>
+                        <div class="form-group" ng-if="configurations[\'redirect_uris\']">
+                            <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Redirect [asis,URIs]' ]]);$output .= '</label>
+                            <span class="glyphicon glyphicon-info-sign"
+                                role="tooltip"
+                                tabindex="0"
+                                uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['The redirect [asis,URIs] for this provider.' ]]);$output .= "\"\n                                tooltip-trigger=\"focus\"\n                                tooltip-placement=\"top\"></span>\n                            <div class=\"row\">\n                                <div class=\"col-md-12\">\n                                    <textarea id=\"txtField_redirect_uris\"\n                                        name=\"txtField_redirect_uris\" readonly=\"readonly\"\n                                        class=\"form-control redirect-uris-textarea\">{{ configurations['redirect_uris'].join(\"\\n\") }}</textarea>\n                                    </textarea>\n                                </div>\n                            </div>\n                        </div>\n                        <div ng-repeat=\"config_field in fields\" class=\"form-group\">\n                            <label for=\"txtField_name\">{{config_field.label}}</label>\n                            <span class=\"glyphicon glyphicon-info-sign\"\n                                role=\"tooltip\"\n                                tabindex=\"0\"\n                                uib-tooltip=\"{{ config_field.description }}\"\n                                tooltip-trigger=\"focus\"\n                                tooltip-placement=\"top\"></span>\n                            <div class=\"row\">\n                                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                                    <input type=\"text\"\n                                        id=\"txtField_{{config_field.field_id}}\"\n                                        name=\"txtField_{{config_field.field_id}}\"\n                                        ng-model=\"configurations[config_field.field_id]\"\n                                        value=\"configurations[config_field.field_id]\"\n                                        ng-required=\"!config_field.optional\"\n                                        class=\"form-control\" />\n                                </div>\n                                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"!config_field.optional\" ng-show=\"!configurations[config_field.field_id]\">\n                                    <ul class=\"validation-container\">\n                                        <li class=\"validation validation-error\">\n                                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="checkbox" ng-hide="!configurations[\'redirect_uris\']">
+                                        <label>
+                                            <input type="checkbox" name="confirmed_redirects" id="confirmed_redirects" ng-model="confirmed_redirects">
+                                            <span>';$output .= $stash->get(['locale',0,'maketext',['To ensure that the system works correctly, confirm that you have used the above [asis,URLs] when you configure the provider.' ]]);$output .= '</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-submit-section">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button
+                                        type="submit"
+                                        spinner-id="saveProfile"
+                                        cp-action="saveProviderConfigurations(editorForm)"
+                                        button-class="btn-primary"
+                                        ng-disabled="!canSave(editorForm)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+                                    <a id="backLink"
+                                        href="providers"
+                                        class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+'}else {$output .= '
+<div>';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this interface.' ]]);$output .= '</div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

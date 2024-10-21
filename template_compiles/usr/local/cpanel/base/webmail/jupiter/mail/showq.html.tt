@@ -1,0 +1,252 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/showq.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('is_webmail',$stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' ? 1 : 0);if ($stash->get('is_webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'account',0],$stash->get(['CPANEL',0,'authuser',0]))}$stash->set('logdate',$stash->get(['RAW_FORM',0,'logdate',0]));if (!$stash->get(['logdate',0,'defined',0])|| $stash->get('logdate')eq '' ||!$stash->get(['logdate',0,'search',['^\d+$' ]])){$stash->set('logdate',$stash->get(['CPANEL',0,'now',0]))}$stash->set('errors',[]);if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= $stash->get(['errors',0,'push',[$stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]])]])}elsif ($stash->get('is_webmail')&& $stash->get(['FORM',0,'item',['account' ]])ne $stash->get(['CPANEL',0,'authuser',0])){$output .= $stash->get(['errors',0,'push',[$stash->get(['locale',0,'maketext',['You are not allowed to view the queue for the user “[output,class,_1,status]”.',$stash->get(['FORM',0,'account',0])]])]])}elsif (!$stash->get(['FORM',0,'account',0,'defined',0])|| $stash->get(['FORM',0,'account',0])eq ''){$output .= $stash->get(['errors',0,'push',[$stash->get(['locale',0,'maketext',['The “[_1]” argument is required.','account' ]])]])}else {if (($stash->get(['FORM',0,'field',0,'defined',0])&& $stash->get(['FORM',0,'value',0,'defined',0]))){$stash->set('api_args',{'email'=>$stash->get(['FORM',0,'account',0]),'date'=>$stash->get('logdate'),'api.filter_column'=>$stash->get(['FORM',0,'field',0]),'api.filter_type'=>'contains','api.filter_term'=>$stash->get(['FORM',0,'value',0])})}else {$stash->set('api_args',{'email'=>$stash->get(['FORM',0,'account',0]),'date'=>$stash->get('logdate')})}$stash->set('boxtrapper_queue',$stash->get(['execute',['BoxTrapper','list_queued_messages',$stash->get('api_args')]]));if (!$stash->get(['boxtrapper_queue',0,'status',0])){$stash->set('errors',$stash->get(['boxtrapper_queue',0,'errors',0]))}else {$stash->set('messages',$stash->get(['boxtrapper_queue',0,'data',0]))}}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    ';if ($stash->get(['errors',0,'size',0])> 0){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('errors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+    <div class="alert alert-danger" role="alert">
+        <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+        <div class=\'alert-message\'>
+            <strong class="alert-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+            </strong>
+            <span class="alert-body">
+                <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                    ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                </span>
+            </span>
+        </div>
+    </div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('messages');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;if ($stash->get(['message',0,'error',0,'defined',0])){$output .= '
+        <div class="alert alert-warning" role="alert">
+            <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+            <div class=\'alert-message\'>
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="warn-some-records-unavailable">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Some records are not accessible due to corruption, file permissions, or ownership issues. Your hosting provider can view more details in the error log.' ]]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+        ';last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        <div class="section" id="newSearchSection">
+            <h2 id="lgndSearch">';$output .= $stash->get(['locale',0,'maketext',['New Search:' ]]);$output .= '</h2>
+            <form name="queuesearch" action="showq.html" method="post">
+                <input type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+                <input type="hidden" name="mydate" value="';$output .= $stash->get(['FORM',0,'logdate',0]);$output .= '" />
+
+                <div class="form-group">
+                    <label id="lblSearch" for="field">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Search In:' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="field" id="field" class="form-control">
+                                <option value="from"';$output .= $stash->get(['FORM',0,'field',0])eq 'from' ? ' selected' : '';$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Sender' ]]);$output .= '</option>
+                                <option value="subject"';$output .= $stash->get(['FORM',0,'field',0])eq 'subject' ? ' selected' : '';$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '</option>
+                                <option value="body"';$output .= $stash->get(['FORM',0,'field',0])eq 'body' ? ' selected' : '';$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Body' ]]);$output .= '</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label id="lblSearchString" for="string">
+                        ';$output .= $stash->get(['locale',0,'maketext',['For search string:' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" class="form-control" name="value" id="string" value="';$output .= $stash->get(['FORM',0,'value',0]);$output .= '" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" class="btn btn-primary" id="btnSubmitSearch" />
+                </div>
+            </form>
+        </div>
+
+        <div class="section" id="dateScroll">
+            <h2 id="hdrQueue">';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] queue for the account “[output,strong,_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '</h2>
+
+            <form action="showq.html" method="post">
+                <button class="btn btn-link" id="lnkReturnToCurrentDate" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Return to current date.' ]]);$output .= '</button>
+            </form>
+
+            ';if (!$stash->get(['FORM',0,'name',0])&&!$stash->get(['FORM',0,'value',0])){$output .= '
+            <table class="table">
+                ';$stash->set('script_url','showq.html');$stash->set('current_day',$stash->get('logdate'));$stash->set('previous_day',$stash->get('current_day')- 86400);$stash->set('next_day',$stash->get('current_day')+ 86400);$output .= '
+                <tr>
+                    <td class="previous-date">
+                        ';if ($stash->get('previous_day')>= 0){$output .= '
+                        <form action="';$output .= $stash->get('script_url');$output .= '" method="post">
+                            <input type="hidden" name="bxaction" value="" />
+                            <input type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+                            <input type="hidden" name="logdate" value="';$output .= $stash->get('previous_day');$output .= '" />
+                            <button id="previous-date" type="submit" class="btn btn-link pull-left">
+                                &lt;&lt; ';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('previous_day')]]);$output .= '
+                            </button>
+                        </form>
+                        '}else {$output .= '
+                        N/A
+                        '}$output .= '
+                    </td>
+                    <td class="current-date">
+                        ';if ($stash->get('current_day')>= 0){$output .= '
+                        <span id="current-date">';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('current_day')]]);$output .= '</span>
+                        '}else {$output .= '
+                        N/A
+                        '}$output .= '
+                    </td>
+                    <td class="next-date">
+                        ';if ($stash->get('next_day')>= 0){$output .= '
+                        <form action="';$output .= $stash->get('script_url');$output .= '" method="post">
+                            <input type="hidden" name="bxaction" value="" />
+                            <input type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+                            <input type="hidden" name="logdate" value="';$output .= $stash->get('next_day');$output .= '" />
+                            <button id="next-date" type="submit" class="btn btn-link pull-right">
+                                ';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('next_day')]]);$output .= ' &gt;&gt;
+                            </button>
+                        </form>
+                        '}else {$output .= '
+                        N/A
+                        '}$output .= '
+                    </td>
+                </tr>
+            </table>
+            '}$output .= '
+
+
+            <form name="input" action="multimsgaction.html" method="post">
+                <input type="hidden"
+                       name="origin"
+                       id="hidOrigin"
+                       value="showmq" />
+                <input type="hidden"
+                       name="account"
+                       value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '" />
+                <input type="hidden"
+                       name="logdate"
+                       id="hidMyDate"
+                       value="';$output .= $stash->get(['FORM',0,'item',['logdate' ]]);$output .= '" />
+                <input type="hidden"
+                       name="field"
+                       id="hidFilter"
+                       value="';$output .= $stash->get(['FORM',0,'item',['field' ]]);$output .= '" />
+                <input type="hidden"
+                       name="value"
+                       id="hidValue"
+                       value="';$output .= $stash->get(['FORM',0,'item',['value' ]]);$output .= '" />
+                <table class="sortable table table-striped responsive-table" id="bxq">
+                    <thead>
+                    <tr>
+                        <th class="sorttable_nosort">
+                            <input id="bxq_top_check"
+                                   onclick="selectBoxes(this,\'bxq\')"
+                                   type="checkbox"
+                                   name="select"
+                                   value="" />
+                        </th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['From' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Time' ]]);$output .= '</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        ';$stash->set('some_visible',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('messages');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;if ($stash->get(['message',0,'error',0,'defined',0])){$stash->set('has_errors',1)}if ($stash->get(['message',0,'error',0,'defined',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('some_visible',1);$stash->set('bg',$stash->get(['loop',0,'index',0])% 2 ? 1 : 2);$stash->set('script','showmsg.html');$stash->set('url',$stash->get('script').'?account=' .$stash->get(['FORM',0,'account',0]).'&amp;q=' .$stash->get(['message',0,'queuefile',0,'html',0]).'&amp;bxaction=&amp;logdate=' .$stash->get(['FORM',0,'logdate',0]).'&amp;field=' .$stash->get(['FORM',0,'field',0]).'&amp;value=' .$stash->get(['FORM',0,'value',0]));$output .= '
+                        <tr class="tdshade';$output .= $stash->get('bg');$output .= '">
+                            <td width="5%">
+                                <input type="checkbox"
+                                       name="queuefile-';$output .= $stash->get(['loop',0,'index',0]);$output .= '"
+                                       value="';$output .= $stash->get(['message',0,'queuefile',0,'html',0]);$output .= '">
+                            </td>
+                            <td class="truncate" truncate="25" width="15%">
+                                <a href="';$output .= $stash->get('url');$output .= '">
+                                ';$output .= $stash->get(['message',0,'from',0,'html',0]);$output .= '
+                                </a>
+                            </td>
+                            <td style="word-wrap: break-word;">
+                                <a href="';$output .= $stash->get('url');$output .= '">
+                                ';if ($stash->get(['message',0,'subject',0])){$output .= '
+                                ';$output .= $stash->get(['message',0,'subject',0,'html',0]);$output .= '
+                                '}else {$output .= '
+                                (';$output .= $stash->get(['locale',0,'maketext',['No Subject' ]]);$output .= ')
+                                '}$output .= '
+                                </a>
+                            </td>
+                            <td width="15%">
+                                <a href="';$output .= $stash->get('url');$output .= '">
+                                ';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get(['message',0,'time',0]),'datetime_format_medium' ]]);$output .= '
+                                </a>
+                            </td>
+                        </tr>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        ';if (!$stash->get('some_visible')){$output .= '
+                        <tr class="tdshade2">
+                            <td colspan="4" id="no-match">
+                               ';$output .= $stash->get(['locale',0,'maketext',['No records matched the selected criteria.' ]]);$output .= '
+                            </td>
+                        </tr>
+                        '}$output .= '
+                    </tbody>
+                </table>
+
+                <div class="form-group">
+                    <div class="radio">
+                        <label id="lblDelete">
+                            <input type="radio" id="rdoDelete" name="action" value="delete" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="radio">
+                        <label id="lblWhiteList">
+                            <input type="radio" id="rdoWhiteList" name="action" checked value="deliver,whitelist" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Whitelist and Deliver' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" id="btnSubmitMulitMsg" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" />
+                </div>
+
+            </form>
+        </div>
+
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back to BoxTrapper Configuration' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_js'=>$stash->get('js_code'),'embed_stylesheets'=>['mail/boxtrapper.css' ],'embed_scripts'=>['js2/mail/showq.js' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var checkflag = 0;
+
+    function check(field) {
+        if (checkflag == 0) {
+            for (i = 0; i < field.length; i++) {
+                field[i].checked = 1;
+            }
+            checkflag = 1;
+            return "Uncheck All";
+        }
+        else {
+            for (i = 0; i < field.length; i++) {
+                field[i].checked = 0;
+            }
+            checkflag = 0;
+            return "Check All";
+        }
+    }
+ </script>
+ '}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

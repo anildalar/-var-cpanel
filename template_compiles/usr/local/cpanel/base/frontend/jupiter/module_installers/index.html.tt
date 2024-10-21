@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/module_installers/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $context->process('supported_langs.html.tt');$stash->set('is_supported',$stash->get(['FORM',0,'defined',['lang' ]])&& $stash->get(['supported_langs',0,'grep',['^' .$stash->get(['CPScalar',0,'quotemeta',[$stash->get(['FORM',0,'lang',0])]]).'$' ],'size',0]));if ($stash->get('is_supported')){$stash->set('lang_mods_get_key_name',$stash->get(['Api2',0,'exec',['LangMods','getkey',{'lang'=>$stash->get(['FORM',0,'lang',0]),'key'=>'name' }],0,0]));$stash->set('lang_mods_setup',$stash->get(['Api2',0,'exec',['LangMods','setup',{'lang'=>$stash->get(['FORM',0,'lang',0])}],0,0]));$stash->set('lang_mods_pre_run',$stash->get(['Api2',0,'exec',['LangMods','pre_run',{'lang'=>$stash->get(['FORM',0,'lang',0])}],0,0]))}$output .= '
+';if (!$stash->get('is_supported')){$output .= '
+    ';$output .= $context->process('not_supported.html.tt',{'lang'=>$stash->get(['FORM',0,'lang',0])});$output .= '
+'}else {$output .= '
+
+';$output .= $context->process('installer_app_key.html.tt');$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrInstaller">';$output .= $stash->get(['locale',0,'maketext',['“[_1]” Installer[comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_name',0,'key',0,'html',0])]]);$output .= '</h2>
+
+    ';if (($stash->get(['FORM',0,'lang',0])eq 'perl')){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Perl modules are collections of functions that allow you to perform tasks in Perl. You will need to install a Perl module before you can use it inside a Perl program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Modules are installed directly from the CPAN repository.' ]]);$output .= '
+        </p>
+    '}elsif (($stash->get(['FORM',0,'lang',0])eq 'php-pear')){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['PEAR packages are collections of functions that allow you to perform tasks in PHP. You will need to install a PEAR package before you can use it inside a PHP program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Packages are installed directly from the PHP Extensions and Applications repository (PEAR).' ]]);$output .= '
+        </p>
+    '}elsif (($stash->get(['FORM',0,'lang',0])eq 'ruby')){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Ruby Gems are collections of functions that allow you to perform tasks in Ruby. You will need to install a Gem before you can use it inside a Ruby program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Gems are installed directly from the RubyForge repository.' ]]);$output .= '
+        </p>
+    '}$output .= '
+
+    <h2 id="hdrCheckSetup">';$output .= $stash->get(['locale',0,'maketext',['Checking Setup' ]]);$output .= '</h2>
+    <div id="module-output">
+        <pre>';$output .= $stash->get(['lang_mods_setup',0,'result',0,'html',0]);$output .= '
+';$output .= $stash->get(['lang_mods_pre_run',0,'result',0,'html',0]);$output .= '
+        </pre>
+    </div>
+
+    <meta http-equiv="refresh" content="0;url=main.html?lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['FORM',0,'lang',0]);&$_tt_filter($output)};$output .= '">
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('installer_app_key'),'content',$output })}}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

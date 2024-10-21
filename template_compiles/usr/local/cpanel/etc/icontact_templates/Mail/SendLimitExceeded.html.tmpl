@@ -1,0 +1,23 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Mail/SendLimitExceeded.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Daily email send notification limit reached for “[_1]”.',$stash->get(['NOTICE',0,'domain',0])]]));$output .= '
+
+';$stash->set('locale',$stash->get(['CPANEL',0,'locale',0]));$stash->set('mail_client_settings',$stash->get('NOTICE'));$stash->set('in_html_email',1);$output .= '
+
+<p>
+ ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The domain [_1] on account [_2] has exceeded the “Number of emails a domain may send per day before the system sends a notification” setting defined in Tweak Settings.',$stash->get(['NOTICE',0,'domain',0]),$stash->get(['NOTICE',0,'user',0])]]);$output .= '
+ ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The threshold is currently [_1] emails per day.',$stash->get(['NOTICE',0,'threshold',0])]]);$output .= '
+</p>
+<p>
+ ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To run a sent email report, use the [_1] interface in [asis,WHM] at [output,url,_2,_2,target,_3].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Mail Delivery Reports' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts11/emailstats_search' ]]),'_blank' ]]);$output .= '
+</p>
+<p>
+ ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This notification does not block sent emails. If you wish to set sent email limits, read our documentation at [output,url,_1,_1,target,_2].','https://go.cpanel.net/how-to-set-email-send-limits','_blank' ]]);$output .= '
+<ul>
+<li> ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To manage domain-level limits, you must manually edit [asis,/var/cpanel/users/username].' ]]);$output .= ' </li>
+<li> ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To manage account-level limits, set the “Maximum Hourly Email by Domain Relayed” field in the [_1] interface in [asis,WHM] at [output,url,_2,_2,target,_3].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Modify an Account' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/edituser' ]]),'_blank' ]]);$output .= ' </li>
+<li> ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To manage global limits, set the “Max hourly emails per domain” option in the [_1] interface in [asis, WHM] at [output,url,_2,_2,target,_3].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Tweak Settings' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts2/tweaksettings' ]]),'_blank' ]]);$output .= '</li>
+</ul>
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

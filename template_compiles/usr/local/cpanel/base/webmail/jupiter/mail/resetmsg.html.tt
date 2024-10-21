@@ -1,0 +1,48 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/resetmsg.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('reset_result',$stash->get(['execute',['BoxTrapper','reset_email_template',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]]),'template'=>$stash->get(['RAW_FORM',0,'item',['form' ]])}]]));$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+
+    <div id="descResetBoxTrapper">
+        ';$output .= $stash->get(['locale',0,'maketext',['Reset [asis,BoxTrapper] messages for “[output,strong,_1]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= ' <br/><br/>
+    </div>
+    <p id="descRequestMessageReset">
+        ';if (!$stash->get(['reset_result',0,'status',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['reset_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                                <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                    ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                                </span>
+                            </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+            <div class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The requested message has been reset.' ]]);$output .= '
+                    </span>
+                </div>
+            </div>
+        '}$output .= '
+    </p>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'editmsgs.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

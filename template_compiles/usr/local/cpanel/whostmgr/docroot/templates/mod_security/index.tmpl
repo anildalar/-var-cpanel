@@ -1,0 +1,44 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('EasyApache',$context->plugin('EasyApache'));$stash->set('ea_version',$stash->get(['EasyApache',0,'get_ea_version',0]));$stash->set('easy_apache_url',$stash->get(['Whostmgr',0,'ENV',0,'cp_security_token',0]).'/scripts7/EasyApache4');$stash->set('PAGE_BASE','/scripts2/show_mod_security/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+
+<div ng-controller="applicationController">
+    <div ng-controller="commonController" class="ng-cloak" ng-cloak>
+        <div class="row" ng-show="!isInstalled">
+            <div class="col-xs-12">
+                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message" id="modsecDisabledInfo">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Info:' ]]);$output .= '</strong>
+                        ';if ($stash->get('ea_version')> 3){$output .= '                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,ModSecurity™] is not enabled on your server. With [asis,ModSecurity™] disabled, you can view historic data in the log. However, you will not get updated log data or be able to configure custom rules. Please refer to this document on [output,url,_1,how to install ModSecurity,target,_blank].','https://go.cpanel.net/InstallModSecurity' ]]);$output .= '
+                        '}else {$output .= '                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,ModSecurity™] is not enabled on your server. With [asis,ModSecurity™] disabled, you can view historic data in the log. However, you will not get updated log data or be able to configure custom rules. To enable [asis,ModSecurity™] go to [output,url,_1,EasyApache] and select [asis,Mod Security] as an option when rebuilding [asis,Apache].',$stash->get('easy_apache_url')]]);$output .= '
+                        '}$output .= '                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <cp-alert-list></cp-alert-list>
+            </div>
+        </div>
+    </div>
+
+    <div id="content"
+         class="ng-cloak"
+         ng-view
+         ng-cloak></div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.NAME = "show_mod_security";
+    PAGE.MAIN_TITLE = ';$output .= $stash->get(['PAGE_NAME',0,'json',0]);$output .= '; // common parent of all views (untranslated)
+    PAGE.hitList = ';$output .= $stash->get(['data',0,'hit_list',0,'json',0]);$output .= ';
+    PAGE.rules = ';$output .= $stash->get(['data',0,'rules',0,'json',0]);$output .= ';
+    PAGE.vendors = ';$output .= $stash->get(['data',0,'vendors',0,'json',0]);$output .= ';
+    PAGE.installed = ';$output .= $stash->get(['data',0,'installed',0])eq 1 ? 'true' : 'false';$output .= ';
+    PAGE.easyApacheURL = "';$output .= $stash->get('easy_apache_url');$output .= '";
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/mod_security/index.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'modsecurity_tools','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

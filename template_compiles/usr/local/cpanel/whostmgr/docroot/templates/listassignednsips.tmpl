@@ -1,0 +1,49 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listassignednsips.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('back_url_query_arg',$stash->get('cp_security_token').'/scripts2/listassignednsips');$output .= do {my$output='';$output .= '<p class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['This feature reports information about the nameservers used by zones on this server. The displayed data updates nightly or when you transfer an account.' ]]);$output .= '
+</p>
+
+<table class="sortable table table-striped table-condensed" id="iplist">
+    <thead>
+    <tr>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Nameserver' ]]);$output .= '</th>
+        <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Addresses' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Zones' ]]);$output .= '</th>
+        <th class="sorttable_nosort actions-column">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+    </tr>
+    </thead>
+    <tbody>
+';if ($stash->get(['data',0,'nsips',0,'keys',0,'size',0])){$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'nsips',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;$output .= '        <tr>
+            <td>';$output .= $stash->get(['ns',0,'html',0]);$output .= '</td>
+            <td>
+                <table class="table table-condensed table-inner">
+                    <tr>
+                        <td class="table-inner__cell table-inner__cell--small">IPv4</td>
+                        <td class="table-inner__cell">';$output .= $stash->get(['data',0,'nsips',0,$stash->get('ns'),0,'ipv4',0])? $stash->get(['data',0,'nsips',0,$stash->get('ns'),0,'ipv4',0]): 'None';$output .= '</td>
+                    </tr>
+                    <tr>
+                        <td class="table-inner__cell table-inner__cell--small">IPv6</td>
+                        <td class="table-inner__cell">';$output .= $stash->get(['data',0,'nsips',0,$stash->get('ns'),0,'ipv6',0])? $stash->get(['data',0,'nsips',0,$stash->get('ns'),0,'ipv6',0]): 'None';$output .= '</td>
+                    </tr>
+                </table>
+            </td>
+            <td>';$output .= $stash->get(['data',0,'nscounts',0,$stash->get('ns'),0,'html',0]);$output .= '</td>
+            <td>
+                <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/zone_editor/?nameserver=';$output .= $stash->get(['ns',0,'uri',0]);$output .= '"
+                    id="edit_';$output .= $stash->get(['loop',0,'index',0]);$output .= '"
+                    class="btn btn-link"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Select domains to edit on “[_1]”.',$stash->get(['ns',0,'html',0])]]);$output .= '">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Edit Zones' ]]);$output .= '</a>
+            </td>
+        </tr>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '
+    <tr class="empty-row info" id="no-nameservers-message">
+        <td colspan="4">
+            ';$output .= $stash->get(['locale',0,'maketext',['No nameservers configured.' ]]);$output .= '
+        </td>
+    </tr>
+'}$output .= '    </tbody>
+</table>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'nameserver_record_report','theme'=>'bootstrap','breadcrumburl'=>'/scripts2/listassignednsips','scripts'=>'/js/sorttable.js','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,54 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dbmapmismatch.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<script>
+    function generatePostForm(frmObj,data) {
+        if (!frmObj) { alert(\'generatePostForm requires a valid form object to post to\'); }
+
+        clearFormKeys(frmObj);
+
+        for (var key in data) {
+            var newInputEl = document.createElement(\'input\');
+            newInputEl.name=key;
+            newInputEl.type=\'hidden\';
+            newInputEl.value=data[key];
+            frmObj.appendChild(newInputEl);
+        }
+
+        frmObj.submit();
+    }
+
+function clearFormKeys(frmObj) {
+    var loop_safe = 8192;
+    var inputs = frmObj.getElementsByTagName(\'input\');
+    while(inputs.length) {
+        inputs[0].value=\'\';
+        inputs[0].parentNode.removeChild(inputs[0]);
+        if (! loop_safe--) { break; }
+    }
+}
+
+function init() {
+    var ok = confirm(\'';$output .= $stash->get(['data',0,'warning_msg',0]);$output .= '\');
+
+    if (!ok) {
+        window.location.href = \'';$output .= $stash->get(['data',0,'cp_security_token',0]);$output .= '/scripts5/norootcopy\';
+    }
+    else {
+        var donorootcopyFrm = document.getElementById(\'donorootcopyFrm\');
+        if (!donorootcopyFrm) { alert("donorootcopyFrm element not found, please restart the process."); }
+        generatePostForm(donorootcopyFrm, {
+                             \'continue\' : 1,
+                             \'host\'     : \'';$output .= $stash->get(['data',0,'host',0]);$output .= '\',
+                             \'domain\'   : \'';$output .= $stash->get(['data',0,'domain',0]);$output .= '\',
+                             \'user\'     : \'';$output .= $stash->get(['data',0,'user',0]);$output .= '\',
+                             \'pass\'     : \'';$output .= $stash->get(['data',0,'pass',0]);$output .= '\',
+                             \'ip\'       : \'';$output .= $stash->get(['data',0,'ip',0]);$output .= '\'
+                         });
+    }
+}
+
+
+YAHOO.util.Event.onDOMReady(init);
+</script>
+
+<form action="';$output .= $stash->get(['data',0,'cp_security_token',0]);$output .= '/scripts5/donorootcopy" name="donorootcopyF" id="donorootcopyFrm" method="POST"><input type="hidden" name="dummy" value="1"></form>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

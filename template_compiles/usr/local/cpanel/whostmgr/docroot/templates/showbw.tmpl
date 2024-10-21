@@ -1,0 +1,255 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/showbw.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('CPGraph',$context->plugin('CPGraph'));$stash->set('CPMath',$context->plugin('CPMath'));$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('barsize',80);$output .= do {my$output='';$stash->set('months',['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ]);if ($stash->get(['data',0,'month',0])eq 1){$stash->set('lastyear',$stash->get(['data',0,'year',0])- 1);$stash->set('lastmonth',12);$stash->set('nextyear',$stash->get(['data',0,'year',0]));$stash->set('nextmonth',2)}elsif ($stash->get(['data',0,'month',0])eq 12){$stash->set('lastyear',$stash->get(['data',0,'year',0]));$stash->set('lastmonth',11);$stash->set('nextyear',$stash->get(['data',0,'year',0])+ 1);$stash->set('nextmonth',1)}else {$stash->set('lastyear',$stash->get(['data',0,'year',0]));$stash->set('lastmonth',$stash->get(['data',0,'month',0])- 1);$stash->set('nextyear',$stash->get(['data',0,'year',0]));$stash->set('nextmonth',$stash->get(['data',0,'month',0])+ 1)}$stash->set('link_descs',{'user'=>0,'maindomain'=>0,'totalbytes'=>0 });if ($stash->get(['data',0,'month',0])eq $stash->get(['data',0,'current_month',0])&& $stash->get(['data',0,'year',0])eq $stash->get(['data',0,'current_year',0])){$stash->set('current_view',1)}else {$stash->set('current_view',0)}$stash->set('sorter',{'field'=>$stash->get(['data',0,'sortreq',0])|| 'user' });if ($stash->get(['data',0,'sortreq',0])eq 'totalbytes'){$stash->set(['sorter',0,'num',0],1)}else {$stash->set(['sorter',0,'case',0],0)}if ($stash->get(['data',0,'sort_desc',0])){$stash->set(['sorter',0,'desc',0],1)}else {$stash->set(['link_descs',0,$stash->get(['data',0,'sortreq',0]),0],1)}$output .= '
+';if ($stash->get(['data',0,'db_creation_in_progress',0])){$output .= '
+
+    <div class="alert alert-warning">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['This interface is temporarily unavailable while the system rebuilds root’s bandwidth cache database.' ]]);$output .= '
+        </div>
+    </div>
+
+
+'}else {$output .= '
+
+';if ($stash->get(['data',0,'warnings',0])&& $stash->get(['data',0,'warnings',0,'size',0])){$output .= '    <div class="alert alert-warning top-warning">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            <p><strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['[numerate,_1,Warning,Warnings]:',$stash->get(['data',0,'warnings',0,'size',0])]]);$output .= '</strong></p>
+
+            ';if (1 eq $stash->get(['data',0,'warnings',0,'size',0])){$output .= '                <p>';$output .= $stash->get(['data',0,'warnings',0,0,0,'html',0]);$output .= '</p>
+            '}else {$output .= '                <ol>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'warnings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'warning'}=$_tt_value;$output .= '                    <li>';$output .= $stash->get(['warning',0,'html',0]);$output .= '</li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </ol>
+            '}$output .= '        </div>
+    </div>
+'}$output .= '
+<script type=\'text/javascript\'>
+      function showcells (user,val) {
+        var row = document.getElementById("dc_" + user);
+        if (row) {
+            row.style.display = val;
+        }
+      }
+
+
+      function handleState (imger,user) {
+         if (imger.src.indexOf("plus.gif") > 0) {
+            showcells(user,\'\');
+            imger.src=\'/minus.gif\';
+         } else {
+            showcells(user,\'none\');
+            imger.src=\'/plus.gif\';
+         }
+      }
+
+
+      function hideshowcol() {
+         var best_fit_style, megs_style;
+         var best_fit_nodes = document.getElementsByClassName("show-best-fit");
+         var show_megs_nodes = document.getElementsByClassName("show-megs");
+
+         if (document.colform.units.value.indexOf("Megabytes") > 0){
+            document.colform.units.value="Show Units with Best Fit";
+            best_fit_style = "none";
+            megs_style = "";
+         } else {
+            document.colform.units.value="Show Units in Megabytes";
+            best_fit_style = "";
+            megs_style = "none";
+         }
+
+         for (var i = 0, len = best_fit_nodes.length; i < len; i++) {
+            best_fit_nodes[i].style.display = best_fit_style;
+         }
+         for (i = 0, len = show_megs_nodes.length; i < len; i++) {
+            show_megs_nodes[i].style.display = megs_style;
+         }
+      }
+</script>
+<div class=\'brickcontainer\'><div class=\'brickcontainer2\'>
+';$output .= do {my$output='';$output .= '      <UL>
+      <LI>   This tool logs HTTP, FTP, SMTP, and POP3 traffic.  This accounts for almost all
+      traffic that a normal account will use. </LI>
+      <LI>Parked domain bandwidth is included in the domain that the parked domain is parked on.</LI>
+      ';if ($stash->get('current_view')){$output .= '        <LI>Use the <a href="../scripts/dialog?dialog=unsusbwall">Unsuspend Bandwidth Exceeders</a> interface to temporarily disable bandwidth limit enforcement.</LI>
+        <LI>Use the <a href="../cgi/statmanager.cgi">Statistics Software Configuration</a> interface to process statistics for one or more users and update their bandwidth limit enforcement statuses.</LI>
+      '}$output .= '      </UL>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Notes','content',$output })};$output .= '
+    <table class="brick">
+        <tr>
+        <td>
+            <a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?month=';$output .= $stash->get('lastmonth');$output .= '&year=';$output .= $stash->get('lastyear');$output .= '&showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=';$output .= $stash->get(['data',0,'sortreq',0]);$output .= '">Last Month
+                (';$output .= $stash->get(['months',0,$stash->get('lastmonth'),0]).' ' .$stash->get('lastyear');$output .= ')</a>
+        </td>
+        <td><b>';$output .= $stash->get(['months',0,$stash->get(['data',0,'month',0]),0]).' ' .$stash->get(['data',0,'year',0]);$output .= '</b></td>
+        <td class="text-right">
+    ';if ($stash->get(['data',0,'current_month',0])> $stash->get(['data',0,'month',0])|| $stash->get(['data',0,'current_year',0])> $stash->get(['data',0,'year',0])){$output .= '            <a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?month=';$output .= $stash->get('nextmonth');$output .= '&year=';$output .= $stash->get('nextyear');$output .= '&showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=';$output .= $stash->get(['data',0,'sortreq',0]);$output .= '">Next Month
+                (';$output .= $stash->get(['months',0,$stash->get('nextmonth'),0]).' ' .$stash->get('nextyear');$output .= ')</a>
+    '}else {$output .= '            Next Month (';$output .= $stash->get(['months',0,$stash->get('nextmonth'),0]).' ' .$stash->get('nextyear');$output .= ')
+    '}$output .= '        </td>
+        </tr>
+    </table>
+
+<!-- sqtable -->
+<div>
+    <form name="colform">
+        <input class="btn-secondary" type="button" onclick=\'hideshowcol();\' value="Show Units in Megabytes" name="units">
+    </form>
+
+    <table class="brick" name="bwtable" id="bwtable">
+        <tr class="scellheader">
+        <td>
+            <b><a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=user&month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '&desc=';$output .= $stash->get(['link_descs',0,'user',0]);$output .= '">
+                ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</a></b>
+        </td>
+        <td>
+            <b><a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=maindomain&month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '&desc=';$output .= $stash->get(['link_descs',0,'maindomain',0]);$output .= '">
+                ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</a></b>
+        </td>
+        <td class="show-best-fit">
+            <b><a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=totalbytes&desc=';$output .= $stash->get(['link_descs',0,'totalbytes',0]);$output .= '&month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '">Xfer<br />(Best Fit)</a></b>
+        </td>
+        <td class="show-megs" style="display: none;">
+            <b><a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&desc=';$output .= $stash->get(['link_descs',0,'totalbytes',0]);$output .= '&sortreq=totalbytes&month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '">Xfer<br />(in Megs)</a></b>
+        </td>
+        <td class="show-best-fit"><b>Limit<br />(Best Fit)</b></td>
+        <td class="show-megs" style="display: none;"> <b>Limit<br />(in Megs)</b></td>
+        <td>
+            <b><a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?showres=';$output .= $stash->get(['data',0,'showres',0]);$output .= '&sortreq=totalbytes&month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '&desc=';$output .= $stash->get(['link_descs',0,'totalbytes',0]);$output .= '">
+                ';$output .= $stash->get(['locale',0,'maketext',['Usage' ]]);$output .= '</a></b>
+        </td>
+        </tr>
+';$stash->set('bw_count',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'accts',0,'cpsort',[$stash->get('sorter')]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acct'}=$_tt_value;if (($stash->get(['acct',0,'limit',0])eq 'unlimited')){$stash->set(['acct',0,'limit',0],0)}$stash->set('fractionused',($stash->get(['acct',0,'limit',0])&& $stash->get(['acct',0,'totalbytes',0])/ $stash->get(['acct',0,'limit',0]))|| 0);$stash->set('percent',$stash->get(['CPMath',0,'ceil',[$stash->get('fractionused')* 100 ]]));$stash->set('has_plus_domains',0);$stash->set('bw_numbers',[]);$stash->set('sorted_bwusage',$stash->get(['acct',0,'bwusage',0,'sort',['domain' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sorted_bwusage');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'bw'}=$_tt_value;if ((!$stash->get('has_plus_domains')&& $stash->get(['bw',0,'domain',0])ne $stash->get(['acct',0,'maindomain',0]))){$stash->set('has_plus_domains',1);$stash->set('pie_colors',$stash->get(['CPGraph',0,'get_graph_colors_css',[$stash->get(['acct',0,'bwusage',0,'size',0])]]))}$output .= $stash->get(['bw_numbers',0,'push',[$stash->get(['bw',0,'usage',0])]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('color','green');$stash->set('tclass','');if (($stash->get('percent')>= 85)){$stash->set('tclass','tdshadered');$stash->set('color','red')}elsif (($stash->get('percent')>= 70)){$stash->set('tclass','tdshadeyellow');$stash->set('color','yellow')}if ((!$stash->get('tclass'))){$stash->set('tclass',$stash->get(['loop',0,'index',0])% 2 ? 'tdshade1' : 'tdshade2')}$stash->set('bar_width_pct',$stash->get('fractionused')* 100);if (($stash->get('bar_width_pct')> 100)){$stash->set('bar_width_pct',100)}$output .= '        <tr class="';$output .= $stash->get('tclass');$output .= '">
+        <td>';$output .= $stash->get(['acct',0,'user',0]);$output .= '        ';if ($stash->get(['data',0,'showres',0])eq '' && $stash->get(['acct',0,'reseller',0])&& $stash->get(['Whostmgr',0,'hasroot',0])){$output .= '            <a
+                href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '&showres=';$output .= $stash->get(['acct',0,'user',0]);$output .= '&sortreq=';$output .= $stash->get(['data',0,'sortreq',0]);$output .= '">
+                <img src="/check.gif" border="0" /></a>
+        '}$output .= '        </td>
+        <td>';$output .= $stash->get(['acct',0,'maindomain',0]);$output .= '        ';if ($stash->get(['acct',0,'deleted',0])){$output .= ' <span class="redstatus">(deleted)</span>'}$output .= '
+        ';if ($stash->get('has_plus_domains')){$output .= '            <a
+                onclick=\'handleState(document.getElementById("plus_';$output .= $stash->get(['acct',0,'user',0]);$output .= '"),"';$output .= $stash->get(['acct',0,'user',0]);$output .= '"); ';if ($stash->get(['acct',0,'totalbytes',0])){$output .= 'draw_pie_graph("graph_';$output .= $stash->get(['acct',0,'user',0]);$output .= '_container", ';$output .= $stash->get(['bw_numbers',0,'json',0]);$output .= ', ';$output .= $stash->get(['pie_colors',0,'json',0]);$output .= ' );'}$output .= '\'>
+                <img border="0" src="/plus.gif" id="plus_';$output .= $stash->get(['acct',0,'user',0]);$output .= '"></a>
+        '}$output .= '        </td>
+';$stash->set('megs_gigs_xfer',$stash->get(['gethumanbw',[$stash->get(['acct',0,'totalbytes',0])]]));if ($stash->get(['acct',0,'limit',0])eq 'N/A'){$stash->set('bwlimit','N/A');$stash->set('meg','N/A')}elsif ($stash->get(['acct',0,'limit',0])eq 0){$stash->set('bwlimit','unlimited Meg');$stash->set('meg','unlimited')}else {$stash->set('display_limits',$stash->get(['gethumanbw',[$stash->get(['acct',0,'limit',0])]]));$stash->set('bwlimit',$stash->get(['display_limits',0,2,0]));$stash->set('meg',$stash->get(['display_limits',0,0,0]))}$output .= '        <td class="text-right show-best-fit ';$output .= $stash->get(['acct',0,'user',0]);$output .= '_xfer">';$output .= $stash->get(['megs_gigs_xfer',0,2,0]);$output .= '</td>
+        <td class="text-right show-megs ';$output .= $stash->get(['acct',0,'user',0]);$output .= '_xfer" style="display: none;">';$output .= $stash->get(['megs_gigs_xfer',0,0,0]);$output .= ' M</td>
+        <td class="text-right show-best-fit">';$output .= $stash->get('bwlimit');$output .= '
+        ';if (!$stash->get(['acct',0,'deleted',0])&& $stash->get(['Whostmgr',0,'checkacl',['limit-bandwidth' ]])){$output .= '            <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/limitbw?user=';$output .= $stash->get(['acct',0,'user',0]);$output .= '&submit-domain=Limit">
+                <img align="absmiddle" src="/change.gif" border="0"></a>
+        </td>
+        <td class="text-right show-megs" style="display: none;">';$output .= $stash->get('meg');$output .= ' M&nbsp;
+            <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/limitbw?user=';$output .= $stash->get(['acct',0,'user',0]);$output .= '&submit-domain=Limit">
+                <img align="absmiddle" src="/change.gif" border="0" /></a>
+        </td>
+        '}else {$output .= '        </td>
+        <td class="text-right show-megs" style="display: none;">';$output .= $stash->get('meg');$output .= ' M</td>
+        '}$output .= '        <td class="bw_usage_bar">
+            <div style="float:left; width:';$output .= $stash->get('barsize');$output .= 'px; border: 1px solid #ddd; margin-right: 3px; background-color: white">
+                <div style="float:left; background: url(';$output .= $stash->get(['Whostmgr',0,'getbargif',0]);$output .= ') repeat green; width:';$output .= $stash->get('bar_width_pct');$output .= '%">&nbsp;</div>
+            </div>
+            ';$output .= $stash->get('percent');$output .= '% used
+        </td>
+        <td>
+            <img src="/';$output .= $stash->get('color');$output .= '-status.gif">
+            ';if ($stash->get(['acct',0,'bwlimited',0])){$output .= '            <img src="/lock.gif">
+            '}$output .= '        </td>
+        </tr>
+        <tr id="dc_';$output .= $stash->get(['acct',0,'user',0]);$output .= '" class="';$output .= $stash->get('tclass');$output .= '" style="display: none"><td colspan="2">
+        <table>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sorted_bwusage');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'bw'}=$_tt_value;$stash->set('bw_count',$stash->get('bw_count')+ 1);$stash->set('megs_gigs_xfer',$stash->get(['gethumanbw',[$stash->get(['bw',0,'usage',0])]]));$output .= '        <tr id="dc';$output .= $stash->get('bw_count');$output .= '" class="';$output .= $stash->get('tclass');$output .= '">
+        <td>
+            ';if ($stash->get(['acct',0,'totalbytes',0])> 0){$output .= '            <div class="legend_block" style="background-color:';$output .= $stash->get(['pie_colors',0,$stash->get(['loop',0,'index',0]),0]);$output .= '"></div>
+            '}$output .= '            ';$output .= $stash->get(['bw',0,'domain',0]);$output .= '
+            ';if ($stash->get(['acct',0,'deleted',0])){$output .= '            <span class="redstatus">(deleted)</span>
+            '}$output .= '            ';if ($stash->get(['bw',0,'deleted',0])){$output .= '            (deleted)
+            '}$output .= '        </td>
+        <td class="text-right show-best-fit">';$output .= $stash->get(['megs_gigs_xfer',0,2,0]);$output .= '</td>
+        <td class="text-right show-megs" style="display: none;">';$output .= $stash->get(['megs_gigs_xfer',0,0,0]);$output .= ' M</td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </table>
+        </td>
+        <td colspan="4">
+        <table>
+        <tr><td>
+        <div id="xpie_';$output .= $stash->get(['acct',0,'user',0]);$output .= '">
+            <div id="graph_';$output .= $stash->get(['acct',0,'user',0]);$output .= '_container" class="pie_container"></div>
+        </div>
+        </td></tr>
+        </table>
+        </td></tr>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </table>
+    <br />
+
+
+';$output .= do {my$output='';$output .= '    <table>
+    ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '        <tr>
+        <td><img src="/check.gif"></td>
+        <td>Show only accounts that belong to this reseller.</td>
+        </tr>
+    '}$output .= '        <tr>
+        <td><img src="/plus.gif"></td>
+        <td>Show the list of subdomains, addon domains, and parked domains that belong to the corresponding account.</td>
+        </tr>
+        <tr>
+        <td><img src="/change.gif"></td>
+        <td>Adjust the bandwidth limit for the corresponding account.</td>
+        </tr>
+        <tr>
+        <td><img src="/lock.gif"></td>
+        ';if ($stash->get('current_view')){$output .= '        <td>The system is enforcing a bandwidth limit on the corresponding account.
+        '}else {$output .= '        <td>Accounts are over their bandwidth limits for the displayed month.
+        '}$output .= '        </tr>
+        <tr>
+        <td colspan="2" class="tdshade1"><img src="/green-status.gif"> Accounts are under 70% of their bandwidth limits.</td>
+        </tr>
+        <tr>
+        <td colspan="2" class="tdshadeyellow"><img src="/yellow-status.gif"> Accounts reached 70% of their bandwidth limits.</td>
+        </tr>
+        <tr>
+        <td colspan="2" class="tdshadered"><img src="/red-status.gif"> Accounts reached 85% of their bandwidth limits.</td>
+        </tr>
+    </table>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Legend','content',$output })};$output .= '
+<br />
+
+';$output .= do {my$output='';$output .= '    ';$stash->set('megs_gigs_xfer',$stash->get(['gethumanbw',[$stash->get(['data',0,'totalbw',0])]]));$output .= '    <div>
+        <table>
+            <tr>
+            <td class="show-best-fit"><b>';$output .= $stash->get(['megs_gigs_xfer',0,2,0]);$output .= '</b></td>
+            <td class="show-megs" style="display: none"><b>';$output .= $stash->get(['megs_gigs_xfer',0,0,0]);$output .= ' M</b></td>
+            </tr>
+        </table>
+    </div>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Total Bandwidth Usage','content',$output })};$output .= '
+';if ($stash->get(['data',0,'showres',0])ne ''){$output .= do {my$output='';$output .= 'Only accounts belonging to ';$output .= $stash->get(['data',0,'showres',0]);$output .= ' are being shown. If you wish to see all accounts,
+<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/showbw?month=';$output .= $stash->get(['data',0,'month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'year',0]);$output .= '&sortreq=';$output .= $stash->get(['data',0,'sortreq',0]);$output .= '">click here</a>.
+';$context->include('_brick.tmpl',{'bricktitle'=>'Limited Output','content',$output })};$output .= '
+<br />
+
+'}$output .= '</div>
+</div>
+</div>
+
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/cjt/jquery.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/jqplot/dist/jquery.jqplot.min.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/jqplot/dist/plugins/jqplot.pieRenderer.min.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/jqplot/jqplot.cpanel.js' ]]);$output .= "\"></script>\n<script type=\"text/javascript\">\nfunction draw_pie_graph( container_id, numbers, colors ) {\n    var container = YAHOO.util.Dom.get( container_id );\n    if ( ! container.childNodes.length ) {\n        var xformed_data = numbers.map( function(v,i) { return [parseInt(i),parseInt(v)] } );\n        var these_options = new CPANEL._pie_chart_options();\n        these_options.seriesColors = colors;\n        \$.jqplot( container_id, [xformed_data], these_options );\n    }\n}\n\n";if ($stash->get(['data',0,'show_whm_bw_usage_in_megs',0])){$output .= 'hideshowcol();
+'}$output .= '</script>
+
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'view_bandwidth_usage','stylesheets'=>['/css/graphs.css' ],'canvas'=>1,'extrastyle'=>'
+table {
+    width: 100%;
+}
+.text-right {
+    text-align: right;
+}
+.top-warning {
+    margin-bottom: 1.5em;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

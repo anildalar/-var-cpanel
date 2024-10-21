@@ -1,0 +1,20 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/DnsAdmin/DnssecError.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_standout.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,DNSSEC,Domain Name System Security Extensions] key synchronization failure for “[_1]”.',$stash->get(['NOTICE',0,'zone',0,'html',0])]]));$output .= '
+<p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following [asis,DNS] Cluster members are not serving [asis,DNSSEC] records for zone “[_1]”.',$stash->get(['NOTICE',0,'zone',0,'html',0])]]);$output .= '
+</p>
+<p>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'failed_peers',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'peer'}=$_tt_value;$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['peer',0,'html',0])}]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</p>
+<p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,DNSSEC,Domain Name System Security Extensions] keys were recently synchronized to the [asis,cPanel] [output,abbr,DNS,Domain Name System] Cluster for the zone “[_1]”. Some cluster members don’t currently serve [output,abbr,DNSSEC,Domain Name System Security Extensions] records for this zone. This may cause failed [output,abbr,DNS,Domain Name System] resolution if your server queries these nameservers.',$stash->get(['NOTICE',0,'zone',0,'html',0])]]);$output .= '
+</p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To fix this issue, visit the [output,url,_1,DNS Cluster Status Interface] and resolve any issues with the cluster.',$stash->get(['NOTICE',0,'cluster_status_url',0,'html',0])]]);$output .= '
+</p>
+<p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Then, run the following script from command line as the root user to resynchronize the [output,abbr,DNSSEC,Domain Name System Security Extensions] keys.' ]]);$output .= '
+</p>
+<p>
+';$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['NOTICE',0,'dnssec_script',0,'html',0])}]]);$output .= '
+</p>
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

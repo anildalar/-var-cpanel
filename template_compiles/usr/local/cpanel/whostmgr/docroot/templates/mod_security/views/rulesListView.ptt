@@ -1,0 +1,449 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/rulesListView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('easy_apache_url',$stash->get(['Whostmgr',0,'ENV',0,'cp_security_token',0]).'/scripts7/EasyApache4');$output .= '
+<div class="row">
+    <!-- The \'sm\' size uses only 11 total columns to compensate for the 1 column spacer from the spinner -->
+    <div class="col-xs-12 col-sm-3">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Rules List' ]]);$output .= '</h2>
+    </div>
+    <div class="col-xs-12 col-sm-9 text-left-xs text-right-sm">
+        <div class="navigation-controls">
+            <button id="btnTopHitList"
+                    type="button"
+                    class="btn btn-default"
+                    ng-click="loadView(\'hitList\', null, { clearAlerts: true })">
+                ';$output .= $stash->get(['locale',0,'maketext',['Hits List' ]]);$output .= '
+            </button>
+            <div class="button-group">
+                <button id="btnTopEditCustomRules"
+                        type="button"
+                        class="btn btn-default"
+                        ng-click="loadView(\'editCustomRules\')">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Edit Rules' ]]);$output .= '
+                </button>
+                <button id="btnTopAddRule"
+                        type="button"
+                        class="btn btn-primary"
+                        ng-click="loadView(\'addCustomRule\')">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Add Rule' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row list-header" ng-hide="dbException">
+    <div class="col-xs-12 col-sm-5 col-md-6">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-11">
+                    <div class="input-group filter-controls">
+                        <input  id="ruleListFilter"
+                                class="form-control"
+                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= "\"\n                                ng-model=\"meta.filterValue\"\n                                autocomplete=\"off\"\n                                auto-focus\n                                ng-keyup=\"triggerToggleSearch(\$event)\">\n                        <span class=\"input-group-btn\" uib-dropdown auto-close=\"outsideClick\" event-handler=\"fixMenuClipping\" is-open=\"advancedSearchOpen\">\n                            <button id=\"btnSearch\"\n                                    type=\"button\"\n                                    class=\"btn btn-default\"\n                                    ng-click=\"toggleSearch(true)\">\n                                <span class=\"glyphicon\" ng-class=\"{ 'glyphicon-search': !activeSearch, 'glyphicon-remove': activeSearch }\"></span>\n                            </button>\n                            <button id=\"btnAdvanceSearch\"\n                                    type=\"button\"\n                                    class=\"btn btn-default dropdown-toggle\"\n                                    title=\"";$output .= $stash->get(['locale',0,'maketext',['Advanced Search' ]]);$output .= '"
+                                    uib-dropdown-toggle>
+                                <span class="caret"></span>
+                                <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Advanced Search' ]]);$output .= "</span>\n                            </button>\n                            <ul class=\"dropdown-menu advanced-filter-menu\" role=\"menu\" ng-click=\"\$event.stopPropagation()\">\n                                <li>\n                                    <div class=\"radio\">\n                                        <label>\n                                            <input id=\"chkShowStagedAndDeployed\"\n                                                   type=\"radio\"\n                                                   name=\"radioPublishState\"\n                                                   ng-model=\"meta.advanced.showStagedDeployed\"\n                                                   ng-checked=\"meta.advanced.showStagedDeployed === 'both'\"\n                                                   ng-change=\"onAdvancedChanged('staged-and-deployed')\"\n                                                   value=\"both\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Show published and unpublished rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="chkShowStaged"
+                                                   type="radio"
+                                                   name="radioPublishState"
+                                                   ng-model="meta.advanced.showStagedDeployed"
+                                                   ng-checked="meta.advanced.showStagedDeployed === \'staged\'"
+                                                   ng-change="onAdvancedChanged(\'staged\')"
+                                                   value="staged">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show unpublished rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="chkShowDeployed"
+                                                   type="radio"
+                                                   name="radioPublishState"
+                                                   ng-model="meta.advanced.showStagedDeployed"
+                                                   ng-checked="meta.advanced.showStagedDeployed === \'deployed\'"
+                                                   ng-change="onAdvancedChanged(\'deployed\')"
+                                                   value="deployed">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show published rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr>
+                                </li>
+                                <li>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="chkShowEnabledAndDisabled"
+                                                   type="radio"
+                                                   name="radioEnableState"
+                                                   ng-model="meta.advanced.showEnabledDisabled"
+                                                   ng-checked="meta.advanced.showEnabledDisabled === \'both\'"
+                                                   ng-change="onAdvancedChanged(\'enabled-and-disabled\')"
+                                                   value="both">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show enabled and disabled rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="chkShowEnabled"
+                                                   type="radio"
+                                                   name="radioEnableState"
+                                                   ng-model="meta.advanced.showEnabledDisabled"
+                                                   ng-checked="meta.advanced.showEnabledDisabled === \'enabled\'"
+                                                   ng-change="onAdvancedChanged(\'enabled\')"
+                                                   value="enabled">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show enabled rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input id="chkShowDisabled"
+                                                   type="radio"
+                                                   name="radioEnableState"
+                                                   ng-model="meta.advanced.showEnabledDisabled"
+                                                   ng-checked="meta.advanced.showEnabledDisabled === \'disabled\'"
+                                                   ng-change="onAdvancedChanged(\'disabled\')"
+                                                   value="disabled">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show disabled rules.' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                </li>
+                                <li>
+                                    <hr>
+                                </li>
+                                <li>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <label for="ddlVendorSelect">';$output .= $stash->get(['locale',0,'maketext',['Vendors:' ]]);$output .= '</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <select id="ddlVendorSelect"
+                                                        class="form-control"
+                                                        ng-show="vendors.length > 0"
+                                                        size="2"
+                                                        multiple
+                                                        ng-model="selectedVendors"
+                                                        ng-click="onAdvancedChanged(\'vendor\')"
+                                                        ng-options="vendor as vendor.name for vendor in vendors">
+                                                </select>
+                                                <span id="no-vendors-installed"
+                                                      ng-show="vendors.length === 0">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['There are no vendor rule sets installed on your system.' ]]);$output .= '
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input id="chkShowUserRules"
+                                                   type="checkbox"
+                                                   ng-model="meta.advanced.includeUserRules"
+                                                   ng-checked="meta.advanced.includeUserRules"
+                                                   ng-change="onAdvancedChanged(\'userDefined\')">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Show user-defined rules.' ]]);$output .= "\n                                        </label>\n                                    </div>\n                                </li>\n                                <li>\n                                    <div class=\"form-group action-group\">\n                                        <button id=\"btnApplyFilter\"\n                                                type=\"button\"\n                                                class=\"btn btn-default\"\n                                                ng-click=\"applyAdvancedFilter(\$event)\"\n                                                ng-disable=\"!\$scope.meta.advanced.changed\"\n                                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Apply the advanced filters.' ]]);$output .= '">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= "\n                                        </button>\n                                        <button id=\"btnResetFilter\"\n                                                type=\"button\"\n                                                class=\"btn btn-link\"\n                                                ng-click=\"resetAdvancedFilter(\$event)\"\n                                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Reset to remove advanced filters.' ]]);$output .= '">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </li>
+                            </ul>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-xs-1">
+                    <span spinner id="ruleListSpinner" class="headerSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-7 col-md-6 form-inline text-left-xs text-right-sm">
+        <div class="form-group page-size-container">
+            <label for="ddlPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                <select id="ddlPageSize"
+                        class="form-control page-size-control"
+                        ng-model="meta.pageSize"
+                        ng-options="size for size in meta.pageSizes">
+                </select>
+            </label>
+        </div>
+        <uib-pagination id="topPager"
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="5"
+                    direction-links="false"
+                    boundary-links="true"
+                    first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                    last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                    previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                    next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                    class="pagination-small">
+        </uib-pagination>
+    </div>
+</div>
+
+<div class="callout callout-warning" ng-hide="dbException || !stagedChanges">
+    <div ng-show="discardConfirm">
+        <div>';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to discard the unpublished changes?' ]]);$output .= '</div>
+        <button id="btnTopConfirmDiscard"
+                type="button"
+                cp-action="discardChanges()"
+                button-class="btn-default"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Discard Changes' ]]);$output .= '
+        </button>
+        <button id="btnTopCancelDiscard"
+                type="button"
+                class="btn btn-link"
+                ng-click="discardConfirm = false"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+    </div>
+    <div ng-hide="discardConfirm">
+        <div ng-show="loadingPageData == \'error\'">';$output .= $stash->get(['locale',0,'maketext',['You have unpublished and invalid changes in your [asis,ModSecurity™] configuration.' ]]);$output .= '</div>
+        <div ng-show="loadingPageData != \'error\'">';$output .= $stash->get(['locale',0,'maketext',['You have unpublished changes for your [asis,ModSecurity™] configuration. You must save these changes for them to take effect.' ]]);$output .= '</div>
+        <button id="btnTopDeployChanges"
+                type="button"
+                cp-action="deployChanges()"
+                ng-show="loadingPageData != \'error\'"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Deploy and Restart [asis,Apache]' ]]);$output .= '
+        </button>
+        <button id="btnTopDiscardChanges"
+                type="button"
+                class="btn btn-default"
+                ng-click="discardConfirm = true"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Discard Changes' ]]);$output .= '
+        </button>
+    </div>
+</div>
+
+<ul class="list-unstyled list-table list-table-striped rules-list" ng-hide="dbException">
+    <li class="list-table-header row" cp-responsive-sort>
+        <span class="visible-xs col-xs-8">
+            <cp-responsive-sort-insert id-suffix="rules" label="';$output .= $stash->get(['locale',0,'maketext',['Sort by' ]]);$output .= '"></cp-responsive-sort-insert>
+        </span>
+        <span class="hidden-xs col-sm-2 col-lg-1 rule-status">
+            <toggle-sort id="sortStatus"
+                         class="nowrap"
+                         onsort="sortList"
+                         sort-meta="meta"
+                         sort-field="disabled"
+                         sort-reverse>
+                ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+            </toggle-sort>
+        </span>
+        <span class="hidden-xs col-sm-2 col-lg-1 rule-published">
+            <toggle-sort id="sortPublished"
+                         class="nowrap"
+                         onsort="sortList"
+                         sort-meta="meta"
+                         sort-field="staged">
+                ';$output .= $stash->get(['locale',0,'maketext',['Staging' ]]);$output .= '
+            </toggle-sort>
+        </span>
+        <span class="hidden-xs col-sm-2 rule-vendor">
+            <toggle-sort id="sortVendor"
+                         class="nowrap"
+                         onsort="sortList"
+                         sort-meta="meta"
+                         sort-field="vendor_id">
+                ';$output .= $stash->get(['locale',0,'maketext',['Vendor' ]]);$output .= '
+            </toggle-sort>
+        </span>
+        <span class="hidden-xs col-sm-2 rule-id">
+            <toggle-sort id="sortID"
+                         class="nowrap"
+                         onsort="sortList"
+                         sort-meta="meta"
+                         sort-type="numeric"
+                         sort-field="id">
+                ';$output .= $stash->get(['locale',0,'maketext',['ID' ]]);$output .= '
+            </toggle-sort>
+        </span>
+        <span class="hidden-xs col-sm-2 col-lg-4 rule-message">
+            <toggle-sort id="sortMessage"
+                         class="nowrap"
+                         onsort="sortList"
+                         sort-meta="meta"
+                         sort-field="meta_msg">
+                ';$output .= $stash->get(['locale',0,'maketext',['Message' ]]);$output .= "\n            </toggle-sort>\n        </span>\n        <span class=\"col-xs-4 col-sm-2 text-right rule-included\">\n            <div class=\"btn-group btn-group-nowrap\" ng-click=\"openAdvancedSearch(\$event)\">\n                <button id=\"btnUserRules\"\n                        class=\"btn btn-primary\"\n                        type=\"button\"\n                        title=\"{{ generateIndicatorText('user-title') }}\"\n                        uib-popover=\"{{ generateIndicatorText('user-title') }}\"\n                        popover-trigger=\"mouseenter\"\n                        popover-append-to-body=\"true\"\n                        popover-placement=\"bottom\">\n                    <span ng-class=\"{ 'glyphicon glyphicon-minus-sign' : !appliedIncludeUserRules, 'fas fa-user' : appliedIncludeUserRules }\"></span>\n                    <span class=\"sr-only\">";$output .= $stash->get(['locale',0,'maketext',['User rule sets included.' ]]);$output .= '</span>
+                </button>
+                <button id="btnVendorCount"
+                        class="btn btn-primary"
+                        type="button"
+                        title="{{ generateIndicatorText(\'vendor-title\') }}"
+                        uib-popover="{{ generateIndicatorText(\'vendor-title\') }}"
+                        popover-trigger="mouseenter"
+                        popover-append-to-body="true"
+                        popover-placement="bottom">
+                    <span class="hidden-md hidden-lg">{{ generateIndicatorText(\'vendor-short\') }}</span>
+                    <span class="hidden-xs hidden-sm">{{ generateIndicatorText(\'vendor-long\') }}</span>
+                    <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Vendor rule set count.' ]]);$output .= "</span>\n                </button>\n            </div>\n        </span>\n    </li>\n    <li class=\"row\"\n        ng-class=\"{ 'disabled' : rule.disabled, 'warning' : rule.staged}\"\n        ng-repeat=\"rule in rules\">\n        <span class=\"col-xs-6 col-sm-2 col-lg-1 rule-status\" id=\"statusData{{\$index}}\">\n            <strong class=\"hidden-sm hidden-md hidden-lg\">";$output .= $stash->get(['locale',0,'maketext',['Status:' ]]);$output .= '</strong>
+            <span class="label label-{{rule.disabled ? \'default\' : \'success\' }}">
+                {{rule.disabled ? ';$output .= $stash->get(['locale',0,'maketext',['Disabled' ],'json',0]);$output .= ' : ';$output .= $stash->get(['locale',0,'maketext',['Enabled' ],'json',0]);$output .= " }}\n            </span>\n        </span>\n        <span class=\"col-xs-6 col-sm-2 col-lg-1 rule-published\" id=\"publishedData{{\$index}}\">\n            <strong class=\"hidden-sm hidden-md hidden-lg\">";$output .= $stash->get(['locale',0,'maketext',['Staging:' ]]);$output .= '</strong>
+            <span class="label label-warning" ng-show="rule.staged">
+                ';$output .= $stash->get(['locale',0,'maketext',['Unpublished' ]]);$output .= '
+            </span>
+            <span class="label label-primary" ng-show="!rule.staged">
+                ';$output .= $stash->get(['locale',0,'maketext',['Published' ]]);$output .= '
+            </span>
+        </span>
+        <span class="col-xs-6 col-sm-2 rule-vendor">
+            <strong class="hidden-sm hidden-md hidden-lg">';$output .= $stash->get(['locale',0,'maketext',['Vendor:' ]]);$output .= "</strong>\n            <span id=\"vendorIdData{{\$index}}\" title=\"{{getVendorName(rule)}}\">{{rule.vendor_id === \"\" ? \"";$output .= $stash->get(['locale',0,'maketext',['Custom' ]]);$output .= '" : rule.vendor_id}}</span>
+        </span>
+        <span class="col-xs-6 col-sm-2 rule-id">
+            <strong class="hidden-sm hidden-md hidden-lg">';$output .= $stash->get(['locale',0,'maketext',['ID:' ]]);$output .= "</strong>\n            <span id=\"idData{{\$index}}\">{{rule.id || 0}}</span>\n        </span>\n        <span class=\"col-xs-12 col-sm-4 col-lg-6 rule-message\">\n            <strong class=\"hidden-sm hidden-md hidden-lg\" ng-show=\"rule.meta_msg\">";$output .= $stash->get(['locale',0,'maketext',['Message:' ]]);$output .= "</strong>\n            <span id=\"messageData{{\$index}}\" ng-bind-html=\"rule.meta_msg | encodeHtml | wrap:'':40\"></span>\n        </span>\n        <span   id=\"contentData{{\$index}}\"\n                class=\"col-xs-12 col-sm-10 col-md-10 rule-content\"\n                ng-hide=\"rule.showDeleteConfirm\">\n            <div ng-repeat=\"part in rule.rule | split track by \$index\">\n                <span ng-bind-html=\"part | encodeHtml | wrap:'':40\"></span>\n            </div>\n        </span>\n        <span   id=\"actionsSwitch{{\$index}}\"\n                class=\"col-xs-12 rule-actions\"\n                ng-class=\"{ 'text-center': rule.showDeleteConfirm, 'col-sm-1 col-md-1': !rule.showDeleteConfirm }\"\n                ng-switch=\"rule.showDeleteConfirm\">\n            <span id=\"actionsContainer{{\$index}}\" ng-switch-default>\n                <button id=\"btnEdit{{\$index}}\"\n                        type=\"button\"\n                        class=\"btn btn-link\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Edit Rule' ]]);$output .= '"
+                        ng-show="isCustomVendor(rule)"
+                        ng-click="loadView(\'editCustomRule\', { ruleId : rule.id })">
+                    <span class=\'glyphicon glyphicon-pencil\'></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "\n                </button>\n                <button id=\"btnCopy{{\$index}}\"\n                        type=\"button\"\n                        class=\"btn btn-link\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Copy Rule' ]]);$output .= '"
+                        ng-click="loadView(\'copyCustomRule\', { config: rule.config, id : rule.id, disabled: rule.disabled })">
+                    <span class=\'fas fa-copy fa-lg\'></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Copy' ]]);$output .= "\n                </button>\n                <span ng-hide=\"rule.disabled\">\n                    <button id=\"btnDisable{{\$index}}\"\n                            type=\"button\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Disable Rule' ]]);$output .= '"
+                            button-class="btn-link"
+                            cp-action="disable(rule)">
+                        <span class=\'glyphicon glyphicon-ban-circle\'></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Disable' ]]);$output .= "\n                    </button>\n                </span>\n                <span ng-show=\"rule.disabled\">\n                    <button id=\"btnEnable{{\$index}}\"\n                            type=\"button\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Enable Rule' ]]);$output .= '"
+                            button-class="btn-link"
+                            cp-action="enable(rule)">
+                        <span class=\'fas fa-check fa-lg\'></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= "\n                    </button>\n                </span>\n                <button id=\"btnDelete{{\$index}}\"\n                        type=\"button\"\n                        class=\"btn btn-link\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Delete Rule' ]]);$output .= '"
+                        ng-show="isCustomVendor(rule)"
+                        ng-click="rule.showDeleteConfirm = true">
+                    <span class="glyphicon glyphicon-trash"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                </button>\n            </span>\n            <div   id=\"deleteConfirmContainer{{\$index}}\"\n                    class=\"confirm-dialog\"\n                    ng-switch-when=\"true\">\n                <div class=\"confirm-message\">";$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to delete this rule?' ]]);$output .= "</div>\n                <div class=\"form-group action-group\">\n                    <button id=\"btnConfirmDelete{{\$index}}\"\n                            type=\"button\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Delete Rule' ]]);$output .= "\"\n                            spinner-id=\"spinnerDelete{{\$index}}\"\n                            cp-action=\"delete(rule)\">\n                        ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                    </button>\n                    <button id=\"btnCancelDelete{{\$index}}\"\n                            type=\"button\"\n                            class=\"btn btn-link\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Cancel Rule Deletion' ]]);$output .= '"
+                            ng-click="rule.showDeleteConfirm = false"
+                            ng-disabled="rule.deleting">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </span>
+    </li>
+    <li class="row info" ng-show="!rules.length" ng-switch="loadingPageData">
+        <span class="col-xs-12" id="loadingRecords" ng-switch-when="true">';$output .= $stash->get(['locale',0,'maketext',['The system is loading your rules.' ]]);$output .= '</span>
+        <span class="col-xs-12" id="unsure" ng-switch-when="error">';$output .= $stash->get(['locale',0,'maketext',['The system is not able to load your rules.' ]]);$output .= '</span>
+        <span class="col-xs-12" ng-switch-default>
+            <span ng-hide="hasSearchFilter()" id="noRecords">';$output .= $stash->get(['locale',0,'maketext',['You have no rules.' ]]);$output .= '</span>
+            <span ng-show="hasSearchFilter()" id="noMatchingRecords">';$output .= $stash->get(['locale',0,'maketext',['No rules matched your search criteria.' ]]);$output .= '</span>
+        </span>
+    </li>
+</ul>
+
+<div class="callout callout-warning" ng-show="stagedChanges && rules.length">
+    <div ng-show="discardConfirm">
+        <div>';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to discard the unpublished changes?' ]]);$output .= '</div>
+        <button id="btnBottomConfirmDiscard"
+                type="button"
+                cp-action="discardChanges()"
+                button-class="btn-default"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Discard Changes' ]]);$output .= '
+        </button>
+        <button id="btnBottomCancelDiscard"
+                type="button"
+                class="btn btn-link"
+                ng-click="discardConfirm = false"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+    </div>
+    <div ng-hide="discardConfirm">
+        <div ng-show="loadingPageData == \'error\'">';$output .= $stash->get(['locale',0,'maketext',['You have unpublished and invalid changes in your [asis,ModSecurity™] configuration.' ]]);$output .= '</div>
+        <div ng-show="loadingPageData != \'error\'">';$output .= $stash->get(['locale',0,'maketext',['You have unpublished changes for your [asis,ModSecurity™] configuration. You must save these changes for them to take effect.' ]]);$output .= '</div>
+        <button id="btnBottomDeployChanges"
+                type="button"
+                cp-action="deployChanges()"
+                ng-show="loadingPageData != \'error\'"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Deploy and Restart [asis,Apache]' ]]);$output .= '
+        </button>
+        <button id="btnBottomDiscardChanges"
+                type="button"
+                class="btn btn-default"
+                ng-click="discardConfirm = true"
+                ng-disabled="pendingChanges">
+            ';$output .= $stash->get(['locale',0,'maketext',['Discard Changes' ]]);$output .= '
+        </button>
+    </div>
+</div>
+
+<div class="row list-footer clearfix">
+    <div class="col-xs-12 col-md-6 text-left-xs text-right-md form-inline pull-right">
+        <div class="form-group page-size-container">
+            <label for="ddlBottomPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                <select id="ddlBottomPageSize"
+                        class="form-control page-size-control"
+                        ng-model="meta.pageSize"
+                        ng-options="size for size in meta.pageSizes">
+                </select>
+            </label>
+        </div>
+        <uib-pagination id="bottomPager"
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="5"
+                    direction-links="false"
+                    boundary-links="true"
+                    first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                    last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                    previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                    next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                    class="pagination-small">
+        </uib-pagination>
+    </div>
+    <div class="col-xs-12 col-md-6 pull-left">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="navigation-controls">
+                        <button id="btnTop"
+                                type="button"
+                                class="btn btn-link"
+                                ng-click="scrollTo(\'top\')">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Back To Top' ]]);$output .= '
+                        </button>
+                        <div class="button-group">
+                            <button id="btnBottomHitList"
+                                    type="button"
+                                    class="btn btn-default"
+                                    ng-click="loadView(\'hitList\')">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Hits List' ]]);$output .= '
+                            </button>
+                            <div class="button-group">
+                                <button id="btnBottomEditCustomRules"
+                                        type="button"
+                                        class="btn btn-default"
+                                        ng-click="loadView(\'editCustomRules\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Edit Rules' ]]);$output .= '
+                                </button>
+                                <button id="btnBottomAddRule"
+                                        type="button"
+                                        class="btn btn-primary"
+                                        ng-click="loadView(\'addCustomRule\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Add Rule' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/EasyApache/EA4_TemplateCheckUpdated.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$stash->set('reason',$stash->get(['NOTICE',0,'first_time',0])? $stash->get(['CPANEL',0,'locale',0,'maketext',['The system sends a notification to the administrators when [asis,EasyApache 4] templates are updated.' ]]): $stash->get(['CPANEL',0,'locale',0,'maketext',['The system detected that one or more templates were updated as a result of a change in the [asis,EasyApache 4] environment.' ]]));$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get('reason'));$output .= '
+
+<p>
+';if ($stash->get(['NOTICE',0,'first_time',0])){$output .= '    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following “.default” [numerate,_1,template has a,templates have] corresponding “.local” [numerate,_1,copy,copies]. We will notify you when we make changes to the “.default” templates.',$stash->get(['NOTICE',0,'templates',0,'size',0])]]);$output .= '
+'}else {$output .= '    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following “.default” [numerate,_1,template has,templates have] changed in a recent update in the [asis,EasyApache 4] environment.',$stash->get(['NOTICE',0,'templates',0,'size',0])]]);$output .= '
+'}$output .= '
+
+    <ul>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'templates',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'tmpl'}=$_tt_value;$output .= '        <li>
+            <strong>';$output .= $stash->get(['tmpl',0,'name',0]);$output .= '</strong>
+        </li>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </ul>
+</p>
+
+<p>
+';if ($stash->get(['NOTICE',0,'first_time',0])){$output .= '    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,strong,Note]: To avoid any issues, it is strongly recommended that you update your corresponding “.local” [numerate,_1,template,templates] when you see these notifications in future.',$stash->get(['NOTICE',0,'templates',0,'size',0])]]);$output .= '
+'}else {$output .= '    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['We identified corresponding “.local” [numerate,_1,template,templates] for the above mentioned “.default” [numerate,_1,template,templates] on your system. Update them as soon as possible to avoid problems.',$stash->get(['NOTICE',0,'templates',0,'size',0])]]);$output .= '
+'}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,173 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/massmodify.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('hide_locale_notice',!$stash->get(['data',0,'has_invalid_locales',0]));$stash->set('show_warnings',!$stash->get('hide_locale_notice'));$output .= do {my$output='';$output .= '<script type="text/javascript">
+function selectMatching(table,searchby,regmatch,deselect) {
+    var re = new RegExp(regmatch.toLowerCase());
+    var tblEle = document.getElementById(table);
+    var trList = tblEle.getElementsByTagName(\'tr\');
+    var choosecell = 1;
+    for(var i=0;i<searchby.length;i++) {
+        if (searchby[i].checked) {
+            choosecell = i + 1;
+            break;
+        }
+    }
+
+
+    for (var i=0;i < trList.length;i++)
+    {
+        var thisTr = trList[i];
+        var tdList = thisTr.getElementsByTagName(\'td\');
+
+        var thisTd = tdList[choosecell];
+
+        if (!thisTd) { continue; }
+        var matchTxt = thisTd.innerHTML.toLowerCase();
+
+        var mat = re.exec(matchTxt);
+
+        if (mat != null) {
+            if (deselect) {
+                tdList[0].firstChild.checked = false;
+            } else {
+                tdList[0].firstChild.checked = true;
+            }
+        }
+    }
+}
+</script>
+
+';if ($stash->get('show_warnings')){$output .= '
+<div id="warning_banners">
+    ';if ($stash->get(['data',0,'has_invalid_locales',0])){$output .= '
+        <div id="unsupported_locale_warning" class="callout callout-warning">
+            <div id="unsupported_locale_warning_text">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:]' ]]);$output .= '                ';$output .= $stash->get(['locale',0,'maketext',['There are account(s) on the server that use deprecated locales. The system will mark these accounts with an “!”. These accounts will automatically default to English until you select a different locale.' ]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+</div>
+'}$output .= '
+
+<form action="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('action');&$_tt_filter($output)};$output .= '" method="POST" name="secform">
+<table cellpadding="10" cellspacing="10">
+    <tr>
+        <td>
+            <table class="sortable" id="userstable">
+                <thead>
+                    <tr class="scellheader">
+                        <th nonsortable="true">&nbsp;</th>
+                        <th>Domain</th>
+                        <th>User</th>
+                        <th>Owner</th>
+                        <th>Package</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Locale' ]]);$output .= '</th>
+                    </tr>
+                </thead>
+                <tbody>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdata',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$output .= '                    <tr>
+                        <td><input type="checkbox" name="acct-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '" value="1"></td>
+                        <td>';$output .= $stash->get(['userdata',0,'domain',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['userdata',0,'name',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['userdata',0,'owner',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['userdata',0,'package',0]);$output .= '</td>
+                        <td class="themeName">
+                            ';$output .= $stash->get(['userdata',0,'theme',0]);$output .= '
+                        </td>
+                        <td class="localeName">
+                            ';$output .= $stash->get(['userdata',0,'readable_locale',0]);$output .= '
+                            ';if (!$stash->get(['userdata',0,'locale_is_valid',0])){$output .= '
+                            <i class="fas fa-exclamation-triangle"
+                               title="';$output .= $stash->get(['locale',0,'maketext',['Locale is not installed' ]]);$output .= '"
+                               aria-label="';$output .= $stash->get(['locale',0,'maketext',['Locale is not installed' ]]);$output .= '"></i>
+                            '}$output .= '
+                        </td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </tbody>
+            </table>
+        </td>
+        <td>
+            <table>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="radio" name="searchby" value="1"> Search by Domain <br />
+                            <input type="radio" name="searchby" value="2" checked="checked"> Search by User <br />
+                            <input type="radio" name="searchby" value="3"> Search by Reseller/Owner <br />
+                            <input type="radio" name="searchby" value="4"> Search by Package <br />
+                            <input type="radio" name="searchby" value="5"> ';$output .= $stash->get(['locale',0,'maketext',['Search by Theme' ]]);$output .= ' <br />
+                            <input type="radio" name="searchby" value="6"> ';$output .= $stash->get(['locale',0,'maketext',['Search by Locale' ]]);$output .= ' <br />
+                            <div>
+                                <input type="text" name="regenter" value=""><br />
+                                <input type="button" class="btn-secondary" onClick="selectMatching(\'userstable\',this.form.searchby,document.secform.regenter.value,0)" value="Select Matching Users"><br />
+                                <input type="button" class="btn-secondary" onClick="selectMatching(\'userstable\',this.form.searchby,document.secform.regenter.value,1)" value="DeSelect Matching Users">
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </td>
+    </tr>
+</table>
+
+<table>
+';if ($stash->get(['data',0,'hasroot',0])){$output .= '<tr> <td><span class="b2">Reseller</span></td> <td>
+<select name="reseller">
+    <option value="-">Choose a Reseller</option>
+    <option value="root">root</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'resellers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'reseller'}=$_tt_value;$output .= '    <option value="';$output .= $stash->get('reseller');$output .= '">';$output .= $stash->get('reseller');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select></td></tr>
+<tr>
+    <td><span class="b2">Theme</span></td>
+    <td>
+        <select name="theme"><option value="-">Choose a Theme</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'theme'}=$_tt_value;$output .= '        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '">
+        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('theme');&$_tt_filter($output)};$output .= '
+        </option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </select>
+    </td>
+</tr>
+<tr>
+      <td><span class="b2">Start Date</span></td>
+
+      <td>
+      <select name="month">
+      <option value="Choose a Month">Choose a Month</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'month'}=$_tt_value;$output .= '    <option value="';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= $stash->get('month');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </select>
+<select name="day">
+        <option value="Choose a Day">Choose a Day</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[1..31 ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'date'}=$_tt_value;$output .= '        <option value="';$output .= $stash->get('date');$output .= '">';$output .= $stash->get('date');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '      </select>
+      <select name="year">
+      <option value="Choose a Year">Choose a Year</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[1990..2100 ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'year'}=$_tt_value;$output .= '        <option value="';$output .= $stash->get('year');$output .= '">';$output .= $stash->get('year');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '      </select>
+
+      </td>
+      </tr>
+'}$output .= '<tr>
+   <td><span class="b2">Locale</span></td>
+   <td><select name="locale">
+';$stash->set(['data',0,'locale_options_no_default',0],1);$stash->set(['data',0,'locale_choose_one_option_value',0],'-');$stash->set(['data',0,'locale_choose_one_option_label',0],$stash->get(['locale',0,'maketext',['Choose a locale …' ]]));$output .= $context->process('_locale_option_tags.tmpl');$output .= '</select>
+<div class="help-block">
+    ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+</div>
+</td>
+</tr>
+   <tr>
+   <td><span class="b2">Package</span></td>
+   <td><select name="pkg"><option value="-">Choose a Package</option>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'packages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '    ';if ($stash->get(['package',0,'length',0])> 50){$output .= '        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('package');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'substr',[0,50 ]]);&$_tt_filter($output)};$output .= '…</option>';$output .= '
+    '}else {$output .= '        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('package');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('package');&$_tt_filter($output)};$output .= '</option>
+    '};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+</td>
+</tr>
+</table>
+<p>
+   You need only change values that you wish to change.<br />
+</p>
+<input type="submit" class="btn-primary" value="Change"><br />
+</form>
+
+';$output .= $stash->get(['data',0,'selected_locale',0]);$output .= $stash->get('selected_locale');$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'modify_upgrade_multiple_accounts','scripts'=>['/js/sorttable.js' ],'stylesheets'=>['/templates/massmodify.min.css','/templates/common/revised_notices.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,83 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/diskusage/diskusage_extras.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('graph_dirs',{'backups'=>1,'etc'=>1,'logs'=>1,'mail'=>1,'perl'=>1,'php'=>1,'public_ftp'=>1,'public_html'=>1,'ruby'=>1,'tmp'=>1 });$stash->set('LANG',{'no_subdir'=>$stash->get(['locale',0,'maketext',['(not in a subdirectory)' ]]),'other_subs'=>$stash->get(['locale',0,'maketext',['(other subdirectories)' ]]),'open_in_fm'=>$stash->get(['locale',0,'maketext',['Open This Directory In File Manager' ]]),'see_children'=>$stash->get(['locale',0,'maketext',['See disk usage for this directory’s child directories.' ]]),'hide_children'=>$stash->get(['locale',0,'maketext',['Hide disk usage for this directory’s child directories.' ]]),'see_mysql'=>$stash->get(['locale',0,'maketext',['Manage My Databases' ]]),'see_pgsql'=>$stash->get(['locale',0,'maketext',['Manage [asis,PostgreSQL] Databases' ]]),'other'=>$stash->get(['locale',0,'maketext',['Other' ]]),'db_unavailable'=>$stash->get(['locale',0,'maketext',['Database usage data is not available at this time. Please check later; if the problem persists, contact your system administrator.' ]])});$stash->set(['LANG',0,'mailaccounts_usage_blurb',0],$stash->get(['locale',0,'maketext',['Email account storage may occupy less space on the disk if you use compression or hard-link optimizations designed to save space. Email account storage does not include the metadata that the system uses to store email.' ]]));$stash->set(['LANG',0,'other_usage_blurb',0],$stash->get(['locale',0,'maketext',['The files outside of your home directory, the metadata that the system uses to store email in the mail directory, the email in Trash folders, or the files that you do not have permission to access.' ]]));$stash->set('plus_glyph','fas fa-chevron-right expander ');$stash->set('minus_glyph','fas fa-chevron-down expander ');$stash->set('home_glyph','fas fa-home ');$stash->set('spinner_image',$stash->get(['theme_magic_url',['/cjt/images/loading.gif' ]]));$output .= '
+
+<script type="text/javascript">
+var USER = ';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| 'null';$output .= ';
+var GRAPH_DIRS = ';$output .= $stash->get(['graph_dirs',0,'json',0])|| 'null';$output .= ';
+var LANG = ';$output .= $stash->get(['LANG',0,'json',0])|| 'null';$output .= ';
+var PLUS_GLYPH = ';$output .= $stash->get(['plus_glyph',0,'json',0])|| 'null';$output .= ';
+var MINUS_GLYPH = ';$output .= $stash->get(['minus_glyph',0,'json',0])|| 'null';$output .= ';
+var HOME_GLYPH = ';$output .= $stash->get(['home_glyph',0,'json',0])|| 'null';$output .= ';
+var SPINNER_IMAGE = ';$output .= $stash->get(['spinner_image',0,'json',0])|| 'null';$output .= ';
+var SPACER = \'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\';
+var HOMEDIR = ';$output .= $stash->get(['CPANEL',0,'homedir',0,'json',0]);$output .= ';
+</script>
+
+<script id="dirs_table_template" type="text/html">
+<table id="disk_usage_table">
+<thead>
+<tr>
+    <th rowspan="2"></th>
+    <th id="directory_header" rowspan="2" style="vertical-align:middle">';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '</th>
+    <th id="contained_header" colspan="2">';$output .= $stash->get(['locale',0,'maketext',['Contained Disk Usage' ]]);$output .= '</th>
+    <th id="owner_header" colspan="99" rowspan="2"></th>
+</tr>
+<tr>
+    <th id="megabytes_header"><abbr title="';$output .= $stash->get(['locale',0,'maketext',['1 MB = 1,024 kB = 1,048,576 bytes' ]]);$output .= '">MB</abbr></th>
+    <th id="bytes_header">';$output .= $stash->get(['locale',0,'maketext',['Bytes' ]]);$output .= '</th>
+</tr>
+</thead>
+<tfoot></tfoot>
+<tbody id="directory_rows_tbody"></tbody>
+</table>
+</script>
+
+<script id="expander_img_template" type="text/html">
+<span class="';$output .= $stash->get('plus_glyph');$output .= '" title="';$output .= $stash->get(['LANG',0,'see_children',0]);$output .= '" id="{path}-icon" onclick="if (!(&quot;{path}&quot; in Expanding)) toggle_children(&quot;{path}&quot;)"></span><img class="spinner" src="';$output .= $stash->get('spinner_image');$output .= '" id="{path}-spin" style="display:none" />
+</script>
+
+<script id="nonexpander_img_template" type="text/html">
+<span class="';$output .= $stash->get('minus_glyph');$output .= '" style="visibility:hidden"></span>
+</script>
+
+<script id="dirs_table_row_template" type="text/html">
+<tr id="{path}-row">
+<td></td>
+<td class="directory">
+    <div>{indentation_html}{expander_html}
+        <a title="';$output .= $stash->get(['LANG',0,'open_in_fm',0]);$output .= '" href="../filemanager/index.html?dirselect=homedir&dir={path_uri}" target="_blank">{dir_name}</a>
+    </div>
+</td>
+<td class="formatted_bytes"><div>{formatted_bytes}</div></td>
+<td class="raw_bytes"><div>{raw_bytes}</div></td>
+<td></td>
+</tr>
+</script>
+
+<script id="dirs_other_owner_table_row_template" type="text/html">
+<tr id="{path}-row">
+<td class="owner"><span style="visibility:hidden">';$output .= $stash->get(['locale',0,'maketext',['Owner: [_1]','{owner}' ]]);$output .= '</span></td>
+<td class="directory">
+    <div>{indentation_html}{expander_html}
+        <a title="';$output .= $stash->get(['LANG',0,'open_in_fm',0]);$output .= '" href="../filemanager/index.html?dirselect=homedir&dir={path_uri}" target="_blank">{dir_name}</a>
+    </div>
+</td>
+<td class="formatted_bytes"><div>{formatted_bytes}</div></td>
+<td class="raw_bytes"><div>{raw_bytes}</div></td>
+<td class="owner">';$output .= $stash->get(['locale',0,'maketext',['Owned by “[_1]”.','{owner}' ]]);$output .= '</td>
+</tr>
+</script>
+
+<script id="dirs_untraversible_table_row_template" type="text/html">
+<tr id="{path}-row">
+<td class="owner"><span style="visibility:hidden">';$output .= $stash->get(['locale',0,'maketext',['Owned by “[_1]”.','{owner}' ]]);$output .= '</span></td>
+<td class="directory untraversible">
+    <div>{indentation_html}{expander_html}
+        <span class="untraversible">{dir_name}</span>
+    </div>
+</td>
+<td class="formatted_bytes untraversible"><div>';$output .= $stash->get(['locale',0,'maketext',['unknown' ]]);$output .= '</div></td>
+<td class="raw_bytes untraversible"><div>';$output .= $stash->get(['locale',0,'maketext',['unknown' ]]);$output .= '</div></td>
+<td class="owner">';$output .= $stash->get(['locale',0,'maketext',['Owned by “[_1]”.','{owner}' ]]);$output .= '</td>
+</tr>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

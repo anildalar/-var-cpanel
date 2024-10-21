@@ -1,0 +1,178 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/quotalist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('CPScalar',$context->plugin('CPScalar'));if (!$stash->get(['data',0,'only_show_over_quota',0])){$stash->set('breadcrumburl','/scripts/quotalistsel')}$output .= do {my$output='';if ($stash->get(['Whostmgr',0,'template_vars',0,'envtype',0])eq 'virtuozzo' || $stash->get(['Whostmgr',0,'template_vars',0,'envtype',0])eq 'vzcontainer'){$output .= '
+    <div class="callout callout-info">
+        Your system uses Virtuozzo containers. For disk quotas to work, your hosting provider may need to enable quotas on the host node. More information is
+        available in our <a target="_blank" href="https://go.cpanel.net/vzquotas">documentation</a>.
+    </div>'}$output .= '
+';if ($stash->get(['data',0,'quotas_enabled',0])){$stash->set('DEFAULT_QUOTA',250);$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '<br />
+<script>
+function form_changed() {
+    var quota = this.quota;
+    if ( this.quota_control ) {
+        var changed = this.quota_control[0].defaultChecked
+            ? ( (quota.value !== quota.defaultValue) || !this.quota_control[0].checked )
+            : this.quota_control[0].checked
+        ;
+    }
+    else {
+        var changed = (quota.value !== quota.defaultValue)
+    }
+
+    var valid = true;
+    if (changed && !quota.disabled) {
+        valid = !!parseInt(quota.value.trim());
+    }
+
+    this.getElementsByTagName("button")[0].disabled = !changed || !valid;
+
+    return changed && valid;
+};
+
+var ERROR_NOTICE;
+function save_quota(form) {
+    if ( form_changed.call(form) ) {
+        var progress = new CPANEL.ajax.Progress_Panel( null, {
+            status_html: \'';$output .= $stash->get(['locale',0,'maketext',['Updating quota for “[output,class,_1,code]” …','{user}' ]]);$output .= '\'.replace( "{user}", form.user.value.html_encode() )
+        } );
+
+        var button = form.getElementsByTagName("button")[0];
+        var source = document.activeElement;
+
+        progress.show_from_source( source );
+
+        var quota = form.quota.disabled ? \'unlimited\' : parseInt(form.quota.value.trim());
+
+        var call = CPANEL.api( {
+            func: "editquota",
+            data: { user: form.user.value, quota:quota },
+            callback: {
+                failure: function(o) {
+                    progress.hide_to_point(source);
+
+                    var err = String(o.cpanel_error || o.error || o);
+
+                    if (ERROR_NOTICE) {
+                        ERROR_NOTICE.cfg.setProperty("content", err.html_encode());
+                    }
+                    else {
+                        ERROR_NOTICE = new CPANEL.widgets.Page_Notice({level:"error", content:err.html_encode(), replaces:ERROR_NOTICE});
+                    }
+                },
+                success: function(o) {
+                    progress.hide_to_point(source);
+
+                    if (ERROR_NOTICE && ERROR_NOTICE.element) {
+                        var old_notice = ERROR_NOTICE;
+                        ERROR_NOTICE = null;
+                        CPANEL.animate.slide_up(old_notice.element)
+                        .onComplete.subscribe( old_notice.destroy, old_notice, true );
+                    }
+
+                    CPANEL.dom.set_form_defaults(form);
+                    button.disabled = true;
+                    DOM.getAncestorByTagName(form,"td").setAttribute("sorttable_customkey",quota);
+
+                    new CPANEL.ajax.Dynamic_Notice({level:"success", content:"';$output .= $stash->get(['locale',0,'maketext',['Success!' ]]);$output .= '"});
+
+                    if (form.user.value in USER_USED_KIB) {
+                        var row = DOM.getAncestorByTagName(form, "tr");
+                        if (USER_USED_KIB[form.user.value] < (quota * 1024) || quota === \'unlimited\') {
+                            DOM.removeClass( row, "tdredshade" );
+                        }
+                        else {
+                            DOM.addClass( row, "tdredshade" );
+                        }
+                    }
+                }
+            }
+        } );
+    }
+};
+
+var USER_USED_KIB = {};
+</script>
+<div id="cjt_pagenotice_container"></div>
+<div class="brickcontainer">
+<div class="brickcontainer2">
+    <table class="sortable brick" id="qlist">
+    <thead>
+    <tr class="cellheader">
+            <th class="heavybg">&nbsp;User&nbsp;</th>
+            <th class="sorttable_space heavybg">&nbsp;Space&nbsp;Used&nbsp;</th>
+            <th class="sorttable_numeric heavybg">&nbsp;Quota&nbsp;</th>
+        </tr>
+     </thead>
+     <tbody>
+';$stash->set('totalused',0);$stash->set('anyone_over_quota',0);$stash->set('tclass','');do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'users',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$stash->set('tclass',($stash->get(['loop',0,'index',0])% 2)? 'tdshade2' : 'tdshade1');if ($stash->get(['userdata',0,'over_quota',0])){$stash->set('tclass',$stash->get('tclass').' tdredshade')}$stash->set('used_disp',$stash->get(['CPScalar',0,'sprintf',['%.2f',($stash->get(['userdata',0,'used',0])|| 0)/ 1024 ]]).'&nbsp;MB');$stash->set('limit_disp',$stash->get(['userdata',0,'limit',0])? (int(($stash->get(['userdata',0,'limit',0])|| 0)/ 1024)): $stash->get('DEFAULT_QUOTA'));$output .= '
+        <tr class="';$output .= $stash->get('tclass');$output .= '">
+            <td>
+            &nbsp;';$output .= $stash->get(['userdata',0,'domain',0]);$output .= ' [';$output .= $stash->get(['userdata',0,'name',0]);$output .= ']
+';if (($stash->get(['data',0,'showres',0])ne $stash->get(['userdata',0,'name',0]))&& $stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get(['userdata',0,'is_reseller',0])){$output .= '<br /><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/quotalist?showres=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '">Show only this reseller\'s accounts</a>'}$output .= '
+            <td class="align-numbers">';$output .= $stash->get('used_disp');$output .= '&nbsp;</td>
+            <td sorttable_customkey="';$output .= $stash->get(['userdata',0,'limit',0])? (int($stash->get(['userdata',0,'limit',0])/ 1024)): 'unlimited';$output .= '">
+            <form id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '_form" action="javascript:void(0)" onsubmit="save_quota(this)">
+                <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '" />
+';if ($stash->get(['data',0,'can_set_unlimited',0])||!$stash->get(['userdata',0,'limit',0])){$output .= '                <div class="form-group">
+                <input type="radio" name="quota_control" value="custom" ';if ($stash->get(['userdata',0,'limit',0])){$output .= 'checked="checked"'}$output .= ' />
+                <input type="text" class="quota" name="quota" value="';$output .= $stash->get('limit_disp');$output .= '" ';if (!$stash->get(['userdata',0,'limit',0])){$output .= 'disabled="disabled"'}$output .= ' />&nbsp;MB
+                </div>
+                <div class="form-group">
+                <label><input type="radio" name="quota_control" value="unlimited" ';if (!$stash->get(['userdata',0,'limit',0])){$output .= 'checked="checked"'}$output .= ' ';if (!$stash->get(['data',0,'can_set_unlimited',0])){$output .= 'disabled="disabled"'}$output .= ' /> ';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '</label>
+                </div>
+'}else {$output .= '<div class="form-group">
+<input type="text" class="quota" name="quota" value="';$output .= $stash->get('limit_disp');$output .= '" ';if (!$stash->get(['userdata',0,'limit',0])){$output .= 'disabled="disabled"'}$output .= ' />&nbsp;MB
+</div>
+'}$output .= '                <button type="submit" disabled="disabled" class="btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+            </form>
+            <script>EVENT.onDOMReady(function() {
+                var form = DOM.get(';$output .= $stash->get(['userdata',0,'name',0,'json',0]);$output .= ' + "_form");
+';if ($stash->get(['data',0,'can_set_unlimited',0])||!$stash->get(['userdata',0,'limit',0])){$output .= '                var gis = new CPANEL.ajax.Grouped_Input_Set( form, form.quota_control[0], form.quota_control[1] );
+'}$output .= '                EVENT.on( form, "click", form_changed );
+                EVENT.on( form, "keyup", form_changed );
+                USER_USED_KIB[';$output .= $stash->get(['userdata',0,'name',0,'json',0]);$output .= '] = ';$output .= $stash->get(['userdata',0,'used',0])|| 0;$output .= ';
+            });</script>
+            </td>
+        </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</tbody><tfoot>
+';if (!$stash->get(['data',0,'only_show_over_quota',0])){$output .= '<tr><td class="mediumbg"><b>&nbsp;Total&nbsp;Space&nbsp;Used&nbsp;</td><td class="align-numbers"><b>&nbsp;';$output .= $stash->get(['CPScalar',0,'sprintf',['%.2f',$stash->get(['data',0,'total_used',0])/ 1024 ]]);$output .= '&nbsp;MB&nbsp;</td><td>&nbsp;</td></tr>
+'}elsif (!$stash->get(['data',0,'anyone_over_quota',0])){$output .= '<tr><td class="mediumbg" colspan="4"><b>No users are over their quota.</td></tr>
+'}$output .= '    </tfoot>
+    </table>
+<br />
+';if ($stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get(['data',0,'showres',0])){$output .= do {my$output='';$output .= 'Only accounts belonging to ';$output .= $stash->get(['data',0,'showres',0]);$output .= ' are being shown. If you wish to see all accounts,
+<a href=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts/quotalist\'>click here</a>.
+';$context->include('_brick.tmpl',{'bricktitle'=>'Limited Output','content',$output })}}if (!$stash->get(['data',0,'only_show_over_quota',0])&& ($stash->get('totalused')> 0)){$output .= do {my$output='';$output .= 'If all users are listed having 0 disk space used and this is incorrect, please
+<a href=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts/newquota\'>click here</a> to rebuild your quota files.
+';$context->include('_brick.tmpl',{'bricktitle'=>'Hints','content',$output })}}$output .= '</div></div>
+';$output .= $context->process('_ajaxapp_footer.tmpl')}else {$output .= 'No quotas are enabled on this system.
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','scripts'=>['/js/sorttable.js' ],'app_key'=>$stash->get(['data',0,'only_show_over_quota',0])eq 1 ? 'show_accounts_over_quota' : 'quota_modification','extrastyle'=>'
+input.quota {
+    text-align: right;
+    width: 5em;
+}
+table.brick {
+    width: 100%;
+}
+.brickcontainer {
+    margin-left: 20px;
+}
+tr.tdredshade {
+    background-color: #ffaaaa;
+    font-size: inherit;
+}
+.form-group {
+    margin-bottom: 5px;
+}
+.align-numbers {
+    text-align: right;
+}
+html[dir=rtl] .callout-info {
+    border-left-color: transparent;
+    border-right-color: #2980b9;
+}
+.callout-info {
+    background-color: #d7edf9;
+    border-left-color: #2980b9;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

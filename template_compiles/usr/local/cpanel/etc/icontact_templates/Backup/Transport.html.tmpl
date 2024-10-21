@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Backup/Transport.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Transport errors encountered.' ]]));$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'upload_errors',0,'size',0])){$output .= '
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system encountered errors during transport of the backup files.' ]]);$output .= '
+        </p>
+        <p>';$output .= $context->process('include/zebra_table.tmpl');$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'upload_errors',0]),'titles'=>[$stash->get(['CPANEL',0,'locale',0,'maketext',['Transport' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup Label' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Message' ]])]}]]);$output .= '        </p>
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Below is a preview of the attached log file.' ]]);$output .= '
+        </p>
+    '}else {$output .= '
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system encountered errors during transport of the backup files. Below is a preview of the attached log file.' ]]);$output .= '
+        </p>
+    '}$output .= '
+<p>
+    ';$output .= $stash->get(['code_block',[{'title'=>'Preview of transport errors log:','formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,0,0])}]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

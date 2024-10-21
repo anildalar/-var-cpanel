@@ -1,0 +1,158 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/configView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div ng-show="isInstalled">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-8">
+            ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to configure a number of global settings for [asis,ModSecurity™]. For more information about each supported directive, you can review additional details using the links provided with each directive.' ]]);$output .= '
+        </div>
+    </div>
+
+    <div class="layout-medium message-container">
+        <div class="row ">
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" ng-show="saveError">
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    <div class="alert-message" id="saveError">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= '{{saveError}}';$output .= '
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" ng-show="saveSuccess">
+                <div class="alert alert-success">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message" id="saveSuccess">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['You have successfully saved your [asis,ModSecurity™] settings.' ]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="layout-medium">
+        <div class="row">
+            <div class="col-xs-8 col-sm-6 col-md-4 col-lg-4">
+                <span class="input-group filter-controls">
+                    <input  id="configFilter"
+                            class="form-control"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= "\"\n                            ng-model=\"searchPattern\"\n                            autocomplete=\"off\"\n                        auto-focus\n                        ng-keyup=\"clearSearch(\$event)\">\n                    <span class=\"input-group-btn\">\n                        <button id=\"btnSearch\"\n                                type=\"button\"\n                                class=\"btn btn-default\"\n                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Submit Search.' ]]);$output .= '"
+                                ng-click="toggleSearch(!searchPattern)">
+                            <span class="glyphicon" ng-class="{ \'glyphicon-search\': !searchPattern, \'glyphicon-remove\': searchPattern }"></span>
+                        </button>
+                    </span>
+                </span>
+            </div>
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+                <div class="controls">
+                    <button id="btnSaveTop"
+                        class="btn btn-primary"
+                        cp-action="save(form)"
+                        ng-disabled="disableSave(form)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                    </button>
+
+                    <button id="btnRefreshTop"
+                        class="btn btn-secondary"
+                        ng-click="fetch()">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '
+                    </button>
+                    <span class="position-anchor">
+                        <span spinner id="loadingSpinner1" class="headerSpinner loadingSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form name="form" novalidate ng-submit="save(form)" class="layout-medium ng-pristine ng-valid">
+        <div class="setting-list" ng-repeat="config in configs | filter:searchPattern">
+            <div class="form-group">
+                <div ng-show="config.type === \'radio\'">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label>{{config.name}}</label> <a id="lnk{{config.directive}}" href="{{config.url}}" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Click for more information about the “[_1]” directive.','{{config.directive}}' ]]);$output .= '">{{config.directive}} <span class="fas fa-external-link-alt"></span></a>
+                        </div>
+                    </div>
+                    <div class="row help-block">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            {{config.description}}
+                        </div>
+                    </div>
+                    <div ng-repeat="radio in config.radio_options">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-8 col-lg-8">
+                                <div class="radio">
+                                    <label>
+                                        <input type="radio" name="radioField{{config.setting_id}}"
+                                               id="radio{{config.setting_id}}{{radio.option}}"
+                                               ng-model="config.state" value="{{radio.option}}"
+                                               ng-change="changed(config)"
+                                               ng-checked="config.state === radio.option">
+                                        <span id="radio{{config.setting_id}}{{radio.option}}name">{{radio.name}}</span>
+                                        <span id="radio{{config.setting_id}}{{radio.option}}default"
+                                              ng-show="!config.engine && config.default && radio.option === config.default"> - <strong>';$output .= $stash->get(['locale',0,'maketext',['Default' ]]);$output .= '</strong> </span>
+                                    </label>
+                                    <span class="label label-warning" ng-if="showLogAllWarning(radio.option, config.directive)">';$output .= $stash->get(['locale',0,'maketext',['Debug Only' ]]);$output .= '</span>
+                                    <span class="help-block alert alert-warning"
+                                        ng-if="showLogAllWarning(radio.option, config.directive)">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Security Alert]: We strongly recommend that you do not select this option. This option causes Apache to log every transaction, including your users’ and clients’ private data. The resulting log files will fill your system’s file partitions quickly.' ]]);$output .= '
+                                    </span>
+                                    <span class="label label-success" ng-if="showLogNoteworthyLabel(radio.option, config.directive)">';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div ng-show="(config.type === \'text\') || (config.type === \'number\')">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <label>{{config.name}}</label> <a id="lnk{{config.directive}}" href="{{config.url}}" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Click for more information about the “[_1]” directive.','{{config.directive}}' ]]);$output .= '">{{config.directive}} <span class="fas fa-external-link-alt"></span></a>
+                        </div>
+                    </div>
+                    <div class="row help-block">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+                            {{config.description}}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input id="txt{{config.setting_id}}"
+                                   name="textField{{config.setting_id}}"
+                                   class="form-control"
+                                   ng-model="config.state"
+                                   dynamic-validator="config.validation"
+                                   validate-fn="validateField"
+                                   ng-change="changed(config)" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <ul validation-container field-name="\'textField\' + config.setting_id" prefix="\'validator_\' + config.directive">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row help-block" ng-show="config.default">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            ';$output .= $stash->get(['locale',0,'maketext',['If the “[_1]” directive does not appear in “[_2]”, its default value is “[_3]”.','{{config.directive}}','modsec2.conf','{{config.default}}' ]]);$output .= '
+                        </div>
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="form-group action-group controls">
+            <button id="btnSaveBottom"
+                    type="submit"
+                    class="btn btn-primary"
+                    cp-action="save(form)"
+                    ng-disabled="disableSave(form)">
+                ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+            </button>
+            <button id="btnRefreshBottom"
+                    type="button"
+                    class="btn btn-secondary"
+                    ng-click="fetch()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '
+            </button>
+            <span spinner id="loadingSpinner2" class="headerSpinner loadingSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+        </div>
+    </form>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

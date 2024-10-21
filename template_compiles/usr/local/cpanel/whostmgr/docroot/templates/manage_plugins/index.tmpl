@@ -1,0 +1,45 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/manage_plugins/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts2/manage_plugins/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= $context->process('master_templates/cjt2_header_include.tt');$stash->set('REQUIRED_FEATURES',['autossl' ]);$output .= '
+
+<div id="content"
+    ng-controller="BaseController as base"
+    class="ng-cloak"
+    ng-cloak>
+
+    <div ng-repeat="plugin in plugins" class="plugin-ctr">
+        <div class="plugin-info">
+            <div class="plugin-logo-ctr">
+                <span class="plugin-logo" style="background-image: url(\'{{plugin.logo}}\')"></span>
+            </div>
+            <div class="plugin-metadata-and-controls">
+                <div class="plugin-metadata">
+                    <div ng-repeat="metaitem in plugin.metadata" class="plugin-metadata-item">
+                        <span class="meta-key">{{metaitem.label}}:</span>
+                        <span class="meta-value">{{metaitem.value}}</span>
+                    </div>
+                </div>
+
+                <div class="plugin-controls">
+                    <div class="plugin-toggle-ctr">
+                        <button ng-disabled="any_plugin_in_progress()" cp-action="toggle(plugin)">
+                            <span ng-if="plugin.enabled">';$output .= $stash->get(['locale',0,'maketext',['Uninstall “[_1]”','{{plugin.label}}' ]]);$output .= '</span>
+                            <span ng-if="!plugin.enabled">';$output .= $stash->get(['locale',0,'maketext',['Install “[_1]”','{{plugin.label}}' ]]);$output .= "</span>\n                        </button>\n                    </div>\n                    <div ng-if=\"plugin.alert\" class=\"plugin-notice alert alert-warning\" id=\"{{plugin.pkg_name}}-alert\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\" aria-hidden=\"true\"></span>\n                        <div class=\"alert-message\">{{plugin.alert}}\n                        </div>\n                    </div>\n                </div>\n            </div>\n        </div>\n        <div ng-if=\"plugin.last_status_message\" class=\"plugin-notice alert alert-{{plugin.last_status_notice_type}} {{plugin_notice_is_dismissable(plugin) ? 'alert-dismissable' : ''}}\" id=\"{{plugin.pkg_name}}-statusMessage\">\n            <button ng-if=\"plugin.last_status_dismissable\" type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\" ng-click=\"clear_plugin_message(\$parent.plugin)\">&times;</button>\n            <span class=\"glyphicon glyphicon-{{plugin_notice_glyphicon(plugin)}}-sign\"></span>\n            <div class=\"alert-message\">\n                <span ng-if=\"plugin.tailing_log\"><i class=\"fas fa-spinner fa-spin\" aria-hidden=\"true\"></i></span>\n                {{plugin.last_status_message}}\n            </div>\n        </div>\n        <div ng-if=\"plugin.log_entry\" class=\"plugin-log-ctr\">\n            <div class=\"plugin-log-entry\">\n                ";$output .= $stash->get(['locale',0,'maketext',['Log entry: [_1]','{{plugin.log_entry}}' ]]);$output .= '
+            </div>
+
+            ';$output .= '            <textarea id="{{plugin.pkg_name}}-log" rows="12" cols="80" class="plugin-log" readonly></textarea>
+        </div>
+    </div>
+
+    <div ng-class="{\'view-disabled\': loading}" class="animate-view" ng-view></div>
+
+    <div growl></div>
+</div>
+
+<script type="text/javascript">
+    var PAGE          = PAGE || {};
+    PAGE.plugins      = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'addons',0])]]);$output .= ';
+    PAGE.total_memory = ';$output .= $stash->get(['data',0,'total_memory',0]);$output .= ';
+    PAGE.cpus         = ';$output .= $stash->get(['data',0,'cpus',0]);$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'manage_plugins','breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/manage_plugins/index.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>0,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,135 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/doeditmx.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('hasroot',$stash->get(['Whostmgr',0,'hasroot',0]));$output .= '
+';$output .= do {my$output='';if ($stash->get(['data',0,'accessdenied',0])){$output .= '
+    Access denied. You don\'t seem to own ';$output .= $stash->get(['data',0,'domain',0]);$output .= '.
+'}else {$output .= '
+
+</style>
+
+';if ($stash->get(['data',0,'uses_mail_worker',0])){$output .= $context->process('_edit_dns_zone_linked_node_warning.tmpl',{'username'=>$stash->get(['data',0,'username',0]),'domain'=>$stash->get(['data',0,'domain',0]),'hasroot'=>$stash->get('hasroot')})}else {$output .= '
+<div id="mxedit">
+<p>The lowest numbered MX entry currently points to: <strong>';$output .= $stash->get(['data',0,'mxentries',0,0,0,'mxentry',0,'replace',['\.$','' ]]);$output .= '</strong></p>
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/savemx" method="post">
+    <input type="hidden" name="zone" value="';$output .= $stash->get(['data',0,'domain',0]).'.db';$output .= '" />
+
+    ';if ($stash->get(['data',0,'downer',0])&& $stash->get(['data',0,'downer',0])ne 'root'){$output .= '
+        ';$output .= $context->include('mxcheck_include.tmpl');$output .= '
+    '}$output .= '
+
+
+    <h3>MX Entries</h3>
+    <table class="sortable" id="mxlist">
+        <thead>
+            <tr>
+                <th>TTL</th>
+                <th>Priority</th>
+                <th>MX Destination</th>
+                <th class="sorttable_no">Actions</th>
+                <th class="sorttable_no">&nbsp;</th>
+            </tr>
+        </thead>
+        <tfoot></tfoot>
+        <tbody id="mxlisttb">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'mxentries',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'entry'}=$_tt_value;$output .= '            ';$stash->set('ttlmatch',$stash->get(['entry',0,'premx',0,'match',['^\s*\S+\s+(\d+)\s' ]]));$output .= '            ';$stash->set('ttl',$stash->get('ttlmatch')? ($stash->get(['ttlmatch',0,0,0])|| $stash->get(['data',0,'zonettl',0])): $stash->get(['data',0,'zonettl',0]));$output .= '            <tr id="mxid-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                <td><input type="text" size="6" name="mxttl-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="';$output .= $stash->get(['ttl',0,'html',0]);$output .= '"></td>
+                <td><input type="text" size="3" name="mxpriority-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="';$output .= $stash->get(['entry',0,'priority',0,'html',0]);$output .= '"></td>
+                <td><input type="text" class="mx" name="mx-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="';$output .= $stash->get(['entry',0,'mxentry',0,'html',0]);$output .= '" /></td>
+                <td><a href="#" onclick="return delmx(';$output .= $stash->get(['loop',0,'index',0]);$output .= ');">Delete</a></td>
+                <td>
+                    <input type="hidden" id="delmx-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" name="delmx-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="0">
+                    <input type="hidden" name="mxline-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="';$output .= $stash->get(['entry',0,'linenum',0])+ 1;$output .= '" />
+                    <input type="hidden" name="zonefile-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" value="';$output .= $stash->get(['entry',0,'zonefile',0,'html',0]);$output .= '" />
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            <tr id="mxid-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '">
+                <td><input type="text" size="6" name="mxttl-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '" value="';$output .= $stash->get('ttl');$output .= '" /></td>
+                <td><input type="text" size="3" name="mxpriority-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '" value="';$output .= $stash->get(['data',0,'mxentries',0,'last',0,'priority',0])+ 10;$output .= '" /></td>
+                <td><input class="mx" type="text" name="mx-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '" value="" /></td>
+                <td><a href="#" onclick="return delmx(';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= ');">Delete</a></td>
+                <td>
+                    (new)
+                    <input type="hidden" id="delmx-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '" name="delmx-';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= '" value="0" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <script type="text/javascript">
+    //<![CDATA[
+    var mxid = ';$output .= $stash->get(['data',0,'mxentries',0,'size',0]);$output .= ';
+    var priority = ';$output .= $stash->get(['data',0,'mxentries',0,'last',0,'priority',0])+ 10;$output .= ';
+
+    var delmx = function(tmxid) {
+        document.getElementById(\'delmx-\' + tmxid).value = 1;
+        hiderow(\'mxid-\' + tmxid, 1);
+    };
+
+    var addanothermx = function() {
+        mxid++;
+        priority += 10;
+        var newtr = document.createElement(\'tr\');
+        newtr.id = \'mxid-\' + mxid;
+        var tdContents = [
+            \'<input type="text" size="6" name="mxttl-\' + mxid + \'" value="';$output .= $stash->get('ttl');$output .= '" />\',
+            \'<input type="text" size="3" name="mxpriority-\' + mxid + \'" value="\' + priority + \'" />\',
+            \'<input type="text" class="mx" name="mx-\' + mxid + \'" value="" />\',
+            \'<a href="#" onclick="return delmx(\' + mxid + \')">Delete</a>\',
+            \'<input type="hidden" id="delmx-\' + mxid + \'" name="delmx-\' + mxid + \'" value="0" />(new)\'
+        ];
+        for (var i=0; i < tdContents.length; i++) {
+            var newtd = document.createElement("td");
+            newtd.innerHTML = tdContents[i];
+            newtr.appendChild(newtd);
+        }
+        document.getElementById(\'mxlisttb\').appendChild(newtr);
+    };
+    //]]>
+    </script>
+    <p><a class="btn-secondary" href="#" onclick="addanothermx(); return false;">Add Another MX Entry Field</a></p>
+
+    <br />
+    <input type="submit" class="btn-primary" value="Save" />
+</form>
+
+</div><!-- end mxedit -->
+
+'}}$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts/editmx','scripts'=>['/js/hidecells_optimized.js','/js/sorttable_optimized.js' ],'extrastyle'=>'
+#mxedit { margin-left:25px; }
+input.mx { width: 40em; }
+
+ul.mxcheck_autolist {
+    list-style-type:disc;
+    margin-top: 0;
+}
+.mxcheck_autolist li {
+    padding: 3px 0;
+}
+ul.mx_list{
+    margin: 0 5px 15px;
+    padding: 0;
+}
+ul.mx_list li{
+    list-style:disc;
+    padding: 0;
+    margin:3px 0 0 10px;
+}
+#mx_input_table_and_table lable{
+    font-size:11px;
+}
+.label_wraps{
+    margin: 0 0 10px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+.label_txt{
+    font-size: 12px;
+}
+.highlight-accordian-desc{
+    padding-top: 5px;
+}
+label { cursor: pointer }
+
+#mxlisttb tr:last-child td {
+    border-bottom: 1px solid #ccc;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

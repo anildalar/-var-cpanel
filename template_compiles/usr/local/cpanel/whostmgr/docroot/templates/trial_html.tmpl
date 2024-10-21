@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/trial_html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPMath',$context->plugin('CPMath'));$stash->set('main_id','s' .$stash->get(['CPMath',0,'rand',[10000000000 ],'int',0]));$stash->set('image_class','s' .$stash->get(['CPMath',0,'rand',[10000000000 ],'int',0]));$stash->set('head_class','s' .$stash->get(['CPMath',0,'rand',[10000000000 ],'int',0]));$stash->set('p_class','s' .$stash->get(['CPMath',0,'rand',[10000000000 ],'int',0]));$output .= $context->process('_starthtml.tmpl',{'extrastyle'=>('
+#' .$stash->get('main_id').' {
+    margin: 0 auto;
+    clear: both;
+    height: 165px;
+    background-color: #').$stash->get(['data',0,'dev',0])? 'd0f1fe' : 'ffff00' .(';
+    border: 1px solid #000000;
+}
+
+.' .$stash->get('image_class').' {
+	float: left;
+}
+
+.' .$stash->get('head_class').' {
+	float: left;
+	font-size: 14px;
+	font-weight: bold;
+	width: 120px;
+	text-align: center;
+	padding-top:8px;
+}
+
+.' .$stash->get('p_class').' {
+	float: left;
+	padding-top: 10px;
+	padding-left:10px;
+}')});$output .= '<div id="';$output .= $stash->get('main_id');$output .= '">
+<div class="';$output .= $stash->get('image_class');$output .= '"><img
+';$output .= $stash->get(['data',0,'dev',0])? 'width="42" height="41"' : 'width="55" height="55"';$output .= 'src="
+';$output .= $stash->get(['MagicRevision',['/icons/' .($stash->get(['data',0,'dev',0])? 'dev_icon.gif' : 'warning.png'),'/scripts/command','/usr/local/cpanel/base' ]]);$output .= '" alt="';$output .= $stash->get(['data',0,'dev',0])? '' : 'Warning!';$output .= '" /></div>
+';if ($stash->get(['data',0,'dev',0])){$output .= '<div class="';$output .= $stash->get('head_class');$output .= '">DEVELOPMENT LICENSE</div>
+<div class="';$output .= $stash->get('p_class');$output .= "\">This server is running on a development license.\nIf this server is being used in a production environment, please notify\n<a href=\"mailto:cs\@cpanel.net?subject=";$output .= $stash->get(['data',0,'hostname',0]);$output .= '%20(';$output .= $stash->get(['data',0,'mainip',0]);$output .= ',%20';$output .= $stash->get(['data',0,'mainserverip',0]);$output .= ")%20is%20using%20a%20dev%20license%20in%20a%20production%20environment\">cs\@cpanel.net</a>\nimmediately.</div>\n"}else {$output .= '<div class="';$output .= $stash->get('head_class');$output .= '">TRIAL LICENSE</div>
+<div class="';$output .= $stash->get('p_class');$output .= '">This copy of cPanel
+/ WHM is a trial version and will expire at the end of the trial term.
+You will need to upgrade to a
+paid copy of cPanel / WHM to continue using the software after that term.</div>
+'}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,200 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Mail/includes/clientconf_email_manual_settings_include.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('txt_password',$stash->get(['locale',0,'maketext',['Use the email account’s password.' ]]));if ($stash->get(['mail_client_settings',0,'from_archiving',0])|| $stash->get(['mail_client_settings',0,'inbox_username',0,'match',['_mainaccount@' ]])||!$stash->get(['mail_client_settings',0,'inbox_username',0,'match',['@' ]])){$stash->set('txt_password',$stash->get(['locale',0,'maketext',['Use your [asis,cPanel] password.' ]]))}$output .= '
+
+';$output .= '
+
+
+';$stash->set('table_props','style="border-collapse: collapse; border-spacing: 0; margin-bottom: 0; width: 100%; background-color: transparent; max-width: 100%;"');$output .= '
+';$stash->set('td_props','style="border-top: 1px solid #ddd; padding: 8px;"');$output .= '
+';$stash->set('li_props','style="display: inline-block; padding-left: 5px; padding-right: 5px;"');$output .= '
+';$stash->set('ul_props','style="margin-bottom: 10px; margin-top: 0; list-style: outside none none; margin-left: -5px; padding-left: 0;"');$output .= '
+
+';if (!$stash->get('in_html_email')){$output .= '
+<script type="text/javascript">
+function toggleNonSSL() {
+    var disp = function(elem, setting) { document.getElementById(elem).style.display = setting };
+    if (document.getElementById(\'nonSSL\').style.display === \'block\') {
+        disp("nonSSL",     "none");
+        disp("hideNonSSL", "none");
+        disp("showNonSSL", "block");
+    }
+    else {
+        disp("nonSSL",     "block");
+        disp("hideNonSSL", "block");
+        disp("showNonSSL", "none");
+    }
+}
+</script>
+'}$output .= '
+
+    <div id="manual_settings_area" class="section">
+        <h2 id="hdrManualSettings">';$output .= $stash->get(['locale',0,'maketext',['Mail Client Manual Settings' ]]);$output .= '</h2>
+        ';if ($stash->get(['CPANEL',0,'appname',0])){$output .= '
+            <p id="descManualSettings" class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['If you do not see an auto-configuration script for your client in the list above, you can manually configure your mail client using the settings below.' ]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['We recommend that you use [output,acronym,IMAP,Internet Message Access Protocol] and [output,abbr,SMTP,Simple Mail Transfer Protocol] for your email account rather than [asis,ActiveSync] unless you are on [asis,Android] and need calendar and contacts support or push updates.' ]]);$output .= '
+            </p>
+        '}$output .= '
+        <div class="row">
+         <div class="col-md-6">
+          <div id="ssl_settings_area"
+            ';if ($stash->get('in_html_email')){$output .= '
+            style="background-color: #fff;  border: 1px solid transparent; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; border-color: #428bca;"
+            '}$output .= '
+            class="preferred-selection panel panel-primary">
+               <div
+                ';if ($stash->get('in_html_email')){$output .= '
+                style="border-top-left-radius: 3px; border-top-right-radius: 3px; padding: 10px 15px; background-color: #428bca; border-color: #428bca; color: #fff;"
+                '}$output .= '
+                class="panel-heading">
+                ';$output .= $stash->get(['locale',0,'maketext',['Secure [output,abbr,SSL,Secure Sockets Layer]/[output,abbr,TLS,Transport Layer Security] Settings' ]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['(Recommended)' ]]);$output .= '
+              </div>
+              <table class="table manual_settings_table" ';if ($stash->get('in_html_email')){$output .= $stash->get('table_props')}$output .= '>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSSLSettingsAreaUsername">';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSSLSettingsAreaUsername" class="data wrap-text">';$output .= $stash->get(['mail_client_settings',0,'inbox_username',0]);$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSettingsAreaPassword">';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSettingsAreaPassword" class="escape-note"> ';$output .= $stash->get('txt_password');$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSettingsAreaIncomingServer">';$output .= $stash->get(['locale',0,'maketext',['Incoming Server:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSettingsAreaIncomingServer" class="data">';$output .= $stash->get(['mail_client_settings',0,'inbox_host',0,'html',0]);$output .= '
+                          <ul
+                          ';if ($stash->get('in_html_email')){$output .= $stash->get('ul_props')}$output .= '
+                          class="port_list list-inline">
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,IMAP,Internet Message Access Protocol] Port: [_1]',993 ]]);$output .= '</li>
+                              ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,POP3,Post Office Protocol 3] Port: [_1]',995 ]]);$output .= '</li>
+                              '}$output .= '
+                          </ul>
+                      </td>
+                  </tr>
+                  ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSettingsAreaOutgoingServer">';$output .= $stash->get(['locale',0,'maketext',['Outgoing Server:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSettingsAreaOutGoingServer" class="data">';$output .= $stash->get(['mail_client_settings',0,'smtp_host',0,'html',0]);$output .= '
+                          <ul
+                          ';if ($stash->get('in_html_email')){$output .= $stash->get('ul_props')}$output .= '
+                          class="port_list list-inline">
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,abbr,SMTP,Simple Mail Transfer Protocol] Port: [_1]',$stash->get(['mail_client_settings',0,'smtp_port',0])]]);$output .= '</li>
+                          </ul>
+                      </td>
+                  </tr>
+                  '}$output .= '
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' colspan="2" class="notes">
+                          ';$stash->set('auth_reqd_protocols',['IMAP' ]);$output .= '                          ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                            ';$output .= $stash->get(['auth_reqd_protocols',0,'push',['POP3','SMTP' ]]);$output .= '                          '}$output .= '                          <div id="lblSettingsAreaSmallNote1" class="small_note">';$output .= $stash->get(['locale',0,'maketext',['[list_and,_1] [numerate,_1,requires,require] authentication.',$stash->get('auth_reqd_protocols')]]);$output .= '</div>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+         </div>
+  ';if ($stash->get(['mail_client_settings',0,'activesync_available',0])){$output .= '
+         <div class="col-md-6">
+          <div id="eas_ssl_settings_area"
+            ';if ($stash->get('in_html_email')){$output .= '
+            style="background-color: #fff;  border: 1px solid transparent; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; border-color: #428bca;"
+            '}$output .= '
+            class="preferred-selection panel panel-primary">
+               <div
+                ';if ($stash->get('in_html_email')){$output .= '
+                style="border-top-left-radius: 3px; border-top-right-radius: 3px; padding: 10px 15px; background-color: #428bca; border-color: #428bca; color: #fff;"
+                '}$output .= '
+                class="panel-heading">
+                ';$output .= $stash->get(['locale',0,'maketext',['[asis,ActiveSync] [output,abbr,SSL,Secure Sockets Layer]/[output,abbr,TLS,Transport Layer Security] Settings (for [asis,Android])' ]]);$output .= '
+              </div>
+              <table class="table manual_settings_table" ';if ($stash->get('in_html_email')){$output .= $stash->get('table_props')}$output .= '>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSSLSettingsAreaUsernameEas">';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSSLSettingsAreaUsernameEas" class="data wrap-text">';$output .= $stash->get(['mail_client_settings',0,'inbox_username',0]);$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSettingsAreaPasswordEas">';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSettingsAreaPasswordEas" class="escape-note"> ';$output .= $stash->get('txt_password');$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblSettingsAreaIncomingServerEas">';$output .= $stash->get(['locale',0,'maketext',['ActiveSync Server:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valSettingsAreaIncomingServerEas" class="data">';$output .= $stash->get(['mail_client_settings',0,'inbox_host',0,'html',0]);$output .= '
+                          <ul
+                          ';if ($stash->get('in_html_email')){$output .= $stash->get('ul_props')}$output .= '
+                          class="port_list list-inline">
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[asis,ActiveSync] Port: [_1]',$stash->get(['mail_client_settings',0,'activesync_port',0,'html',0])]]);$output .= '</li>
+                          </ul>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+         </div>
+'}$output .= '
+      </div>
+        ';if (!$stash->get('in_html_email')&& $stash->get(['mail_client_settings',0,'has_plaintext_authentication',0])){$output .= '
+        <div style="margin-bottom: 10px">
+            <a href="javascript:void(0)" onClick="toggleNonSSL()">
+                <span id="showNonSSL">';$output .= $stash->get(['locale',0,'maketext',['Show Non [asis,SSL/TLS] Settings' ]]);$output .= '&nbsp;<span class="fas fa-chevron-down fa-lg"></span></span>
+                <span id="hideNonSSL" style="display: none">';$output .= $stash->get(['locale',0,'maketext',['Hide Non [asis,SSL/TLS] Settings' ]]);$output .= '&nbsp;<span class="fas fa-chevron-up fa-lg"></span></span>
+            </a>
+        </div>
+        '}$output .= '
+';if ($stash->get(['mail_client_settings',0,'has_plaintext_authentication',0])){$output .= '
+        <div class="row" id="nonSSL" style="display: none">
+         <div class="col-md-6">
+           <div id="non_ssl_settings_area"
+            ';if ($stash->get('in_html_email')){$output .= '
+            style="background-color: #fff;  border: 1px solid transparent; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; border-color: #f6c342;"
+            '}$output .= '
+           class="panel panel-default panel-warning">
+               <div
+                ';if ($stash->get('in_html_email')){$output .= '
+                style="border-top-left-radius: 3px; border-top-right-radius: 3px; padding: 10px 15px; background-color: #fcf8e1; border-color: #f6c342; color: #333;"
+                '}$output .= '
+                class="panel-heading">
+                <span id="descNonSSLSettings" class="caption not-recommended">';$output .= $stash->get(['locale',0,'maketext',['Non-[asis,SSL] Settings (NOT Recommended)' ]]);$output .= '</span>
+              </div>
+              <table id="tblManualSettingsTable" class="table manual_settings_table" ';if ($stash->get('in_html_email')){$output .= $stash->get('table_props')}$output .= '>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblNonSSLSettingsUsername">';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valNonSSLSettingsUsername" class="data wrap-text">';$output .= $stash->get(['mail_client_settings',0,'inbox_username',0,'html',0]);$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblNonSSLSettingsPassword">';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valNonSSLSettingsPassword" class="escape-note">';$output .= $stash->get('txt_password');$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="lblNonSSLSettingsIncomingServer">';$output .= $stash->get(['locale',0,'maketext',['Incoming Server:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="valNonSSLSettingsIncomingServer" class="data">';$output .= $stash->get(['mail_client_settings',0,'mail_domain',0,'html',0]);$output .= '                          <ul
+                          ';if ($stash->get('in_html_email')){$output .= $stash->get('ul_props')}$output .= '
+                          class="port_list list-inline">
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,IMAP,Internet Message Access Protocol] Port: [_1]',143 ]]);$output .= '</li>
+                               ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,POP3,Post Office Protocol 3] Port: [_1]',110 ]]);$output .= '</li>
+                              '}$output .= '
+                          </ul>
+                      </td>
+                  </tr>
+                   ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="NonSSLSettingsOutgoingServer">';$output .= $stash->get(['locale',0,'maketext',['Outgoing Server:' ]]);$output .= '</td>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' id="NonSSLSettingsOutgoingServerData" class="data">';$output .= $stash->get(['mail_client_settings',0,'mail_domain',0,'html',0]);$output .= '                          <ul
+                          ';if ($stash->get('in_html_email')){$output .= $stash->get('ul_props')}$output .= '
+                          class="port_list list-inline">
+                              <li ';if ($stash->get('in_html_email')){$output .= $stash->get('li_props')}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['[output,abbr,SMTP,Simple Mail Transfer Protocol] Port: [_1]',$stash->get(['mail_client_settings',0,'smtp_insecure_port',0])]]);$output .= '</li>
+                          </ul>
+                      </td>
+                  </tr>
+                  '}$output .= '
+                  <tr>
+                      <td ';if ($stash->get('in_html_email')){$output .= $stash->get('td_props')}$output .= ' colspan="2" class="notes">
+                          ';$stash->set('auth_reqd_protocols',['IMAP' ]);$output .= '                          ';if (!$stash->get(['mail_client_settings',0,'from_archiving',0])){$output .= '
+                            ';$output .= $stash->get(['auth_reqd_protocols',0,'push',['POP3','SMTP' ]]);$output .= '                          '}$output .= '                          <div id="descNonSSLSettingsAuthenticationIsRequiredForIMAPPOP3SMTP1" class="small_note">';$output .= $stash->get(['locale',0,'maketext',['[list_and,_1] [numerate,_1,requires,require] authentication.',$stash->get('auth_reqd_protocols')]]);$output .= '</div>
+                      </td>
+                  </tr>
+              </table>
+          </div>
+        </div>
+      </div>
+'}$output .= '
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,95 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/shared/templates/sslinstall_include.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('HTMLOptions',$context->plugin('HTMLOptions'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('browse_source_is_apache',($stash->get(['NVData',0,'get_page_nvdata',0,'browse_source',0])eq 'apache'));$output .= '
+<script type="text/plain" id="browsessl_default_form">
+    <p>{{{introBlurb_html}}}</p>
+    ';if ($stash->get(['CPANEL',0,'is_whm',0])&&!$stash->get(['CPANEL',0,'is_dnsonly',0])){$output .= '
+        <input id="cert_browser_users_radio" type="radio" name="browse_source" value="user" ';$output .= $stash->get('browse_source_is_apache')? '' : 'checked';$output .= '>
+        <label for="cert_browser_users_radio">';$output .= $stash->get(['locale',0,'maketext',['Browse Account:' ]]);$output .= '</label>
+
+        <select id="users" name="users" ';$output .= $stash->get('browse_source_is_apache')? 'disabled' : '';$output .= '>';$output .= '        ';$output .= $stash->get(['cert_browser_users',0,'options_as_html',[{'value'=>'user','text'=>'user','class'=>'class','selected'=>$stash->get(['CPANEL',0,'authuser',0])}]]);$output .= '        </select>
+
+        <p>
+        <input id="cert_browser_apache_radio" type="radio" name="browse_source" value="apache" ';$output .= $stash->get('browse_source_is_apache')? 'checked' : '';$output .= '>
+        <label for="cert_browser_apache_radio">';$output .= $stash->get(['locale',0,'maketext',['Browse Apache' ]]);$output .= '</label>
+        </p>
+
+    '}$output .= '
+    <label for="certlist">';$output .= $stash->get(['locale',0,'maketext',['Certificate:' ]]);$output .= '</label>
+    <div id="certlist">
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="hiddenWhiteSpaceListTemplate">
+<ul>
+  {{#each data}}
+  <li title={{{this.title}}}>{{{this.value}}}</li>
+  {{/each}}
+</ul>
+</script>
+
+<script type="text/x-handlebars-template" id="ipSelectorItemTemplate">
+<div class="ip_combo_item {{#if hasssl}}ip_combo_hasssl{{else}}ip_combo_nossl{{/if}}">
+{{#if isShared}}
+    ';$output .= $stash->get(['locale',0,'maketext',['[_1], shared','{{{ip}}}' ]]);$output .= '
+{{else}}
+    {{{ip}}}
+{{/if}}
+{{#if ipInfo_html}}
+    ({{{ipInfo_html}}})
+{{/if}}
+</div>
+</script>
+
+<script type="text/x-handlebars-template" id="installSuccessTemplate">
+<div class="success-popup">
+    <div class="success-popup-body">
+        <p>{{{statusMessageHTML}}}</p>
+        <p>
+            {{{workingDomainsMessage}}}
+            <ul class=\'working-domains\'>
+            {{#each workingDomains}}
+                {{#if this.makeLink}}
+                    <li><a target="_blank" href="https://{{this.domain}}">{{this.domain}}</a></li>
+                {{else}}
+                    <li>{{{this.domain}}}</li>
+                {{/if}}
+            {{/each}}
+            </ul>
+
+            {{#if warningDomains}}
+                {{{warningDomainsMessage}}}
+                <ul class=\'warning-domains\'>
+                {{#each warningDomains}}
+                    {{#if this.makeLink}}
+                        <li><a target="_blank" href="https://{{this.domain}}">{{this.domain}}</a></li>
+                    {{else}}
+                        <li>{{{this.domain}}}</li>
+                    {{/if}}
+                {{/each}}
+                </ul>
+            {{/if}}
+
+            {{#if extraCertificateDomains}}
+                {{{extraCertificateDomainsMessage}}}
+                <ul class=\'extra-certificate-domains\'>
+                {{#each extraCertificateDomains}}
+                    {{#if this.makeLink}}
+                        <li><a target="_blank" href="https://{{this.domain}}">{{this.domain}}</a></li>
+                    {{else}}
+                        <li>{{this.domain}}</li>
+                    {{/if}}
+                {{/each}}
+                </ul>
+            {{/if}}
+        </p>
+        {{#if needReload}}
+            ';$output .= $stash->get(['locale',0,'maketext',['Click “[_1]” to reload this page.',$stash->get(['locale',0,'maketext',['OK' ]])]]);$output .= '
+        {{/if}}
+    </div>
+</div>
+</script>
+
+';$stash->set('sslinstall_lexicon',{'Certificate Authority Bundle'=>$stash->get(['locale',0,'lextext',['Certificate Authority Bundle' ]]),'Certificate'=>$stash->get(['locale',0,'lextext',['Certificate' ]]),'Description'=>$stash->get(['locale',0,'lextext',['Description' ]]),'Domain names on the certificate.'=>$stash->get(['locale',0,'lextext',['Domain names on the certificate.' ]]),'Domain'=>$stash->get(['locale',0,'lextext',['Domain' ]]),'Domains'=>$stash->get(['locale',0,'lextext',['Domains' ]]),'The certificate’s expiration date'=>$stash->get(['locale',0,'lextext',['The certificate’s expiration date' ]]),'Expiration'=>$stash->get(['locale',0,'lextext',['Expiration' ]]),'Hide'=>$stash->get(['locale',0,'lextext',['Hide' ]]),'IP'=>$stash->get(['locale',0,'lextext',['IP' ]]),'Installing …'=>$stash->get(['locale',0,'lextext',['Installing …' ]]),'Issuer organization name.'=>$stash->get(['locale',0,'lextext',['Issuer organization name.' ]]),'Issuer'=>$stash->get(['locale',0,'lextext',['Issuer' ]]),'Key'=>$stash->get(['locale',0,'lextext',['Key' ]]),'Loading certificates for “[output,strong,_1]” …'=>$stash->get(['locale',0,'lextext',['Loading certificates for “[output,strong,_1]” …' ]]),'Choose a domain.'=>$stash->get(['locale',0,'lextext',['Choose a domain.' ]]),'Provide or retrieve a certificate.'=>$stash->get(['locale',0,'lextext',['Provide or retrieve a certificate.' ]]),'Provide or retrieve a key.'=>$stash->get(['locale',0,'lextext',['Provide or retrieve a key.' ]]),'Enter a valid IP address.'=>$stash->get(['locale',0,'lextext',['Enter a valid IP address.' ]]),'SSL Certificate List'=>$stash->get(['locale',0,'lextext',['SSL Certificate List' ]]),'SSL Certificate Successfully Updated'=>$stash->get(['locale',0,'lextext',['SSL Certificate Successfully Updated' ]]),'SSL Host Successfully Installed'=>$stash->get(['locale',0,'lextext',['SSL Host Successfully Installed' ]]),'Select a certificate below:'=>$stash->get(['locale',0,'lextext',['Select a certificate below:' ]]),'Self-Signed'=>$stash->get(['locale',0,'lextext',['Self-Signed' ]]),'Show'=>$stash->get(['locale',0,'lextext',['Show' ]]),'The CA bundle does not match the certificate.'=>$stash->get(['locale',0,'lextext',['The CA bundle does not match the certificate.' ]]),'The CA bundle is invalid.'=>$stash->get(['locale',0,'lextext',['The CA bundle is invalid.' ]]),'The IP address “[_1]” is not available, or you do not have permission to use it.'=>$stash->get(['locale',0,'lextext',['The IP address “[_1]” is not available, or you do not have permission to use it.' ]]),'The SSL certificate also supports [numerate,_1,this domain,these domains], but [numerate,_1,this domain does,these domains do] not refer to the SSL website mentioned above:'=>$stash->get(['locale',0,'lextext',['The SSL certificate also supports [numerate,_1,this domain,these domains], but [numerate,_1,this domain does,these domains do] not refer to the SSL website mentioned above:' ]]),'The SSL website is also accessible via [numerate,_1,this domain,these domains], but the certificate does not support [numerate,_1,this domain,these domains]. Web browsers will show a warning when a user accesses [numerate,_1,this domain,these domains] via HTTPS:'=>$stash->get(['locale',0,'lextext',['The SSL website is also accessible via [numerate,_1,this domain,these domains], but the certificate does not support [numerate,_1,this domain,these domains]. Web browsers will show a warning when a user accesses [numerate,_1,this domain,these domains] via HTTPS:' ]]),'The SSL website is now active and accessible via HTTPS on [numerate,_1,this domain,these domains]:'=>$stash->get(['locale',0,'lextext',['The SSL website is now active and accessible via HTTPS on [numerate,_1,this domain,these domains]:' ]]),'The certificate does not match your selected domain.'=>$stash->get(['locale',0,'lextext',['The certificate does not match your selected domain.' ]]),'The certificate information could not be retrieved because of an error: [_1]'=>$stash->get(['locale',0,'lextext',['The certificate information could not be retrieved because of an error: [_1]' ]]),'The certificate is not valid.'=>$stash->get(['locale',0,'lextext',['The certificate is not valid.' ]]),'The certificate list could not be retrieved because of an error: [_1]'=>$stash->get(['locale',0,'lextext',['The certificate list could not be retrieved because of an error: [_1]' ]]),'The key does not match the certificate.'=>$stash->get(['locale',0,'lextext',['The key does not match the certificate.' ]]),'The key is invalid.'=>$stash->get(['locale',0,'lextext',['The key is invalid.' ]]),'The lookup failed because of an error: [_1]'=>$stash->get(['locale',0,'lextext',['The lookup failed because of an error: [_1]' ]]),'This SSL certificate was already installed.'=>$stash->get(['locale',0,'lextext',['This SSL certificate was already installed.' ]]),'Use Certificate'=>$stash->get(['locale',0,'lextext',['Use Certificate' ]]),'A user-defined description for the certificate.'=>$stash->get(['locale',0,'lextext',['A user-defined description for the certificate.' ]]),'When [output,asis,cPanel] installs an SSL certificate onto one of your domains, it also installs the same certificate onto that domain’s “[_1]” subdomain, and vice-versa. Unless your certificate matches both domains, however, only one of the two domains will show as a secure site in a user’s web browser.'=>$stash->get(['locale',0,'lextext',['When [output,asis,cPanel] installs an SSL certificate onto one of your domains, it also installs the same certificate onto that domain’s “[_1]” subdomain, and vice-versa. Unless your certificate matches both domains, however, only one of the two domains will show as a secure site in a user’s web browser.' ]]),'You have successfully configured SSL.'=>$stash->get(['locale',0,'lextext',['You have successfully configured SSL.' ]]),'You have successfully updated the SSL website’s certificate.'=>$stash->get(['locale',0,'lextext',['You have successfully updated the SSL website’s certificate.' ]]),'Because your server does not support [output,acronym,SNI,Server Name Indication], all of your IP address’s SSL websites must use the same certificate; thus, this table only shows certificates that match at least one domain on each of your SSL websites.'=>$stash->get(['locale',0,'lextext',['Because your server does not support [output,acronym,SNI,Server Name Indication], all of your IP address’s SSL websites must use the same certificate; thus, this table only shows certificates that match at least one domain on each of your SSL websites.' ]]),'Cancel'=>$stash->get(['locale',0,'lextext',['Cancel' ]]),'Certificates that do not have a domain associated with your account are not listed here.'=>$stash->get(['locale',0,'lextext',['Certificates that do not have a domain associated with your account are not listed here.' ]]),'Choose a certificate to install.'=>$stash->get(['locale',0,'lextext',['Choose a certificate to install.' ]]),'Choose the account that contains the desired certificate to install. Then, select the certificate.'=>$stash->get(['locale',0,'lextext',['Choose the account that contains the desired certificate to install. Then, select the certificate.' ]]),'The SSL website is also accessible via [numerate,_1,this domain,these domains], but the certificate does not support [numerate,_1,it,them]. Web browsers will show a warning when accessing [numerate,_1,this domain,these domains] via HTTPS:'=>$stash->get(['locale',0,'lextext',['The SSL website is also accessible via [numerate,_1,this domain,these domains], but the certificate does not support [numerate,_1,it,them]. Web browsers will show a warning when accessing [numerate,_1,this domain,these domains] via HTTPS:' ]]),'This account does not have any installable certificates.'=>$stash->get(['locale',0,'lextext',['This account does not have any installable certificates.' ]]),'You can manage all of your saved certificates on the [output,url,_1,“Certificates” page].'=>$stash->get(['locale',0,'lextext',['You can manage all of your saved certificates on the [output,url,_1,“Certificates” page].' ]]),'SSL is installed; “[_1]” ([numerate,_2,alias,aliases] [list_and,_3]) is primary.'=>$stash->get(['locale',0,'lextext',['SSL is installed; “[_1]” ([numerate,_2,alias,aliases] [list_and,_3]) is primary.' ]]),'SSL is installed; “[_1]” is primary.'=>$stash->get(['locale',0,'lextext',['SSL is installed; “[_1]” is primary.' ]]),'We recommend that users manage individual subdomains (e.g., “[_1]”, “[_2]”) instead of a single wildcard subdomain (e.g., “[_3]”).'=>$stash->get(['locale',0,'lextext',['We recommend that users manage individual subdomains (e.g., “[_1]”, “[_2]”) instead of a single wildcard subdomain (e.g., “[_3]”).' ]])});$output .= '<script>
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('sslinstall_lexicon')]]);$output .= ' );
+</script>
+
+';$output .= $context->process('ssl_certificate_parse.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

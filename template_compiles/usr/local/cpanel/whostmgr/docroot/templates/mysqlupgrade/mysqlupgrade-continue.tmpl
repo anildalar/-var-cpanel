@@ -1,0 +1,46 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade-continue.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version' ]]),'theme'=>'bootstrap','breadcrumburl'=>'/scripts/mysqlupgrade','extrastyle'=>'
+        .inline-block {
+            display: inline-block;
+        }
+    ' });$stash->set('upgrade_types',{'unattended_automatic'=>$stash->get(['locale',0,'maketext',['Unattended Upgrade' ]]),'unattended_manual'=>$stash->get(['locale',0,'maketext',['Partially-Interactive Upgrade' ]]),'interactive'=>$stash->get(['locale',0,'maketext',['Interactive Upgrade' ]])});$output .= '<div id="content">
+  <div class="callout callout-warning">
+    <div class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '</div>
+    <p>';$output .= $stash->get(['data',0,'message',0]);$output .= '</p>
+  </div>
+
+  <h2>';$output .= $stash->get(['locale',0,'maketext',['Upgrade Details' ]]);$output .= '</h2>
+  <table role="table" class="table table-responsive table-condensed table-striped">
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Current step number:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'step',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Starting database version:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Selected database version:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Upgrade Type:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['upgrade_types',0,$stash->get(['data',0,'upgrade_type',0]),0]);$output .= '</td>
+    </tr>
+  </table>
+
+  <div class="form-group">
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post" class="inline-block">
+      <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+      <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+      <input type="hidden" name="upgrade_type" value="';$output .= $stash->get(['data',0,'upgrade_type',0,'html',0]);$output .= '">
+      <input type="hidden" name="step" value="';$output .= $stash->get(['data',0,'step',0,'html',0]);$output .= '">
+      <button type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Resume Current Upgrade' ]]);$output .= '</button>
+    </form>
+
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post" class="inline-block">
+      <input type="hidden" name="ignore_last_run" value="1">
+      <button type="submit" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Ignore Current Upgrade' ]]);$output .= '</button>
+    </form>
+  </div>
+</div>
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

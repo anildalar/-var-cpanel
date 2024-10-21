@@ -1,0 +1,151 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/GoogleTransport.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Google Drive™,target,_blank] Destination','https://drive.google.com/' ]]);$output .= '</a></h4>
+<p class="documentation-info" id="documentation-info">
+    ';$output .= $stash->get(['locale',0,'maketext',['For more information on how to properly configure Google Drive as a remote backup destination, read [output,url,_1,our documentation,target,_2].','https://go.cpanel.net/GoogleDrive','googledrivedoc' ]]);$output .= '
+    <span class=\'fas fa-external-link-alt fa-sm\'></span>
+</p>
+<form name="google_transport_config" ng-if="!destinationState.fetching_data" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination" novalidate>
+    <div class="section-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="googledrive_name">';$output .= $stash->get(['locale',0,'maketext',['Destination Name' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter a name for this destination.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <input ng-model=\"destinationState.destination.googledrive.name\" type=\"text\" name=\"name\" id=\"googledrive_name\" class=\"form-control\" minlength=\"1\" ng-maxlength=\"256\" required/>\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"google_transport_config.name.\$dirty && (google_transport_config.name.\$error.required || google_transport_config.name.\$error.maxlength)\">\n                    <ul class=\"validation-container\">\n                        <li class=\"validation validation-error\" ng-if=\"google_transport_config.name.\$error.required\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['You must enter a destination name.' ]]);$output .= "\n                            </span>\n                        </li>\n                        <li class=\"validation validation-error\" ng-if=\"google_transport_config.name.\$error.maxlength\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">\n                               ";$output .= $stash->get(['locale',0,'maketext',['The destination name must contain between [numf,1] and [numf,256] characters.' ]]);$output .= '
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input ng-model="destinationState.destination.googledrive.upload_system_backup" type="checkbox" name="upload_system_backup" id="googledrive_system"/>
+                    <label for="googledrive_system">';$output .= $stash->get(['locale',0,'maketext',['Transfer System Backups to this Destination' ]]);$output .= '</label>
+                    <div class="callout callout-warning">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] System Backups contain sensitive security details.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You should transfer System Backups over encrypted methods.' ]]);$output .= '</div>
+                </div>
+            </div>
+        </div>
+
+		<div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input ng-model="destinationState.destination.googledrive.only_used_for_logs" type="checkbox" name="only_used_for_logs" id="googledrive_logsonly"/>
+                    <label for="googledrive_logsonly">';$output .= $stash->get(['locale',0,'maketext',['Only use this destination for log file transfers[comment,title of option like one above, but looks wrong title cased]' ]]);$output .= '</label>
+                    <div class="callout callout-warning">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Enabling this option will prevent it from being used for account and/or system backups.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enable this option if this destination will only be used for log backups. If it will be used for all backups, leave this unchecked.' ]]);$output .= '</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="googledrive_folder">';$output .= $stash->get(['locale',0,'maketext',['Folder' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Optional. Specify the path, relative to the account’s home directory, where the system stores backups.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.googledrive.folder"
+                        type="text"
+                        name="folder"
+                        id="googledrive_folder"
+                        class="form-control"
+                        backup-location />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="folder">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="googledrive_client_id">';$output .= $stash->get(['locale',0,'maketext',['Client [asis,ID]' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter the client [asis,ID] for the access credentials.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.googledrive.client_id"
+                        type="text"
+                        name="client_id"
+                        id="googledrive_client_id"
+                        class="form-control"
+                        ng-trim="false"
+                        nospaces
+                        required/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="client_id">
+                        <validation-item
+                            field-name="client_id"
+                            validation-name="required">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You must enter a client [asis,ID] for the remote destination.' ]]);$output .= '
+			</validation-item>
+		    </ul>
+		</div>
+           </div>
+	   <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="googledrive_client_secret">';$output .= $stash->get(['locale',0,'maketext',['Client secret' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter the client secret for the access credentials.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.googledrive.client_secret"
+                        type="password"
+                        name="client_secret"
+                        id="googledrive_client_secret"
+                        class="form-control"
+                        ng-trim="false"
+                        required
+                        nospaces />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="client_secret">
+                        <validation-item
+                            field-name="client_secret"
+                            validation-name="required">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You must enter a client secret for the remote destination.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div id="generate_google_credentials_container" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <button type="button"
+                        cp-action="checkCredentials(destinationState.destination.googledrive.client_id, destinationState.destination.googledrive.client_secret, destinationState.checkCredentialsOnSave)"
+                        id="generate_google_credentials"
+                        uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Generate the necessary credentials from your client [asis,ID] and client secret.' ]]);$output .= '"
+                        tooltip-placement="auto right"
+                        ng-disabled="!destinationState.destination.googledrive.client_secret.trim().length || !destinationState.destination.googledrive.client_id.trim().length"
+                        button-class="btn-default">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Generate Credentials' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="googledrive_timeout">';$output .= $stash->get(['locale',0,'maketext',['Timeout' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The number of seconds that the system will wait for a response from the remote server.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <input\n                        ng-model=\"destinationState.destination.googledrive.timeout\"\n                        type=\"number\"\n                        name=\"timeout\"\n                        id=\"googledrive_timeout\"\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\"\n                        class=\"form-control\"\n                        min=\"30\"\n                        max=\"300\"\n                        positive-integer />\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <ul validation-container field-name=\"timeout\">\n                        <li validation-item field-name=\"timeout\" validation-name=\"number\">\n                            ";$output .= $stash->get('std_timeout_number_message');$output .= '
+                        </li>
+                         <li validation-item field-name="timeout" validation-name="min">
+                            ';$output .= $stash->get('std_timeout_validation_message');$output .= '
+                        </li>
+                        <li validation-item field-name="timeout" validation-name="max">
+                            ';$output .= $stash->get('std_timeout_validation_message');$output .= "\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <div id=\"save_config\">\n                        <button type=\"submit\" id=\"google_save_destination_btn\" cp-action=\"saveDestination(destinationState.destination)\" ng-disabled=\"google_transport_config.\$pristine || google_transport_config.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save Destination' ]]);$output .= "</button>\n                        <button type=\"button\" id=\"google_save_and_validate_destination\" button-class=\"btn-default\" cp-action=\"saveAndValidateDestination(destinationState.destination)\" ng-disabled=\"google_transport_config.\$pristine || google_transport_config.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save and Validate Destination' ]]);$output .= '</button>
+                        <button type="button" class="btn btn-link" id="cancel_destination" ng-click="cancelDestination()" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

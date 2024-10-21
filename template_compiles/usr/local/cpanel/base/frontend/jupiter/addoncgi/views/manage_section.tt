@@ -1,0 +1,84 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/manage_section.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';if ($stash->get('has_instances')){$stash->set('has_admin',0);$stash->set('has_user',0);$stash->set('module_name',$stash->get(['module',0,'name',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sorted_instances',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'instances'}=$_tt_value;$stash->set('has_admin',do {my$output='';if ($stash->get(['instances',0,'url_to_install_admin',0])){$output .= 1}$output});$stash->set('has_user',do {my$output='';if ($stash->get(['instances',0,'url_to_install',0])){$output .= 1}$output});last FOR1;;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('has_other',$stash->get('has_user')&& $stash->get(['module',0,'meta',0,'miscurls',0,'size',0])> 0);$output .= '
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <table class="table table-striped table-condensed" id="instances">
+            <thead>
+                <tr>
+                    ';if ($stash->get('has_user')){$output .= '
+                    <th id="user-url-title">';$output .= $stash->get(['locale',0,'maketext',['Site URL' ]]);$output .= '</th>
+                    '}$output .= '
+                    ';if ($stash->get('has_admin')){$output .= '
+                    <th id="admin-url-title">';$output .= $stash->get(['locale',0,'maketext',['Administrator [asis,URL]' ]]);$output .= '</th>
+                    '}$output .= '
+                    ';if ($stash->get('has_other')){$output .= '
+                    <th id="other-url-title">';$output .= $stash->get(['locale',0,'maketext',['Other [asis,URLs]' ]]);$output .= '</th>
+                    '}$output .= '
+                    ';if ($stash->get(['module',0,'meta',0,'display',0,'versions',0])){$output .= '
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Version' ]]);$output .= '</th>
+                    '}$output .= '
+                </tr>
+            </thead>
+            <tbody>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sorted_instances',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'instance'}=$_tt_value;$output .= '
+                <tr>
+                    ';if ($stash->get('has_user')){$output .= '
+                    <td>
+                        ';if ($stash->get(['instance',0,'url_to_install',0])){$output .= '
+                        <a id="manage_user';$output .= $stash->get(['slugify',[$stash->get(['instance',0,'install_filename',0]),'_' ]]);$output .= '"
+                           href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'url_to_install',0]);&$_tt_filter($output)};$output .= '"
+                           target="_blank"
+                           class="manage_user_url" >
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'url_to_install',0]);&$_tt_filter($output)};$output .= '
+                        </a>
+                        '}$output .= '
+                    </td>
+                    '}$output .= '
+                    ';if ($stash->get('has_admin')){$output .= '
+                    <td>
+                        ';if ($stash->get(['instance',0,'url_to_install_admin',0])){$output .= '
+                        <a id="manage_admin_';$output .= $stash->get(['slugify',[$stash->get(['instance',0,'install_filename',0]),'_' ]]);$output .= '"
+                           href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'url_to_install_admin',0]);&$_tt_filter($output)};$output .= '"
+                           target="_blank"
+                           class="manage_admin_url" >
+                        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'url_to_install_admin',0]);&$_tt_filter($output)};$output .= '
+                        </a>
+                       '}$output .= '
+                    </td>
+                    '}$output .= '
+                    ';if ($stash->get('has_other')){$output .= '
+                    <td>
+                        ';$stash->set('base',$stash->get(['instance',0,'url_to_install',0]));$stash->set('base',do {my$output='';if (!$stash->get(['base',0,'match',['/$' ]])){$output .= $stash->get('base').'/'}$output});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['meta',0,'miscurls',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'relmiscurl'}=$_tt_value;$stash->set('misc_url',$stash->get('base').$stash->get(['meta',0,'miscurls',0,$stash->get('relmiscurl'),0]));$output .= '
+                        <div>
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('relmiscurl');&$_tt_filter($output)};$output .= ':
+                            <a id="manage_misc_';$output .= $stash->get(['slugify',[$stash->get(['instance',0,'install_filename',0]),'_' ]]).$stash->get(['slugify',[$stash->get(['instance',0,'relmiscurl',0]),'_' ]]);$output .= '"
+                               href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('misc_url');&$_tt_filter($output)};$output .= '"
+                               target="_blank"
+                               class="manage_other_url">
+                               ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('misc_url');&$_tt_filter($output)};$output .= '
+                            </a>
+                        </div>
+                       ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </td>
+                    '}$output .= '
+                    ';if ($stash->get(['module',0,'meta',0,'display',0,'versions',0])){$output .= '
+                    <td>
+                          v';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'version',0]);&$_tt_filter($output)};$output .= '
+                    </td>
+                    '}$output .= '
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </tbody>
+        </table>
+    </div>
+</div>
+
+';$output .= '
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sorted_instances',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'instance'}=$_tt_value;;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get(['module',0,'meta',0,'miscurls',0])){}$output .= '
+'}else {$output .= '
+<span>
+    ';$output .= $stash->get(['locale',0,'maketext',['There are no installed instances of this [asis,cPAddon].' ]]);$output .= '
+</span>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

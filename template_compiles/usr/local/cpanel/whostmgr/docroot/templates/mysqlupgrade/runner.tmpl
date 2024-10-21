@@ -1,0 +1,131 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/runner.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<style type="text/css">
+#output_window {
+    padding:4px;
+    overflow-y:scroll;
+    max-height:400px;
+    word-wrap:break-word;
+}
+</style>
+<script type="text/javascript">
+function updateScroll() {
+    document.getElementById("output_window").scrollTop = document.getElementById("output_window").scrollHeight;
+}
+
+function toggleScrolling(event) {
+    if (event.target.checked) {
+        updateScroll();
+    }
+}
+
+function stopScrolling() {
+    var autoscroll = document.getElementById("scrolling_toggle");
+    autoscroll.checked = false;
+    autoscroll.disabled = true;
+}
+
+function stopLoading() {
+    if (document.getElementById("loading_container")) {
+        document.getElementById("loading_container").className = "hide";
+    }
+}
+
+function handleFailedRunner(message, stepNumber, buttonText) {
+    stopScrolling();
+    stopLoading();
+
+    if (document.getElementById("failure_message")) {
+        document.getElementById("failure_message").textContent = message;
+    }
+
+    if (stepNumber && document.getElementById("failure_continue_step")) {
+        document.getElementById("failure_continue_step").value = stepNumber;
+    }
+
+    if (buttonText && document.getElementById("failure_continue_upgrade")) {
+        document.getElementById("failure_continue_upgrade").value = buttonText;
+    }
+
+    if (document.getElementById("failure_container")) {
+        document.getElementById("failure_container").className = "alert alert-danger";
+    }
+}
+
+function handleSuccessfulRunner(message, stepNumber, buttonText) {
+    stopScrolling();
+    stopLoading();
+
+    if (document.getElementById("success_message")) {
+        document.getElementById("success_message").textContent = message;
+    }
+
+    if (stepNumber && document.getElementById("success_continue_step")) {
+        document.getElementById("success_continue_step").value = "';$output .= $stash->get('step_number');$output .= '";
+    }
+
+    if (buttonText && document.getElementById("success_continue_upgrade")) {
+        document.getElementById("success_continue_upgrade").value = "';$output .= $stash->get('button_text');$output .= '";
+    }
+
+    if (document.getElementById("success_container")) {
+        document.getElementById("success_container").className = "alert alert-success";
+    }
+}
+
+/* Update the scrolling output depending on the user\'s choice */
+window.setInterval(function() {
+    var autoscroll = document.getElementById("scrolling_toggle");
+    if ( autoscroll.checked ) {
+        updateScroll();
+    }
+}, 500);
+</script>
+
+<div>
+  <div id="loading_container" class="alert alert-info" role="alert">
+    <span id="loading_icon" class="glyphicon glyphicon-refresh fa-spin" aria-hidden="true"></span>
+    <div id="loading_message" class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Upgrade in progress' ]]);$output .= '</div>
+  </div>
+  <div id="success_container" class="alert alert-success hide" role="alert">
+    <span id="success_icon" class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+    <div id="success_message_container" class="alert-message">
+        <p id="success_message"></p>
+    ';if ($stash->get('attended')){$output .= '
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post">
+            <input type="hidden" name="upgrade_type" value="';$output .= $stash->get(['data',0,'upgrade_type',0,'html',0]);$output .= '">
+            <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+            <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+            <input type="hidden" id="success_continue_step" name="step" value="5">
+            <div class="form-group">
+                <button type="submit" id="success_continue_upgrade" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+            </div>
+        </form>
+    '}$output .= '
+    </div>
+  </div>
+  <div id="failure_container" class="alert alert-danger hide" role="alert">
+    <span id="failure_icon" class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+    <div id="failure_message_container" class="alert-message">
+        <p id="failure_message"></p>
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post">
+            <input type="hidden" name="upgrade_type" value="';$output .= $stash->get(['data',0,'upgrade_type',0,'html',0]);$output .= '">
+            <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+            <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+            <input type="hidden" id="failure_continue_step" name="step" value="5">
+            <div class="form-group">
+                <button type="submit" id="failure_continue_upgrade" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+            </div>
+        </form>
+    </div>
+  </div>
+  <div id="scrolling_toggle_container" class="checkbox">
+      <label>
+          <input type="checkbox" id="scrolling_toggle" checked onclick="toggleScrolling(event)">
+          <span>';$output .= $stash->get(['locale',0,'maketext',['Autoscroll Output' ]]);$output .= '</span>
+      </label>
+  </div>
+</div>
+
+<div id="output_window" class="pre container-fluid">
+';$output .= $context->process('runner');$output .= '
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

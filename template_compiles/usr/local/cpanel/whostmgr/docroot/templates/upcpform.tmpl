@@ -1,0 +1,27 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/upcpform.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<div class="row">
+<div class="col-xs-12">
+
+';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+';if ($stash->get(['data',0,'update_type',0,'lower',0])eq 'never'){$output .= '
+<p>';$output .= $stash->get(['locale',0,'maketext',['Updates are currently [output,strong,disabled]. To enable updates, visit [output,url,_1,Update Preferences,id,_2].','../scripts2/updateconf','whm-update-preferences-link' ]]);$output .= '</p>
+'}else {$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/upcp2" name="mainform">
+    <p>';$output .= $stash->get(['locale',0,'maketext',['You will be upgrading to the latest [output,strong,_1] build.',$stash->get(['data',0,'treename',0,'html',0])]]);$output .= ' </p>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="force" value="1">
+                ';$output .= $stash->get(['locale',0,'maketext',['Force a reinstall even if the system is up to date.' ]]);$output .= '
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Click to Upgrade' ]]);$output .= '">
+    </div>
+</form>
+</div>
+</div>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'upgrade_to_latest_version','header'=>$stash->get(['locale',0,'maketext',['Upgrade to Latest Version' ]]),'breadcrumburl'=>'/scripts2/upcpform','theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

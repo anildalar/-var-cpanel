@@ -1,0 +1,241 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/api_tokens/views/home.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="notAllowedWarning" class="alert alert-danger ng-hide" ng-show="home.loadingError">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+    <div class="alert-message" ng-bind-html="home.loadingErrorMessage">
+    </div>
+</div>
+<div id="childAccountsExistWarning" class="alert alert-warning ng-hide" ng-show="home.showChildAccountsExistWarning">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message" ng-bind-html="home.childAccountsExistWarning"></div>
+</div>
+<div id="tableShowHideContainer" ng-hide="home.loadingError">
+    <div class="view-content">
+    <div class="row">
+        <div class="col-xs-12 col-sm-7 col-md-8">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['[asis,API] Tokens' ]]);$output .= '</h2>
+        </div>
+    </div>
+    <div id="paginationControls" class="row search-page-container">
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <search id="filterList"
+                ng-model="home.meta.searchText"
+                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search by name' ]]);$output .= '"
+                autofocus
+                ng-change="home.searchList()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+            <div id="generateTokenButtonContainer">
+                <button id="generateToken"
+                    type="button"
+                    class="btn btn-primary navigation-control"
+                    ng-click="home.editToken()"
+                    ng-disabled="home.tokenAdded"
+                    ng-show="home.showFormToggleBtn">
+                        <span class="fas fa-plus"></span> ';$output .= $stash->get(['locale',0,'maketext',['Generate Token' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+            <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+                <page-size id="topPageSize"
+                    allowed-sizes="home.meta.pageSizes"
+                    total-items="home.meta.totalItems"
+                    ng-model="home.meta.pageSize"
+                    show-all="false"
+                    ng-change="home.selectPageSize()">
+                </page-size>
+                <uib-pagination id="topPager"
+                    ng-change="home.selectPage()"
+                    ng-model="home.meta.pageNumber"
+                    max-size="home.meta.maxPages"
+                    items-per-page="home.meta.pageSize"
+                    total-items="home.meta.totalItems"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div id="tableStats" class="row hidden-xs hidden-sm">
+        <div class="col-xs-offset-8 col-xs-4">
+            <div class="page-stats pull-right flip" ng-bind="home.paginationMessage"></div>
+        </div>
+    </div>
+    <div id="tableContainer">
+        <table id="tokenTable" class="table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th id="checkAllHeader" class="checkbox-column">
+                        <input type="checkbox"
+                            ng-model="home.allChecked"
+                            ng-change="home.toggleCheckAll()"
+                            name="checkAllInList"
+                            id="checkAllInList"
+                            indeterminate-state
+                            check-state="home.getIndeterminateState()"
+                            ng-hide="home.filteredList.length == 0"
+                            uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Select or deselect all.' ]]);$output .= '"
+                            tooltip-placement="auto right"
+                            tooltip-append-to-body="true">
+                    </th>
+                    <th id="nameHeader">
+                        <span toggle-sort id="sortByName" onsort="home.sortList" sort-meta="home.meta" sort-field="name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span toggle-sort id="sortByCreated" onsort="home.sortList" sort-meta="home.meta" sort-field="create_time,name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span toggle-sort id="sortByExpires" onsort="home.sortList" sort-meta="home.meta" sort-field="expires_at,name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Whitelisted [asis,IPs]' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="actions-column-header">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                    <th id="gearMenuContainer" class="gear-column">
+                        <span class="dropdown" uib-dropdown>
+                            <a href id="gearMenu" class="dropdown-toggle" uib-dropdown-toggle>
+                              <span class="fas fa-cog fa-lg"></span>
+                            </a>
+                            <ul uib-dropdown-menu class="dropdown-menu dropdown-menu-right text-left flip gear-menu">
+                                <li role="menuitem">
+                                    <a id="refreshList" href ng-click="home.refreshList(true)">';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= '</a>
+                                </li>
+                                <li role="separator" class="divider">
+                                </li>
+                                <li role="menuitem" class="gear-menu-item" ng-class="{disabled: home.checkedCount == home.filteredList.length}">
+                                    <a id="checkAllTokens"
+                                        class="gear-menu-item"
+                                        href
+                                        ng-click="home.checkAll()">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Select All Visible' ]]);$output .= '
+                                    </a>
+                                </li>
+                                <li role="menuitem" class="gear-menu-item" ng-class="{disabled: home.checkedCount == 0}">
+                                    <a id="clearTokenSelection"
+                                        href
+                                        ng-click="home.resetCheckAll()">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Clear Selection' ]]);$output .= '
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider">
+                                </li>
+                                <li role="menuitem" class="gear-menu-item" ng-class="{disabled: home.checkedCount == 0}">
+                                    <a id="revokeSelectedTokens" href ng-click="home.confirmRevokeToken(home.getSelectedTokens())">';$output .= $stash->get(['locale',0,'maketext',['Revoke Selected' ]]);$output .= '</a>
+                                </li>
+                                <li role="menuitem" class="gear-menu-item" ng-class="{disabled: home.allTokens.length == 0}">
+                                    <a id="revokeAllTokens" href ng-click="home.confirmRevokeToken(home.allTokens)">';$output .= $stash->get(['locale',0,'maketext',['Revoke All' ]]);$output .= '</a>
+                                </li>
+                            </ul>
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="loadingNotice" class="info empty-row ng-hide" ng-show="home.loading">
+                    <td colspan="7" id="loadingMessage">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </td>
+                </tr>
+                <tr id="emptyListNotice" class="info empty-row ng-hide" ng-show="home.filteredList.length == 0 && !home.loading">
+                    <td colspan="7" id="emptyMessage">';$output .= $stash->get(['locale',0,'maketext',['No [asis,API] tokens found.' ]]);$output .= '</td>
+                </tr>
+                <tr id="{{ key.name }}" class="token-row" ng-repeat="key in home.filteredList track by key._id"  ng-class="::{\'danger\':key.expired, \'warning\':key.expiresSoon}">
+                    <td class="checkbox-column">
+                        <input type="checkbox"
+                            ng-model="key.checked"
+                            ng-change="home.syncCheckAll(key)"
+                            name="checkAllInList_{{ key._id }}"
+                            id="checkAllInList_{{ key._id }}">
+                    </td>
+                    <td class="name-column" data-title="';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '"
+                        id="key_{{ key._id }}"
+                        ng-bind="key.name">
+                    </td>
+                    <td class="created-column" data-title="';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '"
+                        id="key_created_time_{{ key._id }}"
+                        ng-bind="key.create_time_friendly">
+                    </td>
+                    <td class="expires-column" data-title="';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '"
+                        id="key_expires_time_{{ key._id }}">
+                        <i ng-if="::key.expired || key.expiresSoon" class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                        <span>{{key.expiresAtFriendly || \'&nbsp;\'}}</span>
+                    </td>
+                    <td class="ips-column" data-title="';$output .= $stash->get(['locale',0,'maketext',['Whitelisted [asis,IPs]' ]]);$output .= '"
+                        id="key_ip_limits_{{ key._id }}">
+                        <div class="ip-column-cells">
+                            <span ng-if="!key.whitelist_ips">';$output .= $stash->get(['locale',0,'maketext',['Any' ]]);$output .= '</span>
+                            <div ng-repeat="ip in key.whitelist_ips">{{ip | ipv6short }}</div>
+                        </div>
+                    </td>
+                    <td class="actions-column" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <button type="button"
+                            id="edit_key_{{ key._id }}"
+                            class="btn btn-link"
+                            ng-click="home.editToken(key)">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                        </button>
+                        <button type="button"
+                            id="revoke_key_{{ key._id }}"
+                            class="btn btn-link"
+                            ng-click="home.confirmRevokeToken(key)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Revoke' ]]);$output .= '
+                        </button>
+                    </td>
+                    <td class="gear-column">&nbsp;</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-offset-4 col-xs-8">
+            <div class="page-stats pull-right flip" ng-bind="home.paginationMessage"></div>
+        </div>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div id="paginatorBottom" class="pagination-container">
+                <page-size id="bottomPageSize"
+                    allowed-sizes="home.meta.pageSizes"
+                    total-items="home.meta.totalItems"
+                    ng-model="home.meta.pageSize"
+                    show-all="false"
+                    ng-change="home.selectPageSize()">
+                </page-size>
+                <uib-pagination id="bottomPager"
+                    ng-change="home.selectPage()"
+                    ng-model="home.meta.pageNumber"
+                    max-size="home.meta.maxPages"
+                    items-per-page="home.meta.pageSize"
+                    total-items="home.meta.totalItems"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

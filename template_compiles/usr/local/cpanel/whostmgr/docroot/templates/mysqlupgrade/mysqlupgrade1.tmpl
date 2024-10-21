@@ -1,0 +1,205 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade1.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$output .= $context->process('master_templates/_defheader.tmpl',{'app_key'=>'mysql_mariadb_upgrade','header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version (Step [numf,_1] of [numf,_2])',1,5 ]]),'theme'=>'bootstrap','breadcrumburl'=>'/scripts/mysqlupgrade','extrastyle'=>'
+        .no-bold {
+            font-weight: normal;
+            display: block;
+        }
+        .mysql-version-column label {
+            display: block;
+        }
+        .no-bottom-margin {
+            margin-bottom: 0;
+        }
+        .grayed-out {
+            opacity: 0.5;
+        }
+    ' });$output .= '
+';$output .= $stash->get(['data',0,'mysql_version_is_installable',0,'import',[$stash->get(['data',0,'unsupported_db_versions',0])]]);$output .= '
+';$stash->set('add_installed_label',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '
+    ';if ($stash->get(['data',0,'current',0,'short',0])eq $stash->get('short_version')){$output .= '
+        <span class="label label-success">
+            ';$output .= $stash->get(['locale',0,'maketext',['Installed' ]]);$output .= '
+        </span>
+    '}$output .= '
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+';$output .= '
+
+    <div id="content">
+        <p>
+       ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to upgrade your database server to a newer version. This interface will automatically upgrade your database installation to newer point releases (the third number in the version string) because these upgrades involve little risk to your users’ data. Upgrades to new major releases (the first two numbers in the version string) are more involved because there is a substantial risk of data loss. This interface attempts to walk you through the major release upgrade process.' ]]);$output .= '
+       </p>
+        ';if (!$stash->get(['data',0,'mysql_running',0])&& $stash->get(['data',0,'mysql_enabled',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="mysqlDownAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['The database server is not currently running. If this is not intentional, you may experience problems with your upgrade.' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}$output .= '
+        ';if ($stash->get(['data',0,'current',0,'is_remote',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="remoteMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['This system uses a remote database server. Perform the database version upgrade on the remote server.' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}elsif (!$stash->get(['data',0,'mysql_enabled',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="disabledMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['Your server’s database service is disabled. You cannot use the [output,em,Upgrade Database Version] feature while your server is in this state. For information on upgrading the database version on your server, read our [output,url,_1,Service Manager,target,_blank] documentation.','https://go.cpanel.net/whmdocsServiceManager' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}elsif (!$stash->get(['data',0,'latest_available',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="uninstalledMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['Your server’s database version target is set to “[_1]”. You cannot use the [output,em,Upgrade Database Version] feature while your server is in this state. To allow [asis,cPanel amp() WHM] to upgrade the database version on your server, read the [output,url,_2,rpm.versions system documentation,target,_blank].','uninstalled','https://go.cpanel.net/rpmmanagement' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}elsif ($stash->get(['data',0,'governor_mysql',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="governorMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['Your server uses [asis,MySQL] [asis,Governor].' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You cannot use the [output,em,Upgrade Database Version] feature while your server is in this state.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,Upgrade Database Version,target,_blank] documentation.','https://go.cpanel.net/whmdocsUpgradeDBVersion' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}elsif ($stash->get(['data',0,'unmanaged',0])){$output .= '
+            <div class="alert alert-danger" role="alert" id="unmanagedMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['Your server’s database version target is set to “[_1]”. You cannot use the [output,em,Upgrade Database Version] feature while your server is in this state. To allow [asis,cPanel amp() WHM] to manage databases on your server, read the [output,url,_2,rpm.versions system documentation,target,_blank].','unmanaged','https://go.cpanel.net/rpmmanagement' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}elsif (!$stash->get(['data',0,'mysql_version_is_installable',0,'size',0])> 0){$output .= '
+            <div class="alert alert-danger" role="alert" id="unsupportedMysqlAlert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <span class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['Your server’s database version is “[output,strong,_1]”.',$stash->get(['data',0,'current',0,'full',0])]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['This version is unsupported and you cannot use the [output,em,Upgrade Database Version] feature to upgrade it.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,Upgrade Database Version,target,_blank] documentation.','https://go.cpanel.net/whmdocsUpgradeDBVersion' ]]);$output .= '</span>
+                </div>
+            </div>
+        '}else {$output .= '
+            <div class="alert alert-info" id="alertGeneralWarnings">
+                <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <h4 class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Information' ]]);$output .= '</h4>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Although in-place upgrades are generally safe, you should always perform a full database backup before you begin the upgrade process.' ]]);$output .= '</p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Please note that downgrades to previous versions are unsupported. After you upgrade your system to a newer version, it may be impossible to switch back.' ]]);$output .= '</p>
+                    ';if ($stash->get(['data',0,'is_mariadb',0])){$output .= '
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['Also note that since MariaDB is installed, moving to MySQL 8 is considered a downgrade, and therefore not supported.' ]]);$output .= '</p>
+                    '}$output .= '
+                </div>
+            </div>
+
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Current Version' ]]);$output .= '</h2>
+            ';if ($stash->get(['data',0,'current',0,'full',0])){$output .= '
+                <p>';$output .= ($stash->get(['data',0,'current',0,'short',0])> 10)? 'MariaDB ' : 'MySQL ';$output .= ' ';$output .= $stash->get(['data',0,'current',0,'full',0]);$output .= '</p>
+            '}else {$output .= '
+                <p>';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</p>
+            '}$output .= '
+
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Select a Version' ]]);$output .= '</h2>
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade">
+                <input type="hidden" name="step" value="2">
+                <input type="hidden" name="current_version" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'current',0,'short',0]);&$_tt_filter($output)};$output .= '">
+
+                <table class="table table-striped table-responsive" id="mysqloptions" role="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Version' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Release Date' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['End of Life Date' ]]);$output .= '</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'db_metadata',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();$stash=$context->localise();$stash->set('loop',$_tt_list);eval {LOOP: while (!$_tt_error){$stash->get(['import',[$_tt_value]])if ref$_tt_value eq 'HASH';$output .= $context->process('version_menu_item');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash=$context->delocalise();die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </tbody>
+                </table>
+                <div class="form-group">
+                    <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '" class="btn btn-primary">
+                </div>
+            </form>
+        '}$output .= '
+    </div>
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'version_menu_item'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    ';if ($stash->get(['data',0,'mysql_version_is_installable',0,'item',[$stash->get('item_short_version')]])){$output .= '
+        ';$stash->set('unsupported_version',$stash->get(['data',0,'unsupported_db_versions',0,'exists',[$stash->get('item_short_version')]]));$output .= '
+        <tr>
+            <td>
+                ';$stash->set('current_version',$stash->get(['data',0,'current',0,'short',0,'replace',['.','' ]]));$output .= '
+                ';$stash->set('short_version',$stash->get(['item_short_version',0,'replace',['.','' ]]));$output .= '
+                ';$stash->set('latest_available',$stash->get(['data',0,'latest_available',0,'replace',['.','' ]]));$output .= '
+
+                ';if ($stash->get('current_version')> $stash->get('short_version')){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Cannot downgrade from “[_1]”.',$stash->get(['data',0,'current_version',0])]]);$output .= '
+                '}elsif ($stash->get('latest_available')< $stash->get('short_version')||!$stash->get(['data',0,'mysql_version_is_installable',0,'item',[$stash->get('item_short_version')]])){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Cannot upgrade from “[_1]”.',$stash->get(['data',0,'current_version',0])]]);$output .= '
+                '}elsif ($stash->get('latest_available')< $stash->get('short_version')||!$stash->get(['data',0,'mysql_version_is_available',0,'item',[$stash->get('item_short_version')]])){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Blocked,target,_blank][comment,from updating to this version]','https://go.cpanel.net/rpmmanagement' ]]);$output .= '
+                '}else {$output .= '
+                    <input type="radio"
+                        id="selected_version_';$output .= $stash->get('selected_version');$output .= '"
+                        name="selected_version"
+                        value="';$output .= $stash->get('item_short_version');$output .= '"
+                        ';if ($stash->get(['data',0,'current',0,'short',0])eq $stash->get('item_short_version')){$output .= 'checked="checked"'}$output .= '
+                        ';if ($stash->get('unsupported_version')){$output .= 'disabled'}$output .= '
+                    >
+                '}$output .= '
+            </td>
+            <td class="mysql-version-column">
+                <label for="selected_version_';$output .= $stash->get('selected_version');$output .= '">
+                            <span ';if ($stash->get('unsupported_version')){$output .= 'class="grayed-out"'}$output .= '>
+                                ';$output .= $stash->get(['locale',0,'maketext',[$stash->get('locale_version')]]);$output .= '
+                            </span>
+                            ';if ($stash->get('unsupported_version')){$output .= '
+                                <span class="label label-danger">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Unavailable' ]]);$output .= '
+                                </span>
+                            '}elsif ($stash->get('recommended_version')){$output .= '
+                                <span class="label label-info">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '
+                                </span>
+                            '}elsif ($stash->get('experimental')){$output .= '
+                                <span class="label label-warning">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Experimental' ]]);$output .= '
+                                </span>
+                            '}$output .= '
+                    ';$output .= $stash->get(['add_installed_label',[{'sql_server_name'=>$stash->get('selected_version'),'short_version'=>$stash->get('item_short_version')}]]);$output .= '
+                </label>
+                <label class="no-bold" for="selected_version_';$output .= $stash->get('selected_version');$output .= '">
+                    ';if ($stash->get('unsupported_version')){$output .= '
+                    <p id="mdb-no-cloud-linux">';$output .= $stash->get(['locale',0,'maketext',['[_2][asis,MariaDB] [_4] is not available on [asis,CloudLinux 6] or earlier. Please upgrade to a more recent OS or install [asis,MariaDB] with the [asis,MySQL Governor]. See [asis,CloudLinux’s] [_3][output,url,_1,documentation,target,_blank][_2] for installation instructions using [asis,MySQL Governor].[_3]','https://go.cpanel.net/mysql-governor','<span class="grayed-out">','</span>',$stash->get('item_short_version')]]);$output .= '</p>
+                    '}$output .= '
+                    <p class="no-bottom-margin';if ($stash->get('unsupported_version')){$output .= ' grayed-out'}$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Features:' ]]);$output .= '
+                    </p>
+                    <div >
+                    <ul ';if ($stash->get('unsupported_version')){$output .= 'class="grayed-out"'}$output .= '>
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('features');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '
+                            <li>
+                                ';$output .= $stash->get(['locale',0,'maketext',[$stash->get('feature')]]);$output .= '
+                            </li>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        ';if ($stash->get('release_notes')){$output .= '
+                            <li>
+                                <a href="';$output .= $stash->get('release_notes');$output .= '" target="_blank">Release Notes</a>
+                            </li>
+                        '}$output .= '
+                    </ul>
+                </label>
+            </td>
+            <td>
+                <label class="no-bold';if ($stash->get('unsupported_version')){$output .= ' grayed-out'}$output .= '" for="selected_version_';$output .= $stash->get('selected_version');$output .= '">
+                    ';$output .= $stash->get(['locale',0,'datetime',[$stash->get(['eol_time',0,'start',0]),'date_format_long' ]]);$output .= '
+                </label>
+            </td>
+            <td>
+                <label class="no-bold';if ($stash->get('unsupported_version')){$output .= ' grayed-out'}$output .= '" for="selected_version_';$output .= $stash->get('selected_version');$output .= '">
+                    ';$output .= $stash->get(['locale',0,'datetime',[$stash->get(['eol_time',0,'end',0]),'date_format_long' ]]);$output .= '
+                </label>
+            </td>
+        </tr>
+    '}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

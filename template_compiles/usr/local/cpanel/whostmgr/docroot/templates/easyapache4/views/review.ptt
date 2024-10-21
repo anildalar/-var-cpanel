@@ -1,0 +1,104 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/views/review.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h2 class="view-heading">';$output .= $stash->get(['locale',0,'maketext',['Review' ]]);$output .= '</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <p id="gettingResultsText"
+                    ng-show="gettingResults"
+                    class="alert alert-info"
+                    role="alert"
+                    ng-cloak>
+                    <span id="spinner_review" class="fas fa-spinner fa-spin"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Preparing for review …' ]]);$output .= '">
+                    </span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Preparing selected packages for review …' ]]);$output .= '
+                </p>
+            </div>
+        </div>
+        <div class="row" ng-hide="gettingResults">
+            <div class="col-xs-12">
+                <div id="apiErrorMessage"
+                    class="alert alert-danger"
+                    role="alert"
+                    ng-show="apiError">
+                    <strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Update Error:' ]]);$output .= '
+                    </strong>
+                    {{ yumErrorMessage }}
+                </div>
+                <!-- INSTALL PKGS CONTAINER -->
+                <div class="panel panel-success">
+                    <div class="panel-heading">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Please review the following list of packages you are about to install by provisioning this profile.' ]]);$output .= "</h3>\n                    </div>\n                    <div class=\"panel-body\">\n                        <ul id=\"installList\" class=\"list-unstyled list-inline\">\n                            <li ng-repeat=\"package in installList track by \$index\" class=\"col-xs-4\">\n                                {{ package }}\n                            </li>\n                        </ul>\n                        <p class=\"help-block\"\n                            ng-show=\"!installList.length\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['There are no packages to be installed.' ]]);$output .= '
+                        </p>
+                    </div>
+                </div>
+                <!-- UPGRADE PKGS CONTAINER -->
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Please review the following list of packages you are about to upgrade by provisioning this profile.' ]]);$output .= "</h3>\n                    </div>\n                    <div class=\"panel-body\">\n                        <ul id=\"upgradeList\"\n                            class=\"list-unstyled list-inline\">\n                            <li ng-repeat=\"package in upgradeList track by \$index\" class=\"col-xs-4\">\n                                {{ package }}\n                            </li>\n                        </ul>\n                        <p class=\"help-block\" ng-show=\"!upgradeList.length\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['There are no packages to be upgraded.' ]]);$output .= '
+                        </p>
+                    </div>
+                </div>
+                <!-- UNINSTALL PKGS CONTAINER -->
+                <div class="panel panel-warning">
+                    <div class="panel-heading">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Please review the following list of packages you are about to uninstall by provisioning this profile.' ]]);$output .= "</h3>\n                    </div>\n                    <div class=\"panel-body\">\n                        <ul id=\"uninstallList\" class=\"list-unstyled list-inline\">\n                            <li ng-repeat=\"package in uninstallList track by \$index\" class=\"col-xs-4\">\n                                {{ package }}\n                            </li>\n                        </ul>\n                        <p class=\"help-block\" ng-show=\"!uninstallList.length\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['There are no packages to be uninstalled.' ]]);$output .= '
+                        </p>
+                    </div>
+                </div>
+                <!-- UNAFFECTED PKGS CONTAINER -->
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['These packages will not be affected by provisioning this profile.' ]]);$output .= "</h3>\n                    </div>\n                    <div class=\"panel-body\">\n                        <ul id=\"unaffectedList\" class=\"list-unstyled list-inline\">\n                            <li ng-repeat=\"package in existingList track by \$index\" class=\"col-xs-4\">\n                                {{ package }}\n                            </li>\n                        </ul>\n                        <p class=\"help-block\" ng-show=\"!existingList.length\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['There are no packages remaining unchanged.' ]]);$output .= '
+                        </p>
+                    </div>
+                </div>
+                <p id="noChangeText"
+                    class="alert alert-info"
+                    ng-show="noActionRequired">
+                    ';$output .= $stash->get(['locale',0,'maketext',['There are no changes needed to provision based on the profile of your selection.' ]]);$output .= '
+                </p>
+                <!-- Save as profile directive -->
+                <div class="row">
+                    <div class="col-xs-12" ng-show="customize.saveProfilePopup.showBottom">
+                        <div class="pop-over bottom">
+                            <save-as-profile id-prefix="saveProfile"
+                                position="{{ customize.saveProfilePopup.position }}"
+                                packages="customize.selectedPkgs"
+                                show="{{ customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom }}"
+                                on-cancel="customize.clearSaveProfilePopup(customize.saveProfilePopup.position)">
+                            </save-as-profile>
+                        </div>
+                    </div>
+                </div>
+                <!-- ACTIONS CONTAINER -->
+                <a id="provisionButton"
+                    href="provision"
+                    class="btn btn-primary"
+                    ng-disabled="!readyToProvision">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Provision' ]]);$output .= '
+                </a>
+                <button id="btnSaveAsProfileBottom"
+                    class="btn btn-default"
+                    ng-show="customize.wizard.showWizard"
+                    ng-disabled="customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom"
+                    ng-click="customize.showsaveProfilePopup(\'bottom\')"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#saveProfilePopup"
+                    aria-expanded="false"
+                    aria-controls="saveProfilePopup">
+                    <span class="far fa-save"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save as profile[comment,button title]' ]]);$output .= '
+                </button>
+                <a id="cancelLink"
+                    href="javascript:void(0)"
+                    ng-click="cancel()"
+                    class="btn btn-link">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                </a>
+            </div>
+        </div>
+    </div>
+</div>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

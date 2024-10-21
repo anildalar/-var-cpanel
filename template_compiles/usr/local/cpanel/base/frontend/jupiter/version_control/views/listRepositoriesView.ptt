@@ -1,0 +1,366 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/version_control/views/listRepositoriesView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<callout callout-type="warning" ng-if="!repositories.hasShellAccess">
+    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Your system administrator [output,strong,must] enable shell access to allow you to view clone [output,acronym,URLs,Uniform Resource Locators].' ]]);$output .= '
+</callout>
+
+
+<div class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Create and manage [asis,Git™] repositories. You can use [asis,Git] to maintain any set of files and track the history of changes from multiple editors (version control).' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/GitVersionControl','gitVersionControl','lnkGitVersionDocs' ]]);$output .= '
+</div>
+
+<div id="tableShowHideContainer">
+    <div class="row action-row">
+        <div class="col-xs-12">
+            <div class="pull-right">
+                <button id="btnCreateRepositories"
+                    class="btn btn-primary alignment"
+                    type="button"
+                    ng-click="repositories.createRepository()"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Create repository.' ]]);$output .= '">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- search and pagination controls -->
+    <div id="paginationControls" class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search id="filterRepoList"
+                ng-model="repositories.meta.searchText"
+                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                autofocus
+                ng-change="repositories.searchList()">
+            </search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+                <page-size id="topPageSize"
+                    allowed-sizes="repositories.meta.pageSizes"
+                    total-items="repositories.meta.totalItems"
+                    ng-model="repositories.meta.pageSize"
+                    show-all="false"
+                    ng-change="repositories.selectPageSize()">
+                </page-size>
+                <uib-pagination id="topPager"
+                    ng-change="repositories.selectPage()"
+                    ng-model="repositories.meta.pageNumber"
+                    max-size="0"
+                    items-per-page="repositories.meta.pageSize"
+                    total-items="repositories.meta.totalItems"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+
+    <!-- table stats -->
+    <div id="tableStats" class="row hidden-xs hidden-sm">
+        <div class="col-xs-8">
+            <div class="page-stats selected-stats">
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <div id="paginationMessage" class="page-stats pull-right flip">
+            {{repositories.paginationMessage()}}
+            </div>
+        </div>
+    </div>
+
+    <!-- table container -->
+    <div id="tableContainer">
+        <table id="table" class="table table-striped-child responsive-table">
+            <thead>
+                <tr>
+                    <th id="repoHeader">
+                        <span toggle-sort id="sortByRepo"
+                            onsort="repositories.sortList()"
+                            sort-meta="repositories.meta"
+                            sort-field="name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Repository' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th id="remoteHeader" class="hidden-xs">
+                        <span toggle-sort id="sortByPath"
+                            onsort="repositories.sortList()"
+                            sort-meta="repositories.meta"
+                            sort-field="repository_root">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Repository Path' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="action-column">
+                        <!-- Place holder for create and bulk actions for later -->
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Loading Message row -->
+                <tr id="loadingNotice"
+                    class="info empty-row ng-hide"
+                    ng-show="repositories.isLoading">
+                    <td colspan="3" id="loadingMessage">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </td>
+                </tr>
+
+                <!-- Empty Search Message row-->
+                <tr id="emptySearchListNotice"
+                    class="info empty-row ng-hide"
+                    ng-show="repositories.meta.searchText !== \'\' &&
+                        repositories.filteredList.length == 0 &&
+                        !repositories.isLoading &&
+                        !repositories.reloadRequired">
+                    <td colspan="3" id="emptySearchMessage">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system could not find any repositories that match your criteria. [output,url,_1,Create,id,_2,class,_3,title,Create repository.]','#/create','lnkSearchCreate','search-create-link' ]]);$output .= '
+                    </td>
+                </tr>
+
+                <!-- Empty Message row-->
+                <tr id="emptyListNotice"
+                    class="info empty-row ng-hide"
+                    ng-show="repositories.filteredList.length == 0 &&
+                        !repositories.isLoading &&
+                        repositories.meta.searchText == \'\' &&
+                        !repositories.reloadRequired">
+                    <td colspan="3" id="emptyMessage">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system could not find any repositories. [output,url,_1,Create,id,_2,class,_3,title,Create repository.]','#/create','lnkEmptyCreate','search-create-link' ]]);$output .= '
+                    </td>
+                </tr>
+
+                <!-- list repeater -->
+                <tr ng-repeat-start="repo in repositories.filteredList track by repo.repository_root"
+                    ng-show="!repositories.isLoading"
+                    ng-class="{warning:repo.delete_requested, info:repo.cloneInProgress, success:repo.cloneState == \'complete\'}">
+                    <td>
+                        <div class="row-expand-container">
+                            <button id="lnkToggleViewRepoInfo_{{repo.qaSafeSuffix}}" class="btn btn-link"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['View repository information.' ]]);$output .= '"
+                                aria-label="';$output .= $stash->get(['locale',0,'maketext',['View repository information.' ]]);$output .= '"
+                                ng-click="repositories.getRepositoryDetails(repo, !repo.isExpanded);"
+                                ng-disabled="repo.detailsLoading || repo.cloneInProgress"
+                                >
+                                <i ng-show="repo.detailsLoading"
+                                    class="fas fa-spinner"
+                                    aria-hidden="true">
+                                </i>
+                                <i class="fas"
+                                    ng-class="{ \'fa-chevron-right\': !repo.isExpanded, \'fa-chevron-down\': repo.isExpanded }"
+                                    aria-hidden="true"
+                                    ng-show="!repo.detailsLoading">
+                                </i>
+                            </button>
+
+                        </div>
+                        <span id="repoName_{{repo.qaSafeSuffix}}"
+                            class="repository-name wordbreak"
+                            ng-bind="repo.name">
+                        </span>
+                    </td>
+                    <td class="hidden-xs">
+                        <span id="repoRoot_{{repo.qaSafeSuffix}}"
+                            ng-bind="repo.repository_root" class="wordbreak display-inline-block">
+                        </span>
+                    </td>
+                    <td class="action-column"
+                        ng-class="{showDeleteMode:repo.delete_requested}">
+                        <button id="btnManage_{{repo.qaSafeSuffix}}"
+                            class="btn btn-outline-primary btn-sm"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage the repository settings.' ]]);$output .= '"
+                            ng-click="repositories.manageRepository(repo.repository_root)"
+                            ng-disabled="repo.cloneInProgress">
+                            <i class="fas fa-wrench" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+                        </button>
+                        <button id="btnGitWebRedirect_{{repo.qaSafeSuffix}}"
+                            class="btn btn-outline-primary btn-sm hidden-xs"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['View the repository history in [asis,Gitweb].' ]]);$output .= '"
+                            ng-click="repositories.redirectToGitWeb(repo.gitWebURL, repo.name)"
+                            ng-disabled="repo.cloneInProgress">
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['History' ]]);$output .= '
+                        </button>
+                        <button type="button" id="btnRepoDelete_{{repo.qaSafeSuffix}}"
+                            class="btn btn-outline-primary btn-sm hidden-xs"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Delete the repository.' ]]);$output .= '"
+                            ng-click="repo.delete_requested = true"
+                            ng-disabled="repo.delete_requested || repo.cloneInProgress">
+                            <i class="fas fa-trash" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-repeat-end=""
+                    class="wordbreak"
+                    ng-class="{warning:repo.delete_requested, info:repo.cloneInProgress, success:repo.cloneState == \'complete\'}">
+                    <td class="expand-panel-data" colspan="3">
+                        <div class="vc-list-panel expand-panel"
+                            ng-if="repo.isExpanded">
+                            <div class="row">
+                                <div class="box col-xs-12 col-sm-6">
+                                    <div>
+                                        <label>';$output .= $stash->get(['locale',0,'maketext',['Branch Information' ]]);$output .= '</label>
+                                    </div>
+                                    <div ng-show="repo.hasActiveBranch">
+                                        <code class="format">';$output .= $stash->get(['locale',0,'maketext',['Checked-out Branch' ]]);$output .= ':</code>
+                                        <code id="activeBranch_{{repo.qaSafeSuffix}}" ng-bind="repo.activeBranch" class="wordbreak display-inline-block format">
+                                        </code>
+                                    </div>
+                                    <div ng-show="!repo.hasActiveBranch">
+                                        <callout id="noCommits_{{repo.qaSafeSuffix}}" class="branch-callout"
+                                            callout-type="information">
+                                            <p>';$output .= $stash->get(['locale',0,'maketext',['No checked-out branch is available.' ]]);$output .= '</p>
+                                        </callout>
+                                    </div>
+                                    <div ng-show="repo.hasActiveBranch">
+                                        <div class="info-spacing">
+                                            <code class="format">';$output .= $stash->get(['locale',0,'maketext',['Commit' ]]);$output .= '</code>
+                                            <code id="SHA_{{repo.qaSafeSuffix}}" ng-bind="repo.lastUpdateSHA" class="format"></code>
+                                        </div>
+                                        <div class="info-spacing">
+                                            <code class="format">';$output .= $stash->get(['locale',0,'maketext',['Author' ]]);$output .= ':</code>
+                                            <code id="author_{{repo.qaSafeSuffix}}" ng-bind="repo.author" class="format"></code>
+                                        </div>
+                                        <div class="info-spacing">
+                                            <code class="format">';$output .= $stash->get(['locale',0,'maketext',['Date' ]]);$output .= ':</code>
+                                            <code id="date_{{repo.qaSafeSuffix}}" ng-bind="repo.lastUpdateDate" class="format"></code>
+                                        </div>
+                                        <div class="info-spacking">
+                                            <code id="commitMessage_{{repo.qaSafeSuffix}}" ng-bind="repo.commitMessage" class="wordbreak commands format"></code>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="box col-xs-12 col-sm-6">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['Repository Path' ]]);$output .= '</label>
+                                    <div id="repoRootExpanded_{{repo.qaSafeSuffix}}"
+                                        class="info-spacing"
+                                        ng-bind="repo.repository_root">
+                                    </div>
+                                    <button id="btnFileManagerRedirect_{{repo.qaSafeSuffix}}"
+                                            ng-show="repositories.hasFilemanagerAccess"
+                                            class="btn btn-outline-primary btn-sm"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['View the repository in the File Manager interface.' ]]);$output .= '"
+                                            ng-click="repositories.redirectToFileManager(repo.fileManagerRedirectURL, repo.name)">
+                                            <i class=\'fas fa-external-link-alt\'></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['File Manager' ]]);$output .= '
+                                    </button>
+                                </div>
+
+                                <div class="box col-xs-12 col-sm-6" ng-if="repo.cloneURL">
+                                    <label for="repoEditCloneUrl_{{repo.qaSafeSuffix}}">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Clone URL' ]]);$output .= '
+                                    </label>
+                                    <div class="input-group">
+                                        <input
+                                            name="repoEditCloneUrl"
+                                            id="repoEditCloneUrl_{{repo.qaSafeSuffix}}"
+                                            type="text"
+                                            class="form-control"
+                                            ng-value="repo.cloneURL"
+                                            ng-disabled="viewEditMode"
+                                            readonly />
+                                        <span class="input-group-btn">
+                                            <button type="button" id="cloneURLBtn_{{repo.qaSafeSuffix}}"
+                                                class="btn btn-default btn-default-white"
+                                                ng-click="repositories.cloneToClipboard(repo.cloneURL)"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Copy Clone URL to clipboard' ]]);$output .= '">
+                                                <i class="far fa-copy" aria-hidden="true"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Copy' ]]);$output .= '
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="box col-xs-12 col-sm-6">
+                                    <label
+                                        class="visible-xs">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                                    </label>
+                                    <div class="expand-actions">
+                                        <button id="btnMobileManage_{{repo.qaSafeSuffix}}"
+                                            class="btn btn-outline-primary btn-sm visible-xs-inline"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage the repository settings.' ]]);$output .= '"
+                                            ng-click="repositories.manageRepository(repo.repository_root)">
+                                            <i class="fas fa-wrench" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+                                        </button>
+                                        <button id="btnMobileGitWebRedirect_{{repo.qaSafeSuffix}}"
+                                            class="btn btn-outline-primary btn-sm visible-xs-inline"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['View the repository history in [asis,Gitweb].' ]]);$output .= '"
+                                            ng-click="repositories.redirectToGitWeb(repo.gitWebURL, repo.name)">
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['History' ]]);$output .= '
+                                        </button>
+                                        <button type="button" id="btnMobileRepoDelete_{{repo.qaSafeSuffix}}"
+                                            class="btn btn-outline-primary btn-sm visible-xs-inline"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Delete the repository.' ]]);$output .= '"
+                                            ng-click="repo.delete_requested = true"
+                                            ng-disabled="repo.delete_requested">
+                                            <i class="fas fa-trash" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vc-list-panel"
+                            ng-if="repo.delete_requested">
+                            <div class="delete-warning">
+                                <div class="display-table">
+                                    <div class="display-table-cell">
+                                        <span class="delete-question-mark">?</span>
+                                    </div>
+                                    <div class="display-table-cell">
+                                        <div class="box">
+                                            <span class="delete-message wordbreak" ng-bind="repositories.deleteText(repo)"></span>
+                                            <p>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['This action [output,strong,only] removes the repository from the list of [asis,cPanel]-managed repositories. The system will [output,strong,not] delete the files. To completely delete the repository, manually delete the files after you remove it from the list.' ]]);$output .= '
+                                            </p>
+                                        </div>
+                                        <div class="box">
+                                            <button type="button" id="repoConfirmDelete_{{repo.qaSafeSuffix}}"
+                                                class="btn btn-primary btn-sm"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Remove the repository.' ]]);$output .= '"
+                                                spinner-id="spinnerDelete_{{repo.qaSafeSuffix}}"
+                                                cp-action="repositories.delete(repo)">
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '
+                                            </button>
+                                            <button type="button" id="repoCancelDelete_{{repo.qaSafeSuffix}}"
+                                                class="btn btn-link"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Cancel.' ]]);$output .= '"
+                                                ng-click="repo.delete_requested = false"
+                                                ng-disabled="repo.removing">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="clone-in-progress" ng-if="repo.cloneInProgress">
+                            <span ng-switch="repo.cloneState">
+                                <span ng-switch-when="processing">
+                                    <i id="cloneInProgressSpinner_{{repo.qaSafeSuffix}}" class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Clone is in progress …' ]]);$output .= '
+                                </span>
+                                <span ng-switch-when="complete">
+                                    <i id="cloneSuccessCheck_{{repo.qaSafeSuffix}}" class="far fa-check-circle"></i> ';$output .= $stash->get(['locale',0,'maketext',['Clone is complete' ]]);$output .= '
+                                </span>
+                                <span ng-switch-default>
+                                    <i id="cloneQueuedSpinner_{{repo.qaSafeSuffix}}" class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Queued for cloning …' ]]);$output .= '
+                                </span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

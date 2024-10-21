@@ -1,0 +1,122 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/autossl/views/view_logs.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-md-12">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] Logs' ]]);$output .= '
+            <button id="btnConfirmRefreshLogList"
+                type="button"
+                button-class="btn-link"
+                spinner-id="spinnerRefreshLogList"
+                cp-action="fetch_logs_catalog()">
+                    <span class=\'glyphicon glyphicon-refresh\'></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '
+            </button>
+        </h2>
+        <div class="form_area" ng-if="!logs_catalog.length">
+        ';$output .= $stash->get(['locale',0,'maketext',['This system contains no [asis,AutoSSL] log data.' ]]);$output .= '
+        </div>
+
+        <form ng-if="logs_catalog.length" id="log_select_form" class="form_area" cp-form-waiting="log_submit()" cp-form-waiting-spinner-size="3">
+            <div>
+                <label for="log_chooser">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Select a log to view:' ]]);$output .= "\n                </label>\n\n                <span ng-if=\"(\$parent.logs_catalog | filter : { in_progress: true }).length\">\n                    (“+” = ";$output .= $stash->get(['locale',0,'maketext',['in progress' ]]);$output .= ")\n                </span>\n            </div>\n\n            <div>\n                <select\n                    id=\"log_chooser\"\n                    class=\"no-validation-border\"\n                    name=\"log_run\"\n                    size=\"5\"\n                    ng-model=\"\$parent.chosen_log\"\n                    ng-options=\"((run.in_progress ? '+ ' : '') + datetime(run.start_time_epoch,'datetime_format_medium') + ' &mdash; ' + (run.username === '*' ? '";$output .= $stash->get(['locale',0,'maketext',['All Users' ]]);$output .= '\' : run.username) + \' &mdash; \' + get_provider_display_name(run.provider)) for run in logs_catalog"
+                    ondblclick="document.getElementById(\'log_submit\').click()"
+                ></select>
+            </div>
+
+            <button id="log_submit" class="btn btn-primary" type="submit">';$output .= $stash->get(['locale',0,'maketext',['View Log' ]]);$output .= '</button>
+        </form>
+
+        <div ng-if="logs_catalog.length" id="log_display" class="log-display">
+            <span ng-if="!last_load_data" class="log-placeholder">';$output .= $stash->get(['locale',0,'maketext',['The log data will appear here after you load it.' ]]);$output .= '</span>
+
+            <h5 ng-if="!last_load_data">
+                <span ng-if="last_load_data.in_progress">';$output .= $stash->get(['locale',0,'maketext',['The system has not finished writing to this log.' ]]);$output .= '</span>
+                <span ng-if="!last_load_data.in_progress">';$output .= $stash->get(['locale',0,'maketext',['The system finished writing to this log.' ]]);$output .= '</span>
+            </h5>
+
+            <h4 ng-if="last_load_data">
+                <span ng-if="last_load_data.username === \'*\'">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Log for the [asis,AutoSSL] run for all users:' ]]);$output .= '
+                </span>
+                <span ng-if="last_load_data.username !== \'*\'">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Log for the [asis,AutoSSL] run for “[_1]”:','{{last_load_data.username}}' ]]);$output .= '
+                </span>
+                {{datetime(last_load_data.start_time_epoch, "datetime_format_full")}} ({{get_provider_display_name(last_load_data.provider)}})
+            </h4>
+
+            <div id="current_loaded_log_html"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #log_chooser {
+        margin-bottom: 5px;
+    }
+
+    .indent1 {
+        margin-left: 2em;
+    }
+    .indent2 {
+        margin-left: 4em;
+    }
+    .indent3 {
+        margin-left: 6em;
+    }
+    .indent4 {
+        margin-left: 8em;
+    }
+    .indent5 {
+        margin-left: 10em;
+    }
+    .indent6 {
+        margin-left: 12em;
+    }
+    .indent7 {
+        margin-left: 14em;
+    }
+    .indent8 {
+        margin-left: 16em;
+    }
+    .indent9 {
+        margin-left: 18em;
+    }
+
+    .log-indent {
+        display: inline-block;
+        height: 1px;
+        width: 2em;
+    }
+
+    .log-display {
+        margin-bottom: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        border-radius: 3px;
+        padding: 5px;
+        max-width: 960px;
+        word-break: break-word;
+    }
+
+    .log-placeholder {
+        font-style: italic;
+    }
+
+    .logentry-error,
+    .logentry-warn,
+    .logentry-success {
+        font-weight: bold;
+    }
+
+    .logentry-success {
+        color: green;
+    }
+
+    .logentry-error {
+        color: red;
+    }
+
+    .logentry-warn {
+        color: orange;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

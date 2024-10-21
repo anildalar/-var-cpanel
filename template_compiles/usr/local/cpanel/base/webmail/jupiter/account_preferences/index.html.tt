@@ -1,0 +1,27 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/account_preferences/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('cpuser',$stash->get(['ExpVar',0,'expand',['$user' ]]));$stash->set('authuser',$stash->get(['ExpVar',0,'expand',['$authuser' ]]));$stash->set('domain',$stash->get(['CPANEL',0,'CPDATA',0,'domain',0]));$stash->set('hostname',$stash->get(['ExpVar',0,'expand',['$hostname' ]]));$stash->set('view_templates',['views/_resources.ptt','views/main.ptt' ]);$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.emailAddress = "';$output .= $stash->get('authuser');$output .= '";
+    PAGE.cPanelUser = "';$output .= $stash->get('cpuser');$output .= '";
+    PAGE.displayEmailAddress = "';$output .= $stash->get('authuser')eq $stash->get('cpuser')? $stash->get('authuser').'@' .$stash->get('hostname'): $stash->get('authuser');$output .= '"
+</script>
+
+<div class=\'body-content\' id="mainContent">
+
+    <cp-alert-list></cp-alert-list>
+
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Modify your Webmail account settings.' ]]);$output .= '
+    </p>
+
+    <div id="viewContent" class="ng-cloak section" ng-view ng-cloak></div>
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('view_templates');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ptt'}=$_tt_value;$output .= '
+    <script id="';$output .= $stash->get('ptt');$output .= '" type="text/ng-template">';$output .= $context->process($stash->get('ptt'));$output .= '    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+</div>
+
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Account Preferences' ]]),'app_key'=>'webmail_account_prefs','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'page_stylesheets'=>['account_preferences/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

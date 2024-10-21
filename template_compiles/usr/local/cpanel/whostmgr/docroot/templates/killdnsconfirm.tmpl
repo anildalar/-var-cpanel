@@ -1,0 +1,29 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/killdnsconfirm.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<div class="section">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    ';if ($stash->get(['data',0,'dnslist',0,'size',0])){$output .= '
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to delete these zones?' ]]);$output .= '</p>
+        <div id="wrap">
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/killdns" action="post">
+                <div class="form-group panel panel-default">
+                    <ul id="dns-list">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'dnslist',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'dns'}=$_tt_value;$output .= '
+                        <li>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" name="killdns" value="';$output .= $stash->get('dns');$output .= '" checked="checked" />
+                                    <span>';$output .= $stash->get('dns');$output .= '</span>
+                                </label>
+                            </div>
+                        </li>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </ul>
+                </div>
+                <div class="form-group"><button type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</button></div>
+            </form>
+        </div>
+    '}else {$output .= '
+        <p class="errors">';$output .= $stash->get(['locale',0,'maketext',['No domains were selected for deletion.' ]]);$output .= '</p>
+    '}$output .= '
+    </div>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'delete_a_dns_zone','breadcrumburl'=>'/scripts/killdnslist','stylesheets'=>['/templates/killdnsconfirm.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

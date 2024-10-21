@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Quota/MailboxWarning.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Mailbox quota notification for “[_1]”.',$stash->get(['NOTICE',0,'box',0])]]));$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'status',0])eq 'full'){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The “[_1]” email account is full.',$stash->get(['NOTICE',0,'box',0])]])}elsif ($stash->get(['NOTICE',0,'status',0])eq 'critical'){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The “[_1]” email account is nearly full.',$stash->get(['NOTICE',0,'box',0])]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The “[_1]” email account is almost full.',$stash->get(['NOTICE',0,'box',0])]])}$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The email account currently uses [numf,_1]% ([format_bytes,_2]/[format_bytes,_3]) of its capacity.',$stash->get(['NOTICE',0,'percentused',0]),$stash->get(['NOTICE',0,'diskused',0]),$stash->get(['NOTICE',0,'disklimit',0])]]);$output .= '
+</p>
+<p>
+    ';if ($stash->get(['NOTICE',0,'adjusturl',0])){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You should remove some emails from the mailbox as soon as possible in order to prevent the loss of any future email.' ]]);$output .= ' </p><p> ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can adjust the quota for this mailbox here: [output,url,_1,_1,target,_2]',$stash->get(['NOTICE',0,'adjusturl',0]),'_blank' ]]);$output .= ' </p> '}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You should remove some emails from the mailbox as soon as possible in order to prevent the loss of any future email. Use the Email Disk Usage tool at [output,url,_1,_1,target,_2], or ask the system administrator to upgrade your account to a larger quota.',$stash->get(['NOTICE',0,'manage_disk_usage_url',0]),'_blank' ]])}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

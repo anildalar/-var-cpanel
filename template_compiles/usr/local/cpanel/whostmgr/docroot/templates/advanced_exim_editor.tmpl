@@ -1,0 +1,382 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/advanced_exim_editor.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= "<div class=\"brickcontainer tweaksettings\">\n<div class=\"brickcontainer2\">\n<script type=\"text/javascript\">\nfunction notify_parent_submit() {\n    if (parent && parent.notify_submit)  {\n        parent.notify_submit('advanced','Saving Advanced Configuration...' );\n    }\n}\n\nfunction resizetextarea(thisarea) {\n    thisarea.style.overflow='hidden';\n    var newrows = thisarea.value.split(\"\\n\").length; //# - 1;\n    if (newrows > thisarea.rows) {\n        thisarea.rows = newrows;\n    } else if (newrows + 1 < thisarea.rows) {\n        thisarea.rows = newrows + 1;\n    }\n}\n</script>\n";$output .= do {my$output='';$output .= '<blockquote>
+    The following configuration editor will allow you to modify the default configuration of Exim.
+    Configuration changes made within this editor will be conserved across Exim updates and reinstallation.
+    Changes to the default configuration can significantly impact Exim\'s performance and may prevent it from
+    operating altogether. <b>Use this editor with caution.</b>
+    <br />
+    <br />
+    To use, add new directives or modify current directives within the provided text boxes.
+    You should only use this feature if you
+    understand how to write a valid Exim configuration file. Information on Exim\'s configuration syntax can
+    be found in <a href="http://www.exim.org/exim-html-current/doc/html/spec_html/index.html" target="_blank">Exim\'s documentation</a>.
+    <br />
+    <br />
+    <b><i>Adding invalid configuration information here will prevent Exim from operating.</i></b>
+    <br />
+</blockquote>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Instructions','brickpercent'=>'auto','content',$output })};$output .= '<br /><br />
+
+<div id="eximconf">
+';$output .= do {my$output='';$output .= '
+<form id="advform" ';if ($stash->get('in_tab')){$output .= 'target="tabaction"'}$output .= ' onSubmit="try { return ensure_cfg_is_valid(); } catch(e) { return false } return false;"action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/saveeximconf" method="POST">
+<input type="hidden" name="hasdata" value="1">
+<input type="hidden" name="in_tab" value="';$output .= $stash->get('in_tab');$output .= '">
+
+';do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'hash'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<td>
+    <div class=\'CONFIG_autocompleter\' id="AutoComplete_';$output .= $stash->get(['item',0,'optcount',0]);$output .= '">
+        <input size=\'40\' type=\'text\' id=\'CONFIG_option_';$output .= $stash->get(['item',0,'optcount',0]);$output .= '\' name=\'CONFIG_option_';$output .= $stash->get(['item',0,'optcount',0]);$output .= '\' value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['item',0,'optsetting',0]);&$_tt_filter($output)};$output .= '" /><a id="toggle-';$output .= $stash->get(['item',0,'optcount',0]);$output .= '" href="javascript:void(0)"></a>
+    </div>
+</td>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('cfg_ac_cell',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$stash->set('cols',100);$stash->set('minrows',5);$stash->set('incfkill',0);$stash->set('section','acl');$stash->set('inblock',0);$stash->set('inpre',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'exim_dist_config_template',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'line'}=$_tt_value;$stash->set('this_match',$stash->get(['line',0,'match',['\Abegin\s+(.+)\z' ]]));if ($stash->get('this_match')){$stash->set('section',$stash->get(['this_match',0,0,0]))}$stash->set('this_match',$stash->get(['line',0,'match',['\A\s*\@(.+)\@\s*\n?\z' ]]));if ($stash->get('this_match')){if ($stash->get('inpre')){$output .= '</pre>';$stash->set('inpre',0)}$stash->set('insert',$stash->get(['this_match',0,0,0]));$output .= ('<div id=\'' .$stash->get('insert').'\'><fieldset class=\'section\'><legend>Section: ' .$stash->get('insert').'</legend>');if ($stash->get('insert')eq 'CONFIG'){$stash->set('optcount',0);$output .= '<div>';$output .= '<div id=\'config_options\'>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'parsed_config',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'cfgopt'}=$_tt_value;$stash->set('optname',$stash->get(['cfgopt',0,'name',0]));$stash->set('optsetting',$stash->get(['cfgopt',0,'setting',0]));$stash->set('optcount',$stash->get('optcount')+ 1);$output .= ('
+
+
+<div class=\'config_option\' id=\'CONFIG_container_' .$stash->get('optcount').'\'><table>');$output .= '<tr class=\'CONFIG_container\'>';$output .= $stash->get(['cfg_ac_cell',0,'print',[{'optcount'=>$stash->get('optcount'),'optsetting'=>$stash->get('optsetting')}]]);$output .= '<td>=</td>';$stash->set('cfgval',$stash->get(['cfgopt',0,'val',0,'cpanel_safe_html_encode_str',0]));$stash->set('rows',$stash->get(['cfgval',0,'split',['\n' ],'size',0]));if ($stash->get('rows')< $stash->get('minrows')){$stash->set('rows',2)}$output .= ('<td colspan=\'2\'><pre><textarea id=\'CONFIG_value_' .$stash->get('optcount').'\' onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0,this)\' class=\'confeditbox\' cols=\'60\' rows=\'' .$stash->get('rows').'\' name=\'CONFIG_value_' .$stash->get('optcount').'\'>');$output .= $stash->get('cfgval');$output .= '</textarea></pre></td>';$output .= '<td class=\'validator_display\'>';$output .= ('<div id=\'CONFIG_option_' .$stash->get('optcount').'_error\'></div>');$output .= '</td>';$output .= '<td align=\'right\'>';if (!$stash->get(['data',0,'non_removable_opts',0,$stash->get('optsetting'),0])){$output .= ('<img id=\'CONFIG_delete_' .$stash->get('optcount').'\' src=\'').$stash->get(['MagicRevision',['/images/trashcan.png' ]]).'\' alt=\'Delete\' style=\'cursor:pointer\'>'}$output .= '</td>';$output .= '</tr>';$output .= '<tr class=\'CONFIG_default_container\'>';$output .= '<td colspan=\'2\'></td>';if ($stash->get(['data',0,'config_docs',0,$stash->get('optname'),0,'default',0])){$output .= ('<td valign=\'top\' id=\'CONFIG_default_' .$stash->get('optcount').'\' class=\'CONFIG_default\'>Exim Default: ').$stash->get(['data',0,'config_docs',0,$stash->get('optname'),0,'default',0,'cpanel_safe_html_encode_str',0]).'</td>'}else {$output .= ('<td valign=\'top\' id=\'CONFIG_default_' .$stash->get('optcount').'\' class=\'CONFIG_default\'></td>')}if ($stash->get(['data',0,'config_docs',0,$stash->get('optname'),0,'cpanel_default',0])){$output .= ('<td valign=\'top\' id=\'CONFIG_cpanel_default_' .$stash->get('optcount').'\' class=\'CONFIG_cpanel_default\'>cPanel Default: ').$stash->get(['data',0,'config_docs',0,$stash->get('optname'),0,'cpanel_default',0,'cpanel_safe_html_encode_str',0]).'</td>'}else {$output .= ('<td valign=\'top\' id=\'CONFIG_cpanel_default_' .$stash->get('optcount').'\' class=\'CONFIG_cpanel_default\'></td>')}$output .= '</tr>';$output .= '</table>';$output .= '</div>';$output .= ('<div id=\'CONFIG_description_' .$stash->get('optcount').'\' class=\'CONFIG_description\'>');$output .= $stash->get(['data',0,'config_docs',0,$stash->get('optname'),0,'description',0]);$output .= ('' .'</div>
+
+
+');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</div>';$output .= '<div><br /><div style=\'width: 275px; font-weight: 900; cursor: pointer;\' class=\'btn-primary\' id=\'add_cfg\'><i class=\'fas fa-plus-circle fa-lg\' aria-hidden=\'true\'></i> Add additional configuration setting</div></div>';$output .= '</div>'}else {$stash->set('rows',$stash->get(['data',0,'cf',0,$stash->get('insert'),0,'split',['\n' ],'size',0]));if ($stash->get('rows')< $stash->get('minrows')){$stash->set('rows',$stash->get('minrows'))}$output .= '<table>';$output .= '<tr>';$output .= '<td>';$output .= '<pre>';$output .= ('<textarea id=\'' .$stash->get('insert').'|' .$stash->get('section').'\' onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0,this)\' class=\'confeditbox\' cols=\'' .$stash->get('cols').'\' rows=\'' .$stash->get('rows').'\' name=\'' .$stash->get('insert').'\'>');$output .= $stash->get(['data',0,'cf',0,$stash->get('insert'),0,'cpanel_safe_html_encode_str',0]);$output .= '</textarea>';$output .= '<pre>';$output .= '</td>';$output .= '<td  class=\'validator_display\'>';$output .= ('<div id=\'' .$stash->get('insert').'|' .$stash->get('section').'_error\'></div>');$output .= '</td>';$output .= '</tr>';$output .= '</table>'}$output .= '</fieldset></div>';($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('this_match',$stash->get(['line',0,'match',['\A\%(.+)\%\n?\z' ]]));if ($stash->get('this_match')){if ($stash->get('inpre')){$output .= '</pre>';$stash->set('inpre',0)}$stash->set('insert',$stash->get(['this_match',0,0,0]));$stash->set('acf',$stash->get(['insert',0,'replace',['\A(?:BEGIN|END)','' ]]));if ($stash->get(['insert',0,'match',['\ABEGINACL' ]])){$output .= '<div id=\'ACLS\'><fieldset class=\'section\'><legend>Section: ACLs</legend>';$stash->set('incfkill',1);$stash->set('usingcustom',0);$stash->set('currentblock','');$stash->set('inside_insert',0);$stash->set('insert_text','');$stash->set('customacls',$stash->get(['data',0,'cf',0,$stash->get('acf'),0])? $stash->get(['data',0,'cf',0,$stash->get('acf'),0]): $stash->get(['data',0,'distcf',0,$stash->get('acf'),0]));$stash->set('parsedacls',$stash->get(['data',0,'parsed_acls',0]));if ($stash->get(['data',0,'cf',0,'exists',[$stash->get('acf')]])&& $stash->get(['data',0,'cf',0,$stash->get('acf'),0])){$stash->set('usingcustom',1)}$stash->set('rows',$stash->get(['customacls',0,'split',['\n' ],'size',0]));if ($stash->get('rows')< $stash->get('minrows')){$stash->set('rows',$stash->get('minrows'))}$output .= ('<div id=\'%' .$stash->get('acf').'%\'>');$output .= ('<div id=\'%' .$stash->get('acf').'%_custom\' ').($stash->get('usingcustom')? '' : 'style=\'display:none;\'').'>';$output .= '<table>';$output .= '<tr>';$output .= '<td>';$output .= '<pre>';$output .= ('<textarea id=\'customaclbox|acl\' onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0)\' class=\'confeditbox\' cols=\'' .$stash->get('cols').'\' rows=\'' .$stash->get('rows').'\' name=\'%' .$stash->get('acf').'%\'>');$output .= $stash->get(['customacls',0,'cpanel_safe_html_encode_str',0]);$output .= '</textarea>';$output .= '</pre>';$output .= '</td>';$output .= '<td class=\'validator_display\'>';$output .= '<div id=\'customaclbox|acl_error\'></div>';$output .= '</td>';$output .= '</tr>';$output .= '</table>';$output .= '</div>';$output .= '<script>resizetextarea(YAHOO.util.Dom.get(\'customaclbox|acl\'));</script>';$output .= ('<div id=\'%' .$stash->get('acf').'%_block\' ').($stash->get('usingcustom')? 'style=\'display:none;\'' : '').'>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('parsedacls');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'entry'}=$_tt_value;if ($stash->get(['entry',0,'type',0])eq 'text'){if ($stash->get(['entry',0,'value',0,'match',['^\s*$' ]])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR2}if ($stash->get(['entry',0,'value',0,'match',['^\s*#' ]])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR2}$stash->set('aclname',$stash->get(['entry',0,'value',0]));$output .= '<br /><span class=\'acl_name\'>';$output .= $stash->get(['aclname',0,'cpanel_safe_html_encode_str',0]);$output .= '</span>'}elsif ($stash->get(['entry',0,'type',0])eq 'insert'){$stash->set('rows',$stash->get(['entry',0,'value',0,'split',['\n' ],'size',0]));if ($stash->get('rows')< 1){$stash->set('rows',1)}$output .= '<div class=\'aclinsert\'><fieldset class=\'aclinsert\'><legend>';$output .= '<input onclick=\'sync_acl_checks(this);\' type=\'checkbox\' class=\'aclcheck acl_check_' .$stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]).'\'  id=\'%' .$stash->get('acf').'%|' .$stash->get(['entry',0,'block',0,'cpanel_safe_html_encode_str',0]).'|' .$stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]).'|enabled\' name=\'%' .$stash->get('acf').'%|' .$stash->get(['entry',0,'block',0,'cpanel_safe_html_encode_str',0]).'|' .$stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]).'|enabled\' value=\'' .($stash->get(['entry',0,'enabled',0])? $stash->get(['entry',0,'enabled',0]): '1').'\'' .($stash->get(['entry',0,'enabled',0])? ' checked=\'checked\' ' : '').' > ';$output .= '<input type=\'hidden\' name=\'%' .$stash->get('acf').'%|' .$stash->get(['entry',0,'block',0,'cpanel_safe_html_encode_str',0]).'|' .$stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]).'|key\' value=\'1\'> ';$output .= $stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]);$stash->set('aclkey','acl_' .$stash->get(['entry',0,'name',0]));if ($stash->get(['data',0,'rbl_docs',0,$stash->get('aclkey'),0])){$output .= ' (' .$stash->get(['data',0,'rbl_docs',0,$stash->get('aclkey'),0,'label',0]).')'}$output .= '</legend>';$output .= '<div class=\'aclinner acl_' .$stash->get(['entry',0,'name',0,'cpanel_safe_html_encode_str',0]).'\' style=\'' .($stash->get(['entry',0,'enabled',0])? '' : 'display:none;').'\'>';if ($stash->get(['entry',0,'editable',0])){$output .= '<table>';$output .= '<tr>';$output .= '<td>';$output .= '<pre>';$output .= ('<textarea onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0,this)\' class=\'confeditbox\' cols=\'' .$stash->get('cols').'\' rows=\'' .$stash->get('rows').'\' id=\'%' .$stash->get('acf').'%|').$stash->get(['entry',0,'block',0]).'|' .$stash->get(['entry',0,'name',0]).('\' name=\'%' .$stash->get('acf').'%|').$stash->get(['entry',0,'block',0]).'|' .$stash->get(['entry',0,'name',0]).'\'>';$output .= $stash->get(['entry',0,'value',0,'cpanel_safe_html_encode_str',0]);$output .= '</textarea>';$output .= '</pre>';$output .= '</td>';$output .= '<td class=\'validator_display\'>';$output .= ('<div id=\'%' .$stash->get('acf').'%|').$stash->get(['entry',0,'block',0]).'|' .$stash->get(['entry',0,'name',0]).'_error\'></div>';$output .= '</td>';$output .= '</tr>';$output .= '</table>'}else {$output .= '<pre>';$output .= ('<div style=\'width: 710px;\' id=\'%' .$stash->get('acf').'%|').$stash->get(['entry',0,'block',0]).'|' .$stash->get(['entry',0,'name',0]).('\' name=\'%' .$stash->get('acf').'%|').$stash->get(['entry',0,'block',0]).'|' .$stash->get(['entry',0,'name',0]).'\'>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['entry',0,'value',0,'split',[('' .'
+')]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR3: while (!$_tt_error){$stash->{'txtline'}=$_tt_value;$output .= $stash->get(['txtline',0,'textbreak',[$stash->get('cols'),('' .'
+')],'cpanel_safe_html_encode_str',0]).('' .'
+');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</div>';$output .= '</pre>'}$output .= '</div>';$output .= '</fieldset></div>'};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</div>';$output .= '</div>';$output .= '</fieldset></div>'}elsif ($stash->get(['insert',0,'match',['\ABEGIN(.+)' ]])){$stash->set('inblock',1);$stash->set('acf',$stash->get(['this_match',0,0,0,'replace',['\ABEGIN','' ]]));$output .= ('<div id=\'' .$stash->get('acf').'\'><fieldset class=\'section\'><legend>Section: ' .$stash->get('acf').'</legend>');$stash->set('rows',$stash->get('minrows'));$output .= ('<div id=\'%' .$stash->get('acf').'%\'>');$output .= ('<div id=\'%' .$stash->get('acf').'%_custom\'>');$output .= '<table>';$output .= '<tr>';$output .= '<td>';$output .= '<pre>';$output .= ('<textarea id=\'custom' .$stash->get('acf').'box|' .$stash->get('section').'\' onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0,this)\' class=\'confeditbox\' cols=\'' .$stash->get('cols').'\' rows=\'' .$stash->get('rows').'\' name=\'%' .$stash->get('acf').'%\'>')}elsif ($stash->get(['insert',0,'match',['\AENDACL' ]])){$stash->set('incfkill',0)}elsif ($stash->get(['insert',0,'match',['\AEND(.+)' ]])){$stash->set('inblock',0);$stash->set('acf',$stash->get(['this_match',0,0,0,'replace',['\AEND','' ]]));$stash->set('incfkill',0);if ($stash->get(['data',0,'cf',0,$stash->get('acf'),0])){$output .= $stash->get(['data',0,'cf',0,$stash->get('acf'),0])}$output .= '</textarea>';$output .= '</pre>';$output .= '</td>';$output .= '<td class=\'validator_display\'>';$output .= ('<div id=\'custom' .$stash->get('acf').'box|' .$stash->get('section').'_error\'></div>');$output .= '</td>';$output .= '</tr>';$output .= '</table>';$output .= '</div>';$output .= '</div>';$output .= ('<script>resizetextarea(YAHOO.util.Dom.get(\'custom' .$stash->get('acf').'box|' .$stash->get('section').'\'));</script>');$output .= '</fieldset></div>'}($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get('incfkill')){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if (!$stash->get('inblock')&&!$stash->get('inpre')){$output .= '<pre>';$stash->set('inpre',1)}$output .= $stash->get(['line',0,'textbreak',[$stash->get('cols'),('' .'
+')],'cpanel_safe_html_encode_str',0]).('' .'
+');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('inpre')){$output .= '</pre>'}$output .= '<div>
+    <input type="submit" id="savebutton" class="btn-primary" value="Save">
+    <span id="savebutton_status"></span>
+</div>
+</form>
+
+</div>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Combined Exim Configuration','brickpercent'=>'auto','content',$output })};$output .= '
+<br />
+
+<script type="text/plain" id="cfg_template">
+<div class=\'config_option\' id=\'CONFIG_container_{optcount}\'>
+    <table>
+        <tr class=\'CONFIG_container\'>
+            ';$output .= $stash->get(['cfg_ac_cell',0,'print',[{'optcount'=>'{optcount}' }]]);$output .= '
+            <td>=</td>
+            <td colspan=\'2\'>
+                <pre><textarea id=\'CONFIG_value_{optcount}\' onkeyup=\'resizetextarea(this)\' onchange=\'progressively_validate_configuration(0,this)\'  class=\'confeditbox\' cols=\'60\' rows=\'1\' name=\'CONFIG_value_{optcount}\'></textarea></pre>
+            </td>
+            <td class=\'validator_display\'>
+                <div id=\'CONFIG_option_{optcount}_error\'></div>
+            </td>
+            <td align=\'right\'>
+                <img id=\'CONFIG_delete_{optcount}\' src=\'';$output .= $stash->get(['MagicRevision',['/images/trashcan.png' ]]);$output .= '\' alt=\'Delete\' style=\'pointer\'>
+            </td>
+        </tr>
+        <tr class=\'CONFIG_default_container\'>
+            <td colspan=\'2\'></td>
+            <td valign=\'top\' id=\'CONFIG_default_{optcount}\' class=\'CONFIG_default\'></td>
+            <td valign=\'top\' id=\'CONFIG_cpanel_default_{optcount}\' class=\'CONFIG_cpanel_default\'></td>
+        </tr>
+    </table>
+</div>
+<div id=\'CONFIG_description_{optcount}\' class=\'CONFIG_description\'></div>
+</script>
+
+<script type="text/javascript">
+var save_broken_cfg_panel;
+var optcount = ';$output .= $stash->get('optcount');$output .= ';
+var optkeys = [];
+var restart_progressive_validation = 0;
+var progressive_validation_in_progress = 0;
+var valid_configuration = {};
+var inital_configuration_is_valid = -1;
+var ignore_invalid_config = 0;
+var invalid_config_ids_list = [];
+var window_is_unloading = 0;
+
+function sync_acl_checks(thisEl) {
+    var classes = thisEl.className.split(" ");
+    var class_to_find;
+    for(var i=0;i<classes.length;i++) {
+        if (classes[i].match(/^acl_check/)) {
+            class_to_find = classes[i];
+            break;
+        }
+    }
+    var acl_check_Els = YAHOO.util.Dom.getElementsByClassName(class_to_find,\'input\');
+    for(var i=0;i<acl_check_Els.length;i++) {
+        if (thisEl.checked) {
+            acl_check_Els[i].checked=true;
+        } else {
+            acl_check_Els[i].checked=false;
+        }
+    }
+    class_to_find = class_to_find.replace(/_check/,\'\');
+    var needs_validate = 0;
+    var acl_container_Els = YAHOO.util.Dom.getElementsByClassName(class_to_find,\'div\');
+    for(var i=0;i<acl_container_Els.length;i++) {
+        var thisid = thisEl.id.replace(\'|enabled\',\'\');
+        if (thisEl.checked) {
+            if ( YAHOO.util.Dom.get(thisid).value) {
+                valid_configuration[thisid] = 0;
+                needs_validate = 1;
+            }
+            acl_container_Els[i].style.display=\'\';
+        } else {
+            valid_configuration[thisid] = 1;
+            acl_container_Els[i].style.display=\'none\';
+        }
+    }
+    if(needs_validate) {
+        progressively_validate_configuration(0);
+    }
+}
+
+function setupacledits() {
+    var customaclboxEl = YAHOO.util.Dom.get(\'BEGINACL\');
+    var targetwidth = customaclboxEl.offsetWidth;
+    var aclblockEl = YAHOO.util.Dom.get(\'%ACLBLOCK%\');
+    aclblockEl.style.width=(targetwidth + 2) + \'px\';
+}
+
+function attach_add_cfg() {
+    YAHOO.util.Event.addListener(\'add_cfg\',\'click\',add_cfg);
+}
+
+YAHOO.util.Event.onDOMReady( function() {
+    for(var i=1;i<=optcount;i++) {
+        init_config_option(i);
+    }
+} );
+
+var config_options = ';$output .= $stash->get(['data',0,'config_options',0,'sort',0,'json',0]);$output .= ";\n\nfunction delete_cfg (e,optid) {\n    YAHOO.util.Dom.get(\"CONFIG_option_\" + optid).value = '';\n    YAHOO.util.Dom.get(\"CONFIG_value_\" + optid).value = '';\n    YAHOO.util.Dom.get(\"CONFIG_container_\" + optid).style.display='none';\n    YAHOO.util.Dom.get(\"CONFIG_description_\" + optid).style.display='none';\n    valid_configuration[\"CONFIG_option_\" + optid] = 1;\n    valid_configuration[\"CONFIG_value_\" + optid] = 1;\n    progressively_validate_configuration(0);\n}\n\nfunction init_config_option (optid) {\n    optkeys[optid] = (YAHOO.util.Dom.get(\"CONFIG_option_\" + optid).value.split(\" \"))[0];\n    var DeleteButton = YAHOO.util.Dom.get(\"CONFIG_delete_\" + optid);\n    if (DeleteButton) {\n        EVENT.on(DeleteButton,'click',delete_cfg,optid);\n    }\n\n    var my_configs = {\n        useShadow: true,\n        maxResultsDisplayed: config_options.length,\n        expander: \"toggle-\"+optid,\n        applyLocalFilter: true,\n        queryMatchCase: true\n    };\n    var AC = new CPANEL.widgets.Combobox(\"CONFIG_option_\" + optid, null, config_options, my_configs);\n    AC.originalfilterResults=AC.filterResults;\n    AC.filterResults = function(sQuery, oFullResponse, oParsedResponse, oCallback) {\n        sQuery = sQuery.replace(/\\%20.*/, '');\n        oCallback.argument.query = sQuery;\n        return AC.originalfilterResults(sQuery, oFullResponse, oParsedResponse, oCallback);\n    }\n    AC.itemSelectEvent.subscribe(function(type, ACo) {\n        var newval = ACo[2][0];\n        if (newval != optkeys[optid]) {\n            update_config(optid,newval);\n        }\n        optkeys[optid] = this.getInputEl().value;\n    });\n    AC.textboxChangeEvent.subscribe(function(type, ACo) {\n        var fullval = YAHOO.util.Dom.get(\"CONFIG_option_\" + optid).value;\n        var newval = (fullval.split(\" \"))[0];\n        if (newval != optkeys[optid]) {\n            update_config(optid,newval,fullval);\n        }\n        optkeys[optid] = this.getInputEl().value;\n    });\n}\n\nfunction update_config(optid, configkey, fullval) {\n    if (!configkey.match(/list\$/)) {\n        for(var i=1;i<=optcount;i++) {\n            if (i == optid) { continue; };\n            if ( (YAHOO.util.Dom.get(\"CONFIG_option_\" + i).value.split(\" \"))[0] == configkey ) {\n                alert('\"' + configkey + '\" is already configured.  Please modify the existing value.');\n                YAHOO.util.Dom.get(\"CONFIG_option_\" + optid).value = '';\n                YAHOO.util.Dom.get(\"CONFIG_option_\" + i).focus();\n                return;\n            }\n        }\n    } else if (fullval) {\n        for(var i=1;i<=optcount;i++) {\n            if (i == optid) { continue; };\n            if ( YAHOO.util.Dom.get(\"CONFIG_option_\" + i).value == fullval ) {\n                alert('\"' + fullval + '\" is already configured.  Please modify the existing value.');\n                YAHOO.util.Dom.get(\"CONFIG_option_\" + optid).value = '';\n                YAHOO.util.Dom.get(\"CONFIG_option_\" + i).focus();\n                return;\n            }\n        }\n    }\n\n    if (configkey.match(/^[A-Z]+\$/)) {\n        configkey='MACRO';\n    }\n\n    YAHOO.util.Dom.get('CONFIG_description_' + optid).innerHTML = '<img src=\"/img/yui/rel_interstitial_loading.gif\" />';\n    YAHOO.util.Connect.asyncRequest( \"GET\", '";$output .= $stash->get('cp_security_token');$output .= "/json-api/fetch_doc_key?module=Exim&key=' + encodeURIComponent(configkey),\n                {\n                    success:function(o) {\n                        var jsonResponse = YAHOO.lang.JSON.parse(o.responseText);\n                        YAHOO.util.Dom.get('CONFIG_description_' + optid).innerHTML = jsonResponse.doc.description || 'Unknown configuration setting: ' + configkey;\n\n                        var default_text = 'Exim Default: ' + jsonResponse.doc['default'];\n                        var text = jsonResponse.doc['default'] ? default_text : '';\n                        YAHOO.util.Dom.get('CONFIG_default_' + optid).innerHTML = text;\n\n                        var cpanel_default_text = 'cPanel Default: ' + jsonResponse.doc['cpanel_default'];\n                        var text = jsonResponse.doc['cpanel_default'] ? cpanel_default_text : '';\n                        YAHOO.util.Dom.get('CONFIG_cpanel_default_' + optid).innerHTML = text;\n\n                        if (jsonResponse.doc['cpanel_default'] && jsonResponse.doc['cpanel_default'] != 'unset') {\n                           YAHOO.util.Dom.get('CONFIG_value_' + optid).value = jsonResponse.doc['cpanel_default'];\n                        }\n\n                        progressively_validate_configuration(0,YAHOO.util.Dom.get(\"CONFIG_option_\" + optid))\n                     },\n                     failure: function(o) {\n                        YAHOO.util.Dom.get('CONFIG_description_' + optid).innerHTML = 'failed to load help';\n                        YAHOO.util.Dom.get('CONFIG_default_' + optid).innerHTML = 'failed to load';\n                        YAHOO.util.Dom.get('CONFIG_cpanel_default_' + optid).innerHTML = 'failed to load';\n                     }\n                }, null );\n\n}\nfunction add_cfg() {\n    var newDiv = document.createElement('div');\n    var text = DOM.get(\"cfg_template\").text.replace(/\\{optcount\\}/g,++optcount);\n    newDiv.innerHTML=text;\n    YAHOO.util.Dom.get('config_options').appendChild(newDiv);\n    init_config_option(optcount);\n}\n\nfunction validate_entire_configuration() {\n    disable_save_button();\n    progressively_validate_configuration(1);\n\n    // We cannot take a shortcut as they may have manually edited exim.conf.l*\n    if (0) {\n        YAHOO.util.Connect.asyncRequest( \"GET\", '";$output .= $stash->get('cp_security_token');$output .= "/json-api/validate_current_installed_exim_config',\n                    {\n                        success:function(o) {\n                            var jsonResponse = YAHOO.lang.JSON.parse(o.responseText);\n                            inital_configuration_is_valid = jsonResponse['status'];\n                            progressively_validate_configuration(inital_configuration_is_valid);\n                         },\n                         failure: function(o) {\n                            inital_configuration_is_valid = 0;\n                            alert('Failed to validate exim configuration');\n                            enable_save_button();\n                         }\n                    }, null );\n\n   }\n}\nfunction disable_save_button() {\n    var buttonEl = YAHOO.util.Dom.get('savebutton');\n    buttonEl.disabled=true;\n    YAHOO.util.Dom.get('savebutton_status').innerHTML = CPANEL.icons.ajax;\n    buttonEl.style.display='none';\n    buttonEl.value='Validating Configuration...';\n}\nfunction enable_save_button() {\n    progressive_validation_in_progress=0;\n    restart_progressive_validation=0;\n\n    var buttonEl = YAHOO.util.Dom.get('savebutton');\n    buttonEl.value='Save';\n    YAHOO.util.Dom.get('savebutton_status').innerHTML = '';\n    buttonEl.style.display='';\n    buttonEl.disabled=false;\n}\nfunction progressively_validate_configuration(assume_ok, changedEl, restart) {\n    //console.log(\"progressively_validate_configuration(assume_ok=\" + assume_ok + \",changedEl=\" + changedEl + \",restart=\" + restart + \");\");\n    if (changedEl) {\n       var working_on_id = changedEl.id;\n       //console.log(\"changed el = \" + working_on_id );\n       valid_configuration[working_on_id] = 0;\n       if( working_on_id.match(/^CONFIG_option/)) {\n            valid_configuration[working_on_id.replace(/^CONFIG_option/,'CONFIG_value')] = 0;\n       }\n       else if( working_on_id.match(/^CONFIG_value/)) {\n            valid_configuration[working_on_id.replace(/^CONFIG_value/,'CONFIG_option')] = 0;\n       }\n    }\n\n    if (progressive_validation_in_progress && !restart) {\n        restart_progressive_validation=1;\n        return;\n    }\n    progressive_validation_in_progress = 1;\n//    disable_save_button();\n    var attempted_config = []; //zero element is full on purpose\n    var attempted_config_origin = []; //zero element is full on purpose\n    for(var i=1;i<=optcount;i++) {\n        var optEl = YAHOO.util.Dom.get(\"CONFIG_option_\" + i);\n        if (optEl.style.display == 'none') {\n            continue; // deleted element\n        }\n        var option = optEl.value.replace(\"\\n\",\"\\\\\");\n        if (!option) { continue; }\n        var value = YAHOO.util.Dom.get(\"CONFIG_value_\" + i).value.replace(\"\\n\",\"\\\\\");\n        // We have to validate all of these at once\n        //if (!valid_configuration['CONFIG_option_' + i] || !valid_configuration['CONFIG_value_' + i]) {\n            valid_configuration['CONFIG_option_' + i] = 0;\n            valid_configuration['CONFIG_value_' + i] = 0;\n            attempted_config.push(option + \"=\" + value);\n            attempted_config_origin.push('CONFIG_option_' + i);\n            YAHOO.util.Dom.get(\"CONFIG_option_\" + i).style.background=\"#fff\";\n            YAHOO.util.Dom.get(\"CONFIG_option_\" + i + '_error').innerHTML = CPANEL.icons.ajax;\n        //}\n    }\n    var textareas = document.getElementsByTagName('textarea');\n    var section = '';\n    var thissection = '';\n    var acl = '';\n    var thisacl = '';\n    for(var i=0;i<textareas.length;i++) {\n        if (textareas[i].id == null || textareas[i].id.match(/^CONFIG_/) || textareas[i].id === \"customaclbox|acl\") {\n            continue;\n        }\n        var thisid = textareas[i].id;\n        if (thisid.match(/%ACLBLOCK%/)) {\n            thissection='acl';\n        } else {\n            var splitid = thisid.split('|');\n            thissection = splitid[splitid.length-1];\n        }\n        if (thissection && thissection != section) {\n           // This inserts the \"begin acl: etc line in the test exim config\"\n            attempted_config.push(\"begin \" + thissection);\n            attempted_config_origin.push('');\n            section = thissection;\n        }\n\n        var enabledEl = YAHOO.util.Dom.get(thisid + '|enabled');\n        if (enabledEl) {\n            if (!enabledEl.checked) {\n                //console.log(\"skipped: \" + thisid);\n                continue;\n            }\n        }\n        if ( YAHOO.util.Dom.get(thisid + '_error') && !valid_configuration[thisid] ) {\n            valid_configuration[thisid] = 0; //not yet validated\n        }\n\n        if (thisid.match(/%ACLBLOCK%\\|/) && thisid.match(/\\|custom_/)) {\n           // This inserts the \"acl_connect: etc line in the test exim config\"\n           var blockmatcher = thisid.match(/\\|custom_(?:begin|end)_(.*)/);\n           thisacl = blockmatcher[1];\n           if (acl != thisacl) {\n               attempted_config.push(\"acl_\" + thisacl + \":\");\n               attempted_config_origin.push('0|acl');\n               acl = thisacl;\n           }\n        }\n        var text_content = textareas[i].value.split(\"\\n\");\n        for(var j=0;j<text_content.length;j++) {\n            if (!valid_configuration[thisid]) {\n                YAHOO.util.Dom.get(thisid).style.background=\"#fff\";\n                YAHOO.util.Dom.get(thisid + '_error').innerHTML = CPANEL.icons.ajax;\n                attempted_config.push(text_content[j]);\n                attempted_config_origin.push(thisid);\n            }\n        }\n    }\n\n    call_validate_exim_configuration_syntax(attempted_config, attempted_config_origin);\n}\n\n\nfunction call_validate_exim_configuration_syntax(attempted_config, attempted_config_origin) {\n\n    YAHOO.util.Connect.asyncRequest( \"POST\", '";$output .= $stash->get('cp_security_token');$output .= "/json-api/validate_exim_configuration_syntax',\n                        {\n                            success:function(o) {\n                                continue_progressively_validate_configuration(attempted_config, attempted_config_origin, o.responseText);\n                                //inital_configuration_is_valid = jsonResponse['status'];\n                             },\n                             failure: function(o) {\n                                if (window_is_unloading) {\n                                    return;\n                                }\n                                enable_save_button();\n                                //inital_configuration_is_valid = 0;\n                                //progressively_validate_configuration(inital_configuration_is_valid);\n                             }\n                        }, 'cfg_text=' + encodeURIComponent(attempted_config.join(\"\\n\"))  );\n}\n\nfunction continue_progressively_validate_configuration(attempted_config, attempted_config_origin, validate_exim_configuration_syntax_response) {\n   if (restart_progressive_validation) {\n       //console.log(\"restarting validation due to edit in the middle of validation\");\n       restart_progressive_validation = 0;\n       progressively_validate_configuration(null, null, 1);\n       return;\n   }\n\n   var enable_save = false;\n\n   var jsonResponse = YAHOO.lang.JSON.parse(validate_exim_configuration_syntax_response);\n   if ( jsonResponse['status'] == 1) {\n        set_success_for_validated_ids_up_to_line(attempted_config_origin,attempted_config_origin.length+1);\n        enable_save = true;\n   } else {\n       // All of the \"LOG_PANIC_DIE|LOG_CONFIG\" errors need to be handled in exim/src/readconf.c\n       // Note: \"LOG_PANIC_DIE|LOG_CONFIG_IN\" (notice the IN) are autohandled because it shows the line #\n        var matcher = jsonResponse['error_msg'].match(/in line (\\d+)/);\n        var directive_matcher = jsonResponse['error_msg'].match(/configuration\\s+error:[\\s\\n\\r]+(\\S+)/);\n\n        var router_matcher = jsonResponse['error_msg'].match(/configuration\\s+error\\s+for\\s+(.*)\\s+router/);\n\n        var router_matcher_two = jsonResponse['error_msg'].match(/for\\s+(authenticator|router|transport)\\s+\\\"([^\\\"]*)\\\"/);\n        var router_dupe_matcher = jsonResponse['error_msg'].match(/there\\s+are\\s+two\\s+(authenticator|router|transport)s\\s+called\\s+\\\"([^\\\"]*)\\\"/);\n        var router_defined_matcher = jsonResponse['error_msg'].match(/no\\s+driver\\s+defined\\s+for\\s+(authenticator|router|transport)\\s+\\\"([^\\\"]*)\\\"/);\n        //console.log(router_matcher_two);\n        if (matcher || directive_matcher || router_matcher || router_matcher_two) {\n            var broken_id;\n            var error_line;\n            var attempted_config_origin_array_position;\n            //console.log( matcher);\n            //console.log( directive_matcher );\n            //console.log( router_matcher );\n            //console.log( router_matcher_two );\n            if (matcher) {\n                var error_line = matcher[1];\n                set_success_for_validated_ids_up_to_line(attempted_config_origin,error_line);\n                attempted_config_origin_array_position = parseInt(error_line)-1;\n                //console.log(attempted_config_origin_array_position);\n                //console.log(attempted_config_origin);\n                //console.log(jsonResponse);\n                broken_id = attempted_config_origin[attempted_config_origin_array_position];\n            } else if (router_matcher_two  || router_defined_matcher || router_dupe_matcher) {\n                var target_match;\n                if ( router_dupe_matcher ) { target_match= router_dupe_matcher; }\n                else if ( router_matcher_two ) { target_match= router_matcher_two; }\n                else if ( router_defined_matcher ) { target_match= router_defined_matcher; }\n                var broken_section = target_match[1] + 's';\n                var broken_router = target_match[2];\n                var insection = 'config';\n                for(var i=0;i<attempted_config_origin.length;i++) {\n                    var line = attempted_config[i];\n                    var element = attempted_config_origin[i];\n                    if (line) {\n                        var secmatch = line.match(/^begin\\s+(\\S+)/);\n                        if (secmatch) {\n                            insection =  secmatch[1];\n                        }\n                    }\n                    if (element && insection == broken_section && line.match('^' + broken_router + ':')) {\n                        error_line = i+1;\n                        break;\n                    }\n                }\n                if (!error_line) {\n                    alert(\"Warning! router_matcher could not parse error: \" + jsonResponse['error_msg']);\n                    enable_save_button();\n                    return;\n                }\n                set_success_for_validated_ids_up_to_line(attempted_config_origin,error_line);\n                attempted_config_origin_array_position = parseInt(error_line)-1;\n                broken_id = attempted_config_origin[attempted_config_origin_array_position];\n\n            } else if (router_matcher) {\n                var broken_router = router_matcher[1];\n                //console.log(router_matcher);\n                //console.log(router_matcher_two);\n                //console.log(\"broken router: \" + broken_router);\n                for(var i=0;i<attempted_config_origin.length;i++) {\n                    var line = attempted_config[i];\n                    var element = attempted_config_origin[i];\n                    if (element && line.match(broken_router + ':')) {\n                        error_line = i+1;\n                        break;\n                    }\n                }\n                if (!error_line) {\n                    alert(\"Warning! router_matcher could not parse error: \" + jsonResponse['error_msg']);\n                    enable_save_button();\n                    return;\n                }\n                set_success_for_validated_ids_up_to_line(attempted_config_origin,error_line);\n                attempted_config_origin_array_position = parseInt(error_line)-1;\n                broken_id = attempted_config_origin[attempted_config_origin_array_position];\n            } else if (directive_matcher) {\n                var broken_directive = directive_matcher[1];\n                for(var i=0;i<attempted_config_origin.length;i++) {\n                    var element = attempted_config_origin[i];\n                    if (element && element.match(/^CONFIG_option_/)) {\n                        var text = YAHOO.util.Dom.get(element).value;\n                        if (text === broken_directive) {\n                             error_line = i+1;\n                             break;\n                        }\n                    }\n                }\n                if (!error_line) {  //fallback and just look for the directive name\n                    for(var i=0;i<attempted_config_origin.length;i++) {\n                        var element = attempted_config_origin[i];\n                        if (element && element.match(/^CONFIG_option_/)) {\n                            var text = YAHOO.util.Dom.get(element).value;\n                            if (text && jsonResponse['error_msg'].match(text)) {\n                                 error_line = i+1;\n                                 break;\n                            }\n                        }\n                    }\n                }\n                if (!error_line) {\n                    alert(\"Warning! directive_matcher could not parse error: \" + jsonResponse['error_msg']);\n                    enable_save_button();\n                    return;\n                }\n                set_success_for_validated_ids_up_to_line(attempted_config_origin,error_line);\n                attempted_config_origin_array_position = parseInt(error_line)-1;\n                broken_id = attempted_config_origin[attempted_config_origin_array_position];\n            } else {\n                alert(\"Warning! There is no parser for error message: \" + jsonResponse['error_msg']);\n                enable_save_button();\n                return;\n            }\n\n            //console.log(broken_id);\n\n            var errmatcher = jsonResponse['error_msg'].split(\"\\n\");\n            var errortxt = errmatcher[errmatcher.length-1].replace(/^\\s+/,'');\n            var errorEl = YAHOO.util.Dom.get(broken_id + '_error');\n            if (errorEl) {\n                YAHOO.util.Dom.get(broken_id).style.background=\"#fcc\";\n                errorEl.innerHTML = CPANEL.icons.error + \"<div class='syntax_error'>\" + errortxt + \"</div>\";\n            } else {\n                alert(\"Missing element: \" + broken_id + '_error');\n            }\n            if ( broken_id.match(/^CONFIG_option/)) {\n                valid_configuration[broken_id.replace(/^CONFIG_option/,'CONFIG_value')]=-1;\n            }\n            valid_configuration[broken_id]=-1;\n\n            //console.log(valid_configuration);\n\n            var still_to_check = get_list_of_invalid_config_ids(broken_id);\n            //console.log(still_to_check);\n            if (still_to_check && still_to_check.length) {\n               if (broken_id.match(/^CONFIG_option_/)) {\n                   //console.log(\"its a config option:  \"  + broken_id);\n                   // only remove the element as the CONFIG section has to be validated as a whole\n                    //console.log(attempted_config);\n                    attempted_config.splice(attempted_config_origin_array_position, 1);\n                    attempted_config_origin.splice(attempted_config_origin_array_position, 1);\n                    //console.log(attempted_config);\n               } else {\n                   var next_origin_offset = 0;\n                   // The next few lines may be the same broken_id so we need to skip over that many lines\n                   for(var i=attempted_config_origin_array_position;i<attempted_config_origin.length;i++) {\n                      if (attempted_config_origin[i] == broken_id) {\n                        next_origin_offset++;\n                      }\n                   }\n                   //console.log(\"offset is: \" + next_origin_offset);\n                   // remove everything before the broken id as it is ok\n                   attempted_config.splice(0, attempted_config_origin_array_position+next_origin_offset);\n                   attempted_config_origin.splice(0, attempted_config_origin_array_position+next_origin_offset);\n                   //console.log(attempted_config[0]);\n               }\n               if (attempted_config_origin[0] && attempted_config_origin[0].match(/\\|/)) {\n                    var section = attempted_config_origin[0].match(/\\%ACLBLOCK\\%/) ? 'acl' : (attempted_config_origin[0].split('|'))[1];\n                    // console.log('create sec:' + section);\n                    attempted_config.unshift(\"begin \" + section);\n                    attempted_config_origin.unshift('');\n               }\n               call_validate_exim_configuration_syntax(attempted_config, attempted_config_origin);\n               // splice the attempted_config and attempted_config_origin up to the point of failure and sent it through again\n            } else {\n                enable_save = true;\n            }\n        } else {\n            alert(\"Warning, could not highlight error! No parser for error message found: \" + jsonResponse['error_msg']);\n            enable_save = true;\n        }\n    }\n\n    if (enable_save) {\n        enable_save_button();\n        if (TO_DO_AFTER_VALIDATION) {\n            TO_DO_AFTER_VALIDATION();\n            TO_DO_AFTER_VALIDATION = undefined;\n        }\n    }\n}\n\nvar TO_DO_AFTER_VALIDATION;\nfunction ensure_cfg_is_valid() {\n    if (progressive_validation_in_progress) {\n        TO_DO_AFTER_VALIDATION = function() {\n            if (ensure_cfg_is_valid() !== false) {\n                YAHOO.util.Dom.get('advform').submit();\n            }\n        };\n        disable_save_button();\n        return false;\n    }\n\n    invalid_config_ids_list = [];\n    for(var i in valid_configuration) {\n        if (valid_configuration[i] != 1) { invalid_config_ids_list.push(i); }\n    }\n\n    if (!ignore_invalid_config && invalid_config_ids_list && invalid_config_ids_list.length) {\n        if (! save_broken_cfg_panel ) {\n         save_broken_cfg_panel = new YAHOO.widget.Dialog(\"save_broken_cfg_panel\", {\n            width:\"320px\",\n            visible:false,\n            constraintoviewport:true,\n            close:true,\n            modal:true,\n            fixedcenter:true,\n            buttons : [ { text:\"Correct\", handler:function() {\n                                this.hide();\n                                YAHOO.util.Dom.get(invalid_config_ids_list[0]).focus();\n                                } , isDefault:true },\n                        { text:\"Ignore\", handler:function() {\n                                this.hide();\n                                ignore_invalid_config=1;\n                                notify_parent_submit();\n                                YAHOO.util.Dom.get('advform').submit();\n                        }\n                    } ]\n            } );\n            document.getElementById('save_broken_cfg_panel').style.display='';\n            save_broken_cfg_panel.render();\n        }\n        save_broken_cfg_panel.show();\n        return false;\n    }\n\n    notify_parent_submit();\n\n    return true;\n}\n\nfunction get_list_of_invalid_config_ids(id_to_skip) {\n    var invalid_config_ids_list = [];\n    for(var i in valid_configuration) {\n        if (id_to_skip && ( i == id_to_skip ||\n                i == id_to_skip.replace(/^CONFIG_option/,'CONFIG_value') ||\n                i == id_to_skip.replace(/^CONFIG_value/,'CONFIG_option')\n                )) { continue; }\n        if (!valid_configuration[i]) { invalid_config_ids_list.push(i); }\n    }\n    return invalid_config_ids_list;\n}\nfunction set_success_for_validated_ids_up_to_line(attempted_config_origin,where_to_stop) {\n    for(var i=1;i < where_to_stop;i++) {\n        var attempted_config_origin_array_position = i-1;\n        if( attempted_config_origin[attempted_config_origin_array_position] && !attempted_config_origin[attempted_config_origin_array_position].match(/^0/) ) {\n            YAHOO.util.Dom.get(attempted_config_origin[attempted_config_origin_array_position] + '_error').innerHTML = CPANEL.icons.success;\n            YAHOO.util.Dom.get(attempted_config_origin[attempted_config_origin_array_position]).style.background=\"#fff\";\n            if ( attempted_config_origin[attempted_config_origin_array_position].match(/^CONFIG_option/)) {\n                valid_configuration[attempted_config_origin[attempted_config_origin_array_position].replace(/^CONFIG_option/,'CONFIG_value')]=1;\n            }\n            valid_configuration[attempted_config_origin[attempted_config_origin_array_position]]=1;\n        }\n    }\n}\n\nfunction notify_previous_config_failed() {\n\n    var  previous_config_failed_panel = new YAHOO.widget.Dialog(\"previous_config_failed_panel\", {\n        width:\"320px\",\n        visible:false,\n        constraintoviewport:true,\n        close:true,\n        modal:true,\n        fixedcenter:true,\n        buttons : [ { text:\"Edit\", handler:function() { this.hide();  } , isDefault:true },\n                    { text:\"Revert\", handler:function() { remove_in_progress_exim_config_edit(); } } ]\n        } );\n    document.getElementById('previous_config_failed_panel').style.display='';\n    previous_config_failed_panel.render();\n    previous_config_failed_panel.show();\n\n}\nfunction remove_in_progress_exim_config_edit() {\n     YAHOO.util.Connect.asyncRequest('GET', '";$output .= $stash->get('cp_security_token');$output .= '/json-api/remove_in_progress_exim_config_edit\', {
+                    success:function() {
+                        if (parent.reload_tab) {
+                            parent.reload_tab(\'advanced\',{},1);
+                        }  else {
+                            window.location.reload();
+                        }
+                    },
+                    failure:function() {
+                        alert("Could not remove the in progress exim config edit");
+                    }
+             }, "");
+}
+
+YAHOO.util.Event.onAvailable(\'customaclbox|acl\', setupacledits);
+YAHOO.util.Event.onAvailable(\'add_cfg\', attach_add_cfg);
+YAHOO.util.Event.onDOMReady( validate_entire_configuration );
+YAHOO.util.Event.on(window, \'beforeunload\', function(e) { window_is_unloading = 1; } );
+';if ($stash->get(['data',0,'previous_config_failed',0])&&!$stash->get(['data',0,'skip_dry_run_warning',0])){$output .= '
+YAHOO.util.Event.onAvailable(\'previous_config_failed_panel\', notify_previous_config_failed);
+'}$output .= '
+
+</script>
+
+<div id="previous_config_failed_panel" style="display:none;">
+    <div class="hd">Failed Configuration</div>
+    <div class="bd">
+        <div>The previous configuration edit failed due to invalid configuration data. Would you like to continue to <b>edit</b> the configuration, or <b>revert</b> to the currently installed configuration?</div>
+    </div>
+    <div class="ft"></div>
+</div>
+
+<div id="save_broken_cfg_panel" style="display:none;">
+    <div class="hd">Configuration Errors Exist</div>
+    <div class="bd">
+        <div>You have errors in your configuration. Do you want to <b>ignore</b> them and attempt to install the new configuration anyway, or would you like to <b>correct</b> them?</div>
+    </div>
+    <div class="ft"></div>
+</div>
+
+
+
+</div>
+
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','inside_frame_or_tab_or_popup'=>$stash->get('in_tab'),'skipheader'=>$stash->get('in_tab'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['css/tweaksettings_optimized.css' ]]),'/yui/button/assets/skins/sam/button.css','/yui/autocomplete/assets/skins/sam/autocomplete.css' ],'scripts'=>['/yui/datasource/datasource-min.js','/yui/autocomplete/autocomplete-min.js','/cjt/combobox.js' ],'breadcrumburl'=>'/scripts2/displayeximconfforedit','extrastyle'=>'
+
+/* Tab Style */
+#pageContainer {
+    margin: 0;
+    padding: 0;
+}
+
+#contentContainer {
+    max-width: inherit !important;
+}
+
+/* End Tab Style */
+
+.confeditbox {
+    overflow: hidden;
+}
+
+.brickliststart li {
+    list-style: none;
+}
+
+#rbl_table {
+    width: 100%;
+}
+
+#rbl_table th,
+#rbl_table td {
+    text-align: center;
+}
+
+tr.delete_rbl td {
+    font-style: italic;
+    color: graytext;
+}
+
+.CONFIG_autocompleter {
+    margin-right: 10px;
+    border: 1px solid #aaaaaa;
+    display: inline-block;
+}
+
+.CONFIG_autocompleter a {
+    margin: 0 2px;
+    vertical-align: middle;
+}
+
+.CONFIG_autocompleter a:hover {
+    text-decoration: none;
+}
+
+.CONFIG_autocompleter input {
+    width: 256px;
+    border: 0;
+    border-right: 1px solid #aaaaaa;
+}
+
+.yui-skin-sam .yui-ac-input {
+    position: static;
+    width: 20em;
+    vertical-align: middle;
+}
+
+.yui-skin-sam .yui-ac-container {
+    width: 20em;
+    left: 0px;
+}
+
+.yui-skin-sam .yui-ac-container .yui-ac-content {
+    max-height: 150px;
+    overflow-y: scroll;
+}
+
+.syntax_error {
+    color: #a00;
+}
+
+.sortable td .validator_display,
+.datatable td .validator_display,
+.validator_display {
+    border: 0;
+}
+
+.validator_display {
+    width: 80px;
+}
+
+.CONFIG_container td {
+    padding-bottom: 0;
+}
+
+.CONFIG_container textarea {
+    margin: 0;
+}
+
+.CONFIG_default_container td {
+    padding-top: 0;
+    width: 215px;
+    font: 12px "Andale Mono", "Courier New", Courier, monospace;
+}
+
+fieldset.section {
+    padding: 0;
+    padding-left: 10px !important;
+    border: none;
+}
+
+fieldset.aclinsert {
+    padding: 0;
+    padding-left: 10px !important;
+}
+
+#CONFIG a {
+    color: #037094;
+}
+
+#CONFIG a:visited {
+    color: #335024;
+}
+
+#CONFIG a:hover,
+a:visited:hover {
+    color: #000000;
+}
+
+#CONFIG .docbook_filename,
+.docbook_emphasis,
+.docbook_function {
+    font-style: italic;
+}
+
+#CONFIG .docbook_option,
+.docbook_command {
+    font-weight: bold;
+}
+
+#CONFIG .docbook_literal {
+    font-family: monospace;
+}
+
+#CONFIG .docbook_literallayout {
+    background-color: #E8E8D0;
+}
+
+#CONFIG .docbook_literallayout pre {
+    margin-bottom: 1em;
+    padding: 1em;
+}
+
+#CONFIG p,
+#CONFIG pre {
+    margin: 0;
+}
+
+#CONFIG .CONFIG_description {
+    width: 710px;
+    padding-left: 15px;
+    border: dashed 1px #ccc;
+}
+
+#eximconf pre {
+    margin: 0;
+    padding-left: 10px;
+}
+
+.aclinsert {
+    padding-left: 15px;
+    padding-top: 5px;
+}
+
+#CONFIG td {
+    border: 0;
+}
+
+legend {
+    font-weight: 900;
+}
+
+.datatable td,
+.sortable td {
+    border-right: 0;
+}
+
+html[dir="rtl"] .sortable .cell,
+html[dir="rtl"] .fixedtable .cell,
+html[dir="rtl"] .datatable .cell {
+    border-left: 1px solid #ccc;
+}
+
+html[dir="rtl"] .yui-panel .container-close {
+    left: 4px;
+    right: auto;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

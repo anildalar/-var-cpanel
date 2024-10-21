@@ -1,0 +1,89 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/spam/views/spamBox.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="spamBoxSection">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+                <toggle-switch
+                    id="toggleSpamBoxSwitch"
+                    ng-model="settings.spam_box_enabled"
+                    enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Spam Box is enabled.' ]]);$output .= '"
+                    disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Spam Box is currently disabled.' ]]);$output .= '"
+                    on-toggle="toggleEnable()" ></toggle-switch>
+            </div>
+            <callout callout-type="info" class="tab-callout">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system automatically sends messages to the [asis,SpamBox] folder when their spam score exceeds the [output,url,_1,Spam Threshold (required_score)][comment,required_score should not be translated] ([_3]).','#/required-score','required_score','{{ :: preferences.required_score}}' ]]);$output .= '
+            </callout>
+        </div>
+    </div>
+
+    <div class="section" ng-if="settings.spam_box_enabled">
+        <form id="clearSpamBoxForm" name="clearSpamBoxForm" class="form layout-medium">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <toggle-label-info
+                         for="btnClearSpamBox"
+                         label-text="';$output .= $stash->get(['locale',0,'maketext',['Clear Spam Box' ]]);$output .= '"
+                         label-id="btnClearSpamBoxLabel"
+                         info-icon-id="btnClearSpamBoxLabel_icon"
+                         info-block-id="btnClearSpamBoxLabel_info"
+                         show-info-block="true">
+                         ';$output .= $stash->get(['locale',0,'maketext',['The [asis,SpamBox] folder for this account currently uses [_1].','{{ folderSizeString }}' ]]);$output .= '
+                         ';$output .= $stash->get(['locale',0,'maketext',['This [output,em,spam] folder fills quickly. You should empty it regularly.' ]]);$output .= '
+                    </toggle-label-info>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="form-group" ng-if="!showConfirmClearAll">
+                        <button
+                            id="btnClearSpamBox"
+                            ng-disabled="!folderSize"
+                            spinner-id="btnClearSpamBoxSpinner"
+                            cp-action="clearFolder()"
+                            class="btn btn-primary" >
+                                ';$output .= $stash->get(['locale',0,'maketext',['Empty the Spam Box folder for “[_1]”',$stash->get(['CPANEL',0,'authuser',0])]]);$output .= '
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                        </button>
+
+                        <button
+                            id="btnShowConfirmClearAll"
+                            ng-click="toggleConfirmDeleteAll()"
+                            class="btn btn-default" >
+                                ';$output .= $stash->get(['locale',0,'maketext',['Empty all Spam Box folders' ]]);$output .= '
+                                <i class="fas fa-trash" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="form-group" ng-if="showConfirmClearAll">
+                        <callout class="clear-all-confirm" callout-type="danger" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Are you certain that you want to empty all Spam Box folders?' ]]);$output .= '">
+                            <p>';$output .= $stash->get(['locale',0,'maketext',['This will delete the Spam Box folder contents for every email address on this account, which includes the system user email account.' ]]);$output .= '</p>
+                            <button
+                                id="btnShowConfirmClearAll"
+                                spinner-id="btnShowConfirmClearAllSpinner"
+                                cp-action="clearAllSpamBoxFolders()"
+                                class="btn btn-primary" >
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Empty all Spam Box folders' ]]);$output .= '
+                            </button>
+
+                            <button
+                                id="btnShowCancelClearAll"
+                                ng-click="toggleConfirmDeleteAll()"
+                                class="btn btn-default" >
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Do not empty all Spam Box folders' ]]);$output .= '
+                            </button>
+                        </callout>
+                    </div>
+
+                    <div class="form-group">
+                        <a href="../manage_disk_usage/"
+                            id="btnClearSelectedSpamBox"
+                            class="btn btn-default" >
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Email Disk Usage' ]]);$output .= '
+                                <span class=\'fas fa-external-link-alt fa-lg\'></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

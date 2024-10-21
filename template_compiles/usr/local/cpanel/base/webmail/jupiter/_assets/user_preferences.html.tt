@@ -1,0 +1,110 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/_assets/user_preferences.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('pop_quota',$stash->get('is_email_account')&& $stash->get(['execute_or_die',['Email','get_pop_quota',{'as_bytes'=>1 }],'data',0]));if ($stash->get(['CPANEL',0,'feature',['email_disk_usage' ]])&& ($stash->get('is_default_cpanel_account')|| $stash->get('is_email_account'))){$output .= '
+    <div class="btn-group">
+        <button id="lnkHeaderDiskUsage" onclick="location.href = \'';$output .= ($stash->get('directory_prefix').'mail/manage_disk_usage/');$output .= '\'"
+            uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Total Mailbox Disk Usage' ]]);$output .= '"
+            style="1px solid rgba(255,255,255,.05);"
+            class="btn btn-primary link-buttons btn-diskusage navbar-item ';$output .= $stash->get('disk_usage_class');$output .= '"
+            tooltip-placement="bottom"
+            role="link"
+            data-quotausage=""  ';$output .= '            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= ')"
+        >
+            <i class="fas fa-lg fa-chart-pie" id="imgDiskUsage"></i>
+            <span id="disk_usage_text">
+            <span id="total_disk_usage"><i class="fas fa-spinner fa-spin"></i></span>
+            ';if ($stash->get('pop_quota')){$output .= '
+                /
+                ';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get('pop_quota')]]);$output .= '
+            '}$output .= '            </span>
+        </button>
+    </div>
+'}$output .= '<div class="btn-group">
+    <button id="btnUserPref" data-toggle="dropdown" class="btn btn-primary dropdown-toggle btn-sm navbar-item">
+        <span id="userImg" class="glyphicon glyphicon-user"></span>
+        <span id="lblUserNameTxt" class="hidden-inline-xs" ng-non-bindable style="text-transform:none;">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('auth_user');&$_tt_filter($output)};$output .= '</span>
+        <span id="caretImg" class="caret"></span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right">
+
+        ';if ($stash->get(['global',0,'mail_client_list',0,'size',0])> 0 && $stash->get('has_webmail_access')){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['global',0,'mail_client_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+            <li class="mail-app">
+                <a id="lnkUserPref';$output .= $stash->get(['app',0,'id',0]);$output .= '" href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/3rdparty/';$output .= $stash->get(['app',0,'id',0]);$output .= '/" title="';$output .= $stash->get(['locale',0,'maketext',['Go to “[_1]”.',$stash->get(['app',0,'displayname',0])]]);$output .= '" class="app-name">
+                    ';$output .= $stash->get(['app',0,'displayname',0]);$output .= '
+                </a>
+                <a id="lnkUserPrefFav';$output .= $stash->get(['app',0,'id',0]);$output .= '" href="javascript:void(0);" class="app-fav" data-default-webmail-app="';$output .= $stash->get(['app',0,'id',0]);$output .= '"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['app',0,'displayname',0])]]);$output .= '">
+                    <span id="imgUserPref';$output .= $stash->get(['app',0,'id',0]);$output .= '" class="far fa-star fa-fw pull-right" data-default-webmail-app="';$output .= $stash->get(['app',0,'id',0]);$output .= '"
+                        alt="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['app',0,'displayname',0])]]);$output .= '">
+                    </span>
+                </a>
+            </li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        <li class="divider"></li>
+        '}$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['global',0,'sitemap',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'page'}=$_tt_value;$output .= '
+            ';if ($stash->get(['page',0,'value',0,'condition',0])){$output .= '
+                ';if ($stash->get(['page',0,'value',0,'condition',0,'feature',0])&&!$stash->get(['CPANEL',0,'feature',[$stash->get(['page',0,'value',0,'condition',0,'feature',0])]])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+                ';if ($stash->get(['page',0,'value',0,'condition',0,'if',0])&&!$stash->get(['ExpVar',0,'expand_and_eval',[$stash->get(['page',0,'value',0,'condition',0,'if',0])]])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+            '}$output .= '
+            ';if ($stash->get(['page',0,'key',0,'substr',[0,11 ]])eq 'boxtrapper_' || $stash->get(['page',0,'key',0])eq 'return_to_cpanel'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+            <li>
+                <a id="lnkUserPref';$output .= $stash->get(['page',0,'key',0]);$output .= '" href="';$output .= $stash->get('directory_prefix').$stash->get(['page',0,'value',0,'url',0]);$output .= '"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Go to “[_1]”.',$stash->get(['page',0,'value',0,'description',0])]]);$output .= '" class="app-name">
+                    ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['page',0,'value',0,'description',0])]]);$output .= '
+                </a>
+                <a id="lnkUserPrefFav';$output .= $stash->get(['page',0,'key',0]);$output .= '" href="javascript:void(0);" class="app-fav" data-default-webmail-app="';$output .= $stash->get(['page',0,'key',0]);$output .= '"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['page',0,'value',0,'description',0])]]);$output .= '">
+                    <span id="imgUserPref';$output .= $stash->get(['page',0,'key',0]);$output .= '" class="far fa-star fa-fw pull-right" data-default-webmail-app="';$output .= $stash->get(['page',0,'key',0]);$output .= '"
+                        alt="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['page',0,'value',0,'description',0])]]);$output .= '">
+                    </span>
+                </a>
+            </li>
+            ';if ($stash->get(['page',0,'key',0])eq 'boxtrapper'){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['global',0,'sitemap',0,'boxtrapper',0,'items',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'sub'}=$_tt_value;$output .= '
+                    ';if ($stash->get(['sub',0,'key',0])ne 'boxtrapper_review_queue'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR2}$output .= '
+                    <li class="sub-menu-item">
+                        <a id="lnkUserPref';$output .= $stash->get(['sub',0,'key',0]);$output .= '" href="';$output .= $stash->get('directory_prefix').$stash->get(['sub',0,'url',0]);$output .= '" class="app-name"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Go to “[_1]”.',$stash->get(['sub',0,'description',0])]]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['sub',0,'description',0])]]);$output .= '
+                        </a>
+                        <a id="lnkUserPrefFav';$output .= $stash->get(['sub',0,'key',0]);$output .= '" href="javascript:void(0);" class="app-fav" data-default-webmail-app="';$output .= $stash->get(['sub',0,'key',0]);$output .= '"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['sub',0,'description',0])]]);$output .= '">
+                            <span id="img';$output .= $stash->get(['sub',0,'key',0]);$output .= '" class="far fa-star fa-fw pull-right" data-default-webmail-app="';$output .= $stash->get(['sub',0,'key',0]);$output .= '"
+                                alt="';$output .= $stash->get(['locale',0,'maketext',['Set “[_1]” as my default webmail application.',$stash->get(['sub',0,'description',0])]]);$output .= '">
+                            </span>
+                        </a>
+                    </li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        ';$stash->set('cpanel_url',$stash->get(['CPANEL',0,'ENV',0,'item',['cp_return_url' ]]));if ($stash->get('cpanel_url')){$stash->set('cp_link_label',$stash->get(['locale',0,'makevar',[$stash->get(['global',0,'sitemap',0,'return_to_cpanel',0,'description',0])]]))}elsif ($stash->get('is_default_cpanel_account')|| $stash->get('is_archive_user')|| $stash->get(['CPANEL',0,'ENV',0,'item',['CPRESELLER' ]])){$stash->set('cpanel_url',$stash->get('cp_security_token').$stash->get(['global',0,'sitemap',0,'return_to_cpanel',0,'url',0]));$stash->set('cp_link_label',$stash->get(['locale',0,'maketext',['Go to cPanel' ]]))}$output .= '
+        ';if ($stash->get('cpanel_url')){$output .= '
+            <li class="divider"></li>
+            <li>
+                <a id="lnkReturnToCPanel" href="';$output .= $stash->get(['cpanel_url',0,'html',0]);$output .= '" title="';$output .= $stash->get('cp_link_label');$output .= '">
+                    ';$output .= $stash->get('cp_link_label');$output .= '
+                </a>
+            </li>
+        '}$output .= '
+    </ul>
+</div>
+
+';if ($stash->get(['CPANEL',0,'feature',['email_disk_usage' ]])&& ($stash->get('is_default_cpanel_account')|| $stash->get('is_email_account'))){$output .= '
+<script>
+    var Disk_Usage_Meter;
+
+    window.addEventListener( "load", function() {
+    ';if ($stash->get('is_email_account')){$output .= '        Disk_Usage_Meter = new Disk_Usage_Meter_Mailuser(
+            document.getElementById("total_disk_usage"),
+            document.getElementById("lnkHeaderDiskUsage"),
+            ';$output .= $stash->get('pop_quota');$output .= '
+        );
+    '}else {$output .= '        var Disk_Usage_Meter = new Disk_Usage_Meter_Cpuser(
+            document.getElementById("total_disk_usage")
+        );
+    '}$output .= '
+        Disk_Usage_Meter.refresh();
+    } );
+</script>
+'}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

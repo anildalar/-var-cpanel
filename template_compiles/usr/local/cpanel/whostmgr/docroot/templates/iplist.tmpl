@@ -1,0 +1,57 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/iplist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= $context->process('_ajaxapp.tmpl');$output .= '
+<div id="ipnotices">
+    <div id="defaultNotice" class="notice">
+        <div class="notice-content">';$output .= $stash->get(['locale',0,'maketext',['You cannot remove IP addresses that are in use. You must first remove the accounts with which they are associated or switch the domains to a new IP address.' ]]);$output .= '</div>
+    </div>
+    <div id="contextNotice" class="notice notice-hidden">
+        <div id="contextNoticeContent" class="notice-content error-notice-content"></div>
+        <div id="contextNoticeClose">×</div>
+    </div>
+</div>';$stash->set('nat_mode',$stash->get(['data',0,'is_nat',0]));$output .= '<div id="natModeContent">
+    ';if ($stash->get('nat_mode')){$output .= '<h3>';$output .= $stash->get(['locale',0,'maketext',['NAT Mode' ]]);$output .= '</h3>'}$output .= '
+    <div id="formDryDock">
+        <div id="natPublicIpEdit">
+            <div class="formRow">
+                <div class="formCell"><button id="saveEditedIp" class="btn-primary" id="savePublicIp">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button></div>
+                <div class="formCell"><a id="cancelIpEdit" href="javascript:void(0);">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a></div>
+            </div>
+        </div>
+        <div id="natConfirmDelete">
+            <div class="formRow">
+                <div class="formCell"><button class="btn-primary" id="deleteNatEntry">';$output .= $stash->get(['locale',0,'maketext',['Confirm Delete' ]]);$output .= '</button></div>
+                <div class="formCell"><a id="cancelNatEntryDelete" href="javascript:void(0);">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a></div>
+            </div>
+        </div>
+    </div>';$stash->set('error_condition',0);$stash->set('error_public_ip','');$stash->set('ip_sort_custom_key',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'ip' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= 'sorttable_customkey="';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['ip',0,'split',['\.' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'segment'}=$_tt_value;$output .= do {my$output='';my$_tt_filter=$context->filter('format',['%03d' ])|| $context->throw($context->error);$output .= $stash->get('segment');&$_tt_filter($output)};;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '"'};$stash=$context->delocalise();die $@ if $@;return$output});$stash->set('if_sort_custom_key',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'if' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= 'sorttable_customkey="';if ($stash->set('matches',$stash->get(['if',0,'match',['(eth\d+):cp(\d+)' ]]))){$output .= $stash->get(['matches',0,0,0]);$output .= ':cp';$output .= do {my$output='';my$_tt_filter=$context->filter('format',['%02d' ])|| $context->throw($context->error);$output .= $stash->get(['matches',0,1,0]);&$_tt_filter($output)}}else {$output .= $stash->get('if')}$output .= '"'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '<div id="tableContainer">
+        <table id="natlist" class="sortable" cellpadding="8" cellspacing="0">
+            <thead>
+                <tr id="tableHeader">
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Interface' ]]);$output .= '</th>
+                    <th>';if ($stash->get('nat_mode')){$output .= $stash->get(['locale',0,'maketext',['Local IP' ]])}else {$output .= $stash->get(['locale',0,'maketext',['IP' ]])}$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Notes' ]]);$output .= '</th>';if ($stash->get('nat_mode')){$output .= '<th>';$output .= $stash->get(['locale',0,'maketext',['Public IP' ]]);$output .= '</th>'}$output .= '<th class="status sorttable_nosort"></th>
+                    <th class="actions">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'table_data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'row_details'}=$_tt_value;$output .= $context->process('table_row',{'row_data'=>$stash->get('row_details')});;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('error_condition')ne 0 && $stash->get('error_public_ip')ne ''){$output .= $context->process('duplicate_error_row')}$output .= '</tbody>
+        </table>
+    </div>
+</div>';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'show_or_delete_current_ip_addresses','stylesheets'=>['/templates/backup/common.min.css','/templates/listips/listips.min.css' ],'scripts'=>['/cjt/ajaxapp.js','/js/sorttable.js','/templates/listips/listips.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'table_row'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if (!$stash->get(['row_data',0,'error_row',0,'defined',0])&& $stash->get('error_condition')ne 0 && $stash->get('error_public_ip')ne ''){$output .= '
+        ';$output .= $context->process('duplicate_error_row');$output .= '
+        ';$stash->set('status_class','');$output .= '
+        ';$stash->set('error_condition',0);$output .= '
+        ';$stash->set('error_public_ip','');$output .= '
+    '}if ($stash->get(['row_data',0,'removable',0])){$stash->set('delete_class','delete')}else {$stash->set('delete_class','delete hidden')}$stash->set('current_row',$stash->get('current_row')+ 1);$stash->set('current_row_id',('row_' .$stash->get('current_row')));$stash->set('current_stripe','');if ($stash->get('current_row')% 2 eq 0){$stash->set('current_stripe',' class="evenRow"')}$output .= '<tr id="';$output .= $stash->get('current_row_id');$output .= '"';$output .= $stash->get('current_stripe');$output .= '>
+    <td id="';$output .= $stash->get('current_row_id');$output .= 'If" ';$output .= $stash->get(['if_sort_custom_key',[$stash->get(['row_data',0,'interface',0])]]);$output .= '>';$output .= $stash->get(['row_data',0,'interface',0]);$output .= '</td>
+    <td id="';$output .= $stash->get('current_row_id');$output .= 'LocalIp" ';$output .= $stash->get(['ip_sort_custom_key',[$stash->get(['row_data',0,'local_ip',0])]]);$output .= '>';$output .= $stash->get(['row_data',0,'local_ip',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['row_data',0,'notes',0]);$output .= '</td>';if ($stash->get('nat_mode')){$output .= '<td id="';$output .= $stash->get('current_row_id');$output .= 'PublicIp" class="pubIp"';if ($stash->get(['row_data',0,'error_row',0,'defined',0])){$stash->set('error_condition',$stash->get(['row_data',0,'error_row',0]));$stash->set('error_public_ip',$stash->get(['row_data',0,'public_ip',0]));$stash->set('status_class',' natError')}if ($stash->get(['row_data',0,'public_ip',0,'defined',0])&& $stash->get(['row_data',0,'public_ip',0])ne ''){$output .= $stash->get(['ip_sort_custom_key',[$stash->get(['row_data',0,'public_ip',0])]]);$output .= '>';$output .= $stash->get(['row_data',0,'public_ip',0])}else {$output .= '>';$stash->set('status_class',' natWarning');$output .= $stash->get(['locale',0,'maketext',['Not Routable' ]])}$output .= '</td>'}$output .= '<td id="';$output .= $stash->get('current_row_id');$output .= 'Status" class="natStatus';$output .= $stash->get('status_class');$output .= '">
+    </td>';if ($stash->get('nat_mode')){$output .= '<td id="';$output .= $stash->get('current_row_id');$output .= 'Actions" class="buttons" sorttable_customkey="';$output .= $stash->get(['row_data',0,'removable',0]);$output .= '">
+        <ul class="mappingActions">
+            <li class="validate"><a href="javascript:void(0)" class="validateMappingBtn" title="';$output .= $stash->get(['locale',0,'maketext',['Validate “[_1]”',$stash->get(['row_data',0,'local_ip',0])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Validate' ]]);$output .= '</a></li>
+            <li class="edit"><a href="javascript:void(0)" class="editMappingBtn" title="';$output .= $stash->get(['locale',0,'maketext',['Edit “[_1]”',$stash->get(['row_data',0,'public_ip',0])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '</a></li>
+        '}else {$output .= '
+        <td id="';$output .= $stash->get('current_row_id');$output .= 'Actions" class="buttons" sorttable_customkey="';$output .= $stash->get(['row_data',0,'removable',0]);$output .= '"><ul class="mappingActions nonNat">'}$output .= '<li class="';$output .= $stash->get('delete_class');$output .= '"><a href="javascript:void(0)" class="deleteMappingBtn" title="';$output .= $stash->get(['locale',0,'maketext',['Delete “[_1]”',$stash->get(['row_data',0,'local_ip',0])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</a></li>
+        </ul>
+    </td>
+</tr>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'duplicate_error_row'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<tr class="dupError" data-publicip="';$output .= $stash->get('error_public_ip');$output .= '">
+        <td colspan="6">A single public IP address cannot be assigned to more than one local IP address.</td>
+    </tr>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

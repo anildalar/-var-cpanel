@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/archive.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['FORM',0,'itemsperpage',0])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]))}if ((!($stash->get(['FORM',0,'itemsperpage',0]))||!($stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}if (($stash->get(['FORM',0,'api2_sort_column',0]))){$stash->set(['CPANEL',0,'CPVAR',0,'api2_sort_column',0],($stash->get(['FORM',0,'api2_sort_column',0])))}if ((!(($stash->get(['FORM',0,'api2_sort_column',0])))||!(($stash->get(['CPANEL',0,'CPVAR',0,'api2_sort_column',0]))))){$stash->set(['CPANEL',0,'CPVAR',0,'api2_sort_column',0],'domain')}if (($stash->get(['FORM',0,'api2_sort_reverse',0]))){$stash->set(['CPANEL',0,'CPVAR',0,'api2_sort_reverse',0],($stash->get(['FORM',0,'api2_sort_reverse',0])))}if ((!(($stash->get(['FORM',0,'api2_sort_reverse',0])))||!(($stash->get(['CPANEL',0,'CPVAR',0,'api2_sort_reverse',0]))))){$stash->set(['CPANEL',0,'CPVAR',0,'api2_sort_reverse',0],'0')}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if ($stash->get(['CPANEL',0,'feature',['emailarchive' ]])){$output .= '
+        ';if (($stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0])eq 'disable' ? 0 : $stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0]))){$output .= '
+        <div id="descEmailArchivingAllowsYou" class="header-text">
+            ';$output .= $stash->get(['locale',0,'maketext',['Save incoming, outgoing, or mailing list messages for a specified amount of time. Make sure you have enough disk space available for the retention period you select. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/Archive','_blank','lnkArchiveDocumentation' ]]);$output .= '
+
+        </div>
+
+        <div class="section">
+            ';$output .= $context->include('mail/archive_default.html.tt');$output .= '
+        </div>
+
+        <div class="section">
+            <h2 id="hdrManagingArchiving">';$output .= $stash->get(['locale',0,'maketext',['Manage Archiving' ]]);$output .= '</h2>
+
+            <p id="descOnceArchivingHasBegun" class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Once archiving has begun, you can download a copy of the complete archive in maildir format for each domain by clicking the “[_1]” action. A read-only IMAP connection to the archive is also available.',$stash->get(['locale',0,'maketext',['Download Archive' ]])]]);$output .= '
+            </p>
+
+            ';$output .= $context->include('mail/archive_search.html.tt');$output .= '
+
+            <div id="archive_status_bar" class="cjt_status_bar"></div>
+
+            <div class="table-responsive">
+              <table id="emailarchtbl" class="archives sortable truncate-table table table-striped"  custom-sort-method="onSortClick">
+                <thead>
+                    ';$output .= $context->include('mail/archive_list_header.html.tt');$output .= '
+                </thead>
+                <tbody>
+                    ';$output .= $context->include('mail/archive_list.html.tt');$output .= '
+                </tbody>
+              </table>
+            </div>
+
+            ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+
+        </div>
+
+        <div class="section" id="header-text">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Notes:' ]]);$output .= '</strong>
+            <ul class="bulleted">
+                <li id="descWhenArchivingMailingLists">
+                    ';$output .= $stash->get(['locale',0,'maketext',['When archiving mailing lists, only the messages that get sent out to remote users on the list when a message is received are retained in the archive.' ]]);$output .= '
+                </li>
+                <li id="descDiskSpaceUsage">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Disk space usage is only recalculated once every day.' ]]);$output .= '
+                </li>
+                <li id="descACustomRetentionof">
+                    ';$output .= $stash->get(['locale',0,'maketext',['A custom retention of [output,strong,0] indicates that emails are retained forever.' ]]);$output .= '
+                </li>
+            </ul>
+        </div>
+
+        ';$output .= $context->include('mail/archive_download.html.tt');$output .= '
+
+        <iframe style="display:none;" name="archivedown" id="archivedown"></iframe>
+        '}$output .= '
+    '}$output .= '
+
+    ';if (!($stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0])eq 'disable' ? 0 : $stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0]))){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Email archiving is disabled.' ]]);$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'archive','include_cjt'=>1,'page_scripts'=>['/yui/progressbar/progressbar-min.js' ],'embed_scripts'=>['js2/mail/archive.js' ],'page_stylesheets'=>['/yui/progressbar/assets/skins/sam/progressbar.css' ],'embed_stylesheets'=>['css2/mail/archive.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

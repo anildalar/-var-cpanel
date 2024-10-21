@@ -1,0 +1,285 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backupset.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<script type="text/javascript">
+//<![CDATA[
+function loadusers() {
+
+    window.open(\'';$output .= $stash->get('cp_security_token');$output .= '/scripts/backup_user_selection\', \'select_users\');
+//   window.open("';$output .= $stash->get('cp_security_token');$output .= '/scripts2/backupusers",null,"height=300,width=500,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no");
+}
+
+function presubmit() {
+   document.backupform.BACKUPRETDAILY.disabled = false;
+   document.backupform.BACKUPRETWEEKLY.disabled = false;
+   document.backupform.BACKUPRETMONTHLY.disabled = false;
+   document.backupform.sbutton.disabled = true;
+   return true;
+}
+
+function setupret() {
+   CPANEL.util.zebra("options_table");
+
+   if (document.backupform.BACKUPINT[0].checked == true) {
+      document.backupform.BACKUPRETDAILY.disabled = true;
+      document.backupform.BACKUPRETDAILY.checked = true;
+
+      document.backupform.BACKUPRETWEEKLY.disabled = false;
+      document.backupform.BACKUPRETMONTHLY.disabled = false;
+   }
+   if (document.backupform.BACKUPINT[1].checked == true) {
+      document.backupform.BACKUPRETDAILY.disabled = true;
+      document.backupform.BACKUPRETDAILY.checked = false;
+
+      document.backupform.BACKUPRETWEEKLY.disabled = true;
+      document.backupform.BACKUPRETWEEKLY.checked = true;
+
+      document.backupform.BACKUPRETMONTHLY.disabled = false;
+   }
+   if (document.backupform.BACKUPINT[2].checked == true) {
+      document.backupform.BACKUPRETDAILY.disabled = true;
+      document.backupform.BACKUPRETDAILY.checked = false;
+
+      document.backupform.BACKUPRETWEEKLY.disabled = true;
+      document.backupform.BACKUPRETWEEKLY.checked = false;
+
+      document.backupform.BACKUPRETMONTHLY.disabled = true;
+      document.backupform.BACKUPRETMONTHLY.checked = true;
+   }
+}
+YAHOO.util.Event.onDOMReady(setupret);
+//]]>
+</script>
+
+<style type="text/css">
+.alert-info {
+  background-color: #d7edf9;
+  border: 1px solid #2980b9;
+  color: #31708f;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  margin: 0 0 10px;
+}
+</style>
+
+<div class="alert-info">
+  ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel amp() WHM] will deprecate the Legacy Backup system in the near future. We [output,strong,strongly] recommend that you upgrade to the new Backup system.' ]]);$output .= '
+</div>
+<div id="config-backup-header">
+ <h2>';$output .= $stash->get(['locale',0,'maketext',['Select Your Backup Configuration Options Below' ]]);$output .= '</h2>
+</div>
+<div id="config-backup-wrapper">
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/savebackup" name="backupform" onsubmit="return presubmit();" method="post">
+<!-- prevent password autofill -->
+<input type="text" style="display:none">
+<input type="password" autocomplete=\'off\' style="display:none">
+
+<table class="tblheader tableborder1" id="options_table">
+<tr class="zebra">
+   <td class="left_col">Backup Status</td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPENABLE" value="yes" ';$output .= $stash->get(['data',0,'enabled',0])eq 'yes' ? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label><br />
+      <label><input type="radio" name="BACKUPENABLE" value="no" ';$output .= $stash->get(['data',0,'enabled',0])eq 'no' ? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label><br />
+      <label><input type="radio" name="BACKUPENABLE" value="restoreonly" ';$output .= $stash->get(['data',0,'enabled',0])eq 'restoreonly' ? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Restore Only' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Interval' ]]);$output .= '<br />
+   <span class="backup-note"><i>';$output .= $stash->get(['locale',0,'maketext',['([output,strong,Note]: By selecting the [output,strong,Daily] backup option, you will receive [output,strong,Monthly] and [output,strong,Weekly] as well, unless you choose not to retain them below. By selecting the [output,strong,Weekly] backup option, you will receive [output,strong,Monthly] as well, unless you choose not to retain them below.)' ]]);$output .= '</i></span></td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPINT" value="daily" ';$output .= $stash->get(['data',0,'interval',0])eq 'daily' ? 'checked="checked"' : '';$output .= ' onclick="setupret();" />Daily</label>
+          <label><input type="radio" name="BACKUPINT" value="weekly" ';$output .= $stash->get(['data',0,'interval',0])eq 'weekly' ? 'checked="checked"' : '';$output .= ' onclick="setupret();" />Weekly</label>
+      <label><input type="radio" name="BACKUPINT" value="monthly" ';$output .= $stash->get(['data',0,'interval',0])eq 'monthly' ? 'checked="checked"' : '';$output .= ' onclick="setupret();" />Monthly</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Retention' ]]);$output .= '</td>
+    <td class="right_col">
+      <label><input type="checkbox" name="BACKUPRETDAILY" value="1" ';$output .= $stash->get(['data',0,'retention',0,'daily',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Daily' ]]);$output .= '</label>
+      <label><input type="checkbox" name="BACKUPRETWEEKLY" value="1" ';$output .= $stash->get(['data',0,'retention',0,'weekly',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Weekly' ]]);$output .= '</label>
+      <label><input type="checkbox" name="BACKUPRETMONTHLY" value="1" ';$output .= $stash->get(['data',0,'retention',0,'monthly',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Monthly' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Days to Run Backup' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-0" ';$output .= $stash->get(['data',0,'run_days',0,'sunday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Sunday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-1" ';$output .= $stash->get(['data',0,'run_days',0,'monday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Monday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-2" ';$output .= $stash->get(['data',0,'run_days',0,'tuesday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Tuesday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-3" ';$output .= $stash->get(['data',0,'run_days',0,'wednesday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Wednesday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-4" ';$output .= $stash->get(['data',0,'run_days',0,'thursday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Thursday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-5" ';$output .= $stash->get(['data',0,'run_days',0,'friday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Friday' ]]);$output .= '</label><br />
+      <label><input type="checkbox" value="on" name="BACKUPDAYS-6" ';$output .= $stash->get(['data',0,'run_days',0,'saturday',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Saturday' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Remount/Unmount Backup Drive' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This setting requires a separate drive or other mount point.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPMOUNT" value="yes" ';$output .= $stash->get(['data',0,'drive',0,'mount',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="BACKUPMOUNT" value="no" ';$output .=!$stash->get(['data',0,'drive',0,'mount',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Bail Out if Backup Drive Mount Fails' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This setting is recommended if you set Remount/Mount.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="DIEIFNOTMOUNTED" value="yes" ';$output .= $stash->get(['data',0,'drive',0,'die_on_mount_fail',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="DIEIFNOTMOUNTED" value="no" ';$output .=!$stash->get(['data',0,'drive',0,'die_on_mount_fail',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Incremental Backup' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This setting will only back up items that have changed.) (**No Compression**, not compatible with FTP backups.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPINC" value="yes" ';$output .= $stash->get(['data',0,'incremental',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+      <label><input type="radio" name="BACKUPINC" value="no" ';$output .=!$stash->get(['data',0,'incremental',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Accounts' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPACCTS" value="yes" ';$output .= $stash->get(['data',0,'accounts',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+        <label><input type="radio" name="BACKUPACCTS" value="no" ';$output .=!$stash->get(['data',0,'accounts',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Compress Account Backups' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="radio" name="COMPRESSACCTS" value="yes" ';$output .= $stash->get(['data',0,'compress',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+        <label><input type="radio" name="COMPRESSACCTS" value="no" ';$output .=!$stash->get(['data',0,'compress',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Configuration Files' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This setting is not needed for account restoration.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPFILES" value="yes" ';$output .= $stash->get(['data',0,'config_files',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="BACKUPFILES" value="no" ';$output .=!$stash->get(['data',0,'config_files',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup SQL Databases' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(You must choose the [output,em,Per Account] option to use the restore feature.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="MYSQLBACKUP" ';$output .= $stash->get(['data',0,'mysql',0])eq 'accounts' ? 'checked="checked"' : '';$output .= ' value="accounts" />';$output .= $stash->get(['locale',0,'maketext',['Per Account Only' ]]);$output .= '</label><br />
+      <label><input type="radio" name="MYSQLBACKUP" ';$output .= $stash->get(['data',0,'mysql',0])eq 'dir' ? 'checked="checked"' : '';$output .= ' value="dir" />';$output .= $stash->get(['locale',0,'maketext',['Entire Data Directory' ]]);$output .= '</label><br />
+       <label><input type="radio" name="MYSQLBACKUP" ';$output .= $stash->get(['data',0,'mysql',0])eq 'both' ? 'checked="checked"' : '';$output .= ' value="both" />';$output .= $stash->get(['locale',0,'maketext',['Per Account and Entire Data Directory' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Access Logs' ]]);$output .= '</td>
+    <td class="right_col">
+      <label><input type="radio" name="BACKUPLOGS" value="yes" ';$output .= $stash->get(['data',0,'log_files',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="BACKUPLOGS" value="no" ';$output .=!$stash->get(['data',0,'log_files',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+        <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Bandwidth Data' ]]);$output .= '</td>
+    <td class="right_col">
+                <label><input type="radio" name="BACKUPBWDATA" value="yes" ';$output .= $stash->get(['data',0,'bwdata',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+        <label><input type="radio" name="BACKUPBWDATA" value="no" ';$output .=!$stash->get(['data',0,'bwdata',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+        </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Use local DNS zone files rather than retrieving the latest zone updates from the cluster. (Improves performance, but DNS zone changes may be lost if they are made on a different system in the cluster.)' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="radio" name="LOCALZONESONLY" value="yes" ';$output .= $stash->get(['data',0,'localzonesonly',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="LOCALZONESONLY" value="no" ';$output .=!$stash->get(['data',0,'localzonesonly',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Type' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPTYPE" value="normal" ';$output .=!$stash->get(['data',0,'ftp',0,'enabled',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Standard' ]]);$output .= '</label><br />
+       <label><input type="radio" name="BACKUPTYPE" value="ftp" ';$output .= $stash->get(['data',0,'ftp',0,'enabled',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Remote FTP (Accounts Only)' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['EXPERIMENTAL: Use Hard Links for weekly and monthly backups to reduce disk usage and backup time (incremental backups only).' ]]);$output .= '</td>
+    <td class="right_col">
+        <label><input type="radio" name="LINKDEST" value="yes" ';$output .= $stash->get(['data',0,'linkdest',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+        <label><input type="radio" name="LINKDEST" value="no" ';$output .=!$stash->get(['data',0,'linkdest',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Remote FTP Host' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(Remote FTP Backup Only)' ]]);$output .= '</span></td>
+   <td class="right_col"><input type="text" size="32" name="BACKUPFTPHOST" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'ftp',0,'host',0]);&$_tt_filter($output)};$output .= '" /></td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['FTP Backup User' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(Remote FTP Backup Only)' ]]);$output .= '</span></td>
+   <td class="right_col"><input type="text" size="32" name="BACKUPFTPUSER" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'ftp',0,'user',0]);&$_tt_filter($output)};$output .= '" /></td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['FTP Backup Password' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(Remote FTP Backup Only)' ]]);$output .= '</span></td>
+   <td class="right_col"><input type="password" autocomplete=\'off\' size="32" name="BACKUPFTPPASS" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'ftp',0,'password',0]);&$_tt_filter($output)};$output .= '" /></td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['FTP Backup Directory' ]]);$output .= '<br />
+   <span class="backup-note">
+          ';$output .= $stash->get(['locale',0,'maketext',['Optionally, a directory called [asis,cpbackup] in the root of the account’s [output,acronym,FTP,File Transfer Protocol] directory will be used if none is specified.' ]]);$output .= '
+          <br /><i>';$output .= $stash->get(['locale',0,'maketext',['For Example: [join,~, ,_*]','/home/fred/cpbackup','/backup/cpbackup','/files/cpbackup' ]]);$output .= '</i>
+          <br />
+   ';$output .= $stash->get(['locale',0,'maketext',['(Remote FTP Backup Only)' ]]);$output .= '</span></td>
+   <td class="right_col"><input type="text" size="32" name="BACKUPFTPDIR" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'ftp',0,'directory',0]);&$_tt_filter($output)};$output .= '" /></td>
+</tr>
+
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['FTP Backup Timeout -- in seconds' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['(Remote FTP Backup Only)' ]]);$output .= ' </td>
+   <td class="right_col"><input type="text" size="32" name="BACKUPFTPTIMEOUT" value="';$output .= $stash->get(['data',0,'ftp',0,'timeout',0])? $stash->get(['data',0,'ftp',0,'timeout',0]): '120';$output .= '" />
+                <br/><i>';$output .= $stash->get(['locale',0,'maketext',['Default to [quant,_1,second,seconds] if none is specified.',120 ]]);$output .= '</i>
+        </td>
+</tr>
+
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['FTP Backup Passive Mode' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This setting is required if you are behind a firewall or if FTP backups fail.)' ]]);$output .= '</span></td>
+   <td class="right_col">
+      <label><input type="radio" name="BACKUPFTPPASSIVE" value="yes" ';$output .= $stash->get(['data',0,'ftp',0,'passive',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</label>
+       <label><input type="radio" name="BACKUPFTPPASSIVE" value="no" ';$output .=!$stash->get(['data',0,'ftp',0,'passive',0])? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</label>
+   </td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Backup Destination' ]]);$output .= '<br />
+   <span class="backup-note">';$output .= $stash->get(['locale',0,'maketext',['(This should be a directory, drive, or mount point with at least twice the space of all your [asis,/home*] partitions. Setting this to [asis,/home] is [output,strong,strongly discouraged].)' ]]);$output .= '</span></td>
+   <td class="right_col"><input type="text" size="32" name="BACKUPDIR" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'directory',0]);&$_tt_filter($output)};$output .= '" /></td>
+</tr>
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Select Specific Users' ]]);$output .= '</td>
+   <td class="right_col"><input type="button" class="btn-secondary" value="';$output .= $stash->get(['locale',0,'maketext',['Select' ]]);$output .= ' &gt;&gt;" onclick="loadusers();" /></td>
+</tr>
+';if ($stash->get(['data',0,'scripts',0,'enabled',0])){$output .= '
+<tr class="zebra">
+   <td class="left_col">';$output .= $stash->get(['locale',0,'maketext',['Execute Pre/Post Backup Script' ]]);$output .= '</td>
+   <td class="right_col">
+      <label><input type="checkbox" name="PREBACKUP" value="1" ';$output .= $stash->get(['data',0,'scripts',0,'pre',0])? 'checked="checked"' : '';$output .= ' />/scripts/precpbackup</label><br />
+      <label><input type="checkbox" name="POSTBACKUP" value="1" ';$output .= $stash->get(['data',0,'scripts',0,'post',0])? 'checked="checked"' : '';$output .= ' />/scripts/postcpbackup</label><br />
+   </td>
+</tr>
+'}$output .= '
+</table>
+</div>
+<div id="backup-save">
+<input type="submit" name="sbutton" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+</div>
+</form>
+</div>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'legacy_backup_configuration','theme'=>'yui','extrastyle'=>'
+td {
+   padding: 10px;
+}
+td.left_col {
+   text-align: left;
+   width: 430px;
+   vertical-align:top;
+}
+td.right_col {
+   text-align: left;
+   width: 430px;
+}
+label {
+   cursor: pointer;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Config/CpConfGuard.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system has restored the main [asis,cPanel] [output,amp] [asis,WHM]’s server configuration file on “[_1]”.',$stash->get(['NOTICE',0,'host_server',0])]]));$stash->set(['NOTICE',0,'table_titles',0],[$stash->get(['CPANEL',0,'locale',0,'maketext',['Critical Value' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Current Setting' ]])]);$stash->set(['NOTICE',0,'table_items',0],[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'critical_values',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cvalue'}=$_tt_value;$output .= $stash->get(['NOTICE',0,'table_items',0,'push',[[$stash->get(['cvalue',0,'key',0]),$stash->get(['cvalue',0,'value',0])]]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] [output,amp] [asis,WHM]’s server configuration file, [_1], was not present the last time it was checked.',$stash->get(['NOTICE',0,'cpanel_config_path',0])]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Your server has copied the defaults from your cache and the configuration defaults file ([_1]) to [_2], and it has generated the following critical values:',$stash->get(['NOTICE',0,'default_cpanel_config_path',0]),$stash->get(['NOTICE',0,'cpanel_config_path',0])]]);$output .= '
+</p>
+
+<p style="text-align:center">
+    ';$output .= $stash->get(['zebra_table',[{'titles'=>$stash->get(['NOTICE',0,'table_titles',0]),'items'=>$stash->get(['NOTICE',0,'table_items',0])}]]);$output .= '
+</p>
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If you wish to change these settings, you can manually update the [_1] file.',$stash->get(['NOTICE',0,'cpanel_config_path',0])]]);$output .= '
+</p>
+<p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can update most of these settings in [asis,WHM]’s [_1] interface at: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Tweak Settings' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts2/tweaksettings' ]]),'_blank' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Read the [asis,cPanel] [output,amp] [asis,WHM]’s server configuration file [output,url,_1,documentation,target,_2] for more information about this file.','https://go.cpanel.net/cpconfig','_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

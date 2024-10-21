@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/clientconf.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('ExpVar',$context->plugin('ExpVar'));if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$stash->set('auth_user',$stash->get(['ExpVar',0,'expand',['$authuser' ]]));$stash->set('autho_user_info',$stash->get(['auth_user',0,'split',['@' ]]));if (!$stash->get(['FORM',0,'item',['acct' ]])){$stash->set(['CPANEL',0,'FORM',0,'acct',0],$stash->get(['ExpVar',0,'expand',['$authuser' ]]))}if (!$stash->get(['FORM',0,'item',['domain' ]])){$stash->set(['CPANEL',0,'FORM',0,'item',['domain' ]],$stash->get(['auth_user_info',0,1,0]))}if (!$stash->get(['FORM',0,'item',['archiving' ]])){$stash->set(['FORM',0,'item',['archiving' ]],$stash->get(['ExpVar',0,'expand',['$isarchiveuser' ]]))}}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';$output .= $context->process('clientconfinclude.html.tt');$output .= '
+
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+        ';if ($stash->get(['FORM',0,'item',['archiving' ]])){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkArchive','return_location'=>'archive.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'../email_accounts/index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}$output .= '
+    '}$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get('page_heading'),'app_key'=>'configure_mail_client','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

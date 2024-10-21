@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/conversion_detail.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12 text-right flip">
+        <div class="navigation-controls">
+            <button type="button"
+                id="detailViewAddons"
+                class="btn btn-default"
+                ng-click="detail.viewAddons()">
+                ';$output .= $stash->get(['locale',0,'maketext',['View Addon Domains' ]]);$output .= '</button>
+            <button type="button"
+                id="detailViewHistory"
+                class="btn btn-primary"
+                ng-click="detail.viewHistory()">
+                ';$output .= $stash->get(['locale',0,'maketext',['View Conversion History' ]]);$output .= '</button>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <h2 id="conversionDetailHeadline" class="view-title">';$output .= $stash->get(['locale',0,'maketext',['Conversion Details for “[_1]”','{{detail.conversionData.domain}}' ]]);$output .= "</h2>\n    </div>\n</div>\n<div class=\"row\">\n    <div class=\"col-xs-12\">\n        <uib-progressbar ng-class=\"{'progress-striped active': detail.conversionData.job_status == 'INPROGRESS'}\" value=\"100\" max=\"100\" type=\"{{detail.progressBarType}}\">{{detail.currentProgressMessage}}</uib-progressbar>\n    </div>\n</div>\n<ol id=\"conversionDetailsList\" class=\"steps\">\n    <li ng-repeat=\"step in detail.conversionData.steps\">\n        <div>{{step.step_name}} <i class=\"fa\" uib-tooltip=\"{{ message(step.status) }}\" ng-class=\"{'fa-check text-success': step.status == 'DONE', 'fa-times text-danger': step.status == 'FAILED', 'fa-heartbeat text-info': step.status == 'INPROGRESS'}\"></i></div>\n        <div class=\"callout\" ng-class=\"{'callout-warning': step.status != 'FAILED' || (step.status == 'FAILED' && detail.conversionData.job_status != 'FAILED'), 'callout-danger': step.status == 'FAILED' && detail.conversionData.job_status == 'FAILED'}\" ng-show=\"step.warnings.length > 0\">\n            <ul class=\"ng-hide\" ng-show=\"step.warnings\">\n                <li ng-repeat=\"warning in detail.splitWarnings(step.warnings) track by \$index\">{{warning}}</li>\n            </ul>\n        </div>\n    </li>\n</ol>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

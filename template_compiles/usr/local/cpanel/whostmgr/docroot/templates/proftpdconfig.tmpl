@@ -1,0 +1,132 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/proftpdconfig.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<style type="text/css">
+
+.ftpserversetup {
+margin: 0 20px;
+}
+
+select.narrow {width: 300px;}
+* html select.narrow {width: auto;}
+*+html select.narrow {width: auto;}
+
+#proftpdsetup {
+    border: 5px solid #ddd;
+    width: 570px;
+}
+
+#proftpdsetup td {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+}
+
+#proftpdsetup .label_title {
+    float: left;
+    font-weight: bold;
+    margin: 0 10px 0 0;
+    width: 200px;
+}
+
+#proftpdsetup p {
+    color: #444;
+    line-height: 1.5;
+    margin: 5px 0 5px 210px;
+}
+</style>
+<div class="ftpserversetup">
+<p>ProFTPD is a FTP server capable of handling normal and TLS encrypted connections.</p>
+<p>This interface allows you to configure various aspects of ProFTPD\'s behavior.</p>
+
+<form onSubmit="return do_validate(this.id);" action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" name="mainform" id="mainform" method="POST">
+<table id="proftpdsetup" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <label class="label_title">TLS Encryption Support</label>
+            <select name="TLSRequired">
+                <option ';if (!$stash->get(['data',0,'TLSRequired',0])|| $stash->get(['data',0,'TLSRequired',0])eq 'off'){$output .= 'selected '}$output .= 'value="off">Optional</option>
+                <option ';if ($stash->get(['data',0,'TLSRequired',0])eq 'on'){$output .= 'selected '}$output .= 'value="on">Required</option>
+            </select>
+            <p>This setting controls whether TLS encryption is optional or required for all connections to the FTP server.  Users should always use encryption if possible, but many older FTP clients are incapable of secure FTP sessions.  The \'Optional\' setting is recommended for best compatibility.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">TLS Options</label>
+            <input type="text" name="TLSOptions" id="TLSOptions" value="';$output .= $stash->get(['data',0,'TLSOptions',0]);$output .= '" />
+            <p>To relax the requirement that the SSL session from the control connection be reused for data connections, set this to \'NoSessionReuseRequired\' for best compatibility.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">TLS Cipher Suite</label>
+            <input type="text" name="TLSCipherSuite" id="TLSCipherSuite" value="';$output .= $stash->get(['data',0,'TLSCipherSuite',0]);$output .= '" />
+            <p>This is a standard format list of the SSL/TLS ciphers ProFTPD should use.  Typically this will only need to be adjusted for PCI compliance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">TLS Protocol</label>
+            <input type="text" name="TLSProtocol" id="TLSProtocol" value="';$output .= $stash->get(['data',0,'TLSProtocol',0]);$output .= '" />
+            <p>This is a space-delimited list of the SSL/TLS protocols ProFTPD should use.  Typically this will only need to be adjusted for PCI compliance.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">Allow Anonymous Logins</label>
+            <select name="cPanelAnonymousAccessAllowed">
+                <option ';if ($stash->get(['data',0,'cPanelAnonymousAccessAllowed',0])eq 'yes'){$output .= 'selected '}$output .= ' value="yes">Yes</option>
+                <option ';if ($stash->get(['data',0,'cPanelAnonymousAccessAllowed',0])ne 'yes'){$output .= 'selected '}$output .= ' value="no">No</option>
+            </select>
+            <p>Allowing anonymous FTP logins in generally considered to weaken the security of the server.  Setting this option to "No" is recommended.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">Maximum Idle Time (seconds)</label>
+            <input type="text" name="TimeoutIdle" id="TimeoutIdle" value="';$output .= $stash->get(['data',0,'TimeoutIdle',0]);$output .= '" />
+            <p>Maximum amount of time in seconds that an FTP connection may spend idle before it is disconnected by the server.</p>
+            <p>Setting this value to 0 disables the idle connection timer completely and is not recommended.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">Maximum Number of FTP Processes</label>
+            <input type="text" name="MaxInstances" id="MaxInstances"  value="';$output .= $stash->get(['data',0,'MaxInstances',0]);$output .= '" />
+            <p>Maximum number of processes that ProFTPD may create.  Each client connection to ProFTPD is handled by a different process, so this value will limit the total number of simultaneous connections allowed.  Setting this to \'none\' disables any limits on process creation.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">Show Symlinks</label>
+            <select name="ShowSymlinks">
+                <option ';if ($stash->get(['data',0,'ShowSymlinks',0])eq 'on'){$output .= 'selected '}$output .= ' value="on">Yes</option>
+                <option ';if ($stash->get(['data',0,'ShowSymlinks',0])ne 'on'){$output .= 'selected '}$output .= ' value="off">No</option>
+            </select>
+            <p>This option causes ProFTPD to display symlinks as symlinks, and not as plain files or directories.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">Symlink Compatibility</label>
+            <select name="FactsOptions">
+                <option ';if ($stash->get(['data',0,'FactsOptions',0])eq 'on'){$output .= 'selected '}$output .= ' value="on">Yes</option>
+                <option ';if ($stash->get(['data',0,'FactsOptions',0])ne 'on'){$output .= 'selected '}$output .= ' value="off">No</option>
+            </select>
+            <p>Enable this setting to allow some FTP clients to display symlinks to directories correctly. You must also enable the Show Symlinks setting to use this setting.</p>
+        </td>
+    </tr>
+    ';if ($stash->get(['data',0,'supports_hostaccess',0])){$output .= '
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['TCP Wrappers' ]]);$output .= '</label>
+            <select name="TCPAccessFiles">
+                <option ';if ($stash->get(['data',0,'TCPAccessFiles',0])eq 'on'){$output .= 'selected '}$output .= ' value="on">Yes</option>
+                <option ';if ($stash->get(['data',0,'TCPAccessFiles',0])ne 'on'){$output .= 'selected '}$output .= ' value="off">No</option>
+            </select>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This option forces ProFTPD to use TCP wrappers, which you can configure with the /etc/hosts.allow file and the /etc/hosts.deny file. However, this option may also prevent connection by your clients if they have improperly configured hostnames.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    '}$output .= '
+</table>
+<p><input type="submit" value="Save" class="btn-primary" /></p>
+</form>
+</div>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/js/validate_optimized.js' ]]);$output .= "\"></script>\n<script type=\"text/javascript\">\nfunction register_validators() {\n    register_validator('match','whole_nums',[document.mainform.TimeoutIdle],'The input value for Maximum Idle Time (seconds) must be whole numbers');\n    register_validator('match','whole_nums_or_none',[document.mainform.MaxInstances],'The input value for Maximum Number of FTP Processes must be whole numbers or “none”');\n    register_validator('match','ssl_chars',[document.mainform.TLSCipherSuite],'The TLS Cipher Suite must be defined using alphanumeric characters with regular expressions ! + _ \@ ~ and use a colon (:) for a separator');\n    realtime_validate_init('mainform');\n}\nYAHOO.util.Event.addListener(window, \"load\", register_validators, false);\n</script>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

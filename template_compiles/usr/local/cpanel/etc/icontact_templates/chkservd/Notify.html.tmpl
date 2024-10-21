@@ -1,0 +1,125 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/chkservd/Notify.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['NOTICE',0,'service_status',0])eq 'recovered'){$stash->set('recovered',1);$stash->set('message',$stash->get(['CPANEL',0,'locale',0,'maketext',['The service “[_1]” is now operational.',$stash->get(['NOTICE',0,'service_name',0])]]))}elsif ($stash->get(['NOTICE',0,'service_status',0])eq 'failed'){$stash->set('message',$stash->get(['CPANEL',0,'locale',0,'maketext',['The service “[_1]” appears to be down.',$stash->get(['NOTICE',0,'service_name',0])]]))}else {$stash->set('message',$stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to determine the status of the service “[_1]”.',$stash->get(['NOTICE',0,'service_name',0])]]))}if ($stash->get(['NOTICE',0,'what_failed',0])eq 'command'){$stash->set(['NOTICE',0,'what_failed',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system’s command to check or to restart this service failed.' ]]))}elsif ($stash->get(['NOTICE',0,'what_failed',0])eq 'socket'){$stash->set(['NOTICE',0,'what_failed',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to connect to this service’s [asis,TCP/IP] port.' ]]))}else {$stash->set(['NOTICE',0,'what_failed',0],$stash->get(['NOTICE',0,'what_failed',0,'html',0]))}do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'text'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('lines_to_print',[]);$stash->set('msg_lines',$stash->get(['item',0,'split',[('' .'
+')]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('msg_lines');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;if ($stash->get(['msg',0,'match',['(?i)(?:err(?:or)?[\]\s:]|:\s*bad \S+ name)' ]])){$stash->set('line','<span style="background-color: #EE0000; color: #000000;">')}elsif ($stash->get(['msg',0,'match',['(?i)warn(?:ing)?[\]\s:]' ]])){$stash->set('line','<span style="background-color: #FFFF55; color: #000000;">')}else {$output .= $stash->get(['lines_to_print',0,'push',[$stash->get('msg')]]);($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('line',$stash->get('line').$stash->get('msg').'</span>');$output .= $stash->get(['lines_to_print',0,'push',[$stash->get('line')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= $stash->get(['lines_to_print',0,'join',['<br>' ]])}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('error_highlighted_html',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/icons.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= $context->process('include/system_info_rows.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get('message'));$stash->set('zebra_stripe',0);$output .= '
+    <p>
+        <table style="
+            margin: 5px 10px;
+            border: 2px solid ';$output .= $stash->get('medium_gray');$output .= ';
+            padding: 0;"
+            cellpadding="5" cellspacing="0"
+            width="';$output .= $stash->get('content_width')- 20;$output .= 'px">
+            <tbody>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Server' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'hostname',0]);&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Primary [output,abbr,IP,Internet Protocol] Address' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'mainip',0]);&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Service Name' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'service_name',0]);&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Service Status' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'service_status',0]);&$_tt_filter($output)};$output .= ' ';$output .= $stash->get(['get_icon',[{'icon'=>$stash->get(['NOTICE',0,'service_status',0])}]]);$output .= '</td>
+                </tr>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Notification' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('message');&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                ';if ($stash->get(['NOTICE',0,'what_failed',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Service Check Method' ]]);$output .= '</th>
+                        <td align="left">
+                            ';$output .= $stash->get(['NOTICE',0,'what_failed',0]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'socket_error',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Reason' ]]);$output .= '</th>
+                        <td align="left">';$output .= $stash->get(['code_inline_formatted',[{'term'=>$stash->get(['error_highlighted_html',0,'print',[$stash->get(['NOTICE',0,'socket_error',0])]])}]]);$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'restart_count',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Number of Restart Attempts' ]]);$output .= '</th>
+                        <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'locale',0,'numf',[$stash->get(['NOTICE',0,'restart_count',0])]]);&$_tt_filter($output)};$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'command_error',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Service Check Raw Output' ]]);$output .= '</th>
+                        <td align="left">';$output .= $stash->get(['code_inline_formatted',[{'term'=>$stash->get(['error_highlighted_html',0,'print',[$stash->get(['NOTICE',0,'command_error',0])]])}]]);$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'restart_info',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Restart Message' ]]);$output .= '</th>
+                        <td align="left">';$output .= $stash->get(['code_inline_formatted',[{'term'=>$stash->get(['error_highlighted_html',0,'print',[$stash->get(['NOTICE',0,'restart_info',0])]])}]]);$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'startup_log',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Startup Log' ]]);$output .= '</th>
+                        <td align="left">';$output .= $stash->get(['code_inline_formatted',[{'term'=>$stash->get(['error_highlighted_html',0,'print',[$stash->get(['NOTICE',0,'startup_log',0])]])}]]);$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'syslog_messages',0])){$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                        <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Log Messages' ]]);$output .= '</th>
+                        <td align="left">';$output .= $stash->get(['code_inline_formatted',[{'term'=>$stash->get(['error_highlighted_html',0,'print',[$stash->get(['NOTICE',0,'syslog_messages',0])]])}]]);$output .= '</td>
+                    </tr>
+                '}$output .= '
+                ';$stash->set('system_info_table_zebra',$stash->get('zebra_strip'));$output .= '
+                ';$output .= $stash->get('system_info_rows');$output .= '
+            </tbody>
+        </table>
+    </p>
+
+    ';if ($stash->get(['NOTICE',0,'port',0])&&!$stash->get('recovered')){$output .= '
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [asis,chkservd] process attempts to connect to “127.0.0.1:[_1]” in order to validate that this service is functioning. If you blocked connections with [asis,iptables] or the “[_2]” interface in [asis,WHM], this failure may be a false positive.',$stash->get(['NOTICE',0,'port',0]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Host Access Control' ]])]]);$output .= '
+        </p>
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To resolve this issue, either open the firewall to allow connections as the [asis,root] user to “127.0.0.1:[_1]” or disable checks for this service in [asis,WHM]’s “[_2]” interface with the “[_3]” link below.',$stash->get(['NOTICE',0,'port',0]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Service Manager' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Configure Monitor[comment,program that observes] Settings' ]])]]);$output .= '
+        </p>
+    '}$output .= '
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure Monitor[comment,program that observes] Settings' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '</a>
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure [asis,chkservd]' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_url',0]);$output .= '</a>
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Disable [output,abbr,HTML,Hypertext Markup Language] notifications' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '</a>
+    </p>
+
+    ';if ($stash->get('recovered')){$output .= '
+        <p>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Disable recovery notifications' ]]);$output .= ':<br>
+            <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_recovery_notify_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_recovery_notify_url',0]);$output .= '</a>
+        </p>
+    '}$output .= '
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

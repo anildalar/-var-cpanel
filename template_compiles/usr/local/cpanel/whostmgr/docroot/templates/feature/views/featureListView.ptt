@@ -1,0 +1,100 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/feature/views/featureListView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<section class="description">
+    <p>';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to enable and disable features and cPAddons in each user’s [asis,cPanel]. To assign a feature list to a package, use the [output,url,_1,Edit a Package,id,_2] interface. For more information, read the [output,url,_3,documentation,id,_4,target,_5].',($stash->get('cp_security_token').'/scripts/editpkg2'),'lnkEditPackage','https://go.cpanel.net/featmgr','lnkFeatureManagerDocumentation','featuremanagerdoc' ]]);$output .= ' </p>
+    <ul ng-hide="onlyReseller">
+        <li><button id="btnEditDefaultFeatureList"
+                    class="btn btn-link"
+                    ng-click="loadView(\'editFeatureList\', { name: \'default\' })">
+                default
+            </button> — ';$output .= $stash->get(['locale',0,'maketext',['The system grants [asis,cPanel] users access to these features by default. If you disable a feature from this list, the system will disable it in every user’s [asis,cPanel] that uses that list.' ]]);$output .= '
+        </li>
+        <li><button id="btnEditDisabledFeatureList"
+                    class="btn btn-link"
+                    ng-click="loadView(\'editFeatureList\', { name: \'disabled\' })">
+                disabled
+            </button> — ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] users cannot access these features, and other lists cannot grant access to them.' ]]);$output .= '
+        </li>
+        <li><button id="btnEditMailOnlyFeatureList"
+                    class="btn btn-link"
+                    ng-click="loadView(\'editFeatureList\', { name: \'Mail Only\' })">
+                Mail Only
+            </button> — ';$output .= $stash->get(['locale',0,'maketext',['For [asis,cPanel] users that can only access mail-related features, such as Email Archiving or SpamAssassin.' ]]);$output .= '
+        </li>
+    </ul>
+    <p ng-hide="onlyReseller">';$output .= $stash->get(['locale',0,'maketext',['To create a feature list for a specific reseller account, you must prefix the list name with the reseller username and an underscore.' ]]);$output .= '</p>
+</section>
+
+<section class="row">
+    <form id="formAddFeature" name="formAddFeature" novalidate>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+        <h4  id="hdrAddFeatureList" class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Add a new feature list' ]]);$output .= '</h4>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <input
+                        id="txtNewFeatureList"
+                        name="txtNewFeatureList"
+                        type="text"
+                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['New feature list name' ]]);$output .= "\"\n                        class=\"form-control\"\n                        ng-model=\"newFeatureList\"\n                        ng-pattern=\"/^(?!.*\\.cpaddons\$)/i\"\n                        ng-required=\"true\"\n                        autofocus>\n                </div>\n                <div class=\"col-xs-12\">\n                    <ul id=\"valItemGroupAddFeature\" validation-container field-name=\"txtNewFeatureList\">\n                        <validation-item\n                            field-name=\"txtNewFeatureList\"\n                            validation-name=\"pattern\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['Feature list name cannot end with [asis,.cpaddons]' ]]);$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="txtNewFeatureList"
+                            validation-name="required">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Feature list name is required.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <button id="btnAddFeatureList"
+                            type="submit"
+                            ng-disabled="loadingView"
+                            cp-action="add(newFeatureList)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Add Feature List' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+    <form id="formEditFeature" name="formEditFeature" novalidate>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" ng-show="loadingPageData != \'error\' && featureLists.length">
+        <h4 id="hdrManageFeatureList" class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Manage feature list' ]]);$output .= '</h4>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <select id="ddlSelectedFeatureList"
+                            class="form-control"
+                            ng-model="selectedFeatureList"
+                            ng-disabled="!featureLists"
+                            ng-options="feature as feature for feature in featureLists"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <button id="btnEditFeatureList"
+                            type="submit"
+                            class="btn btn-primary"
+                            ng-click="loadView(\'editFeatureList\', { name: selectedFeatureList })"
+                            ng-disabled="!isEditable(selectedFeatureList)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                    </button>
+                    <button id="btnDeleteFeatureList"
+                            type="button"
+                            cp-action="delete(selectedFeatureList)"
+                            ng-disabled="!isDeletable(selectedFeatureList)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+</section>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

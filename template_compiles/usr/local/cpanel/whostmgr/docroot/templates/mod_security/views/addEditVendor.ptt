@@ -1,0 +1,213 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/addEditVendor.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="row">
+        <div class="col-xs-10" ng-if="!isEditor">
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to add a Vendor for [asis,ModSecurity].' ]]);$output .= '
+            </div>
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['For more information on how to create a Vendor, visit our [output,url,_1,documentation,_2,_3].','https://go.cpanel.net/modsecvendor','target','_blank' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <form name="form" novalidate class="layout-medium ng-pristine ng-valid">
+        <div class="form-group" ng-if="isEditor">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Vendor Name' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorName"
+                            type="text"
+                            class="form-control"
+                            name="vendorName"
+                            ng-model="vendor.name"
+                            readonly="readonly">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="text-left">
+                        <button id="showDetails" class="btn btn-default" ng-click="toggleDetails()" ng-show="hideDetails" ng-disabled="!vendor.name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Show Additional Vendor Information' ]]);$output .= '
+                        </button>
+                        <button id="hideDetails" class="btn btn-default" ng-click="toggleDetails()" ng-show="!hideDetails"  ng-disabled="!vendor.name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Hide Additional Vendor Information' ]]);$output .= '
+                        </button>
+                        <span class="position-anchor">
+                            <span spinner id="loadingSpinner" class="spinner edit-spinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row" ng-show="!isEditor || (isEditor && !hideDetails)">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="txtVendorInstalledFrom">';$output .= $stash->get(['locale',0,'maketext',['Vendor Configuration URL' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row" ng-show="!isEditor || (isEditor && !hideDetails)">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" class="form-control" ng-show="vendor.is_pkg" disabled="disabled" value="';$output .= $stash->get(['locale',0,'maketext',['N/A' ],'dquote',0]);$output .= '" />
+                    <input ng-show="!vendor.is_pkg" id="txtVendorInstalledFrom"
+                            type="text"
+                            class="form-control"
+                            name="vendorInstalledFrom"
+                            ng-disabled="loading"
+                            ng-model="vendor.installed_from"
+                            ng-readonly="isEditor"
+                            required
+                            is-modsec-vendor-url
+                            ng-change="vendorURLchange(vendor.installed_from)"
+                            auto-focus="!isEditor"
+                            placeholder="https://example.com/example/meta_example.yaml">
+                    <span ng-show="!vendor.is_pkg" class="help-block">
+                        <div>
+                            ';$output .= $stash->get(['locale',0,'maketext',['The file name should begin with [asis,meta_], followed by the short vendor identification code, and finally the [asis,.yaml] extension.' ]]);$output .= '
+                        </div>
+                        <div>
+                            <strong>';$output .= $stash->get(['locale',0,'maketext',['Example:' ]]);$output .= '</strong> https://example.com/example/meta_example.yaml
+                        </div>
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                   <ul validation-container field-name="vendorInstalledFrom">
+                       <li validation-item field-name="vendorInstalledFrom" validation-name="required">
+                           ';$output .= $stash->get(['locale',0,'maketext',['Vendor Configuration is a required field.' ]]);$output .= '
+                       </li>
+                   </ul>
+                   <ul class="validation-warning-container" ng-show="showSSLwarning">
+                       <li class="validation-warning">
+                           <span class="glyphicon glyphicon-info-sign"></span>
+                           <span class="validation-message">
+                               ';$output .= $stash->get(['locale',0,'maketext',['We recommend that the URL support [asis,SSL] in order to prevent man-in-the-middle attacks and ensure the downloaded configuration is legitimate.' ]]);$output .= '
+                           </span>
+                       </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group action-group" ng-if="!isEditor">
+            <button id="btnLoad"
+                    class="btn btn-primary"
+                    ng-disabled="disableForm(form)"
+                    ng-click="load(vendor.installed_from)">
+                ';$output .= $stash->get(['locale',0,'maketext',['Load' ]]);$output .= '
+            </button>
+            <span spinner id="loadingSpinner" class="spinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+        </div>
+        <div class="form-group" ng-if="!isEditor">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <hr />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Vendor Name' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorName"
+                            type="text"
+                            class="form-control"
+                            name="vendorName"
+                            ng-model="vendor.name"
+                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="!isEditor || (isEditor && !hideDetails)">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Vendor Description' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorDescription"
+                            type="text"
+                            class="form-control"
+                            name="vendorDescription"
+                            ng-model="vendor.description"
+                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="!isEditor || (isEditor && !hideDetails)">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Vendor Documentation URL' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorURL"
+                            type="text"
+                            class="form-control"
+                            name="vendorURL"
+                            ng-model="vendor.vendor_url"
+                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="!isEditor || (isEditor && !hideDetails)">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Vendor Report URL' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorReportURL"
+                            type="text"
+                            class="form-control"
+                            name="vendorReportURL"
+                            ng-model="vendor.report_url"
+                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="!isEditor || (isEditor && !hideDetails)">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input  id="txtVendorPath"
+                            type="text"
+                            class="form-control"
+                            name="vendorPath"
+                            ng-model="vendor.path"
+                            readonly="readonly">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group action-group" ng-if="!isEditor">
+            <button id="btnSave"
+                    class="btn btn-primary"
+                    ng-disabled="disableForm(form) || !vendor.isLoaded"
+                    ng-click="save(vendor.installed_from)">
+                ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+            </button>
+            <button id="btnCancel"
+                    class="btn btn-link"
+                    ng-click="cancel()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+            </button>
+            <span spinner id="savingSpinner" class="spinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+        </div>
+    </form>
+</div>
+
+<div ng-if="isEditor" ng-controller="enableDisableConfigController" ng-if="isEditor">
+    ';$output .= $context->include('mod_security/views/enableDisableConfigView.ptt');$output .= '
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,18 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_migration/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts5/backupmigration/');$output .= do {my$output='';$output .= '
+<section>
+    <div class="row">
+        <div class="col-xs-12">
+            <div ng-view></div>
+        </div>
+    </div>
+</section>
+<script type="text/javascript">
+    var PAGE = {
+        NAME: "backup_migration",
+        legacy_backup_status: ';$output .= $stash->get('legacy_backup_status');$output .= ',
+        backup_status: ';$output .= $stash->get('backup_status');$output .= '
+    };
+</script>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'backup_system_migration','header'=>$stash->get(['locale',0,'maketext',['Backup System Migration' ]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/backup_migration/index.min.css' ]])],'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

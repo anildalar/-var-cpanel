@@ -1,0 +1,127 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/chkservd/DiskUsage.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('total_usage_meter_width',400);if ($stash->get(['NOTICE',0,'usage_type',0])eq 'inodes'){$stash->set('progress_bar_width',int(($stash->get('total_usage_meter_width')* $stash->get(['NOTICE',0,'used_inodes',0]))/ $stash->get(['NOTICE',0,'total_inodes',0])));$stash->set('percentage',100 * ($stash->get(['NOTICE',0,'total_inodes',0])- $stash->get(['NOTICE',0,'available_inodes',0]))/ $stash->get(['NOTICE',0,'total_inodes',0]))}else {$stash->set('progress_bar_width',int(($stash->get('total_usage_meter_width')* $stash->get(['NOTICE',0,'used_bytes',0]))/ $stash->get(['NOTICE',0,'total_bytes',0])));$stash->set('percentage',100 * ($stash->get(['NOTICE',0,'total_bytes',0])- $stash->get(['NOTICE',0,'available',0]))/ $stash->get(['NOTICE',0,'total_bytes',0]))}$stash->set('percentage_disp',(int((100 * $stash->get('percentage'))/ 1))/ 100);$stash->set('usage_meter_remaining_width',$stash->get('total_usage_meter_width')- $stash->get('progress_bar_width'));$output .= '
+
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/icons.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/progress_bar.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Disk usage warning' ]]));$output .= '
+
+    <p>
+        ';if ($stash->get(['NOTICE',0,'usage_type',0])eq 'blocks'){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The filesystem “[_1]” mounted at “[_2]” reached “[_3]” status because you currently use [numf,_4]% of its available blocks.',$stash->get(['NOTICE',0,'filesystem',0]),$stash->get(['NOTICE',0,'mount',0]),$stash->get(['NOTICE',0,'notify_type',0]),$stash->get('percentage_disp'),$stash->get(['NOTICE',0,'usage_type',0])]]);$output .= '
+        '}elsif ($stash->get(['NOTICE',0,'usage_type',0])eq 'inodes'){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The filesystem “[_1]” mounted at “[_2]” reached “[_3]” status because you currently use [numf,_4]% of its available inodes.',$stash->get(['NOTICE',0,'filesystem',0]),$stash->get(['NOTICE',0,'mount',0]),$stash->get(['NOTICE',0,'notify_type',0]),$stash->get('percentage_disp'),$stash->get(['NOTICE',0,'usage_type',0])]]);$output .= '
+        '}else {$output .= '            Unknown notification type (';$output .= $stash->get(['NOTICE',0,'notify_type',0]);$output .= ')!
+        '}$output .= '    </p>
+
+    <table style="
+        margin: 5px 10px;
+        border: 2px solid ';$output .= $stash->get('medium_gray');$output .= ';
+        padding: 0;"
+        cellpadding="5" cellspacing="0"
+        width="';$output .= $stash->get('content_width')- 20;$output .= 'px">
+        <tbody>
+            ';if ($stash->get(['NOTICE',0,'notify_type',0])){$output .= '
+                <tr style="background-color:';$output .= $stash->get('light_gray');$output .= '">
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Notification Type' ]]);$output .= ':</th>
+                    <td align="left">
+                        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'notify_type',0]);&$_tt_filter($output)};$output .= '
+                        ';$output .= $stash->get(['get_icon',[{'icon'=>$stash->get(['NOTICE',0,'notify_type',0])}]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            <tr style="background-color:';$output .= $stash->get('white');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Server' ]]);$output .= ':</th>
+                <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'hostname',0]);&$_tt_filter($output)};$output .= '</td>
+            </tr>
+            <tr style="background-color:';$output .= $stash->get('light_gray');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Primary [output,abbr,IP,Internet Protocol] Address' ]]);$output .= ':</th>
+                <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'mainip',0]);&$_tt_filter($output)};$output .= '</td>
+            </tr>
+            <tr style="background-color:';$output .= $stash->get('white');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Filesystem' ]]);$output .= ':</th>
+                <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'filesystem',0]);&$_tt_filter($output)};$output .= '</td>
+            </tr>
+            <tr style="background-color:';$output .= $stash->get('light_gray');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Mount Point' ]]);$output .= ':</th>
+                <td >';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'mount',0]);&$_tt_filter($output)};$output .= '</td>
+            </tr>
+            <tr style="background-color:';$output .= $stash->get('white');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Percent Used' ]]);$output .= ':</th>
+                <td >';$output .= $stash->get(['progress_bar',[{'percent_full'=>$stash->get('percentage_disp')}]]);$output .= '</td>
+            </tr>
+            ';if ($stash->get(['NOTICE',0,'usage_type',0])eq 'inodes'){$output .= '
+            <tr style="background-color:';$output .= $stash->get('light_gray');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,Inode] Usage' ]]);$output .= ':</th>
+                <td align="left">
+                    <table>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Used' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'numf',[$stash->get(['NOTICE',0,'used_inodes',0])]]);$output .= '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Available' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'numf',[$stash->get(['NOTICE',0,'available_inodes',0])]]);$output .= '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Total' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'numf',[$stash->get(['NOTICE',0,'total_inodes',0])]]);$output .= '
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            '}else {$output .= '
+            <tr style="background-color:';$output .= $stash->get('light_gray');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Disk Block Usage' ]]);$output .= ':</th>
+                <td align="left">
+                    <table>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Used' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'used_bytes',0])]]);$output .= '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Available' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'available',0])]]);$output .= '
+                            </td>
+                        </tr>
+                        <tr>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Total' ]]);$output .= ':
+                            </td>
+                            <td align="left">
+                                ';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'total_bytes',0])]]);$output .= '
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            '}$output .= '
+            <tr style="background-color:';$output .= $stash->get('white');$output .= '">
+                <th align="left" >';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,ChkServd] Version' ]]);$output .= ':</th>
+                <td >';$output .= $stash->get(['NOTICE',0,'chkservd_version',0]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure system disk usage notifications' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_system_diskusage_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_system_diskusage_url',0]);$output .= '</a>
+    </p>
+    <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Disable [output,abbr,HTML,Hypertext Markup Language] notifications' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '</a>
+    </p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

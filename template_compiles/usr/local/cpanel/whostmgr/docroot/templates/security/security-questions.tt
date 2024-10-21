@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/security/security-questions.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['To keep your account secure, WHM will ask you 4 questions when you try to log in from an unrecognized IP address.' ]]);$output .= '</p>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['Please set your questions and answers below.' ]]);$output .= '</p>
+
+';if ($stash->get(['data',0,'status',0])ne ''){$output .= '<div id="status_container">
+<span id="status">';$output .= $stash->get(['data',0,'status',0]);$output .= '</span>
+</div>
+'}else {$output .= '<br />
+'}$output .= '
+';$output .= $context->process('security/_security_questions.tmpl',{'action'=>('?cmd=edit-secques&formaction=setquestions&key=' .$stash->get(['data',0,'acct_randkey',0])),'userquestions'=>$stash->get(['data',0,'userquestion',0])});$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'edit_questions_and_answers','extrastyle'=>'
+#status {
+    margin: 0 auto;
+    padding: 10px;
+    background-color: #b9ecbe;
+}
+#status_container {
+    margin: 20px;
+    text-align: center;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

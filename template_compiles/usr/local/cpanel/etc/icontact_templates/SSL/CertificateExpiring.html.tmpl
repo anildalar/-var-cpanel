@@ -1,0 +1,28 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/SSL/CertificateExpiring.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/certificate_info_extended.tmpl');$output .= $context->process('SSL/includes/market_upgrade_options.tmpl');$stash->set('expire_message',$stash->get(['CPANEL',0,'locale',0,'maketext',['[_1]: The [asis,SSL] certificate expires on [datetime,_2,date_format_medium] at [datetime,_2,time_format_medium] [asis,UTC].',$stash->get(['NOTICE',0,'vhost_name',0]),1 + $stash->get(['NOTICE',0,'certificate',0,'not_after',0])]]));if ($stash->get(['NOTICE',0,'remaining_time',0])> 0){$stash->set('remain_message',$stash->get(['CPANEL',0,'locale',0,'maketext',['At the time of this notice, the certificate will expire in “[_1]”.',$stash->get(['NOTICE',0,'remaining_time_localized',0])]]))}else {$stash->set('remain_message','<span style="color: ' .$stash->get('dark_red').'">' .$stash->get(['CPANEL',0,'locale',0,'maketext',['At the time of this notice, the certificate expired “[_1]” ago.',$stash->get(['NOTICE',0,'remaining_time_localized',0,'remove',['^-' ]])]]).'</span>')}$stash->set(['NOTICE',0,'email_reason',0],$stash->get('expire_message').' ' .$stash->get('remain_message'));$stash->set('covered_domains',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'vhost_domains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'vhost_domain'}=$_tt_value;if ($stash->get(['vhost_domain',0,'covered',0])){$output .= $stash->get(['covered_domains',0,'push',[$stash->get('vhost_domain')]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= do {my$output='';$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [asis,SSL] certificate for “[_1]” has not been renewed.',$stash->get(['NOTICE',0,'vhost_name',0])]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,strong,You must take action to secure this site.]' ]]);$output .= '
+</p>
+
+
+';$output .= $stash->get(['market_upgrade_options',[{'enabled_providers_count'=>$stash->get(['NOTICE',0,'enabled_providers_count',0]),'ssl_tls_wizard_url'=>$stash->get(['NOTICE',0,'ssl_tls_wizard_url',0]),'certificate'=>$stash->get(['NOTICE',0,'certificate',0])}]]);$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'remaining_time',0])> 0){$output .= '
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following domain [numerate,_1,name,names] will lose [asis,SSL] coverage when the certificate expires:',$stash->get(['covered_domains',0,'size',0])]]);$output .= '
+    '}else {$output .= '
+      <span style="color: ';$output .= $stash->get('dark_red');$output .= '">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following domain [numerate,_1,name,names] lost [asis,SSL] coverage when the certificate expired:',$stash->get(['covered_domains',0,'size',0])]]);$output .= '</span>
+    '}$output .= '
+</p>
+
+<ul>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('covered_domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'d'}=$_tt_value;$output .= '        <li>
+            <a href="https://';$output .= $stash->get(['d',0,'name',0,'html',0]);$output .= '">';$output .= $stash->get(['d',0,'name',0,'html',0]);$output .= '</a>
+        </li>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</ul>
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The certificate that is installed on this website contains the following properties:' ]]);$output .= $stash->get(['certificate_info_extended',[{'certificate'=>$stash->get(['NOTICE',0,'certificate',0])}]]);$output .= '
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

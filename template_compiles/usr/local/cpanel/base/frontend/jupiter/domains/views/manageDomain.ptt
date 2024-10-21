@@ -1,0 +1,195 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/domains/views/manageDomain.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <h2 class="break-on-mobile">';$output .= $stash->get(['locale',0,'maketext',['Manage the “[_1]” Domain','{{ :: currentDomain.domain }}' ]]);$output .= '</h2>
+    <div class="row">
+
+        <!-- manage domain -->
+        <div class="col-xs-12 col-md-8">
+            <form name="updateDomainForm" id="updateDomainForm" class="form layout-medium" >
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="widget-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Update the Domain' ]]);$output .= '
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="section" ng-if="currentDomain.canEdit">
+                            <!-- Update Document Root -->
+                            <div class="form-group" ng-if="currentDomain.canEdit.documentRoot">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <toggle-label-info
+                                             for="newDocumentRoot"
+                                             label-text="';$output .= $stash->get(['locale',0,'maketext',['New Document Root' ]]);$output .= '"
+                                             label-id="newDocumentRootLabel"
+                                             info-icon-id="iconnewDocumentRoot"
+                                             info-block-id="infoBlocknewDocumentRoot"
+                                             show-info-block="true">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Update the directory where you want the files for this domain to exist.' ]]);$output .= '
+                                        </toggle-label-info>
+                                    </div>
+                                </div>
+                                <div class="row" >
+                                    <div ng-class="getFormFieldClasses(updateDomainForm.newDocumentRoot)">
+                                        <div class="input-group">
+                                            <span class="input-group-addon" title="{{ mainDomain.homedir }}/public_html/">
+                                                <span class="fas fa-home"></span>/<span ng-if="requirePublicHTMLSubs">public_html/</span>
+                                            </span>
+                                            <input
+                                                id="newDocumentRoot"
+                                                name="newDocumentRoot"
+                                                ng-pattern=\'documentRootPattern\'
+                                                ng-model="workingDomain.documentRoot"
+                                                autocapitalize="off"
+                                                ng-required="!requirePublicHTMLSubs"
+                                                type="text"
+                                                class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <ul validation-container field-name="newDocumentRoot">
+                                            <li validation-item field-name="newDocumentRoot" validation-name="required" >
+                                                ';$output .= $stash->get(['locale',0,'maketext',['The Document Root field is required' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="documentRoot" validation-name="pattern" >
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Directory paths cannot be empty, contain spaces, or contain the following characters: [output,chr,92] ? % * : | [output,quot] [output,gt] [output,lt]' ]]);$output .= "\n                                            </li>\n                                        </ul>\n                                    </div>\n                                </div>\n                                <div class=\"row\">\n                                    <div class=\"col-xs-12\">\n                                        <callout callout-type=\"warning\" role=\"alert\" ng-if=\"!updateDomainForm.newDocumentRoot.\$pristine\">\n                                            <p>\n                                                ";$output .= $stash->get(['locale',0,'maketext',['This action changes where the web server searches for your files.' ]]);$output .= '
+                                                ';$output .= $stash->get(['locale',0,'maketext',['It does [output,strong,not] rearrange your files in any way.' ]]);$output .= '
+                                            </p>
+                                        </callout>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- / Update Document Root -->
+                        </div>
+
+                        <div class="section" ng-if="!currentDomain.canEdit">
+                            <callout callout-type="info">
+                                <p>';$output .= $stash->get(['locale',0,'maketext',['No configuration options currently exist for the “[_1]” domain.','{{currentDomain.domain}}' ]]);$output .= "</p>\n                            </callout>\n                        </div>\n\n                    </div>\n                    <!-- submit -->\n                    <div class=\"panel-footer clearfix\">\n                        <div class=\"row\">\n                            <div class=\"col-xs-6\">\n                                <button\n                                    ng-if=\"currentDomain.canEdit\"\n                                    type=\"submit\"\n                                    class=\"btn btn-primary\"\n                                    ng-disabled=\"updateDomainForm.\$pristine || !updateDomainForm.\$valid\"\n                                    cp-action=\"update(updateDomainForm, workingDomain)\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '
+                                </button>
+                            </div>
+                            <div class="col-xs-6">
+                                <a
+                                    href="#/"
+                                    class="btn btn-link pull-right flip">
+                                        <i class="fas fa-reply" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Return to Domains' ]]);$output .= '
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / submit -->
+                </div>
+            </form>
+            <!-- / manage domain -->
+            <!-- remove domain -->
+            <div ng-if="currentDomain.canRemove">
+                <form  name="removeDomainForm" id="removeDomainForm" class="form layout-medium" >
+                    <!-- update docroot section -->
+                    <div class="section">
+                        <div class="panel panel-danger">
+                            <div class="panel-heading">
+                                <div class="widget-title">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Remove the Domain' ]]);$output .= '
+                                </div>
+                            </div>
+                            <div class="panel-body" ng-if="!associatedDomains.length">
+                                <div class="animate-show-hide" ng-if="!confirmingRemoval">
+                                    <p class="break-on-mobile">
+                                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['If you remove the “[output,strong,_1]” domain, it will permanently delete the domain from your account. You cannot undo this action.','{{currentDomain.domain}}' ]]);$output .= '
+                                        <span ng-if="webserverRoleAvailable">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['This will not remove “[_1]”’s document root ([_2]).','{{currentDomain.domain}}','{{currentDomain.documentRoot}}' ]]);$output .= '
+                                        </span>
+                                    </p>
+                                    <button class="btn btn-danger" ng-click="startRemovalConfirmation()" id="removeDomainRequestBtn">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                         ';$output .= $stash->get(['locale',0,'maketext',['Remove Domain' ]]);$output .= '
+                                    </button>
+                                </div>
+                                <div class="animate-show-hide" ng-if="confirmingRemoval">
+                                    <p class="break-on-mobile">';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to remove the “[output,strong,_1]” domain?','{{currentDomain.domain}}' ]]);$output .= '</p>
+                                    <button class="btn btn-danger" cp-action="removeDomain()" id="removeDomainConfirmbtn">
+                                        <i class="fas fa-check" aria-hidden="true"></i>
+                                         ';$output .= $stash->get(['locale',0,'maketext',['Yes, remove this domain','{{ workingDomain.domain }}' ]]);$output .= '
+                                    </button>
+                                    <button class="btn btn-default" ng-click="cancelRemoval()" ng-disabled="currentDomain.removing" id="removeDomainRequestCancelBtn">
+                                        <i class="fas fa-times" aria-hidden="true"></i>
+                                         ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                    </button>
+                                    <!-- deletion delayed message -->
+                                    <callout callout-type="info" role="alert" ng-if="deletionDelayed">
+                                        <p>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['It can take a moment to delete a domain.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['This occurs on accounts with a large number of domains.' ]]);$output .= '
+                                        </p>
+                                    </callout>
+                                    <!-- / deletion delayed message -->
+                                </div>
+                            </div>
+                            <div ng-if="associatedDomains.length">
+                                <div class="panel-body animate-show-hide">
+                                    <p class="break-on-mobile">
+                                        <span ng-bind-html="deleteDependentDomainsError(currentDomain.domain, associatedDomains)"></span>
+                                    </p>
+                                    <ul>
+                                        <li ng-repeat="associatedDomain in associatedDomains">
+                                            <a href="#/manage?domain={{associatedDomain.domain}}">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Manage the “[_1]” domain.','{{associatedDomain.domain}}' ]]);$output .= '
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <!-- / remove domain -->
+
+        <!-- summary -->
+        <div class="col-xs-12 col-md-4">
+            <section ng-show="!emailAccount.isLoading" class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Domain Information' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain:' ]]);$output .= '
+                        <span class="flip pull-right">{{ currentDomain.domain }}</span>
+                    </li>
+                    <li ng-if="showAdvancedDetailFields && showSubdomainInDetails">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Associated Subdomain:' ]]);$output .= '
+                        <span class="flip pull-right">{{ currentDomain.subdomain }}<span class="text-muted">.{{ currentDomain.realRootDomain }}</span></span>
+                    </li>
+                    <li ng-if="webserverRoleAvailable">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Redirects To:' ]]);$output .= '
+                        <span class="flip pull-right" ng-if="currentDomain.redirectsTo">{{ currentDomain.redirectsTo }}</span>
+                        <span class="flip pull-right" ng-if="!currentDomain.redirectsTo">';$output .= $stash->get(['locale',0,'maketext',['Not Redirected' ]]);$output .= '</span>
+                    </li>
+                    <li ng-if="webserverRoleAvailable">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Document Root:' ]]);$output .= '
+                        <span class="flip pull-right"><docroot docroot="{{workingDomain.fullDocumentRoot}}" homedir="{{ :: mainDomain.homedir }}"></docroot></span>
+                    </li>
+                    ';$output .= '
+                    <li ng-if="showSubdomainInDetails">
+                        <a href="javascript:void(0)" ng-click="toggleAdvancedDetailFields()" class="pull-right flip">
+                            <span ng-if="!showAdvancedDetailFields">
+                            <i class="fas fa-eye" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Show Additional Details' ]]);$output .= '
+                            </span>
+                            <span ng-if="showAdvancedDetailFields">
+                            <i class="fas fa-eye-slash" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Hide Additional Details' ]]);$output .= '
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="clearfix"></div>
+            </section>
+            <div>
+                <ng-include src="\'additionalResourcesPanel.ptt\'"></ng-include>
+            </div>
+        </div>
+        <!-- / summary -->
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,156 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/statres.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('CPDate',$context->plugin('CPDate'));$output .= '
+';$output .= do {my$output='';$output .= $context->process('_pkg_hover.tmpl');$output .= '
+<div class="topboxmargin"></div>
+
+
+<div id="resellerWrapper">
+<h3>Reseller Stats for ';$output .= $stash->get(['data',0,'reseller',0]);$output .= '</h3>
+<table width="100%" class="tableborder1" style="border: 1px solid #000;border-collapse:collapse;">
+  <tr>
+    <td style="border: 1px solid #000;border-collapse:collapse;">
+      <span class="b2">Reseller Domain:</span>';$output .= $stash->get(['data',0,'reseller_domain',0]);$output .= '<br />
+      <span class="b2">Reseller Username:</span>';$output .= $stash->get(['data',0,'reseller',0]);$output .= '<br />
+      <span class="b2">Number of Accounts:</span>';$output .= $stash->get(['data',0,'total_current_accounts',0]);$output .= '
+    </td>
+
+    <td style="border: 1px solid #000;border-collapse:collapse;">
+      <form method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/suspendreseller">
+        <input type="checkbox" checked name="resalso" value="1">Suspend Reseller\'s Main Account<br />
+        <input type="submit" class="btn-primary" value="Suspend All ';$output .= $stash->get(['data',0,'reseller',0]);$output .= '\'s Accounts">
+        <input type="hidden" name="reseller" value="';$output .= $stash->get(['data',0,'reseller',0]);$output .= '">
+      </form><br />
+      <form method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/suspendreseller">
+        <input type="hidden" name="un" value="1">
+        <input type="hidden" name="reseller" value="';$output .= $stash->get(['data',0,'reseller',0]);$output .= '">
+        <input type="checkbox" checked name="resalso" value="1">UnSuspend Reseller\'s Main Account<br />
+        <input type="submit" class="btn-primary" value="UnSuspend All ';$output .= $stash->get(['data',0,'reseller',0]);$output .= '\'s Accounts"><br /><br />
+      </form><br />
+      <span>
+        <input type="hidden" name="reseller" value="';$output .= $stash->get(['data',0,'reseller',0]);$output .= '">
+        <input id="terminateResellerMainAccountCheckbox" type="checkbox" checked name="resalso" value="1">Terminate Reseller\'s Main Account<br />
+        To complete this action you must type the following phrase in the box below<br />
+        "I understand this will irrevocably remove all the accounts owned by the reseller ';$output .= $stash->get(['data',0,'reseller',0]);$output .= '"<br />
+        <input id="verifyTerminateInput" size="60" type="text" name="verify" value="I understand "><br />
+        <input id="terminateResellerButton" type="submit" class="btn-primary" value="Terminate All ';$output .= $stash->get(['data',0,'reseller',0]);$output .= '\'s Accounts"><br /><br />
+      </span>
+    </td>
+  </tr>
+</table><br />
+<table width="100%">
+  <tr>
+    <td align="left"><a href="statres?res=';$output .= $stash->get(['data',0,'reseller',0]);$output .= '&month=';$output .= $stash->get(['data',0,'prev_month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'prev_year',0]);$output .= '">Last Month Bandwidth Usage (';$output .= $stash->get(['CPDate',0,'get_text_month',[$stash->get(['data',0,'prev_month',0])]]);$output .= ' ';$output .= $stash->get(['data',0,'prev_year',0]);$output .= ')</a></td>
+    <td>';$output .= $stash->get(['CPDate',0,'get_text_month',[$stash->get(['data',0,'month',0])]]);$output .= ' ';$output .= $stash->get(['data',0,'year',0]);$output .= '</td>
+    <td align="right"><a href="statres?res=';$output .= $stash->get(['data',0,'reseller',0]);$output .= '&month=';$output .= $stash->get(['data',0,'next_month',0]);$output .= '&year=';$output .= $stash->get(['data',0,'next_year',0]);$output .= '">Next Month Bandwidth Usage (';$output .= $stash->get(['CPDate',0,'get_text_month',[$stash->get(['data',0,'next_month',0])]]);$output .= ' ';$output .= $stash->get(['data',0,'next_year',0]);$output .= ')</a></td>
+  </tr>
+</table>
+<table class="sortable" id="resltbl" width="100%">
+  <tr>
+    <th>User</th>
+    <th>Domain</th>
+    <th>Plan</th>
+    <th>Suspended</th>
+    <th>Disk Space Used in Meg</th>
+    <th>Disk Space Limit</th>
+    <th>Bandwidth In Meg</th>
+    <th>Monthly Bandwidth Limit in Meg</th>
+  </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'accounts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'account'}=$_tt_value;$output .= '    ';if ((1 > $stash->get(['account',0,'diskused',0,'length',0]))){$stash->set(['account',0,'diskused',0],0)}$output .= '    ';if ((1 > $stash->get(['account',0,'diskquota',0,'length',0]))){$stash->set(['account',0,'diskquota',0],0)}$output .= '    ';if ((1 > $stash->get(['account',0,'bandwidthused',0,'length',0]))){$stash->set(['account',0,'bandwidthused',0],0)}$output .= '    ';if ((1 > $stash->get(['account',0,'bandwidthlimit',0,'length',0]))){$stash->set(['account',0,'bandwidthlimit',0],0)}$output .= '    ';if ($stash->get(['account',0,'deleted',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+  <tr>
+    <td>';$output .= $stash->get(['account',0,'user',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['account',0,'domain',0]);$output .= '</td>
+    <td style="cursor:crosshair; cursor:help;" onMouseOver="hover_pkg(this,\'';$output .= $stash->get(['account',0,'package',0]);$output .= '\');" onMouseOut="dehover_pkg(this,\'';$output .= $stash->get(['account',0,'package',0]);$output .= '\');">';$output .= $stash->get(['account',0,'package',0]);$output .= '</td>
+    <td>';if ($stash->get(['account',0,'suspended',0])){$output .= 'x'}$output .= '</td>
+    <td>';$output .= $stash->get(['account',0,'diskused',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['account',0,'diskquota',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['account',0,'bandwidthused',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['account',0,'bandwidthlimit',0]);$output .= '</td>
+  </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '  <tr>
+    <th>User</th>
+    <th>Domain</th>
+    <th>Plan</th>
+    <th>Suspended</th>
+    <th>Disk Space Used in Meg</th>
+    <th>Disk Space Limit</th>
+    <th>Bandwidth In Meg</th>
+    <th>Monthly Bandwidth Limit in Meg</th>
+  </tr>
+  <tr>
+    <td colspan="4" background="';$output .= $stash->get(['MagicRevision',['/themes/x/bg.png' ]]);$output .= '">Total</td>
+    <td>';$output .= $stash->get(['data',0,'total_disk_used',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['data',0,'total_disk_limit',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['data',0,'total_bandwidth_used',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['data',0,'total_bandwidth_limit',0]);$output .= '</td>
+  </tr>
+</table>
+
+</div>
+
+<script>
+
+    var replaceWrapper = function(child) {
+
+        var wrapper = document.getElementById("resellerWrapper");
+
+        for( var i=wrapper.childNodes.length - 1; i >= 0; i-- ) {
+            wrapper.removeChild(wrapper.childNodes[i]);
+        }
+
+        wrapper.appendChild(child);
+    }
+
+    var handleTerminateOutput = function(accts) {
+
+        var outputDiv = document.createElement("div");
+
+        for( var i=0; i < accts.length; i++ ) {
+            var pre = document.createElement("pre");
+            pre.textContent = accts[i].output.raw;
+            outputDiv.appendChild(pre);
+        }
+
+        var complete = document.createElement("b");
+        complete.innerHTML = "All account terminations complete";
+        outputDiv.appendChild(complete);
+
+        replaceWrapper(outputDiv);
+    }
+
+    var terminateReseller = function() {
+
+        var required = "I understand this will irrevocably remove all the accounts owned by the reseller ';$output .= $stash->get(['data',0,'reseller',0]);$output .= "\";\n\n        var verify = document.getElementById(\"verifyTerminateInput\").value.trim(); // Strip leading and trailing whitespace\n        verify = verify.replace(/(^\"|\"\$)/g, \"\"); // Strip leading and trailing \"'s\n        verify = verify.trim(); // Strip leading and trailing whitespace again just in case\n\n        if( verify !== required ) {\n            alert(\"Sorry, you must type \\\"I understand this will irrevocably remove all the accounts owned by the reseller ";$output .= $stash->get(['data',0,'reseller',0]);$output .= "\\\" in the verification box before you can use this feature.\");\n            return;\n        }\n\n        var terminateMain = document.getElementById(\"terminateResellerMainAccountCheckbox\").checked;\n\n        var title = document.getElementsByClassName(\"pageTitle\");\n        if( title.length === 1 ) {\n            var span = title[0].getElementsByTagName(\"span\");\n            if( span.length === 1 ) {\n                span[0].innerHTML = \"Terminate Reseller\";\n            }\n        }\n\n        var spinner = document.createElement(\"div\");\n        spinner.innerHTML = \"<h3><span class=\\\"fas fa-spinner fa-spin\\\"></span> Termination of ";$output .= $stash->get(['data',0,'reseller',0]);$output .= '\'s accounts is being processed!</h3>";
+        replaceWrapper(spinner);
+
+        window.CPANEL.api({
+            application: "whm",
+            func: "terminatereseller",
+            data: { user: "';$output .= $stash->get(['data',0,'reseller',0]);$output .= '", terminatereseller: terminateMain ? 1 : 0 },
+            callback: {
+                success: function(o) {
+                    if( o.cpanel_data ) {
+                        handleTerminateOutput(o.cpanel_data);
+                    }
+                    else {
+                        var complete = document.createElement("b");
+                        complete.textContent = "All account terminations complete";
+                        replaceWrapper(complete);
+                    }
+                },
+                failure: function(o) {
+                    var reason = document.createElement("pre");
+                    reason.innerHTML = o.cpanel_error;
+                    replaceWrapper(reason);
+                }
+            }
+        })
+
+    };
+
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("terminateResellerButton").addEventListener("click", terminateReseller)
+    });
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'view_reseller_usage_and_manage_account_status','scripts'=>['/js/sorttable.js','/yui-gen/utilities_container/utilities_container.js' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

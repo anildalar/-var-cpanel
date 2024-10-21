@@ -1,0 +1,39 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/gpg/editkey.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+';$stash->set('export_key_call',$stash->get(['execute',['GPG','export_public_key',{'key_id'=>$stash->get(['RAW_FORM',0,'key',0])}]]));$stash->set('export_key','');if ($stash->get(['export_key_call',0,'status',0])){$stash->set('export_key',$stash->get(['export_key_call',0,'data',0,'key_data',0]))}$output .= '
+<div class="body-content">
+    <div class="section">
+        <div class="form-group">
+            <label id="lblPublicKey" for="errtext">
+            ';$output .= $stash->get(['locale',0,'maketext',['Public Key' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-lg-6">
+                    <textarea id="errtext" name="GnuPGKey" class="form-control" cols="80" rows="15" readonly>';$output .= $stash->get('export_key');$output .= '</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'encryption','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var txtarea = document.getElementById("errtext");
+        if (txtarea) {
+            txtarea.addEventListener("click", function (e) {
+                e.target.select();
+            });
+        }
+    });
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

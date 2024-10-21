@@ -1,0 +1,107 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/greylist/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('on_switch_text','ON');$stash->set('off_switch_text','OFF');if (($stash->get(['locale',0,'get_language_tag',0])ne 'en')){$stash->set('on_switch_text','I');$stash->set('off_switch_text','O')}$output .= do {my$output='';$output .= '
+<div id="content"
+     class="ng-cloak"
+     ng-cloak>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] defends email users against spam. When enabled, the mail server will temporarily reject any email from a sender the server does not recognize. If the email is legitimate, the originating server will try again after a delay. After sufficient time has elapsed, the server will accept the email.' ]]);$output .= '</p>
+    <div ng-controller="baseController">
+        <div id="enable_disable_control">
+            <div class="enable_disable_row">
+                <div class="enable_disable_cell">
+                    <div role="checkbox"
+                        id="greylist_status_toggle"
+                        class="toggle-switch"
+                        tabindex="0"
+                        aria-checked="{{ greylistEnabled }}"
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,Greylisting]' ]]);$output .= "\"\n                        ng-click=\"toggle_status()\"\n                        ng-keyup=\"handle_keyup(\$event)\"\n                        ng-keydown=\"handle_keydown(\$event)\"\n                        ng-class=\"{disabled: changing_status}\">\n                        <div id=\"greylist_status_toggle\" class=\"toggle-switch-animate\" ng-class=\"{'switch-off': !greylistEnabled, 'switch-on': greylistEnabled}\">\n                            <span class=\"switch-left\">\n                                ";$output .= $stash->get('on_switch_text');$output .= '
+                            </span>
+                            <span class="knob">{{knobLabel}}</span>
+                            <span class="switch-right">
+                                ';$output .= $stash->get('off_switch_text');$output .= '
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="greylistEnabled || changing_status">
+                    <div class="led led-red"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!greylistEnabled || changing_status">
+                    <div class="led led-green"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!changing_status">
+                    <span class="fas fa-spinner fa-spin"></span>
+                </div>
+                <div class="enable_disable_cell" ng-hide="changing_status">
+                    <span class="greylist_status_message" ng-hide="!greylistEnabled">';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] is [output,strong,Enabled]' ]]);$output .= '</span>
+                    <span class="greylist_status_message" ng-hide="greylistEnabled">';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] is [output,strong,Disabled]' ]]);$output .= '</span>
+                </div>
+            </div>
+        </div>
+        <div id="tabContainer" ng-show="greylistEnabled">
+            <ul class="nav nav-tabs">
+                <li ng-class="{active: currentRoute === \'/config\'}"><a href="config">';$output .= $stash->get(['locale',0,'maketext',['Configuration Settings' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/trusted\'}"><a href="trusted">';$output .= $stash->get(['locale',0,'maketext',['Trusted Hosts' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/commonproviders\'}"><a href="commonproviders">';$output .= $stash->get(['locale',0,'maketext',['Common Mail Providers' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/reports\'}"><a href="reports">';$output .= $stash->get(['locale',0,'maketext',['Reports' ]]);$output .= '</a></li>
+            </ul>
+            <div class="tab-content" ng-view></div>
+        </div>
+    </div>
+    <div growl></div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.security_token = ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ';
+    PAGE.is_enabled = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'is_enabled',0,'json',0]);$output .= ';
+    PAGE.is_exim_enabled = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'is_exim_enabled',0,'json',0]);$output .= ';
+    PAGE.initial_block_time_mins = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'initial_block_time_mins',0,'json',0]);$output .= ';
+    PAGE.must_try_time_mins = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'must_try_time_mins',0,'json',0]);$output .= ';
+    PAGE.record_exp_time_mins = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'record_exp_time_mins',0,'json',0]);$output .= ';
+    PAGE.spf_bypass = ';$output .= $stash->get(['data',0,'cpgreylist_config',0,'spf_bypass',0,'json',0])|| 0;$output .= ';
+    PAGE.current_locale = ';$output .= $stash->get(['locale',0,'get_language_tag',0,'json',0]);$output .= ';
+
+    PAGE.config_default = ';$output .= $stash->get(['data',0,'item',['DEFAULT' ],'json',0]);$output .= ';
+
+</script>
+
+<script type="text/ng-template" id="modal/confirmTrustedHostDeletion.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        {{deleteConfirmationMessage()}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="deleteIps(is_single_deletion)">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancelDeletion()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modal/confirmTrustedHostsDeleteAll.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Do you want to permanently delete all records from the Trusted Hosts list?' ]]);$output .= '
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="deleteAll()">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancelDeleteAll()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="modal/dismissNetblockGrowl.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Hide Permanently' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Do you want to permanently hide this notification?' ]]);$output .= '</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="hideNetblockGrowlPermanently()">';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancelHideNetblockNotice()">';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '</button>
+    </div>
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'greylisting','header'=>$stash->get(['locale',0,'maketext',['[asis,Greylisting]' ]]),'breadcrumburl'=>'/scripts7/greylist','base'=>'/scripts7/greylist/','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/greylist/index.min.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/greylist/angular-toggle-switch-bootstrap.min.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/greylist/angular-toggle-switch.min.css' ]])],'warn_linked_nodes'=>1,'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

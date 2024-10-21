@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sharedjs/libraries/cjt2/cjt2_header_include.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$stash->set('mode','debug');$stash->set('optimized',0);$stash->set('cache_bust',0)}else {$stash->set('mode','release');$stash->set('optimized',1)}if ($stash->get(['CPANEL',0,'FORM',0,'optimized',0])|| $stash->get(['CPANEL',0,'CPVAR',0,'optimized',0])){$stash->set('optimized',1)}elsif ($stash->get(['CPANEL',0,'FORM',0,'exists',['optimized' ]])|| $stash->get(['CPANEL',0,'CPVAR',0,'exists',['optimized' ]])){$stash->set('optimized',0)}elsif (!$stash->get(['optimized',0,'defined',0])){$stash->set('optimized',1)}if ($stash->get(['CPANEL',0,'FORM',0,'cache_bust',0])|| $stash->get(['CPANEL',0,'CPVAR',0,'cache_bust',0])){$stash->set('cache_bust',1)}elsif ($stash->get(['CPANEL',0,'FORM',0,'exists',['cache_bust' ]])|| $stash->get(['CPANEL',0,'CPVAR',0,'exists',['cache_bust' ]])){$stash->set('cache_bust',0)}elsif (!$stash->get(['cache_bust',0,'defined',0])){$stash->set('cache_bust',0)}if ($stash->get(['CPANEL',0,'FORM',0,'e2e',0])){$stash->set('is_e2e',1)}else {$stash->set('is_e2e',0)}if ($stash->get('use_master_bootstrap')eq 1){$stash->set('alias','master')}else {$stash->set('alias','app')}if (!$stash->get('app_name')){$stash->set('app_name','whostmgr')}if ($stash->get('app_name')eq 'whostmgr'){$stash->set('angular_module_name','cjt2.whm');$stash->set('modules_dependency_path','cjt/modules.whm')}else {$stash->set('angular_module_name',('cjt2.' .$stash->get('app_name')));$stash->set('modules_dependency_path',('cjt/modules.' .$stash->get('app_name')))}$output .= "\n<script>\n/**\n * Helper method to extend any existing PAGE object with the standard props.\n * Needed before we load dependencies so it's used in an IIFE here.\n * \@param  {Object} destination Object to extend\n * \@param  {Object} source      New methods and properties to add\n * \@return {Object}             Extended object. To make chaining easier.\n */\nvar PAGE = (function(destination, source) {\n    for (var k in source) {\n        if (source.hasOwnProperty(k)) {\n            destination[k] = source[k];\n        }\n    }\n    return destination;\n})(PAGE || {}, {";if ($stash->get('page_theme_path')){$output .= '
+    THEME_PATH : ';$output .= $stash->get('page_theme_path');$output .= ','}if ($stash->get('page_master_path')){$output .= '
+    masterPath : ';$output .= $stash->get('page_master_path');$output .= ','}$output .= '
+    IS_PROXY: ';if ($stash->get('is_proxy')){$output .= 'true'}else {$output .= 'false'}$output .= ',
+    APP_NAME: ';$output .= $stash->get(['app_name',0,'json',0]);$output .= ',
+    CJT2_ANGULAR_MODULE_NAME: ';$output .= $stash->get(['angular_module_name',0,'json',0]);$output .= ',
+    CJT2_MODULES_DEPENDENCY_PATH: ';$output .= $stash->get(['modules_dependency_path',0,'json',0]);$output .= ',
+    IS_E2E: ';if ($stash->get('is_e2e')){$output .= 'true'}else {$output .= 'false'}$output .= ',
+    APP_PATH: ';$output .= $stash->get(['app',0,'json',0]);$output .= ',
+    MODE: ';$output .= $stash->get(['mode',0,'json',0]);$output .= ',
+    CACHE_BUST: ';if ($stash->get('cache_bust')){$output .= 'true'}else {$output .= 'false'}$output .= ',
+    OPTIMIZED: ';if ($stash->get('optimized')){$output .= 'true'}else {$output .= 'false'}$output .= ',
+    currentLocale: ';$output .= $stash->get(['locale',0,'get_language_tag',0,'json',0]);$output .= ',
+    MAGIC: ';$output .= $stash->get(['MagicRevision',['/' ],'json',0]);$output .= ',
+    BUILDREVISION: ';$output .= $stash->get(['calculate_magic_mtime',['/usr/local/cpanel/version' ],'json',0]);$output .= ',
+    LOCALEREVISION: ';$output .= $stash->get(['calculate_magic_lex_mtime',[$stash->get(['locale',0,'get_language_tag',0])],'json',0]);$output .= '
+});
+
+';if ($stash->get('mode')eq 'debug'){$stash->set('requirejs_url',($stash->get('requirejs_url_base')|| '').'/libraries/requirejs/source/require.js');$stash->set('file',$stash->get('file').'.devel');$output .= $context->insert(['libraries/cjt2/config.debug.js','libraries/cjt2/polyfills/CustomEvent.js' ])}else {$stash->set('requirejs_url',($stash->get('requirejs_url_base')|| '').'/libraries/requirejs/optimized/require.min.js');if ($stash->get('optimized')){$stash->set('file',$stash->get('file').'.dist')}else {$stash->set('file',$stash->get('file').'.devel')}$output .= do {my$output='';my ($_tt_error,$_tt_handler);eval {$output .= $context->insert(['libraries/cjt2-dist/config.js','libraries/cjt2-dist/polyfills/CustomEvent.js' ])};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error if$_tt_error->type =~ /^(return|stop)$/;$stash->set('error',$_tt_error);$stash->set('e',$_tt_error);if (defined ($_tt_handler=$_tt_error->select_handler())){$_tt_error=0}else {$output .= $context->insert(['libraries/cjt2/config.js','libraries/cjt2/polyfills/CustomEvent.js' ]);$_tt_error=''}}die$_tt_error if$_tt_error;$output}}$output .= '
+
+    window.__cjt2__requirejsLoaded = function __cjt2__requirejsLoaded() { // eslint-disable-line camelcase
+        var event = new CustomEvent("library-loaded", {
+            detail: {
+                library: "requirejs"
+            }
+        });
+        window.dispatchEvent(event);
+    };
+</script>
+
+<script defer
+        ';if ($stash->get('use_master_bootstrap')ne 1){$output .= ' data-main="';$output .= $stash->get('alias');$output .= '/';$output .= $stash->get('file');$output .= '" '}$output .= '
+        src="';$output .= $stash->get(['MagicRevision',[$stash->get('requirejs_url')]]);$output .= '"
+        onload="window.__cjt2__requirejsLoaded();">
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

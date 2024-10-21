@@ -1,0 +1,248 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/domains/views/createDomain.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="section">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+             <callout callout-type="warning" role="alert" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning: Maximum Number of Domains Reached' ]]);$output .= '" ng-if="!canCreateDomains()">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['You have reached the maximum number of alias, addon, and subdomains that you can create.' ]]);$output .= '</p>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <a
+                            ng-href="{{ upgradeUrl }}"
+                            ng-if="upgradeUrl"
+                            type="submit"
+                            class="btn btn-primary">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Upgrade Your Account' ]]);$output .= '
+                        </a>
+                    </div>
+                    <div class="col-xs-6">
+                        <a
+                            href="#/"
+                            class="btn btn-link pull-right">
+                                <i class="fas fa-reply" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Return to Domains' ]]);$output .= '
+                        </a>
+                    </div>
+                </div>
+             </callout>
+             <div class="panel panel-default" ng-if="canCreateDomains()">
+                <div class="panel-heading">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Create a New Domain' ]]);$output .= '
+                </div>
+                <div class="panel-body">
+                     <form class="form layout-medium" name="createDomainForm" id="createDomainForm">
+                        <!-- New Domain Name -->
+                        <div class="form-group animate-show-hide animate-show-hide-slide">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                         for="newDomainName"
+                                         label-text="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '"
+                                         label-id="newDomainNameLabel"
+                                         info-icon-id="iconnewDomainName"
+                                         info-block-id="infoBlocknewDomainName"
+                                         show-info-block="true">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Enter the domain that you would like to create:' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div ng-class="getFormFieldClasses(createDomainForm.newDomainName)">
+                                    <input
+                                        id="newDomainName"
+                                        name="newDomainName"
+                                        autofocus
+                                        ng-model="newDomain.newDomainName"
+                                        autocapitalize="off"
+                                        wildcard-fqdn
+                                        domain-is-unique
+                                        ng-model-options="{ debounce: 250 }"
+                                        ng-change="onUpdateNewDomainName()"
+                                        required
+                                        type="text"
+                                        placeholder="my.example.com"
+                                        class="form-control" />
+
+                                    <div class="animate-show-hide animate-show-hide-slide" ng-if="suggestedDomains.length">
+                                        <ul class="list-group domain-suggestion-list-group">
+                                          <li class="list-group-item" ng-repeat="suggestedDomain in suggestedDomains">
+                                            <a href class="btn btn-no-capitalize" ng-click="suggestedDomain.use()">
+                                               ';$output .= $stash->get(['locale',0,'maketext',['Did you mean “[_1]”?','{{suggestedDomain.domain}}' ]]);$output .= '
+                                            </a>
+                                          </li>
+                                          <li class="list-group-item" ng-if="!newDomain.isWildcard">
+                                            <a href class="btn btn-no-capitalize" ng-click="clearSuggestedDomains()">
+                                               <em>';$output .= $stash->get(['locale',0,'maketext',['Just use “[_1]”.','{{newDomain.newDomainName}}' ]]);$output .= '</em>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul validation-container field-name="newDomainName">
+                                        <li validation-item field-name="newDomainName" validation-name="required" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The Domain field is required' ]]);$output .= '
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="!canCreateDomainType(DOMAIN_TYPE_CONSTANTS.ADDON) && newDomain.domainType == DOMAIN_TYPE_CONSTANTS.ADDON">
+                                <div class="col-xs-12">
+                                    <callout callout-type="danger" role="alert" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '">
+                                        <span ng-if="!newDomain.isWildcard">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You have reached the maximum number of domains for this account.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Please contact your hosting provider for more information, or create a subdomain on an existing domain on this account.' ]]);$output .= '
+                                        </span>
+                                        <span ng-if="newDomain.isWildcard">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You cannot create a wildcard addon domain.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You must create a subdomain on an existing domain instead.' ]]);$output .= '
+                                        </span>
+
+                                        <a href="#/" target="_blank" class="btn btn-link">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['View Existing Domains' ]]);$output .= '
+                                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                                        </a>
+                                    </callout>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / New Domain Name -->
+
+                        <!-- Create Document Root -->
+                        <div class="form-group animate-show-hide animate-show-hide-slide" ng-if="!mustInheritDocumentRoot">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="inheritDocumentRoot"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Document Root (File System Location)' ]]);$output .= '"
+                                        label-id="inheritDocumentRootLabel"
+                                        info-icon-id="iconInheritDocumentRoot"
+                                        info-block-id="infoBlockInheritDocumentRoot"
+                                        show-info-block="true">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['If the document root is shared then the created domain will serve the same content as “[_1]”.','{{mainDomain.domain}}' ]]);$output .= '
+                                        <strong>';$output .= $stash->get(['locale',0,'maketext',['This setting is permanent.' ]]);$output .= '</strong>
+                                    </toggle-label-info>
+                                    <div class="checkbox">
+                                        <label for="inheritDocumentRoot" ng-class="{\'text-muted\':inheritDocRootSelectionDisabled()}">
+                                            <input
+                                                type="checkbox"
+                                                id="inheritDocumentRoot"
+                                                name="inheritDocumentRoot"
+                                                ng-change="onToggleInheritDocumentRoot()"
+                                                ng-disabled="inheritDocRootSelectionDisabled()"
+                                                ng-model="newDomain.inheritDocumentRoot" />
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Share document root ([_1]) with “[_2]”.','{{ mainDomain.documentRoot }}','{{mainDomain.domain}}' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="!newDomain.inheritDocumentRoot">
+                                <div ng-class="getFormFieldClasses(createDomainForm.documentRoot)">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" title="{{ mainDomain.homedir }}/public_html/">
+                                            <span class="fas fa-home"></span>
+                                            <span ng-if="requirePublicHTMLSubs">/public_html/</span>
+                                        </span>
+                                        <input
+                                            id="documentRoot"
+                                            name="documentRoot"
+                                            ng-pattern=\'documentRootPattern\'
+                                            ng-model="newDomain.documentRoot"
+                                            autocapitalize="off"
+                                            ng-change="onDocumentRootUpdated()"
+                                            ng-required="!requirePublicHTMLSubs"
+                                            type="text"
+                                            class="form-control" />
+                                    </div>
+                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Specify the directory where you want the files for this domain to exist.' ]]);$output .= '</span>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul validation-container field-name="documentRoot">
+                                        <li validation-item field-name="documentRoot" validation-name="required" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The Document Root field is required' ]]);$output .= '
+                                        </li>
+                                        <li validation-item field-name="documentRoot" validation-name="pattern" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Directory paths cannot be empty, contain spaces, or contain the following characters: [output,chr,92] ? % * : | [output,quot] [output,gt] [output,lt]' ]]);$output .= '
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / Create Document Root -->
+
+                        <!-- subdomain -->
+                        <div class="form-group animate-show-hide animate-show-hide-slide"
+                            ng-if="newDomain.domainType == DOMAIN_TYPE_CONSTANTS.ADDON && canCreateDomainType(DOMAIN_TYPE_CONSTANTS.ADDON)" >
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                         for="subDomainPart"
+                                         label-text="';$output .= $stash->get(['locale',0,'maketext',['Subdomain' ]]);$output .= '"
+                                         label-id="subDomainPartLabel"
+                                         info-icon-id="iconsubDomainPart"
+                                         info-block-id="infoBlocksubDomainPart"
+                                         show-info-block="true">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['An addon domain requires a subdomain in order to use a separate document root.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div ng-class="getFormFieldClasses(createDomainForm.subDomainPart)">
+                                    <div class="input-group">
+                                        <input
+                                            id="subDomainPart"
+                                            name="subDomainPart"
+                                            ng-model="newDomain.subdomain"
+                                            autocapitalize="off"
+                                            valid-subdomain
+                                            not-reserved-subdomain
+                                            required
+                                            ng-maxlength="253 - newDomain.domain.length"
+                                            type="text"
+                                            placeholder="subdomain"
+                                            class="form-control" />
+                                        <span class="input-group-addon">
+                                            .{{ newDomain.domain }}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <ul validation-container field-name="subDomainPart">
+                                        <li validation-item field-name="subDomainPart" validation-name="required" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The Subdomain field is required' ]]);$output .= '
+                                        </li>
+                                        <li validation-item field-name="subDomainPart" validation-name="maxlength" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The combined length of the subdomain and root domain cannot exceed 254 characters.' ]]);$output .= "\n                                        </li>\n                                    </ul>\n                                </div>\n                            </div>\n                        </div>\n                        <!-- / subdomain -->\n\n                        <!-- creation messages -->\n                        <div class=\"form-group animate-show-hide\" ng-if=\"creationMessages.length\">\n                            <div class=\"row\" ng-repeat=\"creationMessage in creationMessages\">\n                                <div class=\"col-xs-12\">\n                                    <callout callout-type=\"creationMessage.type\" role=\"alert\">\n                                        <p ng-bind-html=\"creationMessage.message\"></p>\n                                    </callout>\n                                </div>\n                            </div>\n                        </div>\n                        <!-- / creation messages -->\n\n                        <!-- submit -->\n                        <div class=\"form-group submit-form-group\">\n                            <div class=\"row\">\n                                <div class=\"col-xs-12 col-md-8\">\n                                    <button\n                                        type=\"submit\"\n                                        class=\"btn btn-primary\"\n                                        ng-disabled=\"submittingForm || !createDomainForm.\$valid\"\n                                        cp-action=\"createDomain(createDomainForm, newDomain, false)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= "\n                                    </button>\n                                    <button\n                                        type=\"submit\"\n                                        class=\"btn btn-default\"\n                                        ng-disabled=\"submittingForm || !createDomainForm.\$valid\"\n                                        cp-action=\"createDomain(createDomainForm, newDomain, true)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Submit and Create Another' ]]);$output .= '
+                                    </button>
+                                </div>
+                                <div class="col-xs-12 col-md-4 return-to-list-link">
+                                    <a
+                                        href="#/"
+                                        class="btn btn-link">
+                                            <i class="fas fa-reply" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Return to Domains' ]]);$output .= '
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / submit -->
+
+                        <!-- creation delayed message -->
+                        <div class="form-group animate-show-hide" ng-if="creationDelayed">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <callout callout-type="info" role="alert">
+                                        <p>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['It can take a moment to create a new domain.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['This occurs on accounts with a large number of domains.' ]]);$output .= '
+                                        </p>
+                                    </callout>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- / creation delayed message -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

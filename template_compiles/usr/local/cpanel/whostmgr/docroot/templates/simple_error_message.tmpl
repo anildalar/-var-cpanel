@@ -1,0 +1,9 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/simple_error_message.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$stash->set('warning_message',$stash->get(['data',0,'message',0]));$output .= $context->process('_ajaxapp.tmpl');$output .= '
+<div id="content" class="alert alert-danger">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+    <div class="alert-message">
+        <strong>Error:</strong> ';$output .= $stash->get(['data',0,'error_message',0]);$output .= '
+    </div>
+</div>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'header',0]),'breadcrumburl'=>$stash->get(['data',0,'breadcrumb',0]),'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

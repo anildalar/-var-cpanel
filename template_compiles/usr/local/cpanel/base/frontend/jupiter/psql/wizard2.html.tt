@@ -1,0 +1,149 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/wizard2.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('max_length',63 - $stash->get(['dbownerprefix',0,'length',0]));$output .= $stash->get(['Api2',0,'pre_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('required_strength_result',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'postgres' }]]));$output .= $stash->get(['Api2',0,'post_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('password_strength',$stash->get(['required_strength_result',0,0,0,'strength',0]));$stash->set('full_db',$stash->get('dbownerprefix').$stash->get(['RAW_FORM',0,'db',0]));if (!$stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])&&!($stash->get(['FORM',0,'item',['nocreate' ]])eq '1')){$stash->set('adddb_result',$stash->get(['execute',['Postgresql','create_database',{'name'=>$stash->get('full_db')}]]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '
+        <div id="details" class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]]);$output .= '
+        </div>
+    '}$output .= '
+
+    ';if (!($stash->get(['FORM',0,'item',['nocreate' ]])eq '1')){$output .= '
+        ';if ($stash->get(['adddb_result',0,'status',0])){$output .= '            ';$stash->set(['CPANEL',0,'CPVAR',0,'new_db',0],($stash->get('dbownerprefix').$stash->get(['FORM',0,'item',['db' ]])));$output .= '
+            <div class="alert alert-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['You have created a [asis,PostgreSQL] database named “[output,strong,_1]”.',$stash->get(['full_db',0,'html',0])]]);$output .= '
+            </div>
+        '}else {$output .= '
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                ';$output .= $stash->get(['adddb_result',0,'errors_as_string',0,'html',0]);$output .= '
+            </div>
+        '}$output .= '
+    '}$output .= '
+    <div class="section">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['Step 2: Create Database Users:' ]]);$output .= '
+        </h2>
+
+        <form method="post" form action="wizard3.html" name="mainform" id="mainform">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+            <input type="hidden" name="db" value="';$output .= $stash->get(['full_db',0,'html',0]);$output .= '" />
+            <div class="form-group">
+                <label for="user">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('dbownerprefix')){$output .= '
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                ';$output .= $stash->get('dbownerprefix');$output .= '
+                            </span>
+                            <input type="text" class="form-control" size="15" name="user" id="user" maxlength="';$output .= $stash->get('max_length');$output .= '" />
+                        </div>
+                        '}else {$output .= '
+                            <input type="text" class="form-control" size="15" name="user" id="user" maxlength="';$output .= $stash->get('max_length');$output .= '"/>
+                        '}$output .= '
+                    </div>
+                    <div id="user_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] [quant,_1,character,characters] max.',$stash->get('max_length')]]);$output .= '
+                </span>
+            </div>
+            <div class="form-group">
+                <label for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input size="15" type="password" autocomplete=\'off\' name="pass" id="password" class="form-control"/>
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password (Again):' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' size="15" name="pass2" id="password2" class="form-control"/>
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                    <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" class="btn btn-default"
+                                 id="create_strong_password"
+                                 value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create User' ]]);$output .= '" class="btn btn-primary" id="submit_new_user" />
+            </div>
+        </form>
+    </div>
+
+    <ul class="list-inline text-center">
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkStep1','return_location'=>'wizard1.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        </li>
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to PostgreSQL Databases Main' ]])});$output .= '
+        </li>
+    </ul>
+
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_database_wizard','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+    <script type="text/javascript">
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['password_strength',0,'json',0]);$output .= '\') || 0;
+
+    /**
+     * Initialize the validation for the create user form.
+     */
+    var init_user_validation = function() {
+        var user_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '");
+        user_validator.add("user", "sql_alphanumeric", "';$output .= $stash->get(['locale',0,'maketext',['Username must be alphanumeric characters.' ]]);$output .= '");
+        user_validator.attach();
+
+        var password_validators = CPANEL.password.setup(
+                                        "password",
+                                        "password2",
+                                        "password_strength",
+                                        REQUIRED_PASSWORD_STRENGTH,
+                                        "create_strong_password",
+                                        "why_strong_passwords_link",
+                                        "why_strong_passwords_text");
+        password_validators.push(user_validator);
+        CPANEL.validate.attach_to_form("submit_new_user", password_validators);
+
+        YAHOO.util.Dom.get("user").focus();
+    };
+
+    YAHOO.util.Event.onDOMReady(init_user_validation);
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

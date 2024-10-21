@@ -1,0 +1,8 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/apachestatus.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'litespeed_running',0])&&!$stash->get(['data',0,'apache_running',0])){$output .= '<h3 class="simpleheading">You are running LiteSpeed Web Server on ';$output .= $stash->get(['data',0,'hostname',0]);$output .= '</h3>
+<br /><br /><div>Please visit the <a href="../cgi/lsws/lsws.cgi">LiteSpeed Web Console</a> for status.</div></body>
+'}else {$output .= '<h3 class="simpleheading">Apache server status for ';$output .= $stash->get(['data',0,'hostname',0]);$output .= '</h3>
+';if ($stash->get(['data',0,'status_html',0])){$output .= $stash->get(['data',0,'status_html',0]);$output .= '
+'}elsif (!$stash->get(['data',0,'connection',0])){$output .= '<br /><br /><div class="errors">Failed to receive status information from Apache.
+<br />Unable to connect to local httpd server.</div>
+'}else {$output .= '<br /><br /><div class="errors">Failed to receive status information from Apache.</div></body>
+'}}$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'apache_status','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

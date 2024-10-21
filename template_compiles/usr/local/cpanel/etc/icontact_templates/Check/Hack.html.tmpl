@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Check/Hack.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Possible hack detected.' ]]));$output .= '
+
+';if ($stash->get(['NOTICE',0,'reason',0])){$output .= '
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system has detected failed attempts to create new directories or files whose filenames begin with numbers. This usually indicates a root compromise of the server.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The exact error encountered was:' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'reason',0,'html',0])}]]);$output .= '
+    </p>
+'}else {$output .= '
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['IMPORTANT: Do not ignore this email.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This message is to inform you that the account “[_1]” has user ID 0 ([asis,root] privileges). This may indicate that your system is compromised. To be safe, you should verify that your system is not compromised.',$stash->get(['NOTICE',0,'suspicious_user',0])]]);$output .= '
+    </p>
+'}$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

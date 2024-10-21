@@ -1,0 +1,27 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/htaccess/changepro.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_url','dohtaccess.html?dir=' .$stash->get(['RAW_FORM',0,'dir',0,'uri',0]).'&is_parent=' .$stash->get(['FORM',0,'is_parent',0])* 1);$stash->set('results',$stash->get(['execute',['DirectoryPrivacy','configure_directory_protection',{'dir'=>$stash->get(['RAW_FORM',0,'dir',0]),'enabled'=>$stash->get(['RAW_FORM',0,'protected',0])? 1 : 0,'authname'=>$stash->get(['RAW_FORM',0,'resname',0])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['results',0,'status',0])&&!$stash->get(['result',0,'errors',0])){$output .= '
+    <div class="alert alert-success" id="permsSuccess">
+        <span class="glyphicon glyphicon-ok-sign" id="permsSuccessImg"></span>
+        <div class="alert-message" id="permsSuccessMsg">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong>
+            ';if ($stash->get(['RAW_FORM',0,'protected',0])){$output .= $stash->get(['locale',0,'maketext',['The system set the access permissions for the “[_1]” directory.',$stash->get(['FORM',0,'dir',0])]])}else {$output .= $stash->get(['locale',0,'maketext',['The system removed the access permissions for the “[_1]” directory.',$stash->get(['FORM',0,'dir',0])]])}$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <div class="alert alert-danger" id="permsError">
+        <span class="glyphicon glyphicon-remove-sign" id="permsErrorImg"></span>
+        <div class="alert-message" id="permsErrorMsg">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['The system failed to configure access permissions for the “[_1]” directory because of an error:',$stash->get(['FORM',0,'dir',0])]]);$output .= '
+            ';$output .= $stash->get(['results',0,'errors_as_string',0,'html',0]);$output .= '
+        </div>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'directory_privacy','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

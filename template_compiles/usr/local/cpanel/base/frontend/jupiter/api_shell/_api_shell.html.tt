@@ -1,0 +1,240 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/api_shell/_api_shell.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('API_Shell',$context->plugin('API_Shell'));$stash->set('sort_types',['lexicographic','numeric','numeric_zero_as_max','ipv4' ]);$stash->set('filter_types',[{'value'=>'contains','description'=>$stash->get(['locale',0,'maketext',['Contains' ]])},{'value'=>'begins','description'=>$stash->get(['locale',0,'maketext',['Begins With' ]])},{'value'=>'eq','description'=>$stash->get(['locale',0,'maketext',['Equals' ]])},{'value'=>'gt','description'=>$stash->get(['locale',0,'maketext',['Greater Than (numeric)' ]])},{'value'=>'lt','description'=>$stash->get(['locale',0,'maketext',['Less Than (numeric)' ]])}]);$output .= $context->process('_ajaxapp.tmpl');$stash->set('big_x',!$stash->get(['CPANEL',0,'ua_is_ie',0])|| ($stash->get(['CPANEL',0,'ua_is_ie',0])> 8)? '&#9747;' : 'X');$stash->set('THIS_IS_WHM',$stash->get(['CPANEL',0,'is_whm',0]));$stash->set('api_calls',{});$output .= '
+';do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'text'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '    <div id="combobox_api_calls_';$output .= $stash->get('item');$output .= '" class="cjt-combobox-wrapper">
+        <input id="api_shell_input_';$output .= $stash->get('item');$output .= '" name="functionSelect" type="text" size="40" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Choose an API call.' ]]);$output .= '" dir="ltr"><a class="cjt-combobox-expander"></a>
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('function_select_combobox',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$output .= '
+<link rel="stylesheet" type="text/css" href="/yui/assets/skins/sam/treeview.css" />
+<link rel="stylesheet" type="text/css" href="/yui/assets/skins/sam/tabview.css" />
+<link rel="stylesheet" type="text/css" href="/yui/assets/skins/sam/datatable.css" />
+<link rel="stylesheet" type="text/css" href="/yui/autocomplete/assets/skins/sam/autocomplete.css" />
+<link rel="stylesheet" type="text/css" href="/cjt/css/combobox-min.css" />
+
+<style>
+    ';$output .= $context->insert('sharedcss/api_shell.css');$output .= '</style>
+
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['Use this interface to run API calls interactively.' ]]);$output .= '</p>
+
+<div id="cjt_pagenotice_container" class="cjt-pagenotice-container cjt-notice-container">
+    <div class="yui-module cjt-notice cjt-pagenotice cjt-notice-warn">
+        <div class="bd">
+            <div class="cjt-notice-content">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,WARNING:] This feature operates on the live system.' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+</div>
+
+<p class="description">
+
+';$output .= $stash->get(['locale',0,'maketext',['[output,strong,WARNING:] API function calls may change or delete data on your server, which can cause your server to fail. Read the function call’s documentation thoroughly before you use it in the API Shell, a script, or through any other method.' ]]);$output .= '
+
+';$output .= $stash->get(['locale',0,'maketext',['If you wish to see an example of the output from a specific function call that uses test data, read the [output,em,Example] section for that function call in our API documentation.' ]]);$output .= '
+</p>
+<div class="section">
+<form id="api_form" name="api_form" action="javascript:void(0)">
+    <div id="api_function_area">
+    ';if ($stash->get('THIS_IS_WHM')){$output .= '        ';$stash->set('v1_calls',$stash->get(['API_Shell',0,'whm1_functions',0]));$output .= '        ';$stash->set(['api_calls',0,1,0],$stash->get('v1_calls'));$output .= '        ';$output .= $stash->get(['locale',0,'maketext',['[asis,WHM] API version:' ]]);$output .= '
+
+        <div class="vertical-radio-item">
+            <input type="radio" checked name="api_version" value="1" id="whm1_radio" class="apiRadio">
+            <label class="title" for="whm1_radio">v1</label>
+            ';$output .= $stash->get(['function_select_combobox',0,'print',[1 ]]);$output .= '            (<a href="https://go.cpanel.net/whmapi1" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Browse [_1]’s documentation.','WHM API 1' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[output,asis,WHM API 1] Documentation' ]]);$output .= '</a>)
+        </div>
+
+        <div class="vertical-radio-item">
+            ';$stash->set('no_interact_blurb',$stash->get(['locale',0,'maketext',['This interface does not interact with “[_1]”.','WHM API 0' ]]));$output .= '            <input type="radio" name="api_version" value="0" id="whm0_radio" class="apiRadio" disabled title="';$output .= $stash->get('no_interact_blurb');$output .= '">
+            <label class="title disabled" for="whm0_radio" title="';$output .= $stash->get('no_interact_blurb');$output .= '">0</label>
+        </div>
+    '}else {$output .= '        ';$stash->set('uapi_calls',$stash->get(['API_Shell',0,'uapi_functions',0]));$output .= '        ';$stash->set('api2_calls',$stash->get(['API_Shell',0,'api2_functions',0]));$output .= '        ';$stash->set(['api_calls',0,2,0],$stash->get('api2_calls'));$stash->set(['api_calls',0,3,0],$stash->get('uapi_calls'));$output .= '        ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] API version:' ]]);$output .= '
+
+        <div class="vertical-radio-item">
+            <input type="radio" checked name="api_version" value="3" id="api_radio_3" class="apiRadio">
+            <label class="title" for="api_radio_3">';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,UAPI,Universal API] ([output,asis,API 3])' ]]);$output .= '</label>
+            ';$output .= '            ';$output .= $stash->get(['function_select_combobox',0,'print',[3 ]]);$output .= '            (<a href="https://go.cpanel.net/uapidocs" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Browse [_1]’s documentation.','UAPI' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[output,asis,UAPI] Documentation' ]]);$output .= '</a>)
+        </div>
+
+        <div class="vertical-radio-item">
+            <input type="radio" name="api_version" value="2" id="api_radio_2" class="apiRadio">
+            <label class="title" for="api_radio_2">API 2</label>
+            ';$output .= '            ';$output .= $stash->get(['function_select_combobox',0,'print',[2 ]]);$output .= '            (<a href="https://go.cpanel.net/api2docs" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Browse [_1]’s documentation.','API 2' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[output,asis,API 2] Documentation' ]]);$output .= '</a>)
+        </div>
+
+        <div class="vertical-radio-item">
+            ';$stash->set('no_interact_blurb',$stash->get(['locale',0,'maketext',['This interface does not interact with “[_1]”.','API 1' ]]));$output .= '            <input type="radio" name="api_version" value="1" id="api1_radio" class="apiRadio" disabled title="';$output .= $stash->get('no_interact_blurb');$output .= '">
+            <label class="title disabled" for="api1_radio" title="';$output .= $stash->get('no_interact_blurb');$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[output,asis,API 1] (DEPRECATED)' ]]);$output .= '</label>
+        </div>
+    '}$output .= '    </div>
+
+    <div class="parm-container inputContainer">
+        <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Variables' ]]);$output .= '</span>
+            <a href="javascript:void(0)" id="addVariableButton">(';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= ')</a>
+        <div class="inputFields">
+            <div class="noneField">
+                ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+
+    <div class="form-part">
+        <a href="javascript:void(0)" id="metadataToggle">';$output .= $stash->get(['locale',0,'maketext',['Show Sort/Filter/Paginate Options' ]]);$output .= '</a>
+    </div>
+
+    <div id="metadata" class="metadataContainer" style="display:none">
+        <div>
+            <label class="title" for="page_start">';$output .= $stash->get(['locale',0,'maketext',['Index of first result to show, zero-based' ]]);$output .= ':</label>
+            <input id="page_start" class="number" name="page_start" type="number" min="0" value="0">
+        </div>
+        <p>
+            <label class="title" for="page_size">';$output .= $stash->get(['locale',0,'maketext',['Maximum # of results to show' ]]);$output .= ':</label>
+            <input id="page_size" class="number" name="page_size" type="number" min="0" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '">
+        </p>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['A filter with the special field “*” will match any record with at least one field that matches the filter’s type and term.' ]]);$output .= '
+        </p>
+        <div class="parm-container inputContainer">
+            <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Filters' ]]);$output .= '</span>
+            <a href="javascript:void(0)" id="addFilterButton">(';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= ')</a>
+            <div class="inputFields">
+                <div class="noneField">
+                    ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+
+        <div class="parm-container inputContainer">
+            <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Sorts' ]]);$output .= '</span>
+            <a href="javascript:void(0)" id="addSortButton">(';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= ')</a>
+            <div class="inputFields">
+                    <div class="noneField">
+                        ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+                    </div>
+            </div>
+        </div>
+
+        <div class="parm-container inputContainer">
+            <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Columns' ]]);$output .= '</span>
+            <a href="javascript:void(0)" id="addColumnButton">(';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= ')</a>
+            <div class="inputFields">
+                    <div class="noneField">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Select all columns' ]]);$output .= '
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-part" id="submit-div">
+        <button type="submit" id="submit_button" disabled>';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '</button>
+    </div>
+
+</form>
+
+<div class="form-part">
+    <strong>';$output .= $stash->get(['locale',0,'maketext',['URL: [_1]','<code id="url"></code>' ]]);$output .= '</strong>
+</div>
+
+<div class="form-part">
+    <strong>';$output .= $stash->get(['locale',0,'maketext',['API call data structure:' ]]);$output .= '</strong>
+    <div id="api_treeview" class="data-structure-display invalid-data"></div>
+</div>
+
+<hr>
+<h3>';$output .= $stash->get(['locale',0,'maketext',['API call response' ]]);$output .= '</h3>
+
+<div id="views_container"></div>
+</div>
+
+<div id="raw_view_container">
+    ';$stash->set('bytes_html','');$output .= '    <label for="raw_response">
+        ';$stash->set('resp_length_span','<span id="resp_length">' .$stash->get(['locale',0,'format_bytes',[0 ]]).'</span>');$output .= '        <h3>';$output .= $stash->get(['locale',0,'maketext',['Raw response ([_1]):',$stash->get('resp_length_span')]]);$output .= '</h3>
+    </label>
+    <textarea id="raw_response" readonly></textarea>
+    <h3>
+        ';$output .= $stash->get(['locale',0,'maketext',['HTTP status: [_1]','<span id="raw_status"></span>' ]]);$output .= '
+    </h3>
+    <label for="raw_headers">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Raw HTTP headers:' ]]);$output .= '</h3>
+    </label>
+    <textarea id="raw_headers" readonly></textarea>
+</div>
+
+<div id="tree_view_container">
+    <div id="response_treeview"></div>
+</div>
+
+<div id="table_view_container">
+    <strong>
+        <span id="table_record_count">';$output .= $stash->get(['locale',0,'maketext',['[quant,_1,record,records]',0 ]]);$output .= '</span>
+    </strong>
+    <div id="table_container"></div>
+</div>
+
+<!-- Templates -->
+
+<script id="variableRowTemplate" type="text/plain">
+    <div class="inputField">
+        <div class="closeLink">
+            <a title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" class="delete-link" href="javascript:void(0)">
+                ';$output .= $stash->get('big_x');$output .= '
+            </a>
+        </div>
+        <div class="key_value">
+            <input type="text" name="variable_key_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Key' ]]);$output .= '" />
+            <span class="equals">=</span>
+            <textarea name="variable_value_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Value' ]]);$output .= '" rows="1" cols="15" /></textarea>
+        </div>
+    </div>
+</script>
+<script id="filterRowTemplate" type="text/plain">
+    <div class="inputField filterRow">
+        <div class="closeLink">
+            <a title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" class="delete-link" href="javascript:void(0)">
+                ';$output .= $stash->get('big_x');$output .= '
+            </a>
+        </div>
+        <div>
+            <input tye="text" name="filter_column_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Field' ]]);$output .= '" />
+            <select name="filter_type_{index}">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('filter_types');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'filter'}=$_tt_value;$output .= '
+                <option value=\'';$output .= $stash->get(['filter',0,'value',0]);$output .= '\'>';$output .= $stash->get(['filter',0,'description',0]);$output .= '</option>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </select>
+            <input type="text" name="filter_term_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Term' ]]);$output .= '" />
+        </div>
+    </div>
+</script>
+
+<script id="columnRowTemplate" type="text/plain">
+    <div class="inputField columnRow">
+        <div class="closeLink">
+            <a title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" class="delete-link" href="javascript:void(0)">
+                ';$output .= $stash->get('big_x');$output .= '
+            </a>
+        </div>
+        <div>
+            <input tye="text" name="columns_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Column' ]]);$output .= '" />
+        </div>
+    </div>
+</script>
+
+<script id="sortRowTemplate" type="text/plain">
+    <div class="sortRow inputField">
+        <div class="closeLink">
+            <a title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" class="delete-link" href="javascript:void(0)">
+                ';$output .= $stash->get('big_x');$output .= '
+            </a>
+        </div>
+        <div>
+            <input type="text" name="sort_column_{index}" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Field' ]]);$output .= '" />
+            <select name="sort_type_{index}">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sort_types');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {LOOP: while (!$_tt_error){$stash->{'sort_type'}=$_tt_value;$output .= ('<option value=\'' .$stash->get('sort_type').'\'>' .$stash->get('sort_type').'</option>');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+            <label>
+                <input type="checkbox" name="sort_reverse_{index}"/>';$output .= $stash->get(['locale',0,'maketext',['Reverse' ]]);$output .= '
+            </label>
+        </div>
+    </div>
+</script>
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=['/yui/dragdrop/dragdrop-min.js','/yui/tabview/tabview-min.js','/yui-gen/data/data.js','/cjt/datasource-min.js','/yui/autocomplete/autocomplete-min.js','/cjt/combobox-min.js' ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$stash->set('src',$stash->get(['MagicRevision',[$stash->get('src')]]));$output .= ('<script src="' .$stash->get('src').'"></script>');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '<script>
+    window.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[{'api_calls'=>$stash->get('api_calls')}]]);$output .= ';
+    ';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/api_shell.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/api_shell_optimized.js');$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

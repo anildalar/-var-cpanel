@@ -1,0 +1,271 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/directives/eaWizard.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<section id="{{ idPrefix }}_stepContainer" role="main" aria-live="polite">
+    <!-- STEP CONTAINER -->
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 class="view-heading">
+                <span ng-bind-html="::stepTitle" id="wizard-step-title" tabindex="-1"></span>
+            </h2>
+            <!-- PHP Filter tags -->
+            <div class="row" ng-show="extensions.showPhpFilterTags()">
+                <div class="col-xs-12">
+                    <ul class="nav nav-pills quick-filters">
+                        <li><span class="quick-filter-label">';$output .= $stash->get(['locale',0,'maketext',['Filter by PHP Version' ]]);$output .= '</span></li>
+                        <li ng-repeat="verInfo in phpVersions track by verInfo.version">
+                            <label class="checkbox-label">
+                                <input id="filter_{{ ::verInfo.version }}" type="checkbox"
+                                ng-model="verInfo.selected"
+                                ng-change="extensions.filterPHPExtensions()">
+                                {{ verInfo.name }}
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row search-page-container" ng-show="showSearchPageSection()">
+                <!-- Search/Filter -->
+                <div class="col-xs-12 col-md-6" ng-show="showSearch">
+                    <search id="{{ ::stepName }}" ng-model="metaData.filterValue"
+                        ng-change="applyMetaData()">
+                    </search>
+                </div>
+                <!-- Pagination -->
+                <div class="col-xs-12 col-md-6" ng-show="showPagination">
+                    <div class="pagination-container">
+                        <page-size id="pageSize_{{ ::stepName }}"
+                            allowed-sizes="metaData.pageSizes"
+                            total-items="metaData.totalItems"
+                            ng-model="metaData.pageSize"
+                            show-all="true"
+                            ng-show="metaData.showPager"
+                            ng-change="applyMetaData()">
+                        </page-size>
+                        <uib-pagination id="paginateItems_{{ ::stepName }}"
+                            total-items="metaData.totalItems"
+                            ng-model="metaData.currentPage"
+                            max-size="0"
+                            boundary-links="true"
+                            rotate="false"
+                            previous-text="<"
+                            next-text=">"
+                            first-text="<<"
+                            last-text=">>"
+                            items-per-page="metaData.pageSize"
+                            ng-show="metaData.showPager"
+                            ng-change="applyMetaData()">
+                        </uib-pagination>
+                    </div>
+                </div>
+            </div>
+            <!-- Page Stats -->
+            <div class="row" ng-show="showPagination && metaData.showPager">
+                <div class="col-xs-12">
+                    <div class="page-stats pull-right" ng-bind-html="getShowingText()"></div>
+                </div>
+            </div>
+            <!-- Empty message -->
+            <div id="emptyListMsg_{{ ::stepName }}"
+                class="alert alert-info col-xs-12"
+                role="alert"
+                ng-show="showEmptyMessage()">
+                <span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['There are no packages to display.' ]]);$output .= '
+                </span>
+            </div>
+
+            <!-- No PHP Message -->
+            <div id="noPHPMsg_{{ ::stepName }}" ng-show="extensions.noPHPSelected"
+                class="alert alert-info col-xs-12" role="alert">
+                ';$output .= $stash->get(['locale',0,'maketext',['You must select a [output,url,_1,PHP version] to view the available extensions.','php' ]]);$output .= "\n            </div>\n\n            <!-- Package listing -->\n            <div class=\"row\"\n                ng-hide=\"metaData.isEmptyList\">\n                <div class=\"col-xs-12\">\n                    <!-- TODO: This needs to align with search box above -->\n                    <ul id=\"pkgList_{{ ::stepName }}\"\n                        class=\"list-unstyled PackageList col-xs-12\"\n                        role=\"region\"\n                        aria-labelledby=\"step-title\">\n                        <li id=\"pkg_{{ pkg | qaSafeID }}\"\n                            ng-repeat=\"(pkg, pkgData) in metaData.filterList track by \$index\"\n                            ng-class=\"packageClass(pkgData)\">\n                            <!-- Display Package data -->\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\">\n                                    <div class=\"row\">\n                                        <div class=\"col-xs-12 col-md-5\">\n                                            <p id=\"pkgState_{{ pkg | qaSafeID }}\">\n                                                <strong>\n                                                    {{ pkgData.displayName }}\n                                                </strong>\n                                                <span class=\"label label-success\"\n                                                    ng-show=\"pkgData.state === 'installed'\">\n                                                    ";$output .= $stash->get(['locale',0,'maketext',['Installed' ]]);$output .= '
+                                                </span>
+                                                <span class="label label-info"
+                                                    ng-show="pkgData.state === \'updatable\'">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Updatable' ]]);$output .= "\n                                                </span>\n                                            </p>\n                                        </div>\n                                        <div class=\"col-xs-12 col-md-4\">\n                                            <p id=\"pkgVersions_{{ pkg | qaSafeID }}\" class=\"StatusBlock\">\n                                                <span class=\"text text-success\"\n                                                    ng-show=\"pkgData.version_installed && pkgData.version_latest\">\n                                                    <strong>\n                                                        {{ pkgData.version_latest }}\n                                                    </strong>\n                                                </span>\n                                                <span class=\"text text-info\"\n                                                    ng-show=\"!pkgData.version_installed && pkgData.version_latest\">\n                                                    <strong>\n                                                        {{ pkgData.version_latest }}\n                                                    </strong>\n                                                </span>\n                                            </p>\n                                        </div>\n                                        <div class=\"col-xs-12 col-md-3\">\n                                            <toggle-switch id=\"switch_{{ pkg | qaSafeID }}\"\n                                                class=\"toggle-switch-{{ \$index }}\"\n                                                ng-model=\"pkgData.selectedPackage\"\n                                                on-toggle=\"initializeSelection(pkgData)\"\n                                                enabled-label =\"{{ toggleLabel(pkgData) }}\"\n                                                disabled-label=\"{{ toggleLabel(pkgData) }}\"\n                                                aria-label=\"{{ pkgData.displayName }}\"\n                                                ng-show=\"showToggleSwitch(pkgData)\">\n                                            </toggle-switch>\n                                        </div>\n                                    </div>\n                                    <div class=\"row\">\n                                        <div class=\"col-xs-12\">\n                                            <p id=\"pkgDesc_{{ pkg | qaSafeID }}\" class=\"help-block animate-hide\"\n                                                ng-show=\"!pkgData.hideDescription\">\n                                                {{ pkgData.short_description }}\n                                            </p>\n                                        </div>\n                                    </div>\n                                </div>\n                            </div>\n                            <!-- Vhosts exist callout -->\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\"\n                                    ng-show=\"pkgData.vhostWarning.exist\">\n                                    <div class=\"alert alert-warning\" role=\"alert\">\n                                        <p class=\"text-danger\">\n                                            <span ng-bind-html=\"pkgData.vhostWarning.text\"></span>\n                                        </p>\n                                        <p>\n                                            <label>";$output .= $stash->get(['locale',0,'maketext',['Fix:' ]]);$output .= '</label>
+                                            ';$stash->set('localized_text',$stash->get(['locale',0,'maketext',['[asis,MultiPHP] Manager' ]]));$output .= $stash->get(['locale',0,'maketext',['Open the [comment][output,url,_1,_2,target,_3][comment,Please do not use this url title as part of sentences] in a new window. Move those virtual hosts to another PHP version to ensure that they continue to function. Return to this window and click Continue.',$stash->get('cp_security_token').'/scripts7/multiphp-manager/user',$stash->get('localized_text').' <span class=\'fas fa-external-link-alt fa-md\'></span>','_blank' ]]);$output .= '
+                                        </p>
+                                        <hr />
+                                        <p class="text-warning">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Make certain that your virtual hosts have a functional PHP version before you click Continue.' ]]);$output .= '
+                                        </p>
+                                        <button id="btnContinueVhosts_{{ pkg | qaSafeID }}"
+                                            class="btn btn-primary"
+                                            ng-click="php.continueCheckDependency(pkgData)">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+                                        </button>
+                                        <a id="cancelVhosts_{{ pkg | qaSafeID }}"
+                                            href="javascript:void(0)"
+                                            ng-click="php.resetVhostWarning(pkgData)"
+                                            class="btn btn-link">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Auto-select PHP Extensions callout -->
+                            <div class="row" ng-show="pkgData.autoSelectExt.show">
+                                <div class="col-xs-12">
+                                    <div class="alert" role="alert" ng-class="{ \'alert-info\' : !pkgData.autoSelectExt.showError, \'alert-danger\' : pkgData.autoSelectExt.showError  }">
+                                        <section id="autoSelectExtInfo_{{ pkg | qaSafeID }}" ng-hide="pkgData.autoSelectExt.showError">
+                                            <div class="text-info">
+                                                <p ng-bind-html="pkgData.autoSelectExt.text"></p>
+                                            </div>
+                                            <div class="php-extensions-list" ng-show="pkgData.autoSelectExt.showCommonExtensions">
+                                                <h4><strong>';$output .= $stash->get(['locale',0,'maketext',['Common Extensions' ]]);$output .= '</strong></h4>
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['Remove any extensions here that you do not want to install.' ]]);$output .= '</p>
+                                                <ul id="othersPkgList" class="list-unstyled list-inline">
+                                                    <li ng-repeat="extension in pkgData.autoSelectExt.list" class="col-xs-4">
+                                                        <label class="res-pkg-item">
+                                                            <input id="commonExtensions_{{ extension.displayName | qaSafeID }}"
+                                                                type="checkbox"
+                                                                ng-model="extension.isSelected">
+                                                            {{ extension.displayName }}
+                                                        </label>
+                                                    </li>
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                            <hr class="ea-prompt-hr" />
+                                            <button id="btnOkAutoSelect_{{ pkg | qaSafeID }}"
+                                                class="btn btn-primary"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Install the [asis,PHP] version and extensions.' ]]);$output .= '"
+                                                ng-click="php.performAutoSelect(pkgData)">
+                                                {{ pkgData.autoSelectExt.okText }}
+                                            </button>
+                                            <button id="cancelAutoSelect_{{ pkg | qaSafeID }}"
+                                                class="btn btn-default"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Install only [asis,PHP] version.' ]]);$output .= '"
+                                                ng-click="php.resetAutoSelectExtensions(pkgData)"
+                                                class="btn btn-link">
+                                                {{ pkgData.autoSelectExt.cancelText }}
+                                            </button>
+                                            <a id="editAutoSelect_{{ pkg | qaSafeID }}"
+                                                href="javascript:void(0)"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['View and edit extensions.' ]]);$output .= '"
+                                                class="btn btn-link"
+                                                ng-click="pkgData.autoSelectExt.showCommonExtensions = !pkgData.autoSelectExt.showCommonExtensions">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                                            </a>
+                                        </section>
+                                        <section id="autoSelectExtError_{{ pkg | qaSafeID }}" ng-show="pkgData.autoSelectExt.showError">
+                                            <div class="row">
+                                                <div class="col-xs-12">
+                                                    <p class="text-danger">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['The following extensions could not be selected due to unresolved conflicts:' ]]);$output .= "\n                                                    </p>\n                                                </div>\n                                                <div class=\"col-xs-12\">\n                                                    <ul id=\"autoSelectErrorList_{{ pkg | qaSafeID }}\" class=\"list-unstyled list-inline res-pkg-item\">\n                                                        <li ng-repeat=\"error in pkgData.autoSelectExt.errorList track by \$index\" class=\"col-xs-4\">\n                                                            {{ error }}\n                                                        </li>\n                                                    </ul>\n                                                </div>\n                                                <div class=\"col-xs-12\">\n                                                    <p class=\"text-danger p-under-list\">\n                                                        ";$output .= $stash->get(['locale',0,'maketext',['You may select them manually in PHP Extensions step.' ]]);$output .= '
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <hr class="ea-prompt-hr" />
+                                            <button id="closeAutoSelect_{{ pkg | qaSafeID }}"
+                                                class="btn btn-primary"
+                                                ng-click="php.resetAutoSelectExtensions(pkgData)">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '
+                                            </button>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Conflict/Requirement callout -->
+                            <div class="row">
+                                <div class="col-xs-12"
+                                    ng-show="pkgData.actions.actionNeeded">
+                                    <div class="alert alert-warning">
+                                        <div class="pkg-actions-group" ng-show="pkgData.actions.removeList.length">
+                                            <p class="text-danger">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['The following conflicts are installed on this machine. They will be removed as part of this package selection:' ]]);$output .= "\n                                            </p>\n                                            <ul class=\"list-unstyled text-danger\">\n                                                <li class=\"res-pkg-item\" ng-repeat=\"remPkg in pkgData.actions.removeList track by \$index\">\n                                                    {{ remPkg }}\n                                                </li>\n                                            </ul>\n                                        </div>\n                                        <div class=\"pkg-actions-group\" ng-show=\"pkgData.actions.addList.length\">\n                                            <p class=\"text-info\">\n                                                ";$output .= $stash->get(['locale',0,'maketext',['The following requirements are not installed on this machine. They will be added as part of this package selection:' ]]);$output .= "\n                                            </p>\n                                            <ul class=\"list-unstyled text-info\">\n                                                <li class=\"res-pkg-item\" ng-repeat=\"addPkg in pkgData.actions.addList track by \$index\">\n                                                    {{ addPkg }}\n                                                </li>\n                                            </ul>\n                                        </div>\n                                        <!-- Recommendation container -->\n                                        <section id=\"recommendationsContainer_{{ pkg | qaSafeID }}\" ng-show=\"pkgData.showRecommendations\">\n                                            <hr ng-show=\"pkgData.actions.removeList.length\">\n                                            <div id=\"recoItem_{{ \$index }}\"\n                                                class=\"reco-item\"\n                                                ng-repeat=\"reco in pkgData.recommendations track by \$index\"\n                                                ng-show=\"reco.show\">\n                                                <label>{{reco.displayName}} *</label>\n                                                <p>\n                                                    <span ng-class=\"{'text-danger': reco.level == 'danger'}\" ng-bind-html=\"reco.desc\"></span>\n                                                    <a href=\"{{ reco.url }}\" target=\"_blank\" ng-show=\"reco.url\">\n                                                        ";$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= "\n                                                    </a>\n                                                </p>\n                                                <ul class=\"fa-ul\">\n                                                    <li ng-repeat=\"option in reco.options track by \$index\"\n                                                        class=\"bullet\"\n                                                        ng-show=\"option.show\">\n                                                        <span class=\"fa-stack\" title=\"{{option.title}}\" ng-class=\"{'text-success': option.recommended}\">\n                                                            <i class=\"fa-li fas fa-certificate fa-stack-1x\"></i>\n                                                            <i class=\"fa-li fas fa-ban fa-stack-2x text-danger\"\n                                                                ng-show=\"option.recommended == false\"></i>\n                                                        </span>\n                                                        <span class=\"bullet-item\" ng-class=\"{'text-danger': option.level == 'danger'}\" ng-bind-html=\"option.text\">\n                                                        </span>\n                                                        <a href=\"{{ option.url }}\" target=\"_blank\" ng-show=\"option.url\">\n                                                            ";$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= "\n                                                        </a>\n                                                        <ul>\n                                                            <li id=\"recoOptionItem_{{ item }}\" class=\"res-pkg-item reco-option-list-item\" ng-repeat=\"item in option.items track by \$index\" ng-bind-html=\"item\">\n                                                            </li>\n                                                        </ul>\n                                                    </li>\n                                                </ul>\n                                                <div class=\"foot-note\"\n                                                    ng-show=\"reco.showFootnote\">\n                                                    * ";$output .= $stash->get(['locale',0,'maketext',['You must make any recommended changes manually.' ]]);$output .= '
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <hr>
+                                        <p class="text-warning">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Do you want to proceed with this selection?' ]]);$output .= '
+                                        </p>
+                                        <button id="btnContinueDeps_{{ pkg | qaSafeID }}" class="btn btn-primary"
+                                            ng-click="finalizeSelection(pkgData)">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '
+                                        </button>
+                                        <button  id="btnCancelDeps_{{ pkg | qaSafeID }}" class="btn btn-default"
+                                            ng-click="resetSelection(pkgData)">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- MPM module requirement callout -->
+                            <div class="row">
+                                <div class="col-xs-12"
+                                    ng-show="pkgData.mpmMissing">
+                                    <div class="alert alert-warning" role="alert">
+                                        {{ pkgData.mpmMissingMsg }}
+                                        <hr>
+                                        <button id="btnMpmMissingContinue_{{ pkg | qaSafeID }}"
+                                            class="btn btn-primary"
+                                            ng-click="finalizeSelection(pkgData); proceed(\'mpm\')">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+                                        </button>
+                                        <a id="linkMpmMissingCancel_{{ pkg | qaSafeID }}"
+                                            href="javascript:void(0)"
+                                            ng-click="resetSelection(pkgData)"
+                                            class="btn btn-link">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Multi Requirement callout -->
+                            <div class="row">
+                                <div class="col-xs-12"
+                                    ng-show="pkgData.multiRequirements.exist">
+                                    <div class="alert alert-info" role="alert">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['While resolving the dependencies, we have identified the following breakpoint. Please select one to continue with the process:' ]]);$output .= "\n                                        <div ng-repeat=\"orPkgData in pkgData.multiRequirements.orList track by \$index\">\n                                            <div class=\"radio\">\n                                                <label>\n                                                    <input id=\"multiReqPkg_{{ orPkgData.package }}\"\n                                                        type=\"radio\"\n                                                        name=\"optionsRadios\"\n                                                        ng-model=\"pkgData.multiRequirements.chosenPackage\"\n                                                        ng-value=\"orPkgData.package\">\n                                                    <span>\n                                                        {{orPkgData.displayName}}\n                                                    </span>\n                                                </label>\n                                            </div>\n                                        </div>\n                                        <hr>\n                                        <button id=\"btnMultiReqContinue_{{ pkg | qaSafeID }}\"\n                                            class=\"btn btn-primary\"\n                                            ng-disabled=\"pkgData.multiRequirements.chosenPackage == ''\"\n                                            ng-click=\"continueProcess(pkgData)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+                                        </button>
+                                        <a id="cancelMultiReq_{{ pkg | qaSafeID }}"
+                                            href="javascript:void(0)"
+                                            ng-click="resetSelection(pkgData)"
+                                            class="btn btn-link">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Page Stats -->
+            <div class="row" ng-show="showPagination && metaData.showPager">
+                <div class="col-xs-12">
+                    <div class="page-stats pull-right" ng-bind-html="getShowingText()"></div>
+                </div>
+            </div>
+            <div class="row search-page-container">
+                <!-- Pagination -->
+                <div class="col-xs-12 pull-right" ng-show="showPagination">
+                    <div class="pagination-container">
+                        <page-size id="pageSize_bottom_{{ ::stepName }}"
+                            allowed-sizes="metaData.pageSizes"
+                            total-items="metaData.totalItems"
+                            ng-model="metaData.pageSize"
+                            show-all="true"
+                            ng-show="metaData.showPager"
+                            ng-change="applyMetaData()">
+                        </page-size>
+                        <uib-pagination id="paginateItems_bottom_{{ ::stepName }}"
+                            total-items="metaData.totalItems"
+                            ng-model="metaData.currentPage"
+                            max-size="0"
+                            boundary-links="true"
+                            rotate="false"
+                            previous-text="<"
+                            next-text=">"
+                            first-text="<<"
+                            last-text=">>"
+                            items-per-page="metaData.pageSize"
+                            ng-show="metaData.showPager"
+                            ng-change="applyMetaData()">
+                        </uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

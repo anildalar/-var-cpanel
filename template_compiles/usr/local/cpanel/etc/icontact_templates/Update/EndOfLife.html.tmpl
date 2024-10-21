@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Update/EndOfLife.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])&& $stash->get(['NOTICE',0,'update_available',0])eq 1){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Your system’s [asis,cPanel amp() WHM] version ([_1]) will reach End of Life in [quant,_2,day,days].',$stash->get(['NOTICE',0,'starting_version',0]),$stash->get(['NOTICE',0,'days_left',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Your system’s [asis,cPanel amp() WHM] version ([_1]) will reach End of Life soon.',$stash->get(['NOTICE',0,'starting_version',0])]]))}$output .= '
+
+';if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])){$output .= '
+
+<p>
+
+';if ($stash->get(['NOTICE',0,'update_available',0])eq 1){$output .= '
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Your system’s [asis,cPanel amp() WHM] version ([_1]) will reach [output,url,_2,End of Life,_type,offsite] in [quant,_3,day,days] on [_4].',$stash->get(['NOTICE',0,'starting_version',0]),'https://go.cpanel.net/cPanelLong-TermSupport',$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'eol_date',0])]]);$output .= '
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['We [output,strong,strongly] recommend that you [output,url,_1,upgrade to the latest version] to avoid any disruption in your service.',$stash->get(['NOTICE',0,'endoflife_updatepreferences_url',0])]]);$output .= '
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For more information on how to update your version, read [output,url,_1,our Update Preferences documentation,_type,offsite].','https://go.cpanel.net/UpdatePreferences' ]]);$output .= '
+
+'}else {$output .= '
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['We will release a new version soon. Please prepare to upgrade your server after the new version is available.' ]]);$output .= '
+
+'}$output .= '
+</p>
+
+'}$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

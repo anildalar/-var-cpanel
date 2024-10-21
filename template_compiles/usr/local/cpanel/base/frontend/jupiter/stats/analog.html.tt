@@ -1,0 +1,41 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/analog.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('CPDate',$context->plugin('CPDate'));$stash->set('months',$stash->get(['CPDate',0,'month_stand_alone_wide',0]));$stash->set('resp',$stash->get(['execute',['Stats','list_stats_by_domain',{'engine'=>'analog','ssl'=>$stash->get(['RAW_FORM',0,'ssl',0]),'domain'=>$stash->get(['RAW_FORM',0,'domain',0])}]]));$stash->set('errors',[]);if ($stash->get(['resp',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['resp',0,'errors',0])]]))}$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+     <section>
+        <h4 id="descViewStatsByMonth">';$output .= $stash->get(['locale',0,'maketext',['View Statistics by Month' ]]);$output .= '</h4>
+        <p id="descSelectMonth">
+            ';$output .= $stash->get(['locale',0,'maketext',['Select the month for which you wish to view statistics for “[_1]”.',$stash->get(['FORM',0,'domain',0])]]);$output .= '
+        </p>
+        <p id="apiOutputListOfMonths">
+            ';if ($stash->get(['errors',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('errors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                <div class=\'alert-message\'>
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['resp',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'entry'}=$_tt_value;$stash->set('parts',$stash->get(['CPDate',0,'localtime_parts',[$stash->get(['entry',0,'date',0])]]));$stash->set('month',$stash->get(['parts',0,4,0]));$stash->set('year',$stash->get(['parts',0,5,0])+ 1900);$stash->set('month_name',$stash->get(['months',0,$stash->get('month'),0]));$output .= '
+            <div>
+                <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).'/' .$stash->get(['entry',0,'url',0]);$output .= '"
+                   title="';$output .= $stash->get(['locale',0,'maketext',['Analog statistics report for [_1][comment,month name] [_2][comment,year].',$stash->get('month_name'),$stash->get('year')]]);$output .= '">
+                    ';$output .= $stash->get('month_name').'-' .$stash->get('year');$output .= '
+                </a>
+            </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+        </p>
+    <section>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'analog_landing.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'analog_stats','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

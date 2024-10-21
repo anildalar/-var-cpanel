@@ -1,0 +1,268 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/killacct/views/RemoveView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="list-container">
+    <div class="global-action-buttons">
+        <button id="action-remove-selected"
+                type="button"
+                class="btn-danger"
+                spinner-id="spinner-action-remove-selected"
+                ng-disabled="selected_accounts.length == 0 || confirming_accounts_removal"
+                cp-action="confirming_accounts_removal = true">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remove selected accounts' ]]);$output .= '
+        </button>
+        <button id="action-cancel-remove"
+                ng-if="removal_queue.length"
+                type="button"
+                class="btn-danger"
+                spinner-id="spinner-action-cancel-remove"
+                cp-action="clear_removal_queue()">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span ng-bind="cancel_removal_label()"></span>
+        </button>
+    </div>
+    <div class="callout callout-danger collapse cancel-cert-block" ng-class="{\'in\':confirming_accounts_removal}">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Important:] This will irrevocably remove the following accounts:' ]]);$output .= '</p>
+        <p ng-bind-html="selected_account_name_string()"></p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to remove these accounts?' ]]);$output .= '</p>
+        <button id="action-remove-selected-confirm"
+                type="button"
+                class="btn-danger"
+                spinner-id="spinner-action-remove-selected-confirm"
+                cp-action="request_multi_delete_confirmation()">
+            ';$output .= $stash->get(['locale',0,'maketext',['Yes, remove the selected accounts' ]]);$output .= '
+        </button>
+        <button class="btn btn-default" ng-disabled="removing_multiple_accounts" type="button" ng-click="confirming_accounts_removal = false">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="pagination-container hidden-xs hidden-sm">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="4"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row hidden-xs hidden-sm">
+        <div class="col-xs-4">
+            <div class="page-stats pull-right">
+                <span class="title" ng-bind="get_table_showing_text()"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="pull-left">
+                <div class="checkbox">
+                 <label>
+                   <input id="checkbox-only-suspended" type="checkbox" ng-model="show_only_suspended_accounts" ng-change="fetch()">
+                   <span>';$output .= $stash->get(['locale',0,'maketext',['Show only suspended accounts' ]]);$output .= '</span>
+                 </label>
+               </div>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th class="check-column-header">
+                    <div class="input-group advanced-checkbox">
+                        <span class="input-group-addon">
+                            <input type="checkbox"
+                                id="select_all_visable_accts"
+                                ng-model="account_checkbox_control"
+                                ng-click="toggleCheckAll(filteredAccounts, \'selected\', account_checkbox_control)"
+                                ng-change="">
+                        </span>
+                        <div class="input-group-btn" uib-dropdown>
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" uib-dropdown-toggle>
+                                <span class="caret"></span>
+                                <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Toggle Dropdown' ]]);$output .= '</span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                                <li><a href="" ng-click="toggleCheckAll(accounts, \'selected\', 0); account_checkbox_control = false" id="select_no_accts">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </th>
+                <th>
+                    <span toggle-sort id="sortUsername" sort-meta="meta"
+                              sort-field="username"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                    </span>
+                </th>
+                <th >
+                    <span toggle-sort id="sortDomain" sort-meta="meta"
+                              sort-field="domain"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span toggle-sort id="sortOwner" sort-meta="meta"
+                              sort-field="owner"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="text-center">
+                    <span toggle-sort id="sortSuspended" sort-meta="meta"
+                              sort-field="suspended"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Account State' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="text-center">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Keep [output,abbr,DNS,Domain Name Server] Zone' ]]);$output .= "\n                </th>\n                <th class=\"col-xs-2\"></th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr ng-repeat=\"account in filteredAccounts track by \$index\">\n                <td colspan=\"7\" ng-if=\"account.delete_requested\" class=\"delete-confirm-container\">\n                    <div id=\"deleteConfirm_{{\$index}}\" class=\"callout callout-danger delete-confirm collapse\" ng-class=\"{'in':account.delete_requested}\" >\n                        <div class=\"delete-confirm-message\">\n                            <i class=\"delete-dialog-icon fas fa-question-circle\"></i>\n                            <strong ng-bind-html=\"wrappedDeleteText(account.username)\"></strong>\n                            <table ng-if=\"account.summary\" class=\"table account-summary-table responsive-table\">\n                                <thead>\n                                    <tr>\n                                        <th>";$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Start Date' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Used' ]]);$output .= '</th>
+                                        <th>';$output .= $stash->get(['locale',0,'maketext',['Disk Limit' ]]);$output .= '</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address' ]]);$output .= '">{{ account.summary.ip }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '">{{ account.summary.owner }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '">{{ account.summary.email }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Start Date' ]]);$output .= '">{{ account.summary.startdate }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Theme' ]]);$output .= '">{{ account.summary.theme }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '">{{ account.summary.plan }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Disk Used' ]]);$output .= '">{{ account.summary.diskused }}</td>
+                                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Disk Limit' ]]);$output .= '">{{ account.summary.disklimit }}</td>
+                                </tbody>
+                            </table>
+                            <div ng-if="account.requesting_summary" class="account-summary-loading">
+                                <span><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading Account Summary …' ]]);$output .= '</span>
+                            </div>
+                            <div ng-if="!account.requesting_summary && !account.summary" class="account-summary-error">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The system failed to load the account summary.' ]]);$output .= "\n                            </div>\n                            <div class=\"form-group action-group\">\n                                <button id=\"btnConfirmDelete_{{ account.username }}\"\n                                    type=\"button\"\n                                    class=\"btn\"\n                                    button-class=\"btn-danger\"\n                                    ng-disabled=\"account.removing\"\n                                    spinner-id=\"spinnerDelete_{{\$index}}\"\n                                    cp-action=\"remove(account)\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Yes, remove this account' ]]);$output .= '
+                                </button>
+                                <button id="btnCancelDelete_{{ account.username }}"
+                                    type="button"
+                                    class="btn btn-link"
+                                    ng-click="account.delete_requested = false"
+                                    ng-disabled="account.removing">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+
+                <td ng-if="!account.delete_requested" class="check-column">
+                    <input id="checkbox-{{ account.username }}" ng-disabled="account.removing" type="checkbox" ng-model="account.selected" ng-change="update_selected()" bool-to-int></input>
+                </td>
+                <td ng-if="!account.delete_requested" data-title="';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '">
+                    {{ account.username }}
+                </td>
+                <td ng-if="!account.delete_requested" data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                    {{ account.domain }}
+                </td>
+                <td ng-if="!account.delete_requested" data-title="';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '">
+                    {{ account.owner }}
+                </td>
+                <td ng-if="!account.delete_requested" data-title="';$output .= $stash->get(['locale',0,'maketext',['Account State' ]]);$output .= '"  class="text-center">
+                    {{ account.suspended }}
+                </td>
+                <td ng-if="!account.delete_requested" class="text-center"  data-title="';$output .= $stash->get(['locale',0,'maketext',['Keep [asis,DNS] Zone' ]]);$output .= '">
+                    <input id="checkbox-keepdns-{{ account.username }}" type="checkbox" ng-model="account.keep_dns"></input>
+                </td>
+                <td ng-if="!account.delete_requested">
+                    <button id="action-{{account.username}}"
+                            type="button"
+                            ng-disabled="account.removing"
+                            class="btn-danger"
+                            spinner-id="spinner-action-{{account.username}}"
+                            cp-action="request_delete_account(account)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '
+                    </button>
+                </td>
+            </tr>
+            <tr ng-if="accounts.length" ng-hide="filteredAccounts.length" class="info empty-row">
+                <td colspan="6">';$output .= $stash->get(['locale',0,'maketext',['No results match' ]]);$output .= '</td>
+            </tr>
+            <tr ng-hide="accounts.length" class="info empty-row">
+                <td colspan="6">';$output .= $stash->get(['locale',0,'maketext',['No users' ]]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-8 pull-right">
+            <div class="page-stats pull-right">
+                <span class="title" ng-bind="get_table_showing_text()"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div class="pagination-container">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="4"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="updateModalContent.tmpl">
+    <div class="modal-header">
+        <h3 class="modal-title" id="updateModalLabel">';$output .= $stash->get(['locale',0,'maketext',['Confirm Your Action' ]]);$output .= '</h3>
+    </div>
+    <div class="modal-body">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Delete selected accounts?' ]]);$output .= '</h3>
+        <div class="checkbox">
+         <label>
+           <input id="checkbox-confirm-deletion" type="checkbox" ng-model="confirm_deletion">
+           <span ng-bind-html="get_selected_accounts_text()"></span>
+         </label>
+       </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-link" ng-focus="true" ng-click="closeModal()">';$output .= $stash->get(['locale',0,'maketext',['No, do not delete the accounts.' ]]);$output .= '</button>
+        <button ng-disabled="!confirm_deletion" class="btn btn-primary" ng-click="runIt()">';$output .= $stash->get(['locale',0,'maketext',['Yes, permanently remove the selected accounts.' ]]);$output .= '</button>
+    </div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,633 @@
+[%
+USE NVData;
+
+SET is_sandbox = CPANEL.is_sandbox();
+SET current_analytics_setting = "";
+SET current_personhood_setting = "individual";
+
+TRY;
+    SET NVData = execute( 'NVData', 'get', {"names" =>"analytics|personhood" , "html_encoded" =>"1" } ).data;
+    IF NVData;
+        SET current_analytics_setting = NVData.0.value IF (NVData.0.value);
+        SET current_personhood_setting = NVData.1.value IF (NVData.1.value);
+    END;
+CATCH;
+END;
+
+IF current_analytics_setting != 'on' and current_analytics_setting != 'off';
+    SET current_analytics_setting = "";
+END;
+DEFAULT sample_rate = 50;  # 50% sampling
+IF CPANEL.CPFLAGS.item('trial');
+    SET sample_rate = 100; # 100% sampling
+END;
+
+# NOTE: Check if analytics are disabled server side in WHM.
+    SET is_analytics_enabled_server_side = 0;
+    IF CPANEL.analytics_ui_includes_are_enabled() &&
+       CPANEL.ENV.DNT.substr(0, 1) != '1';
+        is_analytics_enabled_server_side = 1;
+    END;
+%]
+
+[% IF is_analytics_enabled_server_side %]
+<svg class="symbol" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="analytics-icon-arrow">
+        <path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"></path>
+    </symbol>
+</svg>
+<!--
+DEV NOTE: Do not change the id of the below container. It is accessed in the web component <cp-load-mixpanel-js /> web component
+to check the existence of this popup.
+-->
+<div id="analyticsContainer">
+<div id="analyticsReminder">
+    <button id="popupUserConsentButton" data-testid="popupUserConsentButton-cpanel_consent_privacy_slideout" type="button" aria-label="Popup User Consent" onclick="AnalyticsConsentBanner.toggle();">
+        <div class="analytics-icon" aria-hidden="true">
+            <svg class="analytics-icon-arrow" viewBox="0 0 512 512">
+                <use xlink:href="#analytics-icon-arrow" />
+            </svg>
+        </div>
+    </button>
+</div>
+
+<div id="userConsentContainer" class="consentContainer">
+    <button type="button" id="closeConsentContainer" data-testid="closeConsentContainer-webmail_consent_privacy_slideout" aria-label="Close User Consent" class="closeConsent" onclick="AnalyticsConsentBanner.toggle();">&times;</button>
+    <div id="userConsentQuestion" class="consentDefault">
+        <div class="row">
+            <div class="col-xs-12 cp-webmail-consent-privacy-modal__content-title">
+                [% locale.maketext("Consent and Privacy[comment,title]") %]
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__description">
+                [% locale.maketext(
+                    "WebPros International, LLC d.b.a cPanel is asking for your consent to participate in user activity tracking using third-party software for the purpose of understanding the performance of Webpros products. Information will be used pursuant to the [output,url,_1,cPanel & WHM Privacy Policy,title,cPanel & WHM Privacy Policy,data-test-id,_2,target,_3,class,_4,id,_5] and may be shared internally within the Webpros group. You can update your preferences at any time from the analytics slideout.","https://go.cpanel.net/privacy","docLink-cpanel_consent_cp-privacy-policy","privacy-policy","external-link","docLink-cpanel_consent_cp-privacy-policy"
+                ) %]
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__input-container">
+                <label>
+                    [% locale.maketext(
+                        "Select which account type best describes how you will use this product."
+                    ) %]
+                </label>
+                <select
+                    name="personhood_setting"
+                    id="personhood-setting"
+                    data-testid="ddlPersonhoodSetting-cpanel_consent_privacy_slideout"
+                    class="form-control form-input-select"
+                >
+                    <option value="individual">
+                        [% locale.maketext("This account is for an individual.") %]
+                    </option>
+                    <option value="business">[% locale.maketext("This account is for a business.") %]</option>
+                </select>
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__input-container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="consent_setting"
+                                    id="consent-setting"
+                                    data-testid="chkConsent-cpanel_consent_privacy_slideout"
+                                    class="form-input-checkbox"
+                                ></input>
+                                [% locale.maketext(
+                                    'By checking this box, you agree that we may collect your usage statistics. [output,url,_1,Learn more here.,title,cPanel Analytics Documentation,class,_2,target,_3,id,_4,data-test-id,_5]','https://go.cpanel.net/analytics','external-link','analytics','docLink-cpanel_consent_cp-analytics','docLink-cpanel_consent_cp-analytics'
+                                ) %]
+                            </label>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button
+                    id="btnSave"
+                    data-testid="btnSave-cpanel_consent_privacy_slideout"
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="button"
+                    onclick="AnalyticsConsentBanner.handleConsentPrivacySaveClick()"
+                >
+                    [% locale.maketext("Save") %]
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+(function() {
+    var ConsentBanner = (function() {
+        var analyticsContainer = document.getElementById("analyticsContainer");
+        var consentSetting = document.getElementById("consent-setting");
+        var personhoodSetting = document.getElementById("personhood-setting");
+
+        var cpsession = window.location.pathname.split("/")[1];
+        var request = new XMLHttpRequest();
+        var cpanelAPICallPrefix = "/execute/NVData/set?names=analytics|personhood";
+        var whmAPICallPrefix = "/json-api/nvset?api.version=1&key=analytics&value=";
+        var webmailAPICallPrefix = "/json-api/cpanel?cpanel_jsonapi_module=NVData&cpanel_jsonapi_func=set&cpanel_jsonapi_apiversion=2&names=analytics&analytics=";
+        var isWHM = false;
+        var isCpanel = false;
+        var isWebmail = false;
+
+        var currentConsentSetting = false; // Should only ever be true or false. Default to false.
+        var currentPersonhoodSetting = 'individual'; // Should only be "individual", or "business" - default to "individual".
+
+        function updateSettings(consentValue, personhoodValue) {
+            currentConsentSetting = consentValue;
+            currentPersonhoodSetting = personhoodValue || "individual";
+            personhoodSetting.value = currentPersonhoodSetting;
+            consentSetting.checked = currentConsentSetting;
+        }
+
+        function handleConsentPrivacySaveClick() {
+            saveConsent(consentSetting.checked, personhoodSetting.value);
+        }
+
+        function getConnectPrefix() {
+            var prefix = "";
+            if (isWHM) {
+                prefix = whmAPICallPrefix;
+            }
+            if (isCpanel) {
+                prefix = cpanelAPICallPrefix;
+            }
+            if (isWebmail) {
+                prefix = webmailAPICallPrefix;
+            }
+            return prefix;
+        }
+
+        function handleCpanelResult(result) {
+            return result && result.status == 1;
+        }
+
+        function handleWHMResult(result) {
+            return result && result.metadata.result == 1;
+        }
+
+        function handleWebmailResult(result) {
+            return result && result.cpanelresult.event.result == 1;
+        }
+
+        function parseAPIStatus(result) {
+            if (isWHM) {
+                return handleWHMResult(result);
+            }
+            if (isCpanel) {
+                return handleCpanelResult(result);
+            }
+            if (isWebmail) {
+                return handleWebmailResult(result);
+            }
+            return false;
+        }
+
+
+        function saveConsent (consent, personhoodValue) {
+            var consentValue = consent ? "on" : "off";
+            request.open("GET", "/" + cpsession + getConnectPrefix() + "&analytics=" + consentValue + "&personhood=" + personhoodValue);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    var result;
+                    try {
+                        result = JSON.parse(request.responseText);
+                    } catch (e) {
+                    }
+
+                    // IE requires that we clear these manually
+                    analyticsContainer.style.transitionDelay = "";
+
+                    analyticsContainer.className = "peek";
+
+                    var results = parseAPIStatus(result);
+                    if (results) {
+                        updateSettings(consent, personhoodValue);
+
+                        if(!consent){
+                            optOutOfAnalytics();
+                            return;
+                        }
+                        var mixpanelConfig = "";
+                        [% IF analytics_config %]
+                        mixpanelConfig = [% analytics_config.json() %];
+                        [% END %]
+                        if(consent && mixpanelConfig){
+                            // Enable analytics without having to reload the page.
+                            enableAnalyticsForFirstTime(mixpanelConfig);
+                        }
+                    }
+                }
+            };
+            request.send();
+        }
+
+        function handleConsentPrivacySavedEvent(event){
+            var settings = event.detail;
+            if(settings){
+                updateSettings(settings.analytics, settings.personhood);
+            }
+        }
+
+        function toggleDialog (addDelay) {
+            if (addDelay) {
+                analyticsContainer.style = "transition-delay: .5s;";
+            }
+
+            if (analyticsContainer.className.indexOf("shown") === -1 ) {
+                analyticsContainer.className = "shown";
+            } else {
+                analyticsContainer.className = "peek";
+                // Reset the values to the current settings when closing the slideout.
+                updateSettings(currentConsentSetting, currentPersonhoodSetting);
+            }
+        }
+
+        function initialize (opts) {
+            if (opts.isWHM) {
+                isWHM = opts.isWHM;
+            }
+
+            if (opts.isCpanel) {
+                isCpanel = opts.isCpanel;
+            }
+
+            if (opts.isWebmail) {
+                isWebmail = opts.isWebmail;
+            }
+
+            // IE requires that we clear these manually
+            analyticsContainer.style.transitionDelay = "";
+
+            // Hide the slideout by default.
+            analyticsContainer.className = "peek";
+            updateSettings(opts.currentConsentSetting, opts.currentPersonhoodSetting);
+        }
+
+        return {
+            initialize: initialize,
+            toggle: toggleDialog,
+            handleConsentPrivacySaveClick: handleConsentPrivacySaveClick,
+            handleConsentPrivacySavedEvent: handleConsentPrivacySavedEvent
+        };
+    })();
+
+    window.AnalyticsConsentBanner = ConsentBanner;
+
+    setTimeout(function() {
+        ConsentBanner.initialize({
+            "currentConsentSetting": [% current_analytics_setting == "on" ? "true" : "false" %],
+            "currentPersonhoodSetting": [% current_personhood_setting.json() %],
+            "isCpanel": true
+        });
+    }, 2000);
+    document.body.addEventListener('consentPrivacySaved', ConsentBanner.handleConsentPrivacySavedEvent);
+})();
+</script>
+
+<style>
+/* IE, yuno work better? */
+html {
+    -ms-overflow-style: scrollbar;
+}
+
+#analyticsContainer {
+    position: fixed;
+    width: 100%;
+    transition: .75s right, .75s left;
+    right: calc(-100% - 30px);
+    bottom: 0;
+    z-index: 1039;  /* z-index above this value will show up over the top of the consent modal overlay. */
+    box-sizing: border-box;
+}
+
+#analyticsContainer.peek {
+    right: -100%;
+}
+
+#analyticsContainer.shown {
+    right: 0;
+}
+
+#analyticsReminder {
+    position: absolute;
+    bottom: 5px;
+    left: -30px;
+    width: 30px;
+    height: 30px;
+    transition: .75s right, .75s left;
+    box-sizing: border-box;
+}
+#analyticsReminder.active {
+    right: 0;
+}
+
+#popupUserConsentButton {
+    border-radius: 5px 0 0 5px;
+    height: 30px;
+    width: 30px;
+    background-color: #2a3b49;
+    color: #ffffff;
+    border: 5px solid #2a3b49;
+    outline: 0;
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    display: block;
+}
+
+svg.symbol {
+    display: none;
+}
+
+#analytics-icon {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+#analytics-icon-arrow {
+    fill: white;
+}
+
+.consentContainer {
+    width: 100%;
+    font-size: 14px;
+    transition: .75s right, .75s left;
+    box-sizing: border-box;
+}
+
+.consentContainer .closeConsent {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    font-size: 24px;
+    color: #555;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+    line-height: 1;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+.consentDefault {
+    padding: 25px 20px;
+    background-color: #F5F5F5;
+    border-left: 5px solid #2a3b49;
+    box-shadow: 13px 5px 25px #888888;
+    box-sizing: border-box;
+    color: #333333;
+    font-weight: normal;
+}
+
+.consentContainer label {
+    display: inline-block;
+    margin-bottom: 5px;
+    font-weight: 600;
+    box-sizing: border-box;
+}
+
+.consentContainer input[type=radio] {
+    margin: 4px 0 0;
+    margin-top: 1px \9;
+    line-height: normal;
+    box-sizing: border-box;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.consentContainer p {
+    margin: 0 0 10px;
+    box-sizing: border-box;
+    line-height: 1.42857143;
+}
+
+.consentContainer a {
+    background: 0 0;
+    color: #428bca;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.consentContainer a:hover,
+.consentContainer a:focus {
+    color: #2a6496;
+    text-decoration: underline;
+}
+
+.consentConainer a:active,
+.consentConainer a:hover {
+    outline: 0;
+}
+
+.consentContainer a:focus {
+    outline: thin dotted;
+    outline: 5px auto -webkit-focus-ring-color;
+    outline-offset: -2px;
+}
+
+.consentContainer .row {
+    margin-left: -15px;
+    margin-right: -15px;
+    box-sizing: border-box;
+}
+.consentContainer .row:before, .consentContainer .row:after {
+    clear: both;
+    content: " ";
+    display: table;
+    box-sizing: border-box;
+}
+
+.consentContainer .col-sm-9 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+.consentContainer .col-sm-3 {
+    position: relative;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+    box-sizing: border-box;
+}
+
+/*
+  Right-to-left styles
+*/
+html[dir="rtl"] #analyticsContainer {
+    left: calc(-100% - 30px);
+    right: auto;
+}
+
+html[dir="rtl"] #analyticsReminder {
+    right: -30px;
+    left: auto;
+}
+
+html[dir="rtl"] #analyticsContainer.peek {
+    left: -100%;
+    right: auto;
+}
+
+html[dir="rtl"] #analyticsContainer.shown {
+    left: 0;
+    right: auto;
+}
+
+html[dir="rtl"] #popupUserConsentButton {
+    border-radius: 0 5px 5px 0;
+}
+
+html[dir="rtl"] .consentDefault {
+    border-left: 0;
+    border-right: 5px solid #2a3b49;
+    box-shadow: -13px 5px 25px #888888;
+}
+
+html[dir="rtl"] .consentContainer .closeConsent {
+    right: auto;
+    left: 5px;
+}
+
+@media (min-width: 768px) {
+    #analyticsContainer {
+        width: 500px;
+        right: -530px;
+        bottom: 75px;
+    }
+
+    #analyticsContainer.peek {
+        right: -500px;
+    }
+
+    #analyticsReminder {
+        bottom: auto;
+        top: 30px;
+    }
+
+    .consentContainer {
+        width: 500px;
+    }
+
+    .consentContainer .col-sm-3 {
+        float: left;
+        width: 25%;
+    }
+    .consentContainer .col-sm-9 {
+        float: left;
+        width: 75%;
+    }
+    html[dir="rtl"] #analyticsContainer {
+        left: -530px;
+        right: auto;
+    }
+
+    html[dir="rtl"] #analyticsContainer.peek {
+        left: -500px;
+        right: auto;
+    }
+
+    html[dir="rtl"] .consentContainer .col-sm-3 {
+        float: right;
+        width: 25%;
+    }
+    html[dir="rtl"] .consentContainer .col-sm-9 {
+        float: right;
+        width: 75%;
+    }
+}
+
+/*
+ Dark style
+*/
+html[data-style="dark"] .consentDefault {
+    background-color: #313131;
+    box-shadow: 13px 5px 25px #060606;
+    color: #d7d7d7;
+    border-color: #FF6C2C;
+}
+
+html[data-style="dark"] .consentContainer .closeConsent {
+    color: #a5a5a5;
+}
+
+html[data-style="dark"][dir="rtl"] .consentDefault {
+    box-shadow: -13px 5px 25px #060606;
+}
+
+html[data-style="dark"] #analytics-icon-arrow {
+    fill: #d7d7d7;
+}
+
+html[data-style="dark"] #popupUserConsentButton {
+    background-color: #434343;
+    border-radius: 0;
+    border: 1px solid #525252;
+    border-left: 0;
+    border-right: 0;
+    padding: 5px;
+}
+
+html[data-style="dark"] button#popupUserConsentButton::after {
+    content: " ";
+    width: 2px;
+    height: 100%;
+    background: #FF6C2C;
+    position: absolute;
+    top: 0;
+}
+
+html[data-style="dark"][dir="ltr"] button#popupUserConsentButton::after {
+    left: -2px;
+}
+
+html[data-style="dark"][dir="rtl"] button#popupUserConsentButton::after {
+    right: -2px;
+}
+
+.cp-webmail-consent-privacy-modal__content-title{
+    margin-top:0;
+    font-weight:300;
+    line-height:1.2;
+    font-size:1.5rem;
+    color:#243746;
+    text-align:center;
+    margin-bottom:var(--cp-spacer-3);
+}
+
+.cp-consent-privacy__input-container {
+    margin-bottom:var(--cp-spacer-2);
+    padding:0 var(--cp-spacer-3);
+}
+
+.cp-consent-privacy__description {
+    margin-bottom:var(--cp-spacer-5);
+    padding:0 var(--cp-spacer-3);
+}
+
+.external-link::after {
+    // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+    font-family: remixicon;
+
+    // NOTE: Renders a space followed by the external-link icon. A space character
+    // is used rather than margin or padding so that the space will scale properly
+    // across font sizes and link underlines will have no gaps.
+    content: " \ecaf";
+}
+
+</style>
+
+[% END # Consent Flyout shown if analytics enabled on server-side. %]
+
+<script type="text/javascript" src="[% theme_magic_url('libraries/ui-analytics/mixpanelSetup.js') %]"></script>

@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/adddfwd.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('mail_domains',$stash->get(['execute',['Email','list_mail_domains',{}]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <div class="section">
+        <h2 id="hdrNewDomainFwd">';$output .= $stash->get(['locale',0,'maketext',['Add a New Domain Forwarder' ]]);$output .= '</h2>
+
+        <p id="descDomainFwder" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['In addition to forwarding individual mail accounts, you can forward all email from one domain to another.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['To send all email for a domain to a single email address, change the Default Address for that domain.' ]]);$output .= '
+        </p>
+        <form method="get" action="doadddfwd.html" name="mainform" id="mainform">
+            <div class="form-group">
+                <label id="lblDomain" for="domain">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-3">
+                        <select name="domain" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_domains',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                <option value="';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-1">
+                        <p id="lblTo" class="form-control-static">
+                            ';$output .= $stash->get(['locale',0,'maketext',['to[comment,this is meant to be a horizontal separator of 2 side by side things]' ]]);$output .= '
+                        </p>
+                    </div>
+                    <div class="col-xs-12 col-sm-5">
+                        <input type="text" class="form-control" name="forward" id="forward" />
+                        <div id="forward_error"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add Domain Forwarder' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'fwds.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'forwarders','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+
+    var init = function() {
+
+        // create validators
+        var valid = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Add Domain Forwarder' ]]);$output .= '");
+        valid.add("forward", "fqdn", "';$output .= $stash->get(['locale',0,'maketext',['Please enter a valid domain (e.g., example.com).' ]]);$output .= '");
+        valid.attach();
+
+        // attach validators to form
+        CPANEL.validate.attach_to_form("submit", valid);
+
+        // put the focus on the forward box
+        YAHOO.util.Dom.get("forward").focus();
+    };
+
+    YAHOO.util.Event.onDOMReady(init);
+
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

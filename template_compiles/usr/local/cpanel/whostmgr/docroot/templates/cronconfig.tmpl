@@ -1,0 +1,110 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/cronconfig.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$output .= do {my$output='';if ($stash->get(['data',0,'formdata',0,'size',0])&& $stash->get(['data',0,'formdata',0,'action',0])eq 'changecron'){$output .= '<div id="cronNotices">';if ($stash->get(['data',0,'success',0])){$output .= '
+        <div id="successNotice" class="alert alert-success alert-dismissable notice notice-success">
+            <div class="close noticeClose" data-dismiss="alert" aria-hidden="true">&times;</div>
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['Your cron entry for “[_1]” has been successfully saved.',$stash->get(['data',0,'formdata',0,'script',0])]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div id="errorNotice" class="alert alert-danger notice notice-error">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div id="contextNoticeContent" class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['Cron Not Changed. Please check that you entered only digits and the * character.' ]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+</div>
+'}$output .= '
+<div id="intro">
+<p>Cron jobs are scheduled tasks that take place at predefined times or intervals on the server. Set the following variables to configure the cPanel & WHM Cron Jobs below:</p>
+<ul>
+    <li><span class="term">';$output .= $stash->get(['locale',0,'maketext',['Minute:' ]]);$output .= ' </span>';$output .= $stash->get(['locale',0,'maketext',['The number of minutes between each execution of the cron job, or the minute of each hour on which you wish to run the cron job. For example, 15 to run the cron job every 15 minutes.' ]]);$output .= '</li>
+    <li><span class="term">';$output .= $stash->get(['locale',0,'maketext',['Hour:' ]]);$output .= ' </span>';$output .= $stash->get(['locale',0,'maketext',['The number of hours between each execution of the cron job, or the hour each day (in military format) at which you wish to run the cron job. For example, 2100 to run the cron job at 9:00pm.' ]]);$output .= '</li>
+    <li><span class="term">';$output .= $stash->get(['locale',0,'maketext',['Day:' ]]);$output .= ' </span>';$output .= $stash->get(['locale',0,'maketext',['The number of days between each execution of the cron job, or the day of the month on which you wish to run the cron job. For example, 15 to run the cron job on the 15th of the month.' ]]);$output .= '</li>
+    <li><span class="term">';$output .= $stash->get(['locale',0,'maketext',['Month:' ]]);$output .= ' </span>';$output .= $stash->get(['locale',0,'maketext',['The number of months between each execution of the cron job, or the month of the year in which you wish to run the cron job. For example, 7 to run the cron job in July.' ]]);$output .= '</li>
+    <li><span class="term">';$output .= $stash->get(['locale',0,'maketext',['Weekday:' ]]);$output .= ' </span>';$output .= $stash->get(['locale',0,'maketext',['The day(s) of the week on which you wish to run the cron job.' ]]);$output .= '</li>
+</ul>
+<p>Enter * to indicate that the cron job should run at each interval. For example, a value of 0 indicates Sunday, or a value of 6 indicates Saturday.
+For example, a process set to run every day at 21:15 (or 9:15pm in 12-hour format) would be set to Minute = 15, Hour = 21, Day = *, Month = *, Weekday = *.</p>
+</div>
+<div class="formContainer">
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Command: [asis,upcp]' ]]);$output .= '</h3>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['upcp updates [asis,cPanel amp() WHM]. We recommend that you run this script once per day. The script, by default, is set to run at a random time between 9pm and 6am local time. You may set this script to run at any time you wish. We recommend that you set it to run during off-peak hours.' ]]);$output .= '</p>
+    <div class="formTable">
+        <form name="upcp" action="cronconfig" method="post">
+            <input type="hidden" name="action" value="changecron">
+            <input type="hidden" name="script" value="upcp">
+            <input type="hidden" name="command" value="(/usr/local/cpanel/scripts/fix-cpanel-perl; /usr/local/cpanel/scripts/upcp --cron)">
+            <div class="formRow">
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Minute' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Hour' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Day' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Month' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Weekday' ]]);$output .= '</div>
+            </div>
+            <div class="formRow">
+                <div class="formCell">
+                    <input type="text" class="form-control" name="minute" value="';$output .= $stash->get(['data',0,'upcp',0,'minute',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="hour" value="';$output .= $stash->get(['data',0,'upcp',0,'hour',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="day" value="';$output .= $stash->get(['data',0,'upcp',0,'day',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="month" value="';$output .= $stash->get(['data',0,'upcp',0,'month',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="weekday" value="';$output .= $stash->get(['data',0,'upcp',0,'weekday',0]);$output .= '" size="2">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" class="btn btn-primary" id="upcpButton">
+            </div>
+        </form>
+    </div>
+</div>
+<div class="formContainer">
+    <h3 class="cronSubhead">';$output .= $stash->get(['locale',0,'maketext',['Command: [asis,backup]' ]]);$output .= '</h3>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['[asis,backup] runs backups on your server. By default, this script runs at 2:00 AM where the server is located, because this is an off-peak time for most servers. We recommend that you set it to run during off-peak hours, early enough to allow your server to finish backups before peak traffic resumes. If you have backups disabled, the script will immediately exit after it runs.' ]]);$output .= '</p>
+    <div class="formTable">
+        <form name="backup" action="cronconfig" method="post">
+            <input type="hidden" name="action" value="changecron">
+            <input type="hidden" name="script" value="backup">
+            <input type="hidden" name="command" value="/usr/local/cpanel/bin/backup">
+            <div class="formRow">
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Minute' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Hour' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Day' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Month' ]]);$output .= '</div>
+                <div class="formCell header">';$output .= $stash->get(['locale',0,'maketext',['Weekday' ]]);$output .= '</div>
+            </div>
+            <div class="formRow">
+                <div class="formCell">
+                    <input type="text" class="form-control" name="minute" value="';$output .= $stash->get(['data',0,'backup',0,'minute',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="hour" value="';$output .= $stash->get(['data',0,'backup',0,'hour',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="day" value="';$output .= $stash->get(['data',0,'backup',0,'day',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="month" value="';$output .= $stash->get(['data',0,'backup',0,'month',0]);$output .= '" size="2">
+                </div>
+                <div class="formCell">
+                    <input type="text" class="form-control" name="weekday" value="';$output .= $stash->get(['data',0,'backup',0,'weekday',0]);$output .= '" size="2">
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" class="btn btn-primary" id="backupButton">
+            </div>
+        </form>
+    </div>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'configure_cpanel_cron_jobs','scripts'=>['/templates/cron/cronconfig.min.js' ],'stylesheets'=>['/templates/cron/cronconfig.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

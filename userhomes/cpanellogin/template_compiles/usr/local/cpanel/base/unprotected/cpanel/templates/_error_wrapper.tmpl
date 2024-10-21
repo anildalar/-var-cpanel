@@ -1,0 +1,16 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/_error_wrapper.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('app_images',{'whostmgrd'=>'whm-logo_white.svg','webmaild'=>'webmail-logo.svg','cpaneld'=>'cpanel-logo.svg' });$stash->set('app_image',$stash->get(['app_images',0,$stash->get('app_name'),0])|| $stash->get(['app_images',0,'cpaneld',0]));$stash->set('app_image',$stash->get(['MagicRevision',[$stash->get(['get_theme_url',[('images/' .$stash->get('app_image'))]])]]));$output .= '
+
+';if ($stash->get('page_to_show')ne 'access_denied'){$output .= '
+    <p class="logo"><img class="main-logo" src="';$output .= $stash->get('app_image');$output .= '" alt="logo"></p>
+'}$output .= '
+
+
+<div class="error_notice">
+    <div id="error-wrapper">
+        <div id="error_msg_contents">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['HTTP error [_1]',$stash->get('http_status_code')]]);$output .= '</h2>
+';$output .= $stash->get('content');$output .= '
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

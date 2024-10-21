@@ -1,0 +1,23 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/downloadloglist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$output .= '
+';$output .= do {my$output='';$output .= '
+<div id="content">
+ ';$output .= $context->include('_raw_log_warnings.tmpl');$output .= '
+
+  <form method="post" name="fmain">
+    <div class="form-group">
+      <h3>';$output .= $stash->get(['locale',0,'maketext',['Please select a domain.' ]]);$output .= '</h3>
+    </div>
+    <div class="form-group">
+        <input type="hidden" name="log" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'log',0]);&$_tt_filter($output)};$output .= '" />
+        <select name="domain" size="7">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'domainusers',0,'ofeach',['domain' ],'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '          <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '</option>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </select>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</button>
+    </div>
+  </form>
+</div>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>$stash->get(['data',0,'log',0])eq 'ftp' ? 'raw_ftp_log_download' : $stash->get(['data',0,'log',0])eq 'ea-nginx' ? 'raw_ea_nginx_log_download' : 'raw_apache_log_download','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

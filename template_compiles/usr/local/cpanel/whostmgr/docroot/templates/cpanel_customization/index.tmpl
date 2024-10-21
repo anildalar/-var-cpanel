@@ -1,0 +1,40 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/cpanel_customization/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('styleSheets',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/cpanel_customization/index.min.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery-minicolors/2.1.7/jquery.minicolors.css' ]])]);$output .= do {my$output='';$output .= '
+
+<p class="description">
+';$output .= $stash->get(['locale',0,'maketext',['Use this interface to customize the cPanel interface.' ]]);$output .= '
+</p>
+
+<div id="content"
+    ng-controller="BaseController as base"
+    class="ng-cloak"
+    ng-cloak>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="tab-panel">
+                <uib-tabset active="activeTab">
+                    ';$output .= "\n                    <uib-tab ng-repeat=\"tab in selectedThemeTabList track by tab.index\"\n                            index=\"tab.index\"\n                             select=\"goTo(tab.key)\"\n                             data-tab-name=\"tab.key\"\n                             deselect=\"preventDeselect(\$event)\">\n                        <uib-tab-heading>\n                            <span id=\"loader-{{tab.key}}\" ng-if=\"loading && isActive(tab.key)\"><i class=\"fas fa-spinner fa-spin\"></i></span>\n                            <span id=\"tab-{{tab.key}}\">{{ tab.name }}</span>\n                        </uib-tab-heading>\n                    </uib-tab>\n                </uib-tabset>\n            </div>\n        </div>\n        <div class=\"col-xs-12\" ng-class=\"{'view-disabled': loading}\" class=\"animate-view\" ng-view>\n        </div>\n    </div>\n\n    <div growl>\n    </div>\n\n    <script type=\"text/ng-template\" id=\"directives/fileConfirmUploadDelete.phtml\">\n    ";$output .= $context->insert('cpanel_customization/directives/fileConfirmUploadDelete.phtml');$output .= '
+    </script>
+
+    <script type="text/ng-template" id="directives/fileUpload.phtml">
+    ';$output .= $context->insert('cpanel_customization/directives/fileUpload.phtml');$output .= '
+    </script>
+</div>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.token = "';$output .= $stash->get('cp_security_token');$output .= '";
+    PAGE.isRoot = ';$output .= $stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0])eq 'root' ? 'true' : 'false';$output .= ';
+    PAGE.data = {
+            // Jupiter branding
+            jupiter: ';$output .= $stash->get(['data',0,'theme_settings',0,'json',0])|| {};$output .= ',
+            default_theme: "';$output .= $stash->get(['data',0,'theme',0]);$output .= '",
+            // Shared branding
+            public_contact: ';$output .= $stash->get(['data',0,'public_contact',0,'json',0]);$output .= ',
+            has_root: ';$output .= $stash->get(['Whostmgr',0,'hasroot',0])? 1 : 0;$output .= ',
+        };
+</script>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'customization','header'=>$stash->get(['locale',0,'maketext',['Customization' ]]),'breadcrumburl'=>'/scripts6/customization','base'=>'/scripts6/customization/','stylesheets'=>$stash->get('styleSheets'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

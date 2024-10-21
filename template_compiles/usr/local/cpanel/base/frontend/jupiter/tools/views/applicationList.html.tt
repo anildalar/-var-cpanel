@@ -1,0 +1,49 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/tools/views/applicationList.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('Master',$context->plugin('Master'));$output .= '
+<div ng-controller="applicationListController">
+    <!-- DEV NOTE: If the below container IDs are changed, it is IMPORTANT to also change them in the controller\'s method trackAppLinkClicks() -->
+    <div id="boxes" search-text="searchText" collapsed-groups="collapsedGroups">
+        <div drop-area drop="handleDrop" id="top-drop-area" class="drop-area"></div>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$cVC::S{'available_applications'}->{'groups'};unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'this_app_group'}=$_tt_value;$output .= '';$cVC::S{'this_app_group'}=$stash->get('this_app_group');$stash->set('collapsed_groups',$cVC::S{'collapsed_groups'});$output .= '';$cVC::S{'this_app_group_hidden'}=$stash->get(['collapsed_groups',0,'index',[$cVC::S{'this_app_group'}->{'group'}]])> -1 ? 1 : 0;$output .= '
+        <div id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-container">
+            <div id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-group" data-group-name="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '" draggable drag="handleDrag" drag-end="handleDragEnd" class="panel panel-widget icon-menu-section" role="group">
+                <div class="panel-heading widget-heading widget-draggable" ng-dblclick="toggleGroup(';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= ')">
+                    <span class="group-header-icon icon-group icon-group_';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '"></span>
+                    <span role="heading" aria-level="3" id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-header" class="group-header-text">';$output .= $cVC::S{'this_app_group'}->{'desc'};$output .= '</span>
+                    <span
+                        id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-collapsed-indicator"
+                        tabindex="0"
+                        class="group-header-indicator pull-right fas ';$output .= $cVC::S{'this_app_group_hidden'}? 'fa-plus' : 'fa-minus';$output .= '"
+                        ng-click=\'toggleGroup("';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '")\'
+                        data-collapsed-indicator
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Expand or collapse “[_1]” application group.',$cVC::S{'this_app_group'}->{'group'}]]);$output .= '"
+                    ></span>
+                </div>
+                <div id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-body" data-group-body="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '" class="panel-body widget-collapsible ';$output .= $cVC::S{'this_app_group_hidden'}? 'minimized ng-hide' : '';$output .= '">
+                    <div class="icon-container-body">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$cVC::S{'this_app_group'}->{'items'};unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'this_item'}=$_tt_value;$output .= '';$cVC::S{'this_item'}=$stash->get('this_item');$output .= '
+                            <a id="item_';$output .= $cVC::S{'this_item'}->{'file'};$output .= '" href="';$output .= $cVC::S{'this_item'}->{'url'};$output .= '" class="item" data-item-search-text="';$output .= $cVC::S{'this_item'}->{'searchtext'};$output .= ' ';$output .= $cVC::S{'this_item'}->{'itemdesc'};$output .= '" data-item-group="';$output .= $cVC::S{'this_item'}->{'group'};$output .= '"
+                                    ';if ($cVC::S{'this_item'}->{'target'}){$output .= '
+                                        target="';$output .= $cVC::S{'this_item'}->{'target'};$output .= '"
+                                    '}$output .= '
+                                    ';if ($cVC::S{'this_item'}->{'onclick'}){$output .= '
+                                        onclick="';$output .= $cVC::S{'this_item'}->{'onclick'};$output .= ';"
+                                    '}$output .= '
+                                        ';$output .= $cVC::S{'this_item'}->{'acontent'};$output .= '>
+                                <span id="icon-';$output .= $cVC::S{'this_item'}->{'file'};$output .= '" aria-label="';$output .= $cVC::S{'this_item'}->{'itemdesc'};$output .= '" class="itemImageWrapper integrations_icon spriteicon_img icon-';$output .= $cVC::S{'this_item'}->{'file'};$output .= '"
+                                    ';if ($cVC::S{'this_item'}->{'base64_png_image'}){$output .= '
+                                        style="background-image: url(data:image/png;base64,';$output .= $cVC::S{'this_item'}->{'base64_png_image'};$output .= ');"
+                                    '}$output .= '
+                                ></span>
+                                <span class="itemTextWrapper link">';$output .= $cVC::S{'this_item'}->{'itemdesc'};$output .= '</span>
+                            </a>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </div>
+                </div>
+            </div>
+            <div drop-area drop="handleDrop" data-group-name="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '" id="';$output .= $cVC::S{'this_app_group'}->{'group'};$output .= '-drop-area" class="drop-area"></div>
+        </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

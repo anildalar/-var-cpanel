@@ -1,0 +1,76 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/genkey.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['RAW_FORM',['do_generate' ]])){if ($stash->get(['RAW_FORM',['keytype' ]])){$stash->set('generate_key',$stash->get(['execute',['SSL','generate_key',{'keytype'=>$stash->get(['RAW_FORM',['keytype' ]]),'friendly_name'=>$stash->get(['RAW_FORM',['fname' ]])}]]))}else {$stash->set('generate_key',$stash->get(['execute',['SSL','generate_key',{'keysize'=>$stash->get(['RAW_FORM',['keysize' ]]),'friendly_name'=>$stash->get(['RAW_FORM',['fname' ]])}]]))}$stash->set('show_key',$stash->get(['execute',['SSL','show_key',{'id'=>$stash->get(['generate_key',0,'data',0,'id',0])}]]));$stash->set('safe_name',$stash->get(['show_key',0,'status',0])? $stash->get(['show_key',0,'data',0,'details',0,'friendly_name',0,'html',0]): '')}$stash->set('ref',$stash->get(['FORM',0,'ref',0])|| '');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrGenerate">
+        ';$output .= $stash->get(['locale',0,'maketext',['Generate a Private Key' ]]);$output .= '
+    </h2>
+    ';if ($stash->get(['generate_key',0,'status',0])){$output .= '
+        <div id="generateSuccess" class="alert alert-success">
+            <span id="generateSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="generateSuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The server has generated the private key as requested. To use this private key on another server, copy and paste the information from the encoded field below.' ]]);$output .= '
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblFname" for="fname" class="title">';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <p class="form-control-static" id="fname">';$output .= $stash->get('safe_name');$output .= '</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblEncodedKey" for="encoded-key">';$output .= $stash->get(['locale',0,'maketext',['Encoded Private Key:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="encoded-key">';$output .= $stash->get(['show_key',0,'data',0,'key',0]);$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblDecodedKey" for="decoded-key" class="title">';$output .= $stash->get(['locale',0,'maketext',['Decoded Private Key:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="decoded-key">';$output .= $stash->get(['show_key',0,'data',0,'text',0]);$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+    '}elsif ($stash->get('generate_key')){$output .= '
+        <div id="generateError" class="alert alert-danger">
+            <span id="generateErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="generateErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['There was a problem generating the private key.' ]]);$output .= '
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['generate_key',0,'errors',0,0,0]);&$_tt_filter($output)};$output .= '
+            </div>
+        </div>
+    '}elsif (!$stash->get(['RAW_FORM',['do_generate' ]])){$output .= '        <div id="parametersError" class="alert alert-danger">
+            <span id="parametersErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="parametersErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['No parameters were passed to generate the key.' ]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    <ul class="list-inline text-center">';if ($stash->get('ref')){do {my$_tt_result=$stash->get('ref');my$_tt_match;SWITCH: {$_tt_match='csrs';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCSR','return_location'=>'csrs.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'#generate','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificate Signing Requests' ]])});$output .= '
+            </li>';last SWITCH}$_tt_match='crts';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCRT','return_location'=>'crts.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'#generate','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificates' ]])});$output .= '
+            </li>';last SWITCH}}}}$output .= '        <li>
+        ';if ($stash->get('ref')){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html?ref=' .$stash->get(['ref',0,'uri',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to Private Keys' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to Private Keys' ]])});$output .= '
+        '}$output .= '
+        </li>
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Manager' ]])});$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'embed_stylesheets'=>['css/ssl.css' ],'embed_scripts'=>['js2/ssl/genkey.js' ],'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

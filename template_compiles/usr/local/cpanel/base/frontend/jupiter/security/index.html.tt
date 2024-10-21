@@ -1,0 +1,31 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_link','../email_accounts/index.html#/list/' .$stash->get(['FORM',0,'account',0,'uri',0]));$stash->set('source_ip_check_account',$stash->get(['Api2',0,'exec',['SourceIPCheck','getaccount',{'account'=>$stash->get(['FORM',0,'account',0])}],0,0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Manage Security for “[output,inline,_1,class,status]”',$stash->get(['source_ip_check_account',0,'account',0])]]);$output .= '</h2>
+
+    <div class="section">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Update Security Questions' ]]);$output .= '</h3>
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['If you log in from an unrecognized IP address, you will be asked your chosen security questions.' ]]);$output .= '</p>
+        ';if ($stash->get(['ExpVar',0,'expand',['$isoverridelogin' ]])){$output .= '
+            <a id="resetSecurity" onclick="return confirm(&quot;';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to reset the security questions?' ]]);$output .= '&quot;)" href="reset.html?account=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['source_ip_check_account',0,'account',0]);&$_tt_filter($output)};$output .= '" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Reset Security Questions and Answers' ]]);$output .= '</a>
+        '}else {$output .= '
+            <a id="updateSecurity" href="security-questions.html?account=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['source_ip_check_account',0,'account',0]);&$_tt_filter($output)};$output .= '" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Update Security Questions and Answers' ]]);$output .= '</a>
+        '}$output .= '
+    </div>
+
+    <div class="section">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Manage Recognized IP Addresses' ]]);$output .= '</h3>
+        <a id="manageIPs" href="accessip.html?account=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['source_ip_check_account',0,'account',0]);&$_tt_filter($output)};$output .= '" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Manage Access IPs' ]]);$output .= '</a>
+    </div>
+
+    ';if ((!($stash->get(['FORM',0,'account',0])eq $stash->get('undef'))&&!($stash->get(['FORM',0,'account',0])eq $stash->get(['CPANEL',0,'user',0]))&&!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail'))){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

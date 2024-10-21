@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/upload_locale_form.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<style type="text/css">
+
+        .highlight{
+        width:550px;
+        }
+
+</style>
+
+<div class="uniform_page_padding">
+';if ($stash->get(['data',0,'formref',0,'error',0])eq 1){$output .= '<p class="error">';$output .= $stash->get(['locale',0,'maketext',['Invalid locale. Choose one from the menu below.' ]]);$output .= '</p>'}$output .= '
+';if ($stash->get(['data',0,'formref',0,'error',0])eq 2){$output .= '<p class="error">';$output .= $stash->get(['locale',0,'maketext',['Export failed. Try again.' ]]);$output .= '</p>'}$output .= '
+
+<p>';$output .= $stash->get(['locale',0,'maketext',['You can upload a locale in XML format via the [output,url,_1,Locale XML Download] feature or via the command line script `/scripts/locale_export --locale=locale_tag_here` (pass it --help for more information).',$stash->get('cp_security_token').'/scripts9/download_locale_form' ]]);$output .= ' </p>
+
+
+<div class="highlight">
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/upload_locale" enctype="multipart/form-data">
+
+
+<strong>';$output .= $stash->get(['locale',0,'maketext',['Select Locale XML file' ]]);$output .= '</strong> <input name="locale_xml_file" type="file"/>
+<hr size="1" class="hr" />
+<input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '"  class="btn-primary" />
+
+</form>
+</div>
+
+<p>';$output .= $stash->get(['locale',0,'maketext',['If the locale does not exist on the server, all files are created.' ]]);$output .= '</p>
+<p>';$output .= $stash->get(['locale',0,'maketext',['If the locale already exists, the following happens:' ]]);$output .= '
+<ul>
+   <li>';$output .= $stash->get(['locale',0,'maketext',['Core files: Only keys that are in the XML data that do not exist in the file system’s files are added.' ]]);$output .= '</li>
+   <li>';$output .= $stash->get(['locale',0,'maketext',['Local edit files: All keys that are in the XML data are added to or overwritten in the file system’s files.' ]]);$output .= '</li>
+</ul>
+</p>
+
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'locale_xml_upload','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,72 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/accessip.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_link','index.html?account=' .$stash->get(['FORM',0,'account',0,'uri',0]));$stash->set('source_ip_check_account',$stash->get(['Api2',0,'exec',['SourceIPCheck','getaccount',{'account'=>$stash->get(['FORM',0,'account',0])}],0,0]));$stash->set('source_ip_check_list_ips',$stash->get(['Api2',0,'exec',['SourceIPCheck','listips',{'api2_sort_column'=>'ip','api2_sort'=>'1','account'=>$stash->get(['FORM',0,'account',0]),'api2_sort_method'=>'ipv4' }]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Add Access IP for “[output,inline,_1,class,status]”',$stash->get(['source_ip_check_account',0,'account',0])]]);$output .= '</h2>
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to designate IP addresses from which you can access your account.' ]]);$output .= '</p>
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['You may enter an asterisk (*) as a wildcard for a range of IP addresses. Asterisks are allowed in any field except the first.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The following are all examples of valid entries:' ]]);$output .= '
+            <ul>
+                <li>10.*.*.*</li>
+                <li>10.1.*.*</li>
+                <li>10.1.20.*</li>
+                <li>10.1.20.158</li>
+            </ul>
+        </p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Your current IP address is “[_1]”.',$stash->get(['CPANEL',0,'ENV',0,'REMOTE_ADDR',0,'html',0])]]);$output .= '</p>
+
+        <form action="addaccessip.html" method="post">
+            <input type="hidden" id="account" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '">
+            <div class="form-group">
+                <label for="ip">';$output .= $stash->get(['locale',0,'maketext',['Access IP' ]]);$output .= '</label>
+            </div>
+            <div class="form-inline form-inline-padded">
+                <div class="form-group">
+                    <input type="text" class="form-control form-control-small" size="3" maxlength="3" id="ip" name="ip"/>.
+                    <input type="text" class="form-control form-control-small" size="3" maxlength="3" id="ip2" name="ip2"/>.
+                    <input type="text" class="form-control form-control-small" size="3" maxlength="3" id="ip3" name="ip3"/>.
+                    <input type="text" class="form-control form-control-small" size="3" maxlength="3" id="ip4" name="ip4"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Manage Recognized IP Addresses' ]]);$output .= '</h2>
+
+        <table class="sortable table table-striped">
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Functions' ]]);$output .= '</th>
+            </tr>
+            ';if ($stash->get(['source_ip_check_list_ips',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('source_ip_check_list_ips');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                <tr>
+                    <td>';$output .= $stash->get(['hashref',0,'ip',0,'html',0]);$output .= '</td>
+                    <td>
+                        <form action="delaccessip.html">
+                            <input type="submit" id="submitDelete_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" value="';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '" class="btn btn-primary">
+                            <input type="hidden" id="ip_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" name="ip" value="';$output .= $stash->get(['hashref',0,'ip',0,'html',0]);$output .= '">
+                            <input type="hidden" id="account_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '">
+                        </form>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td colspan="2">';$output .= $stash->get(['locale',0,'maketext',['No Access IPs' ]]);$output .= '</td>
+                </tr>
+            '}$output .= '
+        </table>
+    </div>
+
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/email_deliverability/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('EximLocalOpts',$context->plugin('EximLocalOpts'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Master',$context->plugin('Master'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('APP_KEY','email_deliverability');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('page_styles_list',['email_deliverability/index.css' ]);$stash->set('embeded_styles_list',[]);$stash->set('zone_editor',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'zone_editor' ]]));if ($stash->get('zone_editor')){$stash->set('zone_editor_url',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get(['zone_editor',0,'url',0]).'#/manage/')}if (!$stash->get(['CPANEL',0,'ua_is_mobile',0])){$output .= $stash->get(['embeded_styles_list',0,'push',['css/angular-chosen-spinner.css' ]]);$output .= $stash->get(['page_styles_list',0,'push',['libraries/chosen/1.5.1/chosen.min.css' ]])}$stash->set('view_templates',[]);$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div id="body-content" class="body-content">
+
+    <!-- NOTE: leave the alert-group in single quotes -->
+    <cp-alert-list id="mainAlertList"></cp-alert-list>
+
+    <div class="row" ng-controller="RouteController as routeController">
+        <div class="col-md-12">
+            <p class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to reduce the number of emails sent from this server that end up in spam folders. For more information, read our [output,url,_1,Email Deliverability,target,_blank] documentation.','https://go.cpanel.net/EmailDeliverabilityincPanel' ]]);$output .= '
+            </p>
+
+            <div id="body-content" class="body-content ng-cloak">
+
+                <cp-loading-panel id="loadingRoutePanel" ng-show="loading">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</cp-loading-panel>
+
+                <div ng-show="currentTab && !loading">
+                    <h2 ng-hide="currentTab.hideTitle" ng-bind="currentTab.title" class="break-on-mobile"></h2>
+                    <p ng-if="currentTab.description" class="current-tab-description" ng-bind-html="currentTab.description"></p>
+                    <div id="viewContent"
+                        class="ng-cloak section animate-view"
+                        ng-view
+                        ng-cloak>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('view_templates');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ptt'}=$_tt_value;$output .= '
+    <script id="';$output .= $stash->get('ptt');$output .= '" type="text/ng-template">';$output .= $context->process($stash->get('ptt'));$output .= '    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    <script id="decorators/pagination.phtml" type="text/ng-template">';$output .= $context->insert('decorators/pagination.phtml');$output .= '    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+</div><!-- end body-content div -->
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('APP_KEY'),'feature'=>'emailauth','page_js'=>$stash->get('js_code'),'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'focus_feature_search'=>0,'page_stylesheets'=>$stash->get('page_styles_list'),'embed_stylesheets'=>$stash->get('embeded_styles_list'),'show_breadcrumb'=>1,'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.domains = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DOMAINS',0,'json',0]);$output .= ';
+    PAGE.mainDomain = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0,'json',0]);$output .= ';
+    PAGE.zoneEditorUrl = "';$output .= $stash->get('zone_editor_url');$output .= '";
+    PAGE.skipPTRLookups = ';$output .= $stash->get(['EximLocalOpts',0,'is_using_smart_host',0])? 'true' : 'false';$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

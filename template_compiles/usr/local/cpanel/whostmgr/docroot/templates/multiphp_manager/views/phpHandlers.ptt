@@ -1,0 +1,71 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/multiphp_manager/views/phpHandlers.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- CloudLinux promotion block -->
+<div ng-show="lsApiInstalled">
+    <cloud-linux-banner id-prefix="phpHandler"
+        cl-data = clData
+        banner-text="clBannerText">
+    </cloud-linux-banner>
+</div>
+
+<div id="handlerContainer" class="list-container">
+    <div class="row">
+        <div class="col-xs-12" ng-cloak>
+            <cp-alert-list></cp-alert-list>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <h3 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Manage [asis,PHP] Handlers[comment,action header]' ]]);$output .= '</h3>
+            <span class="info-block" id="infoBlk">
+                ';$output .= $stash->get(['locale',0,'maketext',['Edit the [asis,PHP] handler for any [asis,PHP] version listed below.' ]]);$output .= '
+            </span>
+            <div class="callout callout-info">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Handlers do [output,strong,not] apply to [asis,PHP-FPM].' ]]);$output .= '</div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <table id="versionList" class="table table-striped responsive-table">
+                <thead>
+                    <tr>
+                        <th>
+                            <toggle-sort id="sortVersion"
+                                sort-meta="meta"
+                                sort-field="version"
+                                onSort="sortList">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '
+                            </toggle-sort>
+                        </th>
+                        <th>
+                            <toggle-sort id="sortHandler"
+                                sort-meta="meta"
+                                sort-field="current_handler"
+                                onSort="sortList">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Handler' ]]);$output .= '
+                            </toggle-sort>
+                        </th>
+                        <th>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="loadingHandlerList" class="info" ng-hide="!loadingVersionsList">
+                        <td colspan="4"><span id="spinner_getting_handler_list" class="fas fa-spinner fa-spin" title="';$output .= $stash->get(['locale',0,'maketext',['Gathering installed [asis,PHP] versions …' ]]);$output .= '"></span>';$output .= $stash->get(['locale',0,'maketext',['Gathering installed [asis,PHP] versions …' ]]);$output .= "</td>\n                    </tr>\n                    <tr id=\"versionRow_{{\$index}}\" ng-repeat-start=\"versionHandler in phpVersionHandlerList\">\n                        <td id=\"version_{{\$index}}\"\n                            data-title=\"";$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= "\">\n                            <span dir=\"ltr\">{{ versionHandler.display_php_version }}</span>\n                        </td>\n                        <td id=\"handler_{{\$index}}\"\n                            data-title=\"";$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Handler' ]]);$output .= "\">\n                            <span id=\"displayHandler_{{\$index}}\" ng-hide=\"versionHandler.editView\">\n                                {{ versionHandler.current_handler }}\n                            </span>\n                            <span id=\"editHandler_{{\$index}}\" ng-show=\"versionHandler.editView\">\n                                <select id=\"selectHandler_{{\$index}}\" class=\"form-control\"\n                                    ng-options=\"handler for handler in versionHandler.available_handlers\"\n                                    ng-model=\"versionHandler.current_handler\"\n                                    ng-change=\"warnUser(versionHandler, versionHandler.originalHandler)\">\n                                </select>\n                            </span>\n                        </td>\n                        <td id=\"action_{{\$index}}\"\n                            data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\">\n                            <span id=\"displayAction_{{\$index}}\" ng-hide=\"versionHandler.editView\">\n                                <div ng-if=\"!versionHandler.available_handlers.length\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['No handlers available.' ]]);$output .= "\n                                </div>\n                                <div ng-show=\"versionHandler.available_handlers.length\">\n                                    <a id=\"lnkEdit_{{\$index}}\"\n                                        class=\"btn btn-link\"\n                                        ng-click=\"editPhpHandler(versionHandler)\"\n                                        href=\"javascript:void(0);\"\n                                        title='";$output .= $stash->get(['locale',0,'maketext',['Edit the handler for this [asis,PHP] version.' ]]);$output .= '\'>
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "\n                                    </a>\n                                </div>\n                            </span>\n                            <span id=\"editAction_{{\$index}}\" ng-show=\"versionHandler.editView\">\n                                <button id=\"btnApplyEdit_{{\$index}}\"\n                                        type=\"button\"\n                                        class=\"btn btn-primary\"\n                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP] handler.' ]]);$output .= '"
+                                        cp-action="applyVersionHandler(versionHandler)">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= "\n                                </button>\n                                <a id=\"lnkCancelEdit_{{\$index}}\"\n                                        href=\"javascript:void(0);\"\n                                        class=\"btn btn-link\"\n                                        type=\"button\"\n                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Cancel editing the [asis,PHP] handler[comment,action text]' ]]);$output .= '"
+                                        ng-click="cancelHandlerEdit(versionHandler)">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\n                                </a>\n                            </span>\n                        </td>\n                    </tr>\n                    <tr id=\"alertRow_{{\$index}}\"\n                        ng-repeat-end\n                        ng-show=\"versionHandler.showAlert\"\n                        ng-class=\"versionHandler.conflicts.length > 0 ? 'danger' : 'warning'\">\n                        <td id=\"error_{{\$index}}\" colspan=\"3\" ng-show=\"versionHandler.conflicts.length\">\n                            <label>Conflicts</label>\n                            <span class=\"info-block\" id=\"infoBlk\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['You must select a different [asis,PHP] handler or resolve the following conflicts:' ]]);$output .= "\n                            </span>\n                            <ul>\n                                <li ng-repeat=\"conflict in versionHandler.conflicts\">{{conflict}}</li>\n                            </ul>\n                        </td>\n                        <td id=\"warning_{{\$index}}\" colspan=\"3\" ng-hide=\"versionHandler.conflicts.length\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['Changes to this “[_1]” version’s handler may cause errors for the domains that use it.','PHP' ]]);$output .= '
+                        </td>
+                    </tr>
+                    <tr id="listEmpty" ng-hide="phpVersionHandlerList.length || loadingVersionsList" class="info empty-row">
+                        <td colspan="4">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] versions are not available.' ]]);$output .= '</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

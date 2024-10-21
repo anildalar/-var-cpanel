@@ -1,0 +1,156 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/addEditRuleView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <div class="row">
+        <div class="col-xs-10" ng-show="!isEditor && !isCopy">
+            ';$output .= $stash->get(['locale',0,'maketext',['Use the form to add new custom rules to the custom rules list for [asis,ModSecurity™]. This editor only supports [asis,SecRule] and [asis,SecAction] directives.' ]]);$output .= '
+        </div>
+        <div class="col-xs-10" ng-show="!isEditor && isCopy">
+            ';$output .= $stash->get(['locale',0,'maketext',['Use the form to create a copy of the selected rule. The system generates a new rule ID for the copied rule. This editor only supports [asis,SecRule] and [asis,SecAction] directives.' ]]);$output .= '
+        </div>
+        <div class="col-xs-10" ng-show="isEditor">
+            ';$output .= $stash->get(['locale',0,'maketext',['Use the form to edit an existing custom rule for [asis,ModSecurity™]. This editor only supports [asis,SecRule] and [asis,SecAction] directives.' ]]);$output .= '
+        </div>
+    </div>
+
+    <h1 ng-if="!isEditor && !isCopy">
+        ';$output .= $stash->get(['locale',0,'maketext',['Add a new custom [asis,ModSecurity™] rule.' ]]);$output .= '
+    </h1>
+    <h1 ng-if="!isEditor && isCopy">
+        ';$output .= $stash->get(['locale',0,'maketext',['Save a copy of an existing [asis,ModSecurity] rule.' ]]);$output .= '
+    </h1>
+    <h1 ng-if="isEditor">
+        ';$output .= $stash->get(['locale',0,'maketext',['Edit a custom [asis,ModSecurity™] rule.' ]]);$output .= '
+    </h1>
+
+    <div class="callout callout-warning" ng-hide="!isCopy || originalRule.disabled">
+        <div>';$output .= $stash->get(['locale',0,'maketext',['Would you like to disable the original [asis,ModSecurity] rule? This change will not take effect until you restart [asis,Apache].' ]]);$output .= '</div>
+        <button id="btnDisableOriginalRule"
+                type="button"
+                cp-action="disableOriginalRule(originalRule)"
+                button-class="btn btn-default">
+            ';$output .= $stash->get(['locale',0,'maketext',['Disable Original Rule' ]]);$output .= '
+        </button>
+    </div>
+
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8" ng-show="notice">
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message" id="ajax-notices">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Processing:' ]]);$output .= '</strong>
+                <span id="notice" ng-bind-html="notice | break"></span>
+            </div>
+        </div>
+    </div>
+
+    <form name="form" novalidate class="layout-medium ng-pristine ng-valid">
+        <div class="row" ng-if="isEditor">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+                <label for="txtId">';$output .= $stash->get(['locale',0,'maketext',['Original Id' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row" ng-if="isEditor">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+                <input id="txtId" type="text" class="form-control" ng-model="id" readonly>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+                <label>';$output .= $stash->get(['locale',0,'maketext',['Rule Text' ]]);$output .= '</label>
+            </div>
+            <div class="hidden-xs hidden-sm col-md-3 col-lg-4">
+                <label>';$output .= $stash->get(['locale',0,'maketext',['References' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-9 col-lg-8">
+                <textarea id="txtRuleText" class="form-control rule-editor" name="rule" ng-model="rule" auto-focus ng-disabled="isVendor || (isEditor && cantEdit)"></textarea>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-4">
+                <h2 class="visible-xs visible-sm">';$output .= $stash->get(['locale',0,'maketext',['References:' ]]);$output .= '</h3>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        ';$stash->set('manual_url','https://github.com/SpiderLabs/ModSecurity/wiki/Reference-Manual-%28v2.x%29');$output .= '
+                        <a id="ref-manual" href="';$output .= $stash->get('manual_url');$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,ModSecurity™] Specification Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                        <ul class="list-unstyled list-indent">
+                            <li>
+                                <a id="ref-SecRule" href="';$output .= $stash->get('manual_url');$output .= '#SecRule" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,SecRule] Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                            </li>
+                            <li>
+                                <a id="ref-SecAction" href="';$output .= $stash->get('manual_url');$output .= '#SecAction" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,SecAction] Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                            </li>
+                            <li>
+                                <a id="ref-Variables" href="';$output .= $stash->get('manual_url');$output .= '#Variables" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,Variables] Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                            </li>
+                            <li>
+                                <a id="ref-Actions" href="';$output .= $stash->get('manual_url');$output .= '#Actions" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,Actions] Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                            </li>
+                            <li>
+                                <a id="ref-Transforms" href="';$output .= $stash->get('manual_url');$output .= '#Transformation_functions" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,Transformations] Reference' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="list-group-item">
+                        <a id="ref-FAQ" href="https://go.cpanel.net/ModSecurityReference-FAQ" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['[asis,ModSecurity™] FAQ' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <span class="help-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['If you enable the rule, it will be active when you deploy the configuration. Do you want to enable this rule?' ]]);$output .= '
+                </span>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               id="chkEnabled"
+                               name="enabled"
+                               ng-model="enabled"
+                               ng-disabled="isEditor && cantEdit"
+                               ng-checked="enabled">
+                        <span id="chkLabel">';$output .= $stash->get(['locale',0,'maketext',['Enable Rule' ]]);$output .= '</span>
+                    </label>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <span class="help-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['Do you want to deploy your rules and restart [asis,Apache]?' ]]);$output .= '
+                </span>
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox"
+                               name="chkDeploy"
+                               id="chkDeploy"
+                               ng-model="deploy"
+                               ng-disabled="isEditor && cantEdit"
+                               ng-checked="deploy === true">
+                        <span id="chkLabel">';$output .= $stash->get(['locale',0,'maketext',['Deploy and Restart [asis,Apache]' ]]);$output .= '</span>
+                    </label>
+                </div>
+                <span class="help-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system will deploy any other unpublished changes when you select this checkbox.' ]]);$output .= '
+                </span>
+            </div>
+        </div>
+
+        <div class="row controls">
+            <div class="controls col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                <button id="btnSaveBottom" class="btn  btn-primary" ng-disabled="disableSave(form)" ng-click="save(form, true)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+                <button id="btnSaveBottomAnother"
+                        class="btn btn-default"
+                        ng-show="!isEditor"
+                        ng-disabled="disableSave(form)"
+                        ng-click="save(form, false)">
+                    <span ng-show="isCopy">';$output .= $stash->get(['locale',0,'maketext',['Save and Copy Again' ]]);$output .= '</span>
+                    <span ng-hide="isCopy">';$output .= $stash->get(['locale',0,'maketext',['Save and Add Another' ]]);$output .= '</span>
+                </button>
+                <button id="btnCancel" class="btn  btn-link" ng-click="cancel()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                <span spinner id="loadingSpinner" class="addSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+            </div>
+        </div>
+    </form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

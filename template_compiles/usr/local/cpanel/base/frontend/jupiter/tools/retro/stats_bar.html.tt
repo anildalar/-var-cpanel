@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/tools/retro/stats_bar.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Master',$context->plugin('Master'));$stash->set('hasCloudLinux',$stash->get(['ExpVar',0,'expand',['$hascloudlinux' ]]));$stash->set('user',$stash->get(['ExpVar',0,'expand',['$user' ]]));$stash->set('dns',$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]));$stash->set('homeDir',$stash->get(['ExpVar',0,'expand',['$homedir' ]]));$stash->set('isDemo',$stash->get(['CPANEL',0,'CPDATA',0,'DEMO',0]));if ($stash->get('hasCloudLinux')){$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','start' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','start',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','start' ]])}$output .= '
+';$stash->set('set_bar_class',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'test_percent' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {if ($stash->get('test_percent')>= 80){$output .= 'progress-bar progress-bar-danger'}elsif ($stash->get('test_percent')>= 60){$output .= 'progress-bar progress-bar-warning'}elsif ($stash->get('test_percent')>= 40){$output .= 'progress-bar progress-bar-info'}else {$output .= 'progress-bar progress-bar-success'}};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+<div id="content-stats" class="section">
+    <div id="stats-header">
+        <div id="toggle_extended_stats_img" class="box-expand-control">
+            &nbsp;
+        </div>
+        <span role="heading" aria-level="3" class="section-header">
+            ';$output .= $stash->get('user');$output .= '
+        </span>
+    </div>
+    <table id="stats">
+        <tr>
+            <td id="stats_maindomain_text" class="stats_left">
+                ';$output .= $stash->get(['locale',0,'maketext',['Main Domain' ]]);$output .= '
+            </td>
+            <td id="stats_maindomain_value" class="stats_right">
+                <b>';$output .= $stash->get('dns');$output .= '</b>
+            </td>
+        </tr>
+        <tr>
+            <td id="stats_homedir_text" class="stats_left">
+                ';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= '
+            </td>
+            <td id="stats_homedir_value" class="stats_right">
+                ';$output .= $stash->get('homeDir');$output .= '
+            </td>
+        </tr>
+
+        ';if (!$stash->get('isDemo')){$output .= '
+        <tr>
+            <td id="stats_lastlogin_text" class="stats_left">
+                ';$output .= $stash->get(['locale',0,'maketext',['Last Login From' ]]);$output .= '
+            </td>
+            <td id="stats_lastlogin_value" class="stats_right">
+                ';$output .= $stash->get(['execute',['LastLogin','get_last_or_current_logged_in_ip' ],'data',0]);$output .= '
+            </td>
+        </tr>
+        '}$output .= '
+    </table>
+
+    <div id="extended_stats" style="display: none"></div>
+    <!-- this is a status value not text, if you change it, translate it, etc it will break the functionality. If it is displayed then this system need refactored to separate the human text from the computer status -->
+    <div id="extended_stats_state" class="hide">hidden</div>
+    <div id="content-stats-end">
+        <div id="extended_stats_loading_icon" style="display: none"></div>
+        <a href="#" id="toggle_extended_stats">';$output .= $stash->get(['locale',0,'maketext',['Expand Stats' ]]);$output .= '</a>
+    </div>
+</div><!-- end content-stats -->
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

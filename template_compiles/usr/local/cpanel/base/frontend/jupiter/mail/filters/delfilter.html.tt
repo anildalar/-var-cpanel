@@ -1,0 +1,25 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/delfilter.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= '
+
+';$stash->set('email_acct',$stash->get(['execute',['Email','account_name',{'account'=>$stash->get(['FORM',0,'account',0]),'display'=>'0' }],'data',0]));if ($stash->get(['FORM',0,'account',0])ne '' || $stash->get('email_acct')ne ''){$stash->set('app_name','email_filters')}else {$stash->set('app_name','global_email_filters')}$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    <h2 id="hdrDelete">';$output .= $stash->get(['locale',0,'maketext',['Delete Filter' ]]);$output .= '</h2>
+    <p id="descConfirmation">
+        ';$output .= $stash->get(['locale',0,'maketext',['Are you sure you wish to delete the “[_1]” filter?',$stash->get(['FORM',0,'filtername',0])]]);$output .= '
+    </p>
+    <p>
+        <a id="btnDelete" class="btn btn-primary" href="deletefilter.html?account=';$output .= $stash->get(['RAW_FORM',0,'account',0,'uri',0]);$output .= '&filtername=';$output .= $stash->get(['RAW_FORM',0,'filtername',0,'uri',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Delete Filter' ]]);$output .= '</a>
+        <a id="btnCancel" class="btn btn-link" href="userfilters.html?account=';$output .= $stash->get(['RAW_FORM',0,'account',0,'uri',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+    </p>
+
+    ';if ($stash->get(['FORM',0,'account',0])){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html?account=' .$stash->get(['FORM',0,'account',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('app_name'),'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

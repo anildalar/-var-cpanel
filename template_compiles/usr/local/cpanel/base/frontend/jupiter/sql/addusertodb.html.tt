@@ -1,0 +1,39 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/addusertodb.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('privs',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('RAW_FORM');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;if ($stash->get(['pair',0,'key',0,'match',['^privileges' ]])){$output .= $stash->get(['privs',0,'push',[$stash->get(['pair',0,'value',0])]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('setprivs',$stash->get(['execute',['Mysql','set_privileges_on_database',{'user'=>$stash->get(['RAW_FORM',['user' ]]),'database'=>$stash->get(['RAW_FORM',['db' ]]),'privileges'=>$stash->get(['privs',0,'join',[',' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if (!$stash->get(['FORM',0,'item',['update' ]])){$output .= '
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Add User to Database' ]]);$output .= '</h2>
+    '}else {$output .= '
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Update Database User Privileges' ]]);$output .= '</h2>
+    '}$output .= '
+
+    ';if ($stash->get(['setprivs',0,'status',0])){$output .= '
+        <div id="addusertodbSuccess" class="alert alert-success">
+            <span id="addusertodbSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <span id="addusertodbSuccessMsg">
+                ';if (!$stash->get(['FORM',0,'update',0])){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['You have given the requested privileges on the database “[_1]” to the user “[_2]”.',$stash->get(['FORM',0,'db',0]),$stash->get(['FORM',0,'user',0])]]);$output .= '
+                '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['You have updated the privileges for the user “[_1]” on the database “[_2]”.',$stash->get(['FORM',0,'user',0]),$stash->get(['FORM',0,'db',0])]]);$output .= '
+                '}$output .= '
+            </span>
+        </div>
+    '}else {$output .= '
+        <div id="addusertodbError" class="alert alert-danger">
+            <span id="addusertodbErrorImg" class="glyphicon glyphicon-exclamation-sign"></span>
+            <span id="addusertodbErrorMsg">
+                ';if (!$stash->get(['FORM',0,'update',0])){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['There was a problem adding the user: [_1]',$stash->get(['setprivs',0,'errors_as_string',0,'html',0])]]);$output .= '
+                '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['There was a problem updating the user: [_1]',$stash->get(['setprivs',0,'errors_as_string',0,'html',0])]]);$output .= '
+                '}$output .= '
+            </span>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_databases','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard-fullbackup.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('backups_list_full_backups',$stash->get(['Api2',0,'exec',['Backups','listfullbackups',{}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        <div id="backup-nav" class="row">
+            <div class="col-xs-12">
+                <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                <ol>
+                    <li id="tabBackupRestore" class="one"><a href="wizard.html" id="backupRestore"><span>';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></a></li>
+                    <li id="tabFullPartial" class="two"><a href="wizard-backup.html" id="partialBackup"><span>';$output .= $stash->get(['locale',0,'maketext',['Full or Partial Backup' ]]);$output .= '</span></a></li>
+                    <li id="tabDownload" class="three"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <p id="descFullBackup" class="description">';$output .= $stash->get(['locale',0,'maketext',['A full backup will create an archive of all the files and configurations on your website. You can only use this to move your account to another server, or to keep a local copy of your files. You [output,strong,cannot] restore full backups through your cPanel interface.' ]]);$output .= '</p>
+
+        <div class="section">
+            <h2 id="hdrBackupsAvailable">';$output .= $stash->get(['locale',0,'maketext',['Backups Available for Download:' ]]);$output .= '</h2>
+            <ul class="list-unstyled available-downloads" id="backupList">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('backups_list_full_backups');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                <li>
+                    <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/download?file=';$output .= $stash->get(['hashref',0,'file',0,'uri',0]);$output .= '" title="';$output .= $stash->get(['hashref',0,'status',0,'html',0]);$output .= '">
+                        ';if ($stash->get(['hashref',0,'status',0])eq 'complete'){$output .= '
+                        <span class="glyphicon glyphicon-ok-sign"></span>
+                        '}elsif ($stash->get(['hashref',0,'status',0])eq 'inprogress'){$output .= '
+                        <span class="glyphicon glyphicon-transfer"></span>
+                        '}else {$output .= '
+                        <span class="glyphicon glyphicon-remove-sign"></span>
+                        '}$output .= '
+                        <strong>';$output .= $stash->get(['hashref',0,'file',0,'html',0]);$output .= '</strong> (';$output .= $stash->get(['hashref',0,'localtime',0,'html',0]);$output .= ')</a>
+                        ';if ($stash->get(['hashref',0,'status',0])ne 'complete'){$output .= '
+                            [';$output .= $stash->get(['hashref',0,'status',0,'html',0]);$output .= ']
+                        '}$output .= '
+                </li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </ul>
+        </div>
+        <div class="section">
+            <h2 id="hdrGenerateFullBackup">';$output .= $stash->get(['locale',0,'maketext',['Generate a Full Backup' ]]);$output .= '</h2>
+
+            <form id="formDoFullBackup" action="wizard-dofullbackup.html" method="post" enctype="multipart/form-data" name="mainform">
+                ';$output .= $context->include('fullbackup-include.html.tt');$output .= '
+            </form>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'wizard-backup.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_stylesheets'=>['css2-min/backup.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

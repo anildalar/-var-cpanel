@@ -1,0 +1,57 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/email_accounts/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_remote_calcard_feature',$stash->get(['CPANEL',0,'feature',['caldavcarddav' ]]));$stash->set('is_cpdavd_enabled',$stash->get(['ExpVar',0,'expand',['$hascpdavd' ]])? 1 : 0);$stash->set('has_external_auth_modules_configured',$stash->get(['execute',['ExternalAuthentication','has_external_auth_modules_configured',{'appname'=>'webmaild' }],'data',0]));$stash->set('show_calendar_and_contacts_items',$stash->get('has_remote_calcard_feature')&& $stash->get('is_cpdavd_enabled'));$stash->set('show_config_section',$stash->get('has_remote_calcard_feature')&& $stash->get('is_cpdavd_enabled'));$stash->set('has_popaccts_feature',$stash->get(['CPANEL',0,'feature',['popaccts' ]]));$stash->set('has_user_manager',$stash->get(['CPANEL',0,'feature',['user_manager' ]]));$stash->set('hostname',$stash->get(['ExpVar',0,'expand',['$hostname' ]]));$stash->set('is_invite_sub_enabled',$stash->get(['ExpVar',0,'expand',['$is_invite_sub_enabled' ]])&& ($stash->get('has_user_manager')|| $stash->get(['CPANEL',0,'is_team_user',0]))? 1 : 0);$stash->set('ROOT_URL',($stash->get(['CPANEL',0,'ENV',0,'HTTPS',0])eq 'on' ? 'https://' : 'http://').$stash->get(['CPANEL',0,'ENV',0,'HTTP_HOST',0]).':' .$stash->get(['CPANEL',0,'ENV',0,'SERVER_PORT',0]).$stash->get('cp_security_token'));$stash->set('debug_mode',$stash->get(['CPANEL',0,'is_debug_mode_enabled',0]));if ($stash->get('has_popaccts_feature')){$stash->set('Email',$context->plugin('Email'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('Master',$context->plugin('Master'));$stash->set('upgrade_url',$stash->get(['CPBranding',0,'get_implementer_from_available_applications',[$cVC::S{'available_applications'},'upgrade' ],'url',0]));$stash->set('upgradeUrl',$stash->get('upgrade_url')ne '' ? $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get('upgrade_url'): '');$stash->set(['CPANEL',0,'CPVAR',0,'userdefined_quota_default_value',0],$stash->get(['Email',0,'get_user_default_email_quota',0,'html',0]));if (!($stash->get(['CPANEL',0,'CPCONF',0,'email_account_quota_default_selected',0])eq 'unlimited')){$stash->set(['CPANEL',0,'CPVAR',0,'default_quota_selected',0],'userdefined')}if (!($stash->get(['CPANEL',0,'CPVAR',0,'default_quota_selected',0]))){$stash->set(['CPANEL',0,'CPVAR',0,'default_quota_selected',0],'unlimited')}$stash->set('list_mail_domains',$stash->get(['execute',['Email','list_mail_domains',{}]]));$stash->set(['CPANEL',0,'CPVAR',0,'maildomainscount',0],$stash->get(['list_mail_domains',0,'data',0,'size',0]));$stash->set('primary_domain',$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]));$stash->set('required_strength_resp',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'pop' }]]));if ($stash->get(['required_strength_resp',0,'size',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,'data',0,'strength',0]))}$stash->set('has_max_emailacct_quota',$stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])&& $stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])ne 'unlimited');$stash->set('max_email_quota',$stash->get(['execute',['Email','get_max_email_quota_mib' ],'data',0]));$stash->set('page_styles_list',['email_accounts/index.css' ]);$stash->set('embeded_styles_list',[]);if (!$stash->get(['CPANEL',0,'ua_is_mobile',0])){$output .= $stash->get(['embeded_styles_list',0,'push',['css/angular-chosen-spinner.css' ]]);$output .= $stash->get(['page_styles_list',0,'push',['libraries/chosen/1.5.1/chosen.min.css' ]])}$stash->set('view_templates',['views/create.ptt','views/list.ptt','views/manage.ptt','views/manageDefault.ptt' ])}$stash->set('emailAccountsNVData',$stash->get(['execute',['Personalization','get',{'names'=>['CSSS_cpanel_email_accounts' ]}],'data',0]));$stash->set('has_max_emailacct_quota',$stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])&& $stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])ne 'unlimited');$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div id="body-content" class="body-content">
+
+    <!-- NOTE: leave the alert-group in single quotes -->
+    <cp-alert-list alert-group="\'emailAccounts\'"></cp-alert-list>
+
+    <div id="viewContent"
+                class="ng-cloak section"
+                ng-view
+                ng-cloak>
+    </div>
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('view_templates');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ptt'}=$_tt_value;$output .= '
+    <script id="';$output .= $stash->get('ptt');$output .= '" type="text/ng-template">';$output .= $context->process($stash->get('ptt'));$output .= '    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    <script id="decorators/pagination.phtml" type="text/ng-template">';$output .= $context->insert('decorators/pagination.phtml');$output .= '    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+</div><!-- end body-content div -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'email_accounts','feature'=>'popaccts','page_js'=>$stash->get('js_code'),'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'focus_feature_search'=>0,'page_stylesheets'=>$stash->get('page_styles_list'),'embed_stylesheets'=>$stash->get('embeded_styles_list'),'show_breadcrumb'=>1,'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+var PAGE = PAGE || {};';if ($stash->get(['emailAccountsNVData',0,'personalization',0,'CSSS_cpanel_email_accounts',0,'value',0])){$output .= 'PAGE.nvdata = JSON.parse(';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['emailAccountsNVData',0,'personalization',0,'CSSS_cpanel_email_accounts',0,'value',0])]]);$output .= ');'}$output .= '
+PAGE.securityToken = ';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'json',0])|| '""';$output .= ';
+PAGE.requiredPasswordStrength = ';$output .= $stash->get('required_strength')? $stash->get('required_strength'): 0;$output .= ';
+PAGE.defaultQuotaSelected = \'';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'default_quota_selected',0,'html',0]);$output .= '\';
+PAGE.userDefinedQuotaDefaultValue = parseInt(';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'userdefined_quota_default_value',0,'json',0]);$output .= ');
+PAGE.canSetUnlimited = ';$output .= $stash->get('has_max_emailacct_quota')? 'false' : 'true';$output .= ';
+PAGE.maxEmailQuota = parseInt("';$output .= $stash->get('max_email_quota');$output .= '");
+PAGE.isInviteSubEnabled = ';$output .= $stash->get('is_invite_sub_enabled')? 'true' : 'false';$output .= ';
+
+PAGE.upgradeUrl = ';$output .= $stash->get(['upgradeUrl',0,'json',0])|| '""';$output .= '
+
+PAGE.webmailEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['webmail' ]])? 'true' : 'false';$output .= ';
+PAGE.mailDomains = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['list_mail_domains',0,'data',0])]]);$output .= ';
+PAGE.primaryDomain = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('primary_domain')]]);$output .= ';
+PAGE.showConfigSection = ';$output .= $stash->get('show_calendar_and_contacts_items')eq 1 ? 'true' : 'false';$output .= ';
+PAGE.showCalendarAndContactItems = ';$output .= $stash->get('show_calendar_and_contacts_items')? 'true' : 'false';$output .= ';
+PAGE.externalAuthModulesConfigured = ';$output .= $stash->get('has_external_auth_modules_configured')? 'true' : 'false';$output .= ';
+PAGE.emailDiskUsageEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['email_disk_usage' ]])? 'true' : 'false';$output .= ';
+PAGE.defaultAccountEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['defaultaddress' ]])? 'true' : 'false';$output .= ';
+PAGE.emailFiltersEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['blockers' ]])? 'true' : 'false';$output .= ';
+PAGE.defaultAddressEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['defaultaddress' ]])? 'true' : 'false';$output .= ';
+PAGE.autoResponderEnabled = ';$output .= $stash->get(['CPANEL',0,'feature',['autoresponders' ]])? 'true' : 'false';$output .= ';
+PAGE.isRTL = document.getElementsByTagName("HTML")[0].getAttribute("dir") === "rtl";
+PAGE.mainEmailAccount = ';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| '""';$output .= ';
+PAGE.hostname = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('hostname')]]);$output .= ';
+PAGE.dprefix = ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0,'json',0])|| '""';$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

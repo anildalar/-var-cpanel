@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/support/oauth2_login.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<div id="content" ng-app="OAuth2App" ng-controller="OAuth2Landing" ng-cloak class="ng-cloak">
+';if ($stash->get(['data',0,'error',0,'defined',0])){$output .= '
+    <div id="auth-alert-danger" class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['data',0,'error',0]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+
+';if (!($stash->get(['data',0,'security_token_error',0,'defined',0]))){$output .= '
+    <div class="description">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['To grant [asis,cPanel] support access to your server, you [output,strong,must] connect your server to the [asis,cPanel] Customer Portal and transfer the necessary authentication details.' ]]);$output .= '</p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Click [output,em,Log in to cPanel Customer Portal] to establish a secure connection between your server and the [asis,cPanel] Customer Portal.' ]]);$output .= '</p>
+    </div>
+
+    <div class="alert alert-warning">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] If you suspect your server is root compromised, do not use this functionality. Contact [asis,cPanel] support directly by using the [output,url,_1,cPanel Customer Portal,target,_2].',$stash->get(['data',0,'new_ticket_url',0,'html',0]),'_new' ]]);$output .= '
+        </div>
+    </div>
+
+    <section>
+        <form novalidate>
+            <div class="form-group">
+                <button id="login-button" type="submit" class="btn btn-primary" ng-disabled="isProcessing" ng-click="login()">';$output .= $stash->get(['locale',0,'maketext',['Log in to [asis,cPanel] Customer Portal' ]]);$output .= '</button>
+            </div>
+        </form>
+    </section>
+
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Info:] If you need to remove [asis,cPanel] support’s access to your system, and you do not have a [asis,cPanel] Customer Portal account, use WHM’s [output,url,_1,Manage root’s SSH Keys] interface.',$stash->get('cp_security_token').'/scripts2/sshkeys' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.oauth2_endpoint =  ';$output .= $stash->get(['data',0,'oauth2_config',0,'auth_endpoint',0,'json',0]);$output .= ';
+    PAGE.oauth2_config   =  {
+            response_type           :   ';$output .= $stash->get(['data',0,'oauth2_config',0,'response_type',0,'json',0]);$output .= ',
+            client_id               :   ';$output .= $stash->get(['data',0,'oauth2_config',0,'client_id',0,'json',0]);$output .= ',
+            redirect_uri            :   ';$output .= $stash->get(['data',0,'oauth2_config',0,'redirect_uri',0,'json',0]);$output .= ',
+            scopes                  :   ';$output .= $stash->get(['data',0,'oauth2_config',0,'scopes',0,'json',0]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'oauth2_config',0,'extras',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'extra'}=$_tt_value;$output .= '
+            ,';$output .= $stash->get(['extra',0,'key',0,'json',0]);$output .= '   :   ';$output .= $stash->get(['extra',0,'value',0,'json',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    };
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Grant [asis,cPanel] Support Access - Login' ]]),'breadcrumburl'=>'/scripts7/authorizesupport','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/authorizesupport.min.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angular-ui-bootstrap/optimized/ui-bootstrap-tpls-1.2.5.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/sharedjs/angular/oauth2.min.js' ]])],'theme'=>'bootstrap','app_key'=>'grant_cpanel_support_access','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

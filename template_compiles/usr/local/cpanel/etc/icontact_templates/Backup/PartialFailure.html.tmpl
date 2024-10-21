@@ -1,0 +1,45 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Backup/PartialFailure.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/run_time_info.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The backup process on “[_1]” encountered an error.',$stash->get(['NOTICE',0,'host_server',0])]]));$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'transport_started',0])){$output .= '
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system started a separate transport process for remote backup destinations.' ]]);$output .= '
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['When the transport completes, the system will send an additional notification with the status of the transport if any errors were encountered.' ]]);$output .= '
+    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'major_error',0,'size',0])){$output .= '        <p>';$output .= $stash->get(['NOTICE',0,'major_error',0,'html',0]);$output .= '</p>
+    '}$output .= '
+    ';if ($stash->get(['NOTICE',0,'account_errors',0,'size',0])){$output .= '
+        <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following [numerate,_1,error,errors] occurred during account backups:',$stash->get(['NOTICE',0,'account_errors',0,'size',0])]]);$output .= '</p>
+        <p>';$output .= $context->process('include/zebra_table.tmpl');$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'account_errors',0]),'titles'=>[$stash->get(['CPANEL',0,'locale',0,'maketext',['Username' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Error' ]])]}]]);$output .= '        </p>
+        <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can manage whether to include cPanel user accounts in your scheduled backups with [asis,WHM]’s “[_1]“ interface: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup User Selection' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/backup_user_selection' ]]),'_blank' ]]);$output .= '</p>
+    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'transport_errors',0,'size',0])){$output .= '
+        <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following [numerate,_1,error,errors] occurred during transport to the remote backup server:',$stash->get(['NOTICE',0,'transport_errors',0,'size',0])]]);$output .= '</p>
+        <p>';$output .= $context->process('include/zebra_table.tmpl');$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'transport_errors',0]),'titles'=>[$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup System or User' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup Type' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Error' ]])]}]]);$output .= '        </p>
+        <p>
+        ';if ($stash->get(['NOTICE',0,'is_legacy',0])){$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can manage the backup transport settings in [asis,WHM]’s “[_1]“ interface: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Legacy Backup Configuration' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/backupset' ]]),'_blank' ]]);$output .= '
+        '}else {$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can manage the backup transport settings in [asis,WHM]’s “[_1]“ interface: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup Configuration' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/backup_configuration' ]]),'_blank' ]]);$output .= '
+        '}$output .= '
+        </p>
+    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'local_copy_errors',0,'size',0])){$output .= '
+        <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following [numerate,_1,error,errors] occurred as the system moved or copied backup files locally:',$stash->get(['NOTICE',0,'local_copy_errors',0,'size',0])]]);$output .= '</p>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'local_copy_errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'err'}=$_tt_value;$output .= '            <p>';$output .= $stash->get(['code_block',[{'title'=>$stash->get(['err',0,0,0,'html',0]),'formatted_code'=>$stash->get(['err',0,1,0,'html',0])}]]);$output .= '</p>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'important_errors',0,'size',0])){$output .= '
+        <p>';$output .= $context->process('include/zebra_table.tmpl');$stash->set('lead_in_phrase',($stash->get(['NOTICE',0,'major_error',0,'size',0])|| $stash->get(['NOTICE',0,'account_errors',0,'size',0])|| $stash->get(['NOTICE',0,'transport_errors',0,'size',0])|| $stash->get(['NOTICE',0,'local_copy_errors',0,'size',0]))? $stash->get(['CPANEL',0,'locale',0,'maketext',['Additionally, the backup process encountered the following [numerate,_1,error,errors]:',$stash->get(['NOTICE',0,'important_errors',0,'size',0])]]): $stash->get(['CPANEL',0,'locale',0,'maketext',['The backup process encountered the following [numerate,_1,error,errors]:',$stash->get(['NOTICE',0,'important_errors',0,'size',0])]]));$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'important_errors',0]),'titles'=>[$stash->get('lead_in_phrase')]}]]);$output .= '        </p>
+    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'log_preview',0])&& $stash->get(['NOTICE',0,'log_file_path',0])){$output .= '
+        <p>';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,'shift',0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Review the attached log “[_1]” for further details.',$stash->get(['NOTICE',0,'log_file_path',0])]])}]]);$output .= '</p>
+    '}$output .= '
+
+    ';$output .= $stash->get('run_time_info');$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

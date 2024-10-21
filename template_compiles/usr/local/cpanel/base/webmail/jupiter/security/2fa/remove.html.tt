@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/security/2fa/remove.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('is_secpolicy_enabled',$stash->get(['ExpVar',0,'expand',['$is_twofactorauth_sec_policy_enabled' ]]));$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['twofactorauth' ]]));$stash->set('api_call_result',{});$stash->set('return_link','index.html');if ($stash->get(['CPANEL',0,'FORM',0,'defined',['do_the_removal' ]])){$stash->set('api_call_result',$stash->get(['execute',['TwoFactorAuth','remove_user_configuration',{}]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+';if ($stash->get('is_secpolicy_enabled')&& $stash->get('has_feature')){$output .= '
+    ';if ($stash->get(['api_call_result',0,'defined',['status' ]])){$output .= '
+        ';if ($stash->get(['api_call_result',0,'status',0])&& $stash->get(['api_call_result',0,'data',0,'tfa_removed',0])){$output .= '
+            <div id="success" class="alert alert-success">
+                <span id="successImg" class="glyphicon glyphicon-ok-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Success:] The system removed two-factor authentication from your account.' ]]);$output .= '
+                </div>
+            </div>
+        '}else {$output .= '
+            <div id="error" class="alert alert-danger">
+                <span id="errorImg" class="glyphicon glyphicon-remove-sign"></span>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['api_call_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+                <div class="alert-message">
+                    ';$output .= $stash->get(['msg',0,'html',0]);$output .= '
+                </div>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </div>
+        '}$output .= '
+    '}else {$output .= '
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to remove two-factor authentication from your account?' ]]);$output .= '</p>
+        <form method="post" action="remove.html" name="remove" id="remove">
+            <div class="form-group">
+                <button type="submit"
+                    id="do_the_removal"
+                    name="do_the_removal"
+                    class="btn btn-primary"
+                    value="1">';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '</button>
+                <a href=';$output .= $stash->get('return_link');$output .= '
+                    id="cancel"
+                    class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+            </div>
+        </form>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+'}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature. You must have the [asis,Two-factor Authentication] feature enabled for your account to use this interface.' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'two_factor_authentication','include_legacy_stylesheets'=>0,'page_stylesheets'=>['security/2fa/index.min.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

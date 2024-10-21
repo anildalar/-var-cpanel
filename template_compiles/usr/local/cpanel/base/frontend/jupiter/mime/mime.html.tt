@@ -1,0 +1,133 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/mime.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';$stash->set('user_result',$stash->get(['execute',['Mime','list_mime',{'type'=>'user' }]]));$output .= '    ';$stash->set('system_result',$stash->get(['execute',['Mime','list_mime',{'type'=>'system' }]]));$output .= '
+    <p id="descMimeTypes" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['MIME types tell browsers how to handle specific extensions. For example, the text/html MIME type equates to .htm, .html, and .shtml extensions on most servers, and this tells your browser to interpret all files with those extensions as HTML files. You can alter or add new MIME types specifically for your site (note that you can not alter the system defined MIME type values). MIME types are often used to handle new technologies as they appear. When WAP technology first appeared no one had these extensions set up on their server. With MIME types, however, you could have set it up yourself and begun serving WAP pages immediately.' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2 id="hdrCreateMimeType">
+            ';$output .= $stash->get(['locale',0,'maketext',['Create A MIME Type' ]]);$output .= '
+        </h2>
+        <form method="POST" action="addmime.html" id="mainform" name="mainform">
+            <div class="form-group">
+                <label id="lblMimeType" for="mimet">
+                    ';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="mimet" type="text" class="form-control"  name="mimet" size="22" />
+                    </div>
+                    <div id="mimet_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblExtenstion" for="ext">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="ext" type="text" class="form-control"  name="ext" size="22" />
+                        <span id="lblExensionHelper" class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Tip: Separate multiple extension types with a space.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div id="ext_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="submit" name="submit"  type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrUserDefined">';$output .= $stash->get(['locale',0,'maketext',['User Defined MIME Types' ]]);$output .= '</h2>
+        <table id="mimetbl" class="sortable table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '</th>
+                    <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';if (!$stash->get(['user_result',0,'status',0])){$output .= '
+            <tr>
+                <td class="empty-row danger" colspan="3">
+                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['user_result',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+                </td>
+            </tr>
+            '}elsif ($stash->get(['user_result',0,'data',0,'size',0])eq 0){$output .= '
+            <tr>
+                <td class="empty-row info" colspan="3">
+                    ';$output .= $stash->get(['locale',0,'maketext',['There are no user-configured MIME types.' ]]);$output .= '
+                </td>
+            </tr>
+            '}else {$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['user_result',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '">';$output .= $stash->get(['q',0,'type',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '">';$output .= $stash->get(['q',0,'extension',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <a class="btn btn-link" href="delmimeconfirm.html?usermime=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'type',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+        </table>
+    </div>
+    <div class="section">
+        <h2 id="hdrSystemMimeType">';$output .= $stash->get(['locale',0,'maketext',['System MIME Types' ]]);$output .= '</h2>
+        <table id="sysmimetbl" class="sortable table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';if ($stash->get(['system_result',0,'data',0,'size',0])eq 0){$output .= '
+                <tr>
+                    <td class="empty-row info" colspan="2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no system configured [output,acronym,MIME,Multipurpose Internet Mail Extensions] types.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}else {$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['system_result',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '">';$output .= $stash->get(['q',0,'type',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '">';$output .= $stash->get(['q',0,'extension',0]);$output .= '</td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            '}$output .= '
+        </table>
+    </div>
+
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'mime_types','feature'=>'mime','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var init_validators = function() {
+        var mimet_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['MIME Type' ]]);$output .= '");
+        mimet_validator.add("mimet", "mime", "';$output .= $stash->get(['locale',0,'maketext',['You must provide a valid MIME type.' ]]);$output .= '");
+        mimet_validator.attach();
+
+        var ext_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['File Extension' ]]);$output .= '");
+        ext_validator.add("ext", "mime_extension", "';$output .= $stash->get(['locale',0,'maketext',['A [asis,MIME] extension must contain at least 1 alphanumeric character and cannot contain the following characters: /, ?, [output,chr,92], [output,amp]' ]]);$output .= '");
+        ext_validator.attach();
+
+        CPANEL.validate.attach_to_form("submit", [mimet_validator, ext_validator]);
+
+        YAHOO.util.Dom.get("mimet").focus();
+    }
+    YAHOO.util.Event.onDOMReady(init_validators);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

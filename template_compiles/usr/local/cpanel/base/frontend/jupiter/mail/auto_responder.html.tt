@@ -1,0 +1,193 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/auto_responder.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));$output .= '
+';$stash->set('get_auto_responder',$stash->get(['execute',['Email','get_auto_responder',{'email'=>$stash->get(['RAW_FORM',['email' ]]),'temp_charset'=>$stash->get(['FORM',0,'user_charset',0])}]]));$output .= '
+';$stash->set('list_mail_domains',$stash->get(['execute',['Email','list_mail_domains',{'select'=>$stash->get(['RAW_FORM',['email' ]])}]]));$output .= '
+';$stash->set('get_charsets',$stash->get(['execute',['Email','get_charsets',{'iconv'=>1 }]]));$output .= '
+
+<div class="section">
+    ';if ($stash->get('action')eq 'create'){$output .= '
+    <h2 id="hdrModifyAddAutoResponder">';$output .= $stash->get(['locale',0,'maketext',['Add Autoresponder' ]]);$output .= '</h2>
+    '}else {$output .= '
+    <h2 id="hdrModifyAddAutoResponder">';$output .= $stash->get(['locale',0,'maketext',['Modify Autoresponder' ]]);$output .= '</h2>
+    '}$output .= '
+
+    <p id="descHint1">';$output .= $stash->get(['locale',0,'maketext',['Hint: If you do not create a forwarder or email account with the same address as this autoresponder, mail will only be handled by the autoresponder before it is discarded.' ]]);$output .= '</p>
+
+    <p id="descHint2">';$output .= $stash->get(['locale',0,'maketext',['When configuring an autoresponder, you can use the following tags to insert information into the response email:' ]]);$output .= '</p>
+
+    <form method="post" id="mainform" name="mainform" action="doaddars.html">
+        <dl>
+            ';$output .= '
+            <dt id="lblSubject">%subject%</dt>
+            <dd id="valSubject">';$output .= $stash->get(['locale',0,'maketext',['The subject of the message sent to the autoresponder.' ]]);$output .= '</dd>
+            <dt id="lblFrom">%from%</dt>
+            <dd id="valFrom">';$output .= $stash->get(['locale',0,'maketext',['The name of the sender of the message received by the autoresponder, if available.' ]]);$output .= '</dd>
+            <dt id="lblemail">%email%</dt>
+            <dd>';$output .= $stash->get(['locale',0,'maketext',['The incoming email sender’s address.' ]]);$output .= '</dd>
+        </dl>
+
+        <div class="form-group">
+            <label id="lblCharacterSet" for="charset">
+                ';$output .= $stash->get(['locale',0,'maketext',['Character Set:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <select name="charset" onchange="checkcharset(this);" id="charset" class="form-control">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['get_charsets',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'charset'}=$_tt_value;$output .= '
+                    <option value="';$output .= $stash->get('charset');$output .= '"';$output .= $stash->get('charset')eq $stash->get(['get_auto_responder',0,'data',0,'charset',0])? 'selected' : '';$output .= '>';$output .= $stash->get('charset');$output .= '</option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblInterval" for="interval">
+                ';$output .= $stash->get(['locale',0,'maketext',['Interval:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="input-group">
+                        <input size="4" maxlength="4" type="text" class="form-control" autofill="off" autocomplete="off" id="interval" name="interval" value="';$output .= $stash->get(['get_auto_responder',0,'data',0,'interval',0]);$output .= '" />
+                        <span class="input-group-addon">';$output .= $stash->get(['locale',0,'maketext',['[numerate,_1,hour,hours]' ]]);$output .= '</span>
+                    </div>
+                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The number of hours to wait between responses to the same email address, or zero to always respond.' ]]);$output .= '</span>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="interval_error"></div>
+            </div>
+        </div>
+        ';if ($stash->get(['ExpVar',0,'expand',['$appname' ]])ne 'webmail'){$output .= '
+        <div class="form-group">
+            <label id="lblEmail" for="email">
+                ';$output .= $stash->get(['locale',0,'maketext',['Email:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control col-xs-2" autofill="off" autocomplete="off" id="email" name="email" value="';$output .= $stash->get(['FORM',0,'email',0,'split',['@' ],0,0]);$output .= "\" />\n                        <span class=\"input-group-addon\">\@</span>\n                    </div>\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" id=\"email_error\"></div>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <label id=\"lblDomain\" for=\"domain\">\n                ";$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <select id="ddlDomain" name="domain" class="form-control">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_mail_domains',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+                        ';$stash->set('select',$stash->get(['q',0,'select',0])? 'selected ' : '');$output .= '
+                        <option ';$output .= $stash->get('select');$output .= 'value="';$output .= $stash->get(['q',0,'domain',0]);$output .= '">';$output .= $stash->get(['q',0,'domain',0]);$output .= '</option>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="ddlDomain_error"></div>
+            </div>
+        </div>
+        '}else {$output .= '
+        <div class="form-group">
+            <label id="lblEmail" for="email">
+                ';$output .= $stash->get(['locale',0,'maketext',['Email:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="hidden" id="email2" name="email2" value="';$output .= $stash->get(['ExpVar',0,'expand',['$authuser' ]]);$output .= '" />
+                    ';$output .= $stash->get(['ExpVar',0,'expand',['$authuser' ]]);$output .= '
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="email_error"></div>
+            </div>
+        </div>
+        '}$output .= '
+        <div class="form-group">
+            <label for="from">
+                ';$output .= $stash->get(['locale',0,'maketext',['From:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" class="form-control" id="from" name="from" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['get_auto_responder',0,'data',0,'from',0]);&$_tt_filter($output)};$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="from_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="subject">
+                ';$output .= $stash->get(['locale',0,'maketext',['Subject:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" class="form-control" size="39" id="subject" name="subject" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['get_auto_responder',0,'data',0,'subject',0]);&$_tt_filter($output)};$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="subject_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblHTMLMessage" for="html_message">
+                <input type="checkbox" name="html" id="html_message" value="1" ';$output .= $stash->get(['get_auto_responder',0,'data',0,'is_html',0])? 'checked="checked"' : '';$output .= ' />
+                ';$output .= $stash->get(['locale',0,'maketext',['This message contains HTML.' ]]);$output .= '
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label id="lblARBody" for="arbody">
+                ';$output .= $stash->get(['locale',0,'maketext',['Body:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-9">
+                    <textarea id="arbody" name="arbody" class="form-control" cols="80" rows="8">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['get_auto_responder',0,'data',0,'body',0]);&$_tt_filter($output)};$output .= '</textarea>
+                </div>
+                <div class="col-xs-3" id="arbody_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblStartControl" for="start_control">
+                ';$output .= $stash->get(['locale',0,'maketext',['Start:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="radio">
+                        <label id="lblStartControlImmeadiately">
+                            <input type="radio" name="start_control" value="0" checked="checked" onclick="DOM.get(\'start_ts\').value = \'\'; validator.verify()" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Immediately' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label id="lblStartControlCustom">
+                            <input type="radio" name="start_control" value="1" onclick="if (!customized_dates.start) custom_start(DOM.getNextSibling(this));" />
+                            <a id="start_link" style="visibility:hidden" href="#" onclick="custom_start(this); return false">';$output .= $stash->get(['locale',0,'maketext',['Custom' ]]);$output .= '</a>
+                        </label>
+                    </div>
+                    <div id="start_container"></div>
+                    <input id="start_ts" name="start" type="hidden" value="';$output .= $stash->get(['get_auto_responder',0,'data',0,'start',0]);$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="start_ts_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="stop_control">
+                ';$output .= $stash->get(['locale',0,'maketext',['Stop:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="radio">
+                        <label id="lblStopControlNever">
+                            <input id="chkStopControl" type="radio" name="stop_control" value="0" checked="checked" onclick="DOM.get(\'stop_ts\').value = \'\'; validator.verify()" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Never' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label id="lblStopControlCustom">
+                            <input type="radio" name="stop_control" value="1" onclick="if (!customized_dates.stop) custom_stop(DOM.getNextSibling(this));" />
+                            <a id="stop_link" style="visibility:hidden" href="#" onclick="custom_stop(this); return false">';$output .= $stash->get(['locale',0,'maketext',['Custom' ]]);$output .= '</a>
+                        </label>
+                    </div>
+                    <div id="stop_container"></div>
+                    <input id="stop_ts" name="stop" type="hidden" value="';$output .= $stash->get(['get_auto_responder',0,'data',0,'stop',0]);$output .= '" />
+                    <input id="action"  name="action" type="hidden" value="';$output .= $stash->get('action');$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="stop_ts_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+           <input type="submit" id="submit-button" class="btn btn-primary" value="';if ($stash->get('action')eq 'create'){$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= ' '}else {$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Modify' ]]);$output .= ' '}$output .= '" />
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

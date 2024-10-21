@@ -1,0 +1,17 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/addaforhost.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<table class="sortable" id="datatbl1">
+<tr>
+    <th>Hostname</th>
+    <th>Server Main IP</th>
+</tr>
+<tr>
+    <td>';$output .= $stash->get(['data',0,'hostname',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['data',0,'mainip',0]);$output .= '</td>
+</table>
+
+<br /><br />
+Please confirm the IP address to use for the "A Entry" for ';$output .= $stash->get(['data',0,'hostname',0]);$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/doaddaforhost">
+    <input type="text" name="ip" value="';$output .= $stash->get(['data',0,'mainip',0]);$output .= '">
+    <input type="submit" value="Add Entry" class="btn-primary" />
+</form>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'add_an_a_entry_for_your_hostname','breadcrumburl'=>'/scripts/addaforhost','scripts'=>['/js/sorttable.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

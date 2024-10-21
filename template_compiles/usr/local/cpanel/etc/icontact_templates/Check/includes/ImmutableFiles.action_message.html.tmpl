@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/includes/ImmutableFiles.action_message.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('include/code_inline.tmpl');$output .= $context->process('include/code_standout.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= '
+
+<p>
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['During a routine check, [asis,cPanel] [output,amp] [asis,WHM] found the following files marked as immutable in the “[_1]” directory.',$stash->get(['NOTICE',0,'cpanel_root',0])]]);$output .= '
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['A complete list of the immutable files is at the end of this message.' ]]);$output .= '
+  ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,0,0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['File List Preview:' ]])}]]);$output .= '
+</p>
+<p>
+   ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system cannot update immutable files, and they may cause unforeseen problems with [asis,cPanel] [output,amp] [asis,WHM].' ]]);$output .= '
+</p>
+<p>
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If you do not want the [asis,cPanel] update process “[_1]” to update these files, add them to the “[_2]” file instead of making them immutable.',$stash->get(['NOTICE',0,'upcp_path',0]),$stash->get(['NOTICE',0,'cpanelsync_exclude_file',0])]]);$output .= '
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Use of the [asis,cpanelsync.exclude] file has the following advantages:' ]]);$output .= '
+  <ol>
+    <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['It allows the system to update [asis,cPanel] [output,amp] [asis,WHM], but does not update your designated files.' ]]);$output .= '
+    </li>
+    <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['It stores a list of the immutable files in a central location on your server for easy reference.' ]]);$output .= '
+     </li>
+  </ol>
+</p>
+<p>
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To learn more about how to use the “[_1]” file, read our [output,url,_2,documentation,target,_3].',$stash->get(['NOTICE',0,'cpanelsync_exclude_file',0]),$stash->get(['NOTICE',0,'cpanelsync_exclude_documentation_url',0]),'_blank' ]]);$output .= '
+</p>
+<p>
+  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To ensure the health of your [asis,cPanel] [output,amp] [asis,WHM] system, we recommend the following:' ]]);$output .= '
+  <ol>
+    <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Log in to your server as the [asis,root] user via [asis,SSH].' ]]);$output .= '
+    </li>
+    <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For each immutable file, execute the following commands:' ]]);$output .= '
+          ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['NOTICE',0,'chattr_command',0]).' /path/to/file','in_list'=>1 }]]);$output .= '
+          ';$output .= $stash->get(['code_standout',[{'command'=>'echo "/path/to/file" >> ' .$stash->get(['NOTICE',0,'cpanelsync_exclude_file',0]),'in_list'=>1 }]]);$output .= '
+    </li>
+     <li>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Execute the following command to re-sync the files in your [asis,cPanel] [output,amp] [asis,WHM] installation:' ]]);$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['NOTICE',0,'upcp_sync_command',0]),'in_list'=>1 }]]);$output .= '
+    </li>
+  </ol>
+</p>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

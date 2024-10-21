@@ -1,0 +1,47 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/security/tls_status/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('SSL',$context->plugin('SSL'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('has_WebServer_role',$stash->get(['ExpVar',0,'expand',[('' ."\$HASROLE{'WebServer'}")]]));if (!$stash->get('has_WebServer_role')){$stash->set('domains_api_args',{'api.filter'=>1,'api.filter_column'=>'domain','api.filter_type'=>'matches','api.filter_term'=>'^(?!www\\.)' })}$stash->set('domains',$stash->get(['execute',['WebVhosts','list_ssl_capable_domains',$stash->get('domains_api_args')|| {}],'data',0]));$stash->set('domain_types',$stash->get(['execute',['DomainInfo','list_domains' ],'data',0]));$stash->set('installed_hosts',$stash->get(['execute',['SSL','installed_hosts' ],'data',0]));$stash->set('autossl_excluded_domains',$stash->get(['execute',['SSL','get_autossl_excluded_domains' ],'data',0]));$stash->set('autossl_override_enabled',$stash->get(['SSL',0,'autossl_override_enabled',0]));$stash->set('autossl_enabled',$stash->get(['CPANEL',0,'feature',['autossl' ]]));$stash->set('ddns_enabled',$stash->get(['CPANEL',0,'feature',['dynamicdns' ]]));$stash->set('ddns_domains',$stash->get('ddns_enabled')? $stash->get(['execute',['DynamicDNS','list' ],'data',0]): []);$stash->set('autossl_provider',$stash->get(['SSL',0,'get_autossl_provider',0]));$stash->set('autossl_can_wildcard',$stash->get(['SSL',0,'autossl_supports_wildcard',0]));$stash->set('products',$stash->get(['execute',['Market','get_all_products',{'api.filter'=>1,'api.filter_type_0'=>'eq','api.filter_term_0'=>'ssl_certificate','api.filter_column_0'=>'product_group','api.filter_type_1'=>'eq','api.filter_term_1'=>'1','api.filter_column_1'=>'enabled','api.sort'=>1,'api.sort_column_0'=>'recommended','api.sort_method_0'=>'numeric','api.sort_reverse_0'=>'1','api.sort_column_1'=>'x_price_per_domain','api.sort_method_1'=>'numeric' }],'data',0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+    <section id="txtPageDescription" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['You can use this interface to view the [asis,SSL] status of your domains.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more information on this interface, read the [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/tlsstatus','_blank','lnktlsstatusDocumentation' ]]);$output .= '
+    </section>
+
+
+    <div ng-controller="BaseController" class="ng-cloak" ng-cloak id="app_tlsStatus">
+
+        <div class="loading" ng-show="loading">
+            <div class="callout callout-info">
+                <span class="fas fa-spinner fa-lg fa-spin"></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+            </div>
+        </div>
+        <!-- NOTE: leave the alert-group in single quotes -->
+        <cp-alert-list alert-group="\'tlsStatus\'"></cp-alert-list>
+        <div ng-class="{\'view-disabled\':loading}" class="animate-view" ng-view></div>
+    </div>
+
+    <script type="text/javascript">
+        PAGE = {};
+        PAGE.domains = ';$output .= $stash->get(['domains',0,'json',0]);$output .= ';
+        PAGE.ddns_domains = ';$output .= $stash->get(['ddns_domains',0,'json',0]);$output .= '
+        PAGE.domain_types = ';$output .= $stash->get(['domain_types',0,'json',0]);$output .= ';
+        PAGE.installed_hosts = ';$output .= $stash->get(['installed_hosts',0,'json',0]);$output .= ';
+        PAGE.products = ';$output .= $stash->get(['products',0,'json',0]);$output .= ';
+        PAGE.hasWebServerRole = !!';$output .= $stash->get('has_WebServer_role')|| 0;$output .= ';
+        PAGE.has_tls_wizard_feature = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPANEL',0,'feature',['tls_wizard' ]])]]);$output .= ';
+        PAGE.autossl_override_enabled = ';$output .= $stash->get(['autossl_override_enabled',0,'json',0]);$output .= ';
+        PAGE.autossl_enabled = ';$output .= $stash->get(['autossl_enabled',0,'json',0]);$output .= ';
+        PAGE.ddnsEnabled = ';$output .= $stash->get(['ddns_enabled',0,'json',0]);$output .= ';
+        PAGE.autossl_provider = ';$output .= $stash->get(['autossl_provider',0,'json',0]);$output .= ';
+        PAGE.autossl_excluded_domains = ';$output .= $stash->get(['autossl_excluded_domains',0,'json',0]);$output .= ';
+        PAGE.autossl_can_wildcard = ';$output .= $stash->get(['autossl_can_wildcard',0,'json',0]);$output .= ';
+
+        ';$output .= $context->insert('sharedjs/asn1_optimized.js');$output .= '
+        ';$output .= $context->insert('sharedjs/ssl_optimized.js');$output .= '
+        ';$output .= $context->insert('cjt/ssl-min.js');$output .= '
+    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'tls_status','use_master_bootstrap'=>0,'page_stylesheets'=>['security/tls_status/index.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

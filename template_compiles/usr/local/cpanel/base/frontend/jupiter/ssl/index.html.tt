@@ -1,0 +1,176 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('SSL',$context->plugin('SSL'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('old_default',$stash->get(['execute_or_die',['Variables','get_user_information',{'name'=>'ssl_default_key_type' }],'data',0,'ssl_default_key_type',0]));if ($stash->get(['FORM',0,'default_ssl_key_type',0])){$stash->set('set_default_key_type_result',$stash->get(['execute',['SSL','set_default_key_type',{'type'=>$stash->get(['FORM',0,'default_ssl_key_type',0])}]]))}$stash->set('key_types_and_labels',$stash->get(['SSL',0,'key_types_and_labels',0]));$stash->set('opt_system',$stash->get(['SSL',0,'key_type_system',0]));$stash->set('system_default',$stash->get(['CPANEL',0,'CPCONF',0,'ssl_default_key_type',0]));$stash->set('key_descriptions',$stash->get(['SSL',0,'key_type_descriptions',0]));if ($stash->get('set_default_key_type_result')&& $stash->get(['set_default_key_type_result',0,'status',0])){$stash->set('chosen_default',$stash->get(['FORM',0,'default_ssl_key_type',0]))}else {$stash->set('chosen_default',$stash->get(['execute',['Variables','get_user_information',{'name'=>'ssl_default_key_type' }],'data',0,'ssl_default_key_type',0]))}$stash->set('chosen_default_is_custom',($stash->get('opt_system')ne $stash->get('chosen_default')));$stash->set('has_autossl',$stash->get(['CPANEL',0,'feature',['autossl' ]]));$output .= do {my$output='';$output .= '
+';$stash->set('current_setting_macro',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '    <span class="label label-info" title="';$output .= $stash->get(['locale',0,'maketext',['This is your current setting.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Current' ]]);$output .= '</span>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+<div class="body-content content">
+    ';if ($stash->get(['CPANEL',0,'feature',['sslmanager' ]])){$output .= '
+    <div class="row">
+        <div class="col-xs-12 col-md-10">
+            <p id="descSSL" class="description">';$output .= $stash->get(['locale',0,'maketext',['The SSL/TLS Manager will allow you to generate SSL certificates, certificate signing requests, and private keys. These are all parts of using SSL to secure your website. SSL allows you to secure pages on your site so that information such as logins, credit card numbers, etc are sent encrypted instead of plain text. It is important to secure your site’s login areas, shopping areas, and other pages where sensitive information could be sent over the web.' ]]);$output .= '</p>
+        </div>
+    </div>
+    '}$output .= '
+    <div class="row">
+        <div class="col-xs-12 col-md-10">
+            ';if ($stash->get(['CPANEL',0,'feature',['sslmanager' ]])){$output .= '
+                ';if ($stash->get('set_default_key_type_result')){$output .= '
+                <div class="col-xs-12">
+                    <div class="section">
+                        <!-- Update Result Messaging -->
+                        ';if (!$stash->get(['set_default_key_type_result',0,'status',0])){$output .= '
+                            <div id="updateRequestResult" class="alert alert-danger"  role="alert">
+                                <span id="updateKeyErrorMessage" class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['set_default_key_type_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                                    <div class="alert-message">
+                                        ';$output .= $stash->get('error');$output .= '
+                                    </div>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </div>
+                        '}else {$output .= '
+                            <div id="updateRequestResult" class="alert alert-success"  role="alert">
+                                <span id="updateKeySuccessMessage" class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                <div class="alert-message">
+                                                                ';$output .= $stash->get(['locale',0,'maketext',['The system updated your default [asis,SSL/TLS] key type.' ]]);$output .= '
+                                                                ';if ($stash->get('has_autossl')){$output .= '                                                                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] will try to renew your certificates.' ]]);$output .= '
+                                                                '}$output .= '                                </div>
+                            </div>
+                        '}$output .= '
+                    </div>
+                </div>
+                '}$output .= '
+
+                <!-- main panel -->
+                <div class="col-xs-12 col-sm-12 col-md-8 pull-left flip">
+                    <form id="defaultKeyTypeForm" method="post" target="_self">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="widget-title pull-left flip">';$output .= $stash->get(['locale',0,'maketext',['Default [asis,SSL/TLS] Key Type' ]]);$output .= '</div>
+                                <div class="pull-right flip">
+                                    <button type="button"
+                                        class="btn btn-default btn-xs toggle-help-btn"
+                                        id="lnkShowHideHelp">
+                                            <span class="hide-help-label">';$output .= $stash->get(['locale',0,'maketext',['Hide Help Text' ]]);$output .= '</span>
+                                            <span class="show-help-label">';$output .= $stash->get(['locale',0,'maketext',['Show Help Text' ]]);$output .= '</span>
+                                            <i class="far fa-question-circle form-info-sign" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-body">
+                                <section>
+                                    <div id="defaultSSLTypeGroup" class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['The default key type for [asis,SSL/TLS] certificates and [output,abbr,CSR,Certificate Signing Request]s.' ]]);$output .= '</p>
+
+                                                <div class="radio">
+                                                    <label>
+                                                        <input
+                                                            type="radio"
+                                                            name="default_ssl_key_type"
+                                                            value="';$output .= $stash->get('opt_system');$output .= '"
+                                                            ';$output .= ($stash->get('opt_system')eq $stash->get('chosen_default'))? 'checked="checked"' : '';$output .= '
+                                                        >
+                                                        <div>
+                                                            ';$output .= $stash->get(['locale',0,'maketext',['Use the system’s default key type.' ]]);$output .= '
+                                                            <span class="label label-success">';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '</span>
+                                                            ';if (!$stash->get('chosen_default_is_custom')){$output .= $stash->get('current_setting_macro')}$output .= '                                                        </div>
+                                                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Current value: [_1]',$stash->get(['SSL',0,'get_key_type_label',[$stash->get('system_default')]])]]);$output .= '</span>
+                                                    </label>
+                                                    <span class="help-block key-description-help-block">';$output .= $stash->get(['locale',0,'maketext',['Select this if you don’t know which key type is best for you.' ]]);$output .= '</span>
+                                                </div>
+
+                                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('key_types_and_labels');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key_type'}=$_tt_value;$output .= '
+                                                ';$stash->set('key_type_value',$stash->get(['key_type',0,'type',0]));$output .= '
+                                                <div class="radio" >
+                                                    <label>
+                                                        <input type="radio" name="default_ssl_key_type" value="';$output .= $stash->get('key_type_value');$output .= '" ';$output .= $stash->get('key_type_value')eq $stash->get('chosen_default')? 'checked="checked"' : '';$output .= ' />
+                                                        ';$output .= $stash->get(['key_type',0,'label',0]);$output .= '
+                                                    </label>
+                                                    ';if ($stash->get('key_type_value')eq $stash->get('chosen_default')){$output .= '
+                                                        ';$output .= $stash->get('current_setting_macro');$output .= '                                                    '}$output .= '
+                                                    <span class="help-block key-description-help-block">';$output .= $stash->get(['key_descriptions',0,$stash->get('key_type_value'),0]);$output .= '</span>
+                                                </div>
+                                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="callout callout-info hidden" id="keyChangWarningCallout">
+                                        <p>';$output .= $stash->get(['locale',0,'maketext',['When you change this setting, the server will replace [output,strong,all] [asis,AutoSSL]-issued certificates that use a different key type.' ]]);$output .= '</p>
+                                    </div>
+                                </section>
+                            </div>
+                            <div class="panel-footer">
+                                <div>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- / main panel -->
+
+                <div class="col-xs-12 col-md-4 col-lg-4 pull-right flip">
+                    <div class="section">
+                        <section class="widget">
+                            <h3 class="widget-title" id="hdrPrivate"> ';$output .= $stash->get(['locale',0,'maketext',['Private Keys (KEY)' ]]);$output .= '</h3>
+                            <ul>
+                                <li>
+                                    <a id="lnkPrivate" href="keys.html">
+                                        <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Generate, view, upload, or delete your private keys.' ]]);$output .= '
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3 class="widget-title" id="hdrCSR">';$output .= $stash->get(['locale',0,'maketext',['Certificate Signing Requests (CSR)' ]]);$output .= '</h3>
+                            <ul>
+                                <li>
+                                    <a id="lnkRequests" href="csrs.html">
+                                        <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Generate, view, or delete SSL certificate signing requests.' ]]);$output .= '
+                                    </a>
+                                </li>
+                            </ul>
+                            <h3 class="widget-title" id="hdrCRT">';$output .= $stash->get(['locale',0,'maketext',['Certificates (CRT)' ]]);$output .= '</h3>
+                            <ul>
+                                <li>
+                                    <a id="lnkCRT" href="crts.html">
+                                        <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Generate, view, upload, or delete SSL certificates.' ]]);$output .= '
+                                    </a>
+                                </li>
+                            </ul>
+                            ';if ($stash->get(['ExpVar',0,'expand',['$isallowedssl' ]])&& $stash->get(['CPANEL',0,'feature',['sslinstall' ]])){$output .= '                                <h3 class="widget-title" id="hdrInstall">';$output .= $stash->get(['locale',0,'maketext',['Install and Manage SSL for your site (HTTPS)' ]]);$output .= '</h3>
+                                <ul>
+                                    <li>
+                                        <a id="lnkInstall" href="install.html">
+                                            <i class="fas fa-file-alt" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Manage SSL sites.' ]]);$output .= '
+                                        </a>
+                                    </li>
+                                </ul>
+                            '}$output .= '
+                        </section>
+                    </div>
+                </div>
+            '}else {$output .= '
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <div class="alert-message">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature!' ]]);$output .= '
+                    </div>
+                </div>
+            '}$output .= '
+        </div>
+    </div>
+
+</div>
+<script>
+    PAGE.opt_system = ';$output .= $stash->get(['opt_system',0,'json',0]);$output .= ';
+    PAGE.old_choice = ';$output .= $stash->get(['chosen_default',0,'json',0]);$output .= ';
+    PAGE.has_autossl = ';$output .= $stash->get('has_autossl')? 1 : 0;$output .= ';
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','embed_stylesheets'=>['css/ux-styles.min.css' ],'embed_scripts'=>['js2/ssl/index.js' ],'page_stylesheets'=>['css2-min/ssl/index.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

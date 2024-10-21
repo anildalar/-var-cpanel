@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/editnews.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '<div class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['To set custom messages that you want your users and resellers to see, enter your text in the following text boxes. Make certain to use HTML tags and a [output,lt]br[output,gt] to break lines.' ]]);$output .= '
+</div>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/savenews" method="POST">
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label for="txtGlobalNews">
+                ';$output .= $stash->get(['locale',0,'maketext',['Global [asis,cPanel] News (displayed in all of your users[output,apos] [asis,cPanel] dashboards. This includes a reseller[output,apos]s customers.):' ]]);$output .= '
+                </label>
+                <textarea id="txtGlobalNews" name="globalnews" rows="10" class="form-control">';$output .= $stash->get(['data',0,'globalnews',0]);$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label for="txtWhmNews">
+                ';$output .= $stash->get(['locale',0,'maketext',['Global [asis,WHM] News (displayed in all of the resellers[output,apos] [asis,WHM] dashboards):' ]]);$output .= '
+                </label>
+                <textarea id="txtWhmNews" name="whmnews" rows="10" class="form-control">';$output .= $stash->get(['data',0,'whmnews',0]);$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label for="txtResoldNews">
+                ';$output .= $stash->get(['locale',0,'maketext',['Reseller Customer News (displayed in the [asis,cPanel] dashboards of all user accounts that are owned by resellers.):' ]]);$output .= '
+                </label>
+                <textarea id="txtResoldNews" name="resoldnews" rows="10" class="form-control">';$output .= $stash->get(['data',0,'resoldnews',0]);$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+'}$output .= '    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <label for="txtCpanelNews">
+                ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] News (displayed in the [asis,cPanel] dashboards of all of the accounts owned by your account.):' ]]);$output .= '
+                </label>
+                <textarea id="txtCpanelNews" name="news" rows="10" class="form-control">';$output .= $stash->get(['data',0,'news',0]);$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input id="btnSaveNews" type="submit" class="btn btn-primary" value=\'';$output .= $stash->get(['locale',0,'maketext',['Save News' ]]);$output .= '\'>
+    </div>
+</form>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'modify_cpanel_whm_news','theme'=>'bootstrap','header'=>$stash->get(['locale',0,'maketext',['Modify [asis,cPanel amp() WHM] News' ]]),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

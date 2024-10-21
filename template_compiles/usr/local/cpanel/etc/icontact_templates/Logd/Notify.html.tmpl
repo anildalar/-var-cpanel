@@ -1,0 +1,23 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Logd/Notify.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/system_info_table.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Bandwidth processing timeout.' ]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system timed out while it processed “[_1]” bandwidth for the domain “[_2]”.',$stash->get(['NOTICE',0,'bandwidth_type',0]),$stash->get(['NOTICE',0,'user_domain',0])]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system may be overloaded, the user’s bandwidth data may be corrupt, or the server may be receiving an unusually high level of traffic.' ]]);$output .= '
+</p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The server’s current health statistics are:' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get('system_info_table');$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If the system’s health statistics are within normal parameters, you should examine the following logs in order to determine the cause of the timeout:' ]]);$output .= '
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,0,0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] Stats Log: [_1]',$stash->get(['code_inline',[{'term'=>$stash->get(['NOTICE',0,'cpanel_stats_log_path',0])}]])]])}]]);$output .= '
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,1,0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] Error Log: [_1]',$stash->get(['code_inline',[{'term'=>$stash->get(['NOTICE',0,'cpanel_error_log_path',0])}]])]])}]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The last few lines of these logs in reverse order have been included in this message.' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,40 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqladdonhosts.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$stash->set('configure_url',$stash->get('cp_security_token').'/scripts2/mysqlupdateall');$output .= '
+
+';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+<form method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/domysqladdonhosts">
+    <label for="hosts">
+    ';$output .= $stash->get(['locale',0,'maketext',['Enter any additional hosts (one per line) that you would like to be able to access databases on this. You can also enter the remote database server (with the proper user/password):' ]]);$output .= '
+    </label>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <!-- Leave no whitespace in the textarea, or it will show up in the interface. -->
+                <textarea cols="50" rows="10" name="hosts" id="hosts" class="form-control">';$output .= $stash->get(['data',0,'hosts',0,'join',[('' .'
+')]]);$output .= '</textarea>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div id="hosts_error"></div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" id="save-button" value="Save" />
+    </div>
+</form>
+<p>
+    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Important]: Users must log into cPanel and use the Remote Database Access feature to set up access from these hosts. After you have done this, if you would like to configure access from all users’ accounts [output,url,_1,click here].',$stash->get('configure_url')]]);$output .= '
+</p>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'additional_mysql_access_hosts','theme'=>'bootstrap','include_legacy_stylesheets'=>1,'extrastyle'=>'
+    .mask {
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        background-color: #000000;
+    }
+','content',$output })};$output .= '
+<script type="text/javascript">
+    var init_validation = function() {
+
+        var mysql_ip_netmask_regex = new RegExp(';$output .= $stash->get(['data',0,'mysql_ip_netmask_regex',0,'json',0]);$output .= ');
+        var mysql_ip_regex         = new RegExp(';$output .= $stash->get(['data',0,'mysql_ip_regex',0,'json',0]);$output .= ');
+        var mysql_host_regex       = new RegExp(';$output .= $stash->get(['data',0,'mysql_host_regex',0,'json',0]);$output .= ");\n\n        var ip_test = /^(?:[%_\\d]{1,3}\\.)*[%_\\d]{1,3}\$/;\n\n        var host_is_valid = function(host) {\n            host = unescape(host);\n\n            if (host.length > 60) {\n                return false;\n            }\n            if (host.indexOf('/') != -1) {\n                return mysql_ip_netmask_regex.test(host);\n            }\n            else if (ip_test.test(host)) {\n                return mysql_ip_regex.test(host);\n            }\n            else if (mysql_host_regex.test(host)) {\n                return true;\n            }\n            else if (CPANEL.inet6.isValid(host)) {\n                // MySQL wants a canonical compressed format host.\n                return CPANEL.inet6.formatForDisplay(host) === host;\n            }\n\n            return false;\n        };\n\n        var check_hosts = function() {\n            return document.getElementById('hosts').value.trim()\n                .split(/[\\r\\n]+/)\n                .filter( function(host) { return /\\S/.test(host) } )\n                .every(host_is_valid);\n        };\n\n        var hosts_validator = new CPANEL.validate.validator( \"Database Hosts\" );\n        hosts_validator.add( \"hosts\", check_hosts, \"Each entry must be a valid database host.\" );\n        hosts_validator.attach();\n\n        CPANEL.validate.attach_to_form(\"save-button\", hosts_validator);\n    };\n    YAHOO.util.Event.onDOMReady(init_validation);\n</script>\n\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

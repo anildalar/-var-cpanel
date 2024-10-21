@@ -1,0 +1,73 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/spam/views/requiredScore.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="scoringOptionsSection">
+	<div class="section">
+		<form id="requiredScoreForm" name="requiredScoreForm" cp-form-waiting="updateRequiredScore()" class="form layout-medium">
+		    <div class="form-group">
+		        <div class="row">
+		            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+		                <toggle-label-info
+		                     for="requiredScoreSelect"
+		                     label-text="';$output .= $stash->get(['locale',0,'maketext',['Spam Threshold Score ([asis,required_score])' ]]);$output .= '"
+		                     label-id="requiredScoreLabel"
+		                     info-icon-id="requiredScoreLabel_icon"
+		                     info-block-id="requiredScoreLabel_info"
+                             show-info-block="true">
+		                     ';$output .= $stash->get(['locale',0,'maketext',['Spam messages score higher calculated spam scores than regular messages.' ]]);$output .= '
+                             ';$output .= $stash->get(['locale',0,'maketext',['If a message’s calculated spam score meets or exceeds the Spam Threshold Score, the system will label that message as spam.' ]]);$output .= '
+                             ';$output .= $stash->get(['locale',0,'maketext',['For example, an account that uses a Spam Threshold Score of 10 will only mark messages that are obviously spam.' ]]);$output .= '
+                             ';$output .= $stash->get(['locale',0,'maketext',['A Spam Threshold Score of 2 will label many messages as spam, which includes messages that are likely [output,strong,not] spam. We recommend that new users use the default setting of 5. We recommend that an [output,abbr,ISP,Internet service provider] set this score to 8. The Spam Threshold Score does not affect the Auto-Delete Threshold Score.' ]]);$output .= '
+		                </toggle-label-info>
+		            </div>
+		        </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12"
+                            ng-class="{\'col-sm-6\':workingPreferences.required_score_select !== \'custom\',\'col-sm-3\':workingPreferences.required_score_select === \'custom\'}">
+                            <select
+                                data-value="{{ workingPreferences.required_score_select }}"
+                                name="requiredScoreSelect"
+                                id="requiredScoreSelect"
+                                ng-required="!showingCustomScore"
+                                class="form-control"
+                                ng-model="workingPreferences.required_score_select">
+                                    <option
+                                        ng-repeat="option in getRequiredScoreOptions()"
+                                        value="{{ :: option.score }}"
+                                        ng-selected="option.score == workingPreferences.required_score_select" ng-bind-html="::option.label">
+                                    </option>
+                            </select>
+                        </div>
+                        <div class="col-xs-12 col-sm-3" ng-show="workingPreferences.required_score_select === \'custom\'">
+                            <input type="number"
+                                name="requiredScoreCustom"
+                                id="requiredScoreCustom"
+                                ng-model="workingPreferences.customRequiredScoreValue"
+                                placeholder="{{ workingPreferences.required_score }}"
+                                class="form-control"
+                                min="1" max="50" step=".01" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <ul validation-container field-name="requiredScoreCustom">
+                                <li validation-item
+                                    field-name="requiredScoreCustom"
+                                    validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '
+                                </li>
+                                <li validation-item
+                                    field-name="requiredScoreCustom"
+                                    validation-name="min">';$output .= $stash->get(['locale',0,'maketext',['The Spam Threshold Score ([asis,required_score]) must be greater than or equal to [_1].','1' ]]);$output .= '
+                                </li>
+                                <li validation-item
+                                   field-name="requiredScoreCustom"
+                                   validation-name="max">';$output .= $stash->get(['locale',0,'maketext',['The Spam Threshold Score ([asis,required_score]) must be less than or equal to [_1].','50' ]]);$output .= '
+                                </li>
+                                <li validation-item
+                                    field-name="requiredScoreCustom"
+                                    validation-name="number">';$output .= $stash->get(['locale',0,'maketext',['The Spam Threshold Score ([asis,required_score]) must be a valid positive real number.' ]]);$output .= "\n                                </li>\n                            </ul>\n                        </div>\n                    </div>\n                </div>\n		    </div>\n		    <div class=\"form-group\">\n		    	<button id=\"btnUpdateSpamScore\"\n		    		type=\"submit\"\n		    		class=\"btn btn-primary\"\n		    		ng-disabled=\"((workingPreferences.required_score_select === 'custom' && checkPristine('customRequiredScoreValue')) || (workingPreferences.required_score_select !== 'custom' && checkPristine('required_score_select'))) || requiredScoreForm.\$invalid\"\n		    		>";$output .= $stash->get(['locale',0,'maketext',['Update Scoring Options' ]]);$output .= '</button>
+		    </div>
+		</form>
+	</div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

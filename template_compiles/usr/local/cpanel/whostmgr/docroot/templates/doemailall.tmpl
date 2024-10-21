@@ -1,0 +1,124 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/doemailall.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));if ($stash->get(['data',0,'resellers',0])){$stash->set('header',$stash->get(['locale',0,'maketext',['Email All Resellers' ]]))}else {$stash->set('header',$stash->get(['locale',0,'maketext',['Email All Users' ]]))}$output .= do {my$output='';$output .= '<p class="description">
+    ';if ($stash->get(['data',0,'resellers',0])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Send an email to all resellers.' ]]);$output .= '
+    '}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Send an email to all registered users.' ]]);$output .= '
+    '}$output .= '
+</p>
+<form class="layout-medium"
+    action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/reallyemailall"
+    method="POST"
+    accept-charset="UTF-8">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="fromname">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Sender Name' ]]);$output .= '
+                    </label>
+                    <input id="fromname"
+                        name="fromname"
+                        class="form-control"
+                        type="text"
+                        value="';$output .= $stash->get(['data',0,'fromname',0,'html',0]);$output .= '"
+                        readonly />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="frommail">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Sender Email' ]]);$output .= '
+                    </label>
+                    <input id="frommail"
+                        name="fromemail"
+                        class="form-control"
+                        type="text"
+                        value="';$output .= $stash->get(['data',0,'fromemail',0,'html',0]);$output .= '"
+                        readonly />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="subject">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '
+                    </label>
+                    <input id="subject"
+                        name="subject"
+                        class="form-control"
+                        type="text"
+                        value="';$output .= $stash->get(['data',0,'subject',0,'html',0]);$output .= '"
+                        size="50"
+                        readonly />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="mailbody">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Message Body' ]]);$output .= '
+                    </label>
+                    <textarea id="mailbody"
+                        name="body"
+                        class="form-control"
+                        cols="80"
+                        rows="25"
+                        readonly>';$output .= $stash->get(['data',0,'body',0,'html',0]);$output .= '</textarea>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="resellers" value="';$output .= $stash->get(['data',0,'resellers',0,'html',0]);$output .= '" />
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span class="help-block">
+                        ';if ($stash->get(['data',0,'resellers',0])){$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Email will [output,em,only] be sent to your resellers.' ]]);$output .= '
+                        '}elsif ($stash->get(['data',0,'sendall',0])){$output .= '
+                        <input id="sendall"
+                            name="sendall"
+                            type="checkbox"
+                            value="';$output .= $stash->get(['data',0,'sendall',0,'html',0]);$output .= '"
+                            readonly
+                            checked />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Email [output,em,will] also be sent to your resellers[output,chr,8217] customers.' ]]);$output .= '
+                        '}else {$output .= '
+                        <input id="sendall"
+                            name="sendall"
+                            type="checkbox"
+                            value="';$output .= $stash->get(['data',0,'sendall',0,'html',0]);$output .= '"
+                            readonly />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Email [output,em,will not] be sent to your resellers[output,chr,8217] customers.' ]]);$output .= '
+                        '}$output .= '
+                    </span>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input id="submit-button"
+                        type="submit"
+                        class="btn btn-primary"
+                        value="';$output .= $stash->get(['locale',0,'maketext',['Send' ]]);$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get('header'),'theme'=>'bootstrap','breadcrumburl'=>'/scripts/emailall' .($stash->get(['data',0,'resellers',0])? '?resellers=1' : ''),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

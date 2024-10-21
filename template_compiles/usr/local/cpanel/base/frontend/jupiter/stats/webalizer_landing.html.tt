@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/webalizer_landing.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('listwebalizer',$stash->get(['execute',['Stats','list_sites',{'engine'=>'webalizer','traffic'=>'http' }]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p id="descWebalizer" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Webalizer is a complex stats program that produces a variety of charts and graphs about who has visited your site.' ]]);$output .= '
+    </p>
+    <div class="section">
+        <h2 id="hdrSelectDomain">
+            ';$output .= $stash->get(['locale',0,'maketext',['Select a Domain' ]]);$output .= '
+        </h2>
+        <table id="tblDomainList" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th id="theadDomain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </th>
+                    <th id="theadView" nowrap nonsortable="true">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                ';if ($stash->get(['listwebalizer',0,'data',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['listwebalizer',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    ';$stash->set('domainName',$stash->get(['hashref',0,'domain',0,'html',0]));$stash->set('alt',$stash->get(['locale',0,'maketext',['View the statistics for “[_1]”.',$stash->get(['hashref',0,'domain',0])],'remove',['"' ]]));$output .= '
+                    <tr id="row_';$output .= $stash->get('domainName');$output .= '">
+                        <td id="domain_';$output .= $stash->get('domainName');$output .= '">';$output .= $stash->get('domainName');$output .= ' ';if ($stash->get(['hashref',0,'ssl',0])){$output .= ' <strong>SSL</strong> '}$output .= '</td>
+                        <td>
+                            <a target="_blank" id="lnkViewStats_';$output .= $stash->get('domainName');$output .= '"
+                                href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).$stash->get(['hashref',0,'path',0]);$output .= '"
+                                alt="';$output .= $stash->get('alt');$output .= '" title="';$output .= $stash->get('alt');$output .= '"
+                                class="btn btn-link">
+                                <span id="imgViewStats_';$output .= $stash->get('domainName');$output .= '" class="glyphicon glyphicon-search" title="';$output .= $stash->get('alt');$output .= '" alt="';$output .= $stash->get('alt');$output .= '"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                            </a>
+                        </td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    ';if ($stash->get(['listwebalizer',0,'errors',0,'size',0])){$output .= '
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['listwebalizer',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                            <div class="alert alert-danger" role="alert">
+                                <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                                <div class=\'alert-message\'>
+                                    <strong class="alert-title">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                                    </strong>
+                                    <span class="alert-body">
+                                <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                    ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                                </span>
+                            </span>
+                                </div>
+                            </div>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    '}else {$output .= '
+                        <tr id="tblrowErrors">
+                            <td class="errors" colspan="2">
+                                ';$output .= $stash->get(['locale',0,'maketext',['There are no domains which have [asis,Webalizer] stats to display.' ]]);$output .= '
+                            </td>
+                        </tr>
+                    '}$output .= '
+                '}$output .= '
+            </tbody>
+        </table>
+    </div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'webalizer','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

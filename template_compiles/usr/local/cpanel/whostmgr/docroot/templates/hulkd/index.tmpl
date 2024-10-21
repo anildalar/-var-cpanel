@@ -1,0 +1,147 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/hulkd/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('on_switch_text','ON');$stash->set('off_switch_text','OFF');if (($stash->get(['locale',0,'get_language_tag',0])ne 'en')){$stash->set('on_switch_text','I');$stash->set('off_switch_text','O')}$output .= do {my$output='';$output .= '
+<div id="content"
+    ng-controller="BaseController"
+    class="ng-cloak"
+    ng-cloak>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPHulk] provides protection from brute force attacks against your web services.' ]]);$output .= '</p>
+    <div ng-controller="hulkdEnableController">
+        <div id="enable_disable_control">
+            <div class="enable_disable_row">
+                <div class="enable_disable_cell">
+                    <div role="checkbox"
+                        id="hulkd_status_toggle"
+                        class="toggle-switch"
+                        tabindex="0"
+                        aria-checked="{{ hulkdEnabled }}"
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,cPHulk]' ]]);$output .= "\"\n                        ng-click=\"toggle_status()\"\n                        ng-keyup=\"handle_keyup(\$event)\"\n                        ng-keydown=\"handle_keydown(\$event)\"\n                        ng-class=\"{disabled: changing_status}\">\n                        <div class=\"toggle-switch-animate\" ng-class=\"{'switch-off': !hulkdEnabled, 'switch-on': hulkdEnabled}\">\n                            <span class=\"switch-left\">\n                                ";$output .= $stash->get('on_switch_text');$output .= '
+                            </span>
+                            <span class="knob">{{knobLabel}}</span>
+                            <span class="switch-right">
+                                ';$output .= $stash->get('off_switch_text');$output .= '
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="hulkdEnabled || changing_status">
+                    <div class="led led-red"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!hulkdEnabled || changing_status">
+                    <div class="led led-green"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!changing_status">
+                    <span class="fas fa-spinner fa-spin"></span>
+                </div>
+                <div class="enable_disable_cell" ng-hide="changing_status">
+                    <span class="hulkd_status_message" ng-hide="!hulkdEnabled">';$output .= $stash->get(['locale',0,'maketext',['[asis,cPHulk] is [output,strong,Enabled]' ]]);$output .= '</span>
+                    <span class="hulkd_status_message" ng-hide="hulkdEnabled">';$output .= $stash->get(['locale',0,'maketext',['[asis,cPHulk] is [output,strong,Disabled]' ]]);$output .= '</span>
+                </div>
+            </div>
+        </div>
+        <div id="tabContainer" ng-show="hulkdEnabled">
+            <ul class="nav nav-tabs">
+                <li ng-class="{active: currentRoute === \'/config\'}"><a href="config">';$output .= $stash->get(['locale',0,'maketext',['Configuration Settings' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/whitelist\'}"><a href="whitelist">';$output .= $stash->get(['locale',0,'maketext',['Whitelist Management' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/blacklist\'}"><a href="blacklist">';$output .= $stash->get(['locale',0,'maketext',['Blacklist Management' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/countries\'}"><a href="countries">';$output .= $stash->get(['locale',0,'maketext',['Countries Management' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/history\'}"><a href="history">';$output .= $stash->get(['locale',0,'maketext',['History Reports' ]]);$output .= '</a></li>
+            </ul>
+            <div class="loading" ng-show="loading">
+                <p class="alert alert-info col-xs-12">
+                    <span><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+                </p>
+            </div>
+            <div class="tab-content" ng-view ng-class="{\'view-disabled\':loading}"></div>
+        </div>
+        <script type="text/ng-template" id="ip-examples-tooltip.html">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Examples:' ]]);$output .= '</strong><br>
+            169.254.1.1<br>
+            169.254.1.10-169.254.1.10<br>
+            169.254.0.0/16<br>
+            2001:db8::<br>
+            2001:db8::-2001:db8:ffff:ffff:ffff:ffff:ffff:ffff<br>
+            2001:db8::/32
+        </script>
+    </div>
+    <div growl></div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.config_values = ';$output .= $stash->get(['data',0,'config',0,'json',0]);$output .= ';
+    PAGE.security_token = ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ';
+    PAGE.hulkd_status = ';$output .= $stash->get(['data',0,'status',0,'json',0]);$output .= ';
+    PAGE.ipToAdd = ';$output .= $stash->get(['CPANEL',0,'FORM',0,'ip',0,'defined',0])? $stash->get(['CPANEL',0,'FORM',0,'ip',0,'json',0]): 'null';$output .= ';
+</script>
+
+<script type="text/ng-template" id="confirm_whitelist_deletion.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        {{delete_confirmation_message()}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="delete_whitelist_ips(is_single_deletion)">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancel_deletion()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_blacklist_deletion.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        {{delete_confirmation_message()}}
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="delete_blacklist_ips(is_single_deletion)">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancel_deletion()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_blacklist_delete_all.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Do you want to permanently delete all records from the blacklist?' ]]);$output .= '
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="delete_all()">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancel_delete_all()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_whitelist_delete_all.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Do you want to permanently delete all records from the whitelist?' ]]);$output .= '
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="delete_all()">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancel_delete_all()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_country_blacklisting.html">
+    <div class="modal-header">
+        <h4><span class="glyphicon glyphicon-check"></span><span class="confirm_message">';$output .= $stash->get(['locale',0,'maketext',['Confirm Blacklisting' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Please exercise caution when blacklisting IP addresses by country. If your IP address is not whitelisted and matches with a country you are blacklisting, you will be locked out of WHM.' ]]);$output .= '
+    </div>
+
+    <div class="modal-footer">
+        <button class="btn btn-primary btn-sm" ng-click="continue_country_blacklisting(selectedItems)">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button class="btn btn-link btn-sm" ng-click="cancel_country_blacklisting()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="directives/countryCodesTable.ptt">
+';$output .= $context->process('hulkd/directives/countryCodesTable.ptt');$output .= '
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['cPHulk Brute Force Protection' ]]),'breadcrumburl'=>'/scripts7/cphulk','base'=>'/scripts7/cphulk/','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/hulkd/index.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/hulkd/angular-toggle-switch-bootstrap.min.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/hulkd/angular-toggle-switch.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'cphulk_brute_force_protection','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,94 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/include/system_info_rows.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$output .= $context->process('include/system_info_views.html.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= '
+';$stash->set('system_info_rows',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '
+        ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+        <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+            <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Memory Information' ]]);$output .= '</th>
+            <td>
+                <table>
+                    <tr>
+                        <td align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Used' ]]);$output .= '</td>
+                        <td>';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'memory_used',0])]]);$output .= '</td>
+                    </tr>
+                    <tr>
+                        <td align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Available' ]]);$output .= '</td>
+                        <td>';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'memory_available',0])]]);$output .= '</td>
+                    </tr>
+                    <tr>
+                        <td align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Installed' ]]);$output .= '</td>
+                        <td>';$output .= $stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['NOTICE',0,'memory_installed',0])]]);$output .= '</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+        <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+            <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Load Information' ]]);$output .= '</th>
+            <td>
+                <span>';$output .= $stash->get(['NOTICE',0,'load_one',0]);$output .= '</span>
+                <span>';$output .= $stash->get(['NOTICE',0,'load_five',0]);$output .= '</span>
+                <span>';$output .= $stash->get(['NOTICE',0,'load_fifteen',0]);$output .= '</span>
+            </td>
+        </tr>
+        ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+        <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+            <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Uptime' ]]);$output .= '</th>
+            <td>';$output .= $stash->get(['split_time_view',0,'print',[$stash->get(['NOTICE',0,'uptime',0])]]);$output .= '</td>
+        </tr>
+        ';if ($stash->get(['NOTICE',0,'iostat_txt',0])){$output .= '
+            ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+            <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,IOStat] Information' ]]);$output .= '</th>
+                <td>';$output .= $stash->get(['code_inline',[{'term'=>$stash->get(['NOTICE',0,'iostat_txt',0])}]]);$output .= '</td>
+            </tr>
+        '}$output .= '
+        ';if ($stash->get(['NOTICE',0,'chkservd_version',0])&& $stash->get(['NOTICE',0,'show_chkservd_version',0])){$output .= '
+            ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+            <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,ChkServd] Version' ]]);$output .= '</th>
+                <td>';$output .= $stash->get(['NOTICE',0,'chkservd_version',0]);$output .= '</td>
+            </tr>
+        '}$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['additional_items',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$output .= '
+            ';if ($stash->get(['additional_items',0,$stash->get('key'),0])){$output .= '
+                ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+                <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    <th align="left">
+                        ';$output .= $stash->get('key');$output .= '
+                    </th>
+                    <td>
+                        ';$output .= $stash->get(['additional_items',0,$stash->get('key'),0]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        ';if ($stash->get(['NOTICE',0,'procdata',0])){$output .= '
+          ';$stash->set('system_info_table_zebra',!$stash->get('system_info_table_zebra'));$output .= '
+          <tr style="background-color:';$output .= $stash->get('system_info_table_zebra')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+              <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Top Processes' ]]);$output .= '</th>
+              <td>
+                <table>
+                  <tr style="background-color:';$output .= $stash->get('med_dark_gray');$output .= ';">
+                     <th>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,PID,process ID]' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Owner' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,CPU,Central Processing Unit] %' ]]);$output .= '</th>
+                     <th>Memory %</th>
+                     <th>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Command' ]]);$output .= '</th>
+                  </tr>
+                  ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'procdata',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'procdata'}=$_tt_value;$output .= '                    <tr style="background-color:';$output .= $stash->get(['loop',0,'index',0])% 2 ? $stash->get('light_gray'): $stash->get('medium_gray');$output .= '">
+                        <td class="pid">';$output .= $stash->get(['procdata',0,'pid',0]);$output .= '</td>
+                        <td class="owner">';$output .= $stash->get(['procdata',0,'user',0]);$output .= '</td>
+                        <td class="cpu">';$output .= $stash->get(['procdata',0,'cpu',0]);$output .= '</td>
+                        <td class="mem">';$output .= $stash->get(['procdata',0,'mem',0]);$output .= '</td>
+                        <td class="command">';$output .= $stash->get(['code_inline',[{'term'=>$stash->get(['procdata',0,'command',0])}]]);$output .= '</td>
+                    </tr>
+                    ';if ($stash->get(['loop',0,'index',0])>= 4){last FOR1}$output .= '
+                  ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </table>
+              </td>
+          </tr>
+        '}$output .= '
+
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

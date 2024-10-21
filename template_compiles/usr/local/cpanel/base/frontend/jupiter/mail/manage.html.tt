@@ -1,0 +1,171 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/manage.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'feature',['spamassassin' ]])){$output .= '
+        ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+            <p id="descSpamHighlyRecommended" class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['We strongly recommend that you use the [asis,Spam Box] feature in [asis,cPanel]’s [output,url,_1,Spam Filters] interface to reduce server loads and backscatter to illegitimate email addresses.','spam/' ]]);$output .= '
+            </p>
+        '}$output .= '
+    '}$output .= '
+
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+        <div id="changeSettingsError" class="alert alert-danger" role="alert">
+            <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+            <div class=\'alert-message\'>
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="changeSettingsErrorMsg">
+                        ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    '}$output .= '
+
+    ';if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '
+    <div class="alert alert-info" role="alert">
+        <span class=\'glyphicon glyphicon-info-sign\' aria-hidden="true"></span>
+        <div class=\'alert-message\'>
+            <strong class="alert-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Information:' ]]);$output .= '
+            </strong>
+            <span class="alert-body">
+                <span id="disabled-in-demo-mode">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Some capabilities of this feature are disabled in demo mode.' ]]);$output .= '
+                </span>
+            </span>
+        </div>
+    </div>
+    '}$output .= '
+    ';if ((!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')|| $stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0]))){$output .= '
+
+        <div class="section">
+            <h2 id="hdrConfigureBoxtrapper">
+                ';$output .= $stash->get(['locale',0,'maketext',['Configure BoxTrapper for: [output,strong,_1]',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+            </h2>
+
+            ';$stash->set('get_status_result',$stash->get(['execute',['BoxTrapper','get_status',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]])}]]));if (!$stash->get(['get_status_result',0,'status',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['get_status_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                    <div class="alert alert-danger" role="alert">
+                        <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                        <div class=\'alert-message\'>
+                            <strong class="alert-title">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                            </strong>
+                            <span class="alert-body">
+                                <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                    ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '
+            <form action="changestatus.html" method="post">
+                <p id="boxTrapperStatus">
+                    <strong id="spanCurrentStatus">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Current Status:' ]]);$output .= '
+                    </strong>
+
+                    ';$stash->set('state',$stash->get(['get_status_result',0,'data',0]));$output .= '
+                    <span id="current-status">
+                        ';if ($stash->get('state')eq 1){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '
+                        '}else {$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '
+                        '}$output .= '
+                    </span>
+                        ';if (!$stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '
+                    <input id="hdnAccount"
+                           type="hidden"
+                           name="account"
+                           value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '" />
+                    <input type="hidden"
+                           name="action"
+                           id="hidden-next-state"
+                           value="';$output .= $stash->get('state')eq 1 ? 0 : 1;$output .= '">
+                    <input id="btn-toggle-state"
+                           type="submit"
+                           class="btn btn-default"
+                           name="submitaction"
+                           value="';$output .= $stash->get('state')eq 1 ? $stash->get(['locale',0,'maketext',['Disable' ]]): $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+                        '}$output .= '
+                </p>
+            </form>
+
+            <p id="descConfigureSettings">
+                <form method="post" action="conf.html">
+                    <button class="btn btn-link" id="lnkConfigureSettings" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Configure Settings' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Allows you to set up email addresses with BoxTrapper and specify how long to keep logs and queue messages.' ]]);$output .= '
+                </form>
+            </p>
+
+            <p id="descEditConfirmMessage">
+                <form method="post" action="editmsgs.html">
+                    <button class="btn btn-link" id="lnkEditConfirmation" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit Confirmation Messages' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Allows you to change the responses that email senders receive after they send a message to a BoxTrapper-enabled account.' ]]);$output .= '
+                </form>
+            </p>
+
+            <p id="descEditWhiteBlackList">
+                <form method="post" action="editlists.html">
+                    <button class="btn btn-link" id="lnkEditWhiteBlackIgnoreList" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit White/Black/Ignore Lists' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Allows you to permit, deny, and ignore email messages from certain accounts.' ]]);$output .= '
+                </form>
+            </p>
+
+            <p id="descBoxConfigurl">
+                <form method="post" action="forwardlist.html">
+                    <button class="btn btn-link" id="lnkConfUrl" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Forward List' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Allows you to forward the emails that passed through BoxTrapper authentication to another address.' ]]);$output .= '
+                </form>
+            </p>
+
+            <p id="descReviewLog">
+                <form method="post" action="showlog.html">
+                    <button class="btn btn-link" id="lnkReviewLog" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Review Log' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['An overview of all messages sent to your email accounts, displayed by day.' ]]);$output .= '
+                </form>
+            </p>
+
+            <p id="descReviewQueue">
+                <form method="post" action="showq.html">
+                    <button class="btn btn-link" id="lnkReivewQueue" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Review Queue' ]]);$output .= '
+                    </button>
+                    <br />
+                    ';$output .= $stash->get(['locale',0,'maketext',['View any BoxTrapper mail waiting for verification.' ]]);$output .= '
+                </form>
+            </p>
+        '}$output .= '
+        </div>
+    '}$output .= '
+
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+
+    ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'boxtrapper.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

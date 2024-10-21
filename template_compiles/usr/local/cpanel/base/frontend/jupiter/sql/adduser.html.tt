@@ -1,0 +1,23 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/adduser.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_prefix',$stash->get(['ExpVar',0,'expand',['$dbprefix' ]]));$stash->set('user',$stash->get(['FORM',0,'item',['user' ]]));if ($stash->get('has_prefix')){$stash->set('user',($stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]).$stash->get(['FORM',0,'user',0])))}$stash->set('password',$stash->get(['RAW_FORM',0,'pass',0]));$stash->set('adduser',$stash->get(['execute',['Mysql','create_user',{'name'=>$stash->get('user'),'password'=>$stash->get('password')}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if ($stash->get(['adduser',0,'status',0])){$output .= '
+        <div id="adduserSuccess" class="alert alert-success">
+            <span id="adduserSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <span id="adduserSuccessMsg">';$output .= $stash->get(['locale',0,'maketext',['You have successfully created a database user named “[output,class,_1,status]”.',$stash->get('user')]]);$output .= '</span>
+        </div>
+    '}else {$output .= '
+        <div id="adduserError" class="alert alert-danger">
+            <span id="adduserErrorImg" class="glyphicon glyphicon-exclamation-sign"></span>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['adduser',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+                <span id="adduserErrorMsg">';$output .= $stash->get('q');$output .= '</span>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_databases','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

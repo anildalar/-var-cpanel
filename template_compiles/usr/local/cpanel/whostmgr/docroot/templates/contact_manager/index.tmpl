@@ -1,0 +1,214 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/contact_manager/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<div id="content" ng-controller="MainController as main" ng-cloak>
+    <section class="description">
+        <p>
+          <span>';$output .= $stash->get(['locale',0,'maketext',['The Contact Manager allows you to specify which types of alerts you want to receive. It also allows you to specify how the system delivers them. We recommend that you assign a priority to each contact method.' ]]);$output .= '</span>
+        </p>
+        <p>
+          <span>';$output .= $stash->get(['locale',0,'maketext',['These settings control which notifications the system sends to the server administrator. These settings use the contact methods that you select in the “[_1]” tab.',$stash->get(['locale',0,'maketext',['Communication Type' ]])]]);$output .= '</span>
+          <span>';$output .= $stash->get(['locale',0,'maketext',['Each cPanel user can manage their own notification settings in [asis,cPanel]’s “[_1]” interface.',$stash->get(['locale',0,'maketext',['Contact Information' ]])]]);$output .= '</span>
+        </p>
+        <div class="callout callout-info">
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['For more information on each of these notifications, go to [output,url,_1,_1,target,_2,id,contact_manager_go_link].','https://go.cpanel.net/contactmanager','_blank' ]]);$output .= '
+            </div>
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['To adjust the destination for each contact method, go to [output,url,_1,_2,target,_3,id,basic_cpanel_link].','../scripts/editsets?active_tab=contactinformation',$stash->get(['locale',0,'maketext',['Basic [asis,cPanel amp() WHM] Setup' ]]),'_blank' ]]);$output .= '
+            </div>
+        </div>
+        ';if (!($stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0])eq 'root')){$output .= '
+            <div class="callout callout-warning">
+                <div>
+                    ';$output .= $stash->get(['locale',0,'maketext',['The following notification settings control what notifications [asis,root] receives.' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['The notification settings for your specific user account can be modified [output,url,_1,here,ng-click,main.loginTocPanel()].',$stash->get(['data',0,'cpanel_session_url',0])]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+    </section>
+    <form name="cform"
+            action="../scripts2/saveeditcontact"
+            method="POST">
+        <uib-tabset>
+            <uib-tab heading="';$output .= $stash->get(['locale',0,'maketext',['Communication Type' ]]);$output .= '" id="communication_tab">
+                <div class="tab-content">
+                    <div class="list-container">
+                        <div class="section-body">
+                            <table  id="communication_type_table" role="table" class="table table-striped responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th class="col-xs-5 col-sm-5 col-md-5 col-lg-6">';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                                        <th class="col-xs-3 col-sm-3 col-md-2 col-lg-2">';$output .= $stash->get(['locale',0,'maketext',['Receives' ]]);$output .= '</th>
+                                        <th class="col-xs-3 col-sm-3 col-md-2 col-lg-2">';$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= '</th>
+                                        <th class="col-xs-1 col-sm-1 col-md-3 col-lg-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="contact_method in main.PAGE.contactmethods | orderBy: \'display_name\'">
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '">
+                                            <div>
+                                                <span class="contact_icon {{contact_method.icon_name}}_icon" id="{{contact_method.system_name}}_icon" style="{{ :: contact_method.icon_style }}"></span>
+                                                <span ng-bind="contact_method.display_name" id="display_{{contact_method.system_name}}"></span>
+                                            </div>
+                                        </td>
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Receives' ]]);$output .= '" >
+                                            <select class="form-control"
+                                                    ng-model="contact_method.level"
+                                                    name="{{contact_method.system_name}}"
+                                                    id="select_level_for_{{contact_method.system_name}}">
+                                                <option value="';$output .= $stash->get(['data',0,'receives_name_to_number',0,'HighOnly',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['High only' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'receives_name_to_number',0,'HighAndMediumOnly',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['High and Medium only' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'receives_name_to_number',0,'All',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'receives_name_to_number',0,'None',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</option>
+                                            </select>
+                                        </td>
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= "\" ng-attr-title=\"{{ contact_method.contact | splitOnCommaForTitle }}\" class=\"contact_method_display\">\n                                            <div ng-repeat=\"contact in contact_method_contacts = ( contact_method.contact | splitOnComma ) track by \$index\"\n                                                class=\"cutoff_with_ellipses\"\n                                                ng-bind=\"contact\"\n                                                ng-if=\"contact_method_contacts.length\"\n                                                id=\"{{contact_method.system_name}}_contact_{{\$index}}\"></div>\n                                            <div ng-if=\"!contact_method_contacts.length\" title=\"";$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '" id="{{contact_method.system_name}}_none">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</div>
+                                        </td>
+                                        <td data-title="">
+                                            <div class="form-inline action-group">
+                                                <div class="form-group">
+                                                    <a id="edit_{{contact_method.system_name}}" class="btn btn-link"
+                                                        href="../scripts/editsets?find={{contact_method.system_key}}"
+                                                        target="_blank">
+                                                        <span class="glyphicon glyphicon-pencil"></span>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                                                    </a>
+                                                </div>
+                                                <div class="form-group">
+                                                    <button class="btn btn-link" type="button"
+                                                            ng-if="main.will_verify && contact_method.verification_api && contact_method.contact"
+                                                            ng-click="main.verify_service(contact_method)"
+                                                            id="verify_{{contact_method.system_name}}"
+                                                            ng-hide="contact_method.verifying">
+                                                        <span class=\'fas fa-unlink\'></span>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Test' ]]);$output .= '
+                                                    </button>
+                                                    <spinner id="{{contact_method.system_name}}-spinner" class="headerSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Testing communication …' ]]);$output .= '"></spinner>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </uib-tab>
+            <uib-tab heading="';$output .= $stash->get(['locale',0,'maketext',['Notifications' ]]);$output .= '" active="main.show_notifications" id="notification_tab">
+                <div class="tab-content">
+                    <div class="list-container">
+                        <div class="section-body">
+                            <div class="row search-page-container">
+                                <div class="col-xs-12 col-sm-5 col-md-4 col-lg-3">
+                                    <search ng-model="main.meta.search_key"
+                                    ng-change="main.updateFilteredNotifications()"
+                                    id="search_bar"></search>
+                                </div>
+                            </div>
+                            <div class="form-inline">
+                                <div class="form-group advanced-checkbox">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox"
+                                            id="select_all_visable_notifications"
+                                            ng-model="toggleSelected"
+                                            ng-change="main.setSelected(main.filteredNotifications, toggleSelected)"
+                                            cp-indeterminate="{{ ( main.selectedNotifications.length > 0 ) && ( main.selectedNotifications.length < main.filteredNotifications.length ) }}">
+                                    </span>
+                                    <div class="input-group-btn" uib-dropdown>
+                                        <button type="button" class="btn btn-default dropdown-toggle"
+                                                data-toggle="dropdown" uib-dropdown-toggle
+                                                id="dropdown_toggle_select">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Toggle Dropdown' ]]);$output .= '</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                                            <li><a href="" id="select_all_notifications" ng-click="main.setSelected(main.filteredNotifications,true); toggleSelected = true;">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</a></li>
+                                            <li><a href="" id="select_no_notifications" ng-click="main.setSelected(main.filteredNotifications,false); toggleSelected = false;">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="btn-group" ng-show="main.selectedNotifications.length">
+                                    <button type="button" class="btn btn-default" ng-click="main.setLevel(main.selectedNotifications, ';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Disabled',0]);$output .= ')" id="set_selected_disabled">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</button>
+                                    <button type="button" class="btn btn-default" ng-click="main.setLevel(main.selectedNotifications, ';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Low',0]);$output .= ')" id="set_selected_low">';$output .= $stash->get(['locale',0,'maketext',['Low' ]]);$output .= '</button>
+                                    <button type="button" class="btn btn-default" ng-click="main.setLevel(main.selectedNotifications, ';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Medium',0]);$output .= ')" id="set_selected_medium">';$output .= $stash->get(['locale',0,'maketext',['Medium' ]]);$output .= '</button>
+                                    <button type="button" class="btn btn-default" ng-click="main.setLevel(main.selectedNotifications, ';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'High',0]);$output .= ')" id="set_selected_high">';$output .= $stash->get(['locale',0,'maketext',['High' ]]);$output .= '</button>
+                                </div>
+                            </div>
+                            <table id="notifications_table" role="table" class="table table-striped responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                        </th>
+                                        <th>
+                                            <a href="" ng-click="main.orderNotifications(\'display_name\')"
+                                                ng-class="main.selectedHeaderClass(\'display_name\', main.meta)"
+                                                id="order_notifications_by_display_name">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Alert Type' ]]);$output .= '
+                                            </a>
+                                        </th>
+                                        <th class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                                            <a href="" ng-click="main.orderNotifications(\'importance\')"
+                                            ng-class="main.selectedHeaderClass(\'importance\', main.meta)"
+                                                id="order_notifications_by_importance">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Importance' ]]);$output .= '
+                                            </a>
+                                        </th>
+                                        <th class="col-xs-1 col-sm-1 col-md-2 col-lg-2">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Alert List' ]]);$output .= '
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="notification in main.filteredNotifications">
+                                        <td>
+                                            <input type="checkbox" ng-model="notification.selected" id="{{notification.system_name}}_selected">
+                                        </td>
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Alert Type' ]]);$output .= '">
+                                            <span id="{{notification.system_name}}_display_name">{{notification.display_name}}</span>
+                                            <span id="{{notification.system_name}}_help_text" class="info-block" ng-bind-html="notification.help_text" ng-if="notification.help_text">
+                                            </span>
+                                        </td>
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Importance' ]]);$output .= '">
+                                            <select class="form-control"
+                                                    ng-model="notification.importance"
+                                                    ng-disabled="notification.disabled"
+                                                    id="c-{{notification.system_name}}"
+                                                    name="c-{{notification.system_name}}">
+                                                <option value="';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Disabled',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Low',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Low' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'Medium',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Medium' ]]);$output .= '</option>
+                                                <option value="';$output .= $stash->get(['data',0,'eventimportance_name_to_number',0,'High',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['High' ]]);$output .= '</option>
+                                            </select>
+                                        </td>
+                                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Alert List' ]]);$output .= '">
+                                            <span ng-repeat="contact_method in contact_methods = ( main.PAGE.contactmethods | notificationServiceFilter:notification.importance | orderBy: \'display_name\')"
+                                                class="contact_icon {{contact_method.icon_name}}_icon"
+                                                title="{{contact_method.display_name}}"
+                                                id="{{notification.system_name}}_{{contact_method.icon_name}}"
+                                                style="{{ :: contact_method.icon_style }}"
+                                                ng-if="!notification.disabled"></span>
+                                            <span ng-if="!contact_methods.length">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</span>
+                                            <span ng-if="notification.disabled">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+               </div>
+            </uib-tab>
+        </uib-tabset>
+        <button type="submit" class="btn btn-primary" id="submit_button">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+    </form>
+    <div growl></div>
+</div>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    window.app = {};
+    ';$stash->set(['data',0,'REMOTE_USER',0],$stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0]));$output .= '
+    app.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('data')]]);$output .= ';
+</script>
+
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'header',0]),'breadcrumburl'=>'/scripts2/editcontact','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/contact_manager/index.min.css' ]]),'/css/whm_dynamic_notices.css' ],'theme'=>'bootstrap','app_key'=>'contact_manager','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

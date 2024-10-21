@@ -1,0 +1,135 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/main.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12 text-right flip">
+        <div class="navigation-controls">
+            <button id="viewHistory"
+                type="button"
+                class="btn btn-primary"
+                ng-click="main.viewHistory()">
+                ';$output .= $stash->get(['locale',0,'maketext',['View Conversion History' ]]);$output .= '</button>
+        </div>
+    </div>
+</div>
+<div id="paginationControls" class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <search id="filterField"
+            ng-model="main.meta.filter"
+            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filter by domain or owner' ]]);$output .= '"
+            autofocus
+            ng-change="main.filterList()"></search>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+            <page-size id="topPageSize"
+                allowed-sizes="main.meta.pageSizes"
+                total-items="main.meta.totalItems"
+                ng-model="main.meta.pageSize"
+                show-all="true"
+                ng-change="main.fetchPage(false)">
+            </page-size>
+            <uib-pagination id="topPager"
+                ng-change="main.fetchPage(false)"
+                ng-model="main.meta.pageNumber"
+                max-size="main.meta.maxPages"
+                items-per-page="main.meta.pageSize"
+                total-items="main.meta.totalItems"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div id="paginationMessage" class="row hidden-xs hidden-sm">
+    <div class="col-xs-offset-8 col-xs-4">
+        <div class="page-stats pull-right flip">
+        {{main.paginationMessage()}}
+        </div>
+    </div>
+</div>
+<div id="domainTableContainer">
+    <table id="addonDomainTable" class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th id="domainHeader">
+                    <span toggle-sort id="sortDomains" onsort="main.resetDisplay" sort-meta="main.meta" sort-field="domain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Addon Domain' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="ownerHeader">
+                    <span toggle-sort id="sortOwners" onsort="main.resetDisplay" sort-meta="main.meta" sort-field="owner">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="actionsHeader" class="actions-column">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                <th id="gearMenuContainer" class="gearColumn text-right flip">
+                    <span class="dropdown" uib-dropdown>
+                        <a href id="gearMenu" class="dropdown-toggle" uib-dropdown-toggle ng-class="{disabled: ip_being_edited}">
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right text-left flip" uib-dropdown-menu>
+                            <li ng-class="{disabled: !main.hasFilter()}">
+                                <a id="clearFilterMenuItem" href ng-click="main.clearFilter()">';$output .= $stash->get(['locale',0,'maketext',['Clear Filter' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a id="reloadDomainsMenuItem" href ng-click="main.forceLoadList()">';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="emptyListNotice" class="info empty-row" ng-show="!main.hasAddonDomains()" ng-switch="main.loadingDomains">
+                    <td colspan="4" id="loadingMessage" ng-switch-when="true">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </td>
+                    <td colspan="4" id="emptyMessage" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['No addon domains found.' ]]);$output .= '</td>
+            </tr>
+            <tr ng-repeat="domain in main.meta.pagedList">
+                <td class="domainCol" data-title="';$output .= $stash->get(['locale',0,'maketext',['Addon Domain' ]]);$output .= '">{{domain.addon_domain}}</td>
+                <td class="ownerCol" data-title="';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '">{{domain.owner}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\">\n                    <button type=\"button\" id=\"convertDomainButton_{{ \$index }}\" class=\"btn btn-link\"\n                        ng-click=\"main.convertDomain(domain)\">\n                        <span class=\"fas fa-cut\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Convert' ]]);$output .= '
+                    </button>
+                </td>
+                <td class="gearColumn"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="col-xs-12 col-sm-12">
+        <div id="paginatorBottom" class="pagination-container">
+            <page-size id="bottomPageSize"
+                allowed-sizes="main.meta.pageSizes"
+                total-items="main.meta.totalItems"
+                ng-model="main.meta.pageSize"
+                show-all="true"
+                ng-change="main.fetchPage(true)">
+            </page-size>
+            <uib-pagination id="bottomPager"
+                ng-change="main.fetchPage(true)"
+                ng-model="main.meta.pageNumber"
+                max-size="main.meta.maxPages"
+                items-per-page="main.meta.pageSize"
+                total-items="main.meta.totalItems"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">">
+            </uib-pagination>
+        </div>
+        <div id="paginationMessage">
+            {{main.paginationMessage()}}
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

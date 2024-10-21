@@ -1,0 +1,323 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/_select_accounts.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if (!$stash->get('ROUNDCUBE_DBTYPES_MATCH')){$output .= '
+    <section class="callout callout-';$output .= $stash->get('ROUNDCUBE_DBTYPES_MATCH')? 'info' : 'warning';$output .= '">
+    <div> <div class="limit-info"></div>
+        <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Source: “[output,strong,_1]” Roundcube database type is “[output,strong,_2]” …','{{ main.PAGE.remote.host }}','{{main.PAGE.remote.roundcube_dbtype}}' ]]);$output .= '
+        </p>
+        <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Target: “[output,strong,_1]” Roundcube database type is “[output,strong,_2]” …','{{ main.PAGE.local.host }}','{{main.PAGE.local.roundcube_dbtype}}' ]]);$output .= '
+        </p>
+        <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['The source server is not running the same Roundcube database type as the target server.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] highly recommends that the source server run the same Roundcube database type at least 24 hours to ensure that email accounts using Roundcube will transfer properly.' ]]);$output .= '
+        </p>
+    </div>
+    </section>
+'}$output .= '
+
+
+<div ng-controller="AccountTableController as account">
+    <div class="row">
+        <callout class="col-lg-6" ng-if="supportsLiveTransfers && !liveTransfersNoticeIsDismissed" callout-type="warning" id="live_xfer_callout" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is now “[_2]”.',$stash->get(['locale',0,'maketext',['Express Transfer' ]]),$stash->get(['locale',0,'maketext',['Live Transfer' ]])]]);$output .= '">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['We now proxy certain traffic from the source server by default. To configure this setting, click “[_1]” in the “[_2]” column.',$stash->get(['locale',0,'maketext',['Default' ]]),$stash->get(['locale',0,'maketext',['Transfer Configuration' ]])]]);$output .= '</p>
+            <a
+                href="https://go.cpanel.net/livetransfer"
+                title="';$output .= $stash->get(['locale',0,'maketext',['For more information, read our “[_1]” documentation.',$stash->get(['locale',0,'maketext',['Live Transfer' ]])]]);$output .= '"
+                target="_blank"
+                id="express_xfer_callout_info_link">
+                ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our “[_1]” documentation.',$stash->get(['locale',0,'maketext',['Live Transfer' ]])]]);$output .= '
+            </a>
+
+            <div>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="expressOrLiveWarningMessage"
+                    ng-click="dismissLiveTransfersNotice()"
+                >';$output .= $stash->get(['locale',0,'maketext',['I understand. Proceed to the account list.' ]]);$output .= '</button>
+            </div>
+        </callout>
+        <callout class="col-lg-6" ng-if="!supportsLiveTransfers && !liveTransfersPre90NoticeIsDismissed" callout-type="information" id="express_xfer_callout" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Looking for Express Transfer?' ]]);$output .= '">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['To configure the “[_1]” setting, click “[_2]” in the “[_3]” column.',$stash->get(['locale',0,'maketext',['Express Transfer' ]]),$stash->get(['locale',0,'maketext',['Default' ]]),$stash->get(['locale',0,'maketext',['Transfer Configuration' ]])]]);$output .= '</p>
+            <a
+                href="https://go.cpanel.net/whmdocsTransferTool"
+                title="';$output .= $stash->get(['locale',0,'maketext',['For more information about the “[_1]” setting, read our “[_2]” documentation.',$stash->get(['locale',0,'maketext',['Express Transfer' ]]),$stash->get(['locale',0,'maketext',['Transfer Tool' ]])]]);$output .= '"
+                target="_blank"
+                id="express_xfer_callout_info_link">
+                ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our “[_1]” documentation.',$stash->get(['locale',0,'maketext',['Transfer Tool' ]])]]);$output .= '
+            </a>
+
+            <div>
+                <button
+                    type="button"
+                    class="btn btn-primary"
+                    id="expressOrLiveWarningMessage"
+                    ng-click="dismissLiveTransfersPre90Notice()"
+                >';$output .= $stash->get(['locale',0,'maketext',['I understand. Hide this notice.' ]]);$output .= '</button>
+            </div>
+        </callout>
+    </div>
+
+    <div ng-if="showTable()" class="row search-row action-bar" >
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+            <div class="input-group">
+                <input name="find" id="account_filter"
+                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                    class="form-control filter-list-input"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= '"
+                    autocomplete="off"
+                    ng-model="account.accountFilterText"
+                    ng-change="account.acctTable.currentPage=1; account.updateAccounts()"
+                    ng-debounce/>
+                <div id="searchAction" class="input-group-btn" uib-dropdown>
+                    <button type="button" class="btn btn-default" ng-click="account.accountFilterText = \'\'; account.updateAccounts()" >
+                        <span class="glyphicon"
+                        ng-class="{ \'glyphicon-search\': !account.accountFilterText, \'glyphicon-remove\': account.accountFilterText }"></span>
+                    </button>
+                    <button type="button" class="btn btn-default dropdown-toggle" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Toggle Dropdown' ]]);$output .= '</span>
+                    </button>
+                    <ul class="dropdown-menu form-horizontal" role="menu" uib-dropdown-menu>
+                        <li>
+                            <div class="col-xs-12" prevent-bubbling>
+                                <div class="form-group col-xs-12">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</label>
+                                    <input ng-debounce type="text" class="form-control" ng-model="account.acctTable.advSearchOptions.domain" id="advance_search_domain_input">
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</label>
+                                    <input ng-debounce type="text" class="form-control" ng-model="account.acctTable.advSearchOptions.user" id="advance_search_user_input">
+                                </div>
+                                <div class="form-group col-xs-12" ng-if="main.PAGE.remote.has_owners">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['Reseller' ]]);$output .= '</label>
+                                    <select chosen
+                                            multiple
+                                            class="form-control"
+                                            ng-model="account.acctTable.advSearchOptions.owner"
+                                            ng-options="key as key for (key,val) in main.PAGE.remote.resellers"
+                                            id="reseller_select">
+                                    </select>
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['Dedicated IP Address' ]]);$output .= '</label>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn"
+                                                ng-click="account.acctTable.advSearchOptions.dedicated_ip = -1"
+                                                ng-class="account.dedicatedIpClass(-1)">';$output .= $stash->get(['locale',0,'maketext',['Any' ]]);$output .= '</button>
+                                        <button type="button" class="btn"
+                                                ng-click="account.acctTable.advSearchOptions.dedicated_ip = 1"
+                                                ng-class="account.dedicatedIpClass(1)">';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '</button>
+                                        <button type="button" class="btn"
+                                                ng-click="account.acctTable.advSearchOptions.dedicated_ip = 0"
+                                                ng-class="account.dedicatedIpClass(0)">';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '</button>
+                                    </div>
+                                </div>
+                                <div class="form-group col-xs-12">
+                                    <button type="button" class="btn btn-default" ng-click="account.setAdvanceSearch(account.acctTable.advSearchOptions)"><span class="glyphicon glyphicon-search"></span> ';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '</button>
+                                    <button type="button" class="btn btn-link" ng-click="account.setAdvanceSearch(null)">';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '</button>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 col-xs-offset-1">
+            <div class="form-inline pull-right" >
+                <page-size
+                    id="DEFAULT-page-accountsperpage"
+                    total-items="account.filteredAccounts.length"
+                    show-all="true"
+                    class="form-group page-size-controller"
+                    allowed-sizes="account.getPossiblePageSizes()"
+                    ng-model="account.acctTable.pageSize">
+                </page-size>
+                <div id="accountPager"
+                    uib-pagination
+                    ng-if="account.filteredAccounts.length > account.acctTable.pageSize"
+                    ng-change="selectPage(page)"
+                    ng-model="account.acctTable.currentPage"
+                    items-per-page="account.acctTable.pageSize"
+                    total-items="account.filteredAccounts.length"
+                    max-size="4"
+                    boundary-links="true"
+                    previous-text="<" next-text=">" first-text="<<" last-text=">>"
+                    class="pagination-small">
+                </div>
+            </div>
+        </div>
+        <div class=\'col-xs-5 search-labels-container\'>
+            <p class="label label-primary">
+                {{ main.accountFilterMessage(account.filteredAccounts.length) }}
+            </p>
+            <p class="label label-success">
+                {{ main.accountSelectedMessage(main.selectedAccounts.length) }}
+            </p>
+        </div>
+    </div>
+
+    ';$output .= '
+    <div ng-if="showTable()" class="row action-bar">
+        <div class="col-xs-12">
+            <div class="pull-left flip">
+                <div class="input-group advanced-checkbox">
+                    <span class="input-group-addon">
+                        <input type="checkbox"
+                            bool-to-int
+                            id="select_all_visible_accts"
+                            ng-model="account.acct_checkbox_control"
+                            ng-click="main.toggleCheckAllAndReValidate(account.viewableAccounts, \'selected\', account.acct_checkbox_control)"
+                            ng-change="account.updateSelectedAccounts()">
+                    </span>
+                    <div class="input-group-btn" uib-dropdown>
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" uib-dropdown-toggle>
+                            <span class="caret"></span>
+                            <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Toggle Dropdown' ]]);$output .= '</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                            <li><a href="" ng-click="main.toggleCheckAllAndReValidate(account.filteredAccounts, \'selected\', !!1); main.acct_checkbox_control = true; account.updateSelectedAccounts()" id="select_all_accts">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</a></li>
+                            <li><a href="" ng-click="main.toggleCheckAllAndReValidate(account.filteredAccounts, \'selected\', !!0); main.acct_checkbox_control = false; account.updateSelectedAccounts()" id="select_no_accts">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="pull-left flip">
+                <select
+                    id="select_all_visible_xferpoint"
+                    ng-model="account.control_overwrite"
+                    ng-options="item as item.label for item in ::account.overwriteOptions track by item.value"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Change the Overwrite setting for all selected items in this view.' ]]);$output .= '"
+                    ng-change="main.toggleCheckAllAndReValidate((account.viewableAccounts | filter:{selected:1} | filter:main.noUsernameChange | overwriteFilter), \'overwrite_type\', account.control_overwrite);"
+                    ng-disabled="(account.viewableAccounts | filter:{selected:1} | filter:main.noUsernameChange | overwriteFilter).length == 0"
+                    class="form-control adjust-selected-overwrite">
+                </select>
+            </div>
+        </div>
+    </div>
+
+    ';$output .= '
+    <table ng-if="showTable()" id="acct_tbl" role="table" class="table table-striped table-striped-child details-table select-accounts-table" ng-init="account.setUpdateSelectedAccountsFunction(main.updateSelectedAccounts)">
+        <thead>
+            <tr>
+                <th><!-- Checkbox --></th>
+                <th ng-click="main.toggleSort(account.acctTable, \'domain\'); account.updateViewableAccounts()" ng-class="main.selectedHeaderClass(account.acctTable, \'domain\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </a>
+                </th>
+                <th ng-click="main.toggleSort(account.acctTable, \'user\'); account.updateViewableAccounts()" ng-class="main.selectedHeaderClass(account.acctTable, \'user\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+                    </a>
+                </th>
+                <th ng-if="::account.showColumn(\'bytesused\')" ng-click="main.toggleSort(account.acctTable, \'bytesused\'); account.updateViewableAccounts()" ng-class="main.selectedHeaderClass(account.acctTable, \'bytesused\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '
+                    </a>
+                </th>
+                <th ng-if="::account.showColumn(\'owner\')" ng-click="main.toggleSort(account.acctTable, \'owner\'); account.updateViewableAccounts()" ng-class="main.selectedHeaderClass(account.acctTable, \'owner\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Reseller' ]]);$output .= '
+                    </a>
+                </th>
+                <th ng-if="::account.showColumn(\'dedicated_ip\')" ng-class="main.selectedHeaderClass(account.acctTable, \'dedicated_ip\')">
+                    <div class="checkbox">
+                        <input type="checkbox" id="select_all_dedicated_ip"
+                            ng-click="main.toggleCheckAllAndReValidate((account.viewableAccounts | filter:{selected:1}), \'dedicated_ip\', account.control_dedicated_ip); account.handleDedicatedIpForArray(account.viewableAccounts)"
+                            ng-model="account.control_dedicated_ip"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Change the Dedicated [asis,IP] address for all selected items in this view.' ]]);$output .= '"
+                            ng-disabled="!main.PAGE.local.available_ips.length || (account.viewableAccounts | filter:{selected:1}).length == 0">
+                        <a href="" ng-click="main.toggleSort(account.acctTable, \'dedicated_ip\'); account.updateViewableAccounts()">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Dedicated IP' ]]);$output .= '
+                        </a>
+                    </div>
+                </th>
+                <th nonsortable="true">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Transfer Configuration' ]]);$output .= '
+                </th>
+                <th>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Overwrite' ]]);$output .= '
+                    <a ng-click="account.openOverwriteDescriptionModal()" href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Click to view information about the overwrite options.' ]]);$output .= '">
+                        <i class="fas fa-question-circle" aria-hidden="true"></i>
+                    </a>
+                </th>
+            </tr>
+        </thead>
+        <tbody ng-cloak>
+            ';$output .= "\n            <tr ng-class=\"account.getAccountRowClasses(acct)\" ng-repeat-start=\"acct in account.viewableAccounts track by \$index\" class=\"data-row\">\n                <td class=\"check-column\">\n                    <div class=\"table-action-checkbox-item\">\n                        <label class=\"table-action-checkbox-label\">\n                            <input\n                                bool-to-int type=\"checkbox\"\n                                id=\"move_for_{{acct.user}}\"\n                                ng-model=\"acct.selected\"\n                                ng-change=\"account.accountSelectionUpdated(acct); account.validateAccount(acct)\">\n                        </label>\n                    </div>\n                </td>\n                <td>\n                    <div class=\"row-expand-container\">\n                        <button id=\"lnkToggleViewInfo_{{acct.id}}\" class=\"btn btn-link\"\n                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Modify Transfer Configuration Options for “[_1]”.','{{acct.domain}}' ]]);$output .= '"
+                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Modify Transfer Configuration Options for “[_1]”.','{{acct.domain}}' ]]);$output .= '"
+                            ng-click="account.toggleAccountExpansion(acct);">
+                                <i class="fas" ng-class="account.getChevronClasses(acct)" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <span id="account-name_{{acct.id}}" class="account-name collapse-text">{{ acct.domain }}</span>
+                </td>
+                <td ng-class="main.selectedColClass(account.acctTable, \'user\')">
+                    <div class="form-group has-feedback"
+                            ng-class="account.getInputClass(acct)"
+                            ng-if="!main.PAGE.local.domains[acct.domain]">
+                        <input type="text"
+                            ng-model="acct.localuser"
+                            placeholder="{{acct.remote_user}}"
+                            class="form-control input-sm"
+                            autocomplete="off"
+                            data-lpignore="true"
+                            ng-change="account.updateAccountSetting(acct, \'overwrite_type\', account.overwriteOptions[0], true)"
+                            id="localuser_for_{{acct.remote_user}}"
+                            ng-debounce>
+                        <span class="glyphicon form-control-feedback"
+                            ng-class="account.getGlyphClass(acct)"></span>
+                    </div>
+                    <div ng-bind="acct.localuser" ng-if="main.PAGE.local.domains[acct.domain]"></div>
+                </td>
+                <td ng-if="::account.showColumn(\'bytesused\')" ng-class="main.selectedColClass(account.acctTable, \'bytesused\')">{{acct.size | bytes}}</td>
+                <td ng-if="::account.showColumn(\'owner\')" ng-bind="acct.owner" ng-class="main.selectedColClass(account.acctTable, \'owner\')"></td>
+                <td ng-if="::account.showColumn(\'dedicated_ip\')" class="cell">
+                    <input bool-to-int type="checkbox"
+                        id="ip_for_{{acct.remote_user}}"
+                        ng-model="acct.dedicated_ip"
+                        ng-change="account.accountSettingUpdated(acct)"
+                        ng-disabled="account.isDedicatedIpDisabled(acct)">
+                </td>
+                <td class="cell">
+                    <a href="javascript:void(0)" ng-click="account.toggleAccountExpansion(acct);">
+                        <span ng-bind="account.getCustomizeLabel(acct)"></span>
+                        <i class="fas fa-cogs" aria-hidden="true"></i>
+                    </a>
+                </td>
+                <td class="cell">
+                    <select
+                        ng-if="account.canNeedOverwrite(acct)"
+                        id="overwrite_type_for_{{acct.remote_user}}"
+                        ng-change="account.updateOverwriteFlags(acct, true)"
+                        ng-model="acct.overwrite_type"
+                        ng-options="item as item.label for item in ::account.overwriteOptions track by item.value"
+                        class="form-control"
+                        ng-disabled="acct.selected && acct.localuser !== acct.remote_user">
+                    </select>
+                </td>
+            </tr>
+
+            ';$output .= '
+            <tr ng-repeat-end ng-class="account.getAccountRowClasses(acct)" class="wordbreak" >
+                <td class="expand-panel-data" ng-if="account.isAccountExpanded(acct)" colspan="{{::account.numberOfColumns}}">
+                    <div class="list-panel expand-panel">
+                        <account-expand-panel
+                            id="{{acct.remote_user}}"
+                            skip-options="::account.skipOptions"
+                            proxy-option="::account.proxyOption"
+                            disable-live-transfers="account.disableLiveTransfers"
+                            account="acct"
+                            selected-accounts-count="{{ main.selectedAccounts.length }}"
+                            on-change="account.onExpandPanelOptionChanged(updatedAccount, modelKey, value)"
+                            on-apply-to-all="account.onExpandPanelApplyToAll(updatedAccount, main.selectedAccounts, skipOptions, workerOptions, proxyOption)"
+                            on-close="account.collapseAccount(updatedAccount)"
+                        ></account-expand-panel>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

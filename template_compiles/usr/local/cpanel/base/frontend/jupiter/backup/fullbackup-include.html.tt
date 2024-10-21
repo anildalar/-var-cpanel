@@ -1,0 +1,201 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/fullbackup-include.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="form-group">
+    <label id="lblBackupDest" for="backup_dest">
+        ';$output .= $stash->get(['locale',0,'maketext',['Backup Destination' ]]);$output .= '
+    </label>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <select name="dest" id="backup_dest" class="form-control">
+                <option value="homedir" selected="selected">';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= '</option>
+                <option value="ftp">';$output .= $stash->get(['locale',0,'maketext',['Remote FTP Server' ]]);$output .= '</option>
+                <option value="passiveftp">';$output .= $stash->get(['locale',0,'maketext',['Remote FTP Server (passive mode transfer):' ]]);$output .= '</option>
+                <option value="scp">';$output .= $stash->get(['locale',0,'maketext',['Secure Copy (SCP)' ]]);$output .= '</option>
+            </select>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+    </div>
+</div>
+<div class="form-group">
+    <label id="lblBackupEmail" for="backup_email">
+        ';$output .= $stash->get(['locale',0,'maketext',['Email Address' ]]);$output .= '
+    </label>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <input type="radio" name="email_radio" id="email_radio_enabled" value="1" onclick="this.form.email.disabled = false; email_validator.verify()" checked="checked" />
+                </span>
+                ';$stash->set('contact_email',$stash->get(['execute',['Variables','get_user_information',{'name'=>'contact_email' }],'data',0,'contact_email',0])|| '');$output .= '
+                <input type="text" class="form-control" name="email" id="backup_email" value="';$output .= $stash->get('contact_email');$output .= '" onchange="if (this.value.trim() === &quot;&quot;) { this.disabled = true; document.getElementById(&quot;email_radio_0&quot;).checked = true; email_validator.clear_messages() }" />
+            </div>
+        </div>
+        <div id="backup_email_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+    </div>
+</div>
+<div class="form-group">
+    <div class="radio">
+        <label id="lblEmailDisabled">
+            <input type="radio" id="email_radio_disabled" name="email_radio" value="0" onclick="this.form.email.disabled = true; email_validator.clear_messages()" />
+            ';$output .= $stash->get(['locale',0,'maketext',['Do not send email notification of backup completion.' ]]);$output .= '
+        </label>
+    </div>
+</div>
+
+<div id="backup_advanced" style="display: none">
+    <div class="form-group">
+        <label id="lblRemoteServer" for="backup_server">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote Server:' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="text" class="form-control" name="server" id="backup_server" />
+            </div>
+            <div id="backup_server_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblRemoteUser" for="backup_user">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote User:' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="text" class="form-control" name="user" id="backup_user" />
+            </div>
+            <div id="backup_user_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblRemotePassword" for="backup_pass">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote Password:' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="password" autocomplete=\'off\' class="form-control" name="pass" id="backup_pass" />
+            </div>
+            <div id="backup_pass_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblRemotePort" for="backup_port">
+            ';$output .= $stash->get(['locale',0,'maketext',['Port:' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="text" class="form-control" name="port" id="backup_port" />
+            </div>
+            <div id="backup_port_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label id="lblRemoteDir" for="backup_rdir">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote Dir:' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="text" class="form-control" name="rdir" id="backup_rdir" />
+            </div>
+            <div id="backup_rdir_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <input type="submit" class="btn btn-primary" id="backup_submit" value="';$output .= $stash->get(['locale',0,'maketext',['Generate Backup' ]]);$output .= '" />
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+var email_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Notification Email' ]]);$output .= '");
+var raddress_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Remote Server Address' ]]);$output .= '");
+var ruser_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Remote Server User' ]]);$output .= '");
+var rpassword_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Remote Server Password' ]]);$output .= '");
+var rport_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Remote Server Port' ]]);$output .= '");
+var rdirectory_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Remote Server Directory' ]]);$output .= '");
+
+// address cannot be empty or contain spaces
+var raddress = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value != "homedir") {
+        var value = YAHOO.util.Dom.get("backup_server").value;
+        if (CPANEL.validate.min_length(value, 1) == false) return false;
+        if (CPANEL.validate.no_chars(value, " ") == false) return false;
+        return true;
+    }
+    else return true;
+};
+
+// user cannot be empty
+var ruser = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value != "homedir") {
+        return CPANEL.validate.min_length(YAHOO.util.Dom.get("backup_user").value, 1);
+    }
+    else return true;
+};
+
+// password cannot be blank
+var rpassword = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value != "homedir") {
+        return CPANEL.validate.min_length(YAHOO.util.Dom.get("backup_pass").value, 1);
+    }
+    else return true;
+};
+
+// port must be a positive integer or blank
+var rport = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value != "homedir" && YAHOO.util.Dom.get("backup_port").value) {
+        return CPANEL.validate.positive_integer(YAHOO.util.Dom.get("backup_port").value);
+    }
+    else return true;
+};
+
+// directory must be a valid dir_path or blank
+var rdirectory = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value != "homedir" && YAHOO.util.Dom.get("backup_rdir").value) {
+        return CPANEL.validate.dir_path(YAHOO.util.Dom.get("backup_rdir").value);
+    }
+    else return true;
+};
+
+var switch_destination = function() {
+    if (YAHOO.util.Dom.get("backup_dest").value == "homedir") {
+        raddress_validator.clear_messages();
+        ruser_validator.clear_messages();
+        rpassword_validator.clear_messages();
+        rport_validator.clear_messages();
+        rdirectory_validator.clear_messages();
+        CPANEL.animate.slide_up(\'backup_advanced\');
+    }
+    else if ( DOM.getStyle(\'backup_advanced\',\'display\') == \'none\' ) {
+        CPANEL.animate.slide_down( \'backup_advanced\', function() {
+            YAHOO.util.Dom.get("backup_server").focus();
+        });
+    }
+};
+
+var init_backup = function() {
+    email_validator.add("backup_email", "email", "';$output .= $stash->get(['locale',0,'maketext',['Invalid Email Address' ]]);$output .= '");
+    email_validator.attach();
+
+    raddress_validator.add("backup_server", raddress, "';$output .= $stash->get(['locale',0,'maketext',['Remote server cannot be empty or have spaces.' ]]);$output .= '");
+    raddress_validator.attach();
+
+    ruser_validator.add("backup_user", ruser, "';$output .= $stash->get(['locale',0,'maketext',['Remote user cannot be empty.' ]]);$output .= '");
+    ruser_validator.attach();
+
+    rpassword_validator.add("backup_pass", rpassword, "';$output .= $stash->get(['locale',0,'maketext',['Remote password cannot be empty.' ]]);$output .= '");
+    rpassword_validator.attach();
+
+    rport_validator.add("backup_port", rport, \'';$output .= $stash->get(['locale',0,'maketext',['Remote port must be a positive integer.' ]]);$output .= '\');
+    rport_validator.attach();
+
+    rdirectory_validator.add("backup_rdir", rdirectory, \'';$output .= $stash->get(['locale',0,'maketext',['Directory paths cannot be empty or contain the following characters: ? % * : | [output,quot] [output,gt] [output,lt]' ]]);$output .= '\');
+    rdirectory_validator.attach();
+
+    YAHOO.util.Event.on("backup_dest", "change", switch_destination);
+
+    CPANEL.validate.attach_to_form("backup_submit", [email_validator, raddress_validator, ruser_validator, rpassword_validator, rport_validator, rdirectory_validator]);
+
+    switch_destination();
+};
+YAHOO.util.Event.onDOMReady(init_backup);
+//]]>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

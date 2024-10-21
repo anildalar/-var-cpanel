@@ -1,0 +1,155 @@
+Template::Document->new({METADATA=>{'name'=>'/var/cpanel/templates/apache2_4/ssl_vhost.default','modtime'=>'1710374400',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<VirtualHost';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['vhost',0,'ips',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ipblock'}=$_tt_value;$output .= ' ';$output .= $stash->get(['ipblock',0,'ip',0]);$output .= ':';$output .= $stash->get(['ipblock',0,'port',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '>
+  ServerName ';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'servername',0])]]);$output .= '
+';if ($stash->get(['vhost',0,'serveralias_array',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['vhost',0,'serveralias_array',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'alias'}=$_tt_value;$output .= '  ServerAlias ';$output .= $stash->get('alias');$output .= '
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '  ServerAlias ';$output .= $stash->get(['vhost',0,'serveralias',0]);$output .= '
+'}if ($stash->get(['vhost',0,'uid',0])){$output .= '
+  <IfModule env_module>
+   SetEnv USER_ID ';$output .= $stash->get(['vhost',0,'uid',0]);$output .= '
+  </IfModule>
+'}if ($stash->get(['vhost',0,'proxy_backend',0])){$output .= '  SSLProxyEngine on
+  <Location "/">
+    ProxyPass "https://';$output .= $stash->get(['vhost',0,'proxy_backend',0]);$output .= '/"
+    ProxyPreserveHost on
+  </Location>
+'}$output .= '  DocumentRoot ';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '
+';if ($stash->get(['vhost',0,'serveradmin',0])){$output .= '  ServerAdmin ';$output .= $stash->get(['vhost',0,'serveradmin',0]);$output .= '
+'}else {$output .= "\n  ServerAdmin webmaster\@";$output .= $stash->get(['vhost',0,'servername',0]);$output .= '
+'}if ($stash->get(['vhost',0,'usecanonicalname',0])){$output .= '  UseCanonicalName ';$output .= $stash->get(['vhost',0,'usecanonicalname',0]);$output .= '
+'}else {$output .= '
+  UseCanonicalName Off
+'}if (!$stash->get(['vhost',0,'hascgi',0])){$output .= '  Options -ExecCGI -Includes
+  RemoveHandler cgi-script .cgi .pl .plx .ppl .perl
+'}if ($stash->get('logstyle')eq 'combined'){if (!$stash->get('enable_piped_logs')||!$stash->get(['supported',0,'mod_log_config',0])){$output .= '  CustomLog ';$output .= $stash->get(['paths',0,'dir_domlogs',0]);$output .= '/';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'log_servername',0])]]);$output .= '-ssl_log combined env=!isproxyrequest'}$output .= '
+'}elsif ($stash->get('logstyle')eq 'common'){if (!$stash->get('enable_piped_logs')||!$stash->get(['supported',0,'mod_log_config',0])){$output .= '  CustomLog ';$output .= $stash->get(['paths',0,'dir_domlogs',0]);$output .= '/';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'log_servername',0])]]);$output .= '-ssl_log common env=!isproxyrequest'}$output .= '
+'}else {$output .= '
+  TransferLog ';$output .= $stash->get(['paths',0,'dir_domlogs',0]);$output .= '/';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'log_servername',0])]]);$output .= '-ssl_log
+'}if (!$stash->get('enable_piped_logs')){$output .= '  <IfModule log_config_module>
+    <IfModule logio_module>
+      CustomLog ';$output .= $stash->get(['paths',0,'dir_domlogs',0]);$output .= '/';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'log_servername',0])]]);$output .= "-bytes_log \"%{%s}t %I .\\n%{%s}t %O .\" env=!isproxyrequest\n    </IfModule>\n  </IfModule>\n"}$output .= '  ## User ';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' # Needed for Cpanel::ApacheConf
+  <IfModule userdir_module>
+    <IfModule !mpm_itk.c>
+      <IfModule !ruid2_module>
+        <IfModule !mod_passenger.c>';if ($stash->get('userdirprotect_enabled')){if ($stash->get(['vhost',0,'userdirprotect',0])eq '-1'){$output .= '
+          UserDir enabled'}else {$output .= '
+          UserDir disabled
+          UserDir enabled ';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'userdirprotect',0])}}else {if ($stash->get(['vhost',0,'user',0])ne 'nobody'){$output .= '
+          UserDir enabled ';$output .= $stash->get(['vhost',0,'user',0])}}$output .= '
+        </IfModule>
+      </IfModule>
+    </IfModule>
+  </IfModule>
+
+  # Enable backwards compatible Server Side Include expression parser for Apache versions >= 2.4.
+  # To selectively use the newer Apache 2.4 expression parser, disable SSILegacyExprParser in
+  # the user\'s .htaccess file.  For more information, please read:
+  #    http://httpd.apache.org/docs/2.4/mod/mod_include.html#ssilegacyexprparser
+  <IfModule mod_include.c>
+    <Directory "';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '">
+      SSILegacyExprParser On
+    </Directory>
+  </IfModule>
+
+  ';if ($stash->get(['vhost',0,'optimize_htaccess',0])&& $stash->get(['vhost',0,'optimize_htaccess',0])ne 'search_full_path'){$output .= '
+    ';if ($stash->get(['vhost',0,'optimize_htaccess',0])eq 'search_homedir_below'){$output .= '
+      <Directory "';$output .= $stash->get(['vhost',0,'homedir',0]);$output .= '">
+        AllowOverride All
+      </Directory>
+    '}elsif ($stash->get(['vhost',0,'optimize_htaccess',0])eq 'search_documentroot_below'){$output .= '
+      <Directory "';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '">
+        AllowOverride All
+      </Directory>
+    '}elsif ($stash->get(['vhost',0,'optimize_htaccess',0])eq 'disable_htaccess'){$output .= '
+      <Directory "/">
+       AllowOverride None
+      </Directory>
+    '}else {$output .= '
+      <Directory "/">
+        AllowOverride All
+      </Directory>
+    '}$output .= '
+  '}$output .= "\n  <Proxymatch ^https?://127\\.0\\.0\\.1:(2082|2083|2077|2078|2079|2080|2086|2087|2095|2096)/>\n       <IfModule security2_module>\n          SecRuleEngine Off\n       </IfModule>\n       <IfModule security3_module>\n          modsecurity_rules 'SecRuleEngine Off'\n       </IfModule>\n  </Proxymatch>\n\n  <IfModule mod_suphp.c>\n    suPHP_UserGroup ";$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'group',0]);$output .= '
+  </IfModule>
+';if ($stash->get(['vhost',0,'user',0])ne 'nobody'){$output .= '  <IfModule suexec_module>
+    <IfModule !mod_ruid2.c>
+      SuexecUserGroup ';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'group',0]);$output .= '
+    </IfModule>
+  </IfModule>
+  <IfModule ruid2_module>
+    RMode config
+    RUidGid ';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'group',0]);$output .= '
+';if ($stash->get('jailapache')&& $stash->get(['vhost',0,'jailed',0])){$output .= '    RDocumentChRoot /home/virtfs/';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '
+'}$output .= '  </IfModule>
+  <IfModule mpm_itk.c>
+    # For more information on MPM ITK, please read:
+    #   http://mpm-itk.sesse.net/
+    AssignUserID ';$output .= $stash->get(['vhost',0,'user',0]);$output .= ' ';$output .= $stash->get(['vhost',0,'group',0]);$output .= '
+  </IfModule>
+  <IfModule mod_passenger.c>
+    PassengerUser ';$output .= $stash->get(['vhost',0,'user',0]);$output .= '
+    PassengerGroup ';$output .= $stash->get(['vhost',0,'group',0]);$output .= '
+  </IfModule>
+'}if ($stash->get(['vhost',0,'secruleengineoff',0])){$output .= '
+  <IfModule mod_security2.c>
+    SecRuleEngine Off
+  </IfModule>
+  <IfModule security3_module>
+    modsecurity_rules \'SecRuleEngine Off\'
+  </IfModule>'}$output .= '
+';if ($stash->get(['vhost',0,'hascgi',0])&& $stash->get('scriptalias')eq 1){$output .= '  <IfModule alias_module>
+    ScriptAlias /cgi-bin/ ';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '/cgi-bin/
+  </IfModule>
+'}$output .= '  <IfModule ssl_module>
+    SSLEngine on
+    ';if ($stash->get(['vhost',0,'sslciphersuite',0,'length',0])){$output .= 'SSLCipherSuite ';$output .= $stash->get(['vhost',0,'sslciphersuite',0])}$output .= '
+    SSLCertificateFile ';$output .= $stash->get(['vhost',0,'sslcertificatefile',0]);$output .= '
+';$output .= '
+';if ($stash->get(['vhost',0,'sslcertificatekeyfile',0])){$output .= '    SSLCertificateKeyFile ';$output .= $stash->get(['vhost',0,'sslcertificatekeyfile',0]);$output .= '
+'}if ($stash->get(['vhost',0,'sslcacertificatefile',0])){$output .= '    SSLCACertificateFile ';$output .= $stash->get(['vhost',0,'sslcacertificatefile',0]);$output .= '
+'}if ($stash->get(['supported',0,'stapling',0])&&!$stash->get(['has_ocsp',[$stash->get(['vhost',0,'sslcertificatefile',0])]])){$output .= '    SSLUseStapling off
+'}$output .= '    <Directory "';$output .= $stash->get(['vhost',0,'documentroot',0]);$output .= '/cgi-bin">
+      SSLOptions +StdEnvVars
+    </Directory>
+  </IfModule>';$stash->set('added_include',0);if ($stash->get(['file_test',['d',$stash->get(['paths',0,'dir_conf_userdata',0])]])){if ($stash->get(['cachedfglob',[$stash->get(['paths',0,'dir_conf_userdata',0]).'/*.conf' ]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get(['paths',0,'dir_conf_userdata',0]);$output .= '/*.conf"'}if ($stash->get(['vhost',0,'owner',0])&& $stash->get(['cachedfglob',[$stash->get(['paths',0,'dir_conf_userdata',0]).'/*.owner-' .$stash->get(['vhost',0,'owner',0])]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get(['paths',0,'dir_conf_userdata',0]);$output .= '/*.owner-';$output .= $stash->get(['vhost',0,'owner',0]);$output .= '"'}if ($stash->get(['file_test',['d',$stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl' ]])){if ($stash->get(['cachedfglob',[$stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl/*.conf' ]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get(['paths',0,'dir_conf_userdata',0]);$output .= '/ssl/*.conf"'}if ($stash->get(['vhost',0,'owner',0])&& $stash->get(['cachedfglob',[$stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl/*.owner-' .$stash->get(['vhost',0,'owner',0])]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get(['paths',0,'dir_conf_userdata',0]);$output .= '/ssl/*.owner-';$output .= $stash->get(['vhost',0,'owner',0]);$output .= '"'}$output .= '
+        ';$stash->set('vhost_include_base','');$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[($stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl/' .$stash->get('apache_target_version').'/'),($stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl/2/')];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'vhost_include_dir'}=$_tt_value;$output .= '
+            ';if ($stash->get(['file_test',['d',$stash->get('vhost_include_dir')]])){$output .= '
+                ';$stash->set('vhost_include_base',$stash->get('vhost_include_dir'));$output .= '
+                ';last FOR1;$output .= '
+            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('vhost_include_base')){if ($stash->get(['cachedfglob',[$stash->get('vhost_include_base').'*.conf' ]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get('vhost_include_base');$output .= '*.conf"'}if ($stash->get(['vhost',0,'owner',0])&& $stash->get(['cachedfglob',[$stash->get('vhost_include_base').'*.owner-' .$stash->get(['vhost',0,'owner',0])]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get('vhost_include_base');$output .= '*.owner-';$output .= $stash->get(['vhost',0,'owner',0]);$output .= '"'}if ($stash->get(['file_test',['d',$stash->get('vhost_include_base').$stash->get(['vhost',0,'user',0])]])){if ($stash->get(['fglob',[$stash->get('vhost_include_base').$stash->get(['vhost',0,'user',0]).'/*.conf' ]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get('vhost_include_base');$output .= $stash->get(['vhost',0,'user',0]);$output .= '/*.conf"'}$stash->set('domains_list',$stash->get(['vhost',0,'serveralias',0,'split',[' ' ]]));$output .= $stash->get(['domains_list',0,'push',[$stash->get(['vhost',0,'servername',0])]]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['domains_list',0,'unique',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$stash->set('domain',$stash->get(['legacy_wildcard_safe',[$stash->get('domain')]]));if ($stash->get(['file_test',['d',$stash->get('vhost_include_base').$stash->get(['vhost',0,'user',0]).'/' .$stash->get('domain')]])){if ($stash->get(['fglob',[$stash->get('vhost_include_base').$stash->get(['vhost',0,'user',0]).'/' .$stash->get('domain').'/*.conf' ]])){$stash->set('added_include',1);$output .= '
+    Include "';$output .= $stash->get('vhost_include_base');$output .= $stash->get(['vhost',0,'user',0]);$output .= '/';$output .= $stash->get('domain');$output .= '/*.conf"'}};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}}}}if ($stash->get(['vhost',0,'php_fpm',0])){$output .= "\n    <IfModule proxy_fcgi_module>\n        <FilesMatch \\.(phtml|php[0-9]*)\$>\n            SetHandler proxy:unix:";$output .= $stash->get(['vhost',0,'php_fpm_socket',0]);$output .= '|fcgi://';$output .= $stash->get(['wildcard_safe',[$stash->get(['vhost',0,'servername',0])]]);$output .= '
+        </FilesMatch>
+    </IfModule>'}$output .= '
+
+';if ($stash->get('apache_target_version')){$stash->set('vhost_include_base',$stash->get(['paths',0,'dir_conf_userdata',0]).('/ssl/' .$stash->get('apache_target_version').'/'));$output .= '
+'}else {$stash->set('vhost_include_base',$stash->get(['paths',0,'dir_conf_userdata',0]).'/ssl/2_4/');$output .= '
+'}$stash->set('domain',$stash->get(['legacy_wildcard_safe',[$stash->get(['vhost',0,'servername',0])]]));$output .= '
+
+  # To customize this VirtualHost use an include file at the following location
+  # Include "';$output .= $stash->get('vhost_include_base');$output .= $stash->get(['vhost',0,'user',0]);$output .= '/';$output .= $stash->get('domain');$output .= '/*.conf"
+';if ($stash->get('proxysubdomains')&& $stash->get(['vhost',0,'proxy_subdomains',0])&& $stash->get(['supported',0,'mod_proxy',0])&& $stash->get(['supported',0,'mod_rewrite',0])){$output .= '
+    <IfModule headers_module>
+    RequestHeader set X-HTTPS 1
+    </IfModule>
+    RewriteEngine On';if ($stash->get(['vhost',0,'proxy_subdomains',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['vhost',0,'proxy_subdomains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'label__zones'}=$_tt_value;do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['label__zones',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'basezone'}=$_tt_value;$output .= '
+                RewriteCond %{HTTP_HOST} =';$output .= $stash->get(['label__zones',0,'key',0]);$output .= '.';$output .= $stash->get('basezone');$output .= ' [OR]
+                RewriteCond %{HTTP_HOST} =';$output .= $stash->get(['label__zones',0,'key',0]);$output .= '.';$output .= $stash->get('basezone');$output .= ':';$output .= $stash->get(['vhost',0,'port',0]);$output .=!$stash->get(['loop',0,'last',0])&& ' [OR]';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            RewriteCond %{HTTP:Upgrade} !websocket   [nocase]
+
+            ';$output .= $stash->get(['proxy_subdomain_redirect_rule',[$stash->get(['label__zones',0,'key',0])]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['vhost',0,'proxy_subdomains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'label__zones'}=$_tt_value;$stash->set('ws_redirect',$stash->get(['proxy_subdomain_websocket_redirect_rule_if_exists',[$stash->get(['label__zones',0,'key',0])]]));if ($stash->get('ws_redirect')){$output .= '
+                RewriteCond %{HTTP:Upgrade} websocket   [nocase]';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['label__zones',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'basezone'}=$_tt_value;$output .= '
+                    RewriteCond %{HTTP_HOST} =';$output .= $stash->get(['label__zones',0,'key',0]);$output .= '.';$output .= $stash->get('basezone');$output .= ' [OR]
+                    RewriteCond %{HTTP_HOST} =';$output .= $stash->get(['label__zones',0,'key',0]);$output .= '.';$output .= $stash->get('basezone');$output .= ':';$output .= $stash->get(['vhost',0,'port',0]);$output .=!$stash->get(['loop',0,'last',0])&& ' [OR]';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+                ';$output .= $stash->get('ws_redirect')};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= "\n\n    RewriteRule ^/Microsoft-Server-ActiveSync /___proxy_activesync/\$1 [PT]\n    ProxyPass \"/___proxy_activesync\" \"http://127.0.0.1:2090/Microsoft-Server-ActiveSync\" max=1 retry=0"}$output .= '
+</VirtualHost>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

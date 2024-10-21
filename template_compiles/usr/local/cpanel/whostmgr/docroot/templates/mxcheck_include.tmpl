@@ -1,0 +1,90 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mxcheck_include.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h3>';$output .= $stash->get(['locale',0,'maketext',['Email Routing for “[_1]” (The domain is owned by “[_2]”).',$stash->get(['data',0,'domain',0]),$stash->get(['data',0,'downer',0])]]);$output .= '</h3>
+<div class="label_wraps">
+<input type="radio" name="mxcheck" id="mxcheck_auto" value="auto"
+
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'auto'){$output .= '
+        checked="checked"
+    '}$output .= '
+
+/> <label
+
+
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'auto'){$output .= '
+        style="font-weight:700;"
+    '}$output .= '
+
+
+for="mxcheck_auto" class="label_txt" id="mxcheck_auto_label">';$output .= $stash->get(['locale',0,'maketext',['Automatically Detect Configuration' ]]);$output .= ': </label><span class="status" id="mxcheck_auto_current_setting" style="font-weight: bold">';$output .= $stash->get(['data',0,'detectedtxt',0]);$output .= '</span> ';$output .= $stash->get(['locale',0,'maketext',['(recommended)' ]]);$output .= ' <span class="action_link" id="mxcheck_auto_toggle" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_auto_desc\');">';$output .= $stash->get(['LOCALE',0,'maketext',['more »' ]]);$output .= '</span><br />
+<div id="mxcheck_auto_desc" style="display: none">
+    <ul class="mxcheck_autolist">
+        <li>
+			';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_local"></span><br />
+			<em>';$output .= $stash->get(['locale',0,'maketext',['If the lowest numbered mail exchanger points to an IP address on this server, the server will be configured to accept mail locally and from outside the server.' ]]);$output .= '</em>
+        </li>
+        <li>
+			';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_secondary"></span><br />
+            <em>';$output .= $stash->get(['locale',0,'maketext',['If a mail exchanger that is not the lowest numbered mail exchanger points to an IP address on this server, the server will be configured to act as a backup mail exchanger.' ]]);$output .= '</em>
+        </li>
+        <li>
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_remote"></span><br />
+			<em>';$output .= $stash->get(['locale',0,'maketext',['If there are no mail exchangers that point to an IP address on this server, the server will not accept mail locally and will send mail to the lowest MX record.' ]]);$output .= '</em>
+        </li>
+    </ul>
+	<p>';$output .= $stash->get(['locale',0,'maketext',['Note: It is not possible to automatically detect an MX configuration if the MX entries do not resolve (for example, if you mistype a domain name or enter one that does not exist). If your MX configuration is set to auto and you add or edit an MX record that does not resolve, you will see a warning and the MX configuration will default to the last known setting.' ]]);$output .= '</p>
+
+';if ($stash->get(['acl',0,'all',0])){$output .= '
+<p>';$output .= $stash->get(['locale',0,'maketext',['If you have IP addresses that are not bound to any network device on this server and you would like automatic selection to consider them as local, you can edit the list of additional local IP addresses [output,url,_1,here,target,_blank].',$stash->get('cp_security_token').'/scripts6/editremoteipslist' ]]);$output .= '</p>
+'}$output .= '
+
+</div>
+</div>
+<div class="label_wraps">
+	<input
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'local'){$output .= '
+        checked="checked"
+    '}$output .= '
+
+    type="radio" name="mxcheck" id="mxcheck_local" value="local" /> <label
+
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'local'){$output .= '
+        style="font-weight:700;"
+    '}$output .= '
+
+
+    for="mxcheck_local" class="label_txt" id="mxcheck_local_label">';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_local_desc\');">';$output .= $stash->get(['LOCALE',0,'maketext',['more »' ]]);$output .= '</span><br />
+	<div id="mxcheck_local_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure server to always accept mail. Mail will be delivered locally on the server when sent from the server or outside the server.' ]]);$output .= '</em></p></div>
+</div>
+<div class="label_wraps">
+	<input
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'secondary'){$output .= '
+        checked="checked"
+    '}$output .= '
+
+
+        type="radio" name="mxcheck" id="mxcheck_secondary" value="secondary" /> <label
+
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'secondary'){$output .= '
+        style="font-weight:700;"
+    '}$output .= '
+
+        for="mxcheck_secondary" class="label_txt" id="mxcheck_secondary_label">';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_secondary_desc\');">';$output .= $stash->get(['LOCALE',0,'maketext',['more »' ]]);$output .= '</span><br />
+	<div id="mxcheck_secondary_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure server as a backup mail exchanger. Mail will be held until a lower number mail exchanger is available.' ]]);$output .= '</em></p></div>
+</div>
+<div class="label_wraps">
+	<input
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'remote'){$output .= '
+        checked="checked"
+    '}$output .= '
+
+    type="radio" name="mxcheck" id="mxcheck_remote" value="remote" /> <label
+
+    ';if ($stash->get(['data',0,'mxcheck',0])eq 'remote'){$output .= '
+        style="font-weight:700;"
+    '}$output .= '
+        class="label_txt" for="mxcheck_remote" id="mxcheck_remote_label">';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_remote_desc\');">';$output .= $stash->get(['LOCALE',0,'maketext',['more »' ]]);$output .= '</span><br />
+	<div id="mxcheck_remote_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure server to not accept mail locally and send mail to the lowest MX record.' ]]);$output .= '</em></p></div>
+</div>
+
+    <em>';$output .= $stash->get(['locale',0,'maketext',['The current setting is shown in [output,strong,bold].' ]]);$output .= '</em><br /><br />
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/AdminBin/FullBackup.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'pkgfile',0])){if ($stash->get(['NOTICE',0,'errors',0,'size',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['A full backup has completed, but the upload has failed.' ]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['A full backup has completed and is available for download.' ]]))}}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['An attempt to create a full backup has failed.' ]]))}$stash->set(['NOTICE',0,'prettydest',0],($stash->get(['NOTICE',0,'backupdest',0])eq 'passiveftp' ? 'Passive FTP' : ($stash->get(['NOTICE',0,'backupdest',0])eq 'ftp' ? 'FTP' : ($stash->get(['NOTICE',0,'backupdest',0])eq 'scp' ? 'SCP' : 'Unknown'))));$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'pkgfile',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can access a list of locally-stored backups via [asis,cPanel]’s “[_1]” interface:',$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup' ]])]]);$output .= '
+        <br />
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['cPanel' ]]);$output .= '
+         &gt; ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Backup' ]]);$output .= '
+         &gt; ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Download a Full Account Backup' ]]);$output .= '
+        (';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,url,_1,_1,target,_2]',$stash->get(['NOTICE',0,'backup_url',0]),'_blank' ]]);$output .= ')
+        <br />
+        <br />
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The backup file is named “[_1]”',$stash->get(['NOTICE',0,'pkgfile',0])]]);$output .= '<br />
+        ';if ($stash->get(['NOTICE',0,'backupdest',0])ne 'homedir'){$output .= '
+            ';if ($stash->get(['NOTICE',0,'pkgdir',0])){$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The backup transferred via “[_1]” to the server “[_2]” as user “[_3]” in the “[_4]” directory.',$stash->get(['NOTICE',0,'prettydest',0]),$stash->get(['NOTICE',0,'ftpserver',0]),$stash->get(['NOTICE',0,'ftpuser',0]),$stash->get(['NOTICE',0,'pkgdir',0])]]);$output .= '<br />
+            '}else {$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The backup transferred via “[_1]” to the server “[_2]” as user “[_3]” in the default directory.',$stash->get(['NOTICE',0,'prettydest',0]),$stash->get(['NOTICE',0,'ftpserver',0]),$stash->get(['NOTICE',0,'ftpuser',0])]]);$output .= '<br />
+            '}$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The server saved the backup file in the “[_1]” directory.',$stash->get(['NOTICE',0,'pkgdir',0])]]);$output .= '<br />
+        '}$output .= '
+    ';$output .= '
+
+    '}else {$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can try again via [asis,cPanel]’s “[_1]” interface with the “[_2]” button.',$stash->get(['CPANEL',0,'locale',0,'maketext',['Backup' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Download a Full Account Backup' ]])]]);$output .= '<br />
+    '}$output .= '
+
+    ';if ($stash->get(['NOTICE',0,'errors',0,'size',0])){$output .= $context->process('include/zebra_table.tmpl');$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'errors',0]),'titles'=>[$stash->get(['CPANEL',0,'locale',0,'maketext',['The backup process encountered the following [numerate,_1,error,errors]:',$stash->get(['NOTICE',0,'errors',0,'size',0])]])]}]])}$output .= '
+</p>
+<p style="';$output .= $stash->get('font_style');$output .= ';font-size:11px;">
+   ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The raw log file is attached to this email.' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

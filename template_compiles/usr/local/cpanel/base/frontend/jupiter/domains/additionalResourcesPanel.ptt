@@ -1,0 +1,76 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/domains/additionalResourcesPanel.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Master',$context->plugin('Master'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('applist',['email_accounts','site_publisher','zone_editor','redirects','cpanel-sitejet-plugin' ]);$stash->set('apps',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('applist');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'applist_item'}=$_tt_value;$stash->set(['apps',0,$stash->get('applist_item'),0],$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},$stash->get('applist_item')]]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+<div class="panel panel-default">
+    <div class="panel-heading">
+        ';$output .= $stash->get(['locale',0,'maketext',['Additional Resources' ]]);$output .= '
+    </div>
+    <table class="table table-condensed">
+        <tbody>
+            ';if ($stash->get(['apps',0,'email_accounts',0])){$output .= '
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-link"
+                        ng-if="domain.domain.substr(0,1) !== \'*\'"
+                        ng-href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= $stash->get(['apps',0,'email_accounts',0,'url',0]);$output .= '#/create?domain={{currentDomain.domain}}"
+                        target="';$output .= $stash->get(['apps',0,'email_accounts',0,'target',0])? $stash->get(['apps',0,'email_accounts',0,'target',0]): '_blank';$output .= '">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Create an Email Address' ]]);$output .= '</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            '}$output .= '
+            ';if ($stash->get(['apps',0,'item',['cpanel-sitejet-plugin' ]])){$output .= '
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-link"
+                        ng-href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= $stash->get(['apps',0,'item',['cpanel-sitejet-plugin' ],'url',0]);$output .= '#/create?site_id={{currentDomain.domain}}"
+                    >
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Create a Site with Sitejet Builder' ]]);$output .= '</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            '}else {$output .= '
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-link"
+                        ng-href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= $stash->get(['apps',0,'site_publisher',0,'url',0]);$output .= '#/publish?domain={{currentDomain.domain}}"
+                        target="';$output .= $stash->get(['apps',0,'site_publisher',0,'target',0])? $stash->get(['apps',0,'site_publisher',0,'target',0]): '_blank';$output .= '">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Create a site with Site Publisher' ]]);$output .= '</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            '}$output .= '
+            ';if ($stash->get(['apps',0,'zone_editor',0])){$output .= '
+            <tr ng-if="currentDomain.type != \'subdomain\'">
+                <td>
+                    <a
+                        class="btn btn-link"
+                        ng-href="';$output .= $stash->get(['apps',0,'zone_editor',0,'url',0]);$output .= '#/manage?domain={{currentDomain.domain}}"
+                        target="';$output .= $stash->get(['apps',0,'zone_editor',0,'target',0])? $stash->get(['apps',0,'zone_editor',0,'target',0]): '_blank';$output .= '">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Modify the Zones' ]]);$output .= '</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            '}$output .= '
+            ';if ($stash->get(['apps',0,'redirects',0])){$output .= '
+            <tr>
+                <td>
+                    <a
+                        class="btn btn-link"
+                        ng-href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= $stash->get(['apps',0,'redirects',0,'url',0]);$output .= '#/manage/{{currentDomain.domain}}"
+                        target="';$output .= $stash->get(['apps',0,'redirects',0,'target',0])? $stash->get(['apps',0,'redirects',0,'target',0]): '_blank';$output .= '">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Modify the Redirects' ]]);$output .= '</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+            '}$output .= '
+        </tbody>
+    </table>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

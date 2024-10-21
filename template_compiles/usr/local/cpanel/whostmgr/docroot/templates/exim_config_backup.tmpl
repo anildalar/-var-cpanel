@@ -1,0 +1,94 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/exim_config_backup.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+    ';if ($stash->get('run')){$output .= '
+
+        ';$stash->set('tabid','backup');$output .= '
+
+        ';$output .= $context->process('notify_displayeximconfforedit.tmpl');$output .= '
+
+        ';if ($stash->get(['backup',0,'status',0])){$output .= '
+            <div class="okmsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['backup',0,'statusmsg',0])]]);$output .= '</div>
+        '}else {$output .= '
+            <div class="errormsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['backup',0,'statusmsg',0])]]);$output .= '</div>
+        '}$output .= '
+
+
+        ';if ($stash->get(['backup',0,'status',0])eq 1){$output .= '
+            ';if ($stash->get(['backup',0,'type',0])eq 'download'){$output .= '
+                <script>
+                var Event = YAHOO.util.Event;
+                function download_backup() {
+                            if (YAHOO.env.ua.ie > 0)  {
+                                var download_box = document.createElement(\'iframe\');
+                                download_box.name = "download_box_" + Math.random();
+                                download_box.style.display = \'none\';
+                                download_box.src = "';$output .= $stash->get('cp_security_token');$output .= '/file-download/';$output .= $stash->get(['backup',0,'fileid',0]);$output .= '";
+                                document.body.appendChild(download_box);
+
+                                var interval_id = setInterval( function() {
+                                        document.body.removeChild(download_box);
+                                        clearInterval(interval_id);
+                                        }, 300000 ); // remove after 5 minutes so they can still click ok in firefox
+                            } else {
+                                window.location.href = \'';$output .= $stash->get('cp_security_token');$output .= '/file-download/';$output .= $stash->get(['backup',0,'fileid',0]);$output .= '\';
+                            }
+                }
+
+                Event.on(window, "load", download_backup);
+                </script>
+            '}else {$output .= '
+                The Exim Configuration Backup has been saved on the server as ';$output .= $stash->get(['backup',0,'file',0]);$output .= '.   If you want to restore this backup in the future, you can do so in the Restore Tab.
+                <script src="';$output .= $stash->get(['MagicRevision',['/js/exim_tabs_optimized.js' ]]);$output .= '"></script>
+
+                <script>
+                    var Event = YAHOO.util.Event;
+                    ';if ($stash->get('in_tab')){$output .= '
+                        Event.on(window, "load", function() {
+                            console.log(parent);
+                            console.log(parent.reload_tab);
+
+                                parent.reload_tab(\'restore\');
+                        });
+                    '}$output .= '
+               </script>
+            '}$output .= '
+
+
+        '}$output .= '
+
+
+    '}else {$output .= '
+       ';$output .= do {my$output='';$output .= '       <p>You can save a backup file of the currently installed configuration for Exim. You can upload and restore the configuration later using the <em>Restore</em> tab.</p>
+       <form id="backup_form" ';if ($stash->get('in_tab')){$output .= 'target="tabaction"'}$output .= ' action="exim_config_backup" method="POST" onSubmit="notify_parent_submit();">
+             <input type="hidden" name="run" value="1">
+             <input type="hidden" name="in_tab" value="';$output .= $stash->get('in_tab');$output .= '">
+             <div>
+                <div>
+                        <input checked="checked" type="radio" name="backuptype" value="download" id="backuptype_download"><label for="backuptype_download"><strong>Download</strong></label> &mdash; This option saves the backup file on your local computer, which may offer greater security. Later, when you click the <em>Restore</em> tab, you will need to find and upload the file.
+                </div>
+                <div>
+                        <input type="radio" name="backuptype" value="server" id="backuptype_server"><label for="backuptype_server"><strong>Save on Server</strong></label> &mdash; When you click <em>Restore</em>, the backup file appears in a table. This option requires fewer steps.</div>
+                </div>
+                <input type="submit" value="Run Backup" class="btn-primary" />
+       </form>
+        ';$context->include('_brick.tmpl',{'bricktitle'=>'Backup the Exim configuration','brickpercent'=>'auto','content',$output })};$output .= '
+
+        <script>
+        function notify_parent_submit() {
+            if (parent && parent.notify_submit)  {
+                parent.notify_submit(\'backup\',\'Backing up Configuration...\');
+            }
+        }
+        </script>
+    '}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','inside_frame_or_tab_or_popup'=>$stash->get('in_tab'),'skipheader'=>$stash->get('in_tab'),'breadcrumburl'=>'/scripts2/displayeximconfforedit','extrastyle'=>'
+    html[dir="rtl"] .sortable .cell,
+    html[dir="rtl"] .fixedtable .cell,
+    html[dir="rtl"] .datatable .cell {
+        border-left: 1px solid #ccc;
+    }
+
+    html[dir="rtl"] .yui-panel .container-close {
+        left: 4px;
+        right: auto;
+    }
+    ','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

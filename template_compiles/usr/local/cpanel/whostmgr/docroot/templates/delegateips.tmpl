@@ -1,0 +1,133 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/delegateips.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('Net',$context->plugin('Net'));$output .= do {my$output='';if (!$stash->get(['data',0,'valid_user',0])){$output .= 'Invalid user “';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'user',0]);&$_tt_filter($output)};$output .= '”!
+'}else {$stash->set('html_safe_user',$stash->get(['data',0,'user',0,'html',0]));$output .= '
+';$stash->set('uri_safe_user',$stash->get(['data',0,'user',0,'uri',0]));$output .= '
+
+
+<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['IP Address Delegation for “[_1]”',$stash->get(['data',0,'user',0,'html',0])]]);$output .= '</h3>
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/dodelegateips">
+
+<p>
+';$output .= $stash->get(['locale',0,'maketext',['IP address delegation determines which IP addresses “[_1]” may dedicate to an owned account.',$stash->get('html_safe_user')]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Dedicated IP addresses are commonly used for sites that host SSL content and for users who don’t wish to share an IP address.' ]]);$output .= '
+<p>
+    ';$output .= $stash->get(['locale',0,'maketext',['A user does not require a dedicated [asis,IP] address to host [asis,SSL] content. However, web browsers that do not support [output,abbr,SNI,Server Name Indication] may see a security warning when they connect to an [asis,SSL] website that is not the “primary” [asis,SSL] website on its [asis,IP] address. Only a user who has a dedicated [asis,IP] address can designate an [asis,SSL] website as the “primary” website on its [asis,IP] address.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Microsoft® Internet Explorer™ on Windows XP™ is the most widely used web browser that does not support SNI.' ]]);$output .= '
+</p>
+
+<div id="ssl-install-require" style="display:none"></div>
+<ul class="ipchoice">
+    <li class="topchoice">
+        <label><input id="unrestrict_radio" type="radio" name="delegate" ';$output .=!$stash->get(['data',0,'restricted',0])&& 'checked="checked"';$output .= ' value="no" onclick="ip_checkboxes.disable()"> ';$output .= $stash->get(['locale',0,'maketext',['Open Delegation' ]]);$output .= ' </label>
+        <div class="optionblock">
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['This option allows “[_1]” to dedicate any available IP address to an owned account.',$stash->get('html_safe_user')]]);$output .= '
+            </p>
+        </div>
+    </li>
+    <li class="topchoice">
+        <label><input id="restrict_radio" type="radio" name="delegate" ';$output .= $stash->get(['data',0,'restricted',0])&& 'checked="checked"';$output .= ' value="yes" onclick="ip_checkboxes.enable()" /> ';$output .= $stash->get(['locale',0,'maketext',['Restricted Delegation' ]]);$output .= ' </label>
+        <div class="optionblock">
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['This option restricts “[_1]” to only be able to dedicate one of the checked IP addresses below to an owned account.',$stash->get('html_safe_user')]]);$output .= '
+            </p>
+            <p>
+            <a name="delegated_ips"></a>
+            <div id="ips_div" ';$output .=!$stash->get(['data',0,'restricted',0])&& 'style="display:none;" ';$output .= '>
+
+            ';$output .= $stash->get(['locale',0,'maketext',['Select which IP addresses “[_1]” may use:',$stash->get('html_safe_user')]]);$output .= '
+            <ul>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'ipdata',0,'keys',0,'cpsort',[{'code'=>$stash->getref(['Net',0,'inet_aton',0]),'num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ip'}=$_tt_value;$output .= '            ';$stash->set('delegated_to_user',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'grep',[('^' .$stash->get(['data',0,'user',0]))],'size',0])> 0);$stash->set('dedicated_to_owned_user',$stash->get(['data',0,'dedicatedips',0,$stash->get('ip'),0])? 1 : 0);$stash->set('dedicated',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'dedicated_user',0]));$stash->set('reserved',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'reserved',0]));$stash->set('nameserver',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'nameserver',0]));$output .= '            <li>
+            <label ';$output .= $stash->get('input_disabled')? 'class="used"' : '';$output .= '>
+            <input type="checkbox" name="ip-';$output .= $stash->get('ip');$output .= '" value="1"';$output .= $stash->get('dedicated_to_owned_user')|| $stash->get('delegated_to_user')? 'checked="checked"' : '';$output .= $stash->get('dedicated_to_owned_user')|| $stash->get('input_disabled')? 'class="used" disabled="disabled"' : '';$output .= '            />';$output .= $stash->get('ip');if ($stash->get('ip')eq $stash->get(['data',0,'mainsrvip',0])){$output .= ' (Main Server IP)'}if ($stash->get('ip')eq $stash->get(['data',0,'mainip',0])){$output .= ' (Main Shared IP)'}if ($stash->get('ip')eq $stash->get(['data',0,'sharedip',0])){$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['([_1]’s shared IP)',$stash->get('html_safe_user')]])}if ($stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'size',0])> 0){$stash->set('shared_list',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'ungrep',['\Aroot\z' ]]));if ($stash->get(['shared_list',0,'size',0])< $stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'shared',0,'size',0])){$output .= $stash->get(['shared_list',0,'unshift',['root' ]])}if ($stash->get(['shared_list',0,'size',0])> 5){$stash->set('others_count',$stash->get(['shared_list',0,'size',0])- 4);$output .= ' (' .$stash->get(['locale',0,'maketext',['Shared by [_1], [_2], [_3], [_4], and [quant,_5,other,others].',$stash->get(['shared_list',0,0,0]),$stash->get(['shared_list',0,1,0]),$stash->get(['shared_list',0,2,0]),$stash->get(['shared_list',0,3,0]),$stash->get('others_count')]]).')'}else {$output .= ' (' .$stash->get(['locale',0,'maketext',['Shared by [list_and,_1].',$stash->get('shared_list')]]).')'}}if ($stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'size',0])> 0){$stash->set('delegated_list',$stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'ungrep',['\Aroot\z' ]]));if ($stash->get(['delegated_list',0,'size',0])< $stash->get(['data',0,'ipdata',0,$stash->get('ip'),0,'delegated',0,'size',0])){$output .= $stash->get(['delegated_list',0,'unshift',['root' ]])}if ($stash->get(['delegated_list',0,'size',0])> 5){$stash->set('others_count',$stash->get(['delegated_list',0,'size',0])- 4);$output .= ' (' .$stash->get(['locale',0,'maketext',['Delegated to [_1], [_2], [_3], [_4], and [quant,_5,other,others].',$stash->get(['delegated_list',0,0,0]),$stash->get(['delegated_list',0,1,0]),$stash->get(['delegated_list',0,2,0]),$stash->get(['delegated_list',0,3,0]),$stash->get('others_count')]]).')'}else {$output .= ' (' .$stash->get(['locale',0,'maketext',['Delegated to [list_and,_1].',$stash->get('delegated_list')]]).')'}}if ($stash->get('dedicated')){$output .= ' (';if ($stash->get('dedicated_to_owned_user')){$output .= $stash->get(['locale',0,'maketext',['Dedicated to “[_1]”, owned by “[_2]”.',$stash->get('dedicated'),$stash->get('html_safe_user')]])}else {$output .= $stash->get(['locale',0,'maketext',['Dedicated to “[_1]”.',$stash->get('dedicated')]])}$output .= ')'}if ($stash->get('nameserver')){$output .= ' (';$output .= $stash->get(['locale',0,'maketext',['Nameserver “[_1]”.',$stash->get('nameserver')]]);$output .= ')'}if ($stash->get('reserved')){$output .= ' (';$output .= $stash->get(['locale',0,'maketext',['Reserved' ]]);$output .= ')'}$output .= '            </label>
+            </li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </ul>
+            </div>
+            </p>
+         </div>
+    </li>
+</ul>
+
+<script id="ssl-install-require-template" type="text/html">
+';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/editres?res=' .$stash->get('uri_safe_user').'#privs_ssl');$output .= '
+';if ($stash->get(['data',0,'acls',0,'ssl',0])){$output .= '
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['User “[_1]” has the [output,url,_2,SSL Site Management] privilege.',$stash->get('html_safe_user'),$stash->get('url_html')]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['This reseller may create SSL hosts for domains that are attached to an account that the reseller owns as the primary domain, a parked domain, a subdomain, or an addon domain.' ]]);$output .= '
+    </p>
+    ';if ($stash->get(['data',0,'sharedip',0])eq $stash->get(['data',0,'mainip',0])){$output .= '
+    <p>
+        ';$stash->set('url_html',$stash->get('cp_security_token').'/scripts2/delegatemainip?user=' .$stash->get('uri_safe_user'));$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['If you want this reseller’s accounts to have a unique, shared IP address, then change or set the reseller’s [output,url,_1,assigned shared IP address].',$stash->get('url_html')]]);$output .= '
+    </p>
+    '}$output .= '
+
+'}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['For “[_1]” to set up the SSL hosts through WHM, they must have the [output,url,_2,SSL Site Management] privilege.',$stash->get('html_safe_user'),$stash->get('url_html')]]);$output .= '
+'}$output .= '
+
+
+';$output .= $stash->get(['locale',0,'maketext',['Alternatively, if a cPanel user account has the “[_1]” feature, the user may set up SSL hosts through cPanel in the [output,strong,SSL/TLS Manager] interface.','SSL Host Installer' ]]);$output .= '
+
+</script>
+
+
+
+<input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'user',0]);&$_tt_filter($output)};$output .= '" />
+<input type="submit" class="btn-primary" value="Save">
+</form>
+
+<script type="text/javascript">
+var ip_checkboxes = [];
+var inputs = document.getElementsByTagName(\'input\');
+for (var cb=0; cb < inputs.length; cb++ ) {
+    var cur_input = inputs[cb];
+    if (cur_input.type == \'checkbox\'
+        && cur_input.name.substr(0,3) == \'ip-\'
+        && cur_input.className != \'used\'
+    ) {
+        ip_checkboxes.push( cur_input );
+    }
+}
+
+ip_checkboxes.enable = function( disable ) {
+    var disabled_value = !! disable;
+
+    for (var i=0; i < this.length; i++) {
+        this[i].disabled = disabled_value;
+    }
+
+    if (disable) {
+         if (DOM.getStyle( \'ips_div\', \'display\') !== \'none\') {
+            CPANEL.animate.slide_up(\'ips_div\');
+         }
+    } else {
+         if (DOM.getStyle( \'ips_div\', \'display\') === \'none\') {
+            CPANEL.animate.slide_down(\'ips_div\');
+         }
+    }
+}
+ip_checkboxes.disable = function() { this.enable(1) };
+
+//if no existing IP delegation, disable the checkboxes at startup
+ip_checkboxes.enable( document.getElementById(\'unrestrict_radio\').checked );
+
+new CPANEL.widgets.Page_Notice( {
+    level: "info", //can also be "warn", "error", "success"
+    content: DOM.get(\'ssl-install-require-template\').text,
+    container: \'ssl-install-require\',
+} );
+DOM.setStyle(\'ssl-install-require\',\'display\',\'\');
+
+</script>
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'manage_resellers_ip_delegation','extrastyle'=>'
+label.used {
+    font-style: italic;
+    color: rgb(96, 96, 96);
+}
+.ipchoice .topchoice {
+list-style-type: none;
+}
+.optionblock {
+    padding-left: 30px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

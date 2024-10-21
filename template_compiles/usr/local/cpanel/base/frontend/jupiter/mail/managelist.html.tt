@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/managelist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('list_mail_domains_response',$stash->get(['execute',['Email','list_mail_domains',{}]]));$output .= '
+
+';if ($stash->get(['list_mail_domains_response',0,'status',0])){$output .= '
+<div id="manage-list" class="section">
+    <form method="get" action="" id="manage_list_form">
+    <div class="form-group">
+        <label for="manage_list_select" id="txt_Managing">
+            ';$output .= $stash->get(['locale',0,'maketext',['Managing' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <select name="domain" id="manage_list_select" class="form-control">
+                    <option value="" selected>';$output .= $stash->get(['locale',0,'maketext',['All Domains' ]]);$output .= '</option>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_mail_domains_response',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+                        <option value="';$output .= $stash->get(['domain',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['domain',0,'domain',0,'html',0]);$output .= '</option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </select>
+            </div>
+        </div>
+    </div>
+    <noscript>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" id="btn_domainSelect_go" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+        </div>
+    </noscript>
+    </form>
+</div>
+'}else {$output .= '
+    ';$stash->set('error_list',$stash->get(['list_mail_domains_response',0,'errors',0]));$output .= '
+    ';$output .= $context->include('_assets/errors.html.tt');$output .= '
+'}$output .= '
+<script type="text/javascript">
+YAHOO.util.Event.onDOMReady(function() {
+    YAHOO.util.Event.on("manage_list_select", "change", function() { YAHOO.util.Dom.get("manage_list_form").submit(); });
+});
+</script>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,81 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/manage_disk_usage/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('cpuser',$stash->get(['ExpVar',0,'expand',['$user' ]]));$stash->set('authuser',$stash->get(['ExpVar',0,'expand',['$authuser' ]]));$stash->set('account',($stash->get('authuser')eq $stash->get('cpuser'))&& $stash->get(['RAW_FORM',0,'account',0])|| $stash->get('authuser'));$stash->set('pops',$stash->get(['execute_or_die',['Email','list_pops' ],'data',0,'ofeach',['email' ],'sort',0]));$stash->set('get_mailbox_status_call',$stash->get(['execute_or_die',['Mailboxes','get_mailbox_status_list',{'account'=>$stash->get('account')}]]));$stash->set('page_data',{'initial_mailbox_status'=>$stash->get(['get_mailbox_status_call',0,'data',0]),'account'=>$stash->get('account'),'cpuser'=>$stash->get('cpuser'),'authuser'=>$stash->get('authuser'),'pops'=>$stash->get('pops')});$output .= '
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+<script>
+    if (!window.CPANEL) CPANEL = {};
+    CPANEL.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('page_data')]]);$output .= ';
+</script>
+
+<div class=\'body-content\'>
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['This utility allows you to recover disk space by deleting old messages from your mailbox.' ]]);$output .= '
+    </p>
+
+    <div id="ng_content" class="body-content"
+        ng-controller="BaseController"
+    >
+        <!-- NOTE: leave the alert-group in single quotes -->
+        <cp-alert-list></cp-alert-list>
+        <cp-alert-list alert-group="\'emailDiskUsage\'"></cp-alert-list>
+
+        <div ng-if="!mailbox_status" id="page_loading_box" class="view-loading-box">
+            <i class="fas fa-spinner fa-spin fa-4x"></i>
+        </div>
+
+        <div ng-cloak ng-if="mailbox_status">
+            ';if ($stash->get('authuser')eq $stash->get('cpuser')){$output .= '                <p ng-if="show_account_selector">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Account:' ]]);$output .= "\n                    <select chosen search-contains=\"true\" ng-disabled=\"reloading\" ng-model=\"\$parent.\$parent.account\" ng-change=\"reload()\" ng-bind-html=\"::account_options_html\"></select>\n                    <span ng-if=\"reloading\">\n                        <i class=\"fas fa-spinner fa-spin\"></i>\n                    </span>\n                </p>\n            "}$output .= '
+            <div>
+                <label for="mbsearch_input">';$output .= $stash->get(['locale',0,'maketext',['Search:' ]]);$output .= '</label>
+            </div>
+            <div class="search-container col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <search id="mbsearch" ng-model="search_filter"></search>
+            </div>
+
+            <table class="table responsive-table">
+                <thead>
+                    <th>
+                        <span toggle-sort id="sortMailbox" sort-meta="mbsort" sort-field="mailbox">';$output .= $stash->get(['locale',0,'maketext',['Mailbox Name' ]]);$output .= '</span>
+                    </th>
+                    <th class="mailbox-count">
+                        <span toggle-sort id="sortMessages" sort-meta="mbsort" sort-field="messages" sort-reverse-default>';$output .= $stash->get(['locale',0,'maketext',['# of Messages' ]]);$output .= '</span>
+                    </th>
+                    <th class="mailbox-size">
+                        <span toggle-sort id="sortSize" sort-meta="mbsort" sort-field="vsize" sort-reverse-default>';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '</span>
+                    </th>
+                    <th class="mailbox-actions">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "</th>\n                </thead>\n                <tbody>\n                    <tr class=\"mailbox-info\" ng-class=\"{'stripe-yang': !!(\$index % 2) }\" ng-repeat-start=\"mbdata in mailbox_status | filter:{'display_name': search_filter} | orderBy : mbsort.sortBy : mbsort.sortDirection === 'desc' track by mbdata.mailbox\">\n                        <td data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Mailbox Name' ]]);$output .= '" class="mailbox-name">{{ ::mbdata.display_name }}</td>
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['# of Messages' ]]);$output .= '" class="mailbox-count">{{ mbdata.messages_numf }}</td>
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '" class="mailbox-size">{{ mbdata.vsize_format_bytes }}</td>
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '" class="mailbox-actions">
+
+                            <a ng-if="mbdata.messages > 0" title="{{ mbmeta[account][mbdata.mailbox].action === \'expunge\' ? \'';$output .= $stash->get(['locale',0,'maketext',['Collapse' ]]);$output .= '\' : \'';$output .= $stash->get(['locale',0,'maketext',['Expand' ]]);$output .= '\' }}" href="javascript:void(0)" ng-click="toggle_expunge(mbdata.mailbox)"><i class="fas {{ mbmeta[account][mbdata.mailbox].action === \'expunge\' ? \'fa-chevron-up\' : \'fa-chevron-down\' }}" aria-hidden="true"></i><span class="no-underline"></span>';$output .= $stash->get(['locale',0,'maketext',['Manage[comment,expands this row]' ]]);$output .= "</a>\n                        </td>\n                    </tr>\n                    <tr ng-if=\"mbmeta[account][mbdata.mailbox].action\" class=\"mailbox-action\" ng-class=\"{'stripe-yang': !!(\$index % 2) }\" ng-repeat-end>\n                        <td colspan=\"99\">\n                            <div ng-if=\"mbmeta[account][mbdata.mailbox].action === 'expunge'\">\n                                <form cp-form-waiting=\"expunge(mbdata.mailbox)\" cp-form-waiting-spinner-size=\"2\">\n                                    <div>\n                                        <label for=\"{{::mbdata.mailbox}}_expunge_preset\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Messages to delete:' ]]);$output .= '                                        </label>
+                                    </div>
+
+                                    <select id="{{::mbdata.mailbox}}_expunge_preset" ng-model="mbmeta[account][mbdata.mailbox].expunge_preset">
+                                        <option value="1y">';$output .= $stash->get(['locale',0,'maketext',['[quant,_1,year,years] old or more',1 ]]);$output .= '</option>
+                                        <option value="30mib">';$output .= $stash->get(['locale',0,'maketext',['[format_bytes,_1] in size or more',30 * 1024 * 1024 ]]);$output .= '</option>
+                                        <option value="seen">';$output .= $stash->get(['locale',0,'maketext',['Previously viewed' ]]);$output .= '</option>
+                                        <option value="all">';$output .= $stash->get(['locale',0,'maketext',['All messages' ]]);$output .= '</option>
+                                        <option value="custom">';$output .= $stash->get(['locale',0,'maketext',['Custom query …' ]]);$output .= '</option>
+                                    </select>
+
+                                    <input required ng-if="mbmeta[account][mbdata.mailbox].expunge_preset === \'custom\'" id="{{::mbdata.mailbox}}_expunge_query" ng-model="mbmeta[account][mbdata.mailbox].expunge_query" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Dovecot query …' ]]);$output .= '">
+                                    &nbsp;&nbsp;
+
+                                    <button class="btn btn-primary" type="submit">';$output .= $stash->get(['locale',0,'maketext',['Delete Permanently' ]]);$output .= '</button>
+
+                                    <div class="help-block" ng-if="mbmeta[account][mbdata.mailbox].expunge_preset === \'custom\'">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Indicate messages to delete via [output,url,_1,Dovecot’s search query format,target,_blank]. (for example, [_2])','https://go.cpanel.net/doveadm_search_query','<code>savedbefore 2weeks</code>' ]]);$output .= '
+                                    </div>
+
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'email_disk_usage','use_master_bootstrap'=>0,'include_legacy_stylesheets'=>0,'page_stylesheets'=>['mail/manage_disk_usage/index.css','libraries/chosen/1.5.1/chosen.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

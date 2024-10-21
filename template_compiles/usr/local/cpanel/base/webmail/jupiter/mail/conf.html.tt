@@ -1,0 +1,119 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/conf.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}$stash->set('configuration',$stash->get(['execute',['BoxTrapper','get_configuration',{'email'=>$stash->get(['FORM',0,'item',['account' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+    <div id="changeSettingsErrorMsg" class="alert alert-danger">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+        </div>
+    </div>
+    '}elsif ($stash->get(['configuration',0,'status',0])){$output .= '
+
+    <div class="section">
+        <h2 id="descConfigureBoxtrapper">
+            ';$output .= $stash->get(['locale',0,'maketext',['Configure BoxTrapper for: [output,strong,_1]',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+        </h2>
+
+    <form id="frmChangeConf" action="saveconf.html" method="post">
+        <div class="form-group">
+            <label id="lblEmailAddressAccount" for="txtShowEmail">
+                ';$output .= $stash->get(['locale',0,'maketext',['Email addresses for this account:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <textarea id="txtShowEmail" name="froms" class="form-control" cols="30" rows="6">';$output .= $stash->get(['configuration',0,'data',0,'from_addresses',0,'html',0]);$output .= '</textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblYourName" for="txtFromName">
+                ';$output .= $stash->get(['locale',0,'maketext',['Your Name:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input id="txtYourName" type="text" class="form-control" name="fromname" value="';$output .= $stash->get(['configuration',0,'data',0,'from_name',0,'html',0]);$output .= '">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblNumberofDays" for="boxtrapper_daystokeep">
+                ';$output .= $stash->get(['locale',0,'maketext',['The number of days that you wish to keep logs and messages in the queue:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input id="boxtrapper_daystokeep" type="text" class="form-control" name="queue"  value="';$output .= $stash->get(['configuration',0,'data',0,'queue_days',0,'html',0]);$output .= '">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="boxtrapper_daystokeep_error"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblMimimumSpam" for="boxtrapper_minspamscore">
+                ';$output .= $stash->get(['locale',0,'maketext',['Minimum [asis,Apache] [asis,SpamAssassin] Spam Score required to bypass [asis,BoxTrapper]:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input id="boxtrapper_minspamscore" type="text" class="form-control" name="min_spam_score_deliver"  value="';$output .= $stash->get(['configuration',0,'data',0,'spam_score',0,'html',0]);$output .= '">
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="boxtrapper_minspamscore_error"></div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="checkbox">
+                        <label id="lblEnableAutomaticWhiteList">
+                            <input id="chkAutowhitelist" type="checkbox" name="autowhitelist" value="1" ';if ($stash->get(['configuration',0,'data',0,'enable_auto_whitelist',0])){$output .= ' checked="checked" '}$output .= '>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Automatic Whitelisting' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div id="autoWhitelistToFrom" class="checkbox">
+                        <label id="chkWhiteListByAssoc">
+                            <input id="chkAutoWhitelistToandFrom" type="checkbox" name="whitelist_by_assoc" value="1" ';if ($stash->get(['configuration',0,'data',0,'whitelist_by_association',0])){$output .= ' checked="checked" '}$output .= ' >
+                            ';$output .= $stash->get(['locale',0,'maketext',['Automatically whitelist the [output,em,To] and [output,em,From] lines from whitelisted senders (whitelist by association).' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+        </div>
+
+        <input id="hidAccountName" type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+        <div class="form-group">
+            <input id="submit_boxtrapper_conf" type="submit"  value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" class="btn btn-primary" />
+        </div>
+    </form>
+    </div>
+    '}else {$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['configuration',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                <div class=\'alert-message\'>
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','formdata'=>$stash->get('FORM'),'post'=>'1','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','embed_scripts'=>['mail/boxtrapper/conf.js' ],'page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,446 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/clusterstatus.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '<script src="';$output .= $stash->get(['MagicRevision',['/js/sorttable.js' ]]);$output .= '"></script>
+
+<style type="text/css">
+    #dns_tree {
+        font-size: 18px;
+    }
+    #dns_tree dd {
+        margin-left: 0;
+    }
+    #breadcrumbs p {
+        margin:0 !important;
+    }
+    #dns_tree ul {
+        list-style-type: none;
+        padding-left: 40px;
+    }
+
+    #main_content {
+        font-family: helvetica, Arial, sans-serif;
+        font-size: 12px;
+        line-height: 20px;
+        color: #666;
+        padding: 0 30px 30px 30px;
+        max-width:900px;
+    }
+    .sub-head {
+        font-weight: bold;
+        font-size:14px;
+    }
+    p {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size:12px;
+        line-height: 20px;
+        color:#666;
+        margin-top:5px !important;
+        margin-bottom:5px !important;
+    }
+    .note-head {
+        font-size:13px !important;
+    }
+    #main_content a {
+        text-decoration: underline;
+    }
+    #main_content h2 {
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        color: #4C5355;
+        padding-bottom:0px;
+        margin-bottom:0px;
+    }
+    .option_sub_box {
+        margin-left: 25px;
+    }
+    .clusteringstatus {
+          font-weight: bold;
+    }
+    .option_box {
+        width: 100%;
+        background-color: #dddddd;
+        border: 1px solid #ffffff;
+        outline: 1px solid #C1D0D3;
+        margin-top:25px;
+        margin-bottom:25px;
+    }
+    .button-position {
+        display:block !important;
+        margin-top:10px;
+    }
+    h4 {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: #4C5355;
+        padding: 5px;
+        border-bottom: 1px solid #C1D0D3;
+        text-shadow: 0 1px 0 #ffffff;
+        margin:0 !important;
+    }
+    .option_contents {
+        border-top: 1px solid #ffffff;
+        padding: 10px;
+    }
+    .option_contents INPUT[type="text"] {
+        border-radius: 5px;
+        text-align: center;
+        color: #666;
+        margin-bottom: 4px;
+        padding: 0;
+    }
+    .option_contents INPUT[type="checkbox"] {
+        margin-bottom: 10px;
+    }
+    .option_contents SELECT {
+        width: 150px;
+    }
+    .bullets {
+        font-family:Georgia;
+        font-style: italic;
+        font-size:13px;
+        list-style: none !important;
+    }
+    #sltbl {
+        background-color: #E0E9EA;
+        border: 1px solid #C1D0D3;
+        border-bottom: none;
+        outline: 1px solid #ffffff;
+        border-collapse: separate;
+        table-layout: auto;
+    }
+    #sltbl th {
+        border-right: 1px solid #C1D0D3;
+        border-bottom: 1px solid #C1D0D3;
+        border-left: 1px solid #ffffff;
+        background-color: #E0E9EA;
+        padding: 5px;
+        color: #4C5355;
+        word-wrap: break-word;
+    }
+    #sltbl img {
+        vertical-align: top;
+    }
+    .nopad {
+        padding-left:0px !important;
+    }
+    .the-button {
+        margin-top:10px;
+    }
+    #sltbl .pointer {
+        cursor: pointer;
+    }
+    #sltbl td {
+        background-color: white;
+        border-right: 1px solid lightgrey;
+        border-bottom: 1px solid lightgrey !important;
+        padding: 5px;
+        word-wrap: break-word;
+        vertical-align:text-top;
+    }
+    .first {
+        border-left: none !important;
+    }
+    .last {
+        border-right: none !important;
+        text-align: center;
+    }
+    .notes {
+        margin-bottom: 5px;
+    }
+    select {
+        font-family: helvetica, arial, sans-serif;
+        font-size: 13px;
+    }
+    .button-grouped {
+        margin-top:10px;
+    }
+    #dnssec_alert {
+        display: table;
+        width: 80%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        border: 1px solid #f6c342;
+        border-collapse: collapse;
+    }
+    #dnssec_alert_row {
+        display: table-row;
+    }
+    #dnssec_alert_cell_icon {
+        display: table-cell;
+        background-color: #F2C544;
+        padding: 10px;
+        text-align: center;
+        vertical-align: middle;
+        width: 36px;
+    }
+    #dnssec_alert_cell_message {
+        display: table-cell;
+        color: #333333;
+        background-color: #fcf8e1;
+        vertical-align: middle;
+        padding: 10px;
+    }
+    #dnssec_alert_cell_message p {
+        color: #333333;
+        font-size: 14px;
+    }
+    .scrollable-list {
+        overflow-y: auto;
+        max-height: 200px;
+    }
+</style>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+<div id="main_content">
+
+    <!-- This wraps the rest of the page, intent is to only show the interface if you are root, or root has enabled dnsclustering -->
+    <p class="helptext">
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,WHM]’s [asis,DNS] clustering allows you to synchronize [asis,DNS] records among multiple [asis,cPanel amp() WHM] or [output,url,_1,cPanel DNSONLY,_2] machines.','https://go.cpanel.net/dnsonly',{'target'=>'_blank' }]]);$output .= '<br />
+        ';$output .= $stash->get(['locale',0,'maketext',['In order to synchronize your [asis,DNS] records, all machines in the cluster must be running [asis,cPanel amp() WHM] or [output,url,_1,cPanel DNSONLY,_2,_3] version 8.9 or higher.','https://go.cpanel.net/dnsonly','target','_blank' ]]);$output .= '<br />
+    </p>
+
+    ';if ($stash->get(['data',0,'hasroot',0])){$output .= '
+        ';$output .= $context->include('_cluster_masquerade.tmpl');$output .= '
+    '}$output .= '
+
+    ';if ($stash->get(['data',0,'cluster_user',0])eq 'root'){$output .= '
+        ';$stash->set('enabled',$stash->get(['data',0,'dnsclustering',0]));$stash->set('action','adjustclusterdns.cgi');$stash->set('options_header',$stash->get(['locale',0,'maketext',['Global [asis,DNS] Cluster Options' ]]));$output .= '        ';if ($stash->get('enabled')){$output .= '
+            ';$stash->set('text',$stash->get(['locale',0,'maketext',['Disable [asis,DNS] Clustering' ]]));$output .= '            ';$stash->set('flavor',$stash->get(['locale',0,'maketext',['[asis,DNS] clustering is enabled.' ]]));$output .= '        '}else {$output .= '
+            ';$stash->set('text',$stash->get(['locale',0,'maketext',['Enable [asis,DNS] Clustering' ]]));$output .= '            ';$stash->set('flavor',$stash->get(['locale',0,'maketext',['[asis,DNS] clustering is disabled.' ]]));$output .= '        '}$output .= '
+    '}else {$output .= '
+        ';$stash->set('enabled',$stash->get(['data',0,'uniquedns',0]));$stash->set('action','adjustuniquedns.cgi');$stash->set('options_header',$stash->get(['locale',0,'maketext',['Unique [asis,DNS] Clustering' ]]));$output .= '        ';if ($stash->get('enabled')){$output .= '
+            ';$stash->set('text',$stash->get(['locale',0,'maketext',['Disable Unique [asis,DNS] Clustering For Accounts Owned By “[_1]”',$stash->get(['data',0,'cluster_user',0,'html',0])]]));$output .= '            ';$stash->set('flavor',$stash->get(['locale',0,'maketext',['Unique [asis,DNS] clustering is enabled.' ]]).' ' .$stash->get(['locale',0,'maketext',['Accounts owned by “[_1]” will use the unique settings defined below.',$stash->get(['data',0,'cluster_user',0,'html',0])]]));$output .= '        '}else {$output .= '
+            ';$stash->set('text',$stash->get(['locale',0,'maketext',['Enable Unique [asis,DNS] Clustering For Accounts Owned By “[_1]”',$stash->get(['data',0,'cluster_user',0,'html',0])]]));$output .= '            ';$stash->set('flavor',$stash->get(['locale',0,'maketext',['Unique [asis,DNS] clustering is disabled.' ]]).' ' .$stash->get(['locale',0,'maketext',['Accounts owned by “[_1]” will use the settings defined by the server administrator.',$stash->get(['data',0,'cluster_user',0,'html',0])]]));$output .= '        '}$output .= '
+    '}$output .= '
+
+    <div class="option_box">
+        <h4>';$output .= $stash->get('options_header');$output .= '</h4>
+        <div class="option_contents">
+            <form id="toggle_clustering_form" action="';$output .= $stash->get('cp_security_token');$output .= '/cgi/';$output .= $stash->get('action');$output .= '">
+                <input id="toggle_clustering_user" type="hidden" name="cluster_user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '" />
+                <div class="clusteringstatus">';$output .= $stash->get('flavor');$output .= '</div>
+                <div class="the-button">
+                    <button id="toggle_clustering_submit" name="clusterdns" ';if ($stash->get(['data',0,'cluster_user',0])ne 'root' &&!$stash->get(['data',0,'dnsclustering',0])){$output .= 'disabled'}$output .= ' value="';$output .=!$stash->get('enabled');$output .= '" class="btn btn-primary button-position">
+                        ';$output .= $stash->get('text');$output .= '
+                    </button>
+               </div>
+            </form>
+        </div>
+
+        ';if ($stash->get(['data',0,'cluster_user',0])eq 'root' && $stash->get(['data',0,'dnsclustering',0])){$output .= '
+            <div class="option_contents">
+                <form id="cluster_opts_form" action="';$output .= $stash->get('cp_security_token');$output .= '/cgi/adjustclusteroptions.cgi">
+                    <input type="hidden" name="cluster_user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '" />
+                    <p style="margin-top:0px !important;">
+                        <strong>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Failure threshold for cluster members:' ]]);$output .= '
+                        </strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enter the number of [output,url,_1,DNSadmin,_2,_3] commands that may fail before WHM disables an unresponsive cluster member.','https://go.cpanel.net/dnsadminGloss','target','_blank' ]]);$output .= '
+                    </p>
+                    <div class="button-grouped">
+                        ';$stash->set('checked',$stash->get(['data',0,'globaloptions',0,'autodisablethreshold',0])eq 10 ? 'default' : $stash->get(['data',0,'globaloptions',0,'autodisablethreshold',0])? 'custom' : 'disabled');$output .= '
+                        <label>
+                            <input id="cluster_opts_adt_default" type="radio" name="autodisablethreshold_control" ';if ($stash->get('checked')eq 'default'){$output .= 'checked'}$output .= ' value="default" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['[numf,_1] (Default)',10 ]]);$output .= '
+                        </label>
+                        <br />
+                        <input id="cluster_opts_adt_custom" type="radio" name="autodisablethreshold_control" ';if ($stash->get('checked')eq 'custom'){$output .= 'checked'}$output .= ' value="custom" />
+                        <input type=text size=2 maxlength="2" id="threshold" name=autodisablethreshold ';if ($stash->get('checked')ne 'custom'){$output .= 'disabled'}$output .= ' value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'globaloptions',0,'autodisablethreshold',0])|| 10;&$_tt_filter($output)};$output .= '" />
+                        <br />
+                        <label>
+                            <input id="cluster_opts_adt_maxgo" type="radio" name="autodisablethreshold_control" ';if ($stash->get('checked')eq 'disabled'){$output .= 'checked'}$output .= ' value="disabled" /> ';$output .= $stash->get(['locale',0,'maketext',['Keep all cluster members online at all times.' ]]);$output .= '
+                        </label>
+                        <br />
+                    </div>
+
+                    <script>
+                    var autodisable_radios = DOM.get("cluster_opts_form").autodisablethreshold_control;
+                    var autodisable_group = new CPANEL.ajax.Grouped_Input_Set( [
+                    { radio: autodisable_radios[0] },
+                    { radio: autodisable_radios[1], inputs: [ DOM.get("cluster_opts_form").autodisablethreshold ] },
+                    { radio: autodisable_radios[2] },
+                    ] );
+                    </script>
+
+                    <br />
+                    <label>
+                        <input type=checkbox name="cluster_failure_notifications" id="notify" value="1" ';if ($stash->get(['data',0,'cluster_failure_notifications',0])){$output .= 'checked '}$output .= '/>&nbsp;';$output .= $stash->get(['locale',0,'maketext',['Receive a notification when [asis,WHM] disables an unresponsive cluster member.' ]]);$output .= '
+                    </label>
+                    <br />
+                    <div class="the-button">
+                        <input id="cluster_opts_submit" type="submit" class="btn-primary button-position" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" />
+                    </div>
+                </form>
+            </div>
+        '}$output .= '
+    </div>
+
+    ';if ($stash->get(['data',0,'dnsclustering',0])){$output .= '
+
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Servers In Your [asis,DNS] Cluster' ]]);$output .= '</h2>
+    <div id="serverlist" >
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Making direct links between servers can decrease CPU load, improving the performance of your servers. The more steps that exist between a web server and a nameserver, the slower the servers will perform.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['When you add a server and set it to synchronize, the [asis,DNS] path diagram below will update. Try to minimize the width of the diagram as much as possible.' ]]);$output .= '
+        </p>
+        <p>
+            <i>';$output .= $stash->get(['locale',0,'maketext',['Read more at our [output,url,_1,DNS Clustering Quick-Start Guide,_2,_3].','https://go.cpanel.net/DNSClusterConfig/','target','_blank' ]]);$output .= '</i>
+        </p>
+
+        ';if ($stash->get(['data',0,'uniquedns',0])|| $stash->get(['data',0,'cluster_user',0])eq 'root'){$output .= '
+        <div class="option_box">
+            <h4>
+                ';$output .= $stash->get(['locale',0,'maketext',['Add a new server to the cluster' ]]);$output .= '
+            </h4>
+            <div class="option_contents">
+                <form action="';$output .= $stash->get('cp_security_token');$output .= '/cgi/configure_remote_nameserver.cgi" id="mainform" name="mainform">
+                    <label for="module">';$output .= $stash->get(['locale',0,'maketext',['Backend Type:' ]]);$output .= '</label>
+                    <input id="newmember_user" type="hidden" name="cluster_user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '" />
+                    <select name="module" id="module">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'remotemodules',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'remotemod'}=$_tt_value;$output .= '
+                        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['remotemod',0,'value',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['remotemod',0,'name',0]);&$_tt_filter($output)};$output .= '</option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                    (<a href=\'?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&skip_companyid_check=1\'>';$output .= $stash->get(['locale',0,'maketext',['Show All' ]]);$output .= '</a>)
+                    <div class="the-button">
+                        <input id="newmember_submit" type="submit" class="btn-primary button-position" value="';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        '}$output .= '
+
+        ';if (!$stash->get(['data',0,'dnsservers',0,'size',0])){$output .= '
+        <h2><font color="#550000">';$output .= $stash->get(['locale',0,'maketext',['There are currently no servers in your [asis,DNS] cluster.' ]]);$output .= '</font></h2>
+        '}else {$output .= '
+        <table id="sltbl" class="sortable2" cellspacing="0">
+            <thead>
+                <tr>
+                    <th class="first pointer">';$output .= $stash->get(['locale',0,'maketext',['Hostname' ]]);$output .= '</th>
+                    <th class="pointer">';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</th>
+                    <th class="pointer">';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</th>
+                    <th class="pointer">';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                    <th class="pointer">';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+                    <th class="pointer">';$output .= $stash->get(['locale',0,'maketext',['Remote Server Type' ]]);$output .= '</th>
+                    <th nonsortable=true>';$output .= $stash->get(['locale',0,'maketext',['[asis,DNS] Role' ]]);$output .= '</th>
+                    <th nonsortable=true width="90px" class="last">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'dnsservers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'server'}=$_tt_value;$output .= '
+                ';$stash->set('version_prefix',$stash->get(['server',0,'mmversion',0,'substr',[0,2 ]]));$output .= '
+                ';$stash->set('version_suffix',$stash->get(['server',0,'mmversion',0,'substr',[3 ]]));$output .= '
+            ';if ($stash->get(['data',0,'cluster_user',0])ne 'root' && $stash->get(['data',0,'cluster_user',0])ne $stash->get(['server',0,'user',0])&& $stash->get(['data',0,'uniquedns',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+                <tr id="';$output .= $stash->get(['server',0,'host',0]);$output .= '_row">
+                    <td class="hostname">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'hostname',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="host">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="user">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'user',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="module">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'module_name_map',0,$stash->get(['server',0,'module',0]),0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="serverstatus">
+                    ';if ($stash->get(['server',0,'disabled',0])eq 1){$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Disabled due to connection failures.' ]]);$output .= '
+                        [<a href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/enableclusterserver.cgi?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</a>]
+                        <img src="/red-status.gif" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Disabled' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Disabled' ]]);$output .= '" />
+                    '}elsif ($stash->get(['server',0,'module',0])eq 'cPanel'){$output .= '
+                        ';if ($stash->get(['server',0,'error',0])){$output .= '
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'error',0]);&$_tt_filter($output)};$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/red-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" />
+                        '}elsif ((($stash->get('version_prefix')< 11)|| ($stash->get('version_prefix')eq 11 && $stash->get('version_suffix')< 83))&& $stash->get(['data',0,'coordinator',0,'dnssec',0])){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Requires [asis,cPanel] update to support [asis,DNSSEC].' ]]);$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/yellow-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" />
+                        '}elsif (!$stash->get(['server',0,'has_good_privs',0])){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,API] key used has insufficient [asis,ACLs]. The [asis,clustering] [asis,ACL] is required.' ]]);$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/red-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" />
+                        '}elsif (!$stash->get(['server',0,'dns_server_running',0])&&!$stash->get(['server',0,'dns_server_disabled',0])){$output .= '
+                            ';if ($stash->get(['server',0,'dns_server_monitored',0])){$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,DNS] server may be down.' ]]);$output .= '
+                                ';if ($stash->get(['server',0,'mmversion',0])>= 11.87){$output .= '
+                                    [<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/restartclustermember?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Restart' ]]);$output .= '</a>]
+                                '}$output .= '
+                            '}else {$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['The [asis,DNS] server’s status is unknown because the service isn’t monitored.' ]]);$output .= '
+                                ';if ($stash->get(['server',0,'mmversion',0])>= 11.87){$output .= '
+                                    [<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/monitorclustermember?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Monitor' ]]);$output .= '</a>]
+                                '}$output .= '
+                            '}$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/yellow-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" />
+                        '}elsif (!$stash->get(['server',0,'dnssec',0])&&!$stash->get(['server',0,'dns_server_disabled',0])&& $stash->get(['data',0,'coordinator',0,'dnssec',0])){$output .= '
+                            ';if ($stash->get(['server',0,'mmversion',0])>= 11.83){$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['Requires [asis,PowerDNS] to support [asis,DNSSEC].' ]]);$output .= '
+                                [<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/upgradeclustermember?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Upgrade' ]]);$output .= '</a>]
+                                <img src="';$output .= $stash->get(['MagicRevision',['/yellow-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" />
+                            '}$output .= '
+                        '}elsif ($stash->get(['server',0,'has_reverse_trust',0])eq 0 && ($stash->get(['server',0,'dnsrole',0])eq 'sync' || $stash->get(['server',0,'dnsrole',0])eq 'standalone')){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Server needs reverse trust set up to auto-propagate [asis,DNS] updates.' ]]);$output .= '
+                            [<a href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/configure_remote_nameserver.cgi?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</a>]
+                            <img src="';$output .= $stash->get(['MagicRevision',['/yellow-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Warning' ]]);$output .= '" />
+                        '}elsif ($stash->get(['server',0,'status',0])eq 1){$output .= '
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'version',0]);&$_tt_filter($output)};$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/green-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Active' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Active' ]]);$output .= '" />
+                        '}$output .= '
+                    '}else {$output .= '
+                        ';if ($stash->get(['server',0,'error',0])){$output .= '
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'error',0]);&$_tt_filter($output)};$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/red-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Error' ]]);$output .= '" />
+                        '}else {$output .= '
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'version',0]);&$_tt_filter($output)};$output .= '
+                            <img src="';$output .= $stash->get(['MagicRevision',['/green-status.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Server Active' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Server Active' ]]);$output .= '" />
+                        '}$output .= '
+                    '}$output .= '
+                    </td>
+                    <td class="dnsserver">
+                    ';if (!$stash->get(['server',0,'dns_server_disabled',0])){$output .= '
+                        ';$output .= $stash->get(['server',0,'dns_server',0])? $stash->get(['server',0,'dns_server',0]): 'unknown';$output .= '
+                    '}else {$output .= '
+                        disabled
+                    '}$output .= '
+                    </td>
+                    <td class="role">
+                        <form action="';$output .= $stash->get('cp_security_token');$output .= '/cgi/changeclusterdns.cgi" style="text-align:center" method=POST>
+                            <input type="hidden" name="cluster_user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '" />
+                            <input type=hidden name=server value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '" />
+                            ';if ($stash->get(['server',0,'cluster_config_user',0])eq $stash->get(['data',0,'cluster_user',0])){$output .= '
+                                <select name=dnsrole>
+                                ';$stash->set('dnsrole',$stash->get(['server',0,'dnsrole',0]));$output .= '
+                                ';$output .= $context->process('_dnsroles.tmpl');$output .= '
+                                </select>
+                                &nbsp;
+                                <input type=image onclick="this.form.submit()" class="submit-me" title="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" style="vertical-align:top" src="';$output .= $stash->get(['MagicRevision',['/images/save-me.png' ]]);$output .= '" />
+                            '}else {$output .= '
+                                ';$output .= $stash->get(['server',0,'dnsrole',0]);$output .= '
+                            '}$output .= '
+                        </form>
+                    </td>
+                    <td class="last action" >
+                        ';if ($stash->get(['server',0,'cluster_config_user',0])eq $stash->get(['data',0,'cluster_user',0])){$output .= '
+                            <a style="text-decoration:none" href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/configure_remote_nameserver.cgi?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">
+                                <img src="/images/edit-me.png" alt="';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '" border=0 />
+                            </a>
+                            <a style="text-decoration:none" href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/remclusterserver.cgi?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '&server=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['server',0,'host',0]);&$_tt_filter($output)};$output .= '">
+                                <img src="';$output .= $stash->get(['MagicRevision',['/images/redx.gif' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" border=0 />
+                            </a>
+                        '}else {$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['This server is inherited.' ]]);$output .= '
+                        '}$output .= '
+                    </td>
+                </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </tbody>
+        </table>
+
+        ';if ($stash->get(['data',0,'dnsservers',0,'size',0])){$output .= '            ';$output .= $context->process('_dnsroles_explained.tmpl');$output .= '
+        '}$output .= '        '}$output .= '
+    </div>
+
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['[asis,DNS] Path Diagram' ]]);$output .= '</h2>
+
+    ';$stash->set('depth',0);do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'hash'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<dl><dt>';if ($stash->get('depth')> 0){$output .= '&#x21b3;'}$output .= '&nbsp;';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['item',0,'name',0]);&$_tt_filter($output)};$output .= '</dt><dd><ul>';$stash->set('depth',$stash->get('depth')+ 1);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['item',0,'children',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'node'}=$_tt_value;$output .= '<li>';$output .= $stash->get(['dns_view',0,'print',[$stash->get('node')]]);$output .= '</li>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('depth',$stash->get('depth')- 1);$output .= '</ul></dd></dl>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('dns_view',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$output .= '    <blockquote style="margin:10px 0 0 !important; padding: 0 !important;">
+        <div id="dns_tree">
+            ';$output .= $stash->get(['dns_view',0,'print',[$stash->get(['data',0,'dns_peer_tree',0])]]);$output .= '
+        </div>
+    </blockquote>
+</div>
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'dns_cluster','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

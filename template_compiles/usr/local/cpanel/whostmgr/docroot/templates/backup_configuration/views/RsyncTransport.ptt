@@ -1,0 +1,165 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/RsyncTransport.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['[asis,Rsync] Destination' ]]);$output .= '</h4>
+<div class="section-body">
+    <form name="rsyncDestination" ng-if="!destinationState.fetching_data" ng-show="!destinationState.showKeyGenerationForm" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination" novalidate>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="name">';$output .= $stash->get(['locale',0,'maketext',['Destination Name' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter a name for this destination.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input type=\"text\" name=\"name\" id=\"rsync_name\" required class=\"form-control\" minlength=\"1\" ng-maxlength=\"256\" ng-model=\"destinationState.destination.rsync.name\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul class=\"validation-container\" ng-show=\"rsyncDestination.name.\$dirty && (rsyncDestination.name.\$error.required || rsyncDestination.name.\$error.minlength || rsyncDestination.name.\$error.maxlength)\">\n                        <li class=\"validation validation-error\" ng-show=\"rsyncDestination.name.\$error.required\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a destination name.' ]]);$output .= "</span>\n                        </li>\n                        <li class=\"validation validation-error\" ng-show=\"rsyncDestination.name.\$error.minlength || rsyncDestination.name.\$error.maxlength\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['The destination name must contain between [numf,1] and [numf,256] characters.' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <input type="checkbox" name="upload_system_backup" id="rsync_system" ng-model="destinationState.destination.rsync.upload_system_backup"/>
+                    <label for="rsync_system">';$output .= $stash->get(['locale',0,'maketext',['Transfer System Backups to this Destination' ]]);$output .= '</label>
+                    <div class="callout callout-warning">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] System Backups contain sensitive security details.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You should transfer System Backups over encrypted methods.' ]]);$output .= '</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.rsync.only_used_for_logs"
+                        type="checkbox"
+                        name="only_used_for_logs"
+                        id="rsync_logsonly"/>
+                    <label for="rsync_logsonly">';$output .= $stash->get(['locale',0,'maketext',['Only use this destination for log file transfers[comment,title of option like one above, but looks wrong title cased]' ]]);$output .= '</label>
+                    <div class="callout callout-warning">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Enabling this option will prevent it from being used for account and/or system backups.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enable this option if this destination will only be used for log backups. If it will be used for all backups, leave this unchecked.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="path">';$output .= $stash->get(['locale',0,'maketext',['Backup Directory' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Optional. Specify the path, relative to the account’s home directory, where the system stores backups.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input type=\"text\" name=\"path\" id=\"rsync_path\" backup-location class=\"form-control\" ng-model=\"destinationState.destination.rsync.path\" ng-change=\"checkForDisallowedChars(rsyncDestination.path.\$viewValue, disallowedPathChars)\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul validation-container field-name=\"path\">\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <label for=\"host\">";$output .= $stash->get(['locale',0,'maketext',['Remote Host' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter the remote server’s address.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The address should not include [asis,http]://, [asis,https]://, a trailing port, or path information.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input type=\"text\" name=\"host\" id=\"rsync_host\" ng-trim=\"false\" remote-host required class=\"form-control\" ng-model=\"destinationState.destination.rsync.host\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul validation-container field-name=\"host\">\n                        <li class=\"validation validation-error\" ng-show=\"rsyncDestination.host.\$dirty && rsyncDestination.host.\$error.required\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a remote host.' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="port">';$output .= $stash->get(['locale',0,'maketext',['Port' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The port that the system uses to communicate with the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['By default, [asis,Rsync] destinations use an [asis,SSH] channel on port 22.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input\n                        type=\"number\"\n                        name=\"port\"\n                        id=\"rsync_port\"\n                        class=\"form-control\"\n                        ng-model=\"destinationState.destination.rsync.port\"\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\"\n                        min=\"1\"\n                        max=\"65535\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul class=\"validation-container\" ng-show=\"rsyncDestination.port.\$dirty && (rsyncDestination.port.\$error.min || rsyncDestination.port.\$error.max || rsyncDestination.port.\$error.number)\">\n                        <li class=\"validation validation-error\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['The port number must be between [numf,1] and [numf,65535].' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="username">';$output .= $stash->get(['locale',0,'maketext',['Remote Account Username' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The remote server’s account username.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input type=\"text\"\n                        maxlength=\"32\"\n                        name=\"username\"\n                        id=\"rsync_username\"\n                        required\n                        nospaces\n                        class=\"form-control\"\n                        ng-model=\"destinationState.destination.rsync.username\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul validation-container field-name=\"username\">\n                        <li class=\"validation validation-error\" ng-show=\"rsyncDestination.username.\$dirty && rsyncDestination.username.\$error.required\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a username.' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Authentication Type' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The authentication type the system will use to connect to the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For enhanced security, we recommend that you use key authentication.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label class="radio-inline">
+                        <input type="radio" name="authtype" id="key_auth_type_yes" class="dependent" ng-model="destinationState.destination.rsync.authtype" value="key" /> ';$output .= $stash->get(['locale',0,'maketext',['Key Authentication' ]]);$output .= '
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="authtype" id="password_auth_type_yes" class="dependent" ng-model="destinationState.destination.rsync.authtype" value="password" /> ';$output .= $stash->get(['locale',0,'maketext',['Password Authentication' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div id="key_auth_type_options" ng-class="{\'collapsed inactive\': destinationState.destination.rsync.authtype}" class="advanced-options-container password_auth_type_options-alternate" ng-show="destinationState.destination.rsync.authtype === \'key\'">
+            <h5 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Key Authentication Options' ]]);$output .= '</h5>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="privatekey">';$output .= $stash->get(['locale',0,'maketext',['Private Key' ]]);$output .= '</label>
+                        <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The full path of the private key on this server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Click the button below to generate a new key.' ]]);$output .= '</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <input
+                            type="text"
+                            name="privatekey"
+                            id="private_key"
+                            full-path
+                            class="form-control" ng-model="destinationState.destination.rsync.privatekey"
+                            ng-required="destinationState.destination.rsync.authtype === \'key\' && destinationState.newMode" />
+                    </div>
+                    <div class="col-xs-12 col-md-6">
+                        <ul validation-container field-name="privatekey">
+                            <validation-item
+                                field-name="privatekey"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a valid path.' ]]);$output .= '
+                            </validation-item>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '</h3>
+                            </div>
+                            <div cp-loading-panel class="loading_panel" id="ssh_key_list_loading_panel" ng-if="!destinationState.sshKeyListLoaded">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= "\n                            </div>\n                            <ul class=\"list-group\" ng-show=\"destinationState.sshKeyListLoaded\">\n                                <li ng-repeat=\"key in destinationState.sshKeyList track by \$index\" class=\"list-group-item sshKey\" ng-click=\"setPrivateKey(key)\">{{ key }}</li>\n                            </ul>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <button type=\"button\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Generate a New Key' ]]);$output .= '" id="show_save_key" class="btn btn-default" ng-click="toggleKeyGenerationForm()">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Generate a New Key' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="passphrase">';$output .= $stash->get(['locale',0,'maketext',['Passphrase' ]]);$output .= '</label>
+                        <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The private key’s passphrase.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For security reasons, you will not see the passphrase.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enter the passphrase when you create this destination, or when you change the passphrase.' ]]);$output .= "</span>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <input ng-model=\"destinationState.destination.rsync.passphrase\" type=\"password\" name=\"passphrase\" id=\"passphrase\" class=\"form-control advanced-option\" minlength=\"5\" maxlength=\"128\" ng-disabled=\"destinationState.destination.rsync.authtype && !destinationState.destination.rsync.privatekey\" />\n                    </div>\n                    <div class=\"col-xs-12 col-md-6\">\n                        <ul class=\"validation-container\" ng-show=\"rsyncDestination.passphrase.\$dirty && (rsyncDestination.passphrase.\$error.minlength || rsyncDestination.passphrase.\$error.maxlength)\">\n                            <li class=\"validation validation-error\">\n                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a passphrase between [numf,5] and [numf,128] characters.' ]]);$output .= '</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="password_auth_type_options" ng-class="{\'collapsed inactive\': destinationState.destination.rsync.privatekey && !destinationState.destination.rsync.authtype}" class="advanced-options-container key_auth_type_options-alternate" ng-show="destinationState.destination.rsync.authtype === \'password\'">
+            <h5 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Password Authentication Options' ]]);$output .= '</h5>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="password">';$output .= $stash->get(['locale',0,'maketext',['Remote Password' ]]);$output .= '</label>
+                        <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The password of the account on the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For security reasons, you will not see the password.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enter the password when you create this destination, or when you change the password.' ]]);$output .= "</span>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <input type=\"password\" name=\"password\" id=\"rsync_password\" ng-required=\"destinationState.destination.rsync.authtype === 'password' && !destinationState.editMode\" class=\"form-control advanced-option\" ng-model=\"destinationState.destination.rsync.password\" />\n                    </div>\n                    <div class=\"col-xs-12 col-md-6\">\n                        <ul class=\"validation-container\" ng-show=\"rsyncDestination.password.\$dirty && rsyncDestination.password.\$error.required\">\n                            <li class=\"validation validation-error\">\n                                <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a password.' ]]);$output .= '</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="rsync_timeout">';$output .= $stash->get(['locale',0,'maketext',['Timeout' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The number of seconds that the system will wait for a response from the remote server.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input\n                        type=\"number\"\n                        name=\"timeout\"\n                        id=\"rsync_timeout\"\n                        class=\"form-control\"\n                        min=\"30\"\n                        max=\"300\"\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\"\n                        ng-model=\"destinationState.destination.rsync.timeout\" />\n                </div>\n                <div class=\"col-xs-12 col-md-6\">\n                    <ul class=\"validation-container\" ng-show=\"rsyncDestination.timeout.\$dirty && (rsyncDestination.timeout.\$error.min || rsyncDestination.timeout.\$error.max || rysncDestination.timeout.\$error.number)\">\n                        <li class=\"validation validation-error\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">";$output .= $stash->get(['locale',0,'maketext',['You must enter a timeout value between [numf,30] and [numf,300] seconds.' ]]);$output .= "</span>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"row\">\n                <div class=\"col-xs-12\">\n                    <div id=\"save_config\">\n                        <button type=\"submit\" id=\"save_destination_button\" cp-action=\"saveDestination(destinationState.destination)\" ng-disabled=\"rsyncDestination.\$pristine || rsyncDestination.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save Destination' ]]);$output .= "</button>\n                        <button type=\"button\" id=\"save_and_validate_destination_button\" button-class=\"btn-default\" cp-action=\"saveAndValidateDestination(destinationState.destination)\" ng-disabled=\"rsyncDestination.\$pristine || rsyncDestination.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save and Validate Destination' ]]);$output .= '</button>
+                        <button type="button" class="btn btn-link" id="cancel_destination_button" ng-click="cancelDestination()" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <ng-include ng-show="destinationState.showKeyGenerationForm" src="\'views/SSHKeyGen.ptt\'"></ng-include>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

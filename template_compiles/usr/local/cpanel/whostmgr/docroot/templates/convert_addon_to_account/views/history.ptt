@@ -1,0 +1,171 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/history.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-6">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Conversion History' ]]);$output .= '</h2>
+    </div>
+    <div class="col-xs-6 text-right flip">
+        <div class="navigation-controls">
+            <button id="viewAddons"
+                type="button"
+                class="btn btn-primary"
+                ng-click="history.viewAddons()">
+                ';$output .= $stash->get(['locale',0,'maketext',['View Addon Domains' ]]);$output .= '</button>
+        </div>
+    </div>
+</div>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['The Conversion History page displays completed and in progress conversions.' ]]);$output .= '</p>
+<div id="paginationControls" class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <search id="filterList"
+            ng-model="history.conversions.meta.filterValue"
+            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filter by domain' ]]);$output .= '"
+            autofocus
+            ng-change="history.conversions.searchList()"></search>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+            <page-size id="topPageSize"
+                allowed-sizes="history.conversions.meta.pageSizes"
+                total-items="history.conversions.meta.totalItems"
+                ng-model="history.conversions.meta.pageSize"
+                show-all="false"
+                ng-change="history.conversions.selectPageSize()">
+            </page-size>
+            <uib-pagination id="topPager"
+                ng-change="history.conversions.selectPage()"
+                ng-model="history.conversions.meta.pageNumber"
+                max-size="history.conversions.meta.maxPages"
+                items-per-page="history.conversions.meta.pageSize"
+                total-items="history.conversions.meta.totalItems"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div id="tableStats" class="row hidden-xs hidden-sm">
+    <div class="col-xs-8">
+        <div class="page-stats selected-stats">
+        </div>
+    </div>
+    <div class="col-xs-4">
+        <div class="page-stats pull-right flip">
+        {{history.conversions.paginationMessage()}}
+        </div>
+    </div>
+</div>
+<div id="tableContainer">
+    <table id="table" class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th id="domainHeader">
+                    <span toggle-sort id="sortByDomain" onsort="history.conversions.sortList" sort-meta="history.conversions.meta" sort-field="domain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="statusHeader">
+                    <span toggle-sort id="sortByStatus" onsort="history.conversions.sortList" sort-meta="history.conversions.meta" sort-field="status">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="startTimeHeader">
+                    <span toggle-sort id="sortByStartTime" onsort="history.conversions.sortList" sort-meta="history.conversions.meta" sort-field="start_time">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Start Time' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="endTimeHeader">
+                    <span toggle-sort id="sortByEndTime" onsort="history.conversions.sortList" sort-meta="history.conversions.meta" sort-field="end_time">
+                        ';$output .= $stash->get(['locale',0,'maketext',['End Time' ]]);$output .= '
+                    </span>
+                </th>
+                <th id="actionsHeader" class="actions-column">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                <th id="historGearMenuContainer" class="gearColumn text-right flip">
+                    <span class="dropdown" uib-dropdown>
+                        <a href id="historyGearMenu" class="dropdown-toggle" uib-dropdown-toggle>
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-right text-left flip" uib-dropdown-menu>
+                            <li>
+                                <a id="reloadHistoryMenuItem" href ng-click="history.forceLoadList()">';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="historyLoadingNotice" class="info empty-row ng-hide" ng-show="history.ui.is_loading">
+                <td colspan="6" id="loadingMessage">
+                    <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                </td>
+            </tr>
+            <tr id="emptyListNotice" class="info empty-row ng-hide" ng-show="history.conversions.filteredList.length == 0 && !history.ui.is_loading">
+                <td colspan="6" id="emptyMessage">';$output .= $stash->get(['locale',0,'maketext',['The Conversion History is empty.' ]]);$output .= '</td>
+            </tr>
+            <tr ng-repeat="conversion in history.conversions.filteredList" ng-hide="history.ui.is_loading || history.conversions.filteredList.length == 0">
+
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                    <span>{{ conversion.domain }}</span>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '">
+                    <job-status ng-model="conversion.status"></job-status>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Start Time' ]]);$output .= '">
+                    <span>{{ conversion.start_time | local_datetime }}</span>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['End Time' ]]);$output .= '">
+                    <span>{{ conversion.end_time | local_datetime }}</span>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\">\n                    <button type=\"button\" id=\"goToDetailsViewButton_{{ \$index }}\" class=\"btn btn-link\"\n                        ng-click=\"history.goToDetailsView(conversion.job_id)\">\n                        <span class=\"fas fa-info-circle\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '
+                    </button>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row hidden-md hidden-lg">
+    <div class="col-xs-4">
+        <div class="page-stats selected-stats">
+        </div>
+    </div>
+    <div class="col-xs-8">
+        <div class="page-stats pull-right flip">
+            {{history.conversions.paginationMessage()}}
+        </div>
+    </div>
+</div>
+<div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="col-xs-12 col-sm-12">
+        <div id="paginatorBottom" class="pagination-container">
+            <page-size id="bottomPageSize"
+                allowed-sizes="history.conversions.meta.pageSizes"
+                total-items="history.conversions.meta.totalItems"
+                ng-model="history.conversions.meta.pageSize"
+                show-all="false"
+                ng-change="history.conversions.selectPageSize()">
+            </page-size>
+            <uib-pagination id="bottomPager"
+                ng-change="history.conversions.selectPage()"
+                ng-model="history.conversions.meta.pageNumber"
+                max-size="history.conversions.meta.maxPages"
+                items-per-page="history.conversions.meta.pageSize"
+                total-items="history.conversions.meta.totalItems"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

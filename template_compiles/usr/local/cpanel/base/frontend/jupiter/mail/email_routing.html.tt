@@ -1,0 +1,235 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/email_routing.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('LinkedNode',$context->plugin('LinkedNode'));$stash->set('worker_data',$stash->get(['LinkedNode',0,'get_basic_worker_data',0]));$stash->set('has_mail_linkage',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('worker_data');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'worker'}=$_tt_value;if ($stash->get(['worker',0,'worker_type',0])eq 'Mail'){$stash->set('has_mail_linkage',1)};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (!$stash->get('has_mail_linkage')){$output .= $stash->get(['Api2',0,'pre_exec',['Email','listmaildomains' ]]);$stash->set('mail_domains',$stash->get(['Api2',0,'exec',['Email','listmaildomains',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listmaildomains' ]]);$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$stash->set('page_css',do {my$output='';$output .= $context->process('css_block');$output})}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p class="description" id="descMx">
+        ';$output .= $stash->get(['locale',0,'maketext',['Route a domain’s incoming mail to a specific server. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/EmailRouting','_blank','lnkMxEntryDocumentation' ]]);$output .= '
+    </p>
+    ';if ($stash->get('has_mail_linkage')){$output .= '
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled.' ]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] To manage [asis,MX] records, use the new [output,url,_1,Zone Editor].','../zone_editor/index.html' ]]);$output .= '
+            </div>
+        </div>
+        <input type="hidden" name="mxcheck_state" value="auto" id="mxcheck_state">
+        <input type="hidden" name="detected_state" value="remote" id="detected_state">
+        <div class="section">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <label class="control-label">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</label>
+                    </div>
+                </div>
+                <div class="row" id="domain_selection">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get(['mail_domains',0,'size',0])eq '1'){$output .= '
+                            <p class="form-control-static">';$output .= $stash->get(['mail_domains',0,0,0,'domain',0,'html',0]);$output .= ' <input type="hidden" id="domain" value="';$output .= $stash->get(['mail_domains',0,0,0,'domain',0,'html',0]);$output .= '" /></p>
+                        '}else {$output .= '
+                            <select id="domain" class="form-control">
+                                <option value="_select_">';$output .= $stash->get(['locale',0,'maketext',['Select a domain.' ]]);$output .= '</option>
+                            ';if ($stash->get(['mail_domains',0,'size',0])){$output .= '
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('mail_domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain_info'}=$_tt_value;$output .= '
+                                    <option value="';$output .= $stash->get(['domain_info',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['domain_info',0,'domain',0,'html',0]);$output .= '</option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            '}$output .= '
+                            </select>
+                        '}$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="mx_input_and_table" ';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['maildomainscount' ]])> '1')){$output .= 'style="display: none"'}$output .= ' >
+            <div class="section">
+                <div id="mxcheck_options_div">
+                    <label class="control-label">';$output .= $stash->get(['locale',0,'maketext',['Configure Email Routing' ]]);$output .= '</label>
+                    <div class="form-group routing-group">
+                        <label id="mxcheck_auto_label">
+                            <input type="radio" name="mxcheck" id="mxcheck_auto" value="auto" />
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Automatically Detect Configuration' ]]);$output .= '</span>
+                        </label>
+                        <span class="status" id="mxcheck_auto_current_setting" style="font-weight: bold"></span>
+                        (';$output .= $stash->get(['locale',0,'maketext',['recommended' ]]);$output .= ')
+                        <button id="mxcheck_auto_toggle" class="btn btn-link" role="button">
+                            <div id="auto_toggle_more" class="toggle_more_link">';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '<span class="far fa-caret-square-down fa-lg"></span></div>
+                            <div id="auto_toggle_less" class="toggle_less_link">';$output .= $stash->get(['locale',0,'maketext',['Less' ]]);$output .= '<span class="far fa-caret-square-up fa-lg"></span></div>
+                        </button>
+                        <div id="mxcheck_auto_desc" class="callout callout-info toggle-description less">
+                            <p>';$output .= $stash->get(['locale',0,'maketext',['The system uses the following criteria to detect the email routing settings:' ]]);$output .= '</p>
+                            <ul class="mxcheck_autolist" id="listMxCheck">
+                                <li>
+                                    <em>';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= '</em>
+                                    <span id="mxcheck_detected_state_local"></span>
+                                    <p>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Lowest numbered mail exchanger points to an [asis,IP] address on this server.' ]]);$output .= '
+                                    </p>
+                                </li>
+                                <li>
+                                    <em>';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= '</em>
+                                    <span id="mxcheck_detected_state_secondary"></span>
+                                    <p>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Lowest numbered mail exchanger points to an [asis,IP] address [output,strong,not] on this server.' ]]);$output .= '
+                                    </p>
+                                </li>
+                                <li>
+                                    <em>';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= '</em>
+                                    <span id="mxcheck_detected_state_remote"></span>
+                                    <p>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['No mail exchangers point to an [asis,IP] address on this server.' ]]);$output .= '
+                                    </p>
+                                </li>
+                            </ul>
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Automatic detection is [output,strong,not] possible if the configured [asis,MX] records do not resolve.' ]]);$output .= '
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group routing-group">
+                        <label id="mxcheck_local_label">
+                            <input type="radio" name="mxcheck" id="mxcheck_local" value="local" />
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= '</span>
+                        </label>
+                        <button id="mxcheck_local_toggle" class="btn btn-link" role="button">
+                            <div id="local_toggle_more" class="toggle_more_link">';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '<span class="far fa-caret-square-down fa-lg"></span></div>
+                            <div id="local_toggle_less" class="toggle_less_link">';$output .= $stash->get(['locale',0,'maketext',['Less' ]]);$output .= '<span class="far fa-caret-square-up fa-lg"></span></div>
+                        </button>
+                        <div id="mxcheck_local_desc" class="callout callout-info toggle-description less">
+                            <p class="highlight-accordian-desc" id="descConfigMailServer">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The server will always accept mail for this domain. The system will deliver mail to the local mailbox.' ]]);$output .= '
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group routing-group">
+                        <label id="mxcheck_secondary_label">
+                            <input type="radio" name="mxcheck" id="mxcheck_secondary" value="secondary" />
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= '</span>
+                        </label>
+                        <button id="mxcheck_secondary_toggle" class="btn btn-link" role="button">
+                            <div id="secondary_toggle_more" class="toggle_more_link">';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '<span class="far fa-caret-square-down fa-lg"></span></div>
+                            <div id="secondary_toggle_less" class="toggle_less_link">';$output .= $stash->get(['locale',0,'maketext',['Less' ]]);$output .= '<span class="far fa-caret-square-up fa-lg"></span></div>
+                        </button>
+                        <div id="mxcheck_secondary_desc" class="callout callout-info toggle-description less">
+                            <p class="highlight-accordian-desc" id="descConfigMailExchangeBackup">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The server will act as a backup mail exchanger. The system will hold mail for this domain until a lower number mail exchanger is available.' ]]);$output .= '
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group routing-group">
+                        <label id="mxcheck_remote_label">
+                            <input type="radio" name="mxcheck" id="mxcheck_remote" value="remote" />
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= '</span>
+                        </label>
+                        <button id="mxcheck_remote_toggle" class="btn btn-link" role="button">
+                            <div id="remote_toggle_more" class="toggle_more_link">';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '<span class="far fa-caret-square-down fa-lg"></span></div>
+                            <div id="remote_toggle_less" class="toggle_less_link">';$output .= $stash->get(['locale',0,'maketext',['Less' ]]);$output .= '<span class="far fa-caret-square-up fa-lg"></span></div>
+                        </button>
+                        <div id="mxcheck_remote_desc" class="callout callout-info toggle-description less">
+                            <p class="highlight-accordian-desc" id="descConfigNoMail">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The server will not accept mail for this domain. The system sends all mail for this domain to the lowest numbered mail exchanger.' ]]);$output .= '
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" id="submit_button_group">
+                        <input class="btn btn-primary" type="button" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" id="change_mxcheck_button" />
+                        <span class="help-block" id="txtHelpBlock">';$output .= $stash->get(['locale',0,'maketext',['Current setting is shown in [output,strong,bold].' ]]);$output .= '</span>
+                        <span id="mxcheck_status"></span>
+                    </div>
+                </div>
+            </div>
+        <div id="error_message_box" class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div id="error_message_text" class="alert-message"></div>
+        </div>
+    '}$output .= '
+    </div><!-- end mx_input_and_table -->
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'email_routing','page_js'=>$stash->get('js_code'),'embed_scripts'=>!$stash->get('has_mail_linkage')? ['js2/mail/mx.js' ]: [],'page_styles'=>$stash->get('page_css'),'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    .control-label {
+        margin-bottom: 14px;
+        font-size: 18px;
+    }
+    html[dir=ltr] #mx_input_and_table div.form-group,
+    html[dir=ltr] #domain_selection label.control-label,
+    html[dir=ltr] #domain_selection p.form-control-static {
+        padding-left: 15px;
+    }
+    html[dir=rtl] #mx_input_and_table div.form-group,
+    html[dir=rtl] #domain_selection label.control-label,
+    html[dir=rtl] #domain_selection p.form-control-static {
+        padding-right: 15px;
+    }
+    #mx_input_and_table div#submit_button_group {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+    #error_message_box {
+        display: none;
+    }
+    html[dir=ltr] #mxcheck_options_div label span {
+        padding-left: 5px;
+    }
+    html[dir=rtl] #mxcheck_options_div label span {
+        padding-right: 5px;
+    }
+    html[dir=ltr] div.toggle_more_link span.far,
+    html[dir=ltr] div.toggle_less_link span.far {
+        margin-left: 5px;
+    }
+    html[dir=rtl] div.toggle_more_link span.far,
+    html[dir=rtl] div.toggle_less_link span.far {
+        margin-right: 5px;
+    }
+    .toggle_more_link {
+        display: inline;
+    }
+    .toggle_less_link {
+        display: none;
+    }
+    .toggle-description {
+        max-height: 600px;
+        overflow: hidden;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top: 8px;
+        padding-bottom: 5px;
+        -webkit-transition: all 0.25s;
+        transition: all 0.25s;
+    }
+    .less {
+        padding-top: 0;
+        padding-bottom: 0;
+        max-height: 0;
+    }
+    .routing-group {
+        margin-bottom: 5px;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+var LANG = {
+    MX_changing : "';$output .= $stash->get(['locale',0,'maketext',['Changing …' ]]);$output .= '",
+    MX_current_detected_setting : "';$output .= $stash->get(['locale',0,'maketext',['Current Detected Setting' ]]);$output .= '",
+    MX_Local : "';$output .= $stash->get(['locale',0,'maketext',['Local' ]]);$output .= '",
+    MX_Backup : "';$output .= $stash->get(['locale',0,'maketext',['Backup' ]]);$output .= '",
+    MX_Remote : "';$output .= $stash->get(['locale',0,'maketext',['Remote' ]]);$output .= '"
+};
+</script>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

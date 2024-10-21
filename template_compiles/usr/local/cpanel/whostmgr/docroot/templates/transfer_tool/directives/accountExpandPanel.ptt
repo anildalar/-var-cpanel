@@ -1,0 +1,141 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/directives/accountExpandPanel.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="panel-group account-expand-panel">
+    <div class="row content-row">
+        <!-- What to Transfer -->
+        <div class="col-xs-12 col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <toggle-label-info
+                        for="skipOptions"
+                        label-text="';$output .= $stash->get(['locale',0,'maketext',['What to Transfer:' ]]);$output .= '"
+                        label-id="skipOptionsLabel"
+                        info-icon-id="skipOptionsLabelIcon"
+                        show-info-block="false">
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Select the aspects of the account to include in the transfer.' ]]);$output .= '
+                            </p>
+                    </toggle-label-info>
+                    <div class="checkbox" ng-repeat="skipOption in ::skipOptions">
+                        <label for="{{skipOption.id}}">
+                            <input bool-to-int type="checkbox" name="{{account.remote_user}}_skipOptions" id="{{account.remote_user}}_{{skipOption.id}}" ng-model="account[skipOption.modelKey]" ng-change="skipOptionChanged(skipOption)" ng-disabled="skipOption.disabled">
+                            <span>{{skipOption.label}}</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Node Configuration -->
+        <div class="col-xs-12 col-md-5">
+            <div class="panel panel-default" ng-if="account.proxyOption.supports_live_transfers || account.proxyOption.supports_express_transfers">
+                <div class="panel-body" ng-if="account.proxyOption.supports_live_transfers">
+                    <toggle-label-info
+                        for="liveXferOptions"
+                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Live Transfer' ]]);$output .= '"
+                        label-id="liveXferOptionsLabel"
+                        info-icon-id="liveXferLabelIcon"
+                        show-info-block="false">
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable this setting to reduce downtime. Disable this setting to only transfer the files for the [asis,cPanel] account. For more information, read our “[output,url,_1,_2,target,_3]” documentation.','https://go.cpanel.net/livetransfer',$stash->get(['locale',0,'maketext',['Transfer Tool' ]]),'_blank' ]]);$output .= '
+                            </p>
+                    </toggle-label-info>
+                    <toggle-switch
+                        id="{{account.remote_user}}_{{account.proxyOption.id}}"
+                        name="{{account.remote_user}}_proxyOption"
+                        ng-model="account.proxyOption.value"
+                        on-toggle="proxyOptionChanged(account.proxyOption)"
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                        enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '">
+                    </toggle-switch>
+                    <div ng-if="!account.proxyOption.value" class="text-danger">';$output .= $stash->get(['locale',0,'maketext',['If you already performed a [output,url,_1,live transfer,target,_2], then the source server now proxies certain web and mail traffic. To stop this proxying, [output,url,_3,unsuspend the account,target,_2] on the source server.','https://go.cpanel.net/livetransfer','_blank','https://go.cpanel.net/whmdocsListSuspendedAccounts' ]]);$output .= '</div>
+                </div>
+
+                <div class="panel-body" ng-if="!account.proxyOption.supports_live_transfers && account.proxyOption.supports_express_transfers">
+                    <toggle-label-info
+                        for="expressXferOptions"
+                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Express Transfer' ]]);$output .= '"
+                        label-id="expressXferOptionsLabel"
+                        info-icon-id="expressXferOptionsLabelIcon"
+                        show-info-block="false">
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable this setting to use the “[_1]” setting.',$stash->get(['locale',0,'maketext',['Express Transfer' ]])]]);$output .= '
+                            </p>
+                    </toggle-label-info>
+                    <toggle-switch
+                        id="{{account.remote_user}}_{{account.proxyOption.id}}"
+                        name="{{account.remote_user}}_proxyOption"
+                        ng-model="account.proxyOption.value"
+                        on-toggle="proxyOptionChanged(account.proxyOption)"
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                        enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '">
+                    </toggle-switch>
+                </div>
+            </div>
+            <div class="panel panel-default" ng-if="showWorkerNodeOptions">
+                <div class="panel-body">
+                    <div>
+                        <toggle-label-info
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Linked Node Options' ]]);$output .= '"
+                            label-id="linkNodeOptionsLabel"
+                            info-icon-id="linkNodeOptionsLabelIcon"
+                            info-block-id="linkNodeOptionsLabelIconBlock">
+                                <p>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Select whether to link to a child node.' ]]);$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Select the “Use the [asis,cPanel] account’s package configuration” setting to use the [asis,cPanel] account’s current configuration.' ]]);$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['If the [asis,cPanel] account uses a linked node, the system will attempt to use that linked node.' ]]);$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['If this attempt fails, or if the [asis,cPanel] account doesn’t use a linked node, the account will restore to the local server.' ]]);$output .= '
+                                </p>
+                        </toggle-label-info>
+                    </div>
+                    <div class="form-group">
+                        <div ng-repeat="(workerType, workerOptions) in workerNodeOptions" class="row">
+                            <div class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon" id="workerConfig_{{workerType}}_label">
+                                        <span ng-bind="getWorkerConfigLabel(workerType)"></span>
+                                    </span>
+                                    <select
+                                        id="workerConfig_{{workerType}}"
+                                        name="workerConfig_{{workerType}}"
+                                        class="form-control worker-node-select-box"
+                                        ng-model="workerNodeOption[workerType]"
+                                        ng-change="workerNodeOptionChanged(workerType)"
+                                        aria-describedby="workerConfig_{{workerType}}_label"
+                                        ng-options="workerOption as workerOption.label for workerOption in workerOptions track by workerOption.value">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Save Settings -->
+        <div class="col-xs-12 col-md-4 save-settings-section">
+            <div>
+                <div class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['This Account:' ]]);$output .= '</div>
+                <div>
+                    <a href="javascript:void(0)"  class="btn btn-link expanded-panel-save-btn" ng-click="applyAndClose()">
+                        <span class="far fa-save" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= '
+                    </a>
+                    <button href="javascript:void(0)"  class="btn btn-link expanded-panel-save-btn" ng-click="resetToDefaultClicked()" ng-disabled="isSetToDefault()">
+                        <i class="fas fa-undo" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '
+                    </button>
+                </div>
+
+                <hr />
+
+                <div class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Other Accounts:' ]]);$output .= '</div>
+                <div>
+                    <button class="btn btn-link expanded-panel-save-btn" ng-click="applyToAllClicked()" ng-disabled="getOtherSelectedAccountsCount() == 0">
+                        <span class="far fa-save" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Apply to Other Selected Accounts' ]]);$output .= '
+                        <span ng-if="getOtherSelectedAccountsCount() > 0">({{ getOtherSelectedAccountsCount() }})</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,69 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/cron/cron_entries.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('cron_list_results',$stash->get(['Api2',0,'exec',['Cron','listcron',{'omit_extra_record'=>1 }]]));$output .= '
+<table class="table table-striped responsive-table" id="cron_jobs_table">
+    <thead>
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Minute' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Hour' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Day' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Month' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Weekday' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Command' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+        </tr>
+    </thead>
+';if ($stash->get(['cron_list_results',0,'size',0])eq 0){$output .= '
+   <tr>
+        <td colspan="7">';$output .= $stash->get(['locale',0,'maketext',['No Cron Jobs' ]]);$output .= '</td>
+   </tr>
+'}else {$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('cron_list_results');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '    <tr id="info_row_';$output .= $stash->get(['q',0,'count',0]);$output .= '">
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Minute' ]]);$output .= '"><span id="minute_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'minute',0]);&$_tt_filter($output)};$output .= '</span></td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Hour' ]]);$output .= '"><span id="hour_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'hour',0]);&$_tt_filter($output)};$output .= '</span></td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Day' ]]);$output .= '"><span id="day_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'day',0]);&$_tt_filter($output)};$output .= '</span></td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Month' ]]);$output .= '"><span id="month_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'month',0]);&$_tt_filter($output)};$output .= '</span></td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Weekday' ]]);$output .= '"><span id="weekday_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'weekday',0]);&$_tt_filter($output)};$output .= '</span></td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Command' ]]);$output .= '" class="command-cell">
+            <code id="command_htmlsafe_';$output .= $stash->get(['q',0,'count',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'command',0]);&$_tt_filter($output)};$output .= '</code>
+            <input type="hidden" id="command_info_';$output .= $stash->get(['q',0,'count',0]);$output .= '" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'command',0]);&$_tt_filter($output)};$output .= '" />
+            <input type="hidden" id="linekey_';$output .= $stash->get(['q',0,'count',0]);$output .= '" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'linekey',0]);&$_tt_filter($output)};$output .= '" />
+        </td>
+        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+            <span class="btn btn-link" id="lnkEdit_';$output .= $stash->get(['q',0,'count',0]);$output .= '" onclick="toggle_module(\'edit_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '\')">
+                <span class="glyphicon glyphicon-pencil"></span> ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+            </span>&nbsp;&nbsp;&nbsp;
+            <span class="btn btn-link" id="lnkDelete_';$output .= $stash->get(['q',0,'count',0]);$output .= '" onclick="toggle_module(\'delete_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '\')">
+                <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+            </span>
+        </td>
+    </tr>
+    <tr id="module_row_';$output .= $stash->get(['q',0,'count',0]);$output .= '" class="dt_module_row">
+        <td colspan="7">
+            ';$output .= $context->process('cron/edit_module.html.tt');$output .= '
+            <div class="dt_module" id="delete_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '" style="display: none">
+                <div class="form-group">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Delete this cron job?' ]]);$output .= '</p>
+                </div>
+                <div class="form-group" id="delete_input_';$output .= $stash->get(['q',0,'count',0]);$output .= '">
+                    <input
+                        type="button"
+                        class="btn btn-primary"
+                        id="delete_line_';$output .= $stash->get(['q',0,'count',0]);$output .= '"
+                        value="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '"
+                        onclick="delete_line(\'';$output .= $stash->get(['q',0,'count',0]);$output .= '\')"
+                    />
+                    <button
+                        class="btn btn-link"
+                        id="cancel_delete_{{ index }}"
+                        onclick="toggle_module(\'delete_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '\')"
+                    >
+                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                    </button>
+                </div>
+                <div id="delete_status_';$output .= $stash->get(['q',0,'count',0]);$output .= '"></div>
+            </div>
+            <div class="cjt_status_bar" id="status_bar_';$output .= $stash->get(['q',0,'count',0]);$output .= '"></div>
+        </td>
+    </tr>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+</table>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

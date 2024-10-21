@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/ContactInfo/Change.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system saved an update of notification settings for your account:' ]]);$output .= '
+</p>
+<ul>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'messages_about_disabled_settings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'notice'}=$_tt_value;$output .= '    <li>
+        ';$output .= $stash->get(['notice',0,'html',0]);$output .= '    </li>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</ul>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'updated_email_addresses',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '    <p>
+        ';if ($stash->get(['pair',0,'key',0])eq 'primary'){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Your primary email address changed from “[_1]” to “[_2]”.',$stash->get(['pair',0,'value',0,0,0,'html',0]),$stash->get(['pair',0,'value',0,1,0,'html',0])]]);$output .= '
+        '}elsif ($stash->get(['pair',0,'key',0])eq 'secondary'){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Your secondary email address changed from “[_1]” to “[_2]”.',$stash->get(['pair',0,'value',0,0,0,'html',0]),$stash->get(['pair',0,'value',0,1,0,'html',0])]]);$output .= '
+        '}$output .= '    </p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If you initiated this change, disregard this email. If you did not initiate this change, contact your system administrator.' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'',$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Your notification settings have changed.' ]])),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

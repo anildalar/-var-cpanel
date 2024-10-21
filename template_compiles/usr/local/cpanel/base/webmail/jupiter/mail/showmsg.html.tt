@@ -1,0 +1,128 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/showmsg.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('boxtrapper_showmessage',$stash->get(['execute',['BoxTrapper','get_message',{'email'=>$stash->get(['RAW_FORM',0,'account',0]),'queuefile'=>$stash->get(['RAW_FORM',0,'q',0])}],'data',0,'content',0]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    <h2 id="hdrQueue">';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] queue for the account “[output,strong,_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '</h2>
+
+    <div class="section">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Choose an action:' ]]);$output .= '</strong>
+        <form action="multimsgaction.html">
+            <input type="hidden"
+                   name="origin"
+                   id="hidOrigin"
+                   value="showmsg" />
+            <input type="hidden"
+                   name="account"
+                   id="hidAcct"
+                   value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+            <input type="hidden"
+                   name="queuefile-1"
+                   id="hidQ"
+                   value="';$output .= $stash->get(['FORM',0,'q',0]);$output .= '" />
+            <input type="hidden"
+                   name="t"
+                   id="hidT"
+                   value="';$output .= $stash->get(['FORM',0,'t',0]);$output .= '" />
+            <input type="hidden"
+                   name="logdate"
+                   id="hidMyDate"
+                   value="';$output .= $stash->get(['FORM',0,'item',['logdate' ]]);$output .= '" />
+            <input type="hidden"
+                   name="field"
+                   id="hidFilter"
+                   value="';$output .= $stash->get(['FORM',0,'item',['field' ]]);$output .= '" />
+            <input type="hidden"
+                   name="value"
+                   id="hidValue"
+                   value="';$output .= $stash->get(['FORM',0,'item',['value' ]]);$output .= '" />
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnWhiteDeliverAll">
+                        <input checked type="radio" id="rbtnWhiteDeliverAll" name="action" value="deliverall,whitelist" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Whitelist and deliver all messages from this sender.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnWhiteDeliverThis">
+                        <input type="radio" name="action" id="rbtnWhiteDeliverThis" value="deliver,whitelist" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Whitelist and deliver this message from this sender.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeliverAll">
+                        <input type="radio" name="action" id="rbtnDeliverAll" value="deliverall" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Deliver all messages from this sender.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeliverThis">
+                        <input type="radio" name="action" id="rbtnDeliverThis" value="deliver" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Deliver this message.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeleteThis">
+                        <input type="radio" name="action" id="rbtnDeleteThis" value="delete" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete this message from the queue.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeleteAll">
+                        <input type="radio" name="action" id="rbtnDeleteAll" value="deleteall" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete all messages from this sender.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeleteThisBlacklist">
+                        <input type="radio" name="action" id="rbtnDeleteThisBlacklist" value="delete,blacklist" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete this message and blacklist the sender.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="radio">
+                    <label id="lblRbtnDeleteThisIgnore">
+                        <input type="radio" name="action" id="rbtnDeleteThisIgnore" value="delete,ignorelist" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete this message and add sender to Ignore List.' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" id="btnGo" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrMsgPreview">
+          ';$output .= $stash->get(['locale',0,'maketext',['Message Preview' ]]);$output .= '
+          <a id="boxtrapper_download_message" class="btn btn-default" href="';$output .= $stash->get('cp_security_token');$output .= '/boxtrapper_download/';$output .= $stash->get(['FORM',0,'account',0,'uri',0]);$output .= '/';$output .= $stash->get(['FORM',0,'q',0,'uri',0]);$output .= '">
+              <i class="fas fa-download email_control_icon" aria-hidden="true"></i>
+              <span class="email_control_text">';$output .= $stash->get(['locale',0,'maketext',['Download in “[output,strong,_1]” format.','.eml' ]]);$output .= '</span>
+          </a>
+      </h2>
+
+        <form>
+            <div class="form-group">
+                <textarea rows="30" cols="85" readonly="readonly" id="txtShowMsg" class="form-control">';$output .= $stash->get('boxtrapper_showmessage');$output .= '</textarea>
+            </div>
+        </form>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'showq.html','formdata'=>$stash->get('FORM'),'post'=>'1','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

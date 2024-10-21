@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/tls_wizard_redirect/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts2/selectbuyssl/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+    <div id="content"
+        ng-controller="BaseController as base"
+        class="ng-cloak"
+        ng-cloak>
+        <div class="callout callout-warning">
+            ';$output .= $stash->get(['locale',0,'maketext',['If the account does not currently have the necessary features to order [asis,SSL] certificates, the system will automatically enable those features.' ]]);$output .= '
+        </div>
+        <div ng-class="{\'view-disabled\':loading}" ng-view>
+        </div>
+    </div>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.data = ';$output .= $stash->get(['data',0,'json',0]);$output .= '
+</script>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'purchase_and_install_an_ssl_certificate','header'=>$stash->get(['locale',0,'maketext',['Purchase and Install an SSL Certificate' ]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

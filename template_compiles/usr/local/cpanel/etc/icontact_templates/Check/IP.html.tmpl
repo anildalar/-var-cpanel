@@ -1,0 +1,20 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Check/IP.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,IP,Internet Protocol] address-related problem detected.' ]]));$stash->set(['NOTICE',0,'warnings',0],{'resolved_to_wrong_ip'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['The hostname ([_1]) resolves to the “[_2]” [output,abbr,IP,Internet Protocol] address. It should resolve to the “[_3]” [output,abbr,IP,Internet Protocol] address. Ensure that the contents of [_4] are configured correctly, and also that there is a correct [asis,A] record entry for the hostname in the zone file.',$stash->get(['NOTICE',0,'host_server',0]),$stash->get(['NOTICE',0,'wrong_ip',0]),$stash->get(['NOTICE',0,'right_ip',0]),$stash->get(['NOTICE',0,'etc_hosts_path',0])]]),'host_not_found'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to resolve the hostname, [_1], to an [output,abbr,IP,Internet Protocol] address. This means either that [_2] is not set up correctly, there is no [output,abbr,DNS,Domain Name Service] entry for “[_1]”, or both. Ensure that the contents of [_2] are configured correctly, and that there is a correct [asis,A] record entry for the hostname in the zone file.',$stash->get(['NOTICE',0,'host_server',0]),$stash->get(['NOTICE',0,'etc_hosts_path',0])]]),'unable_resolve_no_host_binary'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to resolve your hostname ([_1]) to an [output,abbr,IP,Internet Protocol] address; no ‘host’ binary found.',$stash->get(['NOTICE',0,'host_server',0])]])});$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['IMPORTANT: Do not ignore this email.' ]]);$output .= '
+</p>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'problems',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'problem'}=$_tt_value;$output .= '
+    <p>
+        ';$output .= $stash->get(['NOTICE',0,'warnings',0,$stash->get('problem'),0]);$output .= '
+    </p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Some or all of these problems can be caused by an incorrect configuration in the [_1] file. Check the file or use the [_2] interface in [asis,WHM] at [output,url,_3,_3,target,_4] to verify that everything is correct.',$stash->get(['NOTICE',0,'resolv_conf_path',0]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Resolver Configuration Wizard' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/setupresolvconf' ]]),'_blank' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You may be able to automatically correct this problem with the “[_1]” interface under “[_2]” in [asis,WHM] at: [output,url,_3,_3,target,_4].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Add an A Entry for Your Hostname' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['DNS Functions' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts/addaforhost' ]]),'_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

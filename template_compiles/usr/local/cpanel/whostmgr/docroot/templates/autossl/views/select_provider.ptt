@@ -1,0 +1,98 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/autossl/views/select_provider.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-md-12">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] Providers' ]]);$output .= "\n        </h2>\n        <form id=\"select_provider_form\" name=\"autossl_form\" cp-form-waiting=\"autossl_form.\$valid && do_submit(autossl_form)\">\n            <div class=\"form_area\">\n                <p>\n                    ";$output .= $stash->get(['locale',0,'maketext',['Choose an [asis,AutoSSL] provider:' ]]);$output .= '                    <a href ng-click="toggleShowScoreDetails()">(';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Details' ]]);$output .= ')</a>
+                </p>
+
+                <table class="table table-condensed score-details-table" ng-class="{\'collapsed\':!showScoreDetails}">
+                    <thead ng-if="showScoreDetails">
+                        <tr>
+                            <th></th>
+                            <th ng-repeat="column in ::getTableColumns()" scope="col" ng-bind="::column.getLabel()" class="no-wrap-column"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- disabled -->
+                        <tr>
+                            <td>
+                                <div class="radio">
+                                    <!-- this points at a null variable and must be set to "" -->
+                                    <!-- otherwise this doesn\'t properly reset the scope -->
+                                    <!-- do to interactions with cp-form-waiting -->
+                                    <input id="provider_module_disabled"
+                                        name="provider_module"
+                                        type="radio"
+                                        ng-model="current_provider_module_name"
+                                        value="" >
+                                </div>
+                            </td>
+                            <th scope="row">
+                                <label for="provider_module_disabled">
+                                    <span class="disabled_text">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= "</span>\n                                </label>\n                            </th>\n                            <td colspan=\"{{ showScoreDetails ? '8' : '1' }}\"></td>\n                        </tr>\n                        <!-- /disabled -->\n                        <tr ng-repeat=\"provider in providers\">\n                            <td class=\"no-wrap-column\">\n                                <div class=\"radio\">\n                                    <!-- parent has to be included here because cp-form-waiting toys with scope -->\n                                    <input id=\"provider_module_{{provider.module_name}}\"\n                                        name=\"provider_module\" type=\"radio\"\n                                        ng-model=\"\$parent.current_provider_module_name\"\n                                        ng-value=\"provider.module_name\" />\n                                </div>\n                            </td>\n                            <th scope=\"row\" class=\"no-wrap-column\">\n                                <label for=\"provider_module_{{provider.module_name}}\">{{provider.display_name}}</label>\n                            </th>\n                            <td class=\"no-wrap-column\">\n                                <star-rating ng-click=\"toggleShowScoreDetails()\" max=\"provider.maxUsabilityScore\" rating=\"provider.usabilityScore\"></star-rating>\n                            </td>\n\n                            <!-- details -->\n                            <td class=\"no-wrap-column\" ng-if=\"showScoreDetails\" ng-bind=\"getFormattedSpec(provider.specs.DCV_METHODS, 'list_and_quoted')\"></td>\n                            <td ng-if=\"showScoreDetails\">\n                              <i ng-if=\"provider.specs.SUPPORTS_ANCESTOR_DCV.toString() === '1'\"\n                                  class=\"fas fa-check text-success\" aria-hidden=\"true\"></i>\n                              <i ng-if=\"provider.specs.SUPPORTS_ANCESTOR_DCV.toString() !== '1'\"\n                                  class=\"fas fa-times text-danger\" aria-hidden=\"true\"></i>\n                            </td>\n                            <td ng-if=\"showScoreDetails\" ng-bind-html=\"getFormattedSpec(provider.specs.MAX_DOMAINS_PER_CERTIFICATE, 'numf')\" data-is-best=\"{{provider.specSpecifics['MAX_DOMAINS_PER_CERTIFICATE']}}\"></td>\n                            <td ng-if=\"showScoreDetails\" ng-bind-html=\"getFormattedSpec(provider.specs.DELIVERY_METHOD)\" data-is-best=\"{{provider.specSpecifics['DELIVERY_METHOD']}}\"></td>\n                            <td ng-if=\"showScoreDetails\" ng-bind-html=\"getFormattedSpec(provider.specs.AVERAGE_DELIVERY_TIME, 'time_string')\" data-is-best=\"{{provider.specSpecifics['AVERAGE_DELIVERY_TIME']}}\"></td>\n                            <td ng-if=\"showScoreDetails\" ng-bind-html=\"getFormattedSpec(provider.specs.VALIDITY_PERIOD, 'time_string')\" data-is-best=\"{{provider.specSpecifics['VALIDITY_PERIOD']}}\"></td>\n                            <td ng-if=\"showScoreDetails\" ng-bind-html=\"getFormattedSpec(provider.specs.HTTP_DCV_MAX_REDIRECTS)\" data-is-best=\"{{provider.specSpecifics['HTTP_DCV_MAX_REDIRECTS']}}\"></td>\n\n                            <td ng-if=\"showScoreDetails\">\n                                <i ng-if=\"provider.specs.SUPPORTS_WILDCARD.toString() === '1'\"\n                                    class=\"fas fa-check text-success\" aria-hidden=\"true\"></i>\n                                <i ng-if=\"provider.specs.SUPPORTS_WILDCARD.toString() !== '1'\"\n                                    class=\"fas fa-times text-danger\" aria-hidden=\"true\"></i>\n                            </td>\n                            <!-- / details -->\n                        </tr>\n                    </tbody>\n                    <tfoot ng-if=\"showScoreDetails\">\n                        <tr>\n                            <td></td>\n                            <td ng-repeat=\"column in ::getTableColumns()\" scope=\"col\">\n                                <p ng-bind-html=\"column.getDescription()\"></p>\n                            </td>\n                        </tr>\n                    </tfoot>\n                </table>\n            </div>\n\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-md-8\">\n                    <p ng-if=\"!showScoreDetails\">\n                        {{ ::getDetailsExplaination() }}\n                        <a href ng-click=\"toggleShowScoreDetails()\">";$output .= $stash->get(['locale',0,'maketext',['Click here to view details.' ]]);$output .= '</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="form_area form-group" ng-if="get_current_provider() && get_current_provider().x_terms_of_service">
+                <fieldset>
+                    <legend><h3>';$output .= $stash->get(['locale',0,'maketext',['Terms of Service' ]]);$output .= '</h3></legend>
+                    <div ng-if="get_current_provider().saved_x_terms_of_service_accepted && (get_current_provider().saved_x_terms_of_service_accepted !== get_current_provider().x_terms_of_service)">
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['This provider has updated its terms of service. You must accept the new terms of service to proceed.' ]]);$output .= '</p>
+                    </div>
+
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['To use this [asis,AutoSSL] provider, accept the terms of service as given here:' ]]);$output .= '</p>
+
+                    <p><a class="prominent" target="_blank" ng-href="{{get_current_provider().x_terms_of_service}}">{{get_current_provider().x_terms_of_service}}</a></p>
+
+                    <label>
+                        <input required type="checkbox" ng-model="get_current_provider().x_terms_of_service_accepted" ng-true-value="\'{{get_current_provider().x_terms_of_service}}\'">
+                        ';$output .= $stash->get(['locale',0,'maketext',['I agree to these terms of service.' ]]);$output .= '                    </label>
+                </fieldset>
+            </div>
+
+            <div class="form_area form-group" ng-if="get_current_provider().x_terms_of_service">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['Select the following option to update your registration. The system will overwrite your existing registration. This is optional and not required to use this provider:' ]]);$output .= '</p>
+                <label>
+                    <input type="checkbox" ng-model="provider_submit_type[current_provider_module_name]" ng-true-value="\'reset\'">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Recreate my current registration with “[_1]”.','{{get_current_provider().display_name}}' ]]);$output .= '
+                </label>
+            </div>
+
+            <div class="form_area form-group" ng-if="get_current_provider().module_name === \'cPanel\' && get_saved_provider_module_name() !== \'cPanel\'">
+                <callout callout-type="warning">
+                    <p>
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Please Note:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['We have deprecated the [asis,Sectigo] [asis,AutoSSL] provider. It will no longer function at a future date.' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] will be unable to provision new free [asis,SSL] certificates once the [asis,Sectigo] [asis,AutoSSL] provider no longer functions.' ]]);$output .= '
+                    </p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,cPanel Deprecation Plan documentation,target,_blank].','https://go.cpanel.net/deprecation' ]]);$output .= '</p>
+                    <label>
+                        <input type="checkbox" ng-model="accepted_the_risk" ng-required="{{true}}">
+                        ';$output .= $stash->get(['locale',0,'maketext',['I understand the risk.' ]]);$output .= "\n                    </label>\n                </callout>\n            </div>\n\n            <div class=\"form_area\">\n                <button\n                    class=\"btn btn-primary\"\n                    type=\"submit\"\n                    ng-disabled=\"autossl_form.\$pristine || !autossl_form.\$valid || ( get_current_provider().module_name === get_saved_provider_module_name() && !provider_submit_type[current_provider_module_name] )\">";$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<script type="text/ng-template" id="rank-detail-template.ptt">
+  <span>Special Tooltip with <strong>markup</strong> and {{ dynamicTooltipText }}</span>
+</script>
+
+<style>
+    #select_provider_form {
+        margin-top: 5px;
+    }
+
+    .disabled_text {
+        font-weight: normal;
+        font-style: italic;
+    }
+    .table-condensed .radio {
+          margin-top:0;
+          margin-bottom:0;
+    }
+    .table-condensed th label {
+        margin-bottom:0;
+    }
+</style>'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

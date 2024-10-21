@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Quota/DiskWarning.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Disk quota notification for “[_1]”.',$stash->get(['NOTICE',0,'user',0])]]));$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'status',0])eq 'full'){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The user “[_1]” ([_2]) has reached their disk quota.',$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'user_domain',0])]])}elsif ($stash->get(['NOTICE',0,'status',0])eq 'critical'){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The user “[_1]” ([_2]) has nearly reached their disk quota.',$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'user_domain',0])]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The user “[_1]” ([_2]) has almost reached their disk quota.',$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'user_domain',0])]])}$output .= '
+</p>
+';if ($stash->get(['NOTICE',0,'disklimit',0,'defined',0])){$output .= '
+<p>
+    ';if ($stash->get(['NOTICE',0,'disklimit',0])> 0){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The account currently uses [numf,_1]% ([format_bytes,_2]/[format_bytes,_3]) of its disk capacity.',$stash->get(['NOTICE',0,'percentused',0]),$stash->get(['NOTICE',0,'diskused',0])* 1024 * 1024,$stash->get(['NOTICE',0,'disklimit',0])* 1024 * 1024 ]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The account currently uses [format_bytes,_1] of disk capacity.',$stash->get(['NOTICE',0,'diskused',0])* 1024 * 1024 ]])}$output .= '
+</p>
+'}$output .= '
+';if ($stash->get(['NOTICE',0,'inodeslimit',0,'defined',0])){$output .= '
+<p>
+    ';if ($stash->get(['NOTICE',0,'inodeslimit',0])> 0){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The account currently uses [numf,_1]% ([numf,_2]/[numf,_3]) of its available files.',$stash->get(['NOTICE',0,'inodespercentused',0]),$stash->get(['NOTICE',0,'inodesused',0]),$stash->get(['NOTICE',0,'inodeslimit',0])]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The account currently has [numf,_1] files.',$stash->get(['NOTICE',0,'inodesused',0])]])}$output .= '
+</p>
+'}$output .= '
+<p>
+    ';if ($stash->get(['NOTICE',0,'sent_to_root',0])|| $stash->get(['NOTICE',0,'sent_to_owner',0])){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Remove some files from this account, or increase the account’s disk quota.' ]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Remove some files from this account, or ask the system administrator to increase the account’s disk quota.' ]])}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

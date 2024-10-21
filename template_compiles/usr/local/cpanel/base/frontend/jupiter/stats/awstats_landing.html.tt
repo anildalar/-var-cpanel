@@ -1,0 +1,59 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/awstats_landing.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('awstats_list',$stash->get(['Api2',0,'exec',['Stats','listawstats',{}]]));$output .= '
+';$stash->set('rowCount',0);$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p id="descAwstats" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Awstats produces visual statistics about visitors of your site.' ]]);$output .= '
+    </p>
+    <div class="section">
+        <h2 id="hdrSelectDomain">
+            ';$output .= $stash->get(['locale',0,'maketext',['Select a Domain' ]]);$output .= '
+        </h2>
+        <table id="tblDomainList" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th id="theadDomain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </th>
+                    <th id="theadView" nonsortable="true">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Linked Domains' ]]);$output .= '
+                    </th>
+                    <th id="theadLinked" nonsortable="true">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                ';if ($stash->get(['awstats_list',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('awstats_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'stats'}=$_tt_value;$output .= '
+                        ';$stash->set('rowCount',$stash->get('rowCount')+ 1);$output .= '
+                        ';$stash->set('rowID','row' .$stash->get('rowCount'));$output .= '
+                    <tr id="';$output .= $stash->get('rowID');$output .= '">
+                        <td id="domain_';$output .= $stash->get('rowID');$output .= '">';$output .= $stash->get(['stats',0,'txt',0,'html',0]);$output .= '</td>
+                        <td>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['stats',0,'addons',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'linked'}=$_tt_value;$output .= '
+                                <p>';$output .= $stash->get(['linked',0,'html',0]);$output .= '</p>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </td>
+                        <td>
+                            <a id="lnkViewStats';$output .= $stash->get('rowID');$output .= '" class="btn btn-link" target="_blank" href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'html',0]);$output .= '/awstats.pl?config=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['stats',0,'domain',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&ssl=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['stats',0,'ssl',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['stats',0,'lang',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '">
+                                <span id="imgViewStats';$output .= $stash->get('rowID');$output .= '" class="glyphicon glyphicon-search" title="';$output .= $stash->get(['locale',0,'maketext',['view stats' ]]);$output .= '"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                            </a>
+                        </td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr id="emptyRow">
+                        <td id="errorText" class="errors" colspan="2">
+                            ';$output .= $stash->get(['locale',0,'maketext',['There are no domains which have awstats stats to display.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+            </tbody>
+        </table>
+    </div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'awstats','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

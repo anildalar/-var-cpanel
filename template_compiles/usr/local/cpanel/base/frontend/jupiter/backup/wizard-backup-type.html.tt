@@ -1,0 +1,106 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard-backup-type.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('mysql_list_db_backups',[]);if ($stash->get(['FORM',0,'type',0])eq 'mysql'){$stash->set('mysql_list_db_backups',$stash->get(['Api2',0,'exec',['MysqlFE','listdbsbackup',{}]]))}$stash->set('email_list_alias_backups',[]);if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$stash->set('email_list_alias_backups',$stash->get(['Api2',0,'exec',['Email','listaliasbackups',{}]]))}$stash->set('email_list_system_filter_info',[]);if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$stash->set('email_list_system_filter_info',$stash->get(['Api2',0,'exec',['Email','list_system_filter_info',{}]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        <div id="backup-nav" class="row">
+            <div class="col-xs-12">
+                <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                <ol>
+                    <li id="tabBackupRestore" class="one"><a href="wizard.html" id="backupRestore"><span>';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></a></li>
+                    <li id="tabFullPartial" class="two"><a href="wizard-backup.html" id="partialBackup"><span>';$output .= $stash->get(['locale',0,'maketext',['Full or Partial Backup' ]]);$output .= '</span></a></li>
+                    <li id="tabDownload" class="three"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="br-wrap" class="row">
+            <div class="col-xs-12">
+                <section>
+                    <h2 id="hdrFinalStep">';$output .= $stash->get(['locale',0,'maketext',['Final Step' ]]);$output .= '</h2>
+                    <p id="descFinalStep">';$output .= $stash->get(['locale',0,'maketext',['Download your partial backup type.' ]]);$output .= '</p>
+                </section>
+                <div id="br-content-wide">
+                    ';if (($stash->get(['FORM',0,'type',0])eq 'homedir')){$output .= '
+                    <h4 id="hdrDownloadHomeDir">';$output .= $stash->get(['locale',0,'maketext',['Download a Home Directory Backup' ]]);$output .= '</h4>
+                    <p>
+                        <a id="lnkHomeDir" class="btn btn-primary" href="';$output .= $stash->get(['Api1',0,'pre_exec',['Cgi','backuplink' ]]);$output .= $stash->get(['Api1',0,'exec',['Cgi','backuplink',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['Cgi','backuplink' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= '</a>
+                    </p>
+
+                    '}elsif (($stash->get(['FORM',0,'type',0])eq 'mysql')){$output .= '
+                    <h4 id="hdrDownloadMysqlDb">';$output .= $stash->get(['locale',0,'maketext',['Download a Database Backup' ]]);$output .= '</h4>
+                    <table fixedtruncate="1" class="sortable truncate-table table table-striped" id="sqlbackuptbl">
+                        <tr>
+                            <th id="thDb">';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '</th>
+                        </tr>
+                        <tbody>
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('mysql_list_db_backups');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                            <tr>
+                                <td class="cell nobrd-left truncate" truncatefixed="25">
+                                    <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/getsqlbackup/';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'db',0]);&$_tt_filter($output)};$output .= '.sql.gz" id="database';$output .= $stash->get(['loop',0,'count',0]);$output .= '">';$output .= $stash->get(['hashref',0,'db',0,'html',0]);$output .= '</a>
+                                </td>
+                            </tr>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </tbody>
+                    </table>
+
+                    '}elsif (($stash->get(['FORM',0,'type',0])eq 'email')){$output .= '
+                    <h4 id="hdrDownloadEmailFwdrs">';$output .= $stash->get(['locale',0,'maketext',['Download Email Forwarders or Filters Backup' ]]);$output .= '</h4>
+                    <div class="row">
+
+                        ';if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$output .= '
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <table fixedtruncate="1" class="sortable truncate-table table table-striped" id="aliastbl">
+                                <tr>
+                                    <th id="thFwdrs">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Forwarders' ]]);$output .= '
+                                    </th>
+                                </tr>
+                                <tbody>
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('email_list_alias_backups');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                    <tr>
+                                        <td class="cell nobrd-left truncate" truncatefixed="25">
+                                            <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/getaliasbackup/aliases-';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'domain',0]);&$_tt_filter($output)};$output .= '.gz" id="forwarder';$output .= $stash->get(['loop',0,'count',0]);$output .= '">';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '</a>
+                                        </td>
+                                    </tr>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </tbody>
+                            </table>
+                        </div>
+                        '}$output .= '
+
+                        ';if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$output .= '
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                           <table fixedtruncate="1" class="sortable truncate-table table table-striped" id="filtertbl">
+                                <tr>
+                                    <th id="thSysFilterInfo">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['System Filter Info' ]]);$output .= '
+                                    </th>
+                                </tr>
+                                <tbody>
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('email_list_system_filter_info');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                    <tr>
+                                        <td class="cell nobrd-left truncate" truncatefixed="25">
+                                            <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/getfilterbackup/';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'filter_info',0]);&$_tt_filter($output)};$output .= '" id="systemFilterInfo';$output .= $stash->get(['loop',0,'count',0]);$output .= '">';$output .= $stash->get(['hashref',0,'filter_info',0,'html',0]);$output .= '</a>
+                                        </td>
+                                    </tr>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </tbody>
+                            </table>
+                        </div>
+                        '}$output .= '
+
+                    </div>
+                    '}$output .= '
+                </div>
+            </div>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'wizard-backup.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_stylesheets'=>['css2-min/backup.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

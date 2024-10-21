@@ -1,0 +1,169 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/suspendacctlist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+';$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+<div class="notice-section">
+    <p>';if ($stash->get(['data',0,'suspended_delivery',0])eq 'deliver'){$output .= '<span class="warning">Warning:</span>'}else {$output .= '<span class="note">Note:</span>'}$output .= ' Suspended cPanel accounts are set to: ';$output .= $stash->get(['data',0,'suspended_delivery_label',0,'html',0]);$output .= ' <span class="info_link"><a href="https://go.cpanel.net/suspended_account_deliveries" target="_blank">(more info)</a></span></p>
+</div>
+
+<div class="notice-section">
+    <p><strong>Important:</strong> If you try to unsuspend an account that is actually bandwidth limited, the unsuspension will not work. You must modify the <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/limitbwlist">account\'s bandwidth limit</a> instead.</p>
+</div>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/suspendacct" name="fmain">
+<table class="tablecomplex2">
+    <tr>
+        <td class="lightbg">Select by domain</td>
+        <td>&nbsp;</td>
+        <td class="lightbg">Select by username</td>
+    </tr>
+    <tr>
+        <td class="heavybg">
+            <select size="7" name="domain" onChange="selectionChanged(this)">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdata',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$stash->set('html_class',[]);if ($stash->get(['userdata',0,'suspended',0])){$output .= $stash->get(['html_class',0,'push',['suspended' ]]);if ($stash->get(['userdata',0,'locked',0])){$output .= $stash->get(['html_class',0,'push',['locked' ]])}}$stash->set('disabled',!$stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get(['userdata',0,'locked',0]));$output .= '<option
+    id="domain-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= '-option"
+    class="';$output .= $stash->get(['html_class',0,'join',[' ' ]]);$output .= '"
+    data-transferred="';$output .= $stash->get(['userdata',0,'transferred',0]);$output .= '"
+    data-suspended="';$output .= $stash->get(['userdata',0,'suspended',0]);$output .= '"
+    ';$output .= $stash->get('disabled')? 'disabled="disabled"' : '';$output .= '
+    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= '"
+>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= $stash->get(['userdata',0,'locked',0])? ' (locked)' : '';$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </select>
+        </td>
+        <td>&nbsp;<span class="b2"><font size="+1">OR</font></span>&nbsp;</td>
+        <td class="heavybg">
+            <select size="7" name="user" onChange="selectionChanged(this)">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdata',0,'sort',['user' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$stash->set('disabled',!$stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get(['userdata',0,'locked',0]));$output .= '<option
+    id="user-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'user',0]);&$_tt_filter($output)};$output .= '-option"
+    data-transferred="';$output .= $stash->get(['userdata',0,'transferred',0]);$output .= '"
+    data-suspended="';$output .= $stash->get(['userdata',0,'suspended',0]);$output .= '"';$output .= $stash->get(['userdata',0,'suspended',0])? ' class="suspended"' : '';$output .= $stash->get('disabled')? ' disabled="disabled"' : '';$output .= '    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'user',0]);&$_tt_filter($output)};$output .= '"
+>';$output .= $stash->get(['userdata',0,'user',0]);$output .= $stash->get(['userdata',0,'locked',0])? ' (locked)' : '';$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </select>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <div>
+                <input type="submit"
+                    class="btn-primary"
+                    value="Suspend"
+                    name="suspend-domain"
+                    id="suspend-domain" />
+                <input type="submit"
+                    class="btn-primary"
+                    value="Unsuspend"
+                    name="unsuspend-domain"
+                    id="unsuspend-domain" />
+            </div>
+        </td>
+<!--
+        <td>&nbsp;</td>
+        <td background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">
+            <div> <input type="submit" class="btn-primary" value="Suspend" name="suspend-user"><input type="submit" class="btn-primary" value="UnSuspend" name="unsuspend-user"></div>
+        </td>
+-->
+    </tr>
+    <tr>
+        <td colspan="3" class="heavybg">
+            <div id="suspensionReasonSet" class="hidden">Reason: <input type="text" name="reason" size="30"></div>
+            <div class="checkbox hidden" id="retain-proxying">
+                <label>
+                    <input type="checkbox" name="retain-proxying" value="1" />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Retain [output,url,_1,Service Proxying,target,serviceProxyingDocs]','https://go.cpanel.net/ServiceProxying' ]]);$output .= '
+                </label>
+                <span
+                    id=\'retain-proxying-info\'
+                    onclick=\'CPANEL.ajax.toggleToolTip(this,"';$output .= $stash->get(['locale',0,'maketext',['Retain Service Proxying' ]]);$output .= '");\'
+                    title=\'';$output .= $stash->get(['locale',0,'maketext',['Select this checkbox to keep the account’s current service proxying settings. If you do not select this checkbox, the system will disable service proxying by default.' ]]);$output .= '\'>
+                        <span class=\'fas fa-question-circle fa-large\' aria-hidden></span>
+                </span>
+            </div>
+        </td>
+    </tr>
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '    <tr>
+        <td colspan="3" class="heavybg"><div id="preventUnsuspendingSet" class="hidden">Prevent resellers from unsuspending: <input type="checkbox" name="disallowun" value="1"></div></td>
+    </tr>
+'}$output .= '</table>
+</form>
+<script type="text/javascript">
+var user_sel = document.fmain.user;
+var domain_sel = document.fmain.domain;
+var unsuspend_btn = document.getElementById(\'unsuspend-domain\');
+var suspend_btn = document.getElementById(\'suspend-domain\');
+var retainProxyingElements = document.getElementById(\'retain-proxying\');
+var suspensionReasonSet = document.getElementById("suspensionReasonSet");
+var preventUnsuspendingSet = document.getElementById("preventUnsuspendingSet");
+unsuspend_btn.disabled = true;
+suspend_btn.disabled = true;
+
+var user_domains = {};
+var domain_users = {};
+';$output .= $stash->get(['data',0,'userdata',0,'json',0]);$output .= '.forEach( function(ud) {
+    user_domains[ud.user] = ud.domain;
+    domain_users[ud.domain] = ud.user;
+} );
+
+function selectionChanged( src_select ) {
+    var obj_select;
+    var isSuspended;
+    var isTransferred;
+    var optionClicked;
+
+    if ( src_select == domain_sel ) {
+        optionClicked = domain_sel.options[ domain_sel.selectedIndex ];
+        var domain = optionClicked.value;
+        document.getElementById(\'user-\'+domain_users[domain]+\'-option\').selected = true;
+    }
+    else {
+        optionClicked = user_sel.options[ user_sel.selectedIndex ];
+        var user = optionClicked.value;
+        document.getElementById(\'domain-\'+user_domains[user]+\'-option\').selected = true;
+    }
+
+    isSuspended = optionClicked.dataset.suspended === "1";
+    isTransferred = optionClicked.dataset.transferred === "1";
+
+    unsuspend_btn.disabled = !isSuspended;
+    suspend_btn.disabled = isSuspended;
+
+    if(!isSuspended){
+        suspensionReasonSet && suspensionReasonSet.classList.remove(\'hidden\');
+        preventUnsuspendingSet && preventUnsuspendingSet.classList.remove(\'hidden\');
+    }else{
+        suspensionReasonSet && suspensionReasonSet.classList.add(\'hidden\');
+        preventUnsuspendingSet && preventUnsuspendingSet.classList.add(\'hidden\');
+    }
+
+    if(isTransferred) {
+        retainProxyingElements && retainProxyingElements.classList.remove("hidden");
+    }else{
+        retainProxyingElements && retainProxyingElements.classList.add("hidden");
+    }
+}
+
+</script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'manage_account_suspension','extrastyle'=>'
+.suspended {
+    background-color: #ffcccc;
+}
+.notice-section {
+    max-width: 720px;
+}
+.tablecomplex2 {
+    min-width:400px;
+}
+#retain-proxying-info {
+    cursor:help;
+}
+.warning {
+    color:red;
+    font-weight:bold;
+}
+.note {
+    font-weight:bold;
+}
+.info_link {
+    font-size: 10px;
+    font-style: italic;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

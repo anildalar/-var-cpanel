@@ -1,0 +1,128 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/ipv6/range.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$stash->set('spinner64',$stash->get(['MagicRevision',['/images/loading-arrows-64.gif' ]]));$output .= '
+<div id="content" ng-app="ipv6RangesApp" ng-controller="RangeList">
+    ';if ($stash->get(['data',0,'ipslocked',0])){$output .= '
+    <div id="cjt_static_notice_container" class="cjt-pagenotice-container cjt-notice-container">
+        <div class="yui-module cjt-notice cjt-pagenotice cjt-notice-warn">
+            <div class="bd">
+                <div class="cjt-notice-content">';$output .= $stash->get(['locale',0,'maketext',['IPv6 addresses must be added on the host node' ]]);$output .= '</div>
+            <div>';$output .= $stash->get(['locale',0,'maketext',['You must add IPv6 addresses on the [asis,Virtuozzo] or [asis,OpenVZ] host node before you can add them using this interface.' ]]);$output .= '</div>
+        </div>
+    </div>
+    '}$output .= '
+    <div class="description help-block">
+        ';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to add, edit, and delete an IPv6 address range. An IPv6 address range is a group of several IPv6 addresses and uses the following format:' ]]);$output .= '
+        <ul>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['The range should be a shortened IPv6 address that ends with a slash (/), followed by a number which indicates the network portion of the IPv6 address range.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['The most common network portion will be /64. The network portion might be as low as /48, or as high as /128, which would be a single IPv6 address.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['For example: 2001:db8:1a34:56cf::/64' ]]);$output .= '</li>
+        </ul>
+        ';$output .= $stash->get(['locale',0,'maketext',['When you assign an IPv6 address to a user, you will choose a range that you added here.' ]]);$output .= '
+    </div>
+    <div id="page_loader">
+        <img src="';$output .= $stash->get('spinner64');$output .= '" />
+        <form name="range" id="range_form" class="closed-form" ng-submit="addRange()" novalidate>
+            <div class="form-container">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['Add a Range' ]]);$output .= '</h4>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="range_name">';$output .= $stash->get(['locale',0,'maketext',['Range Name' ]]);$output .= "</label>\n                            <input type=\"text\" name=\"name\" id=\"range_name\" class=\"input-name form-control\" ng-model=\"rangeName\" ng-maxlength=\"64\" required />\n                        </div>\n                    </div>\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <div class=\"field-extra\">\n                            <ul class=\"error-messages\"\n                                ng-show=\"range.name.\$dirty && range.name.\$invalid\">\n                                <li ng-show=\"range.name.\$error.required\">";$output .= $stash->get(['locale',0,'maketext',['Range name required' ]]);$output .= "</li>\n                                <li ng-show=\"range.name.\$error.maxlength\">";$output .= $stash->get(['locale',0,'maketext',['Range name cannot exceed 64 characters.' ]]);$output .= '</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="range_cidr">';$output .= $stash->get(['locale',0,'maketext',['Range' ]]);$output .= "</label>\n                            <input type=\"text\" name=\"cidr\" id=\"range_cidr\" class=\"input-cidr form-control\" ng-model=\"rangeCIDR\" ipv6cidr required />\n                        </div>\n                    </div>\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <div class=\"field-extra\">\n                            <ul class=\"error-messages\"\n                                ng-show=\"range.cidr.\$dirty && range.cidr.\$invalid\">\n                                <li ng-class=\"ipv6Collapsed\">";$output .= $stash->get(['locale',0,'maketext',['Cannot have multiple collapsed groups' ]]);$output .= '</li>
+                                <li ng-class="ipv6Address">';$output .= $stash->get(['locale',0,'maketext',['Must follow IPv6 syntax' ]]);$output .= '</li>
+                                <li ng-class="ipv6Characters">';$output .= $stash->get(['locale',0,'maketext',['Can only include hexidecimal characters (0-9 a-f)' ]]);$output .= '</li>
+                                <li ng-class="ipv6SegmentLength">';$output .= $stash->get(['locale',0,'maketext',['Each section must be 4 characters or fewer' ]]);$output .= '</li>
+                                <li ng-class="ipv6Range">';$output .= $stash->get(['locale',0,'maketext',['Must include / and the network portion' ]]);$output .= '</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="enabled" id="range_enabled" ng-model="rangeEnabled" value="1" checked />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Available - addresses can be assigned' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="enabled" id="range_disabled" ng-model="rangeEnabled" value="0" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Reserved - addresses cannot be assigned' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group">
+                            <label for="range_note">';$output .= $stash->get(['locale',0,'maketext',['Range Notes' ]]);$output .= "</label>\n                            <textarea name=\"note\" id=\"range_note\" class=\"input-note form-control\" ng-model=\"rangeNote\" ng-maxlength=\"250\"></textarea>\n                        </div>\n                    </div>\n                    <div class=\"col-xs-12 col-sm-6\">\n                        <div class=\"field-extra\">\n                            <ul class=\"error-messages\"\n                                ng-show=\"range.note.\$dirty && range.note.\$invalid\">\n                                <li ng-show=\"range.note.\$error.maxlength\">";$output .= $stash->get(['locale',0,'maketext',['Range note cannot exceed 250 characters.' ]]);$output .= '</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="button-container">
+                <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add Range' ]]);$output .= '" ng-click="closeNotice()" openform>
+                <input type="button" class="btn btn-link" value="';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '" ng-click="clearRangeForm()" closeform>
+            </div>
+            <div class="below-form-container cjt-pagenotice-container cjt-notice-container">
+            </div>
+        </form>
+
+        <div class="cjt-pagenotice-container cjt-notice-container">
+            <div ng-show="notice.message" class="yui-module cjt-notice cjt-pagenotice cjt-notice-{{notice.type}}">
+                <div class="close" ng-click="closeNotice()">×</div>
+                <div class="bd">
+                    <div class="cjt-notice-content">{{notice.message}}</div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="range-info-header">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['IP Range Details' ]]);$output .= '</h3>
+                    </th>
+                    <th class="range-actions-header">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</h3>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="range in ranges | orderBy:\'CIDR\'" class="group">
+                    <td class="range-info">
+                        <span class="range-type-{{range.enabled}}">';$output .= $stash->get(['locale',0,'maketext',['Reserved' ]]);$output .= '</span>
+                        <span class="range-name" ng-if="range.name != \'SHARED\'"><strong>{{range.name}}</strong></span>
+                        <span class="range-name" ng-if="range.name == \'SHARED\'"><strong>';$output .= $stash->get(['locale',0,'maketext',['The system’s shared IPv6 address.' ]]);$output .= '</strong></span>
+                        <span class="range-value">{{range.CIDR}}</span>
+                        <span class="range-note">{{range.note}}</span>
+                    </td>
+                    <td class="range-actions">
+                        <button type="button"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Delete Range' ]]);$output .= '"
+                                class="range-edit btn btn-default"
+                                ng-disabled="range.name === \'SHARED\'"
+                                ng-click="deleteRange(range)">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete Range' ]]);$output .= '
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-hide="ranges.length" class="group">
+                    <td colspan="2" class="info empty-row">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['There are currently no ranges.' ]]);$output .= '</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'ipv6_ranges','header'=>$stash->get(['locale',0,'maketext',['IPv6 Address Ranges' ]]),'breadcrumburl'=>'/scripts/ipv6range','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/range.min.css' ]])],'theme'=>'bootstrap','include_legacy_stylesheets'=>1,'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/api.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/form.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/range.min.js' ]])],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

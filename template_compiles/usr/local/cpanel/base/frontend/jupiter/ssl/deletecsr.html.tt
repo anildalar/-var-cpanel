@@ -1,0 +1,34 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/deletecsr.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('has_id',!!$stash->get(['RAW_FORM',['id' ]]));$stash->set('has_host',!!$stash->get(['RAW_FORM',['host' ]]));$stash->set('safe_host',$stash->get(['FORM',0,'host',0,'html',0]));if ($stash->get('has_id')){$stash->set('delete_csr',$stash->get(['execute',['SSL','delete_csr',{'id'=>$stash->get(['RAW_FORM',['id' ]])}]]))}$stash->set('delete_successful',$stash->get('has_id')&& $stash->get('delete_csr')&& $stash->get(['delete_csr',0,'status',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrDelete">
+        ';$output .= $stash->get(['locale',0,'maketext',['Delete Certificate Signing Request (CSR)' ]]);$output .= '
+    </h2>
+
+    ';if ($stash->get('delete_successful')){$output .= '
+    <div id="deleteSuccess" class="alert alert-success">
+        <span id="deleteSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+        <div id="deleteSuccessMsg" class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['The Certificate Signing Request for “[_1]” has been deleted.',$stash->get('safe_host')]]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <div id="noidError" class="alert alert-danger">
+        <span id="noidErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+        <div id="noidErrorMsg" class="alert-message">
+            ';if (!$stash->get('has_id')){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['You did not pass the “[_1]” parameter in your request.','id' ]]);$output .= '
+            '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Failed to delete the requested Certificate Signing Request for: [_1]',$stash->get('safe_host')]]);$output .= '
+                ';if ($stash->get(['delete_csr',0,'errors',0,0,0])){$output .= '
+                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['delete_csr',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+                '}$output .= '
+            '}$output .= '
+        </div>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'csrs.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

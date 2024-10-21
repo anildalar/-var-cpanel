@@ -1,0 +1,172 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/domains/directives/itemLister.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search autofocus id="{{ :: parentID }}_search" ng-model="filterValue" ng-change="fetch()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="pagination-container hidden-xs hidden-sm">
+                <page-size id="{{ :: parentID }}_pageSize_top"
+                    allowed-sizes="pageSizes"
+                    total-items="totalItems"
+                    ng-model="pageSize"
+                    show-all="false"
+                    ng-show="showPager"
+                    ng-change="fetch()">
+                </page-size>
+                <uib-pagination id="{{ :: parentID }}_paginateItems_top"
+                    total-items="totalItems"
+                    ng-model="currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="pageSize"
+                    ng-show="showPager"
+                    ng-change="fetch()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row table-controls-row">
+        <div class="col-xs-12 col-md-6">
+            <div id="{{parentID}}_transcludedControls"></div>
+        </div>
+        <div class="col-md-6 hidden-xs hidden-sm">
+            <table-showing
+                id="{{ :: parentID }}_table_showing_top"
+                class="pull-right"
+                start="start"
+                limit="limit"
+                total="totalItems"
+                />
+        </div>
+    </div>
+
+    <div class="row action-bar">
+        <div class="col-xs-12">
+            <div class="pull-left">
+                <div class="table-action-button-container">
+                    <label class="table-action-button-label table-action-button-sm">
+                        <input type="checkbox"
+                            name="checkAllInList"
+                            id="checkAllInList"
+                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Toggle account selection' ]]);$output .= '"
+                            ng-model="selectAll"
+                            ng-change="toggleSelectAll()"
+                            indeterminate-state
+                            check-state="getIndeterminateState()">
+                    </label>
+                </div>
+                <div class="btn-group" uib-dropdown ng-if="webserverRoleAvailable">
+                    <button id="toggleHTTPSRedirectButton" type="button" class="btn btn-default btn-sm" ng-click="applyMultiSecureRedirects(true)" type="button" ng-disabled="!hasSelected() || !canRedirectHTTPS">';$output .= $stash->get(['locale',0,'maketext',['Enable Force [asis,HTTPS] Redirect' ]]);$output .= '</button>
+                    <button id="toggleHTTPSRedirectDropdown" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle auto-close="outsideClick">
+                        <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu class="dropdown-menu-right" role="menu" aria-labelledby="single-button">
+                        <li role="menuitem">
+                            <a href="javascript:void(0)" ng-click="applyMultiSecureRedirects(false)">';$output .= $stash->get(['locale',0,'maketext',['Disable Force [asis,HTTPS] Redirect' ]]);$output .= '</a>
+                        </li>
+                    </ul>
+                </div>
+                <i ng-if="!canRedirectHTTPS" class="fas fa-question-circle" popover-trigger="mouseenter" popover-append-to-body="true" uib-popover="';$output .= $stash->get(['locale',0,'maketext',['HTTPS Redirect is not available because your server is not configured to support it.' ]]);$output .= '"></i>
+            </div>
+            ';if ($stash->get(['CPANEL',0,'feature',['addondomains' ]])|| $stash->get(['CPANEL',0,'feature',['subdomains' ]])|| $stash->get(['CPANEL',0,'feature',['parkeddomains' ]])){$output .= '            <div class="pull-right">
+                <a href="#/create{{ currentSearchFilterValue ? \'?domain=\' + currentSearchFilterValue : \'\' }}" class="btn btn-primary btn-sm">';$output .= $stash->get(['locale',0,'maketext',['Create A New Domain' ]]);$output .= '</a>
+            </div>
+            '}$output .= '        </div>
+    </div>
+
+    <cp-loading-panel id="loadingDomainsList" ng-show="loadingInitialState">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</cp-loading-panel>
+
+    <table ng-hide="loadingInitialState" class="table table-striped responsive-table fixed-width-table" id="{{ :: parentID }}_items_table">
+        <thead>
+            <tr>
+                <th ng-repeat="item in ::headerItems" id="{{ :: parentID }}_items_table_th_{{ :: item.field }}" ng-class="{\'hidden-sm hidden-xs\': item.hiddenInSmall}">
+                    <span
+                        ng-if="!item.sortable">{{ :: item.label }}</span>
+                    <span
+                        id="{{ :: parentID }}_items_table_th_{{ :: item.field }}_sort"
+                        ng-if="item.sortable"
+                        toggle-sort
+                        sort-meta="sort"
+                        sort-field="{{ :: item.field }}"
+                        onSort="fetch">{{ :: item.label }}</span>
+                </th>
+                <th class="gear_column" ng-if="configurationOptions.length">
+                    <span class="dropdown" uib-dropdown>
+                    <a href class="dropdown-toggle" uib-dropdown-toggle >
+                        <span class="fas fa-cog fa-lg"></span>
+                    </a>
+                    <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                        <li ng-repeat="option in configurationOptions">
+                            <a href
+                                class="dropdown-toggle"
+                                ng-click="configurationClicked(option.event)" ng-bind="option.label"></a>
+                        </li>
+                    </ul>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody ng-if="filteredItems.length" id="{{parentID}}_transcludePoint"></tbody>
+        <tbody ng-if="filteredItems.length === 0" id="{{parentID}}_transcludePoint_noResults">
+            <tr class="info empty-row">
+                <td colspan="{{ configurationOptions.length ? headerItems.length + 1 : headerItems.length }}">';$output .= $stash->get(['locale',0,'maketext',['No results match your query.' ]]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-12">
+            <table-showing
+                id="{{ :: parentID }}_table_showing_bottom"
+                class="pull-right"
+                start="start"
+                limit="limit"
+                total="totalItems"
+                />
+        </div>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div class="pagination-container">
+                <page-size id="{{ :: parentID }}_pageSize_bottom"
+                    allowed-sizes="pageSizes"
+                    total-items="totalItems"
+                    ng-model="pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="fetch()">
+                </page-size>
+                <uib-pagination id="{{ :: parentID }}_paginateItems_bottom"
+                    total-items="totalItems"
+                    ng-model="currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="pageSize"
+                    ng-show="showPager"
+                    ng-change="fetch()">
+                </uib-pagination>
+                <button
+                    id="{{ :: parentID }}_searchBtn_bottom"
+                    class="btn btn-default bottom-search-btn"
+                    ng-click="focusSearch()"
+                    type="button">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+<div class="transcluded" style="display:none" ng-transclude></div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

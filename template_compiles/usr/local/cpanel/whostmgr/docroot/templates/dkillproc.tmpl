@@ -1,0 +1,83 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dkillproc.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '<div id="blurb">
+<p class="description">
+        You can configure WHM to kill any of the following processes and send you an
+        email when it finds one of them. Malicious users may run
+        an IRC bouncer on their shell accounts even though this may be against
+        your policy. WHM detects these processes correctly even if the bouncer is renamed
+        (e.g. to something that appears non-malicious like “pine”, to give the impression that the user is just
+        reading email).
+</p>
+<p class="description">
+        Please check the names of any
+        programs you do not want running on your server; we recommend that you check
+        them all since letting users run IRC bots and servers
+        usually leads to denial-of-service attacks.
+</p>
+</div>
+
+<form id="the_form" method="post" action="javascript:void(0)" onsubmit="send_ajax_submit(); return false">
+
+<br />
+<div class="float_panel">
+<b>Processes</b><br />
+<div id="processes_div">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sym',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '<label><input type="checkbox" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'key',0]);&$_tt_filter($output)};$output .= '" name="processes_to_kill" ';if ($stash->get(['pair',0,'value',0])){$output .= 'checked="checked" '}$output .= ' /> ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'key',0]);&$_tt_filter($output)};$output .= '</label><br />
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</div>
+</div>
+<div class="float_panel"><b>Trusted users</b> (optional)<span style="position:absolute"><small><sup>*</sup></small></span>&nbsp;&nbsp;<br />
+<textarea id="trusted" name="trusted_users" rows="8" cols="12">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'trusted',0,'join',[('' .'
+')]]).('' .'
+');&$_tt_filter($output)};$output .= '</textarea>
+</div>
+<div style="clear:both"></div>
+<br /><input id="save_button" type="submit" style="margin-left:0" class="btn-primary" value="Save">
+<br /><br />
+<br /><div style="float:left"><sup>*</sup></div><div style="float:left;margin-left:2px;" id="footnote_text">List users that you want the process killer to ignore, one per line, in the textbox.
+Note that root, mysql, named, cpanel, and users with UIDs below 99 are already considered trusted and do not need to be added to this list.</div>
+<div style="clear:both"></div>
+</form>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= "<script>\nfunction send_ajax_submit() {\n    var data = CPANEL.dom.get_data_from_form( \"the_form\" );\n    if ( /\\S/.test(data.trusted_users) ) {\n        data.trusted_users = data.trusted_users.trim().split(/\\s*[\\r\\n,;]+\\s*/);\n    }\n    else {\n        delete data.trusted_users;\n    }\n    // Without this, the API interprets sending none of a parameter as not\n    // changing it instead of removing all the items.\n    data.force = 1;\n\n    CPANEL.api( {\n        progress_panel: {\n            status_html: \"";$output .= $stash->get(['locale',0,'maketext',['Saving …' ]]);$output .= '",
+            source_el:   "save_button"
+        },
+        application: "whm",
+        func:        "configurebackgroundprocesskiller",
+        data:        data
+    } );
+}
+</script>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'background_process_killer','theme'=>'yui','extrastyle'=>'
+
+form {
+    margin: 0 20px;
+}
+
+.float_panel {
+    float: left;
+}
+
+#processes_div {
+    background-color: #eeeeee;
+    padding: 8px;
+    margin-right: 30px;
+}
+
+#trusted,
+#processes_div {
+    margin-top: 6px;
+    border: 1px solid #aaaaaa;
+    border-radius: 5px;
+}
+
+#blurb {
+    max-width: 600px;
+}
+#footnote_text {
+    max-width: 590px;
+}
+
+#cjt_pagenotice_container {
+    margin-bottom: 0;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

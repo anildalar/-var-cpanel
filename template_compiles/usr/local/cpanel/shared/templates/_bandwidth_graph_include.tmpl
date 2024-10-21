@@ -1,0 +1,35 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/shared/templates/_bandwidth_graph_include.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<script>
+    ';$output .= $context->insert('sharedjs/jstz.min.js');$output .= '
+    ';$output .= $context->insert('sharedjs/cptimezone_optimized.js');$output .= '
+    CPTimezone.set_timezone_and_reload_if_unset();
+</script>
+
+<style type="text/css">
+';$output .= $context->insert('sharedcss/bw_time_graph_optimized.css');$output .= $context->insert('sharedcss/cptimezone_optimized.css');$output .= '</style>
+
+<script>
+    ';$output .= $context->insert('sharedjs/d3.min.js');$output .= '
+    ';$output .= $context->insert('sharedjs/chart_utilities_optimized.js');$output .= '
+
+    ';$stash->set('lex',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/bandwidth_graph.js' ]]));$output .= '
+    ';if ($stash->get('lex')){$output .= $context->insert($stash->get('lex'))}$output .= '
+    ';$output .= $context->insert('sharedjs/bandwidth_graph_optimized.js');$output .= '
+
+    function wait_for_CLDR_to_load(todo) {
+        var loadInterval = setInterval(
+            function() {
+                if ( !LOCALE.get_cldr(\'datetime\') ) return;
+
+                clearInterval(loadInterval);
+                todo();
+            },
+            5
+        );
+    }
+</script>
+
+';$stash->set('your_timezone_is',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '<span class="your-timezone-is">
+    ';$output .= $stash->get(['locale',0,'maketext',['All times are in the “[_1]” time zone.',$stash->get(['CPANEL',0,'cookies',0,'timezone',0,'html',0])]]);$output .= '
+    <a class="if-timezone-cookie-needs-update" href="javascript:CPTimezone.reset_timezone_and_reload()">';$output .= $stash->get(['locale',0,'maketext',['Set the time zone to “[_1]”, and reload.','<span class="detected-timezone"></span>' ]]);$output .= '</a>
+</span>
+'};$stash=$context->delocalise();die $@ if $@;return$output})}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

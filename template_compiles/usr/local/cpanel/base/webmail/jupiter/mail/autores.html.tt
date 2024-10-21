@@ -1,0 +1,114 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/autores.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= $context->process('_assets/resource_usage_macro.html.tt');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p id="descYouCanUseAutoRespondersTo" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Configure an email account to send automated emails. This can be useful if you are on vacation or unavailable, or if you have a generic message that you wish to send from a support email address. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/Autoresponders','_blank','lnkAutorespondersDocumentation' ]]);$output .= '
+    </p>
+';if ($stash->get(['CPANEL',0,'feature',['autoresponders' ]])){$output .= '
+    ';if ($stash->get(['FORM',0,'itemsperpage',0])){$output .= '
+        ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]));$output .= '
+    '}$output .= '
+    ';if ((!$stash->get(['FORM',0,'itemsperpage',0])||!$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]))){$output .= '
+        ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10');$output .= '
+    '}$output .= '
+    ';$output .= $stash->get(['Api2',0,'pre_exec',['Email','listautoresponders' ]]);$stash->set('auto_responders',$stash->get(['Api2',0,'exec',['Email','listautoresponders',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]),'domain'=>$stash->get(['FORM',0,'domain',0]),'api2_paginate'=>'1','regex'=>$stash->get(['RAW_FORM',0,'searchregex',0]),'api2_paginate_start'=>$stash->get(['FORM',0,'api2_paginate_start',0]),'api2_paginate_page'=>$stash->get(['FORM',0,'page',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listautoresponders' ]]);$output .= '
+
+    ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+       ';$stash->set('resource_usage_key','autoresponders');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');$output .= '
+
+        ';$output .= $context->include('managelist.html.tt');$output .= '
+    '}$output .= '
+
+    <div class="section">
+        <h2 id="hdrForwarder">';$output .= $stash->get(['locale',0,'maketext',['Add Autoresponder' ]]);$output .= '</h2>
+        ';if ($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' && $stash->get(['auto_responders',0,'size',0])){$output .= '
+          <a id="btnAddAutoResponder" class="btn btn-primary" href="addars.html">
+          ';$output .= $stash->get(['locale',0,'maketext',['Edit Autoresponder' ]]);$output .= '
+        '}else {$output .= '
+          <a id="btnAddAutoResponder" class="btn btn-primary" href="addars.html?action=create">
+          ';$output .= $stash->get(['locale',0,'maketext',['Add Autoresponder' ]]);$output .= '
+        '}$output .= '
+        </a>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrCurrentAutoResponders">';$output .= $stash->get(['locale',0,'maketext',['Current Autoresponders' ]]);$output .= '</h2>
+            <p id="descIfYouDoNotCreateAForwarder">
+            ';$output .= $stash->get(['locale',0,'maketext',['If you do not create a forwarder or email account with the same address as each autoresponder, mail sent to the autoresponder will only be handled by the autoresponder before it is discarded.' ]]);$output .= '
+        </p>
+
+        <div id="search-panel_autoresponders">
+            <form id="frmSearch" method="get" action="" class="form-inline">
+                <div class="form-group">
+                    <input id="txtSearchRegex" type="text" class="form-control" size="15" name="searchregex" value="';$output .= $stash->get(['FORM',0,'searchregex',0]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '" />
+                </div>
+                <div class="form-group">
+                    <input id="btnSearchGo" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                    <input id="hidSearchItemsPerPage" type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]);$output .= '" />
+                </div>
+            </form>
+        </div>
+
+        <table id="mailtbl" class="table table-striped responsive-table sortable">
+            <thead>
+                <tr>
+                    <th id="lblMailEmail">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</th>
+                    <th id="lblMailSubject">';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '</th>
+                    <th id="lblMailFunctions" class="sorttable_nosort">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['auto_responders',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('auto_responders');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                <tr class="row-';$output .= $stash->get(['loop',0,'index',0])% 2 eq 0 ? 'even' : 'odd';$output .= '">
+                    <td class="nobrd-center-t" id="';$output .= $stash->get(['hashref',0,'email',0,'uri',0]);$output .= '" data-title="';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '</td>
+                    <td class="wrap-text-forcefully" data-title="';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'subject',0,'html',0]);$output .= '&nbsp;</td>
+                    <td class="nobrd" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <form action="addars.html"
+                            method="post"
+                            class="form-inline-block"
+                            id="editResForm_';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                            <input type="hidden" name="email" value="';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                            <input type="hidden" name="redirectdomain" value="';$output .= $stash->get(['FORM',0,'domain',0]);$output .= '">
+                            <button type="submit" class="btn btn-link" id="editRes_';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                                <span class="glyphicon glyphicon-pencil"></span> ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                            </button>
+                        </form>
+                        <form action="dodelautoresconfirm.html"
+                            method="post"
+                            class="form-inline-block"
+                            id="delResForm_';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                            <input type="hidden" name="email" value="';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                            <button type="submit" class="btn btn-link" id="delRes_';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                                <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td class="info empty-row" colspan="3">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no autoresponders setup on this domain.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+
+        ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+
+
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+'}$output .= '<!-- end cpanelfeature autoresponders -->
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'autoresponders','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

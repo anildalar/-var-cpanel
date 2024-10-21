@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mailbox_converter/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts5/mailboxconversion/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+    <div id="content"
+        ng-controller="BaseController as base"
+        class="ng-cloak"
+        ng-cloak>
+
+        <div class="callout callout-info">
+            ';$output .= $stash->get(['locale',0,'maketext',['You can use this tool to convert the format of accounts’ mailboxes.' ]]);$output .= "\n        </div>\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <ul class=\"list-inline\">\n                    <li ng-repeat=\"step in steps\" ng-click=\"go(\$index, true)\" ng-class=\"{'previous-step' : \$index < current_step, 'current-step' : \$index === current_step } \">\n                        <strong ng-if=\"current_step === \$index\" ng-bind=\"step.breadcrumb\">\n                        </strong>\n                        <span ng-if=\"current_step !== \$index\" ng-bind=\"step.breadcrumb\" ng-class=\"{ 'not-visited' : current_step < \$index }\">\n                        </span>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"panel-body animate-view\"\n                ng-class=\"get_view_styles()\"\n                ng-view></div>\n            <div class=\"panel-footer\">\n                <nav>\n                    <ul class=\"pager\">\n                        <li class=\"previous\" ng-if=\"current_step > 0\">\n                            <button class=\"btn btn-primary left-button\" ng-click=\"go_back()\">\n                                <span aria-hidden=\"true\">&larr;</span>\n                                <span class=\"hidden-xs\"> ";$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '</span>
+                            </button>
+                        </li>
+                        <li class="next" ng-if="current_step < steps.length - 1 ">
+                            <button class="btn btn-primary right-button" ng-click="go(current_step + 1, true)" ng-disabled="!ready">
+                                <span class="hidden-xs">';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= ' </span>
+                                <span aria-hidden="true">&rarr;</span>
+                            </button>
+                        </li>
+                        <li class="next" ng-if="current_step === steps.length - 1">
+                            <button class="btn btn-primary right-button" ng-click="submit_form(\'finalize_form\')">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Convert Selected' ]]);$output .= ' </span>
+                            </button>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.data = ';$output .= $stash->get(['data',0,'json',0]);$output .= ';
+    PAGE.MAIN_TITLE = ';$output .= $stash->get(['PAGE_NAME',0,'json',0]);$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'mailbox_conversion','header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/mailbox_converter/index.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

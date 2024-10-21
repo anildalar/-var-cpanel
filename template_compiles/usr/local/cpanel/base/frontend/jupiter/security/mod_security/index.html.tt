@@ -1,0 +1,32 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/mod_security/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['modsecurity' ]]));$stash->set('domains',$stash->get(['Uapi',0,'exec',['ModSecurity','list_domains',{'api.sort_column'=>'domain','api.paginate_start'=>1,'api.paginate_size'=>10,'api.normalize'=>1 }]]));$stash->set('installed',$stash->get(['execute',['ModSecurity','has_modsecurity_installed',{}],'data',0,'installed',0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+';if ($stash->get('has_feature')){$output .= '
+    <div class="body-content">
+        <div ng-controller="applicationController">
+            <div id="viewContent"
+                 class="ng-cloak"
+                 ng-view
+                 ng-cloak></div>
+        </div>
+     </div>
+
+
+    <script type="text/javascript">
+        PAGE.domainList = ';$output .= $stash->get(['domains',0,'json',0]);$output .= ';
+        PAGE.installed = ';$output .= $stash->get('installed')? 'true' : 'false';$output .= ';
+        PAGE.hasFeature = ';$output .= $stash->get('has_feature')? 'true' : 'false';$output .= ';
+    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+'}else {$output .= '
+
+<div class="body-content">
+    <div class="alert alert-danger">
+        ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature. You must have the [asis,ModSecurity] feature enabled for your account to use the [asis,ModSecurity] Domain Manager.' ]]);$output .= '
+    </div>
+</div>
+
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'mod_security','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>['security/mod_security/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

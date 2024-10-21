@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Backup/PreBackupNotice.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Deprecation notice for “[_1]” on [_2]',$stash->get(['NOTICE',0,'script_name',0]),$stash->get(['NOTICE',0,'host_server',0])]]));$output .= '
+
+ <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The backup process detected the existence of the “[_1]” script. In earlier versions of “[asis,cpbackup]”, the system executed this script prior to any checks or verifications, and it executed the script regardless of whether the backups were up-to-date.',$stash->get(['NOTICE',0,'script_name',0])]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If you wish to retain this deprecated behavior, set the “[asis,PREBACKUP]” setting to a value of “[_1]” in the “[_2]” configuration file. You can run the following shell command to perform this task:',$stash->get(['code_inline',[{'term'=>'-1' }]]),$stash->get(['NOTICE',0,'backup_conf_file',0])]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['code_block',[{'formatted_code'=>'echo "PREBACKUP -1" >> ' .$stash->get(['NOTICE',0,'backup_conf_file',0])}]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Unless you update the configuration file, the system will continue to use the legacy behavior and send you this message once per day when the backup process executes.' ]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Visit [output,url,_1,_1,target,_2] to adjust your backup configuration.',$stash->get(['NOTICE',0,'backup_conf_modify_url',0]),'_blank' ]]);$output .= '</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

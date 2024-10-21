@@ -1,0 +1,105 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/resetpostgres.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$stash->set('bggif',$stash->get(['Whostmgr',0,'getbggif',0]));$output .= '
+   <table>
+    <tr>
+        <td>
+            <form action="';$output .= $stash->get(['actions',0,'install',0]);$output .= '">
+            <table width="50%" link="#0000ee" vlink="#0000ee" text="#000000" class="tableborder1">
+                <tr>
+                    <td background="';$output .= $stash->get('bggif');$output .= '">
+                        <font size="+2"><span class="b2">Postgres Config Install</span></font>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="lightbg">
+    This utility will install a Postgres authentication configuration file that
+    uses md5 passwords which works with cPanel. If you already have a working
+    Postgres setup this will overwrite your current pg_hba.conf. You should not
+    use this unless you are installing Postgres for the first time.
+                    </td>
+                </tr>
+                <tr>
+                    <td background="';$output .= $stash->get('bggif');$output .= '">
+                        <input type="submit" class="btn-primary" onclick="return confirm(\'Are you SURE you want to overwrite your current config file?\')" value="Install Config" name="submit" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </td>
+    </tr>
+    <tr><td><div style="height:50px">&nbsp;</div></td></tr>
+    <tr>
+        <td>
+            <form action="';$output .= $stash->get(['actions',0,'users',0]);$output .= '">
+            <table width="50%" link="#0000ee" vlink="#0000ee" text="#000000" class="tableborder1">
+                <tr>
+                    <td background="';$output .= $stash->get('bggif');$output .= '">
+                        <font size="+2"><span class="b2">Create Postgres Users</span></font>
+                    </td>
+                </tr>
+                <tr>
+                  <td class="lightbg">
+    If postgres has been installed after cPanel users have been created, this
+    utility will add all previously created cPanel users to postgres.
+                  </td>
+                </tr>
+                <tr>
+                  <td background="';$output .= $stash->get('bggif');$output .= '">
+                    <input type="submit" class="btn-primary" value="Create Users" name="submit" />
+                  </td>
+                </tr>
+            </table>
+            </form>
+    </tr>
+    <tr><td><div style="height:50px">&nbsp;</div></td></tr>
+    <tr>
+        <td>
+            <form action="';$output .= $stash->get(['actions',0,'reset',0]);$output .= '" method="post">
+            <table class="tablecomplex2">
+                <tr>
+                    <td background="';$output .= $stash->get('bggif');$output .= '" colspan="3"><font size="+2"><span class="b2">Postgres Password</span></font></td>
+                </tr>
+                <tr>
+                    <td class="lightbg">Enter New Password</td>
+                    <td class="heavybg"><input type="password" name="password" id="password" /><input type="hidden" name="user" value="root" /></td>
+                    <td><div id="password_error"></div></td>
+                </tr>
+                <tr>
+                    <td class="lightbg">Confirm Password</td>
+                    <td class="heavybg"><input type="password" name="password2" id="password2" /></td>
+                    <td><div id="password2_error"></div></td>
+                </tr>
+                <tr>
+                    <td class="align_right">Strength</td>
+                    <td><div id="password_strength" style="width: 150px; height: 20px; border: 1px solid black; margin: 5px 0px 3px 0px"></div></td>
+                    <td><input type="button" id="create_strong_password" value="Password Generator" tabindex="-1" /></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <input type="submit" value="Change Password" name="submit" id="submit" class="btn-primary" />
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </td>
+    </tr>
+
+</table>
+
+<script type = "text/javascript">
+//<[CDATA[
+var init = function () {
+    VALID = {};
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['data',0,'minpwstrength',0]);$output .= '\') || 1;
+
+    var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+    VALID[\'pass1\'] = password_validators[0];
+    VALID[\'pass2\'] = password_validators[1];
+    CPANEL.validate.attach_to_form("submit", VALID);
+}
+
+YAHOO.util.Event.onDOMReady(init);
+//]]>
+</script>
+
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'configure_postgresql','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

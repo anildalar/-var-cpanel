@@ -1,0 +1,140 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/contact/indexincludeform.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Email',$context->plugin('Email'));$output .= $stash->get(['Api2',0,'pre_exec',['CustInfo','contactemails' ]]);$stash->set('contactemails',$stash->get(['Api2',0,'exec',['CustInfo','contactemails',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['CustInfo','contactemails' ]]);$output .= $stash->get(['Api2',0,'pre_exec',['CustInfo','contactprefs' ]]);$stash->set('contactprefs',$stash->get(['Api2',0,'exec',['CustInfo','contactprefs',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['CustInfo','contactprefs' ]]);$stash->set('default_address',$stash->get(['Email',0,'get_default_address',0]));$stash->set('autossl_notification_preset','disable');$stash->set('cert_failures',['notify_autossl_expiry','notify_autossl_expiry_coverage','notify_autossl_renewal_coverage','notify_autossl_renewal_coverage_reduced' ]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('contactprefs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pref'}=$_tt_value;if ($stash->get(['pref',0,'name',0])eq 'notify_autossl_renewal'){$stash->set('can_set_all_autossl_notification',1);if ($stash->get(['pref',0,'enabled',0])eq 1){$stash->set('autossl_notification_preset','all')}}elsif ($stash->get(['pref',0,'name',0])eq 'notify_autossl_renewal_uncovered_domains'){$stash->set('can_set_fail_warn_defer_autossl_notification',1);if ($stash->get(['pref',0,'enabled',0])eq 1 && $stash->get('autossl_notification_preset')ne 'all'){$stash->set('autossl_notification_preset','failWarnDefer')}}elsif ($stash->get(['cert_failures',0,'grep',['^' .$stash->get(['pref',0,'name',0]).'$' ],'size',0])){$stash->set('can_set_cert_failures_autossl_notification',1);if ($stash->get(['pref',0,'enabled',0])eq 1 && $stash->get('autossl_notification_preset')ne 'all' && $stash->get('autossl_notification_preset')ne 'failWarnDefer'){$stash->set('autossl_notification_preset','certFailures')}};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('can_set_any_autossl_notification',$stash->get('can_set_all_autossl_notification')|| $stash->get('can_set_fail_warn_defer_autossl_notification')|| $stash->get('can_set_cert_failures_autossl_notification'));$output .= '
+
+';$stash->set('textfield',sub {my$output='';my (%_tt_args,$_tt_params);@_tt_args{'descp_html','name_html','type','value_html','info_text' }=splice(@_,0,5);$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= '    <div class="form-group">
+        <label for="';$output .= $stash->get('name_html');$output .= '">';$output .= $stash->get('descp_html');$output .= '</label>
+        ';if ($stash->get('info_text')){$output .= '            <span class="info-block">';$output .= $stash->get('info_text');$output .= '</span>
+        '}$output .= '        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input
+                    id="';$output .= $stash->get('name_html');$output .= '"
+                    name="';$output .= $stash->get('name_html');$output .= '"
+                    type="';$output .= $stash->get('type');$output .= '"
+                    value="';$output .= $stash->get('value_html');$output .= '"
+                    size="40"
+                    class="form-control"
+                />
+            </div>
+            <div id="';$output .= $stash->get('name_html');$output .= '_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ></div>
+        </div>
+    </div>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+<div class="section" id="contactprefs">
+    ';if ($stash->get(['contactemails',0,'size',0])){$output .= '
+        <div class="callout callout-warning">
+           ';$output .= $stash->get(['locale',0,'maketext',['You may use an email address on a domain that this server hosts. However, we do not recommend this, because you may fail to receive messages when the server encounters problems. For example, if your mailbox exceeds its quota, you will not receive any new email, including notices.' ]]);$output .= '
+        </div>
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</h2>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('contactemails');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'contactemail'}=$_tt_value;$output .= '
+            ';if ($stash->get(['contactemail',0,'name',0])eq 'pushbullet_access_token'){$output .= '
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Push Notifications' ]]);$output .= '</h2>
+            '}$output .= '
+
+            ';if ($stash->get(['contactemail',0,'name',0])eq 'email' && $stash->get('default_address')ne '' && $stash->get('default_address')ne $stash->get(['contactemail',0,'value',0])){$output .= '
+                ';$output .= $stash->get(['textfield',[$stash->get(['contactemail',0,'descp',0]),$stash->get(['contactemail',0,'name',0]),'text',$stash->get(['contactemail',0,'value',0]),'<a href="#" id="autofill-btn" data-email="' .$stash->get('default_address').'">' .$stash->get(['locale',0,'maketext',['Use the email address set in the Default Address interface ([_1])[comment,label text of a link]',$stash->get('default_address')]]).'</a>' ]]);$output .= '            '}else {$output .= '
+
+                ';$output .= $stash->get(['textfield',[$stash->get(['contactemail',0,'descp',0]),$stash->get(['contactemail',0,'name',0]),'text',$stash->get(['contactemail',0,'value',0])]]);$output .= '
+            '}$output .= '
+
+            ';if ((!$stash->get(['CPANEL',0,'authuser',0,'match',['@' ]])|| $stash->get(['CPANEL',0,'is_team_user',0]))&& $stash->get(['contactemail',0,'name',0])eq 'second_email'){$output .= '
+                ';$output .= $stash->get(['textfield',[$stash->get(['locale',0,'maketext',['Your account’s password:' ]]),'password','password','',$stash->get(['locale',0,'maketext',['This is only required if you change your contact email addresses.' ]])]]);$output .= '            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+
+    '}$output .= '
+
+    ';if ($stash->get(['CPANEL',0,'feature',['updatenotificationprefs' ]])&& $stash->get(['contactprefs',0,'size',0])){$output .= '
+        <div class="form-group contact-prefs" ng-app>
+            <h2 id="contact_prefs_header">';$output .= $stash->get(['locale',0,'maketext',['Contact Preferences' ]]);$output .= '</h2>
+            <div class="contact-prefs-subtitle">';$output .= $stash->get(['locale',0,'maketext',['Notify me when:' ]]);$output .= '</div>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('contactprefs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pref'}=$_tt_value;$output .= '
+                    ';if ($stash->get(['pref',0,'onchangeparent',0])eq ''){$output .= '
+                        <div class="checkbox contact-pref">
+                            <label>
+                                <input id="';$output .= $stash->get(['pref',0,'name',0]);$output .= '"
+                                    name="';$output .= $stash->get(['pref',0,'name',0]);$output .= '"
+                                    type="';$output .= 'boolean' eq $stash->get(['pref',0,'type',0])? 'checkbox' : 'text';$output .= '"
+                                    ';$output .= ($stash->get(['pref',0,'enabled',0])&& ('boolean' eq $stash->get(['pref',0,'type',0])))? 'checked="checked"' : '';$output .= '
+                                    value="';$output .= $stash->get(['pref',0,'value',0]);$output .= '"
+                                    size="40"
+                                    ng-model="';$output .= $stash->get(['pref',0,'name',0]);$output .= '"
+                                    ng-init="';$output .= $stash->get(['pref',0,'name',0]);$output .= ' = ';$output .= $stash->get(['pref',0,'enabled',0]);$output .= ' ? true : false"/>
+                                ';$output .= $stash->get(['pref',0,'descp',0]);$output .= '
+                            </label>
+                            ';if ($stash->get(['pref',0,'infotext',0])){$output .= '
+                            <span class="info-block">
+                                ';$output .= $stash->get(['pref',0,'infotext',0]);$output .= '
+                            </span>
+                            '}$output .= '
+                            <div class="contact-pref-children">
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('contactprefs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'child_pref'}=$_tt_value;$output .= '
+                                    ';if ($stash->get(['child_pref',0,'onchangeparent',0])eq $stash->get(['pref',0,'name',0])){$output .= '
+                                        <div class="checkbox contact-pref-child">
+                                            <label>
+                                                <input id="';$output .= $stash->get(['child_pref',0,'name',0]);$output .= '"
+                                                    name="';$output .= $stash->get(['child_pref',0,'name',0]);$output .= '"
+                                                    type="';$output .= 'boolean' eq $stash->get(['child_pref',0,'type',0])? 'checkbox' : 'text';$output .= '"
+                                                    ';$output .= ($stash->get(['child_pref',0,'enabled',0])&& ('boolean' eq $stash->get(['child_pref',0,'type',0])))? 'checked="checked"' : '';$output .= '
+                                                    value="';$output .= $stash->get(['child_pref',0,'value',0]);$output .= '"
+                                                    size="40"
+                                                    ng-disabled="!';$output .= $stash->get(['pref',0,'name',0]);$output .= '"/>
+                                                ';$output .= $stash->get(['child_pref',0,'is_disabler',0])? $stash->get(['locale',0,'maketext',['If the above option is disabled, notify me.' ]]): $stash->get(['child_pref',0,'descp',0]);$output .= '
+                                            </label>
+                                        </div>
+                                    '}$output .= '
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </div>
+                        </div>
+                    '}$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            ';if ($stash->get('can_set_any_autossl_notification')){$output .= '
+            <div class="form-group" ng-init="autosslNotifications = \'';$output .= $stash->get('autossl_notification_preset');$output .= '\'">
+                <h2 id="autossl_prefs_header">';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] Notifications' ]]);$output .= '</h2>
+                <div class="contact-prefs-subtitle">';$output .= $stash->get(['locale',0,'maketext',['Notify me for:' ]]);$output .= '</div>
+                <div>
+                    ';if ($stash->get('can_set_all_autossl_notification')){$output .= '
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="autosslNotifications" id="autosslNotificationsAll" ng-model="autosslNotifications" value="all"
+                                ';if ($stash->get('autossl_notification_preset')eq 'all'){$output .= 'checked'}$output .= '>
+                                ';$output .= $stash->get(['locale',0,'maketext',['All [asis,AutoSSL] events: failures, deferrals, and successful installations.' ]]);$output .= '
+                        </label>
+                    </div>
+                    '}$output .= '
+                    ';if ($stash->get('can_set_fail_warn_defer_autossl_notification')){$output .= '
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="autosslNotifications" id="autosslNotificationsFailsAndDeferrals" ng-model="autosslNotifications" value="failWarnDefer"
+                                ';if ($stash->get('autossl_notification_preset')eq 'failWarnDefer'){$output .= 'checked'}$output .= '>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] failures and deferrals only. (default)' ]]);$output .= '
+                        </label>
+                    </div>
+                    '}$output .= '
+                    ';if ($stash->get('can_set_cert_failures_autossl_notification')){$output .= '
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="autosslNotifications" id="autosslNotificationsFailsOnly" ng-model="autosslNotifications" value="certFailures"
+                                ';if ($stash->get('autossl_notification_preset')eq 'certFailures'){$output .= 'checked'}$output .= '>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] failures only.' ]]);$output .= '
+                        </label>
+                    </div>
+                    '}$output .= '
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="autosslNotifications" id="autosslNotificationsDisabled" ng-model="autosslNotifications" value="disable"
+                                ';if ($stash->get('autossl_notification_preset')eq 'disable'){$output .= 'checked'}$output .= '>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Disable [asis,AutoSSL] event notifications.' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+            </div>
+            '}else {$output .= '
+            <input type="hidden" name="autosslNotifications" id="autosslNotificationsHidden" ng-model="autosslNotifications" value="disable">
+            '}$output .= '
+        </div>
+    '}$output .= '
+    <div class="form-group">
+        <input type="submit" id="submit-button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '">
+    </div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/prepark.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$output .= do {my$output='';$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/park" name="mainform" method="post">
+
+      <table class="tablecomplex2">
+      <tr>
+      <td colspan="4" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '"  class="cellheader"><div>
+      <b>Park</b></font></div></td>
+      <td background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '" align="right"><b><input type="submit" class="btn-primary"
+      value="Submit"><input type="reset" class="btn-cancel" value="Reset"></b></td>
+      </tr>
+
+      <tr>
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+<td class="heavybg">Domain to park on top of</td><td
+         class="lightbg"><input type="text" name="txtdomain"> <br /> OR <br />
+'}else {$output .= '
+         <td class="heavybg">Domain to park on top of</td><td
+         class="lightbg">
+'}$output .= '
+      <table class="tablecomplex2">
+      <tr>
+      <td class="heavybg">Domain</td>
+      </tr>
+      <tr>
+      <td class="lightbg">
+      <select size="7" name="domain">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'domains_maindomains',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+<option value=\'';$output .= $stash->get('domain');$output .= '\'>';$output .= $stash->get('domain');$output .= ' (';$output .= $stash->get(['data',0,'domains_maindomains',0,$stash->get('domain'),0]);$output .= ')</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+      </select>
+      </td>
+      </tr>
+      </table>
+</td>
+      <td class="heavybg"><img src="/arrowr.gif"></td>
+      <td class="heavybg">Domain to park</td><td
+      class="lightbg"><input type="text" name="ndomain"></td>  </tr>
+      </table>
+      </form>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'park_a_domain','header'=>$stash->get(['locale',0,'maketext',['Park a Domain' ]]),'breadcrumburl'=>'/scripts/prepark','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

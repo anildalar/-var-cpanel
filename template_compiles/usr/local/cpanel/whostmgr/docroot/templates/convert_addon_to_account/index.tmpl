@@ -1,0 +1,32 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('CPUsername',$context->plugin('CPUsername'));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/convert_addon_to_account/index.css' ]])]);$stash->set('PAGE_BASE','/scripts7/convert_addon_to_account/');$stash->set('PAGE_DATA',{'security_token'=>$stash->get('cp_security_token'),'addon_domains'=>$stash->get(['data',0,'addon_domains',0])|| {},'username_restrictions'=>{'maxLength'=>$stash->get(['CPUsername',0,'get_max_username_length',0])}});$output .= do {my$output='';$output .= '
+
+';if ($stash->get(['Whostmgr',0,'get_max_users',0])&& $stash->get(['Whostmgr',0,'minimum_accounts_needed',[$stash->get(['Whostmgr',0,'get_max_users',0])]])){$output .= $context->process('menu/_license_excess_create.tmpl')}else {$output .= '
+
+    <div id="content"
+        class="ng-cloak"
+        ng-cloak>
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Addon domains allow users to host multiple domains under a single [asis,cPanel] account. When you convert an addon domain into a stand-alone [asis,cPanel] account, you gain more control over the domain’s resources, such as databases, [asis,FTP] accounts, [asis,SSH] access, etc.' ]]);$output .= '</p>
+        <div class="animate-view" ng-view></div>
+        <div growl></div>
+    </div>
+
+    <script type="text/ng-template" id="directives/move_status.phtml">
+    ';$output .= $context->insert('convert_addon_to_account/directives/move_status.phtml');$output .= '
+    </script>
+
+    <script type="text/ng-template" id="directives/job_status.phtml">
+    ';$output .= $context->insert('convert_addon_to_account/directives/job_status.phtml');$output .= '
+    </script>
+
+    <script type="text/javascript">
+        var PAGE = ';$output .= $stash->get(['PAGE_DATA',0,'json',0]);$output .= ';
+    </script>
+'}$output .= '
+
+';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/cjt/sql.js','/cjt/sql.js' ]]));$output .= '
+';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+<script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/cjt/sql.js' ]]);$output .= '"></script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'convert_addon_domain_to_account','header'=>$stash->get(['locale',0,'maketext',['Convert Addon Domain to Account' ]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>$stash->get('stylesheet_includes'),'CJT2_EXCLUSIVE'=>0,'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

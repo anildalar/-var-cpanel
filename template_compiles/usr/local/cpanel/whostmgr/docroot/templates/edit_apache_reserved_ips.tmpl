@@ -1,0 +1,33 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/edit_apache_reserved_ips.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$output .= do {my$output='';$output .= '<p class="description">IPs that are greyed out are not currently up on the server\'s main interface. To reserve new IPs not found in this list, please <a href="../scripts2/addipform">add the IP</a> to the server and return to this page.</p>
+<br />
+<div>
+    <form action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" method="post">
+        <table class="table table-hover">
+            <tr class="tblheader0">
+                <th>';$output .= $stash->get(['locale',0,'maketext',['IP' ]]);$output .= '</th>
+                ';if ($stash->get(['data',0,'is_nat',0])){$output .= '
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Public IP' ]]);$output .= '</th>
+                '}$output .= '
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+            </tr>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'all_ips',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ipdata'}=$_tt_value;$output .= '
+            <tr>
+                <td class="';$output .= $stash->get(['ipdata',0,'class',0]);$output .= '">';$output .= $stash->get(['ipdata',0,'local_ip',0]);$output .= '</td>
+                ';if ($stash->get(['data',0,'is_nat',0])){$output .= '
+                <td class="';$output .= $stash->get(['ipdata',0,'class',0]);$output .= '">';$output .= $stash->get(['ipdata',0,'public_ip',0]);$output .= '</td>
+                '}$output .= '
+                <td class="';$output .= $stash->get(['ipdata',0,'class',0]);$output .= '">
+                    <div class="checkbox">
+                        <label for="';$output .= $stash->get(['ipdata',0,'local_ip',0]);$output .= '">
+                            <input type="checkbox" name="';$output .= $stash->get(['ipdata',0,'local_ip',0]);$output .= '" value="1" ';$output .= $stash->get(['ipdata',0,'reserved_check',0]);$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Reserved' ]]);$output .= '</label>
+                    </div>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </table>
+        <input type="hidden" name="rewrite" value="1">
+        <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" class="btn btn-primary" />
+    </form>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','stylesheets'=>['/templates/apache/edit_apache_reserved_ips.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

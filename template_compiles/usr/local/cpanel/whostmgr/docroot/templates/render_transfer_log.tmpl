@@ -1,0 +1,84 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/render_transfer_log.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= $context->process('_ajaxapp.tmpl');$output .= '<!--[if IE 9]>
+<style type="text/css">
+    .cjt-pagenotice-container .cjt-notice .bd {
+        border-radius: 0;
+    }
+    #content #destination_type {
+        min-width: 250px;
+    }
+
+  </style>
+<![endif]-->
+<style>
+#output {
+    margin-bottom: 15px;
+}
+#error_messages {
+  padding-top: 10px;
+}
+.transfer_item {
+    font-size: 14pt;
+    font-weight: 700;
+    padding-bottom: 5px;
+}
+.return-link {
+  margin-bottom: 15px;
+}
+';$output .= $context->insert('css/transfers/TransferLogRender.css');$output .= '
+</style>
+
+';$stash->set('spinner16',$stash->get(['MagicRevision',['/images/loading-arrows-16.gif' ]]));$output .= '
+
+<div id="content" class="yui-skin-sam">
+    <div id="summary"></div>
+    ';$output .= $context->process('_transfer_error_messages.tmpl');$output .= '
+<!--    <div id="spinner"><img src="';$output .= $stash->get('spinner16');$output .= '"></div> -->
+    <div id="output" class="well"></div>
+</div>
+
+<div class="return-link">
+        <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['data',0,'transfer_session_id',0,'uri',0]);$output .= '" id="lnkReturn" class="btn btn-primary">
+            <span class="glyphicon glyphicon-circle-arrow-left"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['View Session Summary' ]]);$output .= '
+        </a>
+</div>
+
+';$output .= $context->process('_transfer_error_script.tmpl');$output .= '
+
+<script>
+
+var DOM = YAHOO.util.Dom;
+var EVENT = YAHOO.util.Event;
+var transfer_session_id = ';$output .= $stash->get(['data',0,'transfer_session_id',0,'json',0]);$output .= ';
+var logfile = ';$output .= $stash->get(['data',0,'log_file',0,'json',0]);$output .= ';
+
+EVENT.on(\'lnkReturn\', \'click\', function(e){
+    if ( window.opener.location.href.match(/transfer_session/ ) ) {
+      if (e) {
+        EVENT.preventDefault(e);
+      }
+      window.close();
+    }
+}
+);
+
+var start = function() {
+  var mock_tail_window = {
+      \'ui\': {
+        \'bodyElement\':DOM.get(\'output\'),
+        \'summaryElement\':DOM.get(\'summary\'),
+        \'setProgressBarPercentage\': function() {},
+      }
+  };
+  var masterErrorProcessorObj = new TransferMasterErrorLogProcessor(transfer_session_id, {}, DOM.get(\'error_messages\'),  DOM.get(\'errorDetailsMessage\'), DOM.get(\'errorDetailsWrapper\'));
+  var log_renderer = new TransferLogRender(mock_tail_window);
+  var tail = new TransferLogTail( transfer_session_id, \'child\', masterErrorProcessorObj );
+  tail.addLog( logfile, function(msg, logfile) { log_renderer.renderMessage(msg)} );
+};
+
+
+EVENT.on(window,\'load\', start);
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'initiator_info',0,'name',0])|| $stash->get(['data',0,'header',0]),'breadcrumburl'=>$stash->get(['data',0,'initiator_info',0,'url',0])|| '/scripts5/account_copy_input','theme'=>'bootstrap','stylesheets'=>['/cjt/css/wrapped-select.css','/css2/newform.css','/yui/progressbar/assets/progressbar-core.css','/yui/progressbar/assets/skins/sam/progressbar.css' ],'scripts'=>['/libraries/handlebars/handlebars.min.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

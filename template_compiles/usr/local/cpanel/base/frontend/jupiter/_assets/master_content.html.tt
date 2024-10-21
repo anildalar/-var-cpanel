@@ -1,0 +1,156 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/_assets/master_content.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Apache',$context->plugin('Apache'));$output .= $context->process('core/partials/main_menu_nav_items.html.tt');$stash->set('banner_module_exists',$stash->get(['file_test',['f','/usr/local/cpanel/Cpanel/Template/Plugin/Banner.pm' ]]));$stash->set('has_component_system',$stash->get(['file_test',['f','/usr/local/cpanel/base/frontend/jupiter/_assets/component.html.tt' ]]));if ($stash->get('has_component_system')){$stash->set('Components',$context->plugin('Components'))}$output .= '
+
+<cp-root-variables
+    directory-prefix="';$output .= $cVC::S{'directory_prefix'};$output .= '"
+    app-list="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['applications',0,'json',0]);&$_tt_filter($output)};$output .= '"
+    main-menu-links="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['links',0,'json',0]);&$_tt_filter($output)};$output .= '"
+    app-name="cpanel"
+    primary-domain="';$output .= $stash->get('domain');$output .= '"
+    app-search-results-limit="';$output .= $stash->get(['CPANEL',0,'app_search_result_limit',0]);$output .= '"
+    company-id="';$output .= $stash->get('get_company_id');$output .= '"
+    cpanel-full-version="';$output .= $stash->get('cpanel_full_version');$output .= '"
+    cpanel-app-key="';$output .= $stash->get('app_key');$output .= '"
+></cp-root-variables>
+
+<!-- skipnav link for screenreader users -->
+<a href="#content" class="sr-only visually-hidden-focusable">';$output .= $stash->get(['locale',0,'maketext',['Skip to main content' ]]);$output .= '</a>
+
+<div id="page-overlay" class="page-overlay"></div>
+
+<div id="wrap" class="cp-layout-page">
+    <div id="glass-navbar-overlay"></div>
+    <a href="#content" class="sr-only visually-hidden-focusable">';$output .= $stash->get(['locale',0,'maketext',['Skip to main content' ]]);$output .= '</a>
+    ';$stash->set('VarCache',$context->plugin('VarCache'));$output .= '';$cVC::S{'home_text'}=$stash->get(['locale',0,'maketext',['Home' ]]);$output .= '
+    ';if ($stash->get('display_cpanel_doclinks')&& $stash->get(['app_key',0,'defined',0])){$stash->set('major_version',$stash->get(['CPANEL',0,'major_version',0]));$stash->set('help_key',$stash->get(['app_info',0,'plainitemdesc',0,'remove',['\W+' ],'uri',0])|| 'Home');$stash->set('helplink','//go.cpanel.net/cpaneldocs' .$stash->get('help_key'))}$output .= '
+
+    ';if (!$stash->get('hide_main_menu')){$output .= '
+    <aside id="cp-main-menu-container" class="cp-layout-main-menu">
+        <cp-main-menu
+            logo-src="';$output .= $cVC::S{'customizations'}->{'main_menu_logo'};$output .= '"
+            logo-alt-text="';$output .= $cVC::S{'customizations'}->{'logo_description_html'};$output .= '"
+        ></cp-main-menu>
+    </aside>
+    '}$output .= '
+
+    <div class="cp-layout-wrapper">';if (!$stash->get('hide_header')){$output .= '
+        <header class="cp-layout-header ';if (!$stash->get('hide_main_menu')){$output .= ' cp-layout-header--with-main-menu '}$output .= '">
+            <!--  Single quotes needed to pass the props into the web component correctly. -->
+            <cp-header
+                focus-search="';$output .= $stash->get('focus_feature_search')? 'true' : 'false';$output .= '"
+                integrations-info=\'';$output .= $stash->get(['integrations_info',0,'json',0]);$output .= '\'
+                logo-alt-text="';$output .= $cVC::S{'customizations'}->{'logo_description_html'};$output .= '"
+                logo-src="';$output .= $cVC::S{'customizations'}->{'header_logo'};$output .= '"
+            ></cp-header>
+
+            <!-- Content Include point: GLOBAL <html><body><header> content -->
+            ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_header.html.tt' ]]);$output .= '
+            <!-- End: Content Include point -->
+
+            <!-- Content Include point: APP HEAD Include-->
+                ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_' .$stash->get('app_key').'_header.html.tt' ]]);$output .= '
+            <!-- End: Content Include point -->
+        </header>
+
+        <script type="text/javascript">
+            (function() {
+                const header = document.querySelector(\'cp-header\');
+                header.addEventListener(\'menuItemPress\', event => {
+                    if(event.detail.id === "menu-reset-link") {
+                        reset_all_interface_settings(\'';$output .= $stash->get('cp_security_token');$output .= '\')
+                    }
+                });
+            })();
+        </script>
+        '}$output .= '
+        ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_header_after.html.tt' ]]);$output .= '
+
+        <!-- Content Include point: APP specific include point after the global header includes. -->
+        ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_' .$stash->get('app_key').'_header_after.html.tt' ]]);$output .= '
+        <!-- End: Content Include point -->
+
+        <!-- PAGE TEMPLATE\'S CONTENT START -->
+        <div id="content" class="cp-layout-main-content ';if (!$stash->get('hide_main_menu')){$output .= ' cp-layout-main-content--with-main-menu '}$output .= ' ';if (!$stash->get('hide_header')){$output .= ' cp-layout-main-content--with-header '}$output .= '">
+            <div class="container-lg">
+            ';if ($stash->get(['CPANEL',0,'CPFLAGS',0,'item',['trial' ]])){$output .= '
+                <div id="trialWarningBlock" class="alert alert-warning">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <div id="trialWarningMessage" class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,TRIAL LICENSE:] This copy is a trial version and will expire at the end of the trial term. You will need to upgrade to a paid copy to continue using the software after that term.' ]]);$output .= '                    </div>
+                </div>
+            '}$output .= '
+            ';if ($stash->get(['CPANEL',0,'CPFLAGS',0,'item',['dev' ]])){$output .= '
+                <div id="devWarningBlock" class="alert alert-warning">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <div id="devWarningMessage" class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,DEVELOPMENT LICENSE:] This server is running on a development license. If this server is being used in a production environment, please notify [output,url,_1,cs@cpanel.net] immediately.','mailto:cs@cpanel.net?subject=' .$stash->get('host_name').'(' .$stash->get('main_ip').',' .$stash->get('main_server_ip').') is using a dev license in a production environment' ]]);$output .= '                    </div>
+                </div>
+            '}$output .= '
+
+            <!-- Banner Section - now controlled via a plugin -->
+            ';if ($stash->get('banner_module_exists')&& $stash->get(['template_exists',['/usr/local/cpanel/base/frontend/jupiter/_assets/banner.html.tt' ]])){$output .= '
+            ';$output .= $context->include('/usr/local/cpanel/base/frontend/jupiter/_assets/banner.html.tt');$output .= '            '}$output .= '
+
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['cpanel',$stash->get('app_key'),'page-top' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'page-top' })}$output .= '
+
+            ';if (!$stash->get('hide_page_heading')&& $stash->get('page_title')){$output .= '                <h1 class="page-header">
+                    <div id="pageHeading" class="page-title-section">
+                        <span class="page-title">';$output .= $stash->get('page_title');$output .= '</span>
+                        ';if ($stash->get(['page_sub_heading',0,'defined',0])){$output .= '
+                        <small id="pageSubHeading">';$output .= $stash->get('page_sub_heading');$output .= '</small>
+                        '}$output .= '
+                        ';if ($stash->get('show_breadcrumb')&&!$stash->get('is_ng')){$output .= '
+                            <breadcrumbs id="breadcrumbs" class="breadcrumbs">
+                            </breadcrumbs>
+                        '}$output .= '
+                        ';if ($stash->get('is_ng')&&!$stash->get('is_jupiter_style')){$output .= '
+                            <nav id="cpanel-breadcrumbs" class="breadcrumb" role="navigation" aria-label="breadcrumb"></nav>
+                        '}$output .= '
+                    </div>
+                </h1>
+                ';if ($stash->get('is_ng')&& $stash->get('is_jupiter_style')){$output .= '
+                    <nav id="cpanel-breadcrumbs" class="breadcrumb" role="navigation" aria-label="breadcrumb" data-jupiter-style="1"></nav>
+                '}$output .= '
+            '}$output .= '
+
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['cpanel',$stash->get('app_key'),'content-top' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'content-top' })}$output .= '
+
+            ';if ($stash->get('authorized_to_access')){$output .= $stash->get('content');$output .= '            '}else {$output .= '                <div class="body-content">
+                    <div class="alert alert-danger">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        <div class="alert-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error:] This feature, “[_1]”, is not enabled on your account. Please contact your reseller for access.',$stash->get('feature')]]);$output .= '
+                        </div>
+                    </div>
+                </div>
+            '}$output .= '            <!-- PAGE TEMPLATE\'S CONTENT END -->
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['cpanel',$stash->get('app_key'),'content-end' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'content-end' })}$output .= '
+            </div>
+        </div>
+
+        ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['cpanel',$stash->get('app_key'),'page-bottom' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'page-bottom' })}$output .= '
+
+        <footer class="cp-layout-footer" role="contentinfo">
+            <!-- Content Include point: APP Footer Include -->
+            ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_' .$stash->get('app_key').'_footer.html.tt' ]]);$output .= '
+            <!-- End: Content Include point -->
+
+            <!-- Content Include point: GLOBAL <html><body><footer> content -->
+            ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_footer.html.tt' ]]);$output .= '
+            <!-- End: Content Include point -->
+
+            <cp-footer
+                id="cp-footer"
+                directory-prefix="';$output .= $cVC::S{'directory_prefix'};$output .= '"
+                version="';$output .= $stash->get('cPanel_version');$output .= '"
+                logo-src="';$output .= $stash->get(['theme_magic_url',['brand/cpanel-logo-orange.svg' ]]);$output .= '"
+                doc-link="';$output .= $cVC::S{'customizations'}->{'documentation_url'};$output .= '"
+            ';if ($cVC::S{'customizations'}->{'help_url'}){$output .= '                help-link="';$output .= $cVC::S{'customizations'}->{'help_url'};$output .= '"
+            '}$output .= '
+            >
+            </cp-footer>
+        </footer>
+
+        <!-- Content Include point: GLOBAL <html><body> after <footer> content -->
+        ';$output .= $stash->get(['Content_Includes',0,'render',['cpanel_jupiter_footer_after.html.tt' ]]);$output .= '
+        <!-- End: Content Include point -->
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

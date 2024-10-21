@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Check/CpanelPackages.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_standout.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],'[check_cpanel_pkgs] ' .$stash->get(['CPANEL',0,'locale',0,'maketext',['There are altered Packages on “[_1]”.',$stash->get(['NOTICE',0,'host_server',0])]]));$stash->set(['NOTICE',0,'table_titles',0],[$stash->get(['CPANEL',0,'locale',0,'maketext',['Packages' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Status' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Additional Information' ]])]);$stash->set(['NOTICE',0,'table_items',0],[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'rpms',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'rpm'}=$_tt_value;$stash->set('table_item',[]);$output .= $stash->get(['table_item',0,'push',[$stash->get(['rpm',0,'rpm',0])]]);if ($stash->get(['rpm',0,'status',0])eq 'missing'){$output .= $stash->get(['table_item',0,'push',[$stash->get(['CPANEL',0,'locale',0,'maketext',['Missing' ]])]])}elsif ($stash->get(['rpm',0,'status',0])eq 'unnecessary'){$output .= $stash->get(['table_item',0,'push',[$stash->get(['CPANEL',0,'locale',0,'maketext',['Unnecessary' ]])]])}elsif ($stash->get(['rpm',0,'status',0])eq 'broken'){$output .= $stash->get(['table_item',0,'push',[$stash->get(['CPANEL',0,'locale',0,'maketext',['Broken' ]])]])}elsif ($stash->get(['rpm',0,'status',0])eq 'repaired'){$output .= $stash->get(['table_item',0,'push',[$stash->get(['CPANEL',0,'locale',0,'maketext',['Repaired' ]])]])}$output .= $stash->get(['table_item',0,'push',[$stash->get(['rpm',0,'info',0])]]);$output .= $stash->get(['NOTICE',0,'table_items',0,'push',[$stash->get('table_item')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system detected problems with the following [asis,cPanel]-provided files that the Packaging System controls:' ]]);$output .= '
+</p>
+<p style="padding:10px;">
+    ';$output .= $stash->get(['zebra_table',[{'titles'=>$stash->get(['NOTICE',0,'table_titles',0]),'items'=>$stash->get(['NOTICE',0,'table_items',0])}]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If you did not make these changes intentionally, execute the following command as the [asis,root] user to correct them:' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['NOTICE',0,'check_cpanel_pkgs_path',0]).' --fix' }]]);$output .= '
+</p>
+
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

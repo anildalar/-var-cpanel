@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/deletekey.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('delete_key',$stash->get(['execute',['SSL','delete_key',{'friendly_name'=>$stash->get(['RAW_FORM',['keyname' ]])}]]));$stash->set('deleted_certs',[]);$stash->set('deleted_csrs',[]);$stash->set('error_certs',[]);$stash->set('error_csrs',[]);if ($stash->get(['delete_key',0,'status',0])){$stash->set('form_cert_keys',$stash->get(['RAW_FORM',0,'keys',0,'grep',['^delete_cert-' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('form_cert_keys');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'formkey'}=$_tt_value;$stash->set('itemname',$stash->get(['formkey',0,'replace',['^delete_cert-','' ]]));$stash->set('delete_cert',$stash->get(['execute',['SSL','delete_cert',{'friendly_name'=>$stash->get('itemname')}]]));if (($stash->get(['delete_cert',0,'status',0]))){$output .= $stash->get(['deleted_certs',0,'push',[{'name_html'=>$stash->get(['itemname',0,'html',0]),'cn_html'=>$stash->get(['delete_cert',0,'data',0,0,0,'subject.commonName',0,'html',0])}]])}else {$output .= $stash->get(['error_certs',0,'push',[{'name_html'=>$stash->get(['itemname',0,'html',0]),'error_html'=>$stash->get(['delete_cert',0,'errors',0,0,0,'html',0])}]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('form_csr_keys',$stash->get(['RAW_FORM',0,'keys',0,'grep',['^delete_csr-' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('form_csr_keys');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'formkey'}=$_tt_value;$stash->set('itemname',$stash->get(['formkey',0,'replace',['^delete_csr-','' ]]));$stash->set('delete_csr',$stash->get(['execute',['SSL','delete_csr',{'friendly_name'=>$stash->get('itemname')}]]));if (($stash->get(['delete_csr',0,'status',0]))){$output .= $stash->get(['deleted_csrs',0,'push',[{'name_html'=>$stash->get(['itemname',0,'html',0]),'cn_html'=>$stash->get(['delete_csr',0,'data',0,0,0,'commonName',0,'html',0])}]])}else {$output .= $stash->get(['error_csrs',0,'push',[{'name_html'=>$stash->get(['itemname',0,'html',0]),'error_html'=>$stash->get(['delete_csr',0,'errors',0,0,0,'html',0])}]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$stash->set('ref',$stash->get(['FORM',0,'ref',0])|| '');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrDelete">
+        ';$output .= $stash->get(['locale',0,'maketext',['Delete Private Key' ]]);$output .= '
+    </h2>
+
+    <div id="delete-status">
+        ';if ($stash->get(['delete_key',0,'status',0])){$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['The private key has been deleted: [_1]',$stash->get(['RAW_FORM',0,'keyname',0,'html',0])]]);$output .= '
+            </p>
+
+            ';if ($stash->get(['deleted_certs',0,'size',0])|| $stash->get(['deleted_csrs',0,'size',0])){$output .= '
+            <p class="also">
+                ';$output .= $stash->get(['locale',0,'maketext',['The following related resources have also been deleted:' ]]);$output .= '
+                <ul class="bulleted">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('deleted_certs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '                    <li>';$output .= $stash->get(['locale',0,'maketext',['Certificate “[_1]”[comment,common name of certificate] - “[_2]”[comment,friendly name of certificate when it is different than the common name]',$stash->get(['item',0,'cn_html',0]),$stash->get(['item',0,'name_html',0])]]);$output .= '</li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('deleted_csrs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '                    <li>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,CSR,Certificate Signing Request]: [output,strong,_1] - [_2]',$stash->get(['item',0,'cn_html',0]),$stash->get(['item',0,'name_html',0])]]);$output .= '</li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </ul>
+            <p>
+            '}$output .= '
+
+        '}else {$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['The private key “[_1]” could not be deleted because an error occurred: [_2]',$stash->get(['RAW_FORM',0,'keyname',0,'html',0]),$stash->get(['delete_key',0,'errors',0,0,0,'html',0])]]);$output .= '
+            </p>
+        '}$output .= '
+    </div>
+
+    ';if ($stash->get(['delete_key',0,'status',0])&& ($stash->get(['error_certs',0,'size',0])|| $stash->get(['error_csrs',0,'size',0]))){$output .= '
+        <div id="dependent-errors">
+            <p class="also">
+                ';$output .= $stash->get(['locale',0,'maketext',['The following resources could not be deleted because of errors:' ]]);$output .= '
+                <ul>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('error_certs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '                    <li>';$output .= $stash->get(['locale',0,'maketext',['Certificate “[_1]”: [_2]',$stash->get(['item',0,'name_html',0]),$stash->get(['item',0,'error_html',0])]]);$output .= '</li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('error_csrs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '                    <li>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,CSR,Certificate Signing Request]: [output,strong,_1] - [_2]',$stash->get(['item',0,'name_html',0]),$stash->get(['item',0,'error_html',0])]]);$output .= '</li>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </ul>
+            <p>
+        </div>
+    '}$output .= '
+
+    <ul class="list-inline text-center">';if ($stash->get('ref')){do {my$_tt_result=$stash->get('ref');my$_tt_match;SWITCH: {$_tt_match='csrs';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCSR','return_location'=>'csrs.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificate Signing Requests' ]])});$output .= '
+            </li>';last SWITCH}$_tt_match='crts';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCRT','return_location'=>'crts.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificates' ]])});$output .= '
+            </li>';last SWITCH}}}}$output .= '        <li>
+        ';if ($stash->get('ref')){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html?ref=' .$stash->get(['ref',0,'uri',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'embed_scripts'=>['js2/ssl/deletekey.js' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n(function() {\n    /**\n     * This module contains all the page specific constants generated by the server.\n     * \@module PAGE.Properties\n     */\n     var PAGE = {\n        properties : {\n            deleted :  ";$output .= $stash->get(['delete_key',0,'status',0])? 'true' : 'false';$output .= '
+        }
+    }
+
+    // Publish the PAGE object;
+    window["PAGE"] = PAGE;
+})();
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

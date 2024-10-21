@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/install_ssl_form.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('extra_css',do {my$output='';$output .= $context->insert('sharedcss/sslinstall_optimized.css');$output .= $context->insert('css/ssl_forms_optimized.css');$output .= $context->insert('yui/datatable/assets/datatable-core.css');$output .= $context->insert('yui/datatable/assets/datatable.css');$output .= $context->insert('yui/autocomplete/assets/skins/sam/autocomplete.css');$output});$stash->set('is_root',$stash->get(['Whostmgr',0,'hasroot',0]));$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+<div class="description">
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to install a certificate on a domain. To install a certificate, you can type the desired domain, and the interface will automatically fill the empty fields. You can also paste a certificate to automatically fill the domain and related information. To browse your certificates, click the “[output,strong,_1]” button.',$stash->get(['locale',0,'maketext',['Browse Certificates' ]])]]);$output .= '
+    </p>
+</div>
+
+<div id="sdiv"></div>
+
+<div id="cjt_pagenotice_container"></div>
+
+';$stash->set('ssl_browse_html',do {my$output='';$output .= '    <input type="button" id="sslbrowse" value="';$output .= $stash->get(['locale',0,'maketext',['Browse Certificates' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Browse for certificates to install.' ]]);$output .= '" class="btn-secondary">
+';$output});$output .= '
+';$stash->set('ssl_form_top',do {my$output='';$output .= '    <div id="msg"></div>
+    <div>
+        <label for="ssldomain">';$output .= $stash->get(['locale',0,'maketext',['Domain:' ]]);$output .= '</label>
+        <span id="ssldomain_error"></span>
+    </div>
+
+    <div>
+        <input type="text" name="domain" id="ssldomain" dir="ltr">
+        <input type="button" id="fetch-domain" style=\'display:none;\' value="';$output .= $stash->get(['locale',0,'maketext',['Autofill by Domain' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Fill this form’s other text boxes with values that match this domain.' ]]);$output .= '" class="btn-secondary" disabled="disabled">
+    </div>
+
+    <div id="wildcard_subdomain_warning"></div>
+    <div id="autofill_message_container"></div>
+';$output});$output .= '
+';if ($stash->get(['data',0,'hasroot',0])){$output .= '    ';$stash->set('ssl_form_extra_section',do {my$output='';$output .= '        <div>
+            <label>';$output .= $stash->get(['locale',0,'maketext',['IP Address (non-user domains only):' ]]);$output .= '</label>
+        </div>
+        <div id="ipcontainer">
+            <div id="ipcombobox">
+                <input id="sslip" name="ip" type="text" size="20" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Auto-discover' ]]);$output .= '" dir="ltr"><a id="ipexpander"></a>
+            </div>
+            <span id="sslip_error"></span>
+            <br>
+            ';$output .= $stash->get(['locale',0,'maketext',['Leave this text box blank unless you wish to create an SSL website for a domain that is not attached to a user account.' ]]);$output .= '
+        </div>
+    ';$output})}$output .= '
+';$output .= $context->process('_ssl_form_include.tmpl',{'ssl_browse_html'=>$stash->get('ssl_browse_html'),'ssl_form_top'=>$stash->get('ssl_form_top'),'ssl_form_extra_section'=>$stash->get('ssl_form_extra_section')});$output .= '
+<script type="text/html" id="error-extra-block">
+    &nbsp;<a href="javascript:void(0)" id="{btnId}">{label}</a>
+    <div id="{areaId}" class="extra-info" style="display: none">
+        {content}
+    </div>
+</script>
+
+<script id="ssl-install-require-template" type="text/html">
+';if ($stash->get(['data',0,'hasroot',0])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['We recommend that you only create SSL websites for domains that users control as their primary domain, parked domains, subdomains, or addon domains.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['If you create a website for a domain that a user does not control, that site will use [asis,Apache]’s default document root and will have the pseudo user “[_1]” as their owner. It will also always run outside Apache jails, even if you enable jails in [output,url,_2,Tweak Settings].','nobody','tweaksettings' ]]);$output .= '
+'}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['You may only create SSL websites for domains that you or one of your users control: the user’s primary domain, parked domains, subdomains, or addon domains.' ]]);$output .= '
+'}$output .= '
+</script>
+
+';$stash->set('js_page_properties',{'selectedUser'=>$stash->get(['data',0,'selected_user',0]),'sslips'=>$stash->get(['data',0,'ips',0]),'ip_options'=>$stash->get(['data',0,'sorted_ips',0]),'mainip'=>$stash->get(['data',0,'mainip',0])});$output .= "<script>\n(function() {\n    /**\n     * This module contains all the page specific constants generated by the server.\n     * \@module PAGE.Properties\n     */\n    var PAGE = {\n        properties : ";$output .= $stash->get(['js_page_properties',0,'json',0]);$output .= ',
+        nvdata : ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['NVData',0,'get_page_nvdata',0])|| {}]]);$output .= ',
+        auto_domains: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'auto_domains',0])]]);$output .= ',
+    };
+
+    // Publish the PAGE object;
+    window["PAGE"] = PAGE;
+})();
+</script>
+
+';$output .= $context->process('sslinstall_include.tmpl',{'cert_browser_users'=>$stash->get(['data',0,'users',0])});$output .= '
+';$output .= $context->process('_ajaxapp_footer.tmpl');$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'install_an_ssl_certificate_on_a_domain','breadcrumburl'=>'/scripts2/installssl','scripts'=>['/yui/datasource/datasource-min.js','/yui/autocomplete/autocomplete-min.js','/cjt/combobox-min.js' ],'breadcrumburl'=>'/scripts2/installssl','extrastyle'=>$stash->get('extra_css'),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

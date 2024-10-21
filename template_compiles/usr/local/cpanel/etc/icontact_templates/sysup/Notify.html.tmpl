@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/sysup/Notify.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] [output,amp] [asis,WHM] failed to update.' ]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to update to the latest version of [asis,cPanel] [output,amp] [asis,WHM] version [_1] because it could not install basic requirements for [asis,cPanel] [output,amp] [asis,WHM]. The specific failure was:',$stash->get(['NOTICE',0,'update_version',0])]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['CPANEL',0,'format_text_as_html',[$stash->get(['NOTICE',0,'failure_message',0])]])}]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For more information about this error and guidance on how to resolve the error, go to [output,url,_1,_1,_2].','https://go.cpanel.net/sysupfailed','_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,109 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/cpanelpro/file-select.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$stash->set('dir',$stash->get(['RAW_FORM',0,'item',['dir' ]]));$stash->set('homedir',$stash->get(['CPANEL',0,'homedir',0]));$stash->set('homedir',$stash->get(['homedir',0,'replace',['/$','' ]]));$stash->set('dir','/' .$stash->get(['dir',0,'split',['/' ],'grep',['[^/\s]' ],'join',['/' ]]).'/');$stash->set('dir',$stash->get(['dir',0,'replace',['//','/' ]]));$output .= '
+
+';$output .= $context->process('_assets/mime_types_icon_classes.tt');$output .= '
+
+';$stash->set('list_files_response',$stash->get(['execute',['Fileman','list_files',{'dir'=>$stash->get('dir'),'include_mime'=>1,'show_hidden'=>1 }]]));if ($stash->get(['list_files_response',0,'status',0])ne 0){$stash->set('list_of_files',$stash->get(['list_files_response',0,'data',0]));$stash->set('up_one',$stash->get(['dir',0,'split',['/' ],'slice',[0,-2 ],'join',['/' ]]));$output .= '
+<div class="row">
+    <div class="col-xs-12 col-sm-4 col-md-3">
+        <a id="home" href="?dir=" class="btn btn-default btn-sm">
+            <i class="fas fa-home"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '
+        </a>
+        ';if ($stash->get('dir')ne '/'){$output .= '
+        <a id="up-one" href="?dir=';$output .= $stash->get(['up_one',0,'uri',0]);$output .= '" class="btn btn-default btn-sm">
+            <i class="fas fa-level-up-alt"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Up One Level' ]]);$output .= '
+        </a>
+        '}$output .= '
+    </div>
+    <div class="col-xs-12 col-sm-8 col-md-9 current-directory">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Current Directory:' ]]);$output .= '</strong>
+        <a href="?dir=/"><span class="fas fa-home fa-lg"></span>&nbsp;/</a>
+        ';$stash->set('target_dir','');do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['dir',0,'remove',['^/' ],'split',['/' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'sub_dir'}=$_tt_value;$stash->set('target_dir',$stash->get('target_dir').$stash->get('sub_dir').'/');$output .= '
+        <a href="?dir=/';$output .= $stash->get(['target_dir',0,'uri',0]);$output .= '">';$output .= $stash->get(['sub_dir',0,'html',0]);$output .= '</a> /
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+</div>
+<table id="files" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+            </th>
+            <th>
+                ';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '
+            </th>
+            <th>
+                ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        ';if ($stash->get(['list_of_files',0,'size',0])> 0){$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_of_files');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'entry'}=$_tt_value;$output .= '
+        <tr>
+            ';if ($stash->get(['entry',0,'type',0])eq 'dir' || ($stash->get(['entry',0,'type',0])eq 'link' && $stash->get(['entry',0,'rawmimename',0,'match',['directory' ]]))){$output .= '
+            <td>
+                ';$output .= '
+                <a href="?dir=';$output .= $stash->get(['dir',0,'uri',0]);$output .= $stash->get(['entry',0,'file',0,'uri',0]);$output .= '" class="dir"><i class="diricon ';$output .= $stash->get(['MimeTypesIconClasses',0,$stash->get(['entry',0,'mimename',0]),0]);$output .= '" aria-hidden="true"></i>';if ($stash->get(['entry',0,'type',0])eq 'link'){$output .= '<i class="fas fa-link fa-rotate-90" aria-hidden="true"></i>'}$output .= '<span>';$output .= $stash->get(['entry',0,'file',0,'html',0]);$output .= '</span></a>
+            </td>
+            <td></td>
+            <td>
+                ';if (!($stash->get('files_only'))){$output .= '
+                ';$output .= $context->include('button');$output .= '
+                '}$output .= '
+            </td>
+            '}else {$output .= '
+            <td align="left">
+                <i class="diricon ';$output .= $stash->get(['MimeTypesIconClasses',0,$stash->get(['entry',0,'mimename',0]),0]);$output .= '" aria-hidden="true"></i>
+                <span>';$output .= $stash->get(['entry',0,'file',0,'html',0]);$output .= '</span>
+            </td>
+            <td>
+                ';$output .= $stash->get(['entry',0,'humansize',0,'html',0]);$output .= '
+            </td>
+            <td>
+                ';if (!($stash->get('dirs_only'))){$output .= '
+                ';$output .= $context->include('button');$output .= '
+                '}$output .= '
+            </td>
+            '}$output .= '
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+        <tr>
+            <td colspan="3">
+                ';$output .= $stash->get(['locale',0,'maketext',['No files or folders are available.' ]]);$output .= '
+            </td>
+        </tr>
+        '}$output .= '
+    </tbody>
+</table>
+'}else {$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_files_response',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+<div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+    <div class="alert-message">
+        <strong class="alert-title">
+            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+        </strong>
+        <span class="alert-body">
+            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+            </span>
+        </span>
+    </div>
+</div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'button'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<form action="';$output .= $stash->get('action');$output .= '" method="get">
+    <input type="hidden" name="dir" value="';$output .= $stash->get(['homedir',0,'html',0]).$stash->get(['dir',0,'html',0]);$output .= '">
+    <input type="hidden" name="file" value="';$output .= $stash->get(['entry',0,'file',0,'html',0]);$output .= '">
+    <button id="action-';$output .= $stash->get(['entry',0,'file',0,'slugify',0]);$output .= '" class="btn btn-outline-primary btn-sm file-select-button">';$output .= $stash->get('content');$output .= '</button>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

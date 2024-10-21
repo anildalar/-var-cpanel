@@ -1,0 +1,149 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/directives/saveAsProfile.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="{{idPrefix}}_popover_{{position}}"
+    class="upload-popover well">
+    <form id="{{idPrefix}}_saveForm_{{position}}" name="form" novalidate>
+        <div class="section text-dir-left">
+            <button type="button"
+                    id="{{idPrefix}}_btnCloseSavePopup_{{position}}"
+                    class="close text-dir-right flip"
+                    ng-click="actionHandler.cancel()"
+                    tooltip="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '"
+                    aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+                <span aria-hidden="true" class="fas fa-times"></span>
+            </button>
+            <!-- Form inputs -->
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label for="{{idPrefix}}_txtProfileName_{{position}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" name="txtProfileName" id="{{idPrefix}}_txtProfileName_{{position}}"
+                                auto-focus="show"
+                                required
+                                ng-model="saveAsData.name"
+                                class="form-control">
+                        <span class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div class="col-xs-12">
+                        <ul id="{{idPrefix}}_valProfileName_{{position}}" validation-container field-name="txtProfileName">
+                            <validation-item
+                                field-name="txtProfileName"
+                                validation-name="required">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Profile name is required.' ]]);$output .= '
+                            </validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label for="{{idPrefix}}_txtFilename_{{position}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Filename' ]]);$output .= '
+                        </label>
+                        <span class="info-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enter the filename without an extension. The system automatically adds the [asis,JSON] extension.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div class="col-xs-12">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" name="txtFilename" id="{{idPrefix}}_txtFilename_{{position}}"
+                                required
+                                ng-model="saveAsData.filename.name"
+                                class="form-control"
+                                ng-change="validateFilenameInput()">
+                        <span class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] be [list_or_quoted,_1].',['.','..' ]]]);$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Filename [output,strong,cannot] include the following characters: [list_and,_1]',['/','NUL' ]]]);$output .= '
+                        </span>
+                    </div>
+                    <div class="col-xs-12">
+                        <ul id="{{idPrefix}}_valFilename_{{position}}" validation-container field-name="txtFilename">
+                            <validation-item
+                                field-name="txtFilename"
+                                validation-name="required">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Filename is required.' ]]);$output .= '
+                            </validation-item>
+                            <validation-item
+                                field-name="txtFilename"
+                                validation-name="invalidFilename">
+                                    <span ng-bind-html="saveAsData.filename.valMsg"></span>
+                            </validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label for="{{idPrefix}}_txtProfileDesc_{{position}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '
+                        </label>
+                        <span class="info-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['An optional description field to describe what this profile is about.' ]]);$output .= '
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" name="txtProfileDesc" id="{{idPrefix}}_txtProfileDesc_{{position}}"
+                                ng-model="saveAsData.desc"
+                                class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label for="{{idPrefix}}_txtProfileTags_{{position}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Tags' ]]);$output .= '
+                        </label>
+                        <span class="info-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You can add multiple comma-separated (,) tags.' ]]);$output .= '
+                        </span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <input type="text" name="txtProfileTags" id="{{idPrefix}}_txtProfileTags_{{position}}"
+                                ng-model="saveAsData.tagsAsString"
+                                class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12" ng-class="{ \'animate-highlight\' : highlightOverwrite }">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="saveAsData.overwrite">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Overwrite an existing profile[comment,checkbox title.]' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Action button -->
+            <div class="form-group">
+                <button id="{{idPrefix}}_btnSaveProfile_{{position}}"
+                        type="submit"
+                        spinner-id="{{idPrefix}}_spinnerSaveProfile_{{position}}"
+                        tooltip="';$output .= $stash->get(['locale',0,'maketext',['Save packages to new profile.' ]]);$output .= "\"\n                        cp-action=\"actionHandler.saveForm()\"\n                        ng-disabled=\"form.\$invalid || !form.\$dirty\">\n                    {{ saveButtonText }}\n                </button>\n                <button id=\"{{idPrefix}}_btnCancelStyleUpload_{{position}}\"\n                        type=\"button\"\n                        tootltip=\"Cancel\"\n                        class=\"btn btn-link\"\n                        ng-click=\"actionHandler.cancel()\">\n                    ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

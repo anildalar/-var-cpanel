@@ -1,0 +1,64 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/editmsgs.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}$stash->set('message_list',$stash->get(['execute',['BoxTrapper','list_email_templates' ]]));$output .= '
+';$output .= do {my$output='';$output .= '
+
+    <div class="body-content">
+        ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+        <div id="boxtrapperErrorMsg" class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+            </div>
+        </div>
+        '}elsif (!$stash->get(['message_list',0,'status',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['message_list',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+        <div class="section">
+            <h2 id="boxtrapperMessageFor">';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] message for “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '</h2>
+            ';if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]]);$output .= '
+            '}else {$output .= '
+                <table id="tblListMessages" class="table table-striped">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['message_list',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message_type'}=$_tt_value;$output .= '
+                        ';$stash->set('account',$stash->get(['FORM',0,'item',['account' ],'html',0]));$stash->set('form',$stash->get(['message_type',0,'html',0]));$output .= '
+                        <tr>
+                            <td>';$output .= $stash->get(['message_type',0,'html',0]);$output .= '</td>
+                            <td>
+                                <form action="editmsg.html" method="post">
+                                    <input type="hidden" name="account" value="';$output .= $stash->get('account');$output .= '">
+                                    <input type="hidden" name="form" value="';$output .= $stash->get('form');$output .= '">
+                                    <input id="boxtrapper-edit-';$output .= $stash->get('form');$output .= '" type="submit" class="input-button" value="';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '">
+                                </form>
+                            </td>
+                            <td>
+                                <form action="resetmsg.html" method="post">
+                                    <input type="hidden" name="account" value="';$output .= $stash->get('account');$output .= '">
+                                    <input type="hidden" name="form" value="';$output .= $stash->get('form');$output .= '">
+                                    <input id="boxtrapper-reset-';$output .= $stash->get('form');$output .= '"type="submit" class="input-button" value="';$output .= $stash->get(['locale',0,'maketext',['Reset to Default' ]]);$output .= '">
+                                </form>
+                            </td>
+                        </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </table>
+            '}$output .= '
+        </div>
+        '}$output .= '
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    </div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

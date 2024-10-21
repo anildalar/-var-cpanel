@@ -1,0 +1,57 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/doaddars.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('add_autoresponder_response',$stash->get(['execute',['Email','add_auto_responder',{'email'=>$stash->get(['RAW_FORM',0,'item',['email' ]]),'from'=>$stash->get(['RAW_FORM',0,'item',['from' ]]),'subject'=>$stash->get(['RAW_FORM',0,'item',['subject' ]]),'body'=>$stash->get(['RAW_FORM',0,'item',['arbody' ]]),'domain'=>$stash->get(['RAW_FORM',0,'item',['domain' ]]),'is_html'=>$stash->get(['RAW_FORM',0,'item',['html' ]]),'charset'=>$stash->get(['RAW_FORM',0,'item',['charset' ]]),'interval'=>$stash->get(['RAW_FORM',0,'item',['interval' ]]),'start'=>$stash->get(['RAW_FORM',0,'item',['start' ]]),'stop'=>$stash->get(['RAW_FORM',0,'item',['stop' ]])}]]));$stash->set('action',$stash->get(['RAW_FORM',0,'item',['action' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+    <div class="body-content">
+        ';if ($stash->get(['add_autoresponder_response',0,'status',0])){$output .= '
+            <div class="section">
+                ';if ($stash->get('action')eq 'create'){$output .= '
+                    <h2 id="hdrAddAutoResponders">';$output .= $stash->get(['locale',0,'maketext',['Add Autoresponder' ]]);$output .= '</h2>
+                '}else {$output .= '
+                    <h2 id="hdrAddAutoResponders">';$output .= $stash->get(['locale',0,'maketext',['Modify Autoresponder' ]]);$output .= '</h2>
+                '}$output .= '
+                <div id="addRespondersSuccess" class="alert alert-success">
+                    <span id="addRespondersSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+                    <div id="addRespondersSuccessMsg" class="alert-message">
+                        ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+                            ';if ($stash->get('action')eq 'create'){$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['You successfully created the “[_1]” autoresponder.',$stash->get(['FORM',0,'item',['email' ]]).'@' .$stash->get(['FORM',0,'item',['domain' ]])]]);$output .= '</strong>
+                            '}else {$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['You successfully modified the “[_1]” autoresponder.',$stash->get(['FORM',0,'item',['email' ]]).'@' .$stash->get(['FORM',0,'item',['domain' ]])]]);$output .= '</strong>
+                            '}$output .= '
+                        '}$output .= '
+
+                        ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+                            ';if ($stash->get('action')eq 'create'){$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['You successfully created the “[_1]” autoresponder.',$stash->get(['FORM',0,'item',['email2' ]])]]);$output .= '
+                            '}else {$output .= '
+                                ';$output .= $stash->get(['locale',0,'maketext',['You successfully modified the “[_1]” autoresponder.',$stash->get(['FORM',0,'item',['email2' ]])]]);$output .= '
+                            '}$output .= '
+                        '}$output .= '
+                    </div>
+                </div>
+            </div>
+        '}else {$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                    <span class="alert-body">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['add_autoresponder_response',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'err'}=$_tt_value;$output .= '
+                            ';$output .= $stash->get(['err',0,'html',0]);$output .= '
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </span>
+                </div>
+            </div>
+        '}$output .= '
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'autores.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+    </div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'autoresponders','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

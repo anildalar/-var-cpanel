@@ -1,0 +1,82 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/cpanelpro/thumbdir.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api2',0,'pre_exec',['FSTest','dirisempty' ]]);$stash->set('api2_result_FSTest_dirisempty',$stash->get(['Api2',0,'exec',['FSTest','dirisempty',{'files_only'=>'1','dir'=>$stash->get(['FORM',0,'item',['dir' ]]).'/' .$stash->get(['FORM',0,'item',['file' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['FSTest','dirisempty' ]]);$stash->set('file_fullpath',$stash->get(['FORM',0,'dir',0]).$stash->get(['FORM',0,'file',0]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <div class="section">
+        ';if ($stash->get(['CPANEL',0,'CPVAR',0,'last_dir_empty',0])){$output .= '
+            <div id="alertThumbEmptyDir" class="alert alert-info">
+                <span id="alertThumbEmptyDirImg" class="glyphicon glyphicon-info-sign"></span>
+                <span id="alertThumbEmptyDirMsg">
+                ';$output .= $stash->get(['locale',0,'maketext',['The directory is empty, no images found.' ]]);$output .= '
+                </span>
+            </div>
+        '}else {$output .= '
+            <p id="descDirectoryToThumb">';$output .= $stash->get(['locale',0,'maketext',['We will be thumbnailing images in “[_1]”.',$stash->get('file_fullpath')]]);$output .= '</p>
+
+            <form name="sff" action="dothumbdir.html">
+                <input type="hidden" name="dir" value="';$output .= $stash->get('file_fullpath');$output .= '" />
+
+                <div class="form-group">
+                    <label id="lblScalePercent" for="widthpercent">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Scale Percent:' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div class="input-group">
+                                <input id="widthpercent" type="text" class="form-control" name="widthpercent"  size="3" value="25" onchange="checkwpdim();" />
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-1"><span>x</span></div>
+                        <div class="col-xs-2">
+                            <div class="input-group">
+                                <input id="heightpercent" type="text" class="form-control" name="heightpercent"  size="3" value="25" onchange="checkhpdim();" />
+                                <span class="input-group-addon">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label id="lblAspectRatio">
+                            <input id="chkAspectRatio" type="checkbox" name="aspect" value="1" checked="checked" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Keep Aspect Ratio' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input id="btnDoThumbnail" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Thumbnail Images' ]]);$output .= '" />
+                    <input id="btnResetDimensions" type="button" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Reset Dimensions' ]]);$output .= '" onclick="document.sff.reset();" />
+                </div>
+            </form>
+        '}$output .= '
+    </div>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'images.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'app_key'=>'images','page_sub_heading'=>$stash->get(['locale',0,'maketext',['Thumbnailer' ]]),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+
+function checkhpdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.widthpercent.value = document.sff.heightpercent.value;
+    }
+}
+
+function checkwpdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.heightpercent.value = document.sff.widthpercent.value;
+    }
+}
+
+ ';if (!$stash->get(['CPANEL',0,'CPVAR',0,'last_dir_empty',0])){$output .= '
+checkwpdim();
+'}$output .= '
+
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

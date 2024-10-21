@@ -1,0 +1,123 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/set_zone_ttls/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE',$stash->get('base_path'));$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+<div id="content"
+    ng-controller="listZones"
+    class="ng-cloak section"
+    ng-cloak>
+<form action="';$output .= $stash->get(['ui',0,'action',0]);$output .= '" name="secform">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <label for="domainselect">';$output .= $stash->get(['locale',0,'maketext',['Select zone(s) to update:' ]]);$output .= '</label>
+            <div class="form-group">
+                <search id="zoneSearchFilter"
+                    ng-model="filterValue"
+                    class="no-validation-border"
+                    ng-change="searchFilterChanged()"></search>
+            </div>
+            <div id="zonechoice" class="form-group panel panel-default" >
+                <div id="zoneChoiceViewport"
+                    class="panel-body" ui-scroll-viewport style="overflow-anchor: none; overflow-y: auto; display: block; padding:0; height:300px;">
+                    <ul class="select-list">
+                        <li class="select-list-item"
+                            ui-scroll="zone in zonesDatasource"
+                            adapter="uiScrollAdapter"
+                            start-index="0">
+                            <div class="checkbox" style="margin:0">
+                                <label style="display:block;margin:0">
+                                    <input
+                                        ng-model="selectedItems[zone]"
+                                        ng-change="onSelectItem(zone)"
+                                        name="p"
+                                        type="checkbox"
+                                        value="{{ :: zone }}">
+                                    <span ng-bind=":: zone"></span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p class="page-stats" ng-bind="showingText"></p>
+            <input type="hidden" name="domainselect" ng-repeat="(key, value) in selectedItems" value="{{key}}" ng-if="key">
+        </div>
+    </div>
+
+    <div class="row ng-hide" ng-show="hasZones">
+        <div id="atLeastOneZoneError" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <ul class="validation-container ng-hide" ng-show="showSelectionValidationMsg">
+                <li class="validation validation-error">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <span class="validation-message">';$output .= $stash->get(['locale',0,'maketext',['You must specify at least one zone.' ]]);$output .= '</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="newttl">';$output .= $stash->get(['locale',0,'maketext',['New [output,acronym,TTL,Time To Live]:' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="text"
+                    class="form-control"
+                    name="newttl"
+                    id="newttl"
+                    ng-model="ttl"
+                    required
+                    positive-integer />
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The default [output,acronym,TTL,Time to Live] is [quant,_1,second,seconds].',14400 ]]);$output .= '</span>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <ul validation-container field-name="newttl">
+                    <validation-item
+                        field-name="newttl"
+                        validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" name="synczones" id="synczones" value="1" />
+                <span>';$output .= $stash->get(['locale',0,'maketext',['Do [output,strong,not] synchronize changes across the [output,acronym,DNS,Domain Name Service] cluster.' ]]);$output .= '</span>
+            </label>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit"
+            id="submit"
+            class="btn btn-primary"
+            value="';$output .= $stash->get(['locale',0,'maketext',['Set TTLs' ]]);$output .= "\"\n            ng-click=\"validateForm(\$event, secform)\"/>\n    </div>\n</form>\n</div>\n\n<script type=\"text/javascript\">\n    var PAGE = window.PAGE || {};\n    PAGE.domains = ";$output .= $stash->get(['data',0,'dnslist',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','app_key'=>'set_zone_time_to_live_ttl','extrastyle'=>'
+.ng-dirty input.ng-dirty.ng-valid:not(.no-validation-border) {
+    border-color: #ccc;
+}
+.ng-dirty input.ng-dirty.ng-valid:not(.no-validation-border):focus {
+    border-color: #66afe9;
+}
+.page-stats {
+    margin-bottom: 20px;
+}
+.panel {
+    margin-bottom: 10px;
+}
+.select-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.select-list-item {
+    border-top: 1px solid #ddd;
+    padding: 4px 8px;
+}
+.select-list-item:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

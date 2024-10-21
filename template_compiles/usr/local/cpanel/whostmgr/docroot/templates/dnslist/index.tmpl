@@ -1,0 +1,88 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dnslist/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE',$stash->get('base_path'));$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$stash->set('extrastyle','
+.ng-dirty input.ng-dirty.ng-valid:not(.no-validation-border) {
+    border-color: #ccc;
+}
+.ng-dirty input.ng-dirty.ng-valid:not(.no-validation-border):focus {
+    border-color: #66afe9;
+}
+.page-stats {
+    margin-bottom: 20px;
+}
+.panel {
+    margin-bottom: 10px;
+}
+.select-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.select-list-item {
+    border-top: 1px solid #ddd;
+    padding: 4px 8px;
+}
+.select-list-item:nth-child(odd) {
+    background-color: #f9f9f9;
+}
+');$output .= '
+
+<div id="viewContent"
+    ng-controller="listZones"
+    class="ng-cloak section"
+    ng-cloak>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <p id="dnsedithdr" class="description">';$output .= $stash->get(['ui',0,'header_text',0]);$output .= '</p>
+                <div class="form-group">
+                    <search id="zoneSearchFilter"
+                        ng-model="filterValue"
+                        class="no-validation-border"
+                        ng-change="searchFilterChanged()"></search>
+                </div>
+                <div id="zonechoice" class="form-group panel panel-default" >
+                    <div id="zoneChoiceViewport"
+                        class="panel-body" ui-scroll-viewport style="overflow-anchor: none; overflow-y: auto; display: block; padding:0; height:300px;">
+                        <ul class="select-list">
+                            <li class="select-list-item"
+                                ui-scroll="zone in zonesDatasource"
+                                adapter="uiScrollAdapter"
+                                start-index="0">
+                                <div class="';$output .= $stash->get(['ui',0,'is_kill',0])? 'checkbox' : 'radio';$output .= '" style="margin:0">
+                                    <label style="display:block;margin:0">
+                                        <input
+                                            ng-model="selectedItems[zone]"
+                                            ng-change="onSelectItem(zone)"
+                                            name="p"
+                                            type="';$output .= $stash->get(['ui',0,'is_kill',0])? 'checkbox' : 'radio';$output .= '"
+                                            value="{{ :: zone }}">
+                                        <span ng-bind=":: zone"></span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <p class="page-stats" ng-bind="showingText"></p>
+
+            <form action="';$output .= $stash->get(['ui',0,'action',0]);$output .= '" name="secform" class="layout-medium">
+                <input type="hidden" name="domainselect" ng-repeat="(key, value) in selectedItems" value="{{key}}" ng-if="isZoneSelected(key)">
+
+                <div id="actionbutton" class="form-group">
+                    <input class="btn btn-primary" type="submit" value="';$output .= $stash->get(['ui',0,'button_text',0]);$output .= '" id="forward" ng-disabled="isFormDisabled()" />
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = window.PAGE || {};
+    PAGE.domains = ';$output .= $stash->get(['data',0,'dnslist',0,'json',0]);$output .= ';
+    PAGE.multiEnabled = ';$output .= $stash->get(['ui',0,'is_kill',0])? 'true' : 'false';$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'app_key'=>$stash->get(['data',0,'app_key',0]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

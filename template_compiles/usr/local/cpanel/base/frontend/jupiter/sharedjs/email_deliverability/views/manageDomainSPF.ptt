@@ -1,0 +1,231 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sharedjs/email_deliverability/views/manageDomainSPF.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-11 col-md-9 retro-col-12">
+            <div class="row">
+                <!-- summary -->
+                <div class="col-sm-4 col-md-4 pull-right hidden-xs">
+                    <div class="section">
+                        <ng-include src="resourcesPanelTemplate"></ng-include>
+                    </div>
+                </div>
+                <!-- / summary -->
+
+                <!-- manage domain -->
+                <div class="col-xs-12 col-sm-8 col-md-8">
+                    <form id="customizeSPFRecordForm" name="customizeSPFRecordForm">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="widget-title pull-left">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Customize an [output,abbr,SPF,Sender Policy Framework] Record' ]]);$output .= '
+                                </div>
+                                <div class="pull-right flip">
+                                    <button type="button"
+                                        class="btn btn-default btn-xs"
+                                        id="lnkshowHideHelp"
+                                        ng-click="toggleHelp()">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                                        <i class="far fa-question-circle form-info-sign"></i>
+                                    </button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <p>';$output .= $stash->get(['locale',0,'maketext',['Customize the suggested [output,abbr,SPF,Sender Policy Framework] record for the “[_1]” domain.','{{currentDomain.domain | htmlSafeString}}' ]]);$output .= '
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '" ng-if="nonPassPrefixesExist">
+                                        <p>';$output .= $stash->get(['locale',0,'maketext',['Your domain‘s current [output,abbr,SPF,Sender Policy Framework] is more complex than what the interface supports. This interface only supports the addition of “Pass” mechanisms. The editor will attempt to preserve other mechanisms.' ]]);$output .= '</p>
+                                    </callout>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <suggested-record-set
+                                                id="currentRecordSet"
+                                                record-type="spf"
+                                                hide-extras
+                                                record-zone-type="TXT"
+                                                domain="currentDomain"
+                                                always-current></suggested-record-set>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="currentDomain.recordsLoaded">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <suggested-record-set
+                                            id="suggestedRecordSet"
+                                            record-type="spf"
+                                            record-zone-type="TXT"
+                                            domain="currentDomain"
+                                            hide-extras
+                                            always-suggested></suggested-record-set>
+                                        </div>
+                                    </div>
+                                </div>
+                                <section class="form-section" ng-if="currentDomain.recordsLoaded">
+                                    <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Domain Settings' ]]);$output .= '</h4>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <toggle-label-info
+                                                    for="additionalHosts"
+                                                    label-text="';$output .= $stash->get(['locale',0,'maketext',['Additional Hosts' ]]);$output .= '"
+                                                    label-id="lblAdditionalHosts"
+                                                    info-icon-id="icoAdditionalHosts"
+                                                    info-block-id="txtAdditionalHosts"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['The server will approve all of the hosts that you define to send email. The server automatically includes your primary mail exchanger and any servers for which you created an [asis,MX] record.' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <multi-field-editor
+                                                    id="additionalHosts"
+                                                    add-new-label="';$output .= $stash->get(['locale',0,'maketext',['Add A New “[_1]” Item','Host (+a)' ]]);$output .= "\"\n                                                    ng-model=\"additionalHosts\">\n                                                        <multi-field-editor-item\n                                                            ng-repeat=\"(key,value) in additionalHosts track by \$index\"\n                                                            label=\"+a:\"\n                                                            label-for=\"additionalHosts_item_{{ :: key }}_input\"\n                                                            index=\"key\"\n                                                            id=\"additionalHosts_item_{{ :: key }}\" >\n                                                                <input\n                                                                    id=\"additionalHosts_item_{{ :: key }}_input\"\n                                                                    name=\"additionalHosts_item_{{ :: key }}_input\"\n                                                                    type=\"text\"\n                                                                    class=\"form-control\"\n                                                                    placeholder=\"domain.com\"\n                                                                    required\n                                                                    fqdn\n                                                                    size=\"100\"\n                                                                    ng-model=\"additionalHosts[key]\" />\n                                                        </multi-field-editor-item>\n                                                </multi-field-editor>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"form-group\">\n                                        <div class=\"row\">\n                                            <div class=\"col-xs-12\">\n                                                <toggle-label-info\n                                                    for=\"additionalMXServers\"\n                                                    label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Additional [asis,MX] Servers' ]]);$output .= '"
+                                                    label-id="lbladditionalMXServers"
+                                                    info-icon-id="icoadditionalMXServers"
+                                                    info-block-id="txtadditionalMXServers"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['This setting allows the server to approve all [asis,MX] entries for each domain that you specify to send email.' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <multi-field-editor
+                                                    id="additionalMXServers"
+                                                    add-new-label="';$output .= $stash->get(['locale',0,'maketext',['Add A New “[_1]” Item','+mx' ]]);$output .= "\"\n                                                    ng-model=\"additionalMXServers\">\n                                                        <multi-field-editor-item\n                                                            ng-repeat=\"(key,value) in additionalMXServers track by \$index\"\n                                                            label=\"+mx:\"\n                                                            label-for=\"additionalMXServers_item_{{ :: key }}_input\"\n                                                            index=\"key\"\n                                                            id=\"additionalMXServers_item_{{ :: key }}\" >\n                                                                <input\n                                                                    id=\"additionalMXServers_item_{{ :: key }}_input\"\n                                                                    name=\"additionalMXServers_item_{{ :: key }}_input\"\n                                                                    type=\"text\"\n                                                                    class=\"form-control\"\n                                                                    placeholder=\"domain.com\"\n                                                                    fqdn\n                                                                    required\n                                                                    size=\"100\"\n                                                                    ng-model=\"additionalMXServers[key]\" />\n                                                        </multi-field-editor-item>\n                                                </multi-field-editor>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </section>\n                                <section class=\"form-section\" ng-if=\"currentDomain.recordsLoaded\">\n                                    <h4 class=\"widget-title\">";$output .= $stash->get(['locale',0,'maketext',['[output,abbr,IP,Internet Protocol] Address Settings' ]]);$output .= '</h4>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <toggle-label-info
+                                                    for="additionalIPv4Addresses"
+                                                    label-text="';$output .= $stash->get(['locale',0,'maketext',['Additional [asis,IP] Address Blocks (IPv4)' ]]);$output .= '"
+                                                    label-id="lbladditionalIPv4Addresses"
+                                                    info-icon-id="icoadditionalIPv4Addresses"
+                                                    info-block-id="txtadditionalIPv4Addresses"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] specify the [output,abbr,IP,Internet Protocol] Address blocks in [output,abbr,CIDR,Classless Inter-Domain Routing] format or as an [output,abbr,IP,Internet Protocol] Address (for example, [asis,192.168.0.1] or [asis,127.0.0.1/32]).' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <multi-field-editor
+                                                    id="additionalIPv4Addresses"
+                                                    add-new-label="';$output .= $stash->get(['locale',0,'maketext',['Add A New “[_1]” Item','+ip4' ]]);$output .= "\"\n                                                    ng-model=\"additionalIPv4Addresses\">\n                                                        <multi-field-editor-item\n                                                            ng-repeat=\"(key,value) in additionalIPv4Addresses track by \$index\"\n                                                            label=\"+ip4:\"\n                                                            label-for=\"additionalIPv4Addresses_item_{{ :: key }}_input\"\n                                                            index=\"key\"\n                                                            id=\"additionalIPv4Addresses_item_{{ :: key }}\" >\n                                                                <input\n                                                                    id=\"additionalIPv4Addresses_item_{{ :: key }}_input\"\n                                                                    name=\"additionalIPv4Addresses_item_{{ :: key }}_input\"\n                                                                    type=\"text\"\n                                                                    class=\"form-control\"\n                                                                    placeholder=\"192.168.0.1\"\n                                                                    required\n                                                                    size=\"100\"\n                                                                    ng-model=\"additionalIPv4Addresses[key]\" />\n                                                        </multi-field-editor-item>\n                                                </multi-field-editor>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"form-group\">\n                                        <div class=\"row\">\n                                            <div class=\"col-xs-12\">\n                                                <toggle-label-info\n                                                    for=\"additionalIPv6Addresses\"\n                                                    label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Additional [asis,IP] Address Blocks (IPv6)' ]]);$output .= '"
+                                                    label-id="lbladditionalIPv6Addresses"
+                                                    info-icon-id="icoadditionalIPv6Addresses"
+                                                    info-block-id="txtadditionalIPv6Addresses"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] specify the [output,abbr,IP,Internet Protocol] Address blocks in [output,abbr,CIDR,Classless Inter-Domain Routing] format or as an [output,abbr,IP,Internet Protocol] Address (for example, [asis,2001:DB8:1a34:56cf::7] or [asis,2001:DB8::/32]).' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <multi-field-editor
+                                                    id="additionalIPv6Addresses"
+                                                    add-new-label="';$output .= $stash->get(['locale',0,'maketext',['Add A New “[_1]” Item','+ip6' ]]);$output .= "\"\n                                                    ng-model=\"additionalIPv6Addresses\">\n                                                        <multi-field-editor-item\n                                                            ng-repeat=\"(key,value) in additionalIPv6Addresses track by \$index\"\n                                                            label=\"+ip6:\"\n                                                            label-for=\"additionalIPv6Addresses_item_{{ :: key }}_input\"\n                                                            index=\"key\"\n                                                            id=\"additionalIPv6Addresses_item_{{ :: key }}\" >\n                                                                <input\n                                                                    id=\"additionalIPv6Addresses_item_{{ :: key }}_input\"\n                                                                    name=\"additionalIPv6Addresses_item_{{ :: key }}_input\"\n                                                                    type=\"text\"\n                                                                    class=\"form-control\"\n                                                                    placeholder=\"2001:db8:1a34:56cf::/64\"\n                                                                    required\n                                                                    size=\"100\"\n                                                                    ng-model=\"additionalIPv6Addresses[key]\" />\n                                                        </multi-field-editor-item>\n                                                </multi-field-editor>\n                                            </div>\n                                        </div>\n                                    </div>\n                                </section>\n                                <section class=\"form-section\" ng-if=\"currentDomain.recordsLoaded\">\n                                    <h4 class=\"widget-title\">";$output .= $stash->get(['locale',0,'maketext',['Additional Settings' ]]);$output .= '</h4>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <toggle-label-info
+                                                    for="additionalINCLUDEItems"
+                                                    label-text="';$output .= $stash->get(['locale',0,'maketext',['Include List (INCLUDE)' ]]);$output .= '"
+                                                    label-id="lbladditionalINCLUDEItems"
+                                                    info-icon-id="icoadditionalINCLUDEItems"
+                                                    info-block-id="txtadditionalINCLUDEItems"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['The [output,abbr,SPF,Sender Policy Framework] settings for all hosts you specify in this list will be included with your SPF settings. This is useful if you will be sending mail though another service (e.g. mac.com, comcast.com, etc).' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <multi-field-editor
+                                                    id="additionalINCLUDEItems"
+                                                    add-new-label="';$output .= $stash->get(['locale',0,'maketext',['Add A New “[_1]” Item','+include' ]]);$output .= "\"\n                                                    ng-model=\"additionalINCLUDEItems\">\n                                                        <multi-field-editor-item\n                                                            ng-repeat=\"(key,value) in additionalINCLUDEItems track by \$index\"\n                                                            label=\"+include:\"\n                                                            label-for=\"additionalINCLUDEItems_item_{{ :: key }}_input\"\n                                                            index=\"key\"\n                                                            id=\"additionalINCLUDEItems_item_{{ :: key }}\" >\n                                                                <input\n                                                                    id=\"additionalINCLUDEItems_item_{{ :: key }}_input\"\n                                                                    name=\"additionalINCLUDEItems_item_{{ :: key }}_input\"\n                                                                    type=\"text\"\n                                                                    class=\"form-control\"\n                                                                    placeholder=\"domain.com\"\n                                                                    zone-name\n                                                                    required\n                                                                    size=\"100\"\n                                                                    ng-model=\"additionalINCLUDEItems[key]\" />\n                                                        </multi-field-editor-item>\n                                                </multi-field-editor>\n                                            </div>\n                                        </div>\n                                    </div>\n                                    <div class=\"form-group\">\n                                        <div class=\"row\">\n                                            <div class=\"col-xs-12\">\n                                                <toggle-label-info\n                                                    for=\"excludeAllOtherDomains\"\n                                                    label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Exclude All Other Hosts (“[asis,-all]” Entry)' ]]);$output .= '"
+                                                    label-id="lblexcludeAllOtherDomains"
+                                                    info-icon-id="icoexcludeAllOtherDomains"
+                                                    info-block-id="txtexcludeAllOtherDomains"
+                                                    show-info-block="{{showAllHelp}}">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Select this checkbox to exclude all other hosts if you have entered all of the hosts that you wish to send mail for your domain.' ]]);$output .= '
+                                                </toggle-label-info>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-xs-12">
+                                                <!-- Input Field-->
+                                                <label>
+                                                    <input type="checkbox" ng-click="toggleExcludeAllOtherDomains()" ng-model="excludeAllOtherDomains">
+                                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Use the “[asis,-all]” Entry' ]]);$output .= '</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </section>
+                                ';$output .= '
+                                <section class="form-section" ng-if="currentDomain.recordsLoaded">
+                                    <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Preview of the Updated Record' ]]);$output .= '</h4>
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['The current configurations will update the new record to the following:' ]]);$output .= '</p>
+                                    <div class="form-group">
+                                        <div class="row" >
+                                            <div class="col-xs-12">
+                                                ';$output .= '
+                                                <div callout callout-type="warning" ng-if="!hasNSAuthority(\'spf\')">
+                                                    <div>
+                                                        <p ng-bind-html="noAuthorityMessage(\'spf\')"></p>
+                                                    </div>
+                                                    <copy-field id="workingRecordCopyField" text="workingRecord"></copy-field>
+                                                </div>
+                                                ';$output .= '
+                                                ';$output .= '
+                                                <div ng-if="hasNSAuthority(\'spf\')">
+                                                    <copy-field id="workingRecordCopyField" text="workingRecord"></copy-field>
+                                                </div>
+                                                ';$output .= "\n                                            </div>\n                                        </div>\n                                    </div>\n                                </section>\n                            </div>\n                            <div class=\"panel-footer\" >\n                                <div class=\"row\">\n                                    <div class=\"col-xs-12 col-sm-12 col-md-12 col-lg-8\">\n                                        <button cp-action=\"update()\" ng-disabled=\"!customizeSPFRecordForm.\$valid\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Install a Customized [output,abbr,SPF,Sender Policy Framework] Record' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4 text-right">
+                                        <a id="btnCancelUpdate"
+                                            type="button"
+                                            class="btn btn-link"
+                                            ng-href="#/manage?domain={{ :: currentDomain.domain | htmlSafeString }}"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Return to Manage the Domain.' ]]);$output .= '">
+                                            <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- / manage domain -->
+
+                <!-- summary -->
+
+                <div class="col-xs-12 hidden-sm hidden-lg hidden-md">
+                    <div class="section">
+                        <ng-include src="resourcesPanelTemplate"></ng-include>
+                    </div>
+                </div>
+                <!-- / summary -->
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

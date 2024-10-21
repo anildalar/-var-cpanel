@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/newsfeed.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<div id="content" class="container-fluid">
+';if ($stash->get('local_news')){$output .= '
+   <div class="row">
+     <div class="col-md-12 col-xs-12">
+       <div class="panel panel-default">
+         <div class="panel-heading">
+           <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Latest Server News' ]]);$output .= '</h3>
+         </div>
+         <div class="panel-body long-text">
+           ';$output .= $stash->get('local_news');$output .= '
+         </div>
+       </div>
+     </div>
+   </div>
+   <hr />
+'}$output .= '
+';if ($stash->get(['feed',0,'error',0])){$output .= '    <div class="alert alert-danger" role="alert">
+      <span class="glyphicon glyphicon-remove-sign"></span>
+      <div class="alert-message">
+        ';$output .= $stash->get(['feed',0,'error',0]);$output .= '
+      </div>
+    </div>
+'}else {if ($stash->get(['feed',0,'defined',['hasentries' ]])){$output .= '    ';$output .= $stash->get(['feed',0,'delete',['hasentries' ]]);$output .= '
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Latest News from [asis,cPanel]' ]]);$output .= '</h2>
+    <div class="row">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['feed',0,'keys',0,'nsort',0,'reverse',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'e'}=$_tt_value;$output .= '    ';if ($stash->get(['loop',0,'count',0])> 3){last FOR1}$output .= '
+      <div class="col-lg-4 col-xs-12 news">
+        <div class="panel panel-';$output .= $stash->get(['feed',0,$stash->get('e'),0,'type',0]);$output .= ' news_panel">
+          <div class="panel-heading">
+             <h3 class="panel-title">';$output .= $stash->get(['feed',0,$stash->get('e'),0,'title',0]);$output .= '</h3>
+             <div><small>By: ';$output .= $stash->get(['feed',0,$stash->get('e'),0,'author',0]);$output .= ' - ';$output .= $stash->get(['feed',0,$stash->get('e'),0,'published',0]);$output .= '</small></div>
+          </div>
+          <div class="panel-body long-text">
+            <p>';$output .= $stash->get(['feed',0,$stash->get('e'),0,'content',0]);if ($stash->get(['feed',0,$stash->get('e'),0,'uselink',0])){$output .= ' &#8230; <span name="readmore"><a href="';$output .= $stash->get(['feed',0,$stash->get('e'),0,'link',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Continue Reading' ]]);$output .= ' &#8594;</a></span>'}$output .= '</p>
+          </div>
+        </div>
+      </div>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </div>
+    <hr />
+    <div class="list-group">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['feed',0,'keys',0,'nsort',0,'reverse',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'n'}=$_tt_value;$output .= '        ';if ($stash->get(['loop',0,'count',0])< 4){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+        <a class="list-group-item" href="';$output .= $stash->get(['feed',0,$stash->get('n'),0,'link',0]);$output .= '" target="_blank">
+           <h4 class="list-group-item-heading">';$output .= $stash->get(['feed',0,$stash->get('n'),0,'title',0]);$output .= '</h4>
+           <div class="text-muted"><small>By: ';$output .= $stash->get(['feed',0,$stash->get('n'),0,'author',0]);$output .= ' - ';$output .= $stash->get(['feed',0,$stash->get('n'),0,'published',0]);$output .= '</small></div>
+           <p class="list-group-item-text">';$output .= $stash->get(['feed',0,$stash->get('n'),0,'content',0]);$output .= ' &#8230; <span name="readmore" class="text-primary">';$output .= $stash->get(['locale',0,'maketext',['Continue Reading' ]]);$output .= ' &#8594;</p>
+        </a>
+      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>'}else {$output .= '        <div class="alert alert-info">';$output .= $stash->get(['locale',0,'maketext',['No news found.' ]]);$output .= '</div>'}}$output .= '</div>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['News' ]]),'breadcrumburl'=>'/cgi/news.cgi','theme'=>'bootstrap','scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]])],'extrastyle'=>'
+            .long-text {
+                word-wrap: break-word;
+            }
+        ','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

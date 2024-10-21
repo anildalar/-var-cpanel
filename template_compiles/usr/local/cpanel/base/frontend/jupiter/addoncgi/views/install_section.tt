@@ -1,0 +1,602 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/install_section.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('module_name',$stash->get(['module',0,'name',0]));if ($stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])){if (!$stash->get(['form',0,'oneclick',0,'defined',0])){$stash->set(['form',0,'oneclick',0],'1')}}$stash->set('used_paths',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sorted_instances',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'instance'}=$_tt_value;$stash->set('domain',$stash->get(['instance',0,'installed_on_domain',0]));$stash->set('domain_path',$stash->get(['data',0,'domain_to_docroot_map',0,$stash->get('domain'),0]));$stash->set('sub_path',$stash->get(['instance',0,'installpath',0,'replace',['[.][/]','' ]]));if ($stash->get('sub_path')){$stash->set('domain_path',$stash->get('domain_path').'/' .$stash->get('sub_path'))}$stash->set(['used_paths',0,$stash->get('domain_path'),0],1);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('domains_without_root_install',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['environment',0,'domains',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$stash->set('domain_path',$stash->get(['data',0,'domain_to_docroot_map',0,$stash->get('domain'),0]));if (!$stash->get(['used_paths',0,$stash->get('domain_path'),0])){$output .= $stash->get(['domains_without_root_install',0,'push',[$stash->get('domain')]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('install_class',$stash->get(['data',0,'sorted_instances',0,'size',0])> 0 ? '' : 'active ');$stash->set('can_hide_advanced_configuration',$stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])&& $stash->get(['domains_without_root_install',0,'size',0])> 0 && $stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'standard',0])&& $stash->get(['module',0,'can_be_installed_in_root_of_domain',0]));if ($stash->get(['form',0,'domain',0])&&!$stash->get(['form',0,'subdomain',0])){$stash->set(['form',0,'subdomain',0],$stash->get(['form',0,'domain',0]))}$stash->set('all_domains',$stash->get(['environment',0,'domains',0,'list',0]));$stash->set('get_addon_needs_license',$stash->get(['module',0,'meta',0,'needs_license_check',0]));$stash->set('get_domains_with_license',$stash->get(['module',0,'meta',0,'licensed_by_domain',0]));$stash->set('addon_needs_license',$stash->get('get_addon_needs_license'));$stash->set('domains_with_license',$stash->get('get_domains_with_license'));$output .= '
+
+';if ($stash->get(['FORM',0,'successful_purchase',0])){$stash->set('license_response',$stash->get(['execute',['Market','get_license_info',{'domain'=>$stash->get(['FORM',0,'domain',0])}]]))}$output .= '
+
+';$output .= '
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+    ';if ($stash->get(['module',0,'is_approved',0])&& $stash->get(['module',0,'supports_action',0,'install',0])&& $stash->get('can_hide_advanced_configuration')&& $stash->get(['data',0,'action_has_prerequisites',0,'install',0])){$output .= '
+        <div class="row">
+            <button id="btnAdvanced" class="btn btn-link">
+                ';$output .= $stash->get(['locale',0,'maketext',['Show Advanced Configuration' ]]);$output .= '
+            </button>
+        </div>
+    '}$output .= '
+
+    ';if (!$stash->get(['environment',0,'contactemail',0])&& $stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])){$output .= '
+            <div class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message" id="contact-email-not-configured">
+                    <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                    ';$output .= $stash->get(['locale',0,'maketext',['To use the one-click installation feature, you must [output,url,_1,configure a contact email address,target,_2,id,_3] for your [asis,cPanel] account.','../contact/index.html','_blank','link-configure-contact-email' ]]);$output .= '
+                </div>
+            </div>
+    '}$output .= '
+
+    ';if (!$stash->get(['module',0,'is_approved',0])||!$stash->get(['module',0,'supports_action',0,'install',0])||!$stash->get(['data',0,'action_has_prerequisites',0,'install',0])){$output .= '
+        <span id="install_not_supported">
+        ';if (!$stash->get(['module',0,'is_approved',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['You cannot install unapproved [asis,cPAddons].' ]]);$output .= '
+        '}else {$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Install is not supported.' ]]);$output .= '
+        '}$output .= '
+        </span>
+        </div>
+    </div>
+    '}else {$output .= '
+    ';if (!$stash->get(['environment',0,'script_run_as_user',0])&& $stash->get(['module',0,'meta',0,'security_policies',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['module',0,'meta',0,'security_policies',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'policy'}=$_tt_value;if ($stash->get(['policy',0,'name',0])eq 'process_config_file_permissions'){$output .= '
+            <div class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message" id="addon-may-be-insecure-without-run-as-owner">
+                    <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                    ';$output .= $stash->get(['locale',0,'maketext',['The web server does not run scripts as the script owner. With this configuration, we must set the file permission on this application more permissively. This can result in security issues with this application on shared servers. Only use this [asis,cPAddon] with this configuration if you use a dedicated server. To enable the more secure mode, contact your hosting provider and request that they install ruid2 or itk on the web server. After your administrator enables the module, they can run the [asis,/usr/local/cpanel/scripts/fix_addon_permissions] script to adjust the security of any [asis,cPAddons] with this security policy.' ]]);$output .= '
+                </div>
+            </div>
+    '};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+        </div>
+    </div>
+
+    ';if ($stash->get(['FORM',0,'successful_purchase',0])){$output .= '
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="alert alert-success">
+                    <span class="glyphicon glyphicon-ok-sign"></span>
+                    <div class="alert-message" id="license-alert-message">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['You successfully purchased a license for “[_1]”.',$stash->get(['FORM',0,'domain',0])]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+    '}$output .= '
+
+    ';if ($stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])&& $stash->get(['module',0,'can_be_installed_in_root_of_domain',0])&& $stash->get(['domains_without_root_install',0,'size',0])eq 0){$output .= '
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message" id="one-click-disabled-no-root-domains-free">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Information:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['You cannot use the one-click installer. However, you can install additional “[_1]” instances into a sub-folder of one of your domains or add additional domains.',$stash->get(['module',0,'display_app_name',0])]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+    '}$output .= '
+
+    ';if ($stash->get('addon_needs_license')){$output .= '
+    <div class="checkbox">
+        <label for="licenseCheckbox">
+            <input id="licenseCheckbox" class="form-check-input" type="checkbox"
+            ';if ($stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])&& $stash->get(['module',0,'can_be_installed_in_root_of_domain',0])&& $stash->get(['domains_without_root_install',0,'size',0])eq 0){$output .= ' disabled '}$output .= '>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Enter a license manually.' ]]);$output .= '</span>
+        </label>
+        <span id="licenseCheckboxInfo" class="glyphicon glyphicon-info-sign text-primary form-info-sign" title="Expand"></span>
+        <span id="checkboxInfoText" class="info-block" style="display: none;">
+            ';$output .= $stash->get(['locale',0,'maketext',['Only available for domains without an existing license.' ]]);$output .= '
+        </span>
+    </div>
+    '}$output .= '
+
+    <form id="cpaddonsform_install"
+        action="';$output .= $stash->get(['environment',0,'script_name',0]);$output .= '"
+        class="layout-medium"
+        method="post"
+        ';if ($stash->get('addon_needs_license')){$output .= ' style="opacity: 0;" '}$output .= '
+        >
+        <input type="hidden" name="addon" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['module',0,'name',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="action" value="install" />
+        <input type="hidden" name="debug" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'debug',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="verbose" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'verbose',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="license_checkbox" value="0" />
+        ';if ($stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])&& $stash->get(['module',0,'can_be_installed_in_root_of_domain',0])&& $stash->get(['domains_without_root_install',0,'size',0])> 0){$output .= '
+        <input type="hidden" id="hidOneClick" name="oneclick" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['form',0,'oneclick',0]);&$_tt_filter($output)};$output .= '" />
+
+        ';if ($stash->get('addon_needs_license')){$output .= '
+        <div id="licenseFormInput" class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" name="license" class="form-control" placeholder="License Key" />
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        <div id="oneclick">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="oneclick-subdomain">';$output .= $stash->get(['locale',0,'maketext',['Installation Domain:' ]]);$output .= '</label>
+                        ';if ($stash->get(['environment',0,'can_add_subdomains',0])){$output .= '
+                        <a id="oneclick-add-subdomain-lnk" class="pull-right"
+                            href="../subdomain/index.html?from_cpaddon=';$output .= $stash->get(['module',0,'name',0]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Add a subdomain' ]]);$output .= '
+                        </a>
+                        '}$output .= '
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="form-group-dropdown">
+                            <select id="oneclick-subdomain" name="subdomain" class="form-control">
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_without_root_install');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$stash->set('selected',$stash->get(['form',0,'subdomain',0])eq $stash->get('domain')||!$stash->get(['form',0,'subdomain',0])&& $stash->get('domain')eq $stash->get(['environment',0,'domains',0,'primary',0])? ' selected' : '');$output .= '
+                                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '"';$output .= $stash->get('selected');$output .= '>
+                                    http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '
+                                </option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                            <div class="dropdown-btn">
+                                ';if ($stash->get(['environment',0,'moderated',0,$stash->get('module_name'),0])){$output .= '
+                                <button type="submit" class="btn btn-primary" id="btnSubmitModeration">
+                                    <i id="spinner-install" style="display: none" class="fas fa-sync fa-spin"></i>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Submit Install Request' ]]);$output .= '
+                                </button>
+                                '}else {$output .= '
+                                <button type="submit" class="btn btn-primary" id="btnSubmitInstall">
+                                    <i id="spinner-install" style="display: none" class="fas fa-sync fa-spin"></i>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '
+                                </button>
+                                '}$output .= '
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="alert alert-info">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message" id="one-click-destructive-warning">
+                            <strong>';$output .= $stash->get(['locale',0,'maketext',['Important:' ]]);$output .= '</strong>
+                            ';$output .= $stash->get(['locale',0,'maketext',['The one-click installer will write files in to the selected domain’s document root. The installer will overwrite any files that exist whose names match a file name that is part of the [asis,cPAddon] installation.' ]]);$output .= '
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        ';if ($stash->get('can_hide_advanced_configuration')){$output .= '
+        <div id="advanced" style="visibility: hidden">
+        '}$output .= '
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="advanced-subdomain">';$output .= $stash->get(['locale',0,'maketext',['Installation URL:' ]]);$output .= '</label>
+                    ';if ($stash->get(['environment',0,'can_add_subdomains',0])){$output .= '
+                    <a id="advanced-add-subdomain-lnk" class="pull-right"
+                        href="../subdomain/index.html?from_cpaddon=';$output .= $stash->get(['module',0,'name',0]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Add a subdomain' ]]);$output .= '
+                    </a>
+                    '}$output .= '
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="form-group">
+                        <div class="input-group form-inline">
+                            <select id="advanced-subdomain"
+                                    name="subdomain"
+                                    class="form-control"
+                                ';if ($stash->get(['module',0,'meta',0,'capabilities',0,'install',0,'oneclick',0])&& $stash->get(['domains_without_root_install',0,'size',0])> 0){$output .= '
+                                    disabled="disabled"
+                                '}$output .= '
+                            >
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['environment',0,'domains',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$stash->set('selected',($stash->get(['form',0,'subdomain',0])eq $stash->get('domain'))|| (!$stash->get(['form',0,'subdomain',0])&& $stash->get('domain')eq $stash->get(['environment',0,'domains',0,'primary',0]))? ' selected' : '');$output .= '
+                                    <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '"';$output .= $stash->get('selected');$output .= '>
+                                        http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '
+                                    </option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                            <span class="input-group-addon">/</span>
+                        ';$stash->set('initial_path',$stash->get(['form',0,'installdir',0])|| $stash->get(['module',0,'meta',0,'installdir',0])|| '');$output .= '
+                            <input id="installdir" type="text"
+                            class="form-control"
+                            name="installdir"
+                            value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('initial_path');&$_tt_filter($output)};$output .= '" />
+                        </div>
+                    </div>
+                    ';if ($stash->get(['module',0,'can_be_installed_in_root_of_domain',0])){$output .= '
+                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['To install directly into a domain’s document root, leave the installation URL’s path blank.' ]]);$output .= '</span>
+                    '}$output .= '
+                </div>
+            </div>
+            ';if ($stash->get(['module',0,'can_be_installed_in_root_of_domain',0])){$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="alert alert-info">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message" id="advanced-config-destructive-warning">
+                            <strong>';$output .= $stash->get(['locale',0,'maketext',['Important:' ]]);$output .= '</strong>
+                            ';$output .= $stash->get(['locale',0,'maketext',['The system will overwrite any files that exist whose name matches a file name that is part of the [asis,cPAddon] installation.' ]]);$output .= '
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+                ';$stash->set('version',$stash->get(['module',0,'meta',0,'version',0]));if ($stash->get(['module',0,'meta',0,$stash->get('version'),0,'public_html_install_note',0])){$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <p>
+                        ';$output .= $stash->get(['module',0,'meta',0,$stash->get('version'),0,'public_html_install_note',0]);$output .= '
+                    </p>
+                </div>
+            </div>
+                '}$output .= '
+            '}$output .= '
+        </div>
+
+        ';if ($stash->get(['module',0,'meta',0,'adminuser_pass',0])){$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="auser">';$output .= $stash->get(['locale',0,'maketext',['Admin User' ]]);$output .= '</label>
+                    <span>
+                        ';if ($stash->get(['module',0,'meta',0,'admin_user_pass_length_max',0])> 0){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['([_1] - [_2] characters)',$stash->get(['module',0,'meta',0,'admin_user_pass_length',0,'html',0]),$stash->get(['module',0,'meta',0,'admin_user_pass_length_max',0,'html',0])]]);$output .= '
+                        '}else {$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['(Minimum [_1] characters)',$stash->get(['module',0,'meta',0,'admin_user_pass_length',0,'html',0])]]);$output .= '
+                        '}$output .= '
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" name="auser" id="auser"
+                            value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['form',0,'auser',0]);&$_tt_filter($output)};$output .= '"
+                            class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="password">';$output .= $stash->get(['locale',0,'maketext',['Admin Password' ]]);$output .= '</label>
+                    <span>
+                        ';if ($stash->get(['module',0,'meta',0,'admin_user_pass_length_max',0])> 0){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['([_1] - [_2] characters)',$stash->get(['module',0,'meta',0,'admin_user_pass_length',0,'html',0]),$stash->get(['module',0,'meta',0,'admin_user_pass_length_max',0,'html',0])]]);$output .= '
+                        '}else {$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['(Minimum [_1] characters)',$stash->get(['module',0,'meta',0,'admin_user_pass_length',0,'html',0])]]);$output .= '
+                        '}$output .= '
+                    </span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' maxLength="128" name="apass" id="password" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['form',0,'apass',0]);&$_tt_filter($output)};$output .= '" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password_error"></div>
+            </div>
+
+            <label id="lblPasswordAgain" for="password2">
+                ';$output .= $stash->get(['locale',0,'maketext',['Admin Password (Again)' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' name="apass2" id="password2" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password2_error"></div>
+            </div>
+            <label id="lblStrength">
+                ';$output .= $stash->get(['locale',0,'maketext',['Password Strength:' ]]);$output .= ' <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+            </label>
+            ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="password_strength" class="password_strength"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        ';if ($stash->get(['module',0,'meta',0,'admin_email',0])){$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="admin_email">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input id="admin_email" type="text"
+                            name="email"
+                            class="form-control"
+                            value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'contactemail',0]);&$_tt_filter($output)};$output .= '" />
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        ';$stash->set(['module',0,'meta',0,'noautoupdate',0],1);$output .= '
+
+        ';if (!$stash->get(['module',0,'meta',0,'noautoupdate',0])|| $stash->get(['module',0,'meta',0,'install_fields',0,'size',0])> 0 || $stash->get(['data',0,'table_prefix',0])){$output .= '
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Additional installation options:' ]]);$output .= '</h4>
+        '}$output .= '
+
+        ';if (!$stash->get(['module',0,'meta',0,'noautoupdate',0])){$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="">';$output .= $stash->get(['locale',0,'maketext',['Automatic Updates' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="checkbox">
+                        <label for="autoupdate">';$output .= $stash->get(['locale',0,'maketext',['Update this installation automatically' ]]);$output .= '
+                            <input type="checkbox" value="1" name="autoupdate" checked id="autoupdate" />
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        ';if ($stash->get(['module',0,'meta',0,'install_fields',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['module',0,'meta',0,'install_fields',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'field'}=$_tt_value;$stash->set('field_name',$stash->get(['field',0,'name',0]));if ($stash->get(['data',0,'standard_install_fields',0,$stash->get('field_name'),0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    ';if ($stash->get(['field',0,'type',0])eq 'hidden'){$output .= '
+                    <!--';$output .= $stash->get(['field',0,'label',0]);$output .= '-->
+                    '}else {$output .= '
+                    <label for="">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['field',0,'label',0]);&$_tt_filter($output)};$output .= '</label>
+                    '}$output .= '
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    ';$output .= '
+                    ';if ($stash->get(['field',0,'type',0,'match',['^text$|^hidden$|^textarea$|^password$' ]])){$output .= '
+                        ';$stash->set('value',$stash->get(['form',0,$stash->get('field_name'),0])|| $stash->get(['field',0,'value',0])|| '');if ($stash->get(['field',0,'type',0])eq 'textarea'){$output .= '
+                        <textarea name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                class="form-control"
+                                ';$output .= $stash->get(['field',0,'attr',0]);$output .= '>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('value');&$_tt_filter($output)};$output .= '</textarea>
+                        '}else {$output .= '
+                        <input type="';$output .= $stash->get(['field',0,'type',0]);$output .= '"
+                                name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('value');&$_tt_filter($output)};$output .= '"
+                                class="form-control"
+                                ';$output .= $stash->get(['field',0,'attr',0]);$output .= '/>
+                        '}$output .= '
+                    '}elsif ($stash->get(['field',0,'type',0])eq 'select'){$output .= '
+                    <select name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                            id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                            class="form-control" ';$output .= $stash->get(['field',0,'attr',0]);$output .= '>
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['field',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'option_value'}=$_tt_value;$output .= '
+                            ';if ($stash->get('option_value')eq $stash->get(['field',0,'defvalue',0])){$output .= '
+                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('option_value');&$_tt_filter($output)};$output .= '" selected>
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['field',0,'value',0,$stash->get('option_value'),0]);&$_tt_filter($output)};$output .= '
+                            </option>
+                            '}else {$output .= '
+                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('option_value');&$_tt_filter($output)};$output .= '">
+                                ';$stash->set('value',$stash->get(['form',0,$stash->get('field_name'),0])|| $stash->get(['field',0,'defvalue',0]));$output .= '
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('value');&$_tt_filter($output)};$output .= '
+                            </option>
+                            '}$output .= '
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                    '}elsif ($stash->get(['field',0,'type',0])eq 'multi'){$output .= '
+                    <select name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                            id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                            class="form-control"
+                            multiple ';$output .= $stash->get(['field',0,'attr',0]);$output .= '>
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['field',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'option_value'}=$_tt_value;$output .= '
+                            ';if ($stash->get(['field',0,'defvalue',0])eq $stash->get('option_value')){$output .= '
+                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('option_value');&$_tt_filter($output)};$output .= '" selected>
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['field',0,'value',0,$stash->get('option_value'),0]);&$_tt_filter($output)};$output .= '
+                            </option>
+                            '}else {$output .= '
+                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('option_value');&$_tt_filter($output)};$output .= '">
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['field',0,'value',0,$stash->get('option_value'),0]);&$_tt_filter($output)};$output .= '
+                            </option>
+                            '}$output .= '
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                    '}elsif ($stash->get(['field',0,'type',0])eq 'checkbox'){$output .= '
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['field',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'checkbox_value'}=$_tt_value;$output .= '
+                            <div class="checkbox">
+                            ';$stash->set('label',$stash->get(['field',0,'value',0,$stash->get('checkbox_value'),0]));if ($stash->get(['field',0,'defvalue',0])eq $stash->get($stash->get('checkbox_value'))){$output .= '
+                                <label>
+                                    <input type="checkbox"
+                                    id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('checkbox_value');&$_tt_filter($output)};$output .= '" checked
+                                    ';$output .= $stash->get(['field',0,'attr',0]);$output .= '/>
+                                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('label');&$_tt_filter($output)};$output .= '
+                                </label>
+                                '}else {$output .= '
+                                <label>
+                                    <input type="checkbox"
+                                    id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('checkbox_value');&$_tt_filter($output)};$output .= '"
+                                    ';$output .= $stash->get(['field',0,'attr',0]);$output .= '/>
+                                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('label');&$_tt_filter($output)};$output .= '
+                                </label>
+                            '}$output .= '
+                            </div>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    '}elsif ($stash->get(['field',0,'type',0])eq 'radio'){$output .= '
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['field',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'radio_value'}=$_tt_value;$output .= '
+                        <div class="radio">
+                        ';$stash->set('value',$stash->get(['form',0,'field_name',0])|| $stash->get(['field',0,'defvalue',0]));$stash->set('label',$stash->get(['field',0,'value',0,$stash->get('radio_value'),0]));if ($stash->get('radio_value')eq $stash->get(['field',0,'defvalue',0])){$output .= '
+                            <label>
+                                <input type="radio"
+                                    name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('radio_value');&$_tt_filter($output)};$output .= '"
+                                    ';$output .= $stash->get(['field',0,'attr',0]);$output .= ' checked />
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('label');&$_tt_filter($output)};$output .= '
+                            </label>
+                            '}else {$output .= '
+                            <label>
+                                <input type="radio"
+                                    name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('field_name');&$_tt_filter($output)};$output .= '"
+                                    value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('radio_value');&$_tt_filter($output)};$output .= '" ';$output .= $stash->get(['field',0,'attr',0]);$output .= '/>
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('label');&$_tt_filter($output)};$output .= '
+                            </label>
+                            '}$output .= '
+                        </div>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    '}$output .= '
+                </div>
+            </div>
+        </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+
+        ';if ($stash->get(['data',0,'table_prefix',0])){$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="table_prefix">';$output .= $stash->get(['locale',0,'maketext',['Table Prefix' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    ';$stash->set('prefix',$stash->get(['form',0,'table_prefix',0])|| $stash->get(['data',0,'table_prefix',0]));$output .= '
+                    <input type="text"
+                        id="table_prefix"
+                        name="table_prefix"
+                        class="form-control"
+                        value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('prefix');&$_tt_filter($output)};$output .= '" />
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <ul id="invalid-prefix-characters-container" class="validation-container" style="display: none">
+                        <li class="validation validation-error">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <span id="invalid-table-prefix-characters" class="validation-message">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['The database table prefix should only contain the letters [asis,a-z] and [asis,A-Z] and the numbers [asis,0-9]. The system will remove all other characters.' ]]);$output .= '</span>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="lstDatabase">';$output .= $stash->get(['locale',0,'maketext',['[asis,MySQL] Database' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <select name="existing_mysql" id="lstDatabase" class="form-control">
+                        <option ';if (!$stash->get(['form',0,'existing_mysql',0])){$output .= 'selected'}$output .= ' value="">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Create New Database' ]]);$output .= '
+                        </option>
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'databases',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'database'}=$_tt_value;if ($stash->get(['form',0,'existing_mysql',0])eq $stash->get('database')){$output .= '
+                        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('database');&$_tt_filter($output)};$output .= '" selected>
+                            '}else {$output .= '
+                        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('database');&$_tt_filter($output)};$output .= '">
+                            '}$output .= '
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('database');&$_tt_filter($output)};$output .= '
+                        </option>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+
+        <div class="form-group">
+        ';if ($stash->get(['environment',0,'moderated',0,$stash->get('module_name'),0])){$output .= '
+            <button type="submit" class="btn btn-primary" id="btnSubmitModeration">
+                <i id="spinner-install" style="display: none" class="fas fa-sync fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['Submit Install Request' ]]);$output .= '
+            </button>
+        '}else {$output .= '
+            <button type="submit" class="btn btn-primary" id="btnSubmitInstallAdvanced">
+                <i id="spinner-install" style="display: none" class="fas fa-sync fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '
+            </button>
+        '}$output .= '
+        </div>
+
+        ';if ($stash->get('can_hide_advanced_configuration')){$output .= '
+        </div> <!-- end of #advanced -->
+        '}$output .= '
+    </form>
+    '}$output .= '
+
+    ';if ($stash->get('addon_needs_license')){$output .= '
+    <form id="cpaddons_form_license" style="display: none;">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="oneclick-subdomain">';$output .= $stash->get(['locale',0,'maketext',['Installation Domain:' ]]);$output .= '</label>
+                    ';if ($stash->get(['environment',0,'can_add_subdomains',0])){$output .= '
+                    <a id="oneclick-add-subdomain-lnk" class="pull-right"
+                        href="../subdomain/index.html?from_cpaddon=';$output .= $stash->get(['module',0,'name',0]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Add a subdomain' ]]);$output .= '
+                    </a>
+                    '}$output .= '
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group-dropdown">
+                        <select id="subdomain-license-dropdown" name="subdomain" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_without_root_install');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$stash->set('selected',$stash->get(['form',0,'subdomain',0])eq $stash->get('domain')||!$stash->get(['form',0,'subdomain',0])&& $stash->get('domain')eq $stash->get(['environment',0,'domains',0,'primary',0])? ' selected' : '');$output .= '
+                                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '"';$output .= $stash->get('selected');$output .= '>
+                                    http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                        <div class="dropdown-btn">
+                            <a class="btn btn-primary" id="btnSubmitLicense"> ';$output .= '                                ';$output .= $stash->get(['locale',0,'maketext',['Buy License' ]]);$output .= '
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message" id="license-alert-message">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Important:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['To use [asis,WHMCS], you must purchase a [asis,WHMCS] license.' ]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+        ';$stash->set('product_name',$stash->get(['module_name',0,'split',['::' ],2,0,'lower',0]));$output .= '
+        <span id="productName" title="';$output .= $stash->get(['product_name',0,'html',0]);$output .= '"></span>
+    </form>
+    '}$output .= '
+
+    ';if ($stash->get(['module',0,'meta',0,'adminuser_pass',0])){$output .= '
+    <script type="text/javascript">
+        window.pwminstrength = parseInt(';$output .= $stash->get(['settings',0,'min_password_strength',0]);$output .= ') || 0;
+        PAGE.oneclick = ';$output .= ($stash->get(['form',0,'oneclick',0])eq '1' && $stash->get(['environment',0,'contactemail',0]))? 'true' : 'false';$output .= ';
+        PAGE.has_contactemail = ';$output .= $stash->get(['environment',0,'contactemail',0])? 'true' : 'false';$output .= ';
+        PAGE.addon_needs_license = ';$output .= $stash->get('addon_needs_license')? 'true' : 'false';$output .= ';
+        PAGE.all_domains = ';$output .= $stash->get(['all_domains',0,'json',0]);$output .= ';
+        PAGE.domains_with_license = ';$output .= $stash->get(['domains_with_license',0,'json',0]);$output .= ';
+        PAGE.domains_without_root_install = ';$output .= $stash->get(['domains_without_root_install',0,'json',0]);$output .= ';
+    </script>
+    '}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

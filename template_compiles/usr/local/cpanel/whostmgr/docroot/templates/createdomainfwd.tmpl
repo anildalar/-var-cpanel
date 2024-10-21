@@ -1,0 +1,25 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/createdomainfwd.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+    ';if ($stash->get(['data',0,'already',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['A domain forwarder already exists in the “[_1]” file.','/var/cpanel/domainfwdip' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You can only configure a single domain forwarder at any given time.' ]]);$output .= '
+    '}elsif ($stash->get(['data',0,'is_empty',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['The system could not find an [output,acronym,IP,Internet Protocol] address. Add [output,acronym,IP,Internet Protocol] addresses to this server under the [output,em,Add a New IP Address] heading.' ]]);$output .= '
+    '}elsif ($stash->get(['data',0,'invalid_ip',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['The system could not find a valid available [output,acronym,IP,Internet Protocol] address.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Check to ensure that available reserved [output,acronym,IP,Internet Protocol] addresses exist on the server.' ]]);$output .= '
+    '}elsif (!$stash->get(['data',0,'open_domainfwdip',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['The system cannot open the “[_1]” file to write to it: [_2]','/var/cpanel/domainfwdip',$stash->get(['data',0,'error',0])]]);$output .= '
+    '}elsif (!$stash->get(['data',0,'open_reservedips',0])){$output .= '
+         ';$output .= $stash->get(['locale',0,'maketext',['The system cannot write to the “[_1]” file: [_2]','/etc/reservedips',$stash->get(['data',0,'error',0])]]);$output .= '
+    '}else {$output .= '
+        ';if (!$stash->get(['data',0,'open_reasons',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['WARNING: The system cannot write to the “[_1]” file: [_2]','/etc/reservedipreasons',$stash->get(['data',0,'reserved_error',0])]]);$output .= '
+        '}$output .= '
+        ';if (!$stash->get(['data',0,'open_htlock',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['WARNING: The system cannot write to the “[_1]” file.',$stash->get(['data',0,'httpdconf',0])]]);$output .= '
+        '}$output .= '
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['The system successfully created the domain forwarder.' ]]);$output .= '</h3>
+        <form action=';$output .= $stash->get('cp_security_token');$output .= '/scripts/domainfwd>
+            <input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Set Up Forwarders' ]]);$output .= '" />
+        </form>
+    '}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','header'=>$stash->get(['locale',0,'maketext',['Setup/Edit Domain Forwarding' ]]),'breadcrumburl'=>'/scripts/domainfwd','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

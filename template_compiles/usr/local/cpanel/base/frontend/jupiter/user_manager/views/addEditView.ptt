@@ -1,0 +1,274 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/user_manager/views/addEditView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<ol class="breadcrumb">
+    <li><a href="" ng-click="loadView(\'list/rows\', { loadFromCache: true }, { clearAlerts: true })">';$output .= $stash->get(['locale',0,'maketext',['User Manager' ]]);$output .= '</a></li>
+    <li class="active">';$output .= $stash->get(['locale',0,'maketext',['Add User' ]]);$output .= '</li>
+</ol>
+
+<div class="row">
+    <div class="col-sm-8 col-md-9">
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to manage subaccounts. Subaccounts use the same login and password information for email, FTP, and Web Disk services. The system synchronizes the password of each of the subaccount’s allowed services.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','https://go.cpanel.net/cpaneldocsUserManager','cp-user-manager-docs','lnkUserManagerDocumentation' ]]);$output .= '
+        </p>
+    </div>
+    <div class="col-sm-8 col-md-9">
+        <callout callout-type="information" callout-heading="">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This interface does not allow you to create new cPanel accounts. Your hosting provider or system administrator can create new cPanel accounts.' ]]);$output .= '</p>
+        </callout>
+    </div>
+</div>
+
+<br/>
+
+<cp-alert-list></cp-alert-list>
+
+<div class="section">
+<form novalidate name="form" prevent-navigation-on-backspace>
+    <!-- prevent password autofill -->
+    <input type="text" style="display:none">
+    <input type="password" autocomplete=\'off\' style="display:none">
+    <h4 class="section-heading">
+        ';$output .= $stash->get(['locale',0,'maketext',['Basic Information' ]]);$output .= '
+    </h4>
+    <div class="section-body" username-with-domain-wrapper lookup-callback="useCandidateServices(ui.user, responseData.accounts)">
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label for="full-name">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Full Name' ]]);$output .= '
+                </label>
+            </div>
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-6">
+                        <input  id="full-name"
+                                name="full-name"
+                                class="form-control"
+                                placeholder="John S. Doe"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['The user’s full name.' ]]);$output .= '"
+                                ng-model="ui.user.fullName"
+                                ng-maxlength="256"
+                                pattern="[^<>&]*"
+                                auto-focus>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-6">
+                       <ul validation-container field-name="full-name">
+                           <li validation-item field-name="full-name" validation-name="pattern" id="val-full-name-invalid-pattern">
+                               ';$output .= $stash->get(['locale',0,'maketext',['The full name cannot include the following special characters: [list_or_quoted,_1].',['<','>','&' ]]]);$output .= '
+                           </li>
+                           <li validation-item field-name="full-name" validation-name="maxlength" id="val-full-name-max-length">
+                               ';$output .= $stash->get(['locale',0,'maketext',['The full name cannot exceed 256 characters.' ]]);$output .= '
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label for="username">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                    <label-suffix for="username" show-validation-status></label-suffix>
+                </label>
+            </div>
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-6">
+                        <div class="input-group">
+                            <input  id="username"
+                                    name="username"
+                                    required
+                                    username="cpanel"
+                                    username-with-domain="username"
+                                    class="form-control"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['The user’s username.' ]]);$output .= "\"\n                                    ng-model=\"ui.user.username\">\n                            <span class=\"input-group-addon\">\@</span>\n                        </div>\n                    </div>\n                    <div class=\"col-xs-12 col-sm-4 col-md-6\">\n                       <ul validation-container field-name=\"username\">\n                           <li validation-item field-name=\"username\" validation-name=\"required\" id=\"val-username-required\">\n                               ";$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-12">
+                <label for="domain">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                </label>
+            </div>
+            <div class="col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-6">
+                        <select id="domain"
+                                name="domain"
+                                class="form-control"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['The user’s domain.' ]]);$output .= '"
+                                username-with-domain="domain"
+                                ng-model="ui.user.domain">
+                            <option ng-repeat="domain in ui.domainList track by domain"
+                                    value="{{ domain }}"
+                                    ng-selected="domain === ui.user.domain">
+                                {{ domain }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-6">
+                       <ul validation-container field-name="domain">
+                           <li validation-item field-name="domain" validation-name="required"  id="val-domain-required">
+                               ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="col-xs-10 col-sm-8 col-md-6">
+                <toggle-label-info
+                     for="recovery-email"
+                     label-text="';$output .= $stash->get(['locale',0,'maketext',['Contact Email Address' ]]);$output .= '"
+                     label-id="lblRecoveryEmail"
+                     info-icon-id="icoRecoveryEmail"
+                     info-block-id="txtRecoverEmailInfo"
+                     show-info-block="false"
+                     include-label-suffix>
+                     ';$output .= $stash->get(['locale',0,'maketext',['The system sends account notifications and password reset confirmations to this email address.' ]]);$output .= "\n                </toggle-label-info>\n            </div>\n            <div class=\"col-xs-12\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-8 col-md-6\">\n                        <input  id=\"recovery-email\"\n                                name=\"recovery-email\"\n                                email=\"rfc\"\n                                email-not-reserved-include-sub-addresses=\"{{ ui.user.username + '\@' + ui.user.domain }}\"\n                                class=\"form-control\"\n                                placeholder=\"alt.email\@another.domain.tld\"\n                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Enter an alternate email address for the user.' ]]);$output .= '"
+                                ng-model="ui.user.recoveryEmail"
+                                ng-required="ui.user.sendInvite">
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-6">
+                       <ul validation-container field-name="recovery-email">
+                           <li validation-item field-name="recovery-email" validation-name="required" id="val-recovery-email-required">
+                               ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="section-heading">
+        ';$output .= $stash->get(['locale',0,'maketext',['Security Information' ]]);$output .= '
+    </h4>
+    <div class="section-body">
+        <div class="form-group" ng-if="ui.isInviteSubEnabled">
+            <div class="row">
+                <div class="col-xs-10 col-sm-8 col-md-6">
+                    <div class="radio">
+                        <label for="send-invite-on">
+                            <input type="radio"
+                                   id="send-invite-on"
+                                   name="send-invite"
+                                   ng-model="ui.user.sendInvite"
+                                   ng-value="true">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['The user will set the account password.' ]]);$output .= '</span>
+                            <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The system will send an email with instructions to the user’s Contact Email Address.' ]]);$output .= "</span>\n                        </label>\n                    </div>\n                </div>\n                <div class=\"col-xs-12 col-sm-4 col-md-6\">\n                   <ul class=\"validation-container\" ng-show=\"form['recovery-email'].\$dirty && form['recovery-email'].\$error.required\">\n                       <li validation-item field-name=\"recovery-email\" validation-name=\"required\" id=\"val-send-invite-recovery-email-required-\">\n                           ";$output .= $stash->get(['locale',0,'maketext',['You must provide a Contact Email Address to use this feature.' ]]);$output .= '
+                       </li>
+                   </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-10 col-sm-8 col-md-6">
+                    <div class="radio">
+                        <label for="send-invite-off">
+                            <input type="radio"
+                                   id="send-invite-off"
+                                   name="send-invite"
+                                   ng-model="ui.user.sendInvite"
+                                   ng-value="false">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Set the user’s password.' ]]);$output .= '</span>
+                            <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['You must select this option if you cannot provide a Contact Email Address.' ]]);$output .= '</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group" ng-if="!ui.user.sendInvite || !ui.isInviteSubEnabled">
+            <div class="col-xs-12">
+                <label for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                    <label-suffix for="password"></label-suffix>
+                </label>
+            </div>
+            <div class="form-group col-xs-12">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-6">
+                        <password name="password"
+                                  title="';$output .= $stash->get(['locale',0,'maketext',['The user’s password.' ]]);$output .= '"
+                                  minimum-strength="{{minimumPasswordStrength}}"
+                                  placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter Password' ]]);$output .= '"
+                                  password="ui.user.password"
+                                  show-meter="true"
+                                  show-strength="true"
+                                  show-generator="true"
+                                  minimum-length="5"
+                                  required
+                                  generate-button-tab-index="-1"
+                                  toggle-view-button-tab-index="-1"
+                                  generate-settings-tab-index="-1"
+                                  strength-meets-template="';$output .= $stash->get(['locale',0,'lextext',['This password has a strength of [numf,_1], which meets or exceeds the system requirement of [numf,_2].' ]]);$output .= '"
+                                  strength-does-not-meet-template="';$output .= $stash->get(['locale',0,'lextext',['The password has a strength of [numf,_1], but your system requires a strength of [numf,_2].' ]]);$output .= '"
+                                  password-strength="passwordStrength">
+                    </div>
+                    <div class="col-xs-12 col-sm-4 col-md-6">
+                       <ul validation-container field-name="password">
+                           <li validation-item field-name="password" validation-name="required" id="val-password-required">
+                               ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                           </li>
+                           <li validation-item field-name="password" validation-name="minlength" id="val-password-minlength">
+                               ';$output .= $stash->get(['locale',0,'maketext',['You must provide a password with at least 5 characters.' ]]);$output .= '
+                           </li>
+                           <li validation-item field-name="password" validation-name="minimumPasswordStrength" id="val-password-minimum-strength">
+                               ';$output .= $stash->get(['locale',0,'maketext',['You must provide a stronger password.' ]]);$output .= '
+                           </li>
+                       </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row form-group" ng-if="!ui.user.sendInvite || !ui.isInviteSubEnabled">
+            <div class="col-xs-12">
+                <label for="password-confirm">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Confirm Password' ]]);$output .= '
+                    <label-suffix for="password-confirm"></label-suffix>
+                </label>
+            </div>
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <input  id="password-confirm"
+                        name="password-confirm"
+                        type="password"
+                        autocomplete=\'new-password\'
+                        class="form-control"
+                        required
+                        validate-equals="form.password"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Confirm the user’s password.' ]]);$output .= '"
+                        ng-model="ui.user.passwordConfirm">
+            </div>
+            <div class="col-xs-12 col-sm-4 col-md-6">
+               <ul validation-container field-name="password-confirm">
+                   <li validation-item field-name="password-confirm" validation-name="required" id="val-password-confirm-required">
+                       ';$output .= $stash->get(['locale',0,'maketext',['You must confirm the password.' ]]);$output .= '
+                   </li>
+                   <li validation-item field-name="password-confirm" validation-name="validateEquals" id="val-password-confirm-match">
+                       ';$output .= $stash->get(['locale',0,'maketext',['The passwords do not match.' ]]);$output .= '
+                   </li>
+               </ul>
+            </div>
+        </div>
+    </div>
+
+    <h4 id="servicesSectionHeader" class="section-heading"
+        ng-if="ui.user.services.email.supports.allowed || ui.user.services.ftp.supports.allowed || ui.user.services.webdisk.supports.allowed">
+            ';$output .= $stash->get(['locale',0,'maketext',['Services' ]]);$output .= "\n    </h4>\n    <div id=\"servicesSection\" class=\"section-body\"\n         ng-if=\"(emailDaemon.enabled && features.email) || (ftpDaemon.enabled && features.ftp) || (webdiskDaemon.enabled && features.webdisk)\">\n        <div class=\"row\">\n            <div id=\"emailServiceSection\" class=\"col-xs-12 col-sm-6 col-md-4\" ng-if=\"emailDaemon.enabled && features.email\">\n                <div email-config\n                     name=\"email-config\"\n                     ng-model=\"ui.user.services.email\"\n                     conflict-resolution-required=\"true\"\n                     show-conflict-dismiss=\"true\"\n                     toggle-service=\"toggleService(ui.user.services.email)\">\n                </div>\n            </div>\n            <div id=\"ftpServiceSection\" class=\"col-xs-12 col-sm-6 col-md-4\" ng-if=\"ftpDaemon.enabled && features.ftp\">\n                <div ftp-config\n                     name=\"ftp-config\"\n                     ng-model=\"ui.user.services.ftp\"\n                     conflict-resolution-required=\"true\"\n                     show-conflict-dismiss=\"true\"\n                     toggle-service=\"toggleService(ui.user.services.ftp)\">\n                </div>\n            </div>\n            <div id=\"webdiskServiceSection\" class=\"col-xs-12 col-sm-6 col-md-4\" ng-if=\"webdiskDaemon.enabled && features.webdisk\">\n                <div webdisk-config\n                     name=\"webdisk-config\"\n                     ng-model=\"ui.user.services.webdisk\"\n                     conflict-resolution-required=\"true\"\n                     show-conflict-dismiss=\"true\"\n                     toggle-service=\"toggleService(ui.user.services.webdisk)\">\n                </div>\n            </div>\n        </div>\n    </div>\n\n    <button id=\"btn-create\"\n            type=\"submit\"\n            class=\"btn btn-primary\"\n            cp-action=\"create(ui.user, true)\"\n            ng-disabled=\"isOverQuota || !form.\$valid || form.\$pending || inProgress\">\n            ";$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= "\n    </button>\n    <button id=\"btn-create-another\"\n            class=\"btn btn-default\"\n            cp-action=\"create(ui.user, false)\"\n            ng-disabled=\"isOverQuota || !form.\$valid || form.\$pending || inProgress\">\n            ";$output .= $stash->get(['locale',0,'maketext',['Create and Add Another User' ]]);$output .= '
+    </button>
+    <button id="btn-cancel-create"
+            class="btn btn-link"
+            ng-click="loadView(\'list/rows\', { loadFromCache: true }, { clearAlerts: true })">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+    </button>
+
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

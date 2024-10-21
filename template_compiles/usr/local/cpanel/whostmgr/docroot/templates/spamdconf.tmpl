@@ -1,0 +1,57 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/spamdconf.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= $context->process('_ajaxapp.tmpl');$output .= '
+';$stash->set('value',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'key' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {if ($stash->get(['data',0,'spamd_conf',0,$stash->get('key'),0])){$output .= '
+        ';$output .= ' value="' .$stash->get(['data',0,'spamd_conf',0,$stash->get('key'),0,'html',0]).'"';$output .= '
+    '}};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '<p>The following options will be used upon execution of the spamd daemon.</p>
+<form id="configForm" action="javascript:void(0)" class="layout-medium">
+    <input type="hidden" name="cgiaction" value="submit">
+
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="allowedips">';$output .= $stash->get(['locale',0,'maketext',['Allowed IPs' ]]);$output .= '</label>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Restrict connections to spamd to specific IP address (e.g. 127.0.0.1).' ]]);$output .= '</span>
+                <input id="allowedips" class="form-control" name="allowedips" type="text"';$output .= $stash->get(['value',['allowedips' ]]);$output .= ' />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="maxconnperchild">';$output .= $stash->get(['locale',0,'maketext',['Maximum Connections per Child' ]]);$output .= '</label>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Number of connections to spamd child before the process is abandoned.' ]]);$output .= '</span>
+                <input id="maxconnperchild" class="form-control" name="maxconnperchild" type="text"';$output .= $stash->get(['value',['maxconnperchild' ]]);$output .= ' />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="maxchildren">';$output .= $stash->get(['locale',0,'maketext',['Maximum Children' ]]);$output .= '</label>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Number of spamd child processes spawned upon startup.' ]]);$output .= '</span>
+                <input id="maxchildren" class="form-control" name="maxchildren" type="text"';$output .= $stash->get(['value',['maxchildren' ]]);$output .= ' />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="timeouttcp">';$output .= $stash->get(['locale',0,'maketext',['TCP Timeout' ]]);$output .= '</label>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Time (in seconds) before TCP connection is abandoned.' ]]);$output .= '</span>
+                <input id="timeouttcp" class="form-control" name="timeouttcp" type="text"';$output .= $stash->get(['value',['timeouttcp' ]]);$output .= ' />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="timeoutchild">';$output .= $stash->get(['locale',0,'maketext',['TCP Child Timeout' ]]);$output .= '</label>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Time (in seconds) before TCP connection is abandoned by child process.' ]]);$output .= '</span>
+                <input id="timeoutchild" class="form-control" name="timeoutchild" type="text"';$output .= $stash->get(['value',['timeoutchild' ]]);$output .= ' />
+            </div>
+        </div>
+    </div>
+    <div class="form-group" id="submitBtnDiv">
+        <input id="saveButton" class="btn btn-primary" type="button" value="Save">
+    </div>
+</form>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'spamd_startup_configuration','theme'=>'bootstrap','warn_linked_nodes'=>1,'scripts'=>['/templates/spamd/spamdconf.min.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

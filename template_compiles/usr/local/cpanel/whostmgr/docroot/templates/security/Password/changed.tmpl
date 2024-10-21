@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/security/Password/changed.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<div class="highlight"><p>
+    ';$output .= $stash->get(['data',0,'result',0,'changepw',0]);$output .= '
+    </p>
+</div>
+<div>
+  <div style="float:right;">
+    ';if ($stash->get(['data',0,'result',0,'changed',0])){$output .= '
+      <p>';$output .= $stash->get(['locale',0,'maketext',['Success! The browser is now redirecting …' ]]);$output .= ' </p>
+      <meta http-equiv="refresh" content="0;url=/" />
+
+    '}else {$output .= '
+      <form action="';$output .= $stash->get(['data',0,'cp_security_token',0]);$output .= '/?key=';$output .= $stash->get(['data',0,'acct_randkey',0]);$output .= '" method="POST" target="_top">
+      <input type="submit" value="Continue &gt;&gt;" class="btn-primary">
+      </form>
+    '}$output .= '
+  </div>
+</div>
+<div id="clearit" style="clear:both;">&nbsp;</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','header'=>$stash->get(['locale',0,'maketext',['Change Password' ]]),'unprotected'=>1,'extrastyle'=>'
+#doctitle h1 {
+    color: #003541;
+    font-size: 14px;
+    margin: 0;
+    padding: 5px 20px;
+    text-align: left;
+}
+.highlight {
+    background: none repeat scroll 0 0 #F3F3F3;
+    border: 1px solid #ACCCB8;
+    margin: 0 8px 12px;
+    padding: 12px 5px 8px;
+    text-align: left;
+    font-size: 12px;
+}
+#breadcrumbs { text-align: left;  font-size: 12px; text-decoration: none; }
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

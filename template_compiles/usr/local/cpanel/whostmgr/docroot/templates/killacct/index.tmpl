@@ -1,0 +1,35 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/killacct/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts4/multikillacct/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+
+<div id="content"
+        ng-controller="BaseController"
+        class="ng-cloak"
+        ng-cloak>
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to terminate one or more accounts on the server.' ]]);$output .= '
+    </p>
+    <div class="callout callout-warning">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Proceed with caution.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['If you terminate an account, you cannot undo this action.' ]]);$output .= '
+        </p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Before you remove an account, we strongly recommend that you create a full backup of that account.' ]]);$output .= '</p>
+    </div>
+
+    <div class="loading" ng-show="loading">
+        <p class="alert alert-info col-xs-12">
+            <span><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+        </p>
+    </div>
+    <div ng-class="{\'view-disabled\':loading}" ng-view></div>
+    <div growl limit-messages="5"></div>
+</div>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.data = ';$output .= $stash->get(['data',0,'json',0]);$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'terminate_accounts','header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/killacct/index.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

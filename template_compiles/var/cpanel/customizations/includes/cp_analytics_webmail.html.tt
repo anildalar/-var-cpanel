@@ -1,0 +1,302 @@
+Template::Document->new({METADATA=>{'modtime'=>'1726252413','name'=>'/var/cpanel/customizations/includes/cp_analytics_webmail.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('NVData',$context->plugin('NVData'));$stash->set('is_sandbox',$stash->get(['CPANEL',0,'is_sandbox',0]));$stash->set('current_analytics_setting','');$stash->set('current_personhood_setting','individual');$output .= do {my$output='';my ($_tt_error,$_tt_handler);eval {$stash->set('NVData',$stash->get(['execute',['NVData','get',{'names'=>'analytics|personhood','html_encoded'=>'1' }],'data',0]));if ($stash->get('NVData')){if (($stash->get(['NVData',0,0,0,'value',0]))){$stash->set('current_analytics_setting',$stash->get(['NVData',0,0,0,'value',0]))}if (($stash->get(['NVData',0,1,0,'value',0]))){$stash->set('current_personhood_setting',$stash->get(['NVData',0,1,0,'value',0]))}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error if$_tt_error->type =~ /^(return|stop)$/;$stash->set('error',$_tt_error);$stash->set('e',$_tt_error);if (defined ($_tt_handler=$_tt_error->select_handler())){$_tt_error=0}}die$_tt_error if$_tt_error;$output};if ($stash->get('current_analytics_setting')ne 'on' && $stash->get('current_analytics_setting')ne 'off'){$stash->set('current_analytics_setting','')}$stash->set('sample_rate',50,1);if ($stash->get(['CPANEL',0,'CPFLAGS',0,'item',['trial' ]])){$stash->set('sample_rate',100)}$stash->set('is_analytics_enabled_server_side',0);if ($stash->get(['CPANEL',0,'analytics_ui_includes_are_enabled',0])&& $stash->get(['CPANEL',0,'ENV',0,'DNT',0,'substr',[0,1 ]])ne '1'){$stash->set('is_analytics_enabled_server_side',1)}$output .= '
+
+';if ($stash->get('is_analytics_enabled_server_side')){$output .= '
+<svg class="symbol" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="analytics-icon-arrow">
+        <path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"></path>
+    </symbol>
+</svg>
+<!--
+DEV NOTE: Do not change the id of the below container. It is accessed in the web component <cp-load-mixpanel-js /> web component
+to check the existence of this popup.
+-->
+<div id="analyticsContainer">
+<div id="analyticsReminder">
+    <button id="popupUserConsentButton" data-testid="popupUserConsentButton-webmail_consent_privacy_slideout" type="button" aria-label="Popup User Consent" onclick="AnalyticsConsentBanner.toggle();">
+        <div class="analytics-icon" aria-hidden="true">
+            <svg class="analytics-icon-arrow" viewBox="0 0 512 512">
+                <use xlink:href="#analytics-icon-arrow" />
+            </svg>
+        </div>
+    </button>
+</div>
+
+<div id="userConsentContainer" class="consentContainer">
+    <button type="button" id="closeConsentContainer" data-testid="closeConsentContainer-webmail_consent_privacy_slideout" aria-label="Close User Consent" class="closeConsent" onclick="AnalyticsConsentBanner.toggle();">&times;</button>
+    <div id="userConsentQuestion" class="consentDefault">
+        <div class="row">
+            <div class="col-xs-12 cp-webmail-consent-privacy-modal__content-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Consent and Privacy[comment,title]' ]]);$output .= '
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__description">
+                ';$output .= $stash->get(['locale',0,'maketext',['WebPros International, LLC d.b.a cPanel is asking for your consent to participate in user activity tracking using third-party software for the purpose of understanding the performance of Webpros products. Information will be used pursuant to the [output,url,_1,cPanel & WHM Privacy Policy,title,cPanel & WHM Privacy Policy,data-test-id,_2,target,_3,class,_4,id,_5] and may be shared internally within the Webpros group. You can update your preferences at any time from the analytics slideout.','https://go.cpanel.net/privacy','docLink-webmail_consent_cp-privacy-policy','privacy-policy','external-link','docLink-webmail_consent_cp-privacy-policy' ]]);$output .= '
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__input-container">
+                <label>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Select which account type best describes how you will use this product.' ]]);$output .= '
+                </label>
+                <select
+                    name="personhood_setting"
+                    id="personhood-setting"
+                    data-testid="ddlPersonhoodSetting-webmail_consent_privacy_slideout"
+                    class="form-control form-input-select"
+                >
+                    <option value="individual">
+                        ';$output .= $stash->get(['locale',0,'maketext',['This account is for an individual.' ]]);$output .= '
+                    </option>
+                    <option value="business">';$output .= $stash->get(['locale',0,'maketext',['This account is for a business.' ]]);$output .= '</option>
+                </select>
+            </div>
+            <div class="col-xs-12 cp-consent-privacy__input-container">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    name="consent_setting"
+                                    id="consent-setting"
+                                    data-testid="chkConsent-webmail_consent_privacy_slideout"
+                                    class="form-input-checkbox"
+                                ></input>
+                                ';$output .= $stash->get(['locale',0,'maketext',['By checking this box, you agree that we may collect your usage statistics. [output,url,_1, Learn more here.,title,cPanel Analytics Documentation,class,_2,target,_3,id,_4,data-test-id,_5]','https://go.cpanel.net/analytics','external-link','analytics','docLink-webmail_consent_cp-analytics','docLink-webmail_consent_cp-analytics' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <button
+                    id="btnSave"
+                    data-testid="btnSave-webmail_consent_privacy_slideout"
+                    type="button"
+                    class="btn btn-primary"
+                    data-bs-toggle="button"
+                    onclick="AnalyticsConsentBanner.handleConsentPrivacySaveClick()"
+                >
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<script>
+(function() {
+    var ConsentBanner = (function() {
+        var analyticsContainer = document.getElementById("analyticsContainer");
+
+        var consentSetting = document.getElementById("consent-setting");
+        var personhoodSetting = document.getElementById("personhood-setting");
+
+        var cpsession = window.location.pathname.split("/")[1];
+        var request = new XMLHttpRequest();
+        var cpanelAPICallPrefix = "/execute/NVData/set?names=analytics&analytics=";
+        var whmAPICallPrefix = "/json-api/nvset?api.version=1&key=analytics&value=";
+        var webmailAPICallPrefix = "/json-api/cpanel?cpanel_jsonapi_module=NVData&cpanel_jsonapi_func=set&cpanel_jsonapi_apiversion=2&names=analytics|personhood";
+        var isWHM = false;
+        var isCpanel = false;
+        var isWebmail = false;
+
+        var currentConsentSetting = false; // Should only ever be true or false. Default to false.
+        var currentPersonhoodSetting = \'individual\'; // Should only be "individual", or "business" - default to "individual".
+
+        function updateSettings(consentValue, personhoodValue) {
+            currentConsentSetting = consentValue;
+            currentPersonhoodSetting = personhoodValue || "individual";
+            personhoodSetting.value = currentPersonhoodSetting;
+            consentSetting.checked = currentConsentSetting;
+        }
+
+        function handleConsentPrivacySaveClick() {
+            saveConsent(consentSetting.checked, personhoodSetting.value);
+        }
+
+        function getConnectPrefix() {
+            var prefix = "";
+            if (isWHM) {
+                prefix = whmAPICallPrefix;
+            }
+            if (isCpanel) {
+                prefix = cpanelAPICallPrefix;
+            }
+            if (isWebmail) {
+                prefix = webmailAPICallPrefix;
+            }
+            return prefix;
+        }
+
+        function handleCpanelResult(result) {
+            return result && result.status == 1;
+        }
+
+        function handleWHMResult(result) {
+            return result && result.metadata.result == 1;
+        }
+
+        function handleWebmailResult(result) {
+            return result && result.cpanelresult.event.result == 1;
+        }
+
+        function parseAPIStatus(result) {
+            if (isWHM) {
+                return handleWHMResult(result);
+            }
+            if (isCpanel) {
+                return handleCpanelResult(result);
+            }
+            if (isWebmail) {
+                return handleWebmailResult(result);
+            }
+            return false;
+        }
+
+
+        function saveConsent (consent, personhoodValue) {
+            var consentValue = consent ? "on" : "off";
+
+            request.open("GET", "/" + cpsession + getConnectPrefix() + "&analytics=" + consentValue + "&personhood=" + personhoodValue);
+            request.onload = function () {
+                if (request.status >= 200 && request.status < 400) {
+                    var result;
+                    try {
+                        result = JSON.parse(request.responseText);
+                    } catch (e) {
+                    }
+
+                    // IE requires that we clear these manually
+                    analyticsContainer.style.transitionDelay = "";
+
+                    analyticsContainer.className = "peek";
+
+                    var results = parseAPIStatus(result);
+                    if (results) {
+                        updateSettings(consent, personhoodValue);
+
+                        if(!consent){
+                            optOutOfAnalytics();
+                            return;
+                        }
+
+                        var mixpanelConfig = "";
+                        ';if ($stash->get('analytics_config')){$output .= '
+                        mixpanelConfig = ';$output .= $stash->get(['analytics_config',0,'json',0]);$output .= ';
+                        '}$output .= '
+
+                        if (consent && mixpanelConfig){
+                            // Enable analytics without having to reload the page.
+                            enableAnalyticsForFirstTime(mixpanelConfig);
+                        }
+                    }
+                }
+            };
+            request.send();
+        }
+
+        function handleConsentPrivacySavedEvent(event){
+            var settings = event.detail;
+            if(settings){
+                updateSettings(settings.analytics, settings.personhood);
+            }
+        }
+
+        function toggleDialog (addDelay) {
+            if (addDelay) {
+                analyticsContainer.style = "transition-delay: .5s;";
+            }
+
+            if (analyticsContainer.className.indexOf("shown") === -1 ) {
+                analyticsContainer.className = "shown";
+            } else {
+                analyticsContainer.className = "peek";
+                // Reset the values to the current settings when closing the slideout.
+                updateSettings(currentConsentSetting, currentPersonhoodSetting);
+            }
+        }
+
+        function initialize (opts) {
+            if (opts.isWHM) {
+                isWHM = opts.isWHM;
+            }
+
+            if (opts.isCpanel) {
+                isCpanel = opts.isCpanel;
+            }
+
+            if (opts.isWebmail) {
+                isWebmail = opts.isWebmail;
+            }
+
+            // IE requires that we clear these manually
+            analyticsContainer.style.transitionDelay = "";
+
+            // Hide the slideout by default.
+            analyticsContainer.className = "peek";
+            updateSettings(opts.currentConsentSetting, opts.currentPersonhoodSetting);
+        }
+
+        return {
+            initialize: initialize,
+            toggle: toggleDialog,
+            handleConsentPrivacySaveClick: handleConsentPrivacySaveClick,
+            handleConsentPrivacySavedEvent: handleConsentPrivacySavedEvent
+        };
+    })();
+
+    window.AnalyticsConsentBanner = ConsentBanner;
+
+    setTimeout(function() {
+        ConsentBanner.initialize({
+            "currentConsentSetting": ';$output .= $stash->get('current_analytics_setting')eq 'on' ? 'true' : 'false';$output .= ',
+            "currentPersonhoodSetting": ';$output .= $stash->get(['current_personhood_setting',0,'json',0]);$output .= ",\n            \"isWebmail\": true\n        });\n    }, 2000);\n\n    document.body.addEventListener('consentPrivacySaved', ConsentBanner.handleConsentPrivacySavedEvent);\n})();\n</script>\n\n<style>\n/* IE, yuno work better? */\nhtml {\n    -ms-overflow-style: scrollbar;\n}\n\n#analyticsContainer {\n    position: fixed;\n    width: 100%;\n    transition: .75s right, .75s left;\n    right: calc(-100% - 30px);\n    bottom: 0;\n    z-index: 1039;  /* z-index above this value will show up over the top of the consent modal overlay. */\n    box-sizing: border-box;\n}\n\n#analyticsContainer.peek {\n    right: -100%;\n}\n\n#analyticsContainer.shown {\n    right: 0;\n}\n\n#analyticsReminder {\n    position: absolute;\n    bottom: 5px;\n    left: -30px;\n    width: 30px;\n    height: 30px;\n    transition: .75s right, .75s left;\n    box-sizing: border-box;\n}\n#analyticsReminder.active {\n    right: 0;\n}\n\n#popupUserConsentButton {\n    border-radius: 5px 0 0 5px;\n    height: 30px;\n    width: 30px;\n    background-color: #2a3b49;\n    color: #ffffff;\n    border: 5px solid #2a3b49;\n    outline: 0;\n    box-sizing: border-box;\n    padding: 0;\n    margin: 0;\n    display: block;\n}\n\nsvg.symbol {\n    display: none;\n}\n\n#analytics-icon {\n    width: 100%;\n    height: 100%;\n    display: block;\n}\n\n#analytics-icon-arrow {\n    fill: white;\n}\n\n.consentContainer {\n    width: 100%;\n    font-size: 14px;\n    transition: .75s right, .75s left;\n    box-sizing: border-box;\n}\n\n.consentContainer .closeConsent {\n    position: absolute;\n    right: 5px;\n    top: 5px;\n    font-size: 24px;\n    color: #555;\n    font-weight: bold;\n    cursor: pointer;\n    box-sizing: border-box;\n    line-height: 1;\n    border: none;\n    background-color: transparent;\n    padding: 0;\n    margin: 0;\n}\n\n.consentDefault {\n    padding: 25px 20px;\n    background-color: #F5F5F5;\n    border-left: 5px solid #2a3b49;\n    box-shadow: 13px 5px 25px #888888;\n    box-sizing: border-box;\n    color: #333333;\n    font-weight: normal;\n}\n\n.consentContainer label {\n    display: inline-block;\n    margin-bottom: 5px;\n    font-weight: 600;\n    box-sizing: border-box;\n}\n\n.consentContainer input[type=radio] {\n    margin: 4px 0 0;\n    margin-top: 1px \\9;\n    line-height: normal;\n    box-sizing: border-box;\n    padding: 0;\n    box-sizing: border-box;\n}\n\n.consentContainer p {\n    margin: 0 0 10px;\n    box-sizing: border-box;\n    line-height: 1.42857143;\n}\n\n.consentContainer a {\n    background: 0 0;\n    color: #428bca;\n    text-decoration: none;\n    box-sizing: border-box;\n}\n\n.consentContainer a:hover,\n.consentContainer a:focus {\n    color: #2a6496;\n    text-decoration: underline;\n}\n\n.consentConainer a:active,\n.consentConainer a:hover {\n    outline: 0;\n}\n\n.consentContainer a:focus {\n    outline: thin dotted;\n    outline: 5px auto -webkit-focus-ring-color;\n    outline-offset: -2px;\n}\n\n.consentContainer .row {\n    margin-left: -15px;\n    margin-right: -15px;\n    box-sizing: border-box;\n}\n.consentContainer .row:before, .consentContainer .row:after {\n    clear: both;\n    content: \" \";\n    display: table;\n    box-sizing: border-box;\n}\n\n.consentContainer .col-sm-9 {\n    position: relative;\n    min-height: 1px;\n    padding-left: 15px;\n    padding-right: 15px;\n    box-sizing: border-box;\n}\n\n.consentContainer .col-sm-3 {\n    position: relative;\n    min-height: 1px;\n    padding-left: 15px;\n    padding-right: 15px;\n    box-sizing: border-box;\n}\n\n/*\n  Right-to-left styles\n*/\nhtml[dir=\"rtl\"] #analyticsContainer {\n    left: calc(-100% - 30px);\n    right: auto;\n}\n\nhtml[dir=\"rtl\"] #analyticsReminder {\n    right: -30px;\n    left: auto;\n}\n\nhtml[dir=\"rtl\"] #analyticsContainer.peek {\n    left: -100%;\n    right: auto;\n}\n\nhtml[dir=\"rtl\"] #analyticsContainer.shown {\n    left: 0;\n    right: auto;\n}\n\nhtml[dir=\"rtl\"] #popupUserConsentButton {\n    border-radius: 0 5px 5px 0;\n}\n\nhtml[dir=\"rtl\"] .consentDefault {\n    border-left: 0;\n    border-right: 5px solid #2a3b49;\n    box-shadow: -13px 5px 25px #888888;\n}\n\nhtml[dir=\"rtl\"] .consentContainer .closeConsent {\n    right: auto;\n    left: 5px;\n}\n\n\@media (min-width: 768px) {\n    #analyticsContainer {\n        width: 500px;\n        right: -530px;\n        bottom: 75px;\n    }\n\n    #analyticsContainer.peek {\n        right: -500px;\n    }\n\n    #analyticsReminder {\n        bottom: auto;\n        top: 30px;\n    }\n\n    .consentContainer {\n        width: 500px;\n    }\n\n    .consentContainer .col-sm-3 {\n        float: left;\n        width: 25%;\n    }\n    .consentContainer .col-sm-9 {\n        float: left;\n        width: 75%;\n    }\n    html[dir=\"rtl\"] #analyticsContainer {\n        left: -530px;\n        right: auto;\n    }\n\n    html[dir=\"rtl\"] #analyticsContainer.peek {\n        left: -500px;\n        right: auto;\n    }\n\n    html[dir=\"rtl\"] .consentContainer .col-sm-3 {\n        float: right;\n        width: 25%;\n    }\n    html[dir=\"rtl\"] .consentContainer .col-sm-9 {\n        float: right;\n        width: 75%;\n    }\n}\n\n/*\n Dark style\n*/\nhtml[data-style=\"dark\"] .consentDefault {\n    background-color: #313131;\n    box-shadow: 13px 5px 25px #060606;\n    color: #d7d7d7;\n    border-color: #FF6C2C;\n}\n\nhtml[data-style=\"dark\"] .consentContainer .closeConsent {\n    color: #a5a5a5;\n}\n\nhtml[data-style=\"dark\"][dir=\"rtl\"] .consentDefault {\n    box-shadow: -13px 5px 25px #060606;\n}\n\nhtml[data-style=\"dark\"] #analytics-icon-arrow {\n    fill: #d7d7d7;\n}\n\nhtml[data-style=\"dark\"] #popupUserConsentButton {\n    background-color: #434343;\n    border-radius: 0;\n    border: 1px solid #525252;\n    border-left: 0;\n    border-right: 0;\n    padding: 5px;\n}\n\nhtml[data-style=\"dark\"] button#popupUserConsentButton::after {\n    content: \" \";\n    width: 2px;\n    height: 100%;\n    background: #FF6C2C;\n    position: absolute;\n    top: 0;\n}\n\nhtml[data-style=\"dark\"][dir=\"ltr\"] button#popupUserConsentButton::after {\n    left: -2px;\n}\n\nhtml[data-style=\"dark\"][dir=\"rtl\"] button#popupUserConsentButton::after {\n    right: -2px;\n}\n\n.cp-webmail-consent-privacy-modal__content-title{\n    margin-top:0;\n    font-weight:300;\n    line-height:1.2;\n    font-size:1.5rem;\n    color:#243746;\n    text-align:center;\n    margin-bottom:var(--cp-spacer-3);\n}\n\n.cp-consent-privacy__input-container {\n    margin-bottom:var(--cp-spacer-2);\n    padding:0 var(--cp-spacer-3);\n}\n\n.cp-consent-privacy__description {\n    margin-bottom:var(--cp-spacer-5);\n    padding:0 var(--cp-spacer-3);\n}\n\n.external-link::after {\n    // stylelint-disable-next-line font-family-no-missing-generic-family-keyword\n    font-family: remixicon;\n\n    // NOTE: Renders a space followed by the external-link icon. A space character\n    // is used rather than margin or padding so that the space will scale properly\n    // across font sizes and link underlines will have no gaps.\n    content: \" \\ecaf\";\n}\n\n</style>\n"}$output .= '
+
+<script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/ui-analytics/mixpanelSetup.js' ]]);$output .= '"></script>
+
+';if ($stash->get('is_analytics_enabled_server_side')&& $stash->get('current_analytics_setting')eq 'on'){$output .= '
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-117050492-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag(\'js\', new Date());
+
+    (function(){
+        var path = window.location.pathname;
+        if (path) {
+            var wholepath = path.split(\'/\');
+            var custompath = wholepath.slice(2);
+            path = \'/\' + custompath.join(\'/\');
+        }
+        var thelocation = window.location.protocol + "//" + window.location.host + path;
+
+        var page_identifier = \'';$output .= $stash->get('page_identifier');$output .= '\'.trim();
+        page_identifier = !page_identifier || page_identifier === "Webmail-" ? "Webmail-" + path : page_identifier;
+
+        gtag(\'config\', \'UA-117050492-1\', {
+            \'page_path\': path,
+            \'page_title\': page_identifier,
+            \'page_location\': thelocation,
+            \'anonymize_ip\': true,
+            \'sample_rate\': ';$output .= $stash->get('sample_rate');$output .= ',
+            \'custom_map\': {
+                \'dimension1\': \'cp-company-id\',
+                \'dimension2\': \'cp-product-version\',
+                \'dimension3\': \'cp-product-interface\',
+                \'dimension4\': \'cp-product-theme-style\',
+                \'dimension5\': \'cp-os\',
+                \'dimension6\': \'cp-default-webmail-app\'
+            }
+        });
+
+        gtag(\'event\', \'cp_analytics\', {
+            \'cp-company-id\': \'';$output .= $stash->get('get_company_id');$output .= '\',
+            \'cp-product-version\': \'';$output .= $stash->get(['CPANEL',0,'version',0]);$output .= '\',
+            \'cp-product-interface\': \'Webmail\',
+            \'cp-product-theme-style\': window.thisStyle,
+            \'cp-os\': \'';$output .= $stash->get('get_os_version');$output .= '\',
+            \'cp-default-webmail-app\': \'';$output .= $stash->get('default_webmail_app');$output .= '\'
+        });
+    })();
+</script>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

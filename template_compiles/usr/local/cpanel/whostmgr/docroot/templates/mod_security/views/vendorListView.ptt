@@ -1,0 +1,149 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/vendorListView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+
+<div ng-show="isInstalled">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-10">
+                        <div class="input-group filter-controls">
+                            <input  id="txtFilter"
+                                    class="form-control"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['To find vendors quickly, use the Search feature.' ]]);$output .= "\"\n                                    ng-model=\"meta.filterValue\"\n                                    autocomplete=\"off\"\n                                    auto-focus\n                                    ng-keyup=\"triggerToggleSearch(\$event)\">\n                            <span class=\"input-group-btn\">\n                                <button id=\"btnSearch\"\n                                        type=\"button\"\n                                        class=\"btn btn-default\"\n                                        ng-click=\"toggleSearch(true)\">\n                                    <span class=\"glyphicon\" ng-class=\"{ 'glyphicon-search': !activeSearch, 'glyphicon-remove': activeSearch }\"></span>\n                                </button>\n                            </span>\n                        </div>\n                    </div>\n                    <div class=\"col-xs-2\">\n                        <span spinner id=\"loadingSpinner\" class=\"headerSpinner\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-9 col-sm-6 text-left-xs text-right-sm form-inline">
+            <div class="form-group page-size-container">
+                <label for="ddlPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                    <select id="ddlPageSize"
+                            class="form-control page-size-control"
+                            ng-model="meta.pageSize"
+                            ng-options="size for size in meta.pageSizes">
+                    </select>
+                </label>
+            </div>
+            <uib-pagination id="topPager"
+                        ng-change="selectPage()"
+                        ng-model="meta.pageNumber"
+                        items-per-page="meta.pageSize"
+                        total-items="totalItems"
+                        max-size="5"
+                        direction-links="false"
+                        boundary-links="true"
+                        first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                        last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                        previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                        next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                        class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr cp-responsive-sort>
+                <th class="visible-xs" colspan="7">
+                    <cp-responsive-sort-insert id-suffix="vendors" main-label="';$output .= $stash->get(['locale',0,'maketext',['Sort by' ]]);$output .= '"></cp-responsive-sort-insert>
+                </th>
+                <th class="hidden-xs col-xs-3 vendor-name">
+                    <toggle-sort id="sortName"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="name">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Vendor' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="hidden-xs col-xs-1 vendor-provider text-center">
+                    <toggle-sort id="sortProvider"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="cpanel_provided"
+                                 sort-reverse>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Provider' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="hidden-xs col-xs-1 vendor-enabled text-center">
+                    <toggle-sort id="sortEnabled"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="enabled">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="hidden-xs col-xs-1 vendor-updates-enabled text-center">
+                    <toggle-sort id="sortUpdatesEnabled"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="update">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Updates' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="hidden-xs col-xs-1 vendor-rulesets text-center">
+                    <toggle-sort id="sortInUse"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="in_use">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Sets Included' ]]);$output .= "\n                    </toggle-sort>\n                </th>\n                <th class=\"hidden-xs col-xs-2 vendor-action\">\n                </th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr ng-repeat-start=\"vendor in vendors\" ng-if=\"!shouldShowDialog(vendor)\" ng-class=\"{disabled: !isVendorInstalled(vendor)}\">\n                <td class=\"vendor-name-desc\">\n                    <div ng-if=\"vendor.vendor_url\">\n                        <a id=\"nameData{{\$index}}\" ng-href=\"{{vendor.vendor_url}}\" target=\"_blank\">\n                            {{vendor.name}}<span ng-if=\"vendor.is_pkg\">&nbsp;";$output .= $stash->get(['locale',0,'maketext',['(via pkg)' ]]);$output .= "</span> <span class=\"fas fa-external-link-alt\"></span>\n                        </a>\n                    </div>\n                    <div id=\"nameData{{\$index}}\" ng-if=\"!vendor.vendor_url\">\n                        {{vendor.name}}<span ng-if=\"vendor.is_pkg\">&nbsp;";$output .= $stash->get(['locale',0,'maketext',['(via pkg)' ]]);$output .= "</span>\n                    </div>\n                    <div id=\"descData{{\$index}}\" class=\"small\">{{vendor.description}}<span ng-if=\"vendor.is_pkg\">&nbsp;";$output .= $stash->get(['locale',0,'maketext',['(via package “[_1]”)','{{vendor.is_pkg}}' ]]);$output .= "</span></div>\n                </td>\n                <td class=\"vendor-provider text-center\" id=\"providerData{{\$index}}\">\n                    <span ng-show=\"vendor.cpanel_provided\"><img src=\"";$output .= $stash->get(['MagicRevision',['/images/cpanel.png' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] Curated' ]]);$output .= '" /></span>
+                    <span  ng-hide="vendor.cpanel_provided">';$output .= $stash->get(['locale',0,'maketext',['Third Party' ]]);$output .= "</span>\n                </td>\n                <td class=\"vendor-enabled text-center\" id=\"enabledData{{\$index}}\" ng-show=\"isVendorInstalled(vendor)\">\n                    <div class=\"btn-group btn-group-nowrap\">\n                        <label  id=\"btnEnable{{\$index}}\"\n                                class=\"btn\"\n                                ng-model=\"vendor.enabled\"\n                                uib-btn-radio=\"true\"\n                                ng-class=\"{ 'btn-primary': vendor.enabled, 'btn-default btn-none': !vendor.enabled }\"\n                                ng-change=\"setVenderStatus(vendor)\">";$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= "</label>\n                        <label  id=\"btnDisable{{\$index}}\"\n                                class=\"btn\"\n                                ng-model=\"vendor.enabled\"\n                                uib-btn-radio=\"false\"\n                                ng-class=\"{ 'btn-negative': !vendor.enabled, 'btn-default btn-none': vendor.enabled }\"\n                                ng-change=\"setVenderStatus(vendor)\">";$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= "</label>\n                    </div>\n                </td>\n                <td class=\"vendor-updates-enabled text-center\" id=\"updatesEnabledData{{\$index}}\" ng-show=\"isVendorInstalled(vendor)\">\n                    <div class=\"btn-group btn-group-nowrap\">\n                        <label  id=\"btnEnableUpdates{{\$index}}\"\n                                class=\"btn\"\n                                ng-model=\"vendor.update\"\n                                uib-btn-radio=\"true\"\n                                ng-class=\"{ 'btn-primary': vendor.update, 'btn-default btn-none': !vendor.update }\"\n                                ng-disabled=\"!vendor.enabled\"\n                                ng-change=\"setVenderUpdate(vendor)\">";$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= "</label>\n                        <label  id=\"btnDisableUpdates{{\$index}}\"\n                                class=\"btn\"\n                                ng-model=\"vendor.update\"\n                                uib-btn-radio=\"false\"\n                                ng-class=\"{ 'btn-negative': !vendor.update, 'btn-default btn-none': vendor.update }\"\n                                ng-disabled=\"!vendor.enabled\"\n                                ng-change=\"setVenderUpdate(vendor)\">";$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= "</label>\n                    </div>\n                </td>\n                <td class=\"vendor-rulesets text-center\" id=\"rulesetsData{{\$index}}\" ng-show=\"isVendorInstalled(vendor)\">\n                    <span class=\"in-use-stats\" id=\"in-use-stats{{\$index}}\" ng-show=\"vendor.in_use && vendor.in_use > 0\">\n                        {{vendor.in_use}} / {{vendor.configs.length}}\n                    </span>\n                    <span id=\"warning-no-rulesets-enabled{{\$index}}\" class=\"alert alert-warning no-rulesets-enabled\" ng-show=\"!vendor.in_use || vendor.in_use === 0\">\n                        <span class=\"fas fa-exclamation-triangle fa-lg\"></span>\n                        <span class=\"message\" title=\"";$output .= $stash->get(['locale',0,'maketext',['You have not included any rule sets for this vendor. Enabling or disabling this vendor will not do anything until you have selected at least one rule set for inclusion. Click the edit link and pick the rule sets you want to include.' ]]);$output .= '">
+                        ';$output .= $stash->get(['locale',0,'maketext',['No rule sets.' ]]);$output .= "\n                        </span>\n                    </span>\n                </td>\n                <td class=\"vendor-install-container text-center\" id=\"installNotice{{\$index\"}} colspan=\"3\" ng-hide=\"isVendorInstalled(vendor)\">\n                    <span id=\"info-vendor-not-installed{{\$index}}\" class=\"alert alert-info vendor-not-installed\">\n                        <span class=\"fas fa-info-circle fa-lg\"></span>\n                        <span class=\"message\">";$output .= $stash->get(['locale',0,'maketext',['This vendor is not installed.' ]]);$output .= "</span>\n                    </span>\n                </td>\n                <td class=\"vendor-action\" id=\"action{{\$index}}\">\n                    <button id=\"btnEdit{{\$index}}\"\n                            type=\"button\"\n                            class=\"btn-sm btn-link text-left\"\n                            ng-click=\"loadEditVendorView(vendor)\"\n                            ng-show=\"isVendorInstalled(vendor)\">\n                        <span class=\"glyphicon glyphicon-pencil\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "\n                    </button>\n                    <button id=\"btnDelete{{\$index}}\"\n                        type=\"button\"\n                        class=\"btn-sm btn-link text-left\"\n                        ng-click=\"showDeleteConfirm(vendor)\"\n                        ng-show=\"isVendorInstalled(vendor)\">\n                        <span class=\"glyphicon glyphicon-trash\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                    </button>\n                    <button id=\"btnInstall{{\$index}}\"\n                        type=\"button\"\n                        class=\"btn-sm btn-link text-left\"\n                        ng-click=\"showInstallConfirm(vendor)\"\n                        ng-hide=\"isVendorInstalled(vendor)\">\n                        <span class=\"glyphicon glyphicon-plus\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= "\n                    </button>\n                </td>\n            </tr>\n            <tr ng-repeat-end ng-if=\"shouldShowDialog(vendor)\">\n                <td ng-show=\"canShowDeleteConfirm(vendor)\" class=\"vendor-action-confirm\" id=\"deleteConfirm{{\$index}}\" colspan=\"7\">\n                    <div  class=\"callout callout-danger\">\n                        <span class=\"confirm-message\">";$output .= $stash->get(['locale',0,'maketext',['Are you sure that you wish to remove “[_1]” from your system?','{{vendor.name}}' ]]);$output .= "</span>\n                        <div class=\"form-group action-group\">\n                            <button id=\"btnConfirmDelete{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn btn-primary\"\n                                spinner-id=\"spinnerDelete{{\$index}}\"\n                                cp-action=\"delete(vendor)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                            </button>\n                            <button id=\"btnCancelDelete{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn btn-link\"\n                                ng-click=\"hideDeleteConfirm(vendor)\"\n                                ng-disabled=\"isDeleting(vendor)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\n                            </button>\n                        </div>\n                    </div>\n                </td>\n                <td ng-show=\"canShowInstallConfirm(vendor)\" class=\"vendor-action-confirm\" id=\"installConfirm{{\$index}}\" colspan=\"7\">\n                    <div  class=\"callout callout-info\">\n                        <span class=\"confirm-message\">";$output .= $stash->get(['locale',0,'maketext',['Are you sure that you wish to install the “[_1]” vendor?','{{vendor.name}}' ]]);$output .= "</span>\n                        <div class=\"form-group action-group\">\n                            <button id=\"btnInstallVendor{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn btn-primary\"\n                                spinner-id=\"spinnerInstallVendor{{\$index}}\"\n                                cp-action=\"install(vendor)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Install and Restart [asis,Apache]' ]]);$output .= "\n                            </button>\n                            <button id=\"btnCancelInstall{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn btn-link\"\n                                ng-click=\"hideInstallConfirm(vendor)\"\n                                ng-disabled=\"isInstalling(vendor)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr class="info emptyrow" ng-hide="vendors.length" ng-switch="loading">
+                <td colspan="7" id="noRecords" ng-switch-when="true">';$output .= $stash->get(['locale',0,'maketext',['The system is loading the [asis,ModSecurity] rule vendors.' ]]);$output .= '</td>
+                <td colspan="7" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The [asis,ModSecurity] vendors list is empty.' ]]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row" ng-show="!dbException">
+        <div class="col-xs-12 col-sm-6 text-left-xs text-right-sm form-inline pull-right">
+            <div class="form-group page-size-container">
+                <label for="ddlBottomPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                    <select id="ddlBottomPageSize"
+                            class="form-control page-size-control"
+                            ng-model="meta.pageSize"
+                            ng-options="size for size in meta.pageSizes">
+                    </select>
+                </label>
+            </div>
+            <uib-pagination id="bottomPager"
+                        ng-change="selectPage()"
+                        ng-model="meta.pageNumber"
+                        items-per-page="meta.pageSize"
+                        total-items="totalItems"
+                        max-size="5"
+                        direction-links="false"
+                        boundary-links="true"
+                        first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                        last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                        previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                        next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                        class="pagination-small">
+            </uib-pagination>
+        </div>
+        <div class="col-xs-12 col-sm-6 pull-left">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="navigation-controls">
+                            <button id="btnTop"
+                                    type="button"
+                                    class="btn btn-link"
+                                    ng-click="scrollTo(\'top\')">
+                                <span class="glyphicon glyphicon-chevron-up"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Back To Top' ]]);$output .= '
+                            </button>
+                            <button id="addVendorBottom" class="btn btn-default" ng-click="loadView(\'vendors/add\')">';$output .= $stash->get(['locale',0,'maketext',['Add Vendor' ]]);$output .= '</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

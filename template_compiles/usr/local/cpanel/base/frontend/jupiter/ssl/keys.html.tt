@@ -1,0 +1,239 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/keys.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('CPIcons',$context->plugin('CPIcons'));$stash->set('SSL',$context->plugin('SSL'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('SHOW_HELPER_LINKS_RECORD_COUNT',10);$stash->set('list_keys',$stash->get(['execute',['SSL','list_keys',{'api.sort_column'=>'friendly_name' }]]));$stash->set('has_keys_data',$stash->get(['list_keys',0,'status',0])&& $stash->get(['list_keys',0,'data',0,'size',0]));$stash->set('list_count',$stash->get(['list_keys',0,'data',0])? $stash->get(['list_keys',0,'data',0,'size',0]): 0);$stash->set('RECOMMENDED_KEY_TYPE',$stash->get(['SSL',0,'key_types_and_labels',0,0,0]));$stash->set('DEFAULT_KEY_TYPE',$stash->get(['SSL',0,'default_key_type',0])|| $stash->get(['RECOMMENDED_KEY_TYPE',0,'type',0]));$stash->set('MINIMUM_MODULUS_LENGTH',$stash->get(['SSL',0,'DEFAULT_KEY_SIZE',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '
+<div class="body-content">
+    <div class="section">
+        ';if ($stash->get('list_count')> $stash->get('SHOW_HELPER_LINKS_RECORD_COUNT')){$output .= '
+        <a id="top"></a>
+        <div class="related related-top">
+            <a id="generate-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['Generate a Private Key.' ]]);$output .= '</a>
+            <a id="upload-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['Upload a Private Key.' ]]);$output .= '</a>
+        </div>
+        '}$output .= '
+
+        <h2 id="h2Header">
+            ';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '
+        </h2>
+
+        <p id="descPrivate" class="description">';$output .= $stash->get(['locale',0,'maketext',['A private key is used to decrypt information transmitted over SSL. When you create an SSL certificate, the first step is to generate a private key file associated with that SSL certificate. You should generate a private key for each SSL certificate you create. This private key is very important and should be kept confidential. A copy of each private key should be kept in a safe place; there is no way to recover a lost private key.' ]]);$output .= '        </p>
+
+        ';if ($stash->get(['list_keys',0,'data',0,'size',0])){$output .= '
+        <h2 id="hdrOnserver">';$output .= $stash->get(['locale',0,'maketext',['Keys on Server' ]]);$output .= '</h2>
+        <table class="sortable table table-striped" id="ssltable">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['ID' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Key Type' ]]);$output .= '</th>
+                    <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['list_keys',0,'data',0,'size',0])){$stash->set('warn_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['warning',16 ]]));$stash->set('error_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['error',16 ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_keys',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$stash->set('modulus_length',$stash->get(['key',0,'modulus_length',0]));$stash->set('modulus_class','');$stash->set('modulus_error',0);$stash->set('keytype',$stash->get(['SSL',0,'translate_key_parts_to_label',[$stash->get('key')]]));if ($stash->get(['key',0,'key_algorithm',0])eq 'rsaEncryption' && $stash->get('modulus_length')< $stash->get('MINIMUM_MODULUS_LENGTH')){$stash->set('modulus_class','modulus-critical');$stash->set('modulus_error',1)}$output .= '                <tr class="';$output .= $stash->get('modulus_class');$output .= '">
+                    <td class="name-column">
+                        <div class="name-column column" title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'friendly_name',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['key',0,'friendly_name',0,'html',0,'breakOn',['\.' ]]);$output .= '</div>
+                    </td>
+                    <td class="id-column">
+                        <div class="id-column column" title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'id',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['key',0,'id',0,'html',0,'breakOn',['_' ]]);$output .= '</div>
+                    </td>
+                    <td class="keytype-column" title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('keytype');&$_tt_filter($output)};$output .= '">
+                        <div class="keytype-column column">
+                            ';$output .= $stash->get(['keytype',0,'html',0]);$output .= '
+                        </div>
+                    </td>
+                    <td>
+                        <a id="view-key-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" class="btn btn-link" href="viewkey.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['key',0,'id',0]);&$_tt_filter($output)};$output .= '&name=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['key',0,'friendly_name',0]);&$_tt_filter($output)};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['This option allows you to view the key and edit the key’s description.' ]]);$output .= '">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '</a>
+                        <a id="remove-key-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" class="btn btn-link" href="deletekeyconfirm.html?name=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['key',0,'friendly_name',0]);&$_tt_filter($output)};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Delete the key from the account.' ]]);$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</a>
+                    </td>
+                </tr>
+              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td colspan="4" class="errors">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no private keys on the server.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+        '}$output .= '
+    </div>
+
+    <div class="section">
+        ';if ($stash->get('list_count')> $stash->get('SHOW_HELPER_LINKS_RECORD_COUNT')){$output .= '
+        <a id="generate"></a>
+        <div class="related">
+            <a id="list-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['List Private Keys' ]]);$output .= '</a>
+            <a id="upload2-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['Upload a Private Keys.' ]]);$output .= '</a>
+        </div>
+        '}$output .= '
+        <h2 id="hdrNewPrivate" class="secondary">';$output .= $stash->get(['locale',0,'maketext',['Generate a New Private Key.' ]]);$output .= '</h2>
+        <p id="descNewPrivate" class="description">';$output .= $stash->get(['locale',0,'maketext',['You should generate a new key file for each certificate you install.' ]]);$output .= '        </p>
+
+        <form id="genkey" action="genkey.html" name="keyform" method="post">
+            <input id="hidDogenerate" type="hidden" name="do_generate" value="1">
+            <div class="form-group">
+                <label id="lblKeytype" for="keytype">';$output .= $stash->get(['locale',0,'maketext',['Key Type' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="keytype" id="keytype" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['SSL',0,'key_types_and_labels',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key_type'}=$_tt_value;$output .= '
+                                <option value="';$output .= $stash->get(['key_type',0,'type',0]);$output .= '" ';if ($stash->get('DEFAULT_KEY_TYPE')eq $stash->get(['key_type',0,'type',0])){$output .= 'selected="selected"'}$output .= '>
+                                    ';$output .= $stash->get(['key_type',0,'label',0]);$output .= '
+                                    &nbsp;
+                                    ';if ($stash->get(['key_type',0,'type',0])eq $stash->get('DEFAULT_KEY_TYPE')){$output .= '
+                                        ';$output .= $stash->get(['locale',0,'maketext',['(Default)' ]]);$output .= '
+                                    '}$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblGenfname" for="gen-fname">';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea name="fname" id="gen-fname" type="text" class="form-control" rows="2"></textarea>
+                        <div class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Optional]: You can use this field to provide a description for this private key.' ]]);$output .= '
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="hidRef" name="ref" value="';$output .= $stash->get(['FORM',0,'ref',0]);$output .= '" type="hidden" />
+                <input id="genkey-action" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Generate' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        ';if ($stash->get('list_count')> $stash->get('SHOW_HELPER_LINKS_RECORD_COUNT')){$output .= '
+        <a id="upload"></a>
+        <div class="related">
+            <a id="list2-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['List Private Keys' ]]);$output .= '</a>
+            <a id="generate2-link" href="javascript:void(0)" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['Generate a Private Key.' ]]);$output .= '</a>
+        </div>
+        '}$output .= '
+
+        <h2 id="hdrNewPrivate" class="secondary">
+            ';$output .= $stash->get(['locale',0,'maketext',['Upload a New Private Key.' ]]);$output .= '
+        </h2>
+
+        <p id="descExisting" class="description">';$output .= $stash->get(['locale',0,'maketext',['If you have an existing key, paste the key below, or upload it to the server.' ]]);$output .= '        </p>
+
+        <div class="section">
+            <form id="uploadkey" action="uploadkey.html" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label id="lblKey" for="key">';$output .= $stash->get(['locale',0,'maketext',['Paste the key into the following text box:' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <textarea dir="ltr" id="key" name="key" rows="15" class="textarea-base64 form-control"></textarea>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblUpfname" for="up-fname">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <textarea type="text" class="form-control" name="fname" id="up-fname" rows="2"></textarea>
+                            <div class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Optional]: You can use this field to provide a description for this private key.' ]]);$output .= '
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input id="hidRef2" name="ref" value="';$output .= $stash->get(['FORM',0,'ref',0]);$output .= '" type="hidden" />
+                    <input id="hidType" name="type" value="paste" type="hidden" />
+                    <input id="pastekey-action" type="submit" class="btn btn-primary" title="';$output .= $stash->get(['locale',0,'maketext',['Click to save the above key to your server.' ]]);$output .= '"  value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '">
+                </div>
+            </form>
+        </div>
+
+        <div class="or-separator">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['or[comment,this is meant to be a horizontal separator of 2 things stacked vertically]' ]]);$output .= '</strong>
+        </div>
+
+        <div class="section">
+            <form id="uploadkey2" action="uploadkey.html" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label id="lblUploadKeyfile" for="uploadkey-file">';$output .= $stash->get(['locale',0,'maketext',['Choose a [asis,.key] file.' ]]);$output .= ':</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input id="uploadkey-file" type="file" name="keyfile" />
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblUp2fname" for="up2-fname">';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <textarea type="text" class="form-control" name="friendly_name" id="up2-fname" rows="2"></textarea>
+                            <div class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Optional]: You can use this field to provide a description for this private key.' ]]);$output .= '
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input id="hidRef3" name="ref" value="';$output .= $stash->get(['FORM',0,'ref',0]);$output .= '" type="hidden" />
+                    <input id="hidType2" name="type" value="upload" type="hidden" />
+                    <input id="uploadkey-action" type="submit" class="btn btn-primary" title="';$output .= $stash->get(['locale',0,'maketext',['Click to upload the above key to your server.' ]]);$output .= '"  value="';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <ul class="list-inline text-center">';if ($stash->get(['FORM',0,'ref',0])){do {my$_tt_result=$stash->get(['FORM',0,'ref',0]);my$_tt_match;SWITCH: {$_tt_match='csrs';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCSR','return_location'=>'csrs.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificate Signing Requests' ]])});$output .= '
+        </li>';last SWITCH}$_tt_match='crts';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCRT','return_location'=>'crts.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificates' ]])});$output .= '
+        </li>';last SWITCH}}}}$output .= '        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Manager' ]])});$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'embed_stylesheets'=>['css/ssl.css' ],'page_stylesheets'=>['css2-min/ssl/keys.css' ],'content',$output })};$output .= '
+
+';$output .= '
+
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n(function() {\n    /**\n     * This module contains all the page specific constants generated by the server.\n     * \@module PAGE.Properties\n     */\n    var PAGE = {\n        properties : {\n            has_keys_data: ";$output .= $stash->get('has_keys_data')? 'true' : 'false';$output .= '
+        }
+    }
+     // Publish the PAGE object;
+     window["PAGE"] = PAGE;
+}());
+
+';$output .= $context->insert('cjt/ssl-min.js');$output .= $context->insert('sharedjs/ssl_optimized.js');$output .= '
+';$output .= $context->insert('yui/event-mouseenter/event-mouseenter-min.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/form_submit_handler_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/form_submit_handler_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['js2/ssl/keys.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('js2/ssl/keys.js');$output .= '
+
+';$stash->set('lexicon',{'Processing …'=>$stash->get(['locale',0,'lextext',['Processing …' ]]),'A key size shorter than [quant,_1,bit,bits] is not supported.'=>$stash->get(['locale',0,'lextext',['A key size shorter than [quant,_1,bit,bits] is not supported.' ]]),'A key size shorter than [quant,_1,bit,bits] is insecure.'=>$stash->get(['locale',0,'lextext',['A key size shorter than [quant,_1,bit,bits] is insecure.' ]]),'The key is shorter than the recommended length of [quant,_1,bit,bits].'=>$stash->get(['locale',0,'lextext',['The key is shorter than the recommended length of [quant,_1,bit,bits].' ]])});$output .= '
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+</script>
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

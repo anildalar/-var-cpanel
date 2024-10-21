@@ -1,0 +1,152 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/manageservicecrts.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('CPList',$context->plugin('CPList'));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'services',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'svc_h'}=$_tt_value;if ($stash->get(['svc_h',0,'name',0])eq 'ftp'){$stash->set('has_ftp',1);last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('extra_css',do {my$output='';$output .= $context->insert('sharedcss/sslinstall_optimized.css');$output .= $context->insert('css/ssl_forms_optimized.css');$output .= $context->insert('sharedcss/ssltable_optimized.css');$output .= $context->insert('css/ssltable_optimized.css');$output .= '
+    .tab-content {
+        padding:0 20px 20px 20px;
+    }
+    #tabSetInstall {
+        margin-top:20px;
+    }
+    div.installCert {
+        margin-top: 20px;
+    }
+    body.no-reset-links .reset-link {
+        display:none;
+    }
+
+';$output});$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';$stash->set('ssl_browse_html',do {my$output='';$output .= '    <input type="button" id="sslbrowse" value="';$output .= $stash->get(['locale',0,'maketext',['Browse Certificates' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Browse for certificates to install.' ]]);$output .= '" class="btn-secondary">
+    <input type="button" id="sslupload" value="';$output .= $stash->get(['locale',0,'maketext',['Choose a [asis,PKCS #12] Archive' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Upload certificate bundle to install.' ]]);$output .= '" class="btn-secondary" onclick="document.getElementById(\'sslfilebrowse\').value = null; document.getElementById(\'sslfilebrowse\').click();">
+    <input type="file" id="sslfilebrowse" style="visibility:hidden" onchange="PAGE.handleFileSelect(this)">
+    <div id="sslpasswordblock" style="display:none;border:1px solid #000; padding:10px;border-radius:4px;margin-left:8px;">
+        <p style="margin-top:0;"><label for="sslpassword" id="sslpassword_label"></label></p>
+        <input type="password" id="sslpassword" oninput="PAGE.certPasswordOnInput(event)">
+        <span id="sslpassword_error" class="no_panel"></span>
+        <p id="sslpassword_success" style="display:none"></p>
+    </div>
+';$output});$output .= '
+';$stash->set('ssl_form_top',do {my$output='';$output .= '    <div>
+        ';$output .= $stash->get(['locale',0,'maketext',['Choose one or more services for SSL certificate installation:' ]]);$output .= '
+        <input type="hidden" id="service_to_install">
+        <span class="checkbox-field-error" id="service_to_install_error"></span>
+    </div>
+    <div>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'services',0,'sort',['description' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'svc'}=$_tt_value;$output .= '            ';if ($stash->get(['svc',0,'grouptype',0])ne 'default'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '            <div class="install-service-group install-service-group-';$output .= $stash->get(['svc',0,'grouptype',0]);$output .= '">
+                <input type="checkbox" id="checkbox-';$output .= $stash->get(['svc',0,'name',0]);$output .= '" name="service" value="';$output .= $stash->get(['svc',0,'name',0]);$output .= '" ';$output .= $stash->get(['data',0,'services',0,'size',0])eq 1 ? 'checked' : '';$output .= '>
+                <label for="checkbox-';$output .= $stash->get(['svc',0,'name',0]);$output .= '">';$output .= $stash->get(['svc',0,'description',0]);$output .= '</label>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </div>
+';$output});$output .= '
+';$stash->set('apns_form_top',do {my$output='';$output .= '    <div id="APNSSelectMsg">
+        ';$output .= $stash->get(['locale',0,'maketext',['Choose the service this [output,acronym,APNs,Apple Push Notification service] certificate is for:' ]]);$output .= '
+        <input type="hidden" id="APNS_to_install">
+        <span class="radio-field-error" id="APNS_to_install_error"></span>
+    </div>
+    <div id="APNSSelectRadio">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'services',0,'sort',['description' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'svc'}=$_tt_value;$output .= '            ';if ($stash->get(['svc',0,'grouptype',0])eq 'default'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '            <div class="APNS-service-group APNS-service-group-';$output .= $stash->get(['svc',0,'grouptype',0]);$output .= '">
+                <input type="radio" id="radio-';$output .= $stash->get(['svc',0,'name',0]);$output .= '" name="service" value="';$output .= $stash->get(['svc',0,'name',0]);$output .= '" ';$output .= $stash->get(['svc',0,'name',0])eq 'mail_apns' ? 'checked' : '';$output .= ' disabled>
+                <label for="radio-';$output .= $stash->get(['svc',0,'name',0]);$output .= '">';$output .= $stash->get(['svc',0,'description',0]);$output .= '</label>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </div>
+';$output});$output .= '
+<div class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to manage SSL certificates for services other than Apache.' ]]);$output .= '</div>
+
+<div id="tabSet" class="yui-navset">
+    <ul class="yui-nav">
+        ';$stash->set('daemons',['cpsrvd','Dovecot','Exim' ]);if ($stash->get('has_ftp')){$output .= $stash->get(['daemons',0,'push',['FTP' ]])}$output .= '        <li class="selected"><a href="#/certificates/"><em>';$output .= $stash->get(['locale',0,'maketext',['Daemons ([list_and,_1])',$stash->get('daemons')]]);$output .= '</em></a></li>
+        <li><a href="#/certificates/iOS-mail"><em>';$output .= $stash->get(['locale',0,'maketext',['[asis,iOS] Mail Push Notifications ([asis,APNs])' ]]);$output .= '</em></a></li>
+    </ul>
+    <div class="yui-content" style="display:none"></div>
+</div>
+
+<div id="ssl_table_area" class="ssl-table-area">
+    <div id="service_ssl_explanation" style="display:none"></div>
+
+    <div id="apns_explanation" style="display:none"></div>
+    <div id="ios_client_explanation" style="display:none"></div>
+    ';if ($stash->get('has_ftp')){$stash->set('daemons_notice',$stash->get(['locale',0,'maketext',['When the system processes a [output,abbr,TLS,Transport Layer Security] [output,abbr,SNI,Server Name Indication] request, the system serves a domain-specific certificate with all services except [output,abbr,FTP,File Transfer Protocol]. If no domain-specific certificate matches the [asis,SNI] request or if the client doesn’t send an [asis,SNI] request, the service uses its default certificate, which you can manage below.' ]]))}else {$stash->set('daemons_notice',$stash->get(['locale',0,'maketext',['When a service receives a [output,abbr,TLS,Transport Layer Security] [output,abbr,SNI,Server Name Indication] request, the service tries to serve a certificate that matches that [asis,SNI] request. If no such certificate exists or if the client doesn’t send an [asis,SNI] request, the service serves its default certificate, which you can manage below.' ]]))}$output .= '    <script>
+        new CPANEL.widgets.Page_Notice( {
+            container: "service_ssl_explanation",
+            level: "info",
+            content: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('daemons_notice').'<br><br>' .$stash->get(['locale',0,'maketext',['We recommend that you install the same certificate for each service.' ]])]]);$output .= ',
+        } );
+        new CPANEL.widgets.Page_Notice( {
+            container: "apns_explanation",
+            level: "info",
+            content: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['[asis,iOS Mail Push Notifications] trigger [asis,iOS] devices to check for new messages when a message is delivered to an email account’s INBOX. To add support for this feature to your server, [output,url,_1,follow these instructions,target,blank] to obtain an [output,abbr,APNs,Apple Push Notification service] mail certificate, and then install it below.','https://go.cpanel.net/iospushnotification' ]])]]);$output .= ',
+        } );
+        new CPANEL.widgets.Page_Notice( {
+            container: "ios_client_explanation",
+            level: "warn",
+            content: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['[asis,iOS] client devices must close and [output,strong,relaunch] the Mail app to enable push notifications after the certificate is installed.' ]])]]);$output .= ',
+        } );
+    </script>
+    <div id="services_ssl_table"></div>
+</div>
+
+<div id="cjt_pagenotice_container"></div>
+
+<div id="tabSetInstall" class="yui-navset">
+    <ul class="yui-nav">
+        <li class="selected"><a href="#/install/"><em>';$output .= $stash->get(['locale',0,'maketext',['Install a New Certificate' ]]);$output .= '</em></a></li>
+    </ul>
+    <div class="yui-content" style="display:none"></div>
+</div>
+
+<div class="span12 installCert">
+    ';$output .= $context->process('_ssl_form_include.tmpl',{'ssl_browse_html'=>$stash->get('ssl_browse_html'),'ssl_form_top'=>$stash->get('ssl_form_top'),'apns_form_top'=>$stash->get('apns_form_top')});$output .= '</div>
+
+
+
+<script id="table_action_template" type="text/x-handlebars-template">
+<div class="action-links">
+    <a href="javascript:void(0)" class="reset-link">';$output .= $stash->get(['locale',0,'maketext',['Reset Certificate' ]]);$output .= '</a>
+    <span class="link-spacer"></span>
+
+    <a href="javascript:void(0)" class="details-link">';$output .= $stash->get(['locale',0,'maketext',['Certificate Details' ]]);$output .= '</a>
+
+';if ($stash->get(['data',0,'services',0,'size',0])> 1){$output .= '    <span class="link-spacer"></span>
+
+    <a href="javascript:void(0)" class="other-service-link">';$output .= $stash->get(['locale',0,'maketext',['Apply Certificate to Another Service' ]]);$output .= '</a>
+'}$output .= '</div>
+</script>
+
+<script id="batch_failure_template" type="text/x-handlebars-template">
+<table class="batch-failure">
+{{#each service}}
+    <tr>
+        <td class="service-name">{{name}}</td>
+        <td class="error-text">{{error}}</td>
+    </tr>
+{{/each}}
+</table>
+</script>
+
+<script id="reset_confirm_template" type="text/x-handlebars-template">
+<p>';$output .= $stash->get(['locale',0,'maketext',['This action will install a new generated key and self-signed certificate for the “[_1]” service. (The certificate will cover the domain “[_2]”.) If you proceed with this reset, obtain another certificate from a valid Certificate Authority to replace the self-signed certificate as soon as possible.','{{service}}',$stash->get(['data',0,'hostname',0])]]);$output .= '</p>
+<p>';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to reset the SSL certificate for “[_1]”? You cannot undo this operation!','{{service}}' ]]);$output .= '</p>
+</script>
+
+<script id="display_restart_dialog" type="text/x-handlebars-template">
+<p>';$output .= $stash->get(['locale',0,'maketext',['In order to complete your SSL Certificate installation, you will need to restart cpsrvd.' ]]);$output .= '</p>
+<p>';$output .= $stash->get(['locale',0,'maketext',['Restart [asis,cpsrvd] now?' ]]);$output .= '</p>
+</script>
+
+
+<script>
+window.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[{'nvdata'=>$stash->get(['NVData',0,'get_page_nvdata',0]),'services'=>$stash->get(['data',0,'services',0]),'ui_mode'=>'services' }]]);$output .= ';
+
+';$output .= $context->insert('sharedjs/asn1_optimized.js');$output .= '
+';$output .= $context->insert('cjt/ssl-min.js');$output .= '
+</script>
+
+';$output .= $context->process('sslinstall_include.tmpl',{'cert_browser_users'=>$stash->get(['data',0,'users',0])});$output .= $context->process('ssltable_include.tmpl');$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+<script>
+';$output .= $context->insert('yui/datasource/datasource-min.js');$output .= '
+';$output .= $context->insert('yui/datatable/datatable-min.js');$output .= '
+';$output .= $context->insert('sharedjs/yui2_datatable_row_expansion_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/sslwidgets.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslwidgets_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/sslinstall.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslinstall_optimized.js');$output .= '
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'manage_services_ssl_certificates','stylesheets'=>['/yui/datatable/assets/datatable-core.css','/yui/datatable/assets/datatable.css',$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/assets/skins/sam/tabview.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['css/notify.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/tabview-min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/layout/layout-min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jsforge/0.7.0/forge.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/sharedjs/pkcs12_optimized.js' ]])],'extrastyle'=>$stash->get('extra_css'),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

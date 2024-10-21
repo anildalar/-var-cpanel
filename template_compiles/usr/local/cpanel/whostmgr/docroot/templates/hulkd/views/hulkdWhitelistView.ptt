@@ -1,0 +1,237 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/hulkd/views/hulkdWhitelistView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Whitelist' ]]);$output .= '</h3>
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] IP addresses on the whitelist can always log in to your server.' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="row batch-subform" id="whitelist_batch_subform">
+            <div class="col-md-12">
+                <form class="layout-medium" novalidate ng-submit="add_to_whitelist()" ng-hide="ip_being_edited">
+                    <div class="form-group">
+                        <label id="lblWhitelistBatchAdd" for="whitelist_batch_add">
+                            ';$output .= $stash->get(['locale',0,'maketext',['New Whitelist Records' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign"
+                            role="tooltip"
+                            tabindex="0"
+                            aria-describedby="lblWhitelistBatchAdd"
+                            uib-tooltip-template="\'ip-examples-tooltip.html\'"
+                            tooltip-trigger="keyup click"
+                            tooltip-placement="top"></span>
+                        <textarea id="whitelist_batch_add"
+                            class="form-control no-expand"
+                            rows="10"
+                            ng-model="new_whitelist_records"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter one or more IP addresses, one address per line.' ]]);$output .= '"></textarea>
+                        <span class="help-block">
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['You may include an optional comment with each IP address.' ]]);$output .= '<br/><br/>
+                                <strong>';$output .= $stash->get(['locale',0,'maketext',['Example:' ]]);$output .= '</strong>
+                                <code>
+                                    169.254.1.1 # ';$output .= $stash->get(['locale',0,'maketext',['Comment for this IP address.' ]]);$output .= '
+                                </code>
+                            </p>
+                            <p>
+                                ';$output .= $stash->get(['locale',0,'maketext',['You can also paste in the contents of a previously downloaded whitelist.' ]]);$output .= '
+                            </p>
+                        </span>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-loading add_button">
+                            <span ng-show="adding_batch_to_whitelist" class="glyphicon glyphicon-refresh fa-spin"></span>
+                            <span ng-hide="adding_batch_to_whitelist" class="btn-label">';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '</span>
+                        </button>
+                    </div>
+                </form>
+                <form class="layout-medium" novalidate id="whitelist_comment_editor" ng-show="ip_being_edited" ng-submit="update_whitelist_comment()">
+                    <div class="form-group">
+                        <label for="whitelist_current_ip">';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</label>
+                        <input id="whitelist_current_ip" type="text" ng-model="current_ip" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="whitelist_current_comment">';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '</label>
+                        <textarea id="whitelist_current_comment" ng-model="current_comment" rows="3" maxlength="255" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter comment (255 characters maximum).' ]]);$output .= '" class="form-control no-expand"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-loading add_button">
+                            <span ng-show="updating_comment" class="glyphicon glyphicon-refresh fa-spin"></span>
+                            <span ng-hide="updating_comment" class="btn-label">';$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '</span>
+                        </button>
+                        <button type="button" class="btn btn-link" ng-hide="updating_comment" ng-click="cancel_whitelist_editing()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="row search-page-container">
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
+                <div class="search-input-group input-group">
+                    <input name="find" id="whitelist-search"
+                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                class="form-control filter-list-input"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= '"
+                                autocomplete="off"
+                                ng-model="meta.filter"
+                                ng-change="filterList()"
+                                ng-debounce
+                    />
+                    <div id="whitelist-searchAction" class="input-group-btn search-list search">
+                        <button class="btn btn-default" ng-click="toggleFilter()">
+                            <span class="glyphicon" ng-class="{ \'glyphicon-search\': !meta.filter, \'glyphicon-remove\': meta.filter }" ></span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12 text-right">
+                <div class="pagination-container">
+                    <page-size id="ddlPageSize"
+                        allowed-sizes="meta.pageSizes"
+                        total-items="meta.filteredItems"
+                        ng-model="meta.pageSize"
+                        show-all="true"
+                        ng-change="selectPageSize()">
+                    </page-size>
+                    <uib-pagination id="topPager"
+                        ng-change="selectPage(page)"
+                        ng-model="meta.currentPage"
+                        max-size="meta.maxPages"
+                        items-per-page="meta.pageSize"
+                        total-items="meta.filteredItems"
+                        direction-links="true"
+                        boundary-links="true"
+                        rotate="false"
+                        first-text="<<"
+                        last-text=">>"
+                        previous-text="<"
+                        next-text=">"
+                        class="pagination-small">
+                    </uib-pagination>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="text-right" ng-show="!meta.filter">
+                    {{ LOCALE.maketext("Displaying [_1] to [_2] out of [quant,_3,record,records].", meta.pageNumberStart, meta.pageNumberEnd, meta.totalItems) }}
+                </p>
+                <p class="text-right" ng-show="meta.filter">
+                    {{ LOCALE.maketext("Displaying [quant,_1,record,records] out of [quant,_2,record,records].", meta.filteredList ? meta.filteredList.length : 0, meta.totalItems) }}
+                </p>
+            </div>
+        </div>
+        <table id="whitelist_table" class="table table-striped">
+            <colgroup>
+                <col class="checkbox_colgroup">
+                <col class="ip_colgroup">
+                <col class="comment_colgroup">
+                <col class="action_colgroup">
+                <col class="gear_colgroup">
+            </colgroup>
+            <thead>
+                <tr>
+                    <th class="checkbox_column">
+                        <input type="checkbox"
+                            id="whitelist_select_all_checkbox"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to select all IP addresses.' ]]);$output .= '"
+                            ng-disabled="!whitelist.length || ip_being_edited"
+                            ng-click="toggle_whitelist_selection()">
+                    </th>
+                    <th class="ip_column">
+                        <span toggle-sort id="sortIp" onsort="sortList" sort-meta="meta" sort-field="white_ip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="comment_column">
+                        <span toggle-sort id="sortComments" onsort="sortList" sort-meta="meta" sort-field="comment">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="actions_header">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                    <th class="gear_column">
+                        <span class="dropdown" uib-dropdown>
+                        <a href class="dropdown-toggle" uib-dropdown-toggle ng-class="{disabled: ip_being_edited}">
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited}">
+                                <a href ng-click="select_all_whitelist();">';$output .= $stash->get(['locale',0,'maketext',['Select All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited || !itemsAreChecked()}">
+                                <a href ng-click="deselect_all_whitelist();">';$output .= $stash->get(['locale',0,'maketext',['Clear Selection' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited || !downloadAllLink}">
+                                <a download="{{ downloadName() }}" ng-href="{{ downloadAllLink }}">';$output .= $stash->get(['locale',0,'maketext',['Download All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited || !itemsAreChecked() || !downloadSelectionLink}">
+                                <a download="{{ downloadName() }}" href="{{ downloadSelectionLink }}">';$output .= $stash->get(['locale',0,'maketext',['Download Selected' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited}">
+                                <a href ng-click="confirm_delete_all();">';$output .= $stash->get(['locale',0,'maketext',['Delete All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !whitelist.length || ip_being_edited || !itemsAreChecked()}">
+                                <a href ng-click="confirm_whitelist_deletion();">';$output .= $stash->get(['locale',0,'maketext',['Delete Selected' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-click="force_load_whitelist();">';$output .= $stash->get(['locale',0,'maketext',['Reload Whitelist from Server' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                      </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="empty_whitelist_notice"
+                    class="info empty-row"
+                    ng-show="loading || meta.totalItems === 0 || meta.filteredList.length === 0">
+                    <td colspan="5">
+                        <span id="loading_whitelist_message" ng-show="loading">
+                            <i id="loading_whitelist_spinner" class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading whitelist data …' ]]);$output .= '
+                        </span>
+                        <span id="empty_whitelist_message" ng-show="!loading && meta.totalItems === 0">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The whitelist is empty.' ]]);$output .= '
+                        </span>
+                        <span id="no_match_whitelist_message" ng-show="!loading && meta.totalItems > 0 && meta.filteredList.length === 0">
+                            ';$output .= $stash->get(['locale',0,'maketext',['No whitelist entries match the filter.' ]]);$output .= '
+                        </span>
+                    </td>
+                </tr>
+                <tr ng-repeat="white_ip in meta.filteredList">
+                    <td class="checkbox_column">
+                        <input type="checkbox"
+                            id="whitelist_{{white_ip}}_checked"
+                            class="whitelist_select_item"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to select “[_1]”.','{{white_ip}}' ]]);$output .= '"
+                            data-ip="{{white_ip}}"
+                            ng-disabled="ip_being_edited"
+                            ng-click="check_whitelist_selection()">
+                    </td>
+                    <td class="ip_column" ng-bind-html="splitLongIp(white_ip)"></td>
+                    <td class="comment_column wordbreak">{{whitelist_comments[white_ip]}}</td>
+                    <td>
+                        <button class="btn btn-link" ng-click="confirm_whitelist_deletion(white_ip)" ng-disabled="ip_being_edited" ng-attr-title="{{delete_tooltip(white_ip)}}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </button>
+                        <button class="btn btn-link" ng-click="edit_whitelist_ip(white_ip)" ng-disabled="ip_being_edited" ng-attr-title="{{edit_tooltip(white_ip)}}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                        </button>
+                    </td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,863 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/createacct.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Net',$context->plugin('Net'));$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('AccountEnhancements',$context->plugin('AccountEnhancements'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('enhancements',$stash->get(['AccountEnhancements',0,'list',0]));$stash->set('spamassassin_disabled_title',$stash->get(['locale',0,'maketext',['You cannot disable this option when the “[asis,Apache SpamAssassin™]: Forced Global ON” setting is enabled in the “[_1]” interface.',$stash->get(['locale',0,'maketext',['Exim Configuration Manager' ]])]]));$stash->set('worker_settings',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'mail_workers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'worker'}=$_tt_value;$stash->set(['worker_settings',0,$stash->get(['worker',0,'alias',0]),0],$stash->get(['worker',0,'system_settings',0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('pkg_system_default_values',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'package_defaults',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pkg'}=$_tt_value;$stash->set(['pkg_system_default_values',0,$stash->get('pkg'),0],$stash->get(['data',0,'package_defaults',0,$stash->get('pkg'),0,'default',0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get(['data',0,'locked_to_mail_worker',0])){$stash->set('spamassassin_globally_enabled',$stash->get(['worker_settings',0,'values',0,0,0,'Mail',0,'globalspamassassin',0]))}else {$stash->set('spamassassin_globally_enabled',$stash->get(['data',0,'spamassassin_globally_enabled',0]))}$stash->set('over_account_limit',0);if ($stash->get(['data',0,'number_of_accounts_remain',0])<= 0 && $stash->get(['data',0,'check_user_account_limits',0])){$stash->set('over_account_limit',1)}$stash->set('manual_resources_help',[]);$stash->set('custom_controls',[]);$stash->set('no_package_defaults',{});$stash->set('acl_add_pkg','settings-acl_add-pkg');$stash->set('acl_not_edit_account','settings-acl_not_edit-account');$stash->set('acl_edit_account','settings-acl_edit-account');$stash->set('DEFAULT_NUMBER_LIMIT',999999999999);$stash->set('reboot_url',($stash->get('cp_security_token').'/scripts/graceful_reboot_landing?suggest=1'));$output .= do {my$output='';$output .= '
+';if ($stash->get(['Whostmgr',0,'get_max_users',0])&& $stash->get(['Whostmgr',0,'minimum_accounts_needed',[$stash->get(['Whostmgr',0,'get_max_users',0])]])){$output .= $context->process('menu/_license_excess_create.tmpl');$output .= '    <script>
+        var PAGE = { noForm: true };
+    </script>
+'}elsif (!$stash->get(['data',0,$stash->get('acl_edit_account'),0])&&!$stash->get(['data',0,'all_pkgs',0,'size',0])&&!$stash->get(['data',0,'invalid_nameserver_setup',0])){$output .= '    <div class="notice notice-warning">
+        <div class="notice-content">
+            ';if ($stash->get(['data',0,$stash->get('acl_add_pkg'),0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You have not added any packages. [output,url,_1,Add a package] to continue.',$stash->get('cp_security_token').'/scripts/addpkg2' ]]);$output .= '
+            '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['No account packages are available for you. Contact your administrator for more information.' ]]);$output .= '
+            '}$output .= '
+        </div>
+    </div>
+    <script>
+        var PAGE = { noForm: true };
+    </script>
+'}else {$output .= '
+
+    ';$output .= $context->process('_pkg_hover.tmpl');$output .= '    ';$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+    ';if ($stash->get(['data',0,'invalid_nameserver_setup',0])){$output .= '    <p style="margin-left:20px">';$output .= $stash->get(['locale',0,'maketext',['Your nameserver setup in [output,url,_1,Basic WebHost Manager® Setup] is invalid. Please enter at least two nameservers there before attempting to create an account.',($stash->get('cp_security_token').'/scripts/editsets')]]);$output .= '</p>
+    '}else {$output .= '    <script type="text/javascript">
+
+    var PAGE = {
+        nsListUrlPrefix: "';$output .= $stash->get('cp_security_token');$output .= '/scripts2/getnslist?domain=",
+        spf_checked: ';$output .= $stash->get(['data',0,'spf_checked',0])? 'true' : 'false';$output .= ',
+        ALLOWSTUPIDSTUFF: ';$output .= $stash->get(['data',0,'username_allowstupidstuff',0]);$output .= ',
+        username_regexp: ';$output .= $stash->get(['data',0,'username_regexp',0,'json',0]);$output .= ',
+        max_email_quota_mib: ';$output .= $stash->get(['data',0,'max_email_quota_mib',0,'json',0]);$output .= ',
+        REQUIRED_PASSWORD_STRENGTH: ';$output .= $stash->get(['data',0,'minpwstrength',0]);$output .= ',
+        ZONE_TEMPLATE_SPF: ';$output .= $stash->get(['data',0,'zone_template_spf',0,'json',0])|| '{}';$output .= ',
+        addpackage: ';$output .= $stash->get(['data',0,$stash->get('acl_add_pkg'),0]);$output .= ',
+        editaccount: ';$output .= $stash->get(['data',0,$stash->get('acl_edit_account'),0]);$output .= ',
+        packages: ';$output .= $stash->get(['data',0,'all_pkgs',0,'json',0]);$output .= ',
+    };
+
+    </script>
+    <div id="why_strong_passwords_text" style="display: none">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['A strong password is very important to maintain security. Web servers are usually more powerful and have access to greater bandwidth than your personal computer, which makes them a prime target for [output,url,_1,password crackers,target,_blank].','http://en.wikipedia.org/wiki/Password_cracking' ]]);$output .= '</p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['We [output,strong,strongly recommend] that you use the built-in password generator to create your password.' ]]);$output .= '</p>
+    </div>
+
+    <div id="content">
+';$stash->set('show_limits_summary','settings-show_limits_summary');$output .= '
+';if ($stash->get(['data',0,$stash->get('show_limits_summary'),0])){$output .= '
+    <!--LIMITS INFO FOR RESELLERS-->
+    <div id="accountLimits" class="fatBorder">
+
+    ';$stash->set('limits_accounts','settings-limits_accounts');$output .= '
+    ';if ($stash->get(['data',0,$stash->get('limits_accounts'),0])){$output .= '
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Account Limits' ]]);$output .= '</h2>
+            <table class="table">
+            <thead>
+                <th>Limit</th>
+                <th>&nbsp;</th>
+                <th>Information</th>
+            </thead>
+            <tbody>
+        ';$stash->set('limits_number_of_accounts','settings-limits_number_of_accounts');$output .= '
+        ';if ($stash->get(['data',0,$stash->get('limits_number_of_accounts'),0])){$output .= '
+            <tr>
+                <td>';$output .= $stash->get(['locale',0,'maketext',['Number of Accounts' ]]);$output .= '</td>
+                <td><img src="/images/progresbar-2-';$output .= $stash->get(['data',0,'progress_number_of_accounts',0]);$output .= '.jpg" /> <b>';$output .= $stash->get(['data',0,'number_of_accounts',0]);$output .= ' / ';$output .= $stash->get(['data',0,'number_of_accounts_allowed',0]);$output .= '</b></td>
+            </tr>
+            ';if ($stash->get('over_account_limit')){$output .= '
+            <tr>
+                <td colspan="2"><b>';$output .= $stash->get(['locale',0,'maketext',['You have reached your account limit quota. You cannot create new accounts.' ]]);$output .= '</b>
+            </tr>
+            '}$output .= '
+        '}$output .= '
+
+        ';$stash->set('limits_resources','settings-limits_resources');$output .= '
+        ';if ($stash->get(['data',0,$stash->get('limits_resources'),0])){$output .= '
+            <tr>
+                <td>';$output .= $stash->get(['locale',0,'maketext',['Disk Space' ]]);$output .= '</td>
+                <td><img src="/images/progresbar-2-';$output .= $stash->get(['data',0,'progress_disk_usage',0]);$output .= '.jpg" /> <b>';$output .= $stash->get(['data',0,'disk_used',0]);$output .= ' / ';$output .= $stash->get(['data',0,'disk_allowed',0]);$output .= '</b></td>
+                <!-- <td>';$output .= $stash->get(['data',0,'disk_remain',0]);$output .= '</td> -->
+                <td>
+            ';$stash->set('overselling_disk','settings-overselling_disk');$output .= '
+            ';if ($stash->get(['data',0,$stash->get('overselling_disk'),0])){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Disk Usage Limit is calculated based on how much disk space all your accounts have used.' ]]);$output .= '
+            '}else {$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Disk Usage Limit is calculated based on how much disk space all your accounts have been allocated.' ]]);$output .= '
+            '}$output .= '
+                </td>
+            </tr>
+            <tr>
+                <td>';$output .= $stash->get(['locale',0,'maketext',['Bandwidth' ]]);$output .= '</td>
+                <td><img src="/images/progresbar-2-';$output .= $stash->get(['data',0,'progress_bw_usage',0]);$output .= '.jpg" /> <b>';$output .= $stash->get(['data',0,'bw_used',0]);$output .= ' / ';$output .= $stash->get(['data',0,'bw_allowed',0]);$output .= '</b></td>
+                    <!-- <td>';$output .= $stash->get(['data',0,'bw_remain',0]);$output .= '</td> -->
+                <td>
+            ';$stash->set('overselling_bw','settings-overselling_bw');$output .= '
+            ';if ($stash->get(['data',0,$stash->get('overselling_bw'),0])){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Bandwidth Usage Limit is calculated based on how much bandwidth all your accounts have used.' ]]);$output .= '
+            '}else {$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Bandwidth Usage Limit is calculated based on how much bandwidth all your accounts have been allocated.' ]]);$output .= '
+            '}$output .= '
+                </td>
+            </tr>
+        ';$output .= '
+        '}$output .= '
+            </tbody>
+        </table>
+    ';$output .= '
+    '}$output .= '
+
+    ';$stash->set('limits_resources','settings-limits_resources');$output .= '
+    ';if ($stash->get(['data',0,$stash->get('limits_resources'),0])){$output .= '
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Accounts Limits Based on Resources' ]]);$output .= '</h2>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['The following limits show how many accounts could be created based on your remaining resources. If account creation is limited by a specific number of accounts then you may not be able to create as many accounts as listed below.' ]]);$output .= '
+        <p>
+        <table class="table" id="bwrl">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</th>
+                    <th>&nbsp;</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Limiting Factor' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'resource_pkg_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'resource_package'}=$_tt_value;$output .= '
+                <tr>
+                    <td><span style="cursor:crosshair; cursor:help;" onmouseover="hover_pkg(this,\'';$output .= $stash->get(['resource_package',0,'pkg',0]);$output .= '\');" onmouseout="dehover_pkg(this,\'';$output .= $stash->get(['resource_package',0,'pkg',0]);$output .= '\');">';$output .= $stash->get(['resource_package',0,'pkg',0]);$output .= '</span></td>
+                    <td><img src="/images/progresbar-2-';$output .= $stash->get(['resource_package',0,'progress',0]);$output .= '.jpg" alt="" /> <b>';$output .= $stash->get(['resource_package',0,'current',0]);$output .= ' / ';$output .= $stash->get(['resource_package',0,'max_allowed',0]);$output .= '</b></td>
+                    <td><img src="/images/';$output .= $stash->get(['resource_package',0,'limit_image',0]);$output .= '_24.gif" align="middle" alt="';$output .= $stash->get(['resource_package',0,'limit_image',0]);$output .= '" /></td>
+                    <!-- <td>';$output .= $stash->get(['resource_package',0,'remain',0]);$output .= '</td> -->
+                </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </tbody>
+        </table>
+
+        ';$stash->set('incompat_pkgs','settings-incompat_pkgs');$output .= '
+        ';if ($stash->get(['data',0,$stash->get('incompat_pkgs'),0])){$output .= '
+        <div align="left">
+            <div style="clear: right; padding-right: 2px;">';$output .= $stash->get(['locale',0,'maketext',['The following packages have been disabled because they have unlimited bandwidth or quota limits:' ]]);$output .= '</div>
+            <ul>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'incompat_pkg_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'incompatible_package'}=$_tt_value;$output .= '
+                <li>';$output .= $stash->get(['incompatible_package',0,'pkg',0]);$output .= '</li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </ul>
+        </div>
+        '}$output .= '
+    ';$output .= '
+    '}$output .= '
+
+    ';$stash->set('show_limits_number_of_packages','settings-show_limits_number_of_packages');$output .= '
+    ';if ($stash->get(['data',0,$stash->get('show_limits_number_of_packages'),0])){$output .= '
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Per Account Quantity Limits' ]]);$output .= '</h2>
+            <table class="table" id="pqrl">
+                <thead>
+                    <th>Package</th>
+                    <th>&nbsp;</th>
+                </thead>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'number_pkg_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'number_package'}=$_tt_value;$output .= '
+                <tbody>
+                    <tr>
+                        <td><span style="cursor:crosshair; cursor:help;" onMouseOver="hover_pkg(this,\'';$output .= $stash->get(['number_package',0,'pkg',0]);$output .= '\');" onMouseOut="dehover_pkg(this,\'';$output .= $stash->get(['number_package',0,'pkg',0]);$output .= '\');">';$output .= $stash->get(['number_package',0,'pkg',0]);$output .= '</span></td>
+                        <td><img src="/images/progresbar-2-';$output .= $stash->get(['number_package',0,'progress',0]);$output .= '.jpg" /> <b>';$output .= $stash->get(['number_package',0,'current',0]);$output .= ' / ';$output .= $stash->get(['number_package',0,'max_allowed',0]);$output .= '</b></td>
+                        <!-- <td>';$output .= $stash->get(['number_package',0,'remain',0]);$output .= '</td> -->
+                    </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </tbody>
+            </table>
+    '}$output .= '
+
+         </div>
+';$output .= '
+'}$stash->set('manualSettingControl',sub {my$output='';my (%_tt_args,$_tt_params);@_tt_args{'prefix','resource_obj','defaultvalue','min','max' }=splice(@_,0,5);$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$stash->set('select_unlimited',$stash->get(['resource_obj',0,'default',0])eq 'unlimited');$output .= '    <div class="tableWrapper">
+        <div class="rowWrapper">
+            <div class="cellWrapper">
+                    <input
+                        type="radio"
+                        id="';$output .= $stash->get('prefix');$output .= '_custom_radio"
+                        name="';$output .= $stash->get('prefix');$output .= '_control"
+                        value="custom"';if (!$stash->get('select_unlimited')){$output .= 'checked'}if (!$stash->get(['resource_obj',0,'can_unlimited',0])){$output .= '                            class="invisible"
+                            checked
+                        '}$output .= '                    />
+                    <input
+                        type="number"
+                        class="resource-text"
+                        name="';$output .= $stash->get('prefix');$output .= '"
+                        id="';$output .= $stash->get('prefix');$output .= '"
+                        value="';$output .= $stash->get('defaultvalue')|| 0;$output .= '"
+                        size="10"
+                        min="';$output .= $stash->get('min');$output .= '"
+                        max="';$output .= $stash->get('max')|| $stash->get('DEFAULT_NUMBER_LIMIT');$output .= '"
+                    />
+
+                    ';if ($stash->get(['resource_obj',0,'can_unlimited',0])){$output .= '                         <input type="radio" id="';$output .= $stash->get('prefix');$output .= '_unlimited_radio" name="';$output .= $stash->get('prefix');$output .= '_control" value="unlimited"';if ($stash->get('select_unlimited')){$output .= 'checked'}$output .= '/>
+                         <label for="';$output .= $stash->get('prefix');$output .= '_unlimited_radio">';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '</label>
+                    '}$output .= '                </div>
+                <div class="cellWrapper" id="';$output .= $stash->get('prefix');$output .= '_manual_errors">
+                    <div id="';$output .= $stash->get('prefix');$output .= '_error"></div>
+                </div>
+        </div>
+    </div>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$stash->set('manualResource',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'resource_name' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$stash->set('resource_obj',$stash->get(['data',0,'package_schema',0,$stash->get('resource_name'),0]));$output .= '
+    ';$stash->set('unlimited',$stash->get(['resource_obj',0,'default',0])eq 'unlimited' ? 1 : 0);$output .= '
+    ';$stash->set('default_value',$stash->get('unlimited')? $stash->get(['resource_obj',0,'min',0]): $stash->get(['resource_obj',0,'default',0]));$output .= '
+
+    ';$output .= $stash->get(['custom_controls',0,'push',[{'name'=>$stash->get('resource_name'),'label'=>$stash->get(['resource_obj',0,'label',0]),'min'=>$stash->get(['resource_obj',0,'min',0]),'max'=>$stash->get(['resource_obj',0,'max',0]),'default'=>$stash->get(['resource_obj',0,'default',0])}]]);$output .= '
+    <div class="propertyEditor">
+        <div class="propertyLabel">
+        ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['resource_obj',0,'label',0])]]);$output .= '        ';if ($stash->get(['resource_obj',0,'help_text',0])){$output .= '        ';$output .= $stash->get(['manual_resources_help',0,'push',[[$stash->get('resource_name'),$stash->get('resource_obj')]]]);$output .= '
+            <span id="';$output .= $stash->get('resource_name');$output .= '__help"><span class="far fa-question-circle help-text"></span></span>
+        '}$output .= '        </div>
+        <div class="propertyValue">
+            ';$output .= $stash->get(['manualSettingControl',[$stash->get('resource_name'),$stash->get('resource_obj'),$stash->get('default_value'),$stash->get(['resource_obj',0,'min',0]),$stash->get(['resource_obj',0,'max',0])]]);$output .= '
+        </div>
+    </div>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$stash->set('whm_variables',$stash->get(['Whostmgr',0,'template_vars',0]));$stash->set('show_reboot_banner',$stash->get(['Whostmgr',0,'check_flag',['CPCONF=show_reboot_banner' ]]));$stash->set('needs_reboot_result',$stash->get(['whm_variables',0,'needs_reboot',0]));if ($stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get('show_reboot_banner')&& $stash->get(['needs_reboot_result',0,'needs_cloudlinux',0])){$output .= '        <div class="callout callout-warning">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] You must [output,url,_1,reboot,target,_blank] your server to start using [output,strong,CloudLinux features].',$stash->get('reboot_url')]]);$output .= '
+        </div>'}if ($stash->get(['Whostmgr',0,'exists',['.cpanel-onboot' ]])){$output .= '        <div class="callout callout-warning">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Please wait for [output,strong,cpanel-onboot.service] to finish before creating one account. [output,em,Please Refresh this page to update this warning]' ]]);$output .= '
+        </div>'}$output .= '
+        <!-- <div id="leftform"> -->
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/wwwacct" name="mainform" id="mainform" method="post">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+
+            <input type="hidden" name="sign" value="" />
+            <input type="hidden" name="plan" />
+
+            <div class="fatBorder">
+                <fieldset class="groupEditor">
+                ';$output .= do {my$output='';$output .= '
+                    <div class="propertyGroup">
+                        <div class="propertyEditor">
+                            <div class="propertyLabel"><label for="domain">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="text" name="domain" id="domain" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="domain_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyLabel"><label for="username">';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="text" name="username" id="username" maxlength="16" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="username_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyLabel"><label for="password">';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="password" autocomplete=\'off\' name="password" id="password" value="" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="password_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyLabel"><label for="password2">';$output .= $stash->get(['locale',0,'maketext',['Re-type Password' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="password" autocomplete=\'off\' id="password2" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="password2_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor" id="pwStrengthEditor">
+                            <div class="propertyLabel">';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' (<div style="display: inline" id="why_strong_passwords_link" class="action_link">';$output .= $stash->get(['locale',0,'maketext',['Why?' ]]);$output .= '</div>)</div>
+                            <div class="propertyValue">
+                                <div id="pwStrengthContainer">
+                                    <div id="pwStrengthWidget"><div id="password_strength"></div></div>
+                                    <div id="pwStrengthButton"><input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor last">
+                            <div class="propertyLabel"><label for="contactemail">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="text" name="contactemail" id="contactemail" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="contactemail_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        ';$stash->set('show_custom_wpsq_options','settings-custom-wpsq-options');$output .= '
+                        ';if ($stash->get(['data',0,$stash->get('show_custom_wpsq_options'),0])){$output .= '
+                        ';$output .= '
+                        ';$output .= $stash->get(['manualResource',['maxaddon' ]]);$output .= '
+                        '}$output .= '
+                    </div>
+
+                ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Domain Information' ]]),'id'=>'domain_information','isExpanded'=>1,'disableCollapse'=>1,'content',$output })};$output .= '
+                </fieldset>
+            </div><!-- end domain_information -->
+
+            <!-- db mapping -->
+            <input type="hidden" id="dbuser" name="dbuser" value="" />
+            <!-- end database_information -->
+
+            <!-- set your package -->
+            ';$stash->set('hide_package_settings','settings-hide_package_settings');$output .= '
+            ';if (!$stash->get(['data',0,$stash->get('hide_package_settings'),0])){$output .= '
+            <div class="fatBorder">
+                <fieldset class="groupEditor">
+                    ';$output .= do {my$output='';$output .= '
+
+                    ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+                    <div class="alert alert-warning quota_sensitive" style="display:none;">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        ';if ($stash->get(['Whostmgr',0,'template_vars',0,'needs_reboot',0,'quota',0])){$output .= '
+                        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Quotas are currently disabled. Quotas defined in packages will not function until you [output,url,_1,reboot,target,_blank].',$stash->get('reboot_url')]]);$output .= '</div>
+                        '}else {$output .= '
+                        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Quotas are currently disabled. Quotas defined in packages will not function until you [output,url,_1,enable,target,_blank] them.',($stash->get('cp_security_token').'/scripts/dialog?dialog=quotas')]]);$output .= '</div>
+                        '}$output .= '
+                    </div>
+                    '}$output .= '
+                    <div class="propertyGroup" id="package_div">
+                        <div class="propertyEditor">
+                            <div class="propertyLabel"><label for="pkgselect">';$output .= $stash->get(['locale',0,'maketext',['Choose a Package' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <select name="msel" id="pkgselect" class="select" style="width:150px;">
+
+                                                ';if (!$stash->get(['data',0,'all_pkgs',0,'size',0])){$output .= '
+                                                    <option
+                                                        autofill="off"
+                                                        autocomplete="off"
+                                                    >---</option>
+                                                '}$output .= '
+                                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'all_pkgs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '
+                                                    <option
+                                                        value="';$output .= $stash->get(['package',0,'name',0,'html',0]);$output .= '"
+                                                        autofill="off"
+                                                        autocomplete="off"
+                                                        ';if ($stash->get(['package',0,'name',0])eq $stash->get(['data',0,'defpackage',0])){$output .= 'selected="selected"'}$output .= '
+                                                        ';$output .=!$stash->get(['package',0,'creatable',0])&& 'disabled';$output .= '                                                        class="';$output .= $stash->get(['package',0,'creatable',0])? 'creatable' : 'viewable';$output .= '"
+                                                    >';$output .= $stash->get(['package',0,'name',0,'html',0]);$output .= '                                                        ';$output .=!$stash->get(['package',0,'creatable',0])&& $stash->get(['locale',0,'maketext',['(Cannot use due to limits)' ]]);$output .= '
+                                                    </option>
+                                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                            </select>
+                                        </div>
+                                        ';if ($stash->get(['data',0,'all_pkgs',0,'size',0])){$output .= '
+                                            <div class="cellWrapper tracePackage">
+                                                <img id="traceImg" src="';$output .= $stash->get(['MagicRevision',['/images/trace.gif' ]]);$output .= '" style="cursor:crosshair; cursor:help;" onmouseover="hover_pkg(this,\'';$output .= $stash->get(['data',0,'pkg',0]);$output .= '\');" onmouseout="dehover_pkg(this,\'';$output .= $stash->get(['data',0,'pkg',0]);$output .= '\');" alt="" />
+                                            </div>
+                                        '}$output .= '
+                                        <div class="cellWrapper">
+                                            <div id="pkgselect_error"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+    ';if ($stash->get(['data',0,$stash->get('acl_edit_account'),0])){$output .= '
+                        <div id="manualOptionsEditor" class="propertyEditor last">
+                            <div class="propertyLabel"><label for="manual">';$output .= $stash->get(['locale',0,'maketext',['Select Options Manually' ]]);$output .= '</label></div>
+                            <div class="propertyValue"><input value="1" type="checkbox" id="manual" /></div>
+                        </div>
+    ';if ($stash->get(['data',0,$stash->get('acl_add_pkg'),0])){$output .= '
+                        <div id="mansettings1" class="propertyEditor hidden">
+                            <div class="propertyLabel"><label for="pkgchkbox">';$output .= $stash->get(['locale',0,'maketext',['Save Manual Settings as a Package' ]]);$output .= '</label></div>
+                            <div class="propertyValue"><input type="checkbox" name="savepkg" id="pkgchkbox" value="1" /></div>
+                        </div>
+                        <div id="pkgNameEditor" class="propertyEditor hidden">
+                            <div class="propertyLabel"><label for="pkgname">';$output .= $stash->get(['locale',0,'maketext',['Package Name' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <div class="tableWrapper">
+                                    <div class="rowWrapper">
+                                        <div class="cellWrapper">
+                                            <input type="text" name="pkgname" id="pkgname" />
+                                        </div>
+                                        <div class="cellWrapper">
+                                            <div id="pkgname_error" class="hidden"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="featureListEditor" class="propertyEditor hidden">
+                            <div class="propertyLabel"><label for="fid">';$output .= $stash->get(['locale',0,'maketext',['Feature List' ]]);$output .= '</label></div>
+                            <div class="propertyValue">
+                                <select name="featurelist" id="fid">
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '
+                                            <option value="';$output .= $stash->get('feature');$output .= '">';$output .= $stash->get('feature');$output .= '</option>
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </select>
+                            </div>
+                        </div>
+    ';$output .= '
+    '}$output .= '
+                </fieldset>
+            </div><!-- end package_div -->
+
+            <div id="mansettings" class="fatBorder hidden">
+                <fieldset class="groupEditor">
+                    ';$output .= do {my$output='';$output .= '
+                    <div class="propertyGroup" class="createacct__d-block" id="manual_resource_options">
+                        <div class="content width-inherit" style="display: block" id="resource_wrapper">
+                        ';$stash->set('acl_allow_emaillimits_pkgs','settings-acl_allow-emaillimits-pkgs');$output .= '
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'package_defaults_order',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'resource_name'}=$_tt_value;$output .= '
+                            ';$stash->set('cur',$stash->get(['data',0,'package_schema',0,$stash->get('resource_name'),0]));$output .= '                            ';if ($stash->get(['cur',0,'hide',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '                            ';if (!$stash->get(['data',0,$stash->get('acl_allow_emaillimits_pkgs'),0])&& $stash->get('resource_name')eq 'max_email_per_hour'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+                            ';if (!$stash->get(['data',0,$stash->get('acl_allow_emaillimits_pkgs'),0])&& $stash->get('resource_name')eq 'max_defer_fail_percentage'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+
+                            ';$stash->set(['no_package_defaults',0,$stash->get('resource_name'),0],$stash->get(['cur',0,'default',0]));$output .= '
+                            ';if ($stash->get(['cur',0,'type',0])ne 'numeric'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+
+                            ';$output .= $stash->get(['manualResource',[$stash->get('resource_name')]]);$output .= '
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </div>
+                    </div>
+                    ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Manual Resource Options' ]]),'id'=>'manual_resource_options','isOptional'=>1,'isExpanded'=>1,'disableCollapse'=>1,'content',$output })};$output .= '
+                </fieldset>
+            </div><!-- end mansettings -->
+
+    '}else {$output .= '
+        </fieldset>
+    </div><!-- end package_div -->
+    '}$output .= '
+     ';$output .= '
+     <div id="packageExtensions"></div>
+    ';$output .= '
+    ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Package' ]]),'id'=>'package_wrapper','isExpanded'=>1,'disableCollapse'=>1,'content',$output })};$output .= '
+    ';$output .= '
+    '}$output .= '
+
+    ';$output .= '
+    ';$stash->set('user',$stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0]));$stash->set('enhancement_limits',$stash->get(['AccountEnhancements',0,'list_enhancement_limits',[$stash->get('user')]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['enhancement_limits',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'enhancement_limit'}=$_tt_value;if ($stash->get(['enhancement_limit',0,'value',0,'limited',0])eq 1 && $stash->get(['enhancement_limit',0,'value',0,'limit',0])eq 0){$output .= $stash->get(['enhancement_limits',0,'data',0,'delete',[$stash->get(['enhancement_limit',0,'key',0])]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('enhancement_has_data_to_show',$stash->get(['enhancements',0,'data',0,'size',0])|| $stash->get(['enhancements',0,'errors',0,'size',0])|| $stash->get(['enhancements',0,'warnings',0,'size',0]));$stash->set('enhancement_limit_not_blocking',$stash->get(['Whostmgr',0,'hasroot',0])|| $stash->get(['enhancement_limits',0,'data',0,'size',0]));if ($stash->get('enhancement_has_data_to_show')&& $stash->get('enhancement_limit_not_blocking')){$output .= '
+    <div id="account_enhancements_container" class="fatBorder">
+        <fieldset class="groupEditor">
+            ';$output .= do {my$output='';$output .= '
+                ';if ($stash->get(['enhancements',0,'errors',0,'size',0])){$output .= '
+                <div class="callout callout-danger" id="enhancements-danger-callout">
+                    <div class="callout-heading">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Error' ]]);$output .= '</strong>
+                    </div>
+
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['enhancements',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                        <p>';$output .= $stash->get(['error',0,'html',0]);$output .= '</p>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+                '}$output .= '
+
+                ';if ($stash->get(['enhancements',0,'warnings',0,'size',0])){$output .= '
+                <div class="callout callout-warning callout-breakword" id="enhancements-warning-callout">
+                    <div class="callout-heading">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '</strong>
+                    </div>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['enhancements',0,'warnings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '                        <p>';$output .= $stash->get(['message',0,'html',0]);$output .= '</p>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+                '}$output .= '
+                <div class="propertyGroup">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['enhancements',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'enhancement'}=$_tt_value;if ($stash->get(['Whostmgr',0,'hasroot',0])|| $stash->get(['enhancement_limits',0,'data',0,'defined',[$stash->get(['enhancement',0,'id',0])]])){$stash->set('html_name',$stash->get(['enhancement',0,'name',0,'html',0]));$output .= '                    <div class="propertyEditor">
+                        <div class="propertyLabel">
+                            <label id="enhancement__label-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" for="enhancement__checkbox-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get('html_name');$output .= '
+                            </label>
+                        </div>
+                        <div class="propertyValue">
+                            <input value="';$output .= $stash->get('html_name');$output .= '" type="checkbox" name="account_enhancements-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" id="enhancement__checkbox-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" />
+                        </div>
+                    </div>
+                '};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+            ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Account Enhancements' ]]),'id'=>'account_enhancements','isOptional'=>1,'content',$output })};$output .= '        </fieldset>
+    </div>';$output .= '
+    '}$output .= '
+    ';$stash->set('hide_main_settings','settings-hide_main_settings');$output .= '
+    ';if (!$stash->get(['data',0,$stash->get('hide_main_settings'),0])){$output .= '
+    <div id="settings_div" class="fatBorder">
+        <fieldset class="groupEditor">
+            ';if ($stash->get(['data',0,$stash->get('acl_not_edit_account'),0])){$output .= '
+                <div class="notice">
+                    <div class="notice-content">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The package that you choose determines these settings. For example, you can only select an IP address if the selected package includes a dedicated IP address.' ]]);$output .= '
+                    </div>
+                </div>
+           '}$output .= '
+        <div class="propertyGroup" id="settings_section">
+            ';$stash->set('acl_add_pkg_ip','settings-acl_add-pkg-ip');$output .= '
+            ';if ($stash->get(['data',0,$stash->get('acl_add_pkg_ip'),0])){$output .= '
+                <div class="propertyEditor hidden" id="dedicatedIp">
+                    <div class="propertyLabel"><label for="ipchkbox">';$output .= $stash->get(['locale',0,'maketext',['Dedicated IP' ]]);$output .= '</label></div>
+                    <div class="propertyValue"><input value="1" type="checkbox" name="ip" id="ipchkbox" /></div>
+                </div>
+
+                <div class="propertyEditor hidden" id="ipSelect">
+                    <div class="propertyLabel"><label for="customip">';$output .= $stash->get(['locale',0,'maketext',['Select the IP Address' ]]);$output .= '</label></div>
+                    <div class="propertyValue">
+                        <select name="customip" id="customip">
+                            <option value="" selected="selected">--';$output .= $stash->get(['locale',0,'maketext',['Auto Assign' ]]);$output .= '--</option>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'ip_options',0,'cpsort',[{'code'=>$stash->getref(['Net',0,'inet_aton',0]),'num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '                            <option value="';$output .= $stash->get('option');$output .= '">';$output .= $stash->get('option');$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                    </div>
+                </div>
+            '}$output .= '
+        ';$stash->set('acl_allow_shell','settings-acl_allow-shell');$output .= '
+        ';if ($stash->get(['data',0,$stash->get('acl_allow_shell'),0])&& $stash->get(['data',0,'user_can_have_shell',0])){$output .= '
+                <div class="propertyEditor hidden" id="allowShell">
+                    <div class="propertyLabel"><label for="hasshell">';$output .= $stash->get(['locale',0,'maketext',['Shell Access' ]]);$output .= '</label></div>
+                    <div class="propertyValue"><input type="checkbox" checked="checked" name="hasshell" id="hasshell" value="1" /></div>
+                </div>
+        '}$output .= '
+        ';if ($stash->get(['data',0,'user_can_have_cgi',0])){$output .= '
+                <div class="propertyEditor" id="allowCGI">
+                    <div class="propertyLabel"><label for="cgi">';$output .= $stash->get(['locale',0,'maketext',['CGI Access' ]]);$output .= '</label></div>
+                    <div class="propertyValue"><input value="1" type="checkbox" checked="checked" name="cgi" id="cgi" /></div>
+                </div>
+        '}$output .= '                <div class="propertyEditor hidden" id="allowDigest">
+                    <div class="propertyLabel"><label for="digestauth" id="digestauth_label">';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication for Web Disk' ]]);$output .= '</label>
+                    </div>
+                    <div class="propertyValue">
+                        <input value="1" type="checkbox" name="digestauth" id="digestauth" />
+                        <img id="digestauth-info" align="absmiddle" src="';$output .= $stash->get(['MagicRevision',['/images/info.png' ]]);$output .= '" onclick="CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication' ]]);$output .= '\');" title="';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '"> </a>
+                    </div>
+                </div>
+
+            ';$stash->set('acl_edit_account','settings-acl_edit-account');$output .= '
+            ';if ($stash->get(['data',0,$stash->get('acl_edit_account'),0])){$output .= '
+                <div class="propertyEditor">
+                    <div class="propertyLabel"><label for="cpmod">';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] Theme' ]]);$output .= '</label></div>
+                    <div class="propertyValue">
+                        <select name="cpmod" id="cpmod">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'theme'}=$_tt_value;$output .= '                                <option value="';$output .= $stash->get('theme');$output .= '" autofill="off" autocomplete="off" ';$output .= $stash->get('theme')eq $stash->get(['data',0,'deftheme',0])&& 'selected="selected"';$output .= ' />
+                                    ';$output .= $stash->get('theme');$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                    </div>
+                </div>
+            '}$output .= '
+                <div class="propertyEditor">
+                    <div class="propertyLabel"><label for="language">';$output .= $stash->get(['locale',0,'maketext',['Locale' ]]);$output .= '</label></div>
+                    <div class="propertyValue">
+                        <select name="language" class="select createacct__w-100" id="language">';$output .= '
+                          ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+                        </select>
+                        <span class="help-block">
+                            ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+                        </span>
+                    </div>
+                </div>
+                <div class="propertyEditor">
+                    <div class="propertyLabel"><label for="spamassassin">';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,Apache SpamAssassin™]' ]]);$output .= '</label></div>
+                    <div class="propertyValue">
+                        <input value="1" type="checkbox" name="spamassassin" id="spamassassin" checked="checked"
+                            ';if ($stash->get('spamassassin_globally_enabled')){$output .= 'disabled title="';$output .= $stash->get(['spamassassin_disabled_title',0,'html',0]);$output .= '"'}$output .= '/>
+                        <input name="spamassassin" id="spamassassin_hidden" value="1" type="hidden" ';if (!$stash->get('spamassassin_globally_enabled')){$output .= 'disabled'}$output .= '>
+                    </div>
+                </div>
+                <div class="propertyEditor last">
+                    <div class="propertyLabel">
+                        <label id="spambox_label" for="spambox">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Spam Box' ]]);$output .= '
+                            <span id="spambox_help"><span class="far fa-question-circle help-text"></span></span>
+                        </label>
+                    </div>
+                    <div class="propertyValue">
+                        <input value="1" type="checkbox" name="spambox" id="spambox" checked="checked"/>
+                    </div>
+                    <div id="spambox_help_content" style="display: none">
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['Save spam messages to a folder.' ]]);$output .= '</p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['When you disable this option, the system delivers messages flagged as spam to the user’s inbox.' ]]);$output .= '</p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['You must enable [asis,Apache SpamAssassin™] to use the Spam Box feature.' ]]);$output .= '</p>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+    </div><!-- end settings_div -->
+    '}$output .= '
+
+        ';$stash->set('hide_mailrouting_settings','settings-hide_mailrouting_settings');$output .= '
+        ';if (!$stash->get(['data',0,$stash->get('hide_mailrouting_settings'),0])){$output .= '
+        <div class="fatBorder">
+            <fieldset class="groupEditor">
+                ';$output .= do {my$output='';$output .= '
+                ';if ($stash->get(['data',0,'locked_to_mail_worker',0])){$output .= '                    ';$output .= $stash->get(['locale',0,'maketext',['Your account uses the following server to perform mail services: “[_1]” ([_2]). All accounts that you create will use this configuration.',$stash->get(['data',0,'mail_workers',0,0,0,'alias',0,'html',0]),$stash->get(['data',0,'mail_workers',0,0,0,'hostname',0,'html',0])]]);$output .= '                '}else {$output .= '                    <div class="propertyGroup" id="mail_routing_settings">
+                        <div class="propertyEditor">
+                            <div class="propertyCombined">
+                                <input type="radio" name="mxcheck" id="mxcheck_auto" value="auto" /> <label for="mxcheck_auto" class="label_txt" id="mxcheck_auto_label">';$output .= $stash->get(['locale',0,'maketext',['Automatically Detect Configuration' ]]);$output .= '</label><span class="status" id="mxcheck_auto_current_setting" style="font-weight: bold"></span> (';$output .= $stash->get(['locale',0,'maketext',['recommended' ]]);$output .= ') <span class="action_link" id="mxcheck_auto_toggle" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_auto_desc\');">';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '</span>
+                                <div id="mxcheck_auto_desc" style="display: none">
+                                    <ul class="mxcheck_autolist" style="margin-left: 25px">
+                                        <li>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_local"></span><br />
+                                            <em>';$output .= $stash->get(['locale',0,'maketext',['If the lowest numbered mail exchanger points to an IP address on this server, the server will be configured to accept mail locally and from outside the server.' ]]);$output .= '</em>
+                                        </li>
+                                        <li>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_secondary"></span><br />
+                                            <em>';$output .= $stash->get(['locale',0,'maketext',['If a mail exchanger that is not the lowest numbered mail exchanger points to an IP address on this server, the server will be configured to act as a backup mail exchanger.' ]]);$output .= '</em>
+                                        </li>
+                                        <li>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= ' <span id="mxcheck_detected_state_remote"></span><br />
+                                            <em>';$output .= $stash->get(['locale',0,'maketext',['If there are no mail exchangers that point to an IP address on this server, the server will not accept mail locally and will send mail to the lowest MX record.' ]]);$output .= '</em>
+                                        </li>
+                                    </ul>
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['Note: It is not possible to automatically detect an MX configuration if the MX entries do not resolve (for example, if you mistype a domain name or enter one that does not exist). If your MX configuration is set to auto and you add or edit an MX record that does not resolve, you will see a warning and the MX configuration will default to the last known setting.' ]]);$output .= '</p>
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['If you have IP addresses that are not bound to any network device on this server and you would like automatic selection to consider them as local, you can edit the list of additional local IP addresses [output,url,_1,here,target,_blank].',($stash->get('cp_security_token').'/scripts6/editremoteipslist')]]);$output .= '
+                                </div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyCombined"><!-- this option is preselected for historical compatibility -->
+                                <input checked="checked" type="radio" name="mxcheck" id="mxcheck_local" value="local" /> <label for="mxcheck_local" class="label_txt" id="mxcheck_local_label">';$output .= $stash->get(['locale',0,'maketext',['Local Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_local_desc\');">';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '</span><br />
+                                <div id="mxcheck_local_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure the server to always accept mail. Mail will be delivered locally on the server whenever it is sent from the server or outside the server.' ]]);$output .= '</em></p></div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyCombined">
+                                <input type="radio" name="mxcheck" id="mxcheck_secondary" value="secondary" /> <label for="mxcheck_secondary" class="label_txt" id="mxcheck_secondary_label">';$output .= $stash->get(['locale',0,'maketext',['Backup Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_secondary_desc\');">';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '</span><br />
+                                <div id="mxcheck_secondary_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure the server as a backup mail exchanger. Mail will be held until a lower number mail exchanger is available.' ]]);$output .= '</em></p></div>
+                            </div>
+                        </div>
+                        <div class="propertyEditor">
+                            <div class="propertyCombined">
+                                <input type="radio" name="mxcheck" id="mxcheck_remote" value="remote" /> <label class="label_txt" for="mxcheck_remote" id="mxcheck_remote_label">';$output .= $stash->get(['locale',0,'maketext',['Remote Mail Exchanger' ]]);$output .= '</label> <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'mxcheck_remote_desc\');">';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '</span><br />
+                                <div id="mxcheck_remote_desc" style="display: none"><p class="highlight-accordian-desc"><em>';$output .= $stash->get(['locale',0,'maketext',['Configure the server to not accept mail locally and send mail to the lowest MX record.' ]]);$output .= '</em></p></div>
+                            </div>
+                        </div>
+                        ';if ($stash->get(['data',0,'has_root',0])){$output .= '
+                        <div class="propertyEditor last">
+                            <div class="propertyCombined">
+                                <input
+                                    type="radio"
+                                    name="mxcheck"
+                                    id="mxcheck_worker"
+                                    value="worker"
+                                    ';$output .= $stash->get(['data',0,'mail_workers',0,'size',0])? '' : 'disabled';$output .= '
+                                /> <label class="label_txt ';$output .= $stash->get(['data',0,'mail_workers',0,'size',0])? '' : 'disabled';$output .= '" for="mxcheck_worker" id="mxcheck_worker_label">';$output .= $stash->get(['locale',0,'maketext',['Mail Child Node' ]]);$output .= '</label>
+                                ';if ($stash->get(['data',0,'mail_workers',0,'size',0])){$output .= '
+                                <span class="click-reenable" onclick="document.getElementById(\'mxcheck_worker\').checked = true; document.getElementById(\'mail_worker_node_selector\').disabled = false; document.getElementById(\'mail_worker_node_selector\').focus()">
+                                    <select disabled name="mail_node_alias" id="mail_worker_node_selector">
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'mail_workers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'node'}=$_tt_value;$output .= '                                        <option value="';$output .= $stash->get(['node',0,'alias',0,'html',0]);$output .= '">';$output .= $stash->get(['node',0,'alias',0,'html',0]);$output .= '&nbsp;&nbsp;(';$output .= $stash->get(['node',0,'hostname',0,'html',0]);$output .= ')</option>
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                                    </select>
+                                </span>
+                                '}$output .= '
+
+                                <span class="action_link" onclick="CPANEL.util.toggle_more_less(this, \'worker_desc\');">';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '</span><br />
+                                <div id="worker_desc" style="display: none">
+                                    <p class="highlight-accordian-desc">
+                                        <em>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Configure this account to use a [asis,cPanel amp() WHM] mail child node to perform mail services.' ]]);$output .= '
+                                        </em>
+                                        ';if ($stash->get(['data',0,'mail_workers',0,'size',0])){$output .= '
+                                            <a target="_blank"  href="../scripts7/link-server-nodes">';$output .= $stash->get(['locale',0,'maketext',['Manage Linked Nodes' ]]);$output .= ' <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                        '}$output .= '
+                                    </p>
+                                    ';if (!$stash->get(['data',0,'mail_workers',0,'size',0])){$output .= '
+                                    <div class="callout callout-info node-warning-message" id="noChildNodesInfoBlock">
+                                        <p>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You can utilize a remote [asis,cPanel amp() WHM] server to handle certain services, like mail.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You must first link that [asis,cPanel amp() WHM] server node to this one.' ]]);$output .= '
+                                            <a href="../scripts7/link-server-nodes/create" target="_self" id="linkAServerNodeLink">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Click here to link a [asis,cPanel amp() WHM] server node.' ]]);$output .= '
+                                            </a>
+                                        </p>
+                                    </div>
+                                    '}$output .= '
+                                </div>
+                            </div>
+                        </div>
+                        '}$output .= '
+                    </div>
+                '}$output .= '                ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Mail Routing Settings' ]]),'id'=>'mail_routing_settings','isOptional'=>1,'content',$output })};$output .= '            </fieldset>
+        </div>
+        '}$output .= '
+    ';$stash->set('acl_all','settings-acl_all');$output .= '
+    ';if ($stash->get(['data',0,$stash->get('acl_all'),0])){$output .= '
+            ';$stash->set('hide_reseller_settings','settings-hide_reseller_settings');$output .= '
+            ';if (!$stash->get(['data',0,$stash->get('hide_reseller_settings'),0])){$output .= '
+            <div class="fatBorder">
+                <fieldset class="groupEditor">
+                    ';$output .= do {my$output='';$output .= '
+                    <div class="propertyGroup" id="reseller_settings">
+                        <div class="propertyEditor">
+                            <div class="propertyCombined">
+                                <label>
+                                    <input value="1" type="checkbox" id="resell" name="reseller" />
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Make the account a reseller' ]]);$output .= '
+                                </label>
+                            </div>
+                        </div>
+                        <div class="propertyEditor last">
+                            <div class="propertyCombined">
+                                <label class="disabled">
+                                    <input value="1" type="checkbox" name="ownerself" id="ownerself" disabled="disabled" />
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Make the account own itself (i.e., the user can modify the account)' ]]);$output .= '
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['Reseller Settings' ]]),'id'=>'reseller_settings','isOptional'=>1,'content',$output })};$output .= '
+                </fieldset>
+            </div>
+            '}$output .= '
+    '}$output .= '
+
+        ';$stash->set('hide_dns_settings','settings-hide_dns_settings');$output .= '
+        ';if (!$stash->get(['data',0,$stash->get('hide_dns_settings'),0])){$output .= '
+        <div class="fatBorder">
+            <fieldset class="groupEditor">
+                ';$output .= do {my$output='';$output .= '
+                <input type="hidden" name="hasuseregns" value="1" />
+                <div class="propertyGroup" id="dns_settings">
+                    ';if ($stash->get(['data',0,'item',['settings-acl_create-dns' ]])|| $stash->get(['data',0,'item',['settings-acl_edit-dns' ]])){$output .= '                    <div class="propertyEditor">
+                        <div class="propertyCombined">
+                            <label id="dkim_label">
+                                <input type="checkbox" ';$output .= $stash->get(['data',0,'dkim_checked',0])&& 'checked="checked"';$output .= ' name="dkim" id="dkim" value="1" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable [output,acronym,DKIM,DomainKeys Identified Mail] on this account.' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="propertyEditor">
+                        <div class="propertyCombined">
+                            <label for="spf" id="spf_label">
+                                <input type="checkbox" ';$output .= $stash->get(['data',0,'spf_checked',0])&& 'checked="checked"';$output .= ' name="spf" id="spf" value="1" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable [output,acronym,SPF,Sender Policy Framework] on this account.' ]]);$output .= '
+                            </label>
+                            <span id="default_spf">&nbsp;&nbsp;(<span id="default_spf_string">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'default_spf_string',0]);&$_tt_filter($output)};$output .= '</span>)</span>
+                            <span id="zone_template_controlled"><br />(<a id="zone_template_link" target="_blank" href="../scripts2/editzonetemplate?template=">zone template</a>: <span id="zone_template_spf_string"></span>)</span>
+                        </div>
+                    </div>
+                    '}$output .= '                    <div class="propertyEditor">
+                        <div class="propertyCombined">
+                            <label>
+                                <input value="1" ';$output .= $stash->get(['data',0,'useregns_checked',0]);$output .= ' type="checkbox" name="useregns" id="useregns" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Use the nameservers specified at the Domain’s Registrar.' ]]);$output .= ' (';$output .= $stash->get(['locale',0,'maketext',['Ignore locally specified nameservers.' ]]);$output .= ')
+                            </label>
+                        </div>
+                    </div>
+                    ';$stash->set('acl_all','settings-acl_all');$output .= '
+                    ';if ($stash->get(['data',0,$stash->get('acl_all'),0])){$output .= '
+                    <div class="propertyEditor">
+                        <div class="propertyCombined">
+                            <label for="forcedns">
+                                <input value="1" type="checkbox" name="forcedns" id="forcedns" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Overwrite any existing DNS zones for the account.' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                    '}$output .= '
+                    <div class="propertyEditor last">
+                            <div class="propertyCombined">
+                                <div class="rowWrapper">
+                                    <div id="nsTitle">';$output .= $stash->get(['locale',0,'maketext',['Nameservers:' ]]);$output .= '</div>
+                                    <div id="nstouse"></div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                ';$context->include('common/collapsible_wrapper/collapsible_wrapper.tmpl',{'label'=>$stash->get(['locale',0,'maketext',['DNS Settings' ]]),'id'=>'dns_settings','isOptional'=>1,'content',$output })};$output .= '
+            </fieldset>
+        </div>
+        '}$output .= '
+
+        <div id="formButtons" class="form-group">
+        ';if ($stash->get('over_account_limit')){$output .= '
+            <input type="submit" id="submit-error" value="';$output .= $stash->get(['locale',0,'maketext',['Reached account limit quota.' ]]);$output .= '" class="btn btn-primary" disabled />
+        '}else {$output .= '
+            <input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '" class="btn btn-primary" />
+        '}$output .= '
+        </div>
+        </form>
+    '}$output .= '    ';$output .= $context->process('_ajaxapp_footer.tmpl')}$output .= '
+';if ($stash->get(['data',0,'mail_workers',0,'size',0])){$output .= '
+    <style>
+        .click-reenable select[disabled] {
+            pointer-events: none;
+        }
+    </style>
+    <script>
+        function updateUiPerGlobalSpamassassin(globalspamassassinFlag) {
+            var cb = document.getElementById("spamassassin");
+            var hidden = document.getElementById("spamassassin_hidden");
+
+            cb.disabled = !!globalspamassassinFlag;
+            cb.title = globalspamassassinFlag ? PAGE.spamassassin_disabled_title : "";
+            hidden.disabled = !globalspamassassinFlag;
+        }
+
+        PAGE.local_globalspamassassin = !!';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'spamassassin_globally_enabled',0])]]);$output .= ';
+        PAGE.worker_settings = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('worker_settings')]]);$output .= ';
+        PAGE.spamassassin_disabled_title = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('spamassassin_disabled_title')]]);$output .= ';
+
+
+
+        document.addEventListener("readystatechange", function (e) {
+            if(document.readyState === "complete") {
+                var linkageSelect = document.getElementById("mail_worker_node_selector");
+                if (linkageSelect) {
+                    let mxCheck = document.getElementById("mxcheck_worker");
+                    if (mxCheck && mxCheck.checked) {
+                        linkageSelect.disabled = false;
+                        linkageSelect.removeAttribute("disabled");
+                    };
+                };
+            };
+        });
+
+        var mxRadios = document.getElementsByName("mxcheck");
+        Array.from(mxRadios).forEach( function(el) {
+            el.addEventListener( \'input\', function(e) {
+                var workerSelector = document.getElementById("mail_worker_node_selector");
+
+                var globalspamassassin;
+
+                if (el.value === "worker") {
+                    workerSelector.disabled = false;
+
+                    var selectedWorkerName = workerSelector.options[ workerSelector.selectedIndex ].value;
+
+                    globalspamassassin = !!PAGE.worker_settings[selectedWorkerName].Mail.globalspamassassin;
+                }
+                else {
+                    workerSelector.disabled = true;
+                    globalspamassassin = PAGE.local_globalspamassassin;
+                }
+
+                updateUiPerGlobalSpamassassin(globalspamassassin);
+            } );
+        });
+    </script>
+'}$output .= '<script>
+PAGE.cPCustomControls = ';$output .= $stash->get(['custom_controls',0,'json',0]);$output .= ';
+PAGE.noPackageDefaults = ';$output .= $stash->get(['no_package_defaults',0,'json',0]);$output .= ';
+
+import(\'';$output .= $stash->get(['MagicRevision',['/js/modules/pkgform-help_optimized.js' ]]);$output .= '\').then( o => {
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('manual_resources_help');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'name_cur'}=$_tt_value;$output .= '    YAHOO.util.Event.onDOMReady( () => {
+        o.cPSetupResourceHelp(
+            document.getElementById(\'';$output .= ($stash->get(['name_cur',0,0,0]).'__help');$output .= '\'),
+            ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['name_cur',0,1,0,'label',0])],'json',0]);$output .= ',
+            ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['name_cur',0,1,0,'help_text',0])],'json',0]);$output .= '
+        );
+    } );
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '} );
+</script>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'create_a_new_account','breadcrumburl'=>'/scripts5/wwwacctform','theme'=>'bootstrap','scripts'=>['/js/sorttable.js','/templates/accounts/createacct.min.js','/templates/common/collapsible_wrapper/collapsible_wrapper.min.js' ],'stylesheets'=>['/cjt/css/ajaxapp-min.css','/templates/common/revised_notices.min.css','/templates/packages/common.min.css','/templates/accounts/createacct.min.css','/templates/common/collapsible_wrapper/collapsible_wrapper.min.css' ],'extrastyle'=>'','include_legacy_stylesheets'=>1,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

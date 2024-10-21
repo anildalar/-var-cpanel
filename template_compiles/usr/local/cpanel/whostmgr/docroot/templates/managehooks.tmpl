@@ -1,0 +1,167 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/managehooks.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$stash->set('app_key','manage_hooks');$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';$stash->set('null',$stash->get(['locale',0,'set_context_html',0]));$output .= '
+
+<script type="text/plain" id="hook_to_reorder_template">
+<div class="hook-wrapper">
+    <div class="hook-to-reorder" id="reorder-{id}">
+        <div class="hook-name">{hook}</div>
+        <div class="hook-id">(';$output .= $stash->get(['locale',0,'maketext',['ID: [_1]','<code>{id}</code>' ]]);$output .= ')</div>
+    </div>
+</div>
+</script>
+
+<script type="text/plain" id="reorder_hooks_template">
+<p>';$output .= $stash->get(['locale',0,'maketext',['Drag the following hooks into their new order, then save.' ]]);$output .= '</p>
+<div class="hook-reorder-container">{hooks_to_reorder}</div>
+</script>
+
+<script type="text/plain" id="delete_prompt_template">
+<p class="delete-highlight">';$output .= $stash->get(['locale',0,'maketext',['Event/Hook: [_1]','{{hook}}' ]]);$output .= '</p>
+<p class="delete-highlight">';$output .= $stash->get(['locale',0,'maketext',['Insertion point: [_1]','{{insertion}}' ]]);$output .= '</p>
+<p>';$output .= $stash->get(['locale',0,'maketext',['This hook may be part of an installed application, and deleting it may break that application.' ]]);$output .= '<br />
+';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to delete this hook?' ]]);$output .= '</p>
+</script>
+
+<script type="text/plain" id="details_template">
+<div class="details-error-notice"></div>
+<table class="details-table">
+<tr><th class="header">';$output .= $stash->get(['locale',0,'maketext',['Category:' ]]);$output .= '</td><td>{category}</td></tr>
+<tr><th class="header">';$output .= $stash->get(['locale',0,'maketext',['Event:' ]]);$output .= '</td><td>{event}</td></tr>
+<tr><th class="header">';$output .= $stash->get(['locale',0,'maketext',['Stage:' ]]);$output .= '</td><td>{stage}</td></tr>
+<tr><td colspan="99"><p class="details-notes">{stage_description}</p></td></tr>
+</table>
+<div class="attribute blocking-on">';$output .= $stash->get(['locale',0,'maketext',['Blocking is enabled for this stage. Hooks in this stage may prevent the event’s execution.' ]]);$output .= '</div>
+<div class="attribute blocking-off">';$output .= $stash->get(['locale',0,'maketext',['Blocking is enabled for this stage. Hooks in this stage cannot prevent the event’s execution.' ]]);$output .= '</div>
+<div class="view-break"></div>
+<table class="details-table bottom-details-table">
+<tr><th class="header">';$output .= $stash->get(['locale',0,'maketext',['Hook:' ]]);$output .= '</td><td>{hook}</td></tr>
+<tr><th class="header">';$output .= $stash->get(['locale',0,'maketext',['ID:' ]]);$output .= '</td><td>{id}</td></tr>
+<tr><td colspan="99"><label for="{id}-notes">';$output .= $stash->get(['locale',0,'maketext',['Notes:' ]]);$output .= '<br /><textarea id="{id}-notes" class="hook-notes" name="hook_notes" width="365px">{notes}</textarea></td></tr>
+</table>
+<div class="attributes-header">';$output .= $stash->get(['locale',0,'maketext',['Attributes:' ]]);$output .= '</div>
+<div class="attribute enabled-on">';$output .= $stash->get(['locale',0,'maketext',['This hook is enabled.' ]]);$output .= '</div>
+<div class="attribute enabled-off">';$output .= $stash->get(['locale',0,'maketext',['This hook is disabled.' ]]);$output .= '</div>
+<div class="attribute escalate-on">';$output .= $stash->get(['locale',0,'maketext',['This hook runs as the root user.' ]]);$output .= '</div>
+<div class="attribute escalate-off">';$output .= $stash->get(['locale',0,'maketext',['This hook runs as a normal user.' ]]);$output .= '</div>
+<div class="attribute check-on">';$output .= $stash->get(['locale',0,'maketext',['A check action is configured.' ]]);$output .= '<br>
+    <span class="attribute-detail">';$output .= $stash->get(['locale',0,'maketext',['Action: [output,class,_1,attribute-value]','{check}' ]]);$output .= '</span>
+</div>
+<div class="attribute check-off">';$output .= $stash->get(['locale',0,'maketext',['No check action is configured.' ]]);$output .= '</div>
+<div class="attribute rollback-on">';$output .= $stash->get(['locale',0,'maketext',['A rollback action is configured.' ]]);$output .= '<br>
+    <span class="attribute-detail">';$output .= $stash->get(['locale',0,'maketext',['Action: [output,class,_1,attribute-value]','{rollback}' ]]);$output .= '</span>
+</div>
+<div class="attribute rollback-off">';$output .= $stash->get(['locale',0,'maketext',['No rollback action is configured.' ]]);$output .= '</div>
+</script>
+
+<ul class="hooks-head">
+  <li><p class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface is used to manage hooks that already exist on your server. For information on how to add hooks, what can be hooked into, and how to write hooks, please see the documentation at [output,url,_1,target,_blank].','https://go.cpanel.net/standardhooksdocs' ]]);$output .= '</p>
+
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Individual hooks are always sorted in execution order. You can reorder hooks using the up/down arrows on the left side of each hook’s table row.' ]]);$output .= '</p>
+    <div id="cjt_pagenotice_container"></div>
+</li>
+  <li class="legend-box" ';$output .=!$stash->get(['data',0,'structured_hooks',0,'size',0])? 'style="display:none"' : '';$output .= '><h4>';$output .= $stash->get(['locale',0,'maketext',['Legend' ]]);$output .= '</h4>
+    <ul class="hooks-legend">
+    <li><img src="';$output .= $stash->get(['MagicRevision',['/images/hooks/hks-enabled.png' ]]);$output .= '" alt="" height="16px" width="16px"/><span>';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</span></li>
+    <li><img src="';$output .= $stash->get(['MagicRevision',['/images/hooks/hks-blocking.png' ]]);$output .= '" alt=""  height="16px" width="16px"/><span>';$output .= $stash->get(['locale',0,'maketext',['Blocking' ]]);$output .= '</span></li>
+    <li><img src="';$output .= $stash->get(['MagicRevision',['/images/hooks/hks-escalate.png' ]]);$output .= '" alt=""  height="16px" width="16px"/><span>';$output .= $stash->get(['locale',0,'maketext',['Escalated' ]]);$output .= '</span></li>
+    <li><img src="';$output .= $stash->get(['MagicRevision',['/images/hooks/hks-check.png' ]]);$output .= '" alt=""  height="16px" width="16px"/><span>';$output .= $stash->get(['locale',0,'maketext',['Check' ]]);$output .= '</span></li>
+    <li><img src="';$output .= $stash->get(['MagicRevision',['/images/hooks/hks-rollback.png' ]]);$output .= '" alt=""  height="16px" width="16px"/><span>';$output .= $stash->get(['locale',0,'maketext',['Rollback' ]]);$output .= '</span></li>
+    </ul>
+  </li>
+</ul>
+
+
+<script>
+var no_hooks_notice = new CPANEL.widgets.Page_Notice( {
+    level: "info",
+    content: "';$output .= $stash->get(['locale',0,'maketext',['No hooks are currently installed.' ]]);$output .= '",
+    visible: ';$output .=!$stash->get(['data',0,'structured_hooks',0,'size',0])? 'true' : 'false';$output .= '} );
+</script>
+
+';if ($stash->get(['data',0,'structured_hooks',0,'size',0])){$output .= '
+<div id="hooks_section">
+
+<label for="table_search_box">';$output .= $stash->get(['locale',0,'maketext',['Search:' ]]);$output .= '</label>
+';$output .= '
+<input id="table_search_box" type="search" onkeyup="update_table_search()" onclick="update_table_search()" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search …' ]]);$output .= '">
+<div id="expand_collapse">
+<button class="btn-secondary" type="button" onclick="collapse_all()">';$output .= $stash->get(['locale',0,'maketext',['Collapse All' ]]);$output .= '</button>
+<button class="btn-secondary" type="button" onclick="expand_all()">';$output .= $stash->get(['locale',0,'maketext',['Expand All' ]]);$output .= '</button>
+</div>
+
+<div id="no_hooks_match_message" style="display:none">
+';$output .= $stash->get(['locale',0,'maketext',['No hooks match your search.' ]]);$output .= '</div>
+
+';$stash->set('hooks_by_key',{});$stash->set('stage_descriptions',{});$stash->set('stage_orders',{});$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'structured_hooks',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cat_evts'}=$_tt_value;$output .= '<div class="category-container" id="';$output .= $stash->get(['cat_evts',0,'category',0]);$output .= '-container">
+    <div class="hd">
+        <span class="header">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cat_evts',0,'category',0]);&$_tt_filter($output)};$output .= '</span>
+    </div>
+    <div class="bd">
+        <table id="';$output .= $stash->get(['cat_evts',0,'category',0]);$output .= '-table" class="hooks-table cpanel-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th class="safe-sortable sorted-asc" onclick="reverse_sort(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cat_evts',0,'category',0,'json',0]);&$_tt_filter($output)};$output .= ',this)"><span class="liner">';$output .= $stash->get(['locale',0,'maketext',['Event/Hook' ]]);$output .= '</span></th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Stage' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Description/Notes' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Attributes' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr>
+        </thead>
+        <tbody>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['cat_evts',0,'events',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'evt_stgs'}=$_tt_value;$output .= '        ';$stash->set('stage_key',$stash->get(['cat_evts',0,'category',0]).'-' .$stash->get(['evt_stgs',0,'event',0]));$output .= '        ';$stash->set('stage_key',$stash->get(['stage_key',0,'replace',[':','-' ]]));$output .= '        ';$stash->set(['stage_orders',0,$stash->get('stage_key'),0],$stash->get(['evt_stgs',0,'stage_order',0]));$output .= '        ';$stash->set('even',1);$output .= '        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['evt_stgs',0,'stages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR3: while (!$_tt_error){$stash->{'stg_acts'}=$_tt_value;$output .= '            ';$stash->set('key',$stash->get('stage_key').'-' .$stash->get(['stg_acts',0,'stage',0]));$output .= '            ';$stash->set(['hooks_by_key',0,$stash->get('key'),0],[]);$output .= '            ';$stash->set(['stage_descriptions',0,$stash->get('key'),0],$stash->get(['stg_acts',0,'description',0]));$output .= '
+            <tr id="';$output .= ($stash->get('key').'-event');$output .= '" class="event-stage ';$output .= $stash->get('even')? 'shown-even' : 'shown-odd';$output .= '">
+                <td class="toggle"><a class="toggle-link" href="javascript:void(0)" onclick="toggle_hooks(\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('key');&$_tt_filter($output)};$output .= '\',this)" title="';$output .= $stash->get(['locale',0,'maketext',['Toggle View' ]]);$output .= '">&#9660;</a></td>
+                <td class="event">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['evt_stgs',0,'event',0]);&$_tt_filter($output)};$output .= '</td>
+                <td class="stage">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['stg_acts',0,'stage',0]);&$_tt_filter($output)};$output .= '</td>
+                <td class="description">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['stg_acts',0,'description',0]);&$_tt_filter($output)};$output .= '</td>
+                <td class="attributes">
+                    ';if ($stash->get(['stg_acts',0,'attributes',0,'blocking',0])){$output .= '                        <span class="attribute blocking-on" title="';$output .= $stash->get(['locale',0,'maketext',['Blocking is enabled for this stage. Hooks in this stage may prevent the event’s execution.' ]]);$output .= '"></span>
+                    '}else {$output .= '                        <span class="attribute blocking-off" title="';$output .= $stash->get(['locale',0,'maketext',['Blocking is disabled for this stage. Hooks in this stage cannot prevent the event’s execution.' ]]);$output .= '"></span>
+                    '}$output .= '                </td>
+                <td class="actions">
+';$output .= '                    ';if (0 && $stash->get(['stg_acts',0,'actions',0,'size',0])> 1){$output .= '                        <a href="javascript:void(0)" onclick="reorder_hooks(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cat_evts',0,'category',0,'json',0]).',' .$stash->get(['evt_stgs',0,'event',0,'json',0]).',' .$stash->get(['stg_acts',0,'stage',0,'json',0]);&$_tt_filter($output)};$output .= ', this)">';$output .= $stash->get(['locale',0,'maketext',['Reorder Hooks' ]]);$output .= '</a></td>
+                    '}$output .= '                </td>
+            </tr>
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['stg_acts',0,'actions',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR4: while (!$_tt_error){$stash->{'action'}=$_tt_value;$output .= '                ';$output .= $stash->get(['hooks_by_key',0,$stash->get('key'),0,'push',[$stash->get('action')]]);$output .= '                ';$stash->set('row_classes',['hook',($stash->get('key').'-hook')]);$output .= '
+                ';$output .= $stash->get(['row_classes',0,'push',[$stash->get(['action',0,'enabled',0])? 'hook-enabled' : 'hook-disabled' ]]);$output .= '                ';if ($stash->get(['loop',0,'first',0])){$output .= $stash->get(['row_classes',0,'push',['first-hook' ]])}$output .= '                ';if ($stash->get(['loop',0,'last',0])){$output .= $stash->get(['row_classes',0,'push',['final-hook' ]])}$output .= '                <tr id="hook-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0]);&$_tt_filter($output)};$output .= '" class="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['row_classes',0,'join',[' ' ]]);&$_tt_filter($output)};$output .= '">
+                    <td>
+                                        </td>
+                    <td class="action" colspan="2">
+                    ';if ($stash->get(['stg_acts',0,'actions',0,'size',0])> 1){$output .= '                        <div class="hook-movers">
+                            <a href="javascript:void(0)" onclick="move_up(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0,'json',0]);&$_tt_filter($output)};$output .= ', this)" class="up-link" title="';$output .= $stash->get(['loop',0,'first',0])? $stash->get(['locale',0,'maketext',['Move this hook to the bottom.' ]]): $stash->get(['locale',0,'maketext',['Move this hook up.' ]]);$output .= '">&#9650;</a>
+                            <a href="javascript:void(0)" onclick="move_down(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0,'json',0]);&$_tt_filter($output)};$output .= ', this)" class="down-link" title="';$output .= $stash->get(['loop',0,'last',0])? $stash->get(['locale',0,'maketext',['Move this hook to the top.' ]]): $stash->get(['locale',0,'maketext',['Move this hook down.' ]]);$output .= '">&#9660;</a>
+                        </div>
+                    '}$output .= '                    <span class="hook-event-detail">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'hook',0]);&$_tt_filter($output)};$output .= '</span>
+                    </td>
+                    <td class="notes">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'notes',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="attributes">
+                        ';if ($stash->get(['action',0,'enabled',0])){$output .= '                            <span class="attribute enabled-on" title="';$output .= $stash->get(['locale',0,'maketext',['This hook is enabled.' ]]);$output .= '"></span>
+                        '}else {$output .= '                            <span class="attribute enabled-off" title="';$output .= $stash->get(['locale',0,'maketext',['This hook is disabled.' ]]);$output .= '"></span>
+                        '}$output .= '                        ';if ($stash->get(['action',0,'escalateprivs',0])){$output .= '                            <span class="attribute escalate-on" title="';$output .= $stash->get(['locale',0,'maketext',['This hook runs as the root user.' ]]);$output .= '"></span>
+                        '}else {$output .= '                            <span class="attribute escalate-off" title="';$output .= $stash->get(['locale',0,'maketext',['This hook runs as a normal user.' ]]);$output .= '"></span>
+                        '}$output .= '                        ';if ($stash->get(['action',0,'check',0])){$output .= '                            <span class="attribute check-on" title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['Check action: [_1]',$stash->get(['action',0,'check',0])]]);&$_tt_filter($output)};$output .= '"></span>
+                        '}else {$output .= '                            <span class="attribute check-off" title="';$output .= $stash->get(['locale',0,'maketext',['No check action is configured.' ]]);$output .= '"></span>
+                        '}$output .= '                        ';if ($stash->get(['action',0,'rollback',0])){$output .= '                            <span class="attribute rollback-on" title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['Rollback action: [_1]',$stash->get(['action',0,'rollback',0])]]);&$_tt_filter($output)};$output .= '"></span>
+                        '}else {$output .= '                            <span class="attribute rollback-off" title="';$output .= $stash->get(['locale',0,'maketext',['No rollback action is configured.' ]]);$output .= '"></span>
+                        '}$output .= '                    </td>
+                    <td class="actions"><a href="javascript:void(0)" onclick="show_details(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0,'json',0]);&$_tt_filter($output)};$output .= ', this)" title="';$output .= $stash->get(['locale',0,'maketext',['Show details for this hook.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="toggle_enabled(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0,'json',0]);&$_tt_filter($output)};$output .= ', this)" title="';$output .= $stash->get(['action',0,'enabled',0])? $stash->get(['locale',0,'maketext',['Disable this hook.' ]]): $stash->get(['locale',0,'maketext',['Enable this hook.' ]]);$output .= '">';$output .= $stash->get(['action',0,'enabled',0])? $stash->get(['locale',0,'maketext',['Disable' ]]): $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</a>&nbsp;&nbsp;<a href="javascript:void(0)" onclick="delete_prompt(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['action',0,'id',0,'json',0]);&$_tt_filter($output)};$output .= ', this)" title="';$output .= $stash->get(['locale',0,'maketext',['Delete this hook.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</a></td>
+                </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </tbody>
+        </table>
+    </div>
+</div>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</div>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '<script src="';$output .= $stash->get(['MagicRevision',['/cjt/dragdrop.js' ]]);$output .= '"></script>
+<script>
+var hooks_by_key = ';$output .= $stash->get(['hooks_by_key',0,'json',0]);$output .= ';
+var stage_descriptions = ';$output .= $stash->get(['stage_descriptions',0,'json',0]);$output .= ';
+var stage_orders = ';$output .= $stash->get(['stage_orders',0,'json',0]);$output .= ';
+</script>
+
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

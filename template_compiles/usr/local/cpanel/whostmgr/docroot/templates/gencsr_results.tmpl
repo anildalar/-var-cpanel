@@ -1,0 +1,41 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/gencsr_results.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<style>
+table {
+    border-collapse: collapse;
+    border: 1px dotted #ccc;
+}
+</style>
+
+';if (!$stash->get(['data',0,'status',0])){$output .= '
+<p class="redstatus">&nbsp;&nbsp;Certificate signing request generation failed: ';$output .= $stash->get(['data',0,'message',0]);$output .= '</p>
+'}else {$output .= '
+';if (!$stash->get(['data',0,'email_status',0])){$output .= '
+<p class="redstatus">&nbsp;&nbsp;';$output .= $stash->get(['data',0,'email_message',0]);$output .= '</p>
+'}else {$output .= '
+<p>&nbsp;&nbsp;';$output .= $stash->get(['data',0,'email_message',0]);$output .= '</p>
+'}$output .= '
+<div>
+<table>
+    <tr>
+        <th>Signing Request</th>
+    </tr>
+    <tr>
+        <td><textarea rows="15" cols="70" readonly>';$output .= $stash->get(['data',0,'csr',0]);$output .= '</textarea></td>
+    </tr>
+';if ($stash->get(['data',0,'cert',0])){$output .= '
+    <tr>
+        <th>Certificate</th>
+    </tr>
+    <tr>
+        <td><textarea rows="25" cols="70" readonly>';$output .= $stash->get(['data',0,'cert',0]);$output .= '</textarea></td>
+    </tr>
+'}$output .= '
+    <tr>
+        <th>Key</th>
+    </tr>
+    <tr>
+        <td><textarea rows="18" cols="70" readonly>';$output .= $stash->get(['data',0,'key',0]);$output .= '</textarea></td>
+    </tr>
+</table>
+</div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

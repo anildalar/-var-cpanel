@@ -1,0 +1,139 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade2.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version (Step [numf,_1] of [numf,_2])',2,5 ]]),'breadcrumburl'=>'/scripts/mysqlupgrade','theme'=>'bootstrap','extrastyle'=>'
+        .no-bold { font-weight: normal; display: block;}
+        .center { text-align: center; }
+        .inline-block { display: inline-block; }
+        .alert-danger .alert-message ul li { color: #333; }
+        .margin-top { margin-top: 10px; }
+' });$stash->set('can_do_checkers',($stash->get(['data',0,'selected_version',0,'html',0])<= '10.0' && $stash->get(['data',0,'selected_version',0,'html',0])>= '8.0' && $stash->get(['data',0,'current_version',0,'html',0])eq '5.7'));$output .= '    <div id="content">
+        ';if (!$stash->get(['data',0,'fatal',0])&& $stash->get('can_do_checkers')){$output .= '
+            <div id="myslshellChecker">
+                <h3>MySQL Upgrade Checker via MySQLShell (optional)</h3>
+                <p>This utility verifies whether your MySQL 5.7 server is ready for an upgrade to MySQL 8.</p>
+                <div id="runOutputStatusMsg" style="display: none"></div>
+                <pre id="runOutputContainer" style="display: none; height: 40rem;" class="well"></pre>
+                <button type="button" id="installAndRunChecker" class="btn btn-default" onclick="window.installAndRunChecker();">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Run Checker' ]]);$output .= '
+                </button>
+            </div>
+        '}$output .= '
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Upgrade Warnings' ]]);$output .= '</h2>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['The upgrade script has checked your system to see if an upgrade is possible at this time.' ]]);$output .= '
+            ';if ($stash->get(['data',0,'warnings',0,'size',0])eq 0){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['The system has not encountered any problems specific to your configuration.' ]]);$output .= '
+            '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['The system encountered warnings specific to your configuration.' ]]);$output .= '
+            '}$output .= '
+        </p>
+        ';if ($stash->get(['data',0,'fatal',0])){$output .= '
+            <div class="alert alert-danger" id="alertFatalWarnings" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                    <span class="alert-body">
+                        ';$output .= $stash->get(['locale',0,'maketext',['An upgrade on your system is not possible at this time!' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Please correct the following errors before you attempt to upgrade:' ]]);$output .= '
+                        <ul class="margin-top">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'warnings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'fatals'}=$_tt_value;$output .= '
+                                ';if ($stash->get(['fatals',0,'severity',0])ne 'Fatal'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+                                <li id="fatal-warning-';$output .= $stash->get(['loop',0,'count',0]);$output .= '">';$output .= $stash->get(['fatals',0,'message',0]);$output .= '</li>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </ul>
+                    </span>
+                </div>
+            </div>
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="get" id="mysql_upgrade_form_0">
+                <input type="hidden" name="step" value="1">
+                <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+                <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+                <div class="form-group">
+                    <button type="submit" id="back_button" class="btn btn-default">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</button>
+                </div>
+            </form>
+        '}else {$output .= '
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post" id="mysql_upgrade_form_1">
+                <input type="hidden" name="step" value="3">
+                <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+                <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+                ';if ($stash->get(['data',0,'warnings',0,'size',0])ne 0){$output .= '
+                <div>
+                <p>
+                <b>';$output .= $stash->get(['locale',0,'maketext',['Please click the checkbox next to each warning to indicate that you understand the potential consequences of this upgrade.' ]]);$output .= ' </b>
+                </p>
+                </div>
+                <div>
+                    <table id="system_warnings" class="table table-striped responsive-table">
+                    <thead>
+                    <tr>
+                        <th>&nbsp;</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Severity' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Message' ]]);$output .= '</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'warnings',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'warn'}=$_tt_value;$output .= '
+                        ';if ($stash->get(['warn',0,'severity',0])eq 'Fatal'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+                        <tr ';if ($stash->get(['warn',0,'severity',0])eq 'Critical'){$output .= 'class="warning"'}$output .= '>
+                            <td class="center" data-title="';$output .= $stash->get(['locale',0,'maketext',['Confirm' ]]);$output .= '">
+                                <input type="checkbox" name="boxes" id="warning_';$output .= $stash->get(['loop',0,'count',0]);$output .= '">
+                            </td>
+                            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Severity' ]]);$output .= '">
+                                <label class="no-bold" for="warning_';$output .= $stash->get(['loop',0,'count',0]);$output .= '">
+                                    ';$output .= $stash->get(['warn',0,'severity',0]);$output .= '
+                                </label>
+                            </td>
+                            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Message' ]]);$output .= '">
+                                <label class="no-bold" for="warning_';$output .= $stash->get(['loop',0,'count',0]);$output .= '">
+                                    ';$output .= $stash->get(['warn',0,'message',0]);$output .= '
+                                </label>
+                            </td>
+                        </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </tbody>
+                    </table>
+                </div>
+                '}$output .= '
+                <div class="form-group">
+                    <button type="submit" id="continue_button" class="btn btn-primary" disabled>';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+                    </form>
+                    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="get" id="mysql_upgrade_form_0" class="inline-block">
+                        <input type="hidden" name="step" value="1">
+                        <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+                        <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+                        <button type="submit" id="back_button" class="btn btn-default">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</button>
+                    </form>
+                </div>
+        '}$output .= '
+        </div>
+    </div>
+    <script type="text/javascript">
+        function update_continue_button() {
+            var cont_disabled = false;
+            var form = document.forms["mysql_upgrade_form_1"];
+            if ( form ) {
+                var boxes = form.querySelectorAll(\'input[type="checkbox"][name="boxes"]\');
+                var checked = form.querySelectorAll(\'input[type="checkbox"][name="boxes"]:checked\');
+                if ( boxes.length !== checked.length ) {
+                    cont_disabled = true;
+                }
+                document.getElementById("continue_button").disabled = cont_disabled;
+            }
+        }
+
+        window.addEventListener("load", function() {
+            var form = document.forms["mysql_upgrade_form_1"];
+            if ( form ) {
+                var boxes = form.querySelectorAll(\'input[type="checkbox"][name="boxes"]\');
+                for (var i = 0, len = boxes.length; i < len; i++) {
+                    boxes[i].addEventListener("click", update_continue_button);
+                }
+            }
+            // Update continue button now -- there may be no checkboxes,
+            // or the user checks all boxes before event listeners are added.
+            update_continue_button();
+        });
+
+        ';if ($stash->get('can_do_checkers')){$output .= "\n        window.installAndRunChecker = function () {\n            'use strict';\n            var btn = document.getElementById(\"installAndRunChecker\");\n            btn.innerHTML = \"<span class=\\\"fa fa-spin fa-spinner\\\"></span>\"\n            btn.disabled = true;\n            var upgradeDiv = document.getElementById('runOutputContainer');\n            upgradeDiv.style.display = \"block\";\n            upgradeDiv.textContent = '';\n            var msgElem = document.getElementById(\"runOutputStatusMsg\");\n            msgElem.style.display = \"none\";\n            msgElem.classList.remove(\"alert\", \"alert-danger\", \"alert-info\");\n            msgElem.textContent = '';\n            let ccElem = document.getElementById('contentContainer');\n            ccElem.scrollTo(0,ccElem.scrollHeight);\n            CPANEL.api({\n                func: \"background_mysql_upgrade_checker_run\",\n                catch_api_errors: true,\n                callback: {\n                    success: function(o) {\n                        var log_entry = o.cpanel_data.log_entry,\n                            pid = o.cpanel_data.pid,\n                            metadata = { \"CHILD_ERROR\": \"?\" };\n                        let url = `wss://\${window.location.host}";$output .= $stash->get(['data',0,'CP_SECURITY_TOKEN',0]);$output .= "/websocket/LogStreamer?log_entry=\${log_entry}&pid=\${pid}`;\n\n                        var ws = new WebSocket(url);\n                        ws.onerror = function(e) {\n                            msgElem.classList.add(\"alert\", \"alert-danger\");\n                            msgElem.textContent = e.data;\n                            msgElem.style.display = \"block\";\n\n                            // Don't need to close the conn, as the error does this already\n                        };\n\n                        ws.onmessage = function(e) {\n                            if(e.data.charAt(0) === '.') {\n\n                                // Decode the message, as it is JSON line.\n                                // These are used to set metadata.\n                                let parsed = JSON.parse(e.data.substr(1));\n                                if( parsed && Array.isArray(parsed) ) {\n                                    for (let i = 0; i < parsed.length; i++) {\n                                        if( i % 2 ) { // odd\n                                            continue;\n                                        }\n                                        metadata[parsed[i]] = parsed[i + 1];\n                                    }\n                                }\n                            } else {\n                                upgradeDiv.textContent += e.data.replace(/\\.\\./g,'.');\n                                upgradeDiv.scrollTo(0,upgradeDiv.scrollHeight);\n                            }\n                        };\n\n                        ws.onclose = function(e) {\n                            if (e.code === 1011) {\n                                msgElem.classList.add(\"alert\", \"alert-danger\");\n                                msgElem.textContent = e.reason;\n                                msgElem.style.display = 'block';\n                            }\n                            else if ( metadata.CHILD_ERROR && (metadata.CHILD_ERROR !== \"?\") ) {\n                                var chld_err = \"\" + metadata.CHILD_ERROR;\n                                let msgElem = document.getElementById(\"runOutputStatusMsg\");\n                                if (chld_err === \"0\") {\n                                    msgElem.classList.add(\"alert\", \"alert-info\");\n                                    msgElem.textContent = LOCALE.maketext(\"Check executed successfully. Review the log below.\");\n                                    msgElem.style.display = \"block\";\n\n                                } else {\n                                    msgElem.classList.add(\"alert\", \"alert-danger\");\n                                    msgElem.textContent = chld_err;\n                                }\n                            } else {\n                                msgElem.classList.add(\"alert\", \"alert-danger\");\n                                msgElem.textContent = LOCALE.maketext(\n                                    \"The log transmission for “[_1]” did not include a final status for the check. This may indicate a failure. Check the “[_2]” file for more information.\", 'mysqlshell', '/var/cpanel/logs/' + log_entry + '/txt'\n                                );\n                            }\n                            btn.textContent = LOCALE.maketext(\"Run Checker Again\");\n                            btn.disabled = false;\n                        };\n                        return false;\n\n                    },\n                    failure: function(o) {\n                        msgElem.classList.add(\"alert\", \"alert-danger\");\n                        var error = LOCALE.maketext(\"Request timed out.\");\n                        if (o && o.status > 0) {\n                            error = String(o.cpanel_error || o.error || o).html_encode();\n                        }\n                        msgElem.textContent = error;\n                        btn.textContent = LOCALE.maketext(\"Run Checker Again\");\n                        btn.disabled = false;\n                    },\n                    timeout: 5000\n                }\n            });\n            return false;\n        }\n        "}$output .= '
+    </script>
+
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

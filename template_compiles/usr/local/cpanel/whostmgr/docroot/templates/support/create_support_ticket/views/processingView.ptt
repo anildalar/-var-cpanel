@@ -1,0 +1,105 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/support/create_support_ticket/views/processingView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="processingView">
+    <!-- This alert needs to be outside of the .bootstrap-container so that its width matches other alerts -->
+    <cp-alert type="danger" id="processing-error" ng-if="processingError">
+        <span ng-bind-html="processingError.message"></span>
+        <span class="processing-error-actions">
+            <span class="processing-error-text">';$output .= $stash->get(['locale',0,'maketext',['We cannot proceed with this automated tool. You must continue the ticket creation process within the [asis,cPanel Customer Portal].' ]]);$output .= '</span>
+            <button id="processing-error-bypass-button"
+                    target="tickets"
+                    class="btn btn-primary"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Transfer to the [asis,cPanel Customer Portal] to finish your support request …' ]]);$output .= '"
+                    ng-click="openTicketWizard()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Complete your support request' ]]);$output .= ' <span class="fas fa-external-link-alt"></span>
+            </button>
+        </span>
+    </cp-alert>
+
+    <div class="bootstrap-container">
+
+        <div class="row ng-hide" ng-show="ui.showTsa">
+            <div id="tos-verification">
+                <span class="col-xs-1">
+                    <span id="log-tsa-icon"
+                          cp-processing-icon
+                          class="pull-right flip text-center processing-icon"
+                          ng-model="work.states.logTsa"></span>
+                </span>
+                <span class="col-xs-11"
+                      ng-class="{ emphasize: work.states.logTsa > 0 }">';$output .= $stash->get(['locale',0,'maketext',['Recording that you accepted the Technical Support Agreement …' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row">
+            <div id="initialize-request">
+                <span class="col-xs-1">
+                    <span id="init-request-icon"
+                          class="pull-right flip text-center processing-icon"
+                          cp-processing-icon
+                          ng-model="work.states.initializeRequest"></span>
+                </span>
+                <span class="col-xs-11"
+                      ng-class="{ emphasize: work.states.initializeRequest > 0 }">';$output .= $stash->get(['locale',0,'maketext',['Initializing your support request with [asis,cPanel] …' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row ng-hide" ng-show="ui.showAccess">
+            <div id="authorize-support">
+                <span class="col-xs-1">
+                    <span id="log-authorize-support-icon"
+                          cp-processing-icon
+                          class="pull-right flip  text-center processing-icon"
+                          ng-model="work.states.logAuthorizeSupport"></span>
+                </span>
+                <span class="col-xs-11"
+                      ng-class="{ emphasize: work.states.logAuthorizeSupport > 0 }">';$output .= $stash->get(['locale',0,'maketext',['Authorizing [asis,cPanel] Support to access this server …' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row ng-hide" ng-show="ui.showAccess">
+            <div id="start-ssh-test">
+                <span class="col-xs-1">
+                    <span id="start-ssh-test-icon"
+                          cp-processing-icon
+                          class="pull-right flip  text-center processing-icon"
+                          ng-model="work.states.startSshTest"></span>
+                </span>
+                <span class="col-xs-11"
+                      ng-class="{ emphasize: work.states.startSshTest > 0 }">';$output .= $stash->get(['locale',0,'maketext',['Starting [asis,SSH] connection testing …' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row">
+            <div id="transferring">
+                <span class="col-xs-1">
+                    <span id="log-authorize-support-icon"
+                          cp-processing-icon
+                          class="pull-right flip  text-center processing-icon"
+                          ng-model="work.states.transferring"></span>
+                </span>
+                <span class="col-xs-11"
+                      ng-class="{ emphasize: work.states.transferring > 0 }">';$output .= $stash->get(['locale',0,'maketext',['Transferring you to the [asis,cPanel Customer Portal] …' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row ng-hide" ng-show="work.states.transferring == 2 && !isPopupBlocked">
+            <div class="col-xs-12">
+                <div id="transferring-note"
+                     class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Note:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Your ticket is not submitted until you enter the ticket information in the [asis,cPanel Customer Portal] window.' ]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row ng-hide" ng-show="isPopupBlocked">
+            <div class="col-xs-12">
+                <cp-alert id="popup-blocker-info" type="info">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['We have gathered your server’s information for [asis,cPanel] Support. Click the button below to fill out the rest of your ticket.' ]]);$output .= '</p>
+                    <button id="bypass-blocker"
+                            target="tickets"
+                            class="btn btn-primary"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Transfer to the [asis,cPanel Customer Portal] to finish your support request …' ]]);$output .= '"
+                            ng-click="openTicketWizard()">';$output .= $stash->get(['locale',0,'maketext',['Fill out your support request.' ]]);$output .= ' <span class="fas fa-external-link-alt"></span></button>
+                </cp-alert>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

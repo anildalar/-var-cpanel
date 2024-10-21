@@ -1,0 +1,313 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/SFTPTransport.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['[asis,SFTP] Destination' ]]);$output .= '</h4>
+<form name="sftp_transport_config" ng-if="!destinationState.fetching_data" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination" novalidate>
+    <div class="section-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_name">';$output .= $stash->get(['locale',0,'maketext',['Destination Name' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter a name for this destination.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.name"
+                        type="text"
+                        name="name"
+                        id="sftp_name"
+                        class="form-control"
+                        minlength="1"
+                        ng-maxlength="256"
+                        required/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" >
+                    <ul validation-container field-name="name">
+                        <validation-item
+                            field-name="name"
+                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a destination name.' ]]);$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="name"
+                            validation-name="maxlength">';$output .= $stash->get(['locale',0,'maketext',['The destination name must contain between [numf,1] and [numf,256] characters.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.upload_system_backup"
+                        type="checkbox"
+                        name="upload_system_backup"
+                        id="sftp_system"/>
+                    <label for="sftp_system">';$output .= $stash->get(['locale',0,'maketext',['Transfer System Backups to this Destination' ]]);$output .= '</label>
+                    <div class="callout callout-warning">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] System Backups contain sensitive security details.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You should transfer System Backups over encrypted methods.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.only_used_for_logs"
+                        type="checkbox"
+                        name="only_used_for_logs"
+                        id="sftp_logsonly"/>
+                    <label for="sftp_logsonly">';$output .= $stash->get(['locale',0,'maketext',['Only use this destination for log file transfers[comment,title of option like one above, but looks wrong title cased]' ]]);$output .= '</label>
+                    <div class="callout callout-warning">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Enabling this option will prevent it from being used for account and/or system backups.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enable this option if this destination will only be used for log backups. If it will be used for all backups, leave this unchecked.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_path">';$output .= $stash->get(['locale',0,'maketext',['Backup Directory' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Optional. Specify the path, relative to the account’s home directory, where the system stores backups.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.path"
+                        type="text"
+                        name="path"
+                        id="sftp_path"
+                        class="form-control"
+                        backup-location/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" >
+                    <ul validation-container field-name="path">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_host">';$output .= $stash->get(['locale',0,'maketext',['Remote Host' ]]);$output .= '</label>
+               <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter the remote server’s address.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['The address should not include [asis,http]://, [asis,https]://, a trailing port, or path information.' ]]);$output .= '</span>
+		 </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.host"
+                        type="text"
+                        name="host"
+                        id="sftp_host"
+                        class="form-control"
+                        remote-host
+                        required/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="host">
+                        <validation-item
+                            field-name="host"
+                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a remote host.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_port">';$output .= $stash->get(['locale',0,'maketext',['Port' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The port that the system uses to communicate with the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['By default, [asis,SFTP] destinations use port 22.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <input\n                        ng-model=\"destinationState.destination.sftp.port\"\n                        type=\"number\"\n                        name=\"port\"\n                        id=\"sftp_port\"\n                        class=\"form-control\"\n                        min=\"1\"\n                        max=\"65535\"\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <ul validation-container field-name=\"port\">\n                        <validation-item\n                            field-name=\"port\"\n                            validation-name=\"number\">";$output .= $stash->get('port_validation_message');$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="port"
+                            validation-name="min">';$output .= $stash->get('port_validation_message');$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="port"
+                            validation-name="max">';$output .= $stash->get('port_validation_message');$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="username">';$output .= $stash->get(['locale',0,'maketext',['Remote Account Username' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.username"
+                        type="text"
+                        name="username"
+                        id="sftp_username"
+                        class="form-control"
+                        ng-minlength="1"
+                        ng-maxlength="128"
+                        required/>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="username">
+                        <validation-item
+                            field-name="username"
+                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a remote account username.' ]]);$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="username"
+                            validation-name="maxlength">';$output .= $stash->get(['locale',0,'maketext',['The username must contain between [numf,1] and [numf,128] characters.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Authentication Type' ]]);$output .= '</label>
+                    <div class="callout callout-info">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['The authentication type the system will use to connect to the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For enhanced security, we recommend that you use key authentication.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="key_auth_type_yes" class="radio-inline">
+                        <input ng-model="destinationState.destination.sftp.authtype" ng-disabled="destinationState.showKeyGenerationForm" type="radio" name="authtype" id="key_auth_type_yes" value="key"> ';$output .= $stash->get(['locale',0,'maketext',['Key Authentication' ]]);$output .= '
+                    </label>
+                    <label for="password_auth_type_yes" class="radio-inline">
+                        <input ng-model="destinationState.destination.sftp.authtype" ng-disabled="destinationState.showKeyGenerationForm" type="radio" name="authtype" id="password_auth_type_yes" value="password"> ';$output .= $stash->get(['locale',0,'maketext',['Password Authentication' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="key_auth_type_options" ng-if="destinationState.destination.sftp.authtype === \'key\' && !destinationState.showKeyGenerationForm">
+        <h5 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Key Authentication Options' ]]);$output .= '</h5>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="private_key">';$output .= $stash->get(['locale',0,'maketext',['Private Key' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The full path of the private key on this server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Click the button below to generate a new key.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.privatekey"
+                        type="text"
+                        name="privatekey"
+                        id="private_key"
+                        class="form-control"
+                        ng-required="destinationState.destination.sftp.authtype === \'key\' && destinationState.newMode"
+                        full-path />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="privatekey">
+                        <validation-item
+                            field-name="privatekey"
+                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a valid path.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '</h3>
+                        </div>
+                        <div cp-loading-panel class="loading_panel" id="ssh_key_list_loading_panel" ng-if="!destinationState.sshKeyListLoaded">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= "\n                        </div>\n                        <ul class=\"list-group\" ng-if=\"destinationState.sshKeyListLoaded\">\n                            <li ng-repeat=\"key in destinationState.sshKeyList track by \$index\" class=\"list-group-item sshKey\" ng-click=\"setPrivateKey(key)\">{{key}}</button>\n                        </ul>\n                    </div>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                    <button type=\"button\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Generate a New Key' ]]);$output .= '" id="show_save_key" class="btn btn-default" ng-click="toggleKeyGenerationForm()">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Generate a New Key' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_passphrase">';$output .= $stash->get(['locale',0,'maketext',['Passphrase' ]]);$output .= '</label>
+                   <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The private key’s passphrase.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For security reasons, you will not see the passphrase.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enter the passphrase when you create this destination, or when you change the passphrase.' ]]);$output .= '</span>
+        </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.passphrase"
+                        type="password"
+                        name="passphrase"
+                        id="sftp_passphrase"
+                        class="form-control"
+                        ng-minlength="5"
+                        ng-maxlength="128" />
+                </div>
+                ';$stash->set('sftp_passphrase_error_message',$stash->get(['locale',0,'maketext',['You must enter a passphrase between [numf,5] and [numf,128] characters.' ]]));$output .= '
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="passphrase">
+                        <validation-item
+                            field-name="passphrase"
+                            validation-name="minlength">';$output .= $stash->get('sftp_passphrase_error_message');$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="passphrase"
+                            validation-name="maxlength">';$output .= $stash->get('sftp_passphrase_error_message');$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="password_auth_type_options" ng-if="destinationState.destination.sftp.authtype === \'password\' && !destinationState.showKeyGenerationForm">
+        <h5 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Password Authentication Options' ]]);$output .= '</h5>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="sftp_password">';$output .= $stash->get(['locale',0,'maketext',['Remote Password' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The password of the account on the remote server.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['For security reasons, you will not see the password.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enter the password when you create this destination, or when you change the password.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.sftp.password"
+                        type="password"
+                        name="password"
+                        id="sftp_password"
+                        class="form-control"
+                        ng-required="destinationState.destination.sftp.authtype === \'password\' && destinationState.newMode" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <ul validation-container field-name="password">
+                        <validation-item
+                            field-name="password"
+                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You must enter a password.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-include ng-show="destinationState.showKeyGenerationForm" src="\'views/SSHKeyGen.ptt\'"></ng-include>
+    <div class="form-group" ng-if="!destinationState.showKeyGenerationForm">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="sftp_timeout">';$output .= $stash->get(['locale',0,'maketext',['Timeout' ]]);$output .= '</label>
+                <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The number of seconds that the system will wait for a response from the remote server.' ]]);$output .= "</span>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <input\n                    type=\"number\"\n                    name=\"timeout\"\n                    id=\"sftp_timeout\"\n                    class=\"form-control\"\n                    min=\"30\"\n                    max=\"300\"\n                    positive-integer\n                    ng-keydown=\"noDecimalPoints(\$event)\"\n                    ng-paste=\"onlyNumbers(\$event)\"\n                    ng-model=\"destinationState.destination.sftp.timeout\" />\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <ul validation-container field-name=\"timeout\">\n                    <li validation-item field-name=\"timeout\" validation-name=\"number\">\n                        ";$output .= $stash->get('std_timeout_number_message');$output .= '
+                    </li>
+                     <li validation-item field-name="timeout" validation-name="min">
+                        ';$output .= $stash->get('std_timeout_validation_message');$output .= '
+                    </li>
+                    <li validation-item field-name="timeout" validation-name="max">
+                        ';$output .= $stash->get('std_timeout_validation_message');$output .= "\n                    </li>\n                </ul>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group\" ng-if=\"!destinationState.showKeyGenerationForm\"\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <div id=\"save_config\">\n                    <button type=\"submit\" id=\"save_destination_btn\" cp-action=\"saveDestination(destinationState.destination)\" ng-disabled=\"sftp_transport_config.\$pristine || sftp_transport_config.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save Destination' ]]);$output .= "</button>\n                    <button type=\"button\" id=\"save_and_validate_destination\" button-class=\"btn-default\" cp-action=\"saveAndValidateDestination(destinationState.destination)\" ng-disabled=\"sftp_transport_config.\$pristine || sftp_transport_config.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save and Validate Destination' ]]);$output .= '</button>
+                    <button type="button" class="btn btn-link" id="cancel_destination" ng-click="cancelDestination()" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

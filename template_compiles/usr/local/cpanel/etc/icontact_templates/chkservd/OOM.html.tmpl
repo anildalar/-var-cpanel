@@ -1,0 +1,133 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/chkservd/OOM.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/icons.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_inline.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/system_info_rows.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'proc_name',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Out of memory: The process “[_1]” was terminated because the system is low on memory.',$stash->get(['NOTICE',0,'proc_name',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Out of memory: A process was terminated because the system is low on memory.' ]]))}$stash->set('zebra_stripe',0);$output .= '
+    <p>
+        ';if ($stash->get(['NOTICE',0,'pid',0])&& $stash->get(['NOTICE',0,'proc_name',0])){$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['In order to avoid a system crash due to low memory, the kernel terminated the process named “[_1]” with the [output,abbr,PID,process ID] “[_2]”.',$stash->get(['NOTICE',0,'proc_name',0]),$stash->get(['NOTICE',0,'pid',0])]]);$output .= '
+        '}elsif ($stash->get(['NOTICE',0,'proc_name',0])){$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['In order to avoid a system crash due to low memory, the kernel terminated the process named “[_1]”.',$stash->get(['NOTICE',0,'proc_name',0])]]);$output .= '
+        '}elsif ($stash->get(['NOTICE',0,'pid',0])){$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['In order to avoid a system crash due to low memory, the kernel terminated the process with [output,abbr,PID,process ID] “[_1]”.',$stash->get(['NOTICE',0,'pid',0])]]);$output .= '
+        '}$output .= '
+
+
+        <table style="
+            margin: 5px 10px;
+            border: 2px solid ';$output .= $stash->get('medium_gray');$output .= ';
+            padding: 0;"
+            cellpadding="5" cellspacing="0"
+            width="';$output .= $stash->get('content_width')- 20;$output .= 'px">
+            <tbody>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Server' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'hostname',0]);&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Primary [output,abbr,IP,Internet Protocol] Address' ]]);$output .= '</th>
+                    <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'mainip',0]);&$_tt_filter($output)};$output .= '</td>
+                </tr>
+                ';if ($stash->get(['NOTICE',0,'proc_name',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process Name' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'proc_name',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'time',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Event Time' ]]);$output .= '</th>
+                      <td align="left"> ';$output .= $stash->get(['CPANEL',0,'locale',0,'datetime',[$stash->get(['NOTICE',0,'time',0]),'datetime_format_full' ]]);$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'pid',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,PID,process ID]' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'pid',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'uid',0,'size',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process [output,abbr,UID,user ID]' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'uid',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'user',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process Username' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'user',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'total_vm',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process Total Virtual Memory' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'total_vm',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'anon_rss',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process Anonymous Resident Set Size' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'anon_rss',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'file_rss',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process File Resident Set Size' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'file_rss',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                ';if ($stash->get(['NOTICE',0,'score',0])){$output .= '
+                  <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                      ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                      <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Process [output,abbr,OOM,Out Of Memory] Score' ]]);$output .= '</th>
+                      <td align="left">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['NOTICE',0,'score',0]);&$_tt_filter($output)};$output .= '</td>
+                  </tr>
+                '}$output .= '
+                <tr style="background-color:';$output .= $stash->get('zebra_stripe')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                    ';$stash->set('zebra_stripe',!$stash->get('zebra_stripe'));$output .= '
+                    <th align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Status' ]]);$output .= '</th>
+                    <td align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Out of Memory' ]]);$output .= ' ';$output .= $stash->get(['get_icon',[{'icon'=>'warn' }]]);$output .= '</td>
+                </tr>
+                ';$stash->set('system_info_table_zebra',$stash->get('zebra_strip'));$output .= '
+                ';$output .= $stash->get('system_info_rows');$output .= '
+            </tbody>
+        </table>
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For addtional details, see the attached [asis,dmesg] log dump.' ]]);$output .= '
+    </p>
+
+    <p>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'log_preview',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'log'}=$_tt_value;$output .= '
+            ';$stash->set('loop_index',$stash->get(['loop',0,'index',0]));$output .= '
+            ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get('log'),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Preview of “[_1]”',$stash->get(['NOTICE',0,'log_preview_name',0,$stash->get('loop_index'),0])]])}]]);$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </p>
+
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure Monitor[comment,program that observes] Settings' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '</a>
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure [asis,chkservd]' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_url',0]);$output .= '</a>
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Disable [output,abbr,HTML,Hypertext Markup Language] notifications' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'tweaksettings_chkservd_plaintext_notify_url',0]);$output .= '</a>
+    </p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

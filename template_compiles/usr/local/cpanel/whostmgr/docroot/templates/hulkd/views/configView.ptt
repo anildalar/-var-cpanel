@@ -1,0 +1,432 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/hulkd/views/configView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('on_switch_text','ON');$stash->set('off_switch_text','OFF');if (($stash->get(['locale',0,'get_language_tag',0])ne 'en')){$stash->set('on_switch_text','I');$stash->set('off_switch_text','O')}$output .= '
+<div>
+    <div class="row">
+        <div class="col-xs-12">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Configuration Settings' ]]);$output .= '</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <section id="form">
+            <form class="layout-medium ng-pristine ng-valid" id="config_form" name="config_form" novalidate>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                      <div class="switchable_panel">
+                          <div class="switchable_panel_group">
+                              <div class="panel_label">
+                                 ';$output .= $stash->get(['locale',0,'maketext',['Username-based Protection' ]]);$output .= '
+                              </div>
+                              <div class="panel_switch">
+                                  <div role="checkbox"
+                                      id="usernameToggleSwitch"
+                                      class="toggle-switch toggle-switch-xs"
+                                      tabindex="0"
+                                      uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Click to enable or disable username-based protection.' ]]);$output .= '"
+                                      tooltip-append-to-body="true"
+                                      aria-checked="{{ username_protection_enabled }}"
+                                      aria-label="';$output .= $stash->get(['locale',0,'maketext',['Click to enable or disable username-based protection.' ]]);$output .= "\"\n                                      ng-click=\"username_protection_enabled = !username_protection_enabled\"\n                                      ng-keyup=\"handle_protection_keyup(\$event, 'username')\"\n                                      ng-keyup=\"handle_protection_keydown(\$event)\">\n                                      <div id=\"usernameToggleStatus\" class=\"toggle-switch-animate\" ng-class=\"{'switch-off': !username_protection_enabled, 'switch-on': username_protection_enabled}\">\n                                          <span class=\"switch-left\">\n                                              ";$output .= $stash->get('on_switch_text');$output .= '
+                                          </span>
+                                          <span class="knob">{{knobLabel}}</span>
+                                          <span class="switch-right">
+                                              ';$output .= $stash->get('off_switch_text');$output .= '
+                                          </span>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div id="user_protection_settings" class="panel-body" ng-class="{off: !username_protection_enabled}">
+                        <p class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Username-based protection tracks login attempts for user accounts. When disabled, [asis,cPHulk] will not lock user accounts, but existing account locks will remain.' ]]);$output .= '
+                        </p>
+                        <div class="form-group">
+                            <label for="txtField_brute_force_period_mins">';$output .= $stash->get(['locale',0,'maketext',['Brute Force Protection Period (in minutes)' ]]);$output .= '</label>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <input type="text"
+                                        id="txtField_brute_force_period_mins"
+                                        name="txtField_brute_force_period_mins"
+                                        ng-model="config_settings.brute_force_period_mins"
+                                        ng-disabled="!username_protection_enabled"
+                                        disable-validation="!username_protection_enabled"
+                                        required
+                                        positive-integer
+                                        num-greater-than-equal="1"
+                                        num-less-than-equal="1440"
+                                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Minutes' ]]);$output .= '"
+                                        class="form-control" />
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <ul validation-container field-name="txtField_brute_force_period_mins">
+                                        <validation-item
+                                            field-name="txtField_brute_force_period_mins"
+                                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtField_max_failures">';$output .= $stash->get(['locale',0,'maketext',['Maximum Failures by Account' ]]);$output .= '</label>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <input type="text"
+                                        id="txtField_max_failures"
+                                        name="txtField_max_failures"
+                                        ng-model="config_settings.max_failures"
+                                        ng-disabled="!username_protection_enabled"
+                                        disable-validation="!username_protection_enabled"
+                                        required
+                                        positive-integer
+                                        max-length="6"
+                                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Integer' ]]);$output .= '"
+                                        class="form-control" />
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <ul validation-container field-name="txtField_max_failures">
+                                        <validation-item
+                                            field-name="txtField_max_failures"
+                                            validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="radio">
+                            <label>
+                              <input type="radio"
+                                    ng-model="username_protection_level"
+                                    value="local"
+                                    name="username_protection_level_setting"
+                                    ng-checked="username_protection_level == \'local\'"
+                                    ng-disabled="!username_protection_enabled">
+                              <span>';$output .= $stash->get(['locale',0,'maketext',['Apply protection to local addresses [output,strong,only]' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                              <input type="radio"
+                                    ng-model="username_protection_level"
+                                    value="both"
+                                    name="username_protection_level_setting"
+                                    ng-checked="username_protection_level == \'both\'"
+                                    ng-disabled="!username_protection_enabled">
+                              <span>';$output .= $stash->get(['locale',0,'maketext',['Apply protection to local and remote addresses' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" ng-model="config_settings.username_based_protection_for_root" ng-disabled="!username_protection_enabled"/>
+                                <span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Allow username protection to lock the “[_1]” user.','root' ]]);$output .= '
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                    <div class="switchable_panel">
+                        <div class="switchable_panel_group">
+                            <div class="panel_label">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address-based Protection' ]]);$output .= '
+                            </div>
+                            <div class="panel_switch">
+                                <div role="checkbox"
+                                    id="ipToggleSwitch"
+                                    class="toggle-switch toggle-switch-xs"
+                                    tabindex="0"
+                                    uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Click to enable or disable [asis,IP] address-based protection.' ]]);$output .= '"
+                                    tooltip-append-to-body="true"
+                                    aria-checked="{{ config_settings.ip_based_protection }}"
+                                    aria-label="';$output .= $stash->get(['locale',0,'maketext',['Click to enable or disable [asis,IP] address-based protection.' ]]);$output .= "\"\n                                    ng-click=\"config_settings.ip_based_protection = !config_settings.ip_based_protection\"\n                                    ng-keyup=\"handle_protection_keyup(\$event, 'ip_based_protection')\"\n                                    ng-keyup=\"handle_protection_keydown(\$event)\">\n                                    <div id=\"ipToggleStatus\" class=\"toggle-switch-animate\" ng-class=\"{'switch-off': !config_settings.ip_based_protection, 'switch-on': config_settings.ip_based_protection}\">\n                                        <span class=\"switch-left\">\n                                            ";$output .= $stash->get('on_switch_text');$output .= '
+                                        </span>
+                                        <span class="knob">{{knobLabel}}</span>
+                                        <span class="switch-right">
+                                            ';$output .= $stash->get('off_switch_text');$output .= '
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  <div id="ip_protection_settings" class="panel-body" ng-class="{off: !config_settings.ip_based_protection}">
+                    <p class="description">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address-based protection tracks login attempts from specific [asis,IP] addresses. When disabled, [asis,cPHulk] will not block [asis,IP] addresses, but existing blocks will remain.' ]]);$output .= '
+                    </p>
+                    <div class="form-group">
+                        <label for="txtField_ip_brute_force_period_mins">';$output .= $stash->get(['locale',0,'maketext',['IP Address-based Brute Force Protection Period (in minutes)' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_ip_brute_force_period_mins"
+                                    name="txtField_ip_brute_force_period_mins"
+                                    ng-model="config_settings.ip_brute_force_period_mins"
+                                    ng-disabled="!config_settings.ip_based_protection"
+                                    disable-validation="!config_settings.ip_based_protection"
+                                    required
+                                    positive-integer
+                                    num-greater-than-equal="1"
+                                    num-less-than-equal="1440"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Minutes' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <ul validation-container field-name="txtField_ip_brute_force_period_mins">
+                                    <validation-item
+                                        field-name="txtField_ip_brute_force_period_mins"
+                                        validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtField_max_failures_byip">';$output .= $stash->get(['locale',0,'maketext',['Maximum Failures per IP Address' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_max_failures_byip"
+                                    name="txtField_max_failures_byip"
+                                    ng-model="config_settings.max_failures_byip"
+                                    ng-disabled="!config_settings.ip_based_protection"
+                                    disable-validation="!config_settings.ip_based_protection"
+                                    required
+                                    positive-integer
+                                    max-length="6"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Integer' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <ul validation-container field-name="txtField_max_failures_byip">
+                                    <validation-item
+                                        field-name="txtField_max_failures_byip"
+                                        validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtField_command_to_run_on_brute_force">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Command to Run When an IP Address Triggers Brute Force Protection' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign"
+                            role="checkbox"
+                            tabindex="0"
+                            aria-checked="{{ !bruteInfoCollapse }}"
+                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Display additional help text for this field.' ]]);$output .= "\"\n                            ng-click=\"bruteInfoCollapse = !bruteInfoCollapse\"\n                            ng-keyup=\"collapse_keydown(\$event)\"\n                            ng-keyup=\"collapse_keyup(\$event, 'bruteInfoCollapse')\"></span>\n                        <div uib-collapse=\"bruteInfoCollapse\">\n                            <span class=\"info-block\">\n                                <div class=\"alert alert-warning\">\n                                    <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                    <div class=\"alert-message\">\n                                        <strong>";$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['The command must complete within [quant,_1,second,seconds] to avoid a timeout.',15 ]]);$output .= '
+                                    </div>
+                                </div>
+                                <p><strong>';$output .= $stash->get(['locale',0,'maketext',['The following variables may be used in commands:' ]]);$output .= '</strong>
+                                  <ul>
+                                    <li><strong>&percnt;exptime&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The [asis,Unix] time when brute force protection will release the block' ]]);$output .= '</li>
+                                    <li><strong>&percnt;max_allowed_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['Maximum allowed failures to trigger this type (excessive or non-excessive failures)' ]]);$output .= '</li>
+                                    <li><strong>&percnt;current_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['Number of current failures' ]]);$output .= '</li>
+                                    <li><strong>&percnt;excessive_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['0 (not an excessive login failure) or 1 (an excessive login failure)' ]]);$output .= '</li>
+                                    <li><strong>&percnt;reason&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The reason for the block' ]]);$output .= '</li>
+                                    <li><strong>&percnt;remote_ip&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The blocked IP address' ]]);$output .= '</li>
+                                    <li><strong>&percnt;authservice&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The last service to request authentication (for example, [asis,webmaild])' ]]);$output .= '</li>
+                                    <li><strong>&percnt;user&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The last username to request authentication' ]]);$output .= '</li>
+                                    <li><strong>&percnt;logintime&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The time of the request' ]]);$output .= '</li>
+                                    <li><strong>&percnt;ip_version&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The IP version (4 or 6)' ]]);$output .= '</li>
+                                  </ul>
+                               </p>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_command_to_run_on_brute_force"
+                                    name="txtField_command_to_run_on_brute_force"
+                                    ng-model="config_settings.command_to_run_on_brute_force"
+                                    ng-disabled="!config_settings.ip_based_protection"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Command Text' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="config_settings.block_brute_force_with_firewall" ng-disabled="!config_settings.can_temp_ban_firewall || !config_settings.ip_based_protection"/>
+                            <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Block IP addresses at the firewall level if they trigger brute force protection' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                    <div class="alert alert-info" ng-show="!config_settings.can_temp_ban_firewall">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message">
+                        {{ config_settings.iptable_error }}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel panel-default">
+                  <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['One-day Blocks' ]]);$output .= '</div>
+                  <div id="one_day_protection_settings" class="panel-body" ng-class="{off: !config_settings.ip_based_protection}">
+                    <div class="form-group">
+                        <label for="txtField_mark_as_brute">';$output .= $stash->get(['locale',0,'maketext',['Maximum Failures per IP Address before the IP Address is Blocked for One Day' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_mark_as_brute"
+                                    name="txtField_mark_as_brute"
+                                    ng-model="config_settings.mark_as_brute"
+                                    ng-disabled="!config_settings.ip_based_protection"
+                                    disable-validation="!config_settings.ip_based_protection"
+                                    required
+                                    positive-integer
+                                    max-length="6"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Integer' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <ul validation-container field-name="txtField_mark_as_brute">
+                                    <validation-item
+                                        field-name="txtField_mark_as_brute"
+                                        validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="txtField_command_to_run_on_excessive_brute_force">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Command to Run When an IP Address Triggers a One-Day Block' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign"
+                            role="checkbox"
+                            tabindex="0"
+                            aria-checked="{{ !excessiveBruteInfoCollapse }}"
+                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Display additional help text for this field.' ]]);$output .= "\"\n                            ng-click=\"excessiveBruteInfoCollapse = !excessiveBruteInfoCollapse\"\n                            ng-keyup=\"collapse_keydown(\$event)\"\n                            ng-keyup=\"collapse_keyup(\$event, 'excessiveBruteInfoCollapse')\"></span>\n                        <div uib-collapse=\"excessiveBruteInfoCollapse\">\n                            <span class=\"info-block\">\n                                <div class=\"alert alert-warning\">\n                                    <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                    <div class=\"alert-message\">\n                                        <strong>";$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['The command must complete within [quant,_1,second,seconds] to avoid a timeout.',15 ]]);$output .= '
+                                    </div>
+                                </div>
+                                <p><strong>';$output .= $stash->get(['locale',0,'maketext',['The following variables may be used in commands:' ]]);$output .= '</strong>
+                                  <ul>
+                                    <li><strong>&percnt;exptime&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The [asis,Unix] time when brute force protection will release the block' ]]);$output .= '</li>
+                                    <li><strong>&percnt;max_allowed_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['Maximum allowed failures to trigger this type (excessive or non-excessive failures)' ]]);$output .= '</li>
+                                    <li><strong>&percnt;current_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['Number of current failures' ]]);$output .= '</li>
+                                    <li><strong>&percnt;excessive_failures&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['0 (not an excessive login failure) or 1 (an excessive login failure)' ]]);$output .= '</li>
+                                    <li><strong>&percnt;reason&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The reason for the block' ]]);$output .= '</li>
+                                    <li><strong>&percnt;remote_ip&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The blocked IP address' ]]);$output .= '</li>
+                                    <li><strong>&percnt;authservice&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The last service to request authentication (for example, [asis,webmaild])' ]]);$output .= '</li>
+                                    <li><strong>&percnt;user&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The last username to request authentication' ]]);$output .= '</li>
+                                    <li><strong>&percnt;logintime&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The time of the request' ]]);$output .= '</li>
+                                    <li><strong>&percnt;ip_version&percnt;</strong> - ';$output .= $stash->get(['locale',0,'maketext',['The IP version (4 or 6)' ]]);$output .= '</li>
+                                  </ul>
+                                </p>
+                            </span>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_command_to_run_on_excessive_brute_force"
+                                    name="txtField_command_to_run_on_excessive_brute_force"
+                                    ng-model="config_settings.command_to_run_on_excessive_brute_force"
+                                    ng-disabled="!config_settings.ip_based_protection"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Command Text' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="config_settings.block_excessive_brute_force_with_firewall" ng-disabled="!config_settings.can_temp_ban_firewall || !config_settings.ip_based_protection" />
+                            <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Block IP addresses at the firewall level if they trigger a one-day block' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                    <div class="alert alert-info" ng-show="!config_settings.can_temp_ban_firewall">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message">
+                        {{ config_settings.iptable_error }}
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+               <div class="panel panel-default">
+                  <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['Login History' ]]);$output .= '</div>
+                  <div class="panel-body">
+                    <div class="form-group">
+                        <label for="txtField_lookback_period_min">';$output .= $stash->get(['locale',0,'maketext',['Duration for Retaining Failed Logins (in minutes)' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text"
+                                    id="txtField_lookback_period_min"
+                                    name="txtField_lookback_period_min"
+                                    ng-model="config_settings.lookback_period_min"
+                                    required
+                                    positive-integer
+                                    max-length="6"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Minutes' ]]);$output .= '"
+                                    class="form-control" />
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <ul validation-container field-name="txtField_lookback_period_min">
+                                    <validation-item
+                                        field-name="txtField_lookback_period_min"
+                                        validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="panel panel-default">
+                  <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['Notifications' ]]);$output .= '</div>
+                  <div class="panel-body">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="config_settings.notify_on_root_login" />
+                            <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Send a notification upon successful root login when the IP address is not on the whitelist' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                ng-model="config_settings.notify_on_root_login_for_known_netblock" />
+                            <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Send a notification upon successful root login when the [asis,IP] address is not on the whitelist, but from a known [asis,netblock]' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox"
+                                ng-model="config_settings.notify_on_brute"
+                                ng-disabled="!config_settings.ip_based_protection" />
+                            <span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Send a notification when the system detects a brute force user' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                      <p class="text-info">
+                           ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Users can enable login notifications in the Contact Information area inside of [asis,cPanel].' ]]);$output .= '
+                      </p>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                            <button
+                                type="submit"
+                                spinner-id="saveConfig"
+                                cp-action="save(config_form)"
+                                button-class="btn-primary"
+                                ng-disabled="disableSave(config_form)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            </section>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

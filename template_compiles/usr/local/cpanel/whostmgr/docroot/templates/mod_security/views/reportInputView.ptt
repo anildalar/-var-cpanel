@@ -1,0 +1,127 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/reportInputView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="section-heading">
+    <h2 ng-bind-html="getTitleText()">';$output .= $stash->get(['locale',0,'maketext',['Report a [asis,ModSecurity] Rule' ]]);$output .= '</h2>
+    <span>';$output .= $stash->get(['locale',0,'maketext',['Fill in the form below to report your issue. You can review your submission before transmission.' ]]);$output .= '</span>
+</div>
+
+<div class="section-body report-rule-body">
+    <form class="layout-medium" name="view.form" novalidate>
+        <div class="report-rule-form-input">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <label for="report-email">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <input type="email"
+                               class="form-control"
+                               id="report-email"
+                               name="email"
+                               ng-model="report.inputs.email"
+                               required
+                               title="';$output .= $stash->get(['locale',0,'maketext',['Your email address.' ]]);$output .= "\"\n                               placeholder=\"user\@example.com\" />\n                    </div>\n                    <div class=\"col-xs-12 col-sm-5\">\n                        <ul validation-container field-name=\"email\">\n                            <li validation-item field-name=\"email\" validation-name=\"required\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['You must enter your email address.' ]]);$output .= '
+                            </li>
+                            <li validation-item field-name="email" validation-name="email">
+                                ';$output .= $stash->get(['locale',0,'maketext',['You must enter a valid email address.' ]]);$output .= '
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group rule-text-toggle">
+                <button class="btn btn-default" ng-show="view.loading.init" disabled>
+                    <i class="glyph fas fa-sync animate-spin"></i>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Loading Rule…' ]]);$output .= '</span>
+                </button>
+                <button class="btn btn-default" ng-show="!view.loading.init && !view.ruleExpanded" ng-click="view.ruleExpanded = true">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Show Rule Text' ]]);$output .= '
+                    <span class="caret"></span>
+                </button>
+                <button class="btn btn-default" ng-show="!view.loading.init && view.ruleExpanded" ng-click="view.ruleExpanded = false">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Hide Rule Text' ]]);$output .= '
+                    <span class="caret caret-up"></span>
+                </button>
+
+                <div>
+                    <div class="panel panel-default" ng-show="view.ruleExpanded">
+                        <div class="panel-body">
+                            <span ng-bind-html="report.rule.rule | wrap:\'[,/]\' | break"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <label for="report-reason">';$output .= $stash->get(['locale',0,'maketext',['Reason for the Report' ]]);$output .= '</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <select class="form-control"
+                                id="report-reason"
+                                name="reason"
+                                ng-model="report.inputs.reason"
+                                required
+                                title=';$output .= $stash->get(['locale',0,'maketext',['The reason for your submission.' ]]);$output .= '>
+                            <option value="">';$output .= $stash->get(['locale',0,'maketext',['Select a reason' ]]);$output .= '</option>
+                            <option value="';$output .= $stash->get(['locale',0,'maketext',['The rule generates false positive hit entries' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['The rule generates false positive hit entries' ]]);$output .= '</option>
+                            <option value="';$output .= $stash->get(['locale',0,'maketext',['The rule is too strict' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['The rule is too strict' ]]);$output .= '</option>
+                            <option value="';$output .= $stash->get(['locale',0,'maketext',['There is an error in the rule' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['There is an error in the rule' ]]);$output .= '</option>
+                            <option value="';$output .= $stash->get(['locale',0,'maketext',['Another reason - see comments' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Another reason - see comments' ]]);$output .= '</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <label for="report-comments">';$output .= $stash->get(['locale',0,'maketext',['Additional Comments' ]]);$output .= '</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-5">
+                        <textarea class="form-control"
+                                  id="report-comments"
+                                  name="comments"
+                                  ng-model="report.inputs.comments"
+                                  required
+                                  rows="3"
+                                  title=';$output .= $stash->get(['locale',0,'maketext',['Enter your comments or notes to clarify the issue.' ]]);$output .= '
+                                  placeholder="';$output .= $stash->get(['locale',0,'maketext',['Example: This rule triggers when I submit a form.' ]]);$output .= '"></textarea><!-- The closing tag must remain here for the placeholder to show on initial load. -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" ng-show="view.isDisabled && !view.isDisabled.rule">
+                <div class="checkbox">
+                    <label for="report-form-disable">
+                        <input type="checkbox"
+                               id="report-form-disable"
+                               name="disable"
+                               ng-model="report.inputs.disableRule"
+                               ng-disabled="view.isDisabled.rule" />
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Disable this rule' ]]);$output .= '</span>
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label for="report-form-deploy" ng-class="{ \'muted\' : view.isDisabled.rule || !report.inputs.disableRule }">
+                        <input type="checkbox"
+                               id="report-form-deploy"
+                               name="deploy"
+                               ng-model="report.inputs.deployRule"
+                               ng-disabled="view.isDisabled.rule || !report.inputs.disableRule" />
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Deploy and Restart [asis,Apache]' ]]);$output .= "</span>\n                    </label>\n                </div>\n            </div>\n\n            <div class=\"form-group\">\n                <button class=\"btn btn-primary\" ng-click=\"changeStep('review')\" ng-disabled=\"view.loading.init || view.form.\$invalid || report.invalid\">\n                    ";$output .= $stash->get(['locale',0,'maketext',['Review Report' ]]);$output .= '
+                </button>
+                <button class="btn btn-link" ng-click="cancelSubmission()">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

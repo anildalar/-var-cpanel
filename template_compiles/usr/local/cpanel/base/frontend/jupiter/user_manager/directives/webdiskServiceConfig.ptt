@@ -1,0 +1,196 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/user_manager/directives/webdiskServiceConfig.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="panel" ng-class="{
+    \'panel-default\': !conflictResolutionRequired || !needsConflictResolution(),
+    \'panel-warning\': conflictResolutionRequired && (needsConflictResolution() || isLinking),
+    \'panel-success\': service.willLink && !isLinking,
+    \'panel-danger\': service.willDismiss
+}">
+    <div class="panel-heading">
+        <label>';$output .= $stash->get(['locale',0,'maketext',['Web Disk' ]]);$output .= '</label>
+        <span class="pull-right flip ng-hide" ng-show="showToggle">
+            <toggle-switch id="toggleWebDisk"
+                       ng-model="service.enabled"
+                       no-spinner="true"
+                       label-position="left"
+                       on-toggle="toggleService()"
+                       enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                       disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '"
+                       ng-disabled="isDisabled || hasConflict() && isResolved() && !isLinking"
+                       ng-hide="(hasConflict() && !isResolved()) || isLinking">
+            </toggle-switch>
+        </span>
+        <span class="fas fa-exclamation-triangle" id="webdisk-has-conflicts-warning" ng-show=" conflictResolutionRequired && (needsConflictResolution() || isLinking)" title="';$output .= $stash->get(['locale',0,'maketext',['The system detected a service account with the same username.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You must select an action.' ]]);$output .= '"></span>
+        <span class="fas fa-info-circle"          id="webdisk-has-conflicts-info"    ng-show="!conflictResolutionRequired && (needsConflictResolution() || isLinking)" title="';$output .= $stash->get(['locale',0,'maketext',['The system detected a service account with the same username.' ]]);$output .= '"></span>
+    </div>
+    <div class="panel-body">
+        <!-- Handle merge candidates -->
+        <div ng-class="{ \'text-warning\': conflictResolutionRequired }" ng-show="needsConflictResolution() || isLinking">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['A [asis,Web Disk] service account with the same username and domain as this [asis,subaccount] already exists.' ]]);$output .= '</p>
+
+            <div class="well well-sm existing-service-summary" ng-show="needsConflictResolution() || isLinking">
+                <div id="webdisk-details-expander" class="text-center existing-service-summary-header" ng-click="toggleConflictSummary()">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Existing Account Summary' ]]);$output .= '</label>
+                    <span class="fas fa-fw fa-caret-down" ng-class="{ \'fa-rotate-180\': !isSummaryCollapsed }"></span>
+                </div>
+                <div class="existing-service-summary-body" uib-collapse="isSummaryCollapsed">
+                    <hr>
+                    <ul>
+                        <li id="existing-webdisk-homedir">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= ':</label>
+                            <span ng-bind-html="service.homedir | wrap:\'\':5"></span>
+                        </li>
+                        <li id="existing-webdisk-perms">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Permissions' ]]);$output .= ':</label>
+                            <span ng-show="service.perms === \'rw\'">';$output .= $stash->get(['locale',0,'maketext',['Read-Write' ]]);$output .= '</span>
+                            <span ng-show="service.perms === \'ro\'">';$output .= $stash->get(['locale',0,'maketext',['Read-Only' ]]);$output .= '</span>
+                        </li>
+                        <li id="existing-webdisk-enabledigest">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication' ]]);$output .= ':</label>
+                            <span ng-show="service.enabledigest">';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</span>
+                            <span ng-show="!service.enabledigest">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <p>';$output .= $stash->get(['locale',0,'maketext',['You cannot create a duplicate [asis,Web Disk] service account. To manage their settings jointly, link the [asis,Web Disk] account to the [asis,subaccount].' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button id="webdisk-conflict-link"
+                        type="button"
+                        ng-disabled="isInProgress()"
+                        cp-action="runLinkAction()"
+                        button-ng-class="{ \'btn-warning\': conflictResolutionRequired, \'btn-small\': !conflictResolutionRequired, \'btn-default\': !conflictResolutionRequired }">
+                    <span class="fas fa-link" ng-hide="isLinking"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Link' ]]);$output .= '
+                </button>
+                <button class="btn btn-warning"
+                        id="webdisk-conflict-dismiss"
+                        type="button"
+                        ng-click="setDismiss()"
+                        ng-show="showConflictDismiss">
+                    <span class="fas fa-unlink"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Dismiss' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+
+        <div class="text-success" ng-show="service.willLink && !isLinking">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The system will link this [asis,Web Disk] service account to the [asis,subaccount].' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button class="btn btn-link"
+                        id="webdisk-link-undo"
+                        type="button"
+                        ng-click="clearConflictResolution()">
+                    <span class="fas fa-undo"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Undo' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+        <div class="text-danger" ng-show="service.willDismiss">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This [asis,subaccount] will not have [asis,Web Disk] access.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You can edit this setting later in the User Manager interface.' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button class="btn btn-link"
+                        id="webdisk-dismiss-undo"
+                        type="button"
+                        ng-click="clearConflictResolution()">
+                    <span class="fas fa-undo"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Undo' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+
+        <!-- Normal configuration settings -->
+        <div ng-hide="hasConflict()">
+            <div class="ng-hide" cp-alert ng-show="showWarning" id="webdiskWarningMessage">
+                {{warningMessage}}
+            </div>
+            <div class="ng-hide" cp-alert ng-show="showInfo" id="webdiskInfoMessage" type="info">
+                {{infoMessage}}
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= "</label>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"fas fa-home\"></i>\n                                <span>/</span>\n                            </span>\n                            <input id=\"txtWebDiskHomeDirectory\"\n                               name=\"txtWebDiskHomeDirectory\"\n                               class=\"form-control\"\n                               ng-model=\"service.homedir\"\n                               ng-disabled=\"!service.enabled\"\n                               uib-typeahead=\"directory for directory in completeDirectory(\$viewValue)\"\n                               typeahead-template-url=\"pathSuggester.html\"\n                               autocomplete=\"off\"\n                               class=\"form-control\"\n                               ng-disabled=\"isDisabled\" />\n                        </span>\n                    </div>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <toggle-label-info\n                            label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Permissions' ]]);$output .= '"
+                            info-icon-id="icoWebDiskPermissions"
+                            info-block-id="textWebDiskPermissions"
+                            show-info-block="false">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Read-Write access level will permit all supported operations inside the directory assigned to this Web Disk account. Read-Only access will only permit this account to read, download, and list files inside the directory assigned to this Web Disk account.' ]]);$output .= '
+                        </toggle-label-info>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="radio">
+                            <label title="';$output .= $stash->get(['locale',0,'maketext',['Allow the user to read and write files to the Home Directory.' ]]);$output .= '">
+                                <input id="rdoWebdiskRW"
+                                       type="radio"
+                                       ng-model="service.perms"
+                                       ng-disabled="!service.enabled || isDisabled"
+                                       name="permission" value="rw">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Read-Write' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label title="';$output .= $stash->get(['locale',0,'maketext',['Allow the user to only read files in the Home Directory.' ]]);$output .= '">
+                                <input id="rdoWebdiskRO"
+                                       type="radio"
+                                       ng-model="service.perms"
+                                       ng-disabled="!service.enabled || isDisabled"
+                                       name="permission" value="ro">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Read-Only' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group ng-hide" ng-show="allowDigestAuth">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Authentication (Optional)' ]]);$output .= '"
+                            info-icon-id="icoWebDiskAuthentication"
+                            info-block-id="textWebDiskAuthentication"
+                            show-info-block="false">
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,Windows Vista®], [asis,Windows® 7], [asis,Windows® 8] and [asis,Windows® 10] require digest authentication support to be enabled in order to access your [asis,Web Disk] over a clear text/unencrypted connection. If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '
+                        </toggle-label-info>
+                    </div>
+                    <div class="col-xs-12 ng-hide" cp-alert ng-show="showDigestWarning" id="webdiskDigestWarningMessage">
+                        ';$output .= $stash->get(['locale',0,'maketext',['You must provide a new password to enable Digest Authentication.' ]]);$output .= '
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="checkbox">
+                            <label>
+                                <input id="chkWebdiskEnableDigest"
+                                       type="checkbox"
+                                       ng-model="service.enabledigest"
+                                       ng-disabled="!service.enabled || isDisabled || !enableDigestControls">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                            </label>
+                            <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['This option only applies to [asis,Windows Vista®], [asis,Windows® 7], [asis,Windows® 8] and [asis,Windows® 10].' ]]);$output .= '</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="panel-footer ng-hide" ng-show="showUnlink">
+        <div class="row">
+            <div class="col-xs-12">
+                <action-button id="unlinkWebDisk"
+                               class="btn btn-link btn-xs pull-right"
+                               ng-click="unlinkService()"
+                               ng-disabled="isInProgress()"
+                               title="';$output .= $stash->get(['locale',0,'maketext',['Unlink this [asis,Web Disk] service account from this [asis,subaccount].' ]]);$output .= '">
+                    <i class="fas fa-unlink"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Unlink' ]]);$output .= '
+                </action-button>
+            </div>
+        </div>
+    </div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

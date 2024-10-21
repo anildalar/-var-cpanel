@@ -1,0 +1,66 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/support/create_support_ticket/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/create_support_ticket/index.min.css' ]])]);$stash->set('PAGE_BASE','/scripts7/create_support_ticket/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('PAGE_DATA',{'MAIN_TITLE'=>$stash->get('PAGE_NAME'),'access_id'=>$stash->get(['data',0,'access_id',0]),'main_ip'=>$stash->get(['data',0,'main_ip',0]),'is_dns_only'=>$stash->get(['data',0,'is_dns_only',0])? 1 : 0,'is_tickets_authenticated'=>$stash->get(['data',0,'is_tickets_authenticated',0])? 1 : 0,'tickets_hostname'=>$stash->get(['data',0,'tickets_hostname',0]),'new_ticket_urls'=>$stash->get(['data',0,'new_ticket_urls',0]),'oauth2'=>$stash->get(['data',0,'oauth2',0]),'has_cloud_linux'=>$stash->get(['data',0,'has_cloud_linux',0])? 1 : 0,'has_lite_speed'=>$stash->get(['data',0,'has_lite_speed',0])? 1 : 0,'is_cpanel_direct'=>$stash->get(['data',0,'is_cpanel_direct',0])? 1 : 0,'is_internal'=>$stash->get(['data',0,'is_internal',0])? 1 : 0 });$output .= do {my$output='';$output .= '
+
+';if ($stash->get(['PAGE_DATA',0,'is_cpanel_direct',0])|| $stash->get(['PAGE_DATA',0,'is_internal',0])){$output .= '
+<div ng-controller="applicationController" class="ng-cloak">
+    <div ng-controller="wizardController">
+        <div class="wizard panel panel-default">
+            <div class="panel-heading hidden-xs hidden-sm">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Support Ticket Wizard' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <cp-alert-list inline></cp-alert-list>
+                <div id="content" class="ng-cloak" ng-cloak>
+                    <div class="animate-view" ng-view></div>
+                </div>
+            </div>
+            <div class="panel-footer" ng-show="wizard.footer" class="ng-hide">
+                <button class="btn btn-sm btn-default pull-left flip"
+                        ng-click="wizardApi.previous()"
+                        ng-attr-id="{{ wizard.previousButtonId }}"
+                        title="{{wizard.previousButtonTitle}}">{{wizard.previousButtonText}}</button>
+                <button class="btn btn-sm btn-primary pull-right flip"
+                        ng-click="wizardApi.next()"
+                        ng-disabled="wizard.nextButtonDisabled"
+                        ng-attr-id="{{ wizard.nextButtonId }}"
+                        title="{{wizard.nextButtonTitle}}">{{wizard.nextButtonText}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['PAGE_DATA',0,'json',0]);$output .= ';
+</script>
+
+<script type="text/ng-template" id="support/create_support_ticket/views/startView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/startView.ptt');$output .= '
+</script>
+<script type="text/ng-template" id="support/create_support_ticket/views/termsofserviceView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/termsofserviceView.ptt');$output .= '
+</script>
+<script type="text/ng-template" id="support/create_support_ticket/views/authorizeCustomerPortalView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/authorizeCustomerPortalView.ptt');$output .= '
+</script>
+<script type="text/ng-template" id="support/create_support_ticket/views/grantView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/grantView.ptt');$output .= '
+</script>
+<script type="text/ng-template" id="support/create_support_ticket/views/processingView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/processingView.ptt');$output .= '
+</script>
+'}else {$output .= '
+<div class="callout callout-warning" aria-label="warning">
+    <div class="callout-heading ng-binding" ng-show="hasHeading">';$output .= $stash->get(['locale',0,'maketext',['Restricted Feature' ]]);$output .= '</div>
+    <div>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['This feature is only available if you have purchased a license directly from [asis,cPanel].' ]]);$output .= '</p>
+        <button class="btn btn-primary" onclick="window.location.href=\'https://support.cpanel.net\';">';$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= '</button>
+</div>
+'}$output .= '
+<script type="text/ng-template" id="support/create_support_ticket/views/supportInfoView.ptt">
+    ';$output .= $context->process('support/create_support_ticket/views/supportInfoView.ptt');$output .= '
+</script>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>$stash->get('stylesheet_includes'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','app_key'=>'create_support_ticket','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

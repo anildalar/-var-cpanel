@@ -1,0 +1,143 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/user_manager/directives/ftpServiceConfig.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="panel" ng-class="{
+    \'panel-default\': !conflictResolutionRequired || !needsConflictResolution(),
+    \'panel-warning\': conflictResolutionRequired && (needsConflictResolution() || isLinking),
+    \'panel-success\': service.willLink && !isLinking,
+    \'panel-danger\': service.willDismiss
+}">
+    <div class="panel-heading">
+        <label>';$output .= $stash->get(['locale',0,'maketext',['FTP' ]]);$output .= '</label>
+        <span class="pull-right flip ng-hide" ng-show="showToggle">
+            <toggle-switch id="toggleFTP"
+                       ng-model="service.enabled"
+                       no-spinner="true"
+                       label-position="left"
+                       on-toggle="toggleService()"
+                       enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                       disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '"
+                       ng-disabled="isDisabled || hasConflict() && isResolved() && !isLinking"
+                       ng-hide="(hasConflict() && !isResolved()) || isLinking">
+            </toggle-switch>
+        </span>
+        <span class="fas fa-exclamation-triangle" id="ftp-has-conflicts-warning" ng-show=" conflictResolutionRequired && (needsConflictResolution() || isLinking)" title="';$output .= $stash->get(['locale',0,'maketext',['The system detected a service account with the same username.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You must select an action.' ]]);$output .= '"></span>
+        <span class="fas fa-info-circle"          id="ftp-has-conflicts-info"    ng-show="!conflictResolutionRequired && (needsConflictResolution() || isLinking)" title="';$output .= $stash->get(['locale',0,'maketext',['The system detected a service account with the same username.' ]]);$output .= '"></span>
+    </div>
+    <div class="panel-body">
+        <!-- Handle merge candidates -->
+        <div ng-class="{ \'text-warning\': conflictResolutionRequired }" ng-show="needsConflictResolution() || isLinking">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['An [asis,FTP] service account with the same username and domain as this [asis,subaccount] already exists.' ]]);$output .= '</p>
+
+            <div class="well well-sm existing-service-summary" ng-show="needsConflictResolution() || isLinking">
+                <div id="ftp-details-expander" class="text-center existing-service-summary-header" ng-click="toggleConflictSummary()">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Existing Account Summary' ]]);$output .= '</label>
+                    <span class="fas fa-fw fa-caret-down" ng-class="{ \'fa-rotate-180\': !isSummaryCollapsed }"></span>
+                </div>
+                <div class="existing-service-summary-body" uib-collapse="isSummaryCollapsed">
+                    <hr>
+                    <ul>
+                        <li id="existing-ftp-homedir">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= ':</label>
+                            <span ng-bind-html="service.homedir | wrap:\'\':5"></span>
+                        </li>
+                        <li id="existing-ftp-quota">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= ':</label>
+                            <span ng-show="service.quota">{{ service.quota }} MB</span>
+                            <span ng-show="!service.quota">';$output .= $stash->get(['locale',0,'maketext',['Unrestricted' ]]);$output .= '</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['You cannot create a duplicate [asis,FTP] service account. To manage their settings jointly, link the [asis,FTP] account to the [asis,subaccount].' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button id="ftp-conflict-link"
+                        type="button"
+                        ng-disabled="isInProgress()"
+                        cp-action="runLinkAction()"
+                        button-ng-class="{ \'btn-warning\': conflictResolutionRequired, \'btn-small\': !conflictResolutionRequired, \'btn-default\': !conflictResolutionRequired }">
+                    <span class="fas fa-link" ng-hide="isLinking"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Link' ]]);$output .= '
+                </button>
+                <button class="btn btn-warning"
+                        id="ftp-conflict-dismiss"
+                        type="button"
+                        ng-click="setDismiss()"
+                        ng-show="showConflictDismiss">
+                    <span class="fas fa-unlink"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Dismiss' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+
+        <div class="text-success" ng-show="service.willLink && !isLinking">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The system will link this [asis,FTP] service account to the [asis,subaccount].' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button class="btn btn-link"
+                        id="ftp-link-undo"
+                        type="button"
+                        ng-click="clearConflictResolution()">
+                    <span class="fas fa-undo"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Undo' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+        <div class="text-danger" ng-show="service.willDismiss">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This [asis,subaccount] will not have [asis,FTP] access.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You can edit this setting later in the User Manager interface.' ]]);$output .= '</p>
+            <div class="conflict-button-container text-center">
+                <button class="btn btn-link"
+                        id="ftp-dismiss-undo"
+                        type="button"
+                        ng-click="clearConflictResolution()">
+                    <span class="fas fa-undo"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Undo' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+
+        <!-- Normal configuration settings -->
+        <div ng-hide="hasConflict()">
+            <div class="ng-hide" cp-alert ng-show="showWarning" id="ftpWarningMessage">
+                {{warningMessage}}
+            </div>
+            <div class="ng-hide" cp-alert ng-show="showInfo" id="ftpInfoMessage" type="info">
+                {{infoMessage}}
+            </div>
+            <div class="form-group" ng-if="daemon.supports.quota">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= '</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <app-limit id="ftpQuota"
+                                   ng-model="service.quota"
+                                   ng-disabled="!service.enabled"
+                                   units-label="MB"
+                                   unlimited-value="0"
+                                   minimum-value="1"
+                                   maximum-length="9"
+                                   default-value="defaults.ftp.default_quota"
+                                   selected-unit="service.quotaUnit"
+                                   ng-disabled="isDisabled">
+                        </app-limit>
+                    </div>
+                </div>
+            </div>';$stash->set('quota_required',$stash->get(['locale',0,'maketext',['You must enter a valid number or select [output,em,Unlimited].' ]]));$output .= '            <div class="col-xs-12 spacing-after">
+                <ul validation-container field-name="ftpQuota_txtLimit">
+                    <li validation-item field-name="ftpQuota_txtLimit" validation-name="required">';$output .= $stash->get('quota_required');$output .= '                    </li>
+                    <li validation-item field-name="ftpQuota_txtLimit" validation-name="number">';$output .= $stash->get('quota_required');$output .= '                    </li>
+                    <li validation-item field-name="ftpQuota_txtLimit" validation-name="min">';$output .= $stash->get(['locale',0,'maketext',['Quota must be greater than zero.' ]]);$output .= '                    </li>
+                    <li validation-item field-name="ftpQuota_txtLimit" validation-name="integer">';$output .= $stash->get(['locale',0,'maketext',['Quota must be an integer.' ]]);$output .= '                    </li>
+                </ul>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= "</label>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <span class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"fas fa-home\"></i>\n                                <span>/</span>\n                            </span>\n                            <input id=\"txtFtpHomeDirectory\"\n                               class=\"form-control\"\n                               name=\"txtFtpHomeDirectory\"\n                               ng-model=\"service.homedir\"\n                               ng-disabled=\"!service.enabled\"\n                               uib-typeahead=\"directory for directory in completeDirectory(\$viewValue)\"\n                               typeahead-template-url=\"pathSuggester.html\"\n                               autocomplete=\"off\"\n                               ng-disabled=\"isDisabled\" />\n                        </span>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"panel-footer ng-hide\" ng-show=\"showUnlink\">\n        <div class=\"row\">\n            <div class=\"col-xs-12\">\n                <action-button id=\"unlinkFTP\"\n                               class=\"btn btn-link btn-xs pull-right\"\n                               ng-click=\"unlinkService()\"\n                               ng-disabled=\"isInProgress()\"\n                               title=\"";$output .= $stash->get(['locale',0,'maketext',['Unlink this [asis,FTP] service account from this [asis,subaccount].' ]]);$output .= '">
+                    <i class="fas fa-unlink"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Unlink' ]]);$output .= '
+                </action-button>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

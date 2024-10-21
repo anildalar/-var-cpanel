@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Update/UpgradeRequired.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'custom_subject',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['NOTICE',0,'custom_subject',0]))}else {if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])&& $stash->get(['NOTICE',0,'hrs_left',0,'defined',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The service, [_1], needs to be upgraded and will be upgraded automatically in [quant,_2,day,days] and [quant,_3,hour,hours].',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'hrs_left',0])]]))}else {if ($stash->get(['NOTICE',0,'failed_to_upgrade',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to automatically upgrade “[_1]” on the server.',$stash->get(['NOTICE',0,'service_name',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system upgraded the service: “[_1]”.',$stash->get(['NOTICE',0,'service_name',0])]]))}}}$output .= '
+
+<p>
+';if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])&& $stash->get(['NOTICE',0,'hrs_left',0,'defined',0])){$output .= '
+    <p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [asis,cPanel amp() WHM] will be automatically upgrading the following service: “[_1]” in [quant,_2,day,days] and [quant,_3,hour,hours]',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'hrs_left',0])]]);$output .= '
+    </p>
+
+    <p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Until “[_1]” has been upgraded, [asis,cPanel] will be unable to upgrade to the next major version.',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel amp() WHM] version “[_1]” will be the last [output,abbr,LTS,Long Term Support] version to support this outdated version of “[_2]”.',$stash->get(['NOTICE',0,'last_version',0]),$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To continue using [_1], you must change your Update Preferences in [asis,WHM] to Long Term Support (LTS).',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['By switching to LTS, you will not receive new features and eventually will stop receiving security updates.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For more information about Long Term Support, read the following: [output,url,_1,target,_2]','https://go.cpanel.net/longtermsupport','_blank' ]]);$output .= '
+        <br>
+        <br>
+    </p>
+'}else {$output .= '
+    ';if ($stash->get(['NOTICE',0,'failed_to_upgrade',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to upgrade the service, [_1], automatically.',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[_1], has been upgraded. No further action is required on your behalf.',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    '}$output .= '
+    <br>
+    <br>';if ($stash->get(['NOTICE',0,'script_output',0])){$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'script_output',0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Below is the log for further details if you wish to review:' ]])}]])}}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

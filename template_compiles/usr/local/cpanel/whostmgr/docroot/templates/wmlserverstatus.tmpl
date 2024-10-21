@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/wmlserverstatus.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '    <?xml version="1.0"?>
+    <!DOCTYPE wml PUBLIC "-//PHONE.COM//DTD WML 1.1//EN"
+    "http://www.phone.com/dtd/wml11.dtd">
+
+    <wml>
+
+
+    <card title="Server Status">
+    <p mode="nowrap">
+    <b>WebHost Manager Server Status</b>
+    </p>
+    <p>';$output .= $stash->get(['data',0,'hostname',0]);$output .= '</p>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'service_statuses',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'service'}=$_tt_value;$output .= '
+<p><small>';$output .= $stash->get('service');$output .= ' ';$output .= $stash->get(['data',0,'service_statuses',0,$stash->get('file'),0])? 'up' : '<b>failed</b>';$output .= '</small></p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+<p><small>Load: ';$output .= ($stash->get(['data',0,'load',0])> $stash->get(['data',0,'cpunum',0]))? '<b>$data.load</b>' : $stash->get(['data',0,'load',0]);$output .= '</b> (';$output .= $stash->get(['data',0,'cpunum',0]);$output .= ' ';$output .= ($stash->get(['data',0,'cpunum',0])eq 1)? 'cpu' : 'cpus';$output .= ')</small></p>
+<p><small>Memory used: ';$output .= $stash->get(['data',0,'mem_used_percent',0]);$output .= '&#37;</small></p>
+<p><small>Swap used: ';$output .= $stash->get(['data',0,'swap_used_percent',0]);$output .= '&#37;</small></p>
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'diskinfo',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'disk'}=$_tt_value;$output .= '
+<p><small>Disk ';$output .= $stash->get('disk');$output .= ' (';$output .= $stash->get(['data',0,'diskinfo',0,$stash->get('disk'),0,'mountpoint',0]);$output .= ') ';$output .= $stash->get(['data',0,'diskinfo',0,$stash->get('disk'),0,'used_percent',0]);$output .= '&#37;</small></p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+</card></wml>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

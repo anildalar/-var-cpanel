@@ -1,0 +1,46 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/site_publisher/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('Master',$context->plugin('Master'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['sitepublisher' ]]));$stash->set('domains',$stash->get(['Uapi',0,'exec',['SiteTemplates','list_user_settings',{'api.paginate_start'=>1,'api.paginate_size'=>10,'api.normalize'=>1 }]]));$stash->set('templates',$stash->get(['Uapi',0,'exec',['SiteTemplates','list_site_templates' ]]));$stash->set('file_manager_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'file_manager' ]]));$stash->set('accounts_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'email_accounts' ]]));$stash->set('webdisk_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'web_disk' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+';if ($stash->get('has_feature')){$output .= '
+
+    <div class="body-content"
+        ng-controller="BaseController as base"
+        class="ng-cloak">
+        <div ng-class="{\'view-disabled\':loading}" ng-view></div>
+    </div>
+
+    <script type="text/javascript">
+        PAGE = {
+            domainList: ';$output .= $stash->get(['domains',0,'json',0]);$output .= ',
+            templateList: ';$output .= $stash->get(['templates',0,'json',0]);$output .= ',
+
+            ';if ($stash->get(['CPANEL',0,'feature',['filemanager' ]])){$output .= '
+            fileManagerObj: ';$output .= $stash->get(['file_manager_obj',0,'json',0]);$output .= ',
+            '}$output .= '
+
+            ';if ($stash->get(['CPANEL',0,'feature',['popaccts' ]])){$output .= '
+            accountsObj: ';$output .= $stash->get(['accounts_obj',0,'json',0]);$output .= ',
+            '}$output .= '
+
+            ';if ($stash->get(['CPANEL',0,'feature',['webdisk' ]])){$output .= '
+            webdiskObj: ';$output .= $stash->get(['webdisk_obj',0,'json',0]);$output .= ',
+            '}$output .= '
+
+            deprefix: ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0,'json',0]);$output .= '
+        };
+    </script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+'}else {$output .= '
+    <div class="body-content">
+        <div class="alert alert-danger">
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Your system administrator must enable the Site Publisher feature for your account.' ]]);$output .= '
+        </div>
+    </div>
+
+'}$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'site_publisher','use_master_bootstrap'=>0,'page_stylesheets'=>['css2-min/site_publisher/publish.css' ],'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

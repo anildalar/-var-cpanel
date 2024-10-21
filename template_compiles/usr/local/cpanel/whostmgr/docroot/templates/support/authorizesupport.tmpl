@@ -1,0 +1,219 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/support/authorizesupport.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<div id="content" ng-app="TicketSupportApp" ng-cloak class="ng-cloak">
+    ';$output .= '
+    <script id="template/alert/alert.html" type="text/ng-template">
+        <div class=\'alert\' ng-class=\'type && "alert-" + type\'>
+            <button type=\'button\' class=\'close\' aria-hidden=\'true\' ng-show=\'type != "danger"\' ng-click=\'close()\'>&times;</button>
+            <span class=\'glyphicon glyphicon-ok-sign\' ng-show=\'type == "success"\'></span>
+            <span class=\'glyphicon glyphicon-remove-sign\' ng-show=\'type == "danger"\'></span>
+            <div class=\'alert-message\'>
+                <strong ng-show=\'type == "success"\'>';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '&nbsp;</strong>
+                <strong ng-show=\'type == "danger"\'>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '&nbsp;</strong>
+                <span ng-transclude></span>
+            </div>
+        </div>
+    </script>
+
+    <div class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['When you [output,url,_1,create a ticket with cPanel support], we generate a unique [asis,SSH] key related to the ticket and your server. This key allows support to access your server. You may use this page to install the [asis,SSH] key that [asis,cPanel] provides or to remove a previously installed key.','../scripts7/create_support_ticket' ]]);$output .= '
+    </div>
+
+    <div ng-controller="List">
+
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Info]: Make sure that the following [asis,IP] addresses may connect to your server:' ]]);$output .= '</p>
+                <ul id="cpanel-support-ips">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'access_ips',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ip'}=$_tt_value;$output .= '
+                    <li id="cpanel-ip-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['ip',0,'ip',0]);&$_tt_filter($output)};$output .= '">
+                        <span id="cpanel-ip-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['ip',0,'ip',0]);&$_tt_filter($output)};$output .= '-ip">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['ip',0,'ip',0]);&$_tt_filter($output)};$output .= '</span> - <span id="cpanel-ip-';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['ip',0,'ip',0]);&$_tt_filter($output)};$output .= '-desc">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['ip',0,'description',0]);&$_tt_filter($output)};$output .= '</span>
+                    </li>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </ul>
+            </div>
+        </div>
+
+        <div    class="callout callout-warning"
+                ng-show="getAuthCount() && firewallProblem == \'NEED_SETUP\' || !getAuthCount() && firewallProblem == \'NEED_UNSETUP\'">
+            <div class="limit-info" ng-switch="firewallProblem">
+                <span ng-switch-when="NEED_SETUP">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: There are open support tickets with access granted on this server, but the firewall rules added during in the grant process are missing.' ]]);$output .= '</span>
+                <span ng-switch-when="NEED_UNSETUP">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: There are no granted support tickets for this server, but the Revoke process did not remove [asis,cPanel] support’s [asis,IP] addresses from the server’s firewall rules.' ]]);$output .= '</span>
+            </div>
+            <button type="button"
+                    id="fix_iptables"
+                    class="btn btn-primary{{this.isFixingFirewall ? \' button-loading\' : \'\'}}"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Update Firewall Configuration' ]]);$output .= '"
+                    ng-disabled="this.isFixingFirewall"
+                    ng-click="fixFirewall()">
+                <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Update Firewall Configuration' ]]);$output .= '</span>
+            </button>
+        </div>
+
+    <div ng-controller="List">
+        <h2 class="page-header">';$output .= $stash->get(['locale',0,'maketext',['Grant or Revoke [asis,cPanel] Support’s Access' ]]);$output .= '</h2>
+
+        <div class="callout callout-warning" ng-show="getClosedCount()">
+            <div class="limit-info">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: When a support ticket has been closed, immediately revoke [asis,cPanel] support’s access to your server.' ]]);$output .= '</div>
+            <button type="button"
+                id="revoke-all-authroizations"
+                class="btn btn-primary{{this.isProcessing ? \' button-loading\' : \'\'}}"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Revoke and Remove Closed Tickets' ]]);$output .= '"
+                ng-disabled="this.isProcessing"
+                ng-click="removeFromClosed()">
+                    <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                    <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Revoke and Remove Closed Tickets' ]]);$output .= '</span>
+            </button>
+        </div>
+
+        <div ng-show="alert">
+            <alert id="list-alert-{{alert.type}}" type="{{alert.type}}" close="alert=undefined"><span ng-bind-html="alert.msg"></span></alert>
+        </div>
+
+        <div ng-repeat="ticket in tickets track by ticket._serial">
+            <div id="ticket-{{ticket.ticket_id}}-alert-container" ng-show="ticket.alert">
+                <alert id="ticket-{{ticket.ticket_id}}-alert" type="{{ticket.alert.type}}" close="ticket.alert=undefined"><span ng-bind-html="ticket.alert.msg"></span></alert>
+            </div>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span id=\'ticket-{{ticket.ticket_id}}-status\' class="label label-{{ticket.ticket_status == \'OPEN\' ? \'success\' : \'default\'}}">{{ticket.ticket_status}}</span>
+                    <span id=\'ticket-{{ticket.ticket_id}}-id\' class="ticket-id"> ';$output .= $stash->get(['locale',0,'maketext',['Ticket ID:' ]]);$output .= ' {{ticket.ticket_id}}</span>
+                    <span id=\'ticket-{{ticket.ticket_id}}-subject\' class="ticket-subject"> {{ticket.ticket_subject}}</span>
+                    <button type="button"
+                            id="ticket-{{ticket.ticket_id}}-show-all-servers"
+                            class="btn btn-xs btn-default"
+                            ng-click="ticket.showAllServers = !ticket.showAllServers"
+                            ng-show="ticket.unboundServers"
+                            ng-switch="ticket.showAllServers"
+                            btn-checkbox>
+                        <span ng-switch-when="true">';$output .= $stash->get(['locale',0,'maketext',['Hide Unrelated Servers' ]]);$output .= '</span>
+                        <span ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['Show Unrelated Servers' ]]);$output .= '</span>
+                    </button>
+                </div>
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr ng-show="boundServers.length">
+                            <th>';$output .= $stash->get(['locale',0,'maketext',['Server' ]]);$output .= '</th>
+                            <th>';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</th>
+                            <th>';$output .= $stash->get(['locale',0,'maketext',['SSH Info' ]]);$output .= '</th>
+                            <th>';$output .= $stash->get(['locale',0,'maketext',['Granted' ]]);$output .= "</th>\n                            <th>&nbsp;</th>\n                            <th>&nbsp;</th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr ng-repeat=\"auth in boundServers = (ticket.servers | boundServerFilter:ticket.showAllServers ) track by auth._serial\" id=\"list-row-{{\$index}}\" class=\"auth-row\">\n                            <td class=\"server-id\">{{auth.server_name && auth.server_num + \" - \" + auth.server_name || auth.server_num}}</td>\n                            <td class=\"ssh-username\">{{auth.ssh_username}}</td>\n                            <td class=\"ssh-info\">{{auth.ssh_ip}}:{{auth.ssh_port}}</td>\n                            <td id=\"auth-{{ticket.ticket_id}}-{{auth.server_num}}\" class=\"ssh-grant-time\">\n                                <span ng-if=\"auth.bound && auth.auth_time\" title=\"{{auth.auth_time * 1000 | date:'medium'}}\">{{ auth.auth_time | fromNow }}</span>\n                                <span ng-if=\"auth.bound && !auth.auth_time\">";$output .= $stash->get(['locale',0,'maketext',['Not Granted' ]]);$output .= '</span>
+                                <span ng-if="!auth.bound">';$output .= $stash->get(['locale',0,'maketext',['Not Applicable' ]]);$output .= '</span>
+                            </td>
+                            <td id="sshtest-{{ticket.ticket_id}}-{{auth.server_num}}" class="ssh-status" ng-switch="auth.ssh_test_result">
+                                <div class="status-success" ng-switch-when="SUCCESS">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Success' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="TIMEOUT">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Timeout' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="TICKET_SYSTEM_TIMEOUT">
+                                    <span class="glyphicon glyphicon-time"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Ticket System Timeout' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="UNKNOWN">
+                                    <span class="glyphicon glyphicon-question-sign"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Unknown' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="UNREACHABLE">
+                                    <span class="glyphicon glyphicon-signal"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Unreachable' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="REFUSED">
+                                    <span class="glyphicon glyphicon-ban-circle"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Refused' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="PROTOCOL">
+                                    <span class="glyphicon glyphicon-link"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Protocol' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="AUTH">
+                                    <span class="glyphicon glyphicon-eye-open"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Authentication' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="ENVIRONMENT">
+                                    <span class="glyphicon glyphicon-usd"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Environment' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="ESCALATE">
+                                    <span class="glyphicon glyphicon-chevron-up"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Escalate' ]]);$output .= '</span>
+                                </div>
+                                <div class="status-failure" ng-switch-when="ERROR">
+                                    <span class="glyphicon glyphicon-remove-sign"></span>
+                                    <span class="status-message">';$output .= $stash->get(['locale',0,'maketext',['Error' ]]);$output .= '</span>
+                                </div>
+                            </td>
+                            <td class="ssh-actions">
+                                <button type="button"
+                                        id="ssh-test-{{ticket.ticket_id}}-{{auth.server_num}}"
+                                        class="btn btn-default{{this.auth.isTesting ? \' button-loading\' : \'\'}}"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Test' ]]);$output .= '"
+                                        ng-show="auth.bound && ticket.ticket_status == \'OPEN\' && auth.auth_status == \'AUTHED\'"
+                                        ng-disabled="this.auth.isTesting || this.auth.isProcessing"
+                                        ng-click="ssh_test(auth._index)">
+                                    <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                                    <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Test' ]]);$output .= '<span>
+                                </button>
+                                <button type="button"
+                                        id="grant-{{ticket.ticket_id}}-{{auth.server_num}}"
+                                        class="btn btn-primary{{this.auth.isProcessing ? \' button-loading\' : \'\'}}"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Grant' ]]);$output .= '"
+                                        ng-show="auth.bound && !(auth.auth_status == \'AUTHED\' || auth.auth_status == \'EXPIRED\')"
+                                        ng-disabled="this.auth.isProcessing"
+                                        ng-click="grant(auth._index)">
+                                    <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                                    <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Grant' ]]);$output .= '</span>
+                                </button>
+                                <button type="button"
+                                        id="revoke-{{ticket.ticket_id}}-{{auth.server_num}}"
+                                        class="btn btn-primary{{this.auth.isProcessing ? \' button-loading\' : \'\'}}"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Revoke' ]]);$output .= '"
+                                        ng-show="ticket.ticket_status == \'OPEN\' && auth.auth_status == \'AUTHED\'"
+                                        ng-disabled="this.auth.isProcessing"
+                                        ng-click="revoke(auth._index)">
+                                    <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                                    <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Revoke' ]]);$output .= '</span>
+                                </button>
+                                <button type="button"
+                                        id="revoke-remove-{{ticket.ticket_id}}-{{auth.server_num}}"
+                                        class="btn btn-primary{{this.auth.isProcessing ? \' button-loading\' : \'\'}}"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Revoke and Remove' ]]);$output .= '"
+                                        ng-show="ticket.ticket_status == \'CLOSED\' || ticket.ticket_status == \'UNKNOWN\' || auth.auth_status == \'EXPIRED\'"
+                                        ng-disabled="this.isProcessing || this.auth.isProcessing"
+                                        ng-click="revoke(auth._index)">
+                                    <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                                    <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Revoke and Remove' ]]);$output .= '</span>
+                                </button>
+                            </td>
+                        </tr>
+                        <tr class="callout callout-info" ng-hide="ticket.servers.length">
+                            <td colspan="5">';$output .= $stash->get(['locale',0,'maketext',['This ticket has no associated servers.' ]]);$output .= '</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="callout callout-info" ng-hide="tickets.length">
+            <div class="limit-info">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,0 Tickets] require authorization.' ]]);$output .= '</div>
+            <button type="button"
+                    id="reload_tickets"
+                    class="btn btn-primary{{this.isProcessing ? \' button-loading\' : \'\'}}"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Reload Tickets' ]]);$output .= '"
+                    ng-disabled="this.isProcessing"
+                    ng-click="load()">
+                <span class="glyphicon glyphicon-refresh button-loading-indicator"></span>
+                <span class="button-label">';$output .= $stash->get(['locale',0,'maketext',['Reload Tickets' ]]);$output .= '</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.tickets = ';$output .= $stash->get(['data',0,'list',0,'json',0]);$output .= ';
+    PAGE.firewall = ';$output .= $stash->get(['data',0,'firewall',0,'json',0]);$output .= ';
+</script>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Grant [asis,cPanel] Support Access' ]]),'breadcrumburl'=>'/scripts7/authorizesupport','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/authorizesupport.min.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular-sanitize.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angular-ui-bootstrap/optimized/ui-bootstrap-tpls-1.2.5.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/support.min.js' ]])],'theme'=>'bootstrap','app_key'=>'grant_cpanel_support_access','CJT2_EXCLUSIVE'=>0,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

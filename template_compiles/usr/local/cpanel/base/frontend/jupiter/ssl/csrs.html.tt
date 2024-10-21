@@ -1,0 +1,274 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/csrs.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('SSL',$context->plugin('SSL'));$stash->set('Geo',$context->plugin('Geo'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('SYSTEM_DEFAULT_KEY_TYPE',$stash->get(['SSL',0,'key_types_and_labels',0,0,0]));$stash->set('DEFAULT_NEW_KEY_TYPE',$stash->get(['SSL',0,'default_key_type',0])|| $stash->get(['SYSTEM_DEFAULT_KEY_TYPE',0,'type',0]));$stash->set('DEFAULT_NEW_KEY_LABEL','');do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['SSL',0,'key_types_and_labels',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key_type'}=$_tt_value;if ($stash->get('DEFAULT_NEW_KEY_TYPE')eq $stash->get(['key_type',0,'type',0])){$stash->set('DEFAULT_NEW_KEY_LABEL',$stash->get(['key_type',0,'label',0]))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('SHOW_HELPER_LINKS_RECORD_COUNT',10);$stash->set('list_csrs',$stash->get(['execute',['SSL','list_csrs',{'api.sort_column'=>'commonName' }]]));$stash->set('has_csr_error',!$stash->get(['list_csrs',0,'status',0]));$stash->set('has_csr_data',!$stash->get('has_csr_error')&& $stash->get(['list_csrs',0,'data',0,'size',0]));$stash->set('creation_date',$stash->get(['locale',0,'get_lookup_hash_of_multi_epoch_datetime',[$stash->get(['list_csrs',0,'data',0,'ofeach',['created' ]]),'date_format_short' ]]));$stash->set('creation_datetime',$stash->get(['locale',0,'get_lookup_hash_of_multi_epoch_datetime',[$stash->get(['list_csrs',0,'data',0,'ofeach',['created' ]]),'datetime_format_short' ]]));$stash->set('list_keys',$stash->get(['execute',['SSL','list_keys',{'api.sort_column'=>'friendly_name' }]]));$stash->set('has_keys_error',!$stash->get(['list_keys',0,'status',0]));$stash->set('has_keys_data',!$stash->get('has_keys_error')&& $stash->get(['list_keys',0,'data',0,'size',0]));$stash->set('list_count',$stash->get(['list_csrs',0,'data',0])? $stash->get(['list_csrs',0,'data',0,'size',0]): 0);$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('list_mail_domains',$stash->get(['execute',['WebVhosts','list_domains',{'api.sort_column'=>'domain' }]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '    <div class="section">
+        ';if ($stash->get('list_count')> $stash->get('SHOW_HELPER_LINKS_RECORD_COUNT')){$output .= '
+        <a id="top"></a>
+        <div class="related related-top">
+            <a id="generate-link" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['Generate a Certificate Signing Request.' ]]);$output .= '</a>
+        </div>
+        '}$output .= '
+
+        <h2 id="hdrCsr">
+            ';$output .= $stash->get(['locale',0,'maketext',['SSL Certificate Signing Request' ]]);$output .= '
+        </h2>
+
+        <p id="descCsr" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['If you obtain a certificate from a trusted SSL provider, you must complete the Certificate Signing Request form to provide the information needed to generate your SSL certificate.' ]]);$output .= '
+        </p>
+
+        ';if ($stash->get('has_csr_error')){$output .= '
+        <div id="retrieveCsrError" class="alert alert-danger">
+            <span id="retrieveCsrErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="retrieveCsrErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Unable to retrieve the certificate signing requests for your account.' ]]);$output .= '
+            ';if ($stash->get(['list_csrs',0,'errors',0,0,0])){$output .= '
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['list_csrs',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+            '}$output .= '
+            </div>
+        </div>
+        '}$output .= '
+
+        <h2 id="hdrCsrOnserver">';$output .= $stash->get(['locale',0,'maketext',['Certificate Signing Requests on Server' ]]);$output .= '</h2>
+        <table class="sortable table table-striped" id="ssltable">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Created (UTC)' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th>
+                    <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get('has_csr_data')){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_csrs',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'csr'}=$_tt_value;$output .= '
+                <tr>
+                    <td class="domain-column column"><div title="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'list_and',[$stash->get(['csr',0,'domains',0])]]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['csr',0,'domains',0,'join',[('' .'
+')],'html',0,'breakOn',['\.' ],'replace',[('' .'
+'),'<br>' ]]);$output .= '</div></td>
+                    <td class="created-column column" title="';$output .= $stash->get(['creation_datetime',0,$stash->get(['csr',0,'created',0]),0]);$output .= '"><div>';$output .= $stash->get(['creation_date',0,$stash->get(['csr',0,'created',0]),0]);$output .= '</div></td>
+                    <td class="description-column column"><div title="';$output .= $stash->get(['csr',0,'friendly_name',0,'html',0]);$output .= '">';$output .= $stash->get(['csr',0,'friendly_name',0,'html',0,'breakOn',['\.' ]]);$output .= '</div></td>
+                    <td>
+                        <a id="show-csr-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" class="btn btn-link" href="viewcsr.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['csr',0,'id',0]);&$_tt_filter($output)};$output .= '&host=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['csr',0,'commonName',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                        </a>
+                        <a id="remove-csr-';$output .= $stash->get(['loop',0,'index',0]);$output .= '" class="btn btn-link" href="deletecsrconfirm.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['csr',0,'id',0]);&$_tt_filter($output)};$output .= '&host=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['csr',0,'commonName',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td id="nocsrErrorMsg" colspan="4" class="errors">';$output .= $stash->get(['locale',0,'maketext',['There are no certificate signing requests on the server.' ]]);$output .= '</td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        ';if ($stash->get('list_count')> $stash->get('SHOW_HELPER_LINKS_RECORD_COUNT')){$output .= '
+        <a id="generate"></a>
+        <div class="related">
+            <a id="top-link" class="dependent-action">';$output .= $stash->get(['locale',0,'maketext',['List Certificate Signing Requests' ]]);$output .= '</a>
+        </div>
+        '}$output .= '
+
+        <h2 id="hdrGenerateCsr">';$output .= $stash->get(['locale',0,'maketext',['Generate a New Certificate Signing Request (CSR)' ]]);$output .= '</h2>
+        ';if ($stash->get('has_keys_error')){$output .= '
+
+        <div id="retrievePrivateError" class="alert alert-danger">
+            <span id="retrievePrivateErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="retrievePrivateErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Unable to retrieve the private keys for your account.' ]]);$output .= '
+            ';if ($stash->get(['list_keys',0,'errors_as_string',0])){$output .= '
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['list_keys',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+            '}$output .= '
+            </div>
+        </div>
+        '}$output .= '
+
+        ';if (!$stash->get('has_keys_data')){$output .= '
+        <div id="privateWarning" class="alert alert-warning">
+            <span id="privateWarningImg" class="glyphicon glyphicon-exclamation-sign"></span>
+            <div id="privateWarningMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['You do not have any Private Keys setup for this account. You must generate or upload a key before you can generate any certificate signing requests.' ]]);$output .= '
+            </div>
+        </div>
+        '}$output .= '
+
+        <div id="cjt_pagenotice_container" class="cjt-pagenotice-container cjt-notice-container"></div>
+        <p id="descNewsrc" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Use this form to generate a new certificate signing request for your domain. Your SSL certificate authority (CA) will ask for a certificate signing request to complete the certificate purchase. Your CA may require specific information in the form below. Check with the CA’s CSR requirements for the Apache web server.' ]]);$output .= '
+        </p>
+        <form action="gencsr.html" method="post" id="csrform" name="csrform">
+            <div class="form-group">
+                <label id="lblKey" for="key"><span>';$output .= $stash->get(['locale',0,'maketext',['Key' ]]);$output .= '</span><span class="extra">*</span></label>
+                <input type="hidden" value="';$output .= $stash->get('DEFAULT_NEW_KEY_TYPE');$output .= '" name="default_key_type" />
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="key_id" id="key" class="form-control">
+                            <option value="">';$output .= $stash->get(['locale',0,'maketext',['Generate a new “[_1]” key.',$stash->get('DEFAULT_NEW_KEY_LABEL')]]);$output .= '</option>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_keys',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$output .= '                                <option value="';$output .= $stash->get(['key',0,'id',0,'html',0]);$output .= '">';$output .= $stash->get(['key',0,'friendly_name',0,'html',0]);$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('has_keys_data')){$output .= '                        <a id="view-key" class="dependent-action" href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['This option allows you to view the CSR and edit the CSR’s description.' ]]);$output .= '"><span class="glyphicon glyphicon-pencil"></span> ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '</a>
+                        '}$output .= '                        <div id="key_error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+
+                <label id="lblDomains" for="domains">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '
+                    <span class="extra">*</span>
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea name="domains" id="domains" rows="3" cols="15" class="form-control"></textarea>
+                        <div class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Provide the [output,acronym,FQDN,Fully Qualified Domain Name]s that you are trying to secure, one per line. You may use a wildcard domain by adding an asterisk in a domain name in the form: [output,em,_1].','*.example.com' ]]);$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['NOTE: Many [output,acronym,CA,Certificate Authority]s charge a higher price to issue multiple-domain certificates (sometimes called “[output,acronym,UCC,Unified Communications Certificate]s” or “[output,acronym,SAN,subjectAltName] certificates”) and certificates that include wildcard domains.' ]]);$output .= '
+                        </div>
+                    </div>
+                    <div id="domains_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblCity" for="city"><span>';$output .= $stash->get(['locale',0,'maketext',['City' ]]);$output .= '</span><span class="extra">*</span></label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                         <input id="city" type="text" name="city" class="form-control" />
+                         <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Provide the complete name for the city or locality. Do not use abbreviations.' ]]);$output .= '</div>
+                    </div>
+                    <div id="city_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                 <label id="lblState" for="state"><span>';$output .= $stash->get(['locale',0,'maketext',['State' ]]);$output .= '</span><span class="extra">*</span></label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="state" type="text" name="state" class="form-control" />
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Provide the complete name for the state or province. Do not use abbreviations.' ]]);$output .= '</div>
+                    </div>
+                    <div id="state_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblCountry" for="country"><span>';$output .= $stash->get(['locale',0,'maketext',['Country' ]]);$output .= '</span><span class="extra">*</span></label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="country" name="country" class="form-control">
+                            <option value="">';$output .= $stash->get(['locale',0,'maketext',['Choose a country.' ]]);$output .= '</option>
+                            ';$stash->set('locales_obj',$stash->get(['locale',0,'get_locales_obj',0]));$output .= '                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Geo',0,'COUNTRY_CODES',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'country_code'}=$_tt_value;$output .= '                                ';$stash->set('country_name',$stash->get(['locales_obj',0,'get_territory_from_code',[$stash->get('country_code')]]));$output .= '                                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('upper')|| $context->throw($context->error);$output .= $stash->get('country_code');&$_tt_filter($output)};$output .= '">
+                                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('upper')|| $context->throw($context->error);$output .= $stash->get('country_code');&$_tt_filter($output)};$output .= '
+                                    ';$output .= $stash->get('country_name')? (' (' .$stash->get('country_name').')'): '';$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Choose the country of origin for the certificate’s company.' ]]);$output .= '</span>
+                    </div>
+                    <div id="country_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+               <label id="lblCompany" for="company"><span>';$output .= $stash->get(['locale',0,'maketext',['Company' ]]);$output .= '</span><span class="extra">*</span></label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="company" type="text" name="company" class="form-control" />
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Provide the legally-registered name for your business. If your company name includes symbols other than a period or comma, check with your certificate authority to confirm that they are acceptable.' ]]);$output .= '</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="company_error"></div>
+                        <div id="company_warning"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblCompanyDivision" for="companydivision">';$output .= $stash->get(['locale',0,'maketext',['Company Division' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="companydivision" type="text" name="companydivision" class="form-control" />
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Provide the name of the division or group within the above company. If the division includes symbols other than a period or comma, check with your certificate authority to confirm that they are acceptable.' ]]);$output .= '</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="companydivision_error"></div>
+                        <div id="companydivision_warning"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblEmail" for="email">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                         <input id="email" type="text" name="email" class="form-control" />
+                         <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Provide a valid email address where you can be contacted for verification of domain ownership.' ]]);$output .= '</span>
+                    </div>
+                    <div id="email_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblPass" for="pass">';$output .= $stash->get(['locale',0,'maketext',['Passphrase' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" id="pass" name="pass" class="form-control" />
+                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Some certificate authorities may require CSRs to have a passphrase. The certificate authority can use a CSR passphrase to confirm the identity of the person or organization with whom you wish to communicate. CSR passphrases are stored [output,strong,unencrypted] in the CSR. Because of this, and also because you will share this passphrase with a third party, do not use an important password here.' ]]);$output .= '</span>
+                    </div>
+                    <div id="pass_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblFriendlyName" for="friendly_name">';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea id="friendly_name" type="text" name="friendly_name" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div id="friendly_name_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="hidItem" type="hidden" name="item" value="csr" />
+                <input id="hidItemname" type="hidden" name="itemname" value="Certificate Signing Request" />
+                <input id="submit-button" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Generate' ]]);$output .= '"  title="';$output .= $stash->get(['locale',0,'maketext',['Click to generate the certificate signing request.' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Manager' ]])});$output .= '
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'embed_stylesheets'=>['css/ssl.css' ],'page_stylesheets'=>['css2-min/ssl/csrs.css' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n(function() {\n    /**\n     * This module contains all the page specific constants generated by the server.\n     * \@module PAGE.Properties\n     */\n     var PAGE = {\n        properties : {\n            installable_domains: ";$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['list_mail_domains',0,'data',0,'ofeach',['domain' ]])]]);$output .= ',
+            has_csr_data: ';$output .= $stash->get('has_csr_data')? 'true' : 'false';$output .= ',
+            desiredKey: \'';$output .= $stash->get(['FORM',0,'selkey',0]);$output .= '\'
+        },
+        lexicon : {
+
+        }
+     };
+     // Publish the PAGE object;
+     window["PAGE"] = PAGE;
+}());
+
+';$stash->set('lexicon',{'[numf,_1] of the [numerate,_2,domain,domains] that you have entered [numerate,_1,is a domain,are domains] that you do not control.'=>$stash->get(['locale',0,'lextext',['[numf,_1] of the [numerate,_2,domain,domains] that you have entered [numerate,_1,is a domain,are domains] that you do not control.' ]]),'Choose a country.'=>$stash->get(['locale',0,'lextext',['Choose a country.' ]]),'Domain'=>$stash->get(['locale',0,'lextext',['Domain' ]]),'ForwarderEmailNotEmpty'=>$stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['Email' ]])]]),'Private Key'=>$stash->get(['locale',0,'lextext',['Private Key' ]]),'Processing …'=>$stash->get(['locale',0,'maketext',['Processing …' ]]),'SSLCity'=>$stash->get(['locale',0,'lextext',['City' ]]),'SSLCoDivision'=>$stash->get(['locale',0,'lextext',['Company Division' ]]),'SSLCompany'=>$stash->get(['locale',0,'lextext',['Company' ]]),'SSLCountry'=>$stash->get(['locale',0,'lextext',['Country' ]]),'SSLEmail'=>$stash->get(['locale',0,'lextext',['Email' ]]),'SSLPassPhrase'=>$stash->get(['locale',0,'lextext',['Passphrase' ]]),'SSLState'=>$stash->get(['locale',0,'lextext',['State' ]]),'The certificate signing request passphrase can contain only alphanumeric characters.'=>$stash->get(['locale',0,'lextext',['The certificate signing request passphrase can contain only alphanumeric characters.' ]]),'The certificate signing request passphrase must be at least [quant,_1,character,characters] long.'=>$stash->get(['locale',0,'lextext',['The certificate signing request passphrase must be at least [quant,_1,character,characters] long.' ]]),'The passphrase must be no longer than [quant,_1,character,characters].'=>$stash->get(['locale',0,'lextext',['The passphrase must be no longer than [quant,_1,character,characters].' ]]),'This field should only contain letters, numbers, and basic punctuation (e.g., period, dash, space, underscore, comma).'=>$stash->get(['locale',0,'lextext',['This field should only contain letters, numbers, and basic punctuation (e.g., period, dash, space, underscore, comma).' ]]),'ValidatorCity'=>$stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['City' ]])]]),'ValidatorCompany'=>$stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['Company' ]])]]),'ValidatorCompanyDiv'=>$stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['Company Division' ]])]]),'ValidatorEmailFormat'=>$stash->get(['locale',0,'lextext',['Please use an email format (for example: [asis,user@example.com]).' ]]),'ValidatorState'=>$stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['State' ]])]]),'You can only enter valid domains.'=>$stash->get(['locale',0,'lextext',['You can only enter valid domains.' ]]),'You do not control this domain.'=>$stash->get(['locale',0,'lextext',['You do not control this domain.' ]])});$output .= '
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/form_submit_handler_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/form_submit_handler_optimized.js');$output .= '
+';$output .= $context->insert('sharedjs/ssl_optimized.js');$output .= '
+';$output .= $context->insert('cjt/ssl-min.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['js2/ssl/csrs.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('js2/ssl/csrs.js');$output .= '
+</script>
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

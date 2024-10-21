@@ -1,0 +1,32 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/edittime.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$output .= do {my$output='';$output .= '            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['To ensure consistency, we [output,strong,strongly recommend] that you reboot the server after you change the time zone.' ]]);$output .= '
+                </div>
+            </div>
+            ';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Current Time' });$output .= '
+            ';$output .= $stash->get(['data',0,'ctime',0]);$output .= '<br /><br />
+            ';$output .= $context->process('_brickend.tmpl');$output .= '
+            <br /><br />
+            ';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Configure Timezone' });$output .= '
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/settz">
+                <select name="tz">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'tzs',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'tz'}=$_tt_value;$output .= '
+                <option value="';$output .= $stash->get('tz');$output .= '" ';$output .= $stash->get('tz')eq $stash->get(['data',0,'cur_tz',0])? 'selected="selected"' : '';$output .= '>';$output .= $stash->get('tz');$output .= '</option>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </select>
+                <input type="submit" class="btn btn-primary" value="Change TimeZone">
+            </form>
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/synctime">
+               ';$stash->set('envtype',$stash->get(['Whostmgr',0,'template_vars',0,'envtype',0]));$output .= '
+               ';if ($stash->get('envtype')eq 'vzcontainer' || $stash->get('envtype')eq 'vzcontainer'){$output .= '
+               <div class="callout callout-info">
+                   Your system runs inside a Virtuozzo container. The system time is inherited from the Host, or Hardware, node. To change the system time you need to contact your hosting provider.
+               </div>
+               '}else {$output .= '
+               <input type="submit" class="btn btn-primary" value="Sync Time with Time Server" />
+               '}$output .= '
+            </form>
+            ';$output .= $context->process('_brickend.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'server_time','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

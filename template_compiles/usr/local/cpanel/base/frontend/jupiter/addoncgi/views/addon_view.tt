@@ -1,0 +1,130 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/addon_view.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('show_security',$stash->get(['module',0,'meta',0,'security',0])|| ($stash->get(['module',0,'meta',0,'security_id',0])&& $stash->get(['module',0,'meta',0,'security_id_valid',0]))|| (!$stash->get(['module',0,'meta',0,'security_rank',0]))|| ($stash->get(['module',0,'meta',0,'security_rank',0])< $stash->get('lowest_allowed')));if ($stash->get(['FORM',0,'view',0])eq 'install'){$stash->set('install_class','active ');$stash->set('manage_class','')}else {$stash->set('install_class',$stash->get('has_instances')? '' : 'active ');$stash->set('manage_class',$stash->get('has_instances')? 'active ' : '')}$output .= '
+<div class="row">
+    <div class="col-xs-12">
+
+        <ul class="breadcrumb">
+            <li><a role="navigation" href="cpaddons.html.tt">';$output .= $stash->get(['locale',0,'maketext',['Site Software' ]]);$output .= '</a></li>
+            <li>';$output .= $stash->get(['module',0,'vendor',0,'html',0]);$output .= '</li>
+            <li>';$output .= $stash->get(['module',0,'category',0,'html',0,'replace',['_',' ' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['module',0,'display_app_name',0,'html',0]);$output .= '</li>
+        </ul>
+
+        <h3 class="cpaddons">
+            ';$output .= $stash->get(['module',0,'display_app_name',0,'html',0]);$output .= '
+            <span aria-labelledby="software-version" title="';$output .= $stash->get(['locale',0,'maketext',['Software Version: [_1], Module Version: [_2]',$stash->get(['module',0,'meta',0,'version',0]),$stash->get(['module',0,'version',0])]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['module',0,'meta',0,'version',0]);&$_tt_filter($output)};$output .= '</span>
+        </h3>
+
+        <p>
+        ';if ($stash->get(['module',0,'is_modified',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This is a modified [_1] module. Contact the maintainer for support.',$stash->get(['vendor',0,'name',0,'html',0])]]);$output .= '
+        '}elsif (!$stash->get(['module',0,'is_3rd_party',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This is a [_1] packaged module.',$stash->get(['vendor',0,'name',0])]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel, L.L.C.] does not maintain this module. Contact the maintainer for support.' ]]);$output .= '
+        '}$output .= '
+        </p>
+
+    </div>
+</div>
+
+';if ($stash->get(['module',0,'name',0,'search',['WordPressX' ]])){$output .= '
+    ';$output .= do {my$output='';$output .= '
+            <span>';$output .= $stash->get(['locale',0,'maketext',['We have deprecated the [output,em,WordPress Site Software] interface and will remove it in a future release.' ]]);$output .= '</span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['For more information on managing your WordPress installation, read the [output,url,_1,WP Toolkit,title,WP Toolkit,id,_2] article.','https://go.cpanel.net/wptk-install' ]]);$output .= '</span>
+        ';$context->include('core/partials/deprecation-messages/deprecation-info.component.tt',{'id'=>'addon-deprecation-message','content',$output })};$output .= '
+'}$output .= '
+
+';if (($stash->get(['module',0,'supports_action',0,'install',0])&&!$stash->get(['data',0,'action_has_prerequisites',0,'install',0]))|| ($stash->get(['module',0,'supports_action',0,'upgrade',0])&&!$stash->get(['data',0,'action_has_prerequisites',0,'upgrade',0]))|| ($stash->get(['module',0,'supports_action',0,'uninstall',0])&&!$stash->get(['data',0,'action_has_prerequisites',0,'uninstall',0]))&& $stash->get(['data',0,'notices',0,'has',['critical_error','error' ]])){$output .= '
+<div class="row">
+<div class="install-alerts col-xs-12 col-sm-6">
+    ';$output .= $context->process('addoncgi/views/notices.tt',{'notices'=>$stash->get(['data',0,'notices',0])});$output .= '
+</div>
+</div>
+'}$output .= '
+
+<div class="row">
+    <div class="col-xs-12">
+        <ul class="nav nav-tabs">
+            <li role="presentation" class="';$output .= $stash->get('install_class');$output .= 'nav-item">
+                <a id="installTabLink" data-toggle="tab" href="#install">';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '</a>
+            </li>
+            <li role="presentation" class="';$output .= $stash->get('manage_class');$output .= 'nav-item';$output .= $stash->get(['data',0,'sorted_instances',0,'size',0])> 0 ? '' : ' disabled';$output .= '">
+                <a id="manageTabLink"';if ($stash->get(['data',0,'sorted_instances',0,'size',0])> 0){$output .= '
+                    data-toggle="tab"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '"'}else {$output .= '
+                    title="';$output .= $stash->get(['locale',0,'maketext',['There are no installed instances of this [asis,cPAddon].' ]]);$output .= '"'}$output .= '
+                    href="#manage">';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '</a>
+            </li>
+            ';if ($stash->get(['module',0,'meta',0,'display',0,'upgrades',0])){$output .= '
+            <li role="presentation" class="nav-item';$output .= $stash->get('has_upgradable_instances')? '' : ' disabled';$output .= '">
+                <a id="upgradeTabLink"';if ($stash->get('has_upgradable_instances')){$output .= '
+                    data-toggle="tab"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Upgrade' ]]);$output .= '"'}else {$output .= '
+                    title="';$output .= $stash->get(['locale',0,'maketext',['No upgradeable instances exist of this [asis,cPAddon].' ]]);$output .= '"'}$output .= '
+                    href="#upgrade">';$output .= $stash->get(['locale',0,'maketext',['Upgrade' ]]);$output .= '</a>
+            </li>
+            '}$output .= '
+            <li role="presentation" class="nav-item';$output .= $stash->get(['data',0,'sorted_instances',0,'size',0])> 0 ? '' : ' disabled';$output .= '">
+                <a id="uninstallTabLink"';if ($stash->get(['data',0,'sorted_instances',0,'size',0])> 0){$output .= '
+                    data-toggle="tab"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Uninstall' ]]);$output .= '"'}else {$output .= '
+                    title="';$output .= $stash->get(['locale',0,'maketext',['There are no installed instances of this [asis,cPAddon].' ]]);$output .= '"'}$output .= '
+                    href="#uninstall">';$output .= $stash->get(['locale',0,'maketext',['Uninstall' ]]);$output .= '</a>
+            </li>
+            <li role="presentation" class="dropdown">
+                <a id="moreMenuLink" class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    ';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '
+                    <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li role="presentation" class="nav-item"><a id="summaryTabLink" data-toggle="tab" href="#summary">';$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '</a></li>
+                    ';if ($stash->get(['module',0,'meta',0,'license_text',0])){$output .= '
+                    <li role="presentation" class="nav-item"><a id="licenseTermsLink" data-toggle="tab" href="#license-terms">';$output .= $stash->get(['locale',0,'maketext',['License Terms' ]]);$output .= '</a></li>
+                    '}$output .= '
+                    ';if ($stash->get('show_security')){$output .= '
+                    <li role="presentation" class="nav-item"><a id="securityInformationTabLink" data-toggle="tab" href="#security-information">';$output .= $stash->get(['locale',0,'maketext',['Security Information' ]]);$output .= '</a></li>
+                    '}$output .= '
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content">
+    <div class="';$output .= $stash->get('install_class');$output .= 'tab-pane fade in" id="install">
+        ';$output .= $stash->get('install_content');$output .= '
+    </div>
+    <div class="';$output .= $stash->get('manage_class');$output .= 'tab-pane fade in" id="manage">
+        ';$output .= $stash->get('manage_content');$output .= '
+    </div>
+    ';if ($stash->get('upgrade_content')){$output .= '
+    <div class="tab-pane fade in" id="upgrade">
+        ';$output .= $stash->get('upgrade_content');$output .= '
+    </div>
+    '}$output .= '
+    <div class="tab-pane fade in" id="uninstall">
+        ';$output .= $stash->get('uninstall_content');$output .= '
+    </div>
+    <div class="tab-pane fade in" id="summary">';$output .= $context->process('addoncgi/views/summary_section.tt');$output .= '    </div>
+    ';if ($stash->get(['module',0,'meta',0,'license_text',0])){$output .= '
+    <div class="tab-pane fade in" id="license-terms">';$output .= $context->process('addoncgi/views/license_section.tt');$output .= '    </div>
+    '}$output .= '
+    ';if ($stash->get('show_security')){$output .= '
+    <div class="tab-pane fade in" id="security-information">';$output .= $context->process('addoncgi/views/security_section.tt');$output .= '    </div>
+    '}$output .= '
+</div>
+
+';if ($stash->get(['meta',0,'specialfunctions',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['meta',0,'specialfunctions',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'action'}=$_tt_value;$stash->set('fn_url',$stash->get(['to_uri',[$stash->get('environment'),'addon=' .$stash->get(['module',0,'name',0]).'&action=' .$stash->get('action')]]));$output .= '
+<p>
+    <a href="';$output .= $stash->get('fn_url');$output .= '" id="special_';$output .= $stash->get(['slugify',[$stash->get(['meta',0,'specialfunctions',0,$stash->get('action'),0,'name',0]),'_' ]]);$output .= '">
+        ';$output .= $stash->get(['meta',0,'specialfunctions',0,$stash->get('action'),0,'name',0]);$output .= '
+    </a>
+</p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+
+';if (!$stash->get(['environment',0,'called_from_root',0])){$stash->set('back_url',$stash->get(['to_uri',[$stash->get('environment'),'changevendor=' .$stash->get(['vendor',0,'name',0])]]));$output .= '
+<p align="center">
+    [<a id="main" href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('back_url');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Main' ]]);$output .= '</a>]
+</p>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

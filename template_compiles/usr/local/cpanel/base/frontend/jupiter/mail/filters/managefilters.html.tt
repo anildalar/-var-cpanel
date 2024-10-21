@@ -1,0 +1,59 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/managefilters.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');if ($stash->get(['FORM',0,'itemsperpage',0])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]))}elsif ((!($stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$output .= $stash->get(['Api2',0,'pre_exec',['Email','listpops' ]]);$stash->set('api2_result_Email_listpops',$stash->get(['Api2',0,'exec',['Email','listpops',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]),'api2_paginate'=>'1','regex'=>$stash->get(['RAW_FORM',0,'searchregex',0]),'api2_paginate_start'=>$stash->get(['FORM',0,'item',['api2_paginate_start' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listpops' ]]);$output .= '
+
+
+';$output .= do {my$output='';$output .= '
+
+
+<div class="body-content">
+    <p id="descIntro" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Create and manage email filters for an email address that you specify. This can be useful if you want to avoid spam, redirect mail, or pipe messages to a program. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/UserFilters','_blank','lnkUserFiltersDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2 id="hdrByUsers">';$output .= $stash->get(['locale',0,'maketext',['Filters by Users' ]]);$output .= '</h2>
+
+        <div id="search-panel_managerfilters">
+            <form method="get" action="" class="form-inline">
+                <div class="form-group">
+                    <input id="txtSearchRegex" type="text" class="form-control" name="searchregex" value="';$output .= $stash->get(['FORM',0,'searchregex',0]);$output .= '">
+                </div>
+                <div class="form-group">
+                    <input id="btnSearchRegex" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                    <input id="hidItemsPerPage" type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]);$output .= '" />
+                </div>
+            </form>
+        </div>
+
+        <table id="actiontbl" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['api2_result_Email_listpops',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_Email_listpops');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '</td>
+                        <td><div>
+                            <a class="btn btn-link" href="userfilters.html?account=';$output .= $stash->get(['hashref',0,'email',0,'html',0]);$output .= '">
+                            <span class="fas fa-wrench"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Filters' ]]);$output .= '</a>
+                        </div></td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            </tbody>
+        </table>
+
+        ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+
+    </div>
+
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'email_filters','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,189 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/autossl/views/manage-users.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <!-- Enable / Disable -->
+    <div class="row">
+        <div class="col-md-12">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Configure [asis,AutoSSL] for Users on the Server' ]]);$output .= '</h2>
+            <div class="list-container">
+                <div class="row search-page-container">
+                    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                        <search ng-model="meta.filterValue" ng-change="filter_table()"></search>
+                    </div>
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <div class="pagination-container hidden-xs hidden-sm">
+                            <page-size id="pageSize"
+                                allowed-sizes="meta.pageSizes"
+                                total-items="meta.totalItems"
+                                ng-model="meta.pageSize"
+                                show-all="true"
+                                ng-show="showPager"
+                                ng-change="set_page_size()">
+                            </page-size>
+                            <uib-pagination id="paginateItems"
+                                total-items="meta.totalItems"
+                                ng-model="meta.currentPage"
+                                max-size="meta.maxPages"
+                                boundary-links="true"
+                                rotate="false"
+                                previous-text="<"
+                                next-text=">"
+                                first-text="<<"
+                                last-text=">>"
+                                items-per-page="meta.pageSize"
+                                ng-show="showPager"
+                                ng-change="set_page()">
+                            </uib-pagination>
+                        </div>
+                    </div>
+                </div>
+                <div class="row hidden-xs hidden-sm">
+                    <div class="col-xs-8">
+                        <div class="page-stats selected-stats">
+                            <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Selected' ]]);$output .= '</span>
+                            <span id="selectedCounter" class="badge badge-info" ng-bind="selected_items.length"></span>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="page-stats pull-right">
+                            <span class="title" ng-bind-html="showing_text()"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="padding-top:15px;padding-bottom:8px;">
+                        <button ng-bind="get_enable_button_label()" ng-disabled="!selected_items.length" type="button" class="btn btn-primary btn-success" ng-click="enable_auto_ssl(selected_items)"></button>
+                        <button ng-bind="get_disable_button_label()" ng-disabled="!selected_items.length" type="button" class="btn btn-primary btn-danger" ng-click="disable_auto_ssl(selected_items)"></button>
+                        <button ng-bind="get_reset_button_label()" ng-disabled="!selected_items.length" type="button" class="btn btn-primary btn-danger" ng-click="reset_auto_ssl(selected_items)"></button>
+                    </div>
+                </div>
+                <table class="table table-striped responsive-table">
+                    <thead>
+                        <tr>
+                            <th class="checkColumn">
+                                <div class="input-group advanced-checkbox">
+                                    <span class="input-group-addon">
+                                        <input type="checkbox"
+                                            ng-model="all_rows_selected"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Select all items on this page.' ]]);$output .= '"
+                                            ng-change="select_all_items(filteredList)">
+                                    </span>
+                                    <div class="input-group-btn" uib-dropdown>
+                                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" uib-dropdown-toggle>
+                                            <span class="caret"></span>
+                                            <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Toggle Dropdown' ]]);$output .= '</span>
+                                        </button>
+                                        <ul class="dropdown-menu" role="menu" uib-dropdown-menu>
+                                            <li><a href="" ng-click="select_all_items(items,true)" id="select_all_accts">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</a></li>
+                                            <li><a href="" ng-click="clear_all_selections()" id="select_no_accts">';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </th>
+                            <th >
+                                <span toggle-sort id="sortUser" sort-meta="meta" sort-field="user" onSort="sort_table()">';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</span>
+                            </th>
+                            <th>
+                                <span><span>';$output .= $stash->get(['locale',0,'maketext',['Toggle [asis,AutoSSL]' ]]);$output .= '</span></span>
+                            </th>
+                            <th>
+                                <span><span>';$output .= $stash->get(['locale',0,'maketext',['Run [asis,AutoSSL] Check' ]]);$output .= "</span></span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tbody>\n                        <tr ng-repeat=\"item in filteredList\">\n                            <td class=\"checkColumn\">\n                                <input type=\"checkbox\" id=\"rowSelector{{\$index}}\"\n                                    title=\"";$output .= $stash->get(['locale',0,'maketext',['Select this item.' ]]);$output .= '"
+                                    ng-model="item.rowSelected"
+                                    ng-change="select_item(item)">
+                            </td>
+                            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '">{{ item.user}}</td>
+                            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] Setting' ]]);$output .= '">
+                                <div class="radio">
+                                  <label>
+                                    <input
+                                        type="radio"
+                                        name="{{item.user}}autoSSLRadios"
+                                        id="{{item.user + \'_disable_autossl\'}}"
+                                        ng-disabled="item.updating"
+                                        ng-checked="item.auto_ssl_enabled == \'enabled\'"
+                                        ng-click="update_auto_ssl_setting(item, \'enabled\')"
+                                        value="enabled" >
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,AutoSSL]' ]]);$output .= '</span>
+                                  </label>
+                                  <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Override the feature list setting and force [asis,AutoSSL] to be enabled.' ]]);$output .= '</span>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input
+                                        type="radio"
+                                        name="{{item.user}}autoSSLRadios"
+                                        id="{{item.user + \'_enable_autossl\'}}"
+                                        ng-disabled="item.updating"
+                                        ng-checked="item.auto_ssl_enabled == \'disabled\'"
+                                        ng-click="update_auto_ssl_setting(item, \'disabled\')"
+                                        value="disabled">
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Disable [asis,AutoSSL]' ]]);$output .= '</span>
+                                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Override the feature list setting and force [asis,AutoSSL] to be disabled.' ]]);$output .= '</span>
+                                  </label>
+                                </div>
+                                <div class="radio">
+                                  <label>
+                                    <input
+                                        type="radio"
+                                        name="{{item.user}}autoSSLRadios"
+                                        id="{{item.user + \'_reset_autossl\'}}"
+                                        ng-disabled="item.updating"
+                                        ng-checked="item.auto_ssl_enabled == \'inherit\'"
+                                        ng-click="update_auto_ssl_setting(item, \'inherit\')"
+                                        value="inherit">
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Reset to Feature List Setting' ]]);$output .= '</span>
+                                    <span class="help-block" ng-bind-html="get_reset_string(item)"></span>
+                                  </label>
+                                </div>
+                            </td>
+                            <td>
+                                <button
+                                    ng-disabled="!can_run_check(item)"
+                                    type="button"
+                                    class="btn btn-primary"
+                                    spinner-id="spinnerRun_{{item.user}}"
+                                    cp-action="start_autossl_for_user(item.user)"
+                                >';$output .= $stash->get(['locale',0,'maketext',['Check “[_1]”','{{item.user}}' ]]);$output .= '</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row hidden-md hidden-lg">
+                    <div class="col-xs-offset-4 col-xs-8">
+                        <div class="page-stats pull-right">
+                            <span class="title" ng-bind-html="showing_text()"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+                    <div class="col-xs-12 col-sm-12">
+                        <div id="paginatorBottom" class="pagination-container">
+                            <page-size id="bottomPageSize"
+                                allowed-sizes="meta.pageSizes"
+                                total-items="meta.totalItems"
+                                ng-model="meta.pageSize"
+                                show-all="true"
+                                ng-show="showPager"
+                                ng-change="set_page_size()">
+                            </page-size>
+                            <uib-pagination id="bottomPaginateItems"
+                                total-items="meta.totalItems"
+                                ng-model="meta.currentPage"
+                                max-size="meta.maxPages"
+                                boundary-links="true"
+                                rotate="false"
+                                previous-text="<"
+                                next-text=">"
+                                first-text="<<"
+                                last-text=">>"
+                                items-per-page="meta.pageSize"
+                                ng-show="showPager"
+                                ng-change="set_page()">
+                            </uib-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

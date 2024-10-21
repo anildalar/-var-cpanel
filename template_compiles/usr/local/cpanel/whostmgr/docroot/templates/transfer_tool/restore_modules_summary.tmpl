@@ -1,0 +1,83 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/restore_modules_summary.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('String',$context->plugin('String'));$output .= do {my$output='';$output .= '<div id="block">
+
+    <section class="description">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['The table below lists the differences between Restricted and Unrestricted restores, and displays notes about each item.' ]]);$output .= '</p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['For more information, see: [output,url,_1,_1,_2,_3]','https://go.cpanel.net/insecurerestoreaccount','target','_blank' ]]);$output .= '</p>
+    </section>
+
+    <div ng-controller="RestoreModulesTableController as tableCtrl" class="list-container">
+        <div class="row search-page-container">
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+            </div>
+        </div>
+        <table class="table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>
+                        <span toggle-sort id="sortModule" sort-meta="meta"
+                                  sort-field="module"
+                                  onSort="sortList">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Module' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span toggle-sort id="sortModuleSummary" sort-meta="meta"
+                                  sort-field="summary"
+                                  onSort="sortList">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Module Summary' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span toggle-sort id="sortRestrictedAvailable" sort-meta="meta"
+                                  sort-field="restricted_available"
+                                  onSort="sortList">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Restricted Restore?' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th>
+                        <span toggle-sort id="sortRestrictedModule" sort-meta="meta"
+                                  sort-field="restricted_summary"
+                                  onSort="sortList">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Restricted Summary' ]]);$output .= '
+                        </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody ng-show="filteredList.length" class="ng-cloak">
+                <tr id="restoreModulesTableRow_{{}}" ng-repeat="module in filteredList">
+                    <td class="table-column-module" data-title="';$output .= $stash->get(['locale',0,'maketext',['Module' ]]);$output .= '"  ng-bind="module.module"></td>
+                    <td class="table-column-summary" data-title="';$output .= $stash->get(['locale',0,'maketext',['Module Summary' ]]);$output .= '" >
+                        <span ng-bind-html="module.summary"></span>
+                        <span ng-if="module.notes" class="help-block" ng-bind-html="module.notes"></span>
+                    </td>
+                    <td class="table-column-restricted_available" data-title="';$output .= $stash->get(['locale',0,'maketext',['Restricted Available' ]]);$output .= '" >
+                        <span ng-if="module.restricted_available == 1" class=\'fas fa-check fa-lg\'></span>
+                        <span ng-if="module.restricted_available == 0" class=\'fas fa-times fa-lg\'></span>
+                    </td>
+                    <td class="table-column-restricted_summary" data-title="';$output .= $stash->get(['locale',0,'maketext',['Restricted Summary' ]]);$output .= '" ng-bind="module.restricted_summary"></td>
+                </tr>
+                <tr ng-if="modules" ng-hide="filteredList.length" class="info empty-row">
+                    <td colspan="3">';$output .= $stash->get(['locale',0,'maketext',['No results match your query.' ]]);$output .= '</td>
+                </tr>
+                <tr ng-hide="modules.length" class="info empty-row">
+                    <td colspan="3">';$output .= $stash->get(['locale',0,'maketext',['No modules were found.' ]]);$output .= '</td>
+                </tr>
+            </tbody>
+            <tfoot ng-show="!filteredList.length">
+                <tr>
+                    <td colspan="4" class="text-center info">';$output .= $stash->get(['locale',0,'maketext',['Loading modules …' ]]);$output .= '</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.modules = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'modules',0])]]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'header',0]),'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/acctlist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- THIS IS WHAT FELIPE CAME UP WITH TO MATCH WHAT /scripts/acctlist CURRENTLY DOES.
+<style type=\'text/css\'>
+/* THIS IS IN style.css ON MY BRANCH ON FLUX. */
+.brickcontainer { /* ACCOMPLISHES CENTERING */
+	display: table;
+     margin-left: auto;
+     margin-right: auto;
+}
+.brickcontainer2 { /* EQUALIZES BRICKS\' WIDTHS */
+	display: table-cell;
+}
+</style>
+<div class=\'brickcontainer\'><div class=\'brickcontainer2\'>
+<table class="datatable brick">
+<tr><th>Active Domains</th></tr>
+<tr><td>';$output .= $stash->get(['data',0,'activedomains',0,'sort',0,'join',['<br />' ]]);$output .= '</td></tr>
+</table>
+<br />
+
+<table class="datatable brick">
+<tr><th>Inactive Domains</th><tr>
+<tr><td>';$output .= $stash->get(['data',0,'inactivedomains',0,'sort',0,'join',['<br />' ]]);$output .= '</td></tr>
+</table>
+<br />
+
+<table class="datatable brick">
+<tr><th>Actions</th></tr>
+<tr><td style="text-align: center"><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/rebuildhttpdconf" style=\'font-weight: bold;\'>Reactivate Inactive Domains</a></td></tr>
+</table>
+</div></div>
+-->
+';$output .= do {my$output='';$output .= '<h2>Active Domains</h2>
+';if ($stash->get(['data',0,'activedomains',0,'size',0])> 0){$output .= '
+<ul>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'activedomains',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+<li>';$output .= $stash->get('domain');$output .= '</li>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</ul>
+'}else {$output .= '
+None
+'}$output .= '
+
+<h2>Inactive Domains</h2>
+';if ($stash->get(['data',0,'inactivedomains',0,'size',0])> 0){$output .= '
+<ul>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'inactivedomains',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+<li>';$output .= $stash->get('domain');$output .= '</li>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</ul>
+
+<a href=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts2/rebuildhttpdconf\'>Reactivate Inactive Domains</a>
+'}else {$output .= '
+None
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

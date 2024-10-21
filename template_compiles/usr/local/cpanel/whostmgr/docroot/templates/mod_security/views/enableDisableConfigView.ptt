@@ -1,0 +1,114 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/enableDisableConfigView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,ModSecurity] vendors group related [asis,ModSecurity] rules into separate configuration files. Select the configuration files you want to enable or disable for your system.' ]]);$output .= '
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="form-group">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <div class="input-group filter-controls">
+                                            <input  id="configFileListFilter"
+                                                    class="form-control"
+                                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                                    title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= "\"\n                                                    ng-model=\"filter\"\n                                                    ng-keyup=\"triggerClearFilter(\$event)\"\n                                                    autocomplete=\"off\"\n                                                    auto-focus=\"!isEditor\">\n                                            <span class=\"input-group-btn\">\n                                                <button id=\"btnSearch\"\n                                                        type=\"button\"\n                                                        class=\"btn btn-default\"\n                                                        title=\"{{ filter ? '";$output .= $stash->get(['locale',0,'maketext',['Clear the configuration filter.' ]]);$output .= '\' : \'';$output .= $stash->get(['locale',0,'maketext',['Apply the configuration filter.' ]]);$output .= '\'}}"
+                                                        ng-click="toggleFilter()">
+                                                    <span class="glyphicon" ng-class="{ \'glyphicon-search\': !filter, \'glyphicon-remove\': filter }"></span>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <span spinner id="loadingSpinner2" class="headerSpinner loadingSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= "\"></span>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                            <div class=\"navigation-controls pull-right\">\n                                <button id=\"enableAll\"\n                                        class=\"btn btn-default\"\n                                        ng-click=\"enableAllConfigs(\$event)\"\n                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Attempt to enable all the configuration files for this vendor.' ]]);$output .= '"
+                                        ng-disabled="buttonDisabled(\'enableAll\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Enable All' ]]);$output .= "\n                                </button>\n                                <button id=\"disableAll\"\n                                        class=\"btn btn-default\"\n                                        ng-click=\"disableAllConfigs(\$event)\"\n                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Attempt to disable all the configuration files for this vendor.' ]]);$output .= '"
+                                        ng-disabled="buttonDisabled(\'disableAll\')">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Disable All' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                            <div class="alert alert-warning" ng-if="force">
+                                <span class="glyphicon glyphicon-warning-sign"></span>
+                                <div class="alert-message" id="noConfigsSelected">
+                                    <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['You have successfully enabled the vendor. However, there are no configuration files enabled. You must select at least one set of rules for an enabled vendor to use the ModSecurity rules. Enable one or more configuration files below:' ]]);$output .= '
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-striped table-condensed configs">
+                        <thead>
+                            <tr>
+                                <th class="col-xs-8 modsec-conf">
+                                    <toggle-sort id="sortConfFile"
+                                                 sort-meta="meta"
+                                                 sort-field="config"
+                                                 title="';$output .= $stash->get(['locale',0,'maketext',['Sort by file path.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Config File' ]]);$output .= '
+                                    </toggle-sort>
+                                </th>
+                                <th class="col-xs-2 modsec-enabled text-center">
+                                    <toggle-sort id="sortEnabled"
+                                                 sort-meta="meta"
+                                                 sort-field="enabled"
+                                                 title="';$output .= $stash->get(['locale',0,'maketext',['Sort by status.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                                    </toggle-sort>
+                                </th>
+                                <th class="col-xs-4 modsec-issues" ng-show="hasIssues">
+                                    <toggle-sort id="sortIssues"
+                                                 sort-meta="meta"
+                                                 sort-field="exception"
+                                                 title="';$output .= $stash->get(['locale',0,'maketext',['Sort by issues.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Issues' ]]);$output .= "\n                                    </toggle-sort>\n                                </th>\n                            </tr>\n                        </thead>\n                        <tbody>\n                            <tr ng-repeat=\"config in filteredConfigs = (configs | filter: filterConfigs | orderBy: meta.sortBy: meta.sortDirection === 'desc')\">\n                                <td class=\"modsec-conf\" ng-if=\"vendor.cpanel_provided\" >\n                                    <span id=\"confData{{\$index}}\" ng-bind-html=\"config.config | replace : '^modsec_vendor_configs/[^/]*/' | wrap : '[/_]'\"></span>\n                                </td>\n                                <td class=\"modsec-conf\" ng-if=\"!vendor.cpanel_provided\" >\n                                    <span id=\"confData{{\$index}}\"\n                                          ng-bind-html=\"config.config | replace : '^modsec_vendor_configs/[^/]*/' | wrap : '[/_]'\"></span>\n                                </td>\n                                <td class=\"modsec-enabled text-center\" id=\"enabledData{{\$index}}\">\n                                    <div class=\"btn-group btn-group-nowrap\">\n                                        <label id=\"btnConfigEnable{{\$index}}\"\n                                               class=\"btn\"\n                                               ng-model=\"config.enabled\"\n                                               uib-btn-radio=\"true\"\n                                               title=\"";$output .= $stash->get(['locale',0,'maketext',['Enable Configuration' ]]);$output .= '"
+                                               ng-class="{ \'btn-primary\': config.enabled, \'btn-default btn-none\': !config.enabled }"
+                                               ng-change="setConfig(config)"
+                                               ng-disabled="buttonDisabled(\'configToggle\', config.serverRequest)">';$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= "</label>\n                                        <label id=\"btnConfigDisable{{\$index}}\"\n                                               class=\"btn\"\n                                               ng-model=\"config.enabled\"\n                                               title=\"";$output .= $stash->get(['locale',0,'maketext',['Disable Configuration' ]]);$output .= '"
+                                               uib-btn-radio="false"
+                                               ng-class="{ \'btn-negative\': !config.enabled, \'btn-default btn-none\': config.enabled }"
+                                               ng-change="setConfig(config)"
+                                               ng-disabled="buttonDisabled(\'configToggle\', config.serverRequest)">';$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= '</label>
+                                    </div>
+                                </td>
+                                <td class="modsec-issues" ng-show="hasIssues">
+                                    <ul class="validation-container" ng-show="hasIssue(config)">
+                                        <li validation-item>
+                                            <div ng-bind-html="config.exception | wrap:\'[/]\' | break"></div>
+                                        </li>
+                                    </ul>
+                                </td>
+                            </tr>
+                            <tr class="info emptyrow" ng-show="!filteredConfigs.length"><!-- filteredConfigs is defined in the ng-repeat above -->
+                                <td colspan="6" id="loadingRecords"    ng-show="serverRequest">';$output .= $stash->get(['locale',0,'maketext',['The system is loading configuration files.' ]]);$output .= '</td>
+                                <td colspan="6" id="noRecords"         ng-show="!serverRequest && !configs.length">';$output .= $stash->get(['locale',0,'maketext',['No configuration files were found.' ]]);$output .= '</td>
+                                <td colspan="6" id="noFilteredRecords" ng-show="!serverRequest && configs.length">';$output .= $stash->get(['locale',0,'maketext',['No configuration files matched your search criteria.' ]]);$output .= '</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="form-group action-group">
+            <button id="btnBottomConfig"
+                    class="btn btn-primary"
+                    ng-click="loadView(\'vendors\')">
+                ';$output .= $stash->get(['locale',0,'maketext',['Vendor Manager' ]]);$output .= '
+            </button>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

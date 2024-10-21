@@ -1,0 +1,10 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/SSL/LinkedNodeCertificateExpiring.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/certificate_info_extended.tmpl');$output .= do {my$output='';$output .= '
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['“[_1]”’s [asis,TLS] certificate expires soon. Replace this certificate before [datetime,_2,date_format_full] to avoid service interruptions.',$stash->get(['NOTICE',0,'node_info',0,'hostname',0]),1 + $stash->get(['NOTICE',0,'node_info',0,'certificate',0,'not_after',0])]]);$output .= '</p>
+
+<h4>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Validity remaining: [_1]',$stash->get(['NOTICE',0,'node_info',0,'validity_left_localized',0])]]);$output .= '</h4>
+
+<h4>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Certificate Details:' ]]);$output .= '</h4>
+
+';$output .= $stash->get(['certificate_info_extended',[{'certificate'=>$stash->get(['NOTICE',0,'node_info',0,'certificate',0])}]]);$output .= '
+';$context->include('wrapper/main.html.tmpl',{'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/dodelfwd.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('email_delete_domain_forwarder',$stash->get(['execute',['Email','delete_forwarder',{'address'=>$stash->get(['RAW_FORM',0,'item',['email' ]]),'forwarder'=>$stash->get(['RAW_FORM',0,'item',['emaildest' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <div class="section">
+        ';if (!$stash->get(['CPANEL',0,'CPERROR',0,'item',['email' ]])){$output .= '
+            <div id="mailFwdSuccess" class="alert alert-success">
+                <span id="mailFwdSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+                <div id="mailFwdSuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Mail for “[_1]” will no longer be forwarded to “[_2]”.',$stash->get(['FORM',0,'email',0]),$stash->get(['FORM',0,'emaildest',0])]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+    </div>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'fwds.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'forwarders','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

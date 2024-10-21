@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/master_templates/wrapper.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$output .= '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="';$output .= $stash->get(['locale',0,'get_html_dir_attr',0]);$output .= '">
+    <head>
+        <title>WHM [';$output .= $stash->get(['Whostmgr',0,'shorthostname',0]);$output .= '] - ';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= '</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=';$output .= $stash->get(['locale',0,'encoding',0]);$output .= '" />
+        <link rel="shortcut icon" href="';$output .= $stash->get(['MagicRevision',['/favicon.ico' ]]);$output .= '" type="image/x-icon" />
+        <link rel="stylesheet" type="text/css" href=\'';$output .= $stash->get(['MagicRevision',['/styles/reset.css' ]]);$output .= '\'/>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['stylesheets',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= '<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get(['MagicRevision',[$stash->get('src')]]).'\' />';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        ';if ($stash->get('extrastyle')){$output .= '        <style type="text/css">
+            ';$output .= $stash->get('extrastyle');$output .= '        </style>
+        '}$output .= '        ';if ($stash->get('base')){$output .= '
+        <base href="';$output .= $stash->get('base');$output .= '">
+        '}$output .= '
+    </head>
+    <body class="';$output .= $stash->get(['NVData',0,'get',['whmcommand:navigation' ]])eq 1 ? 'nav-collapsed' : '';$output .= '">
+        ';$output .= $stash->get('content');$output .= '
+    </body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

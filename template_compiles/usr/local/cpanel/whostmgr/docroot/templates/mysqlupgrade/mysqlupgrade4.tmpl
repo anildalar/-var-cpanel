@@ -1,0 +1,14 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade4.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version (Step [numf,_1] of [numf,_2])',4,5 ]]),'breadcrumburl'=>'/scripts/mysqlupgrade','theme'=>'bootstrap' });$output .= '
+<div id="content">
+    ';$output .= '
+    ';$output .= $context->process('mysqlupgrade/runner.tmpl',{'attended'=>1 });$output .= '
+    ';if ($stash->get('success')){$output .= '
+       ';$output .= $context->process('mysqlupgrade/runner_success.tmpl',{'message'=>$stash->get(['locale',0,'maketext',['The upgrade process succeeded. You should recompile any software that used the previous version.' ]]),'step_number'=>'5','button_text'=>$stash->get(['locale',0,'maketext',['Continue' ]])});$output .= '
+    '}else {$output .= '
+        ';$output .= $context->process('mysqlupgrade/runner_failed.tmpl',{'message'=>$stash->get(['locale',0,'maketext',['The upgrade process failed. You should correct any errors listed in the output window and retry the upgrade process.' ]]),'step_number'=>'4','button_text'=>$stash->get(['locale',0,'maketext',['Retry' ]])});$output .= '
+    '}$output .= '
+</div>
+
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'runner'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+      ';$stash->set('success',$stash->get(['data',0,'run_upgrade',[$stash->get('data')]]));$output .= '
+    '}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

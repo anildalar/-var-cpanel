@@ -1,0 +1,112 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/greylist/views/mailServices.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Common Mail Providers' ]]);$output .= '</h3>
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] will never defer emails from trusted mail providers.' ]]);$output .= '
+        </p>
+    </div>
+</div>
+<div id="mailServices" class="row">
+    <form class="layout-medium ng-pristine ng-valid"
+        id="mail_services_form"
+        name="mail_services_form"
+        autocomplete="off"
+        novalidate>
+        <div class="section-body mailServicesSection">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div id="autotrustCheckbox" class="checkbox">
+                            <label>
+                                <input id="autotrust"
+                                    name="autotrust"
+                                    type="checkbox"
+                                    tabindex="0"
+                                    ng-model="autotrust_new_common_mail_providers">
+                                <span class="configCheckboxLabel"
+                                    id="autotrustLabel">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Automatically trust newly added mail providers' ]]);$output .= '
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Mail Provider' ]]);$output .= '</th>
+                        <th class="provider_setting_col">';$output .= $stash->get(['locale',0,'maketext',['Trust' ]]);$output .= '</th>
+                        <th class="provider_setting_col">';$output .= $stash->get(['locale',0,'maketext',['Auto Update' ]]);$output .= '</th>
+                        <th class="gear_column">
+                        <span class="dropdown" uib-dropdown>
+                        <a href class="dropdown-toggle" uib-dropdown-toggle>
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                            <li>
+                                <a href ng-disabled="areAllProvidersTrusted()" ng-click="trustAll(mail_services_form, true);">';$output .= $stash->get(['locale',0,'maketext',['Check Trust for All' ]]);$output .= '</a>
+                            </li>
+                            <li>
+                                <a href ng-disabled="areAllProvidersUntrusted()" ng-click="trustAll(mail_services_form, false);">';$output .= $stash->get(['locale',0,'maketext',['Uncheck Trust for All' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-disabled="autoUpdateAllChecked()" ng-click="autoUpdateAll(mail_services_form, true)">';$output .= $stash->get(['locale',0,'maketext',['Check Auto Update for All' ]]);$output .= '</a>
+                            </li>
+                            <li>
+                                <a href ng-disabled="autoUpdateNoneChecked()" ng-click="autoUpdateAll(mail_services_form, false)">';$output .= $stash->get(['locale',0,'maketext',['Uncheck Auto Update for All' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-click="forceLoadMailProviders(mail_services_form)">';$output .= $stash->get(['locale',0,'maketext',['Reload Mail Providers from Server' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                      </span>
+                    </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(key, settings) in commonMailProviders">
+                        <td>{{settings.display_name}}</td>
+                        <td class="provider_setting_col">
+                            <input id="trust_{{key}}"
+                                name="trust_{{key}}"
+                                type="checkbox"
+                                tabindex="0"
+                                ng-model="settings.is_trusted">
+                        </td>
+                        <td class="provider_setting_col">
+                            <input id="auto_update_{{key}}"
+                                name="auto_update_{{key}}"
+                                type="checkbox"
+                                tabindex="0"
+                                ng-model="settings.autoupdate">
+                        </td>
+                        <td>&nbsp;</td>
+                    </tr>
+                    <tr class="info emptyrow" ng-hide="isCommonMailProvidersPopulated()" ng-switch="loadingProviders">
+                        <td colspan="4" id="loadingRecords" ng-switch-when="true">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Loading Common Mail Provider settings.' ]]);$output .= '
+                        </td>
+                        <td colspan="4" id="noRecords" ng-switch-default>
+                            ';$output .= $stash->get(['locale',0,'maketext',['No Common Mail Provider settings found.' ]]);$output .= '
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group" id="saveButtonContainer">
+                <button
+                    type="submit"
+                    spinner-id="saveMailProviders"
+                    cp-action="save(mail_services_form)"
+                    button-class="btn-primary"
+                    tabindex="0"
+                    ng-disabled="disableSave(mail_services_form)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

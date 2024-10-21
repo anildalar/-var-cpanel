@@ -1,0 +1,114 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/reportReviewView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="section-heading">
+    <h2 ng-bind-html="getTitleText()">';$output .= $stash->get(['locale',0,'maketext',['Report a [asis,ModSecurity] Rule' ]]);$output .= '</h2>
+    <span>';$output .= $stash->get(['locale',0,'maketext',['Review the information below before you submit your report.' ]]);$output .= '</span>
+</div>
+
+<div class="section-body report-rule-body">
+    <form class="layout-medium" novalidate>
+        <div class="form-group" id="report-rule-form-data">
+            <uib-tabset>
+                <uib-tab select="changeToTab(\'hitList\')">
+                    <uib-tab-heading>';$output .= $stash->get(['locale',0,'maketext',['Associated Hits' ]]);$output .= '</uib-tab-heading>
+                    <span class="info-block tab-pane-header">';$output .= $stash->get(['locale',0,'maketext',['The list below contains the associated hits to send with the report. If you see multiple hits, exclude any unrelated hits from the report to help the vendor identify the problem.' ]]);$output .= '</span>
+
+                    <span ng-show="view.loading.init">
+                        <i class="glyph fas fa-sync animate-spin"></i>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+                    </span>
+                    <span class="text-danger" ng-hide="report.hits || view.loading.init">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system could not load the data.' ]]);$output .= '
+                    </span>
+                    <table ng-show="report.hits && !view.loading.init" class="table" ng-repeat="hit in report.hits">
+                        <thead>
+                            <tr>
+                                <th class="col-sm-1 text-center">';$output .= $stash->get(['locale',0,'maketext',['Included' ]]);$output .= '</th>
+                                <th class="col-sm-11">';$output .= $stash->get(['locale',0,'maketext',['Hit Data' ]]);$output .= '</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="hit in report.hits">
+                                <td class="text-center include-exclude-col">
+                                    <button class="btn" ng-click="toggleIncludeExclude(hit)" ng-class="{ \'btn-success\' : hit.included }">
+                                        <span class="fas fa-check" ng-show="hit.included"></span>
+                                        <span class="fas fa-times" ng-hide="hit.included"></span>
+                                    </button>
+                                </td>
+                                <td>
+                                    <div class="collapsed-hit-data" ng-hide="isExpanded(hit)">
+                                        <div>
+                                            <span>
+                                                <label>';$output .= $stash->get(['locale',0,'maketext',['Source IP:' ]]);$output .= '</label> {{ hit.ip }}
+                                            </span>
+                                            <span>
+                                                <label>';$output .= $stash->get(['locale',0,'maketext',['Timestamp:' ]]);$output .= '</label> {{ hit.timestamp }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <label>';$output .= $stash->get(['locale',0,'maketext',['Request:' ]]);$output .= '</label> {{ hit.http_status }} {{ hit.http_method }} {{ hit.host }}{{ hit.path }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <label>';$output .= $stash->get(['locale',0,'maketext',['Action Description:' ]]);$output .= '</label> {{ hit.action_desc }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span>
+                                                <label>';$output .= $stash->get(['locale',0,'maketext',['Justification:' ]]);$output .= '</label> {{ hit.justification }}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-default btn-xs" ng-click="toggleExpandCollapse(hit)">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['See all data' ]]);$output .= ' <span class="glyphicon glyphicon-chevron-down">
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <table class="table table-striped table-condensed expanded-hit-data" ng-show="isExpanded(hit)">
+                                        <tr class="hit-field" ng-repeat="(key, val) in hit | onlyTrueHitFields">
+                                            <td class="col-sm-2">{{ key }}</td>
+                                            <td class="col-sm-10">{{ val }}</td>
+                                        </tr>
+                                    </table>
+                                    <button class="btn btn-default btn-xs" ng-show="isExpanded(hit)" ng-click="toggleExpandCollapse(hit)">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['See less data' ]]);$output .= ' <span class="glyphicon glyphicon-chevron-up">
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </uib-tab>
+
+                <uib-tab select="changeToTab(\'ruleText\')">
+                    <uib-tab-heading>';$output .= $stash->get(['locale',0,'maketext',['Rule Text' ]]);$output .= '</uib-tab-heading>
+                    <span class="info-block tab-pane-header">';$output .= $stash->get(['locale',0,'maketext',['The report contains the complete text of the rule.' ]]);$output .= '</span>
+
+                    <span ng-show="view.loading.init">
+                        <i class="glyph fas fa-sync animate-spin"></i>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+                    </span>
+                    <span class="text-danger" ng-hide="report.rule || view.loading.init">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The system could not load the data.' ]]);$output .= "\n                        </span>\n                    <pre ng-show=\"report.rule && !view.loading.init\" ng-bind-html=\"report.rule.rule\"></pre>\n                </uib-tab>\n\n                <uib-tab select=\"changeToTab('rawReport')\" active=\"view.rawReportActive\" disabled=\"view.form.\$invalid || view.loading.init\">\n                    <uib-tab-heading>\n                        <span class='fas fa-exclamation-triangle fa-lg' ng-show=\"rawTabIsStale()\" title=\"";$output .= $stash->get(['locale',0,'maketext',['A new version of the report is available.' ]]);$output .= '"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Raw Report Data' ]]);$output .= '
+                    </uib-tab-heading>
+                    <span class="info-block tab-pane-header">';$output .= $stash->get(['locale',0,'maketext',['The report contains the following raw [asis,JSON]:' ]]);$output .= '</span>
+
+                    <span ng-show="view.loading.report">
+                        <i class="glyph fas fa-sync animate-spin"></i>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+                    </span>
+                    <span class="text-danger" ng-hide="report.json || view.loading.report">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system could not load the data.' ]]);$output .= "\n                    </span>\n                    <pre ng-show=\"report.json && !view.loading.report\" ng-bind-html=\"report.json\"></pre>\n                </uib-tab>\n            </uib-tabset>\n        </div>\n\n        <div class=\"form-group\">\n            <button type=\"submit\" class=\"btn btn-primary\" cp-action=\"submitReport()\" ng-disabled=\"view.form.\$invalid || report.invalid || view.loading.init || view.submitting\">\n                ";$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '
+            </button>
+            <button type="button" class="btn btn-default" ng-click="changeStep(\'input\')">
+                ';$output .= $stash->get(['locale',0,'maketext',['Back' ]]);$output .= '
+            </button>
+            <button type="button" class="btn btn-link" ng-click="cancelSubmission()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cancel Submission' ]]);$output .= '
+            </button>
+        </div>
+
+    </form>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

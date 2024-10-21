@@ -1,0 +1,40 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/uninstall_section.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';if ($stash->get(['module',0,'supports_action',0,'uninstall',0])&& $stash->get(['data',0,'action_has_prerequisites',0,'uninstall',0])){$output .= '
+    ';if ($stash->get('has_instances')){$output .= '
+    <form id="cpaddonsform_uninstall"
+          action="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'script_name',0]);&$_tt_filter($output)};$output .= '"
+          method="post" class="form-inline">
+        <input type="hidden" name="debug" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'debug',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="verbose" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'verbose',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="oneclick" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['form',0,'oneclick',0]);&$_tt_filter($output)};$output .= '" />
+        <input type="hidden" name="addon"
+               value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['module',0,'name',0]);&$_tt_filter($output)};$output .= '"
+               id="hidUninstallModuleName" />
+        <input type="hidden" name="action" value="uninstall" />
+
+        <select name="workinginstall" id="selInstanceToUninstall" class="form-control">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sorted_instances',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'instance'}=$_tt_value;$output .= '
+            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'install_filename',0]);&$_tt_filter($output)};$output .= '">
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'no_protocol_url_to_install',0]);&$_tt_filter($output)};$output .= '
+                ';if ($stash->get(['module',0,'meta',0,'display',0,'versions',0])){$output .= '
+                  (v';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['instance',0,'version',0]);&$_tt_filter($output)};$output .= ')
+                '}$output .= '
+            </option>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </select>
+        <button type="submit" class="btn btn-primary" id="btnUninstall">
+            ';$output .= $stash->get(['locale',0,'maketext',['Uninstall' ]]);$output .= '
+        </button>
+    </form>
+    '}else {$output .= '
+    <span id="nothing_to_uninstall">
+        ';$output .= $stash->get(['locale',0,'maketext',['There are no installed instances of this [asis,cPAddon].' ]]);$output .= '
+    </span>
+    '}$output .= '
+'}else {$output .= '
+    <span id="uninstall_not_supported">
+        ';$output .= $stash->get(['locale',0,'maketext',['Uninstall is not supported.' ]]);$output .= '
+    </span>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

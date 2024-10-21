@@ -1,0 +1,113 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/graceful_reboot_landing.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <div id="initialMessage" class="dialog-box">
+                <div>
+                    <h4>';$output .= $stash->get(['locale',0,'maketext',['Warning: This will reboot your system!' ]]);$output .= '</h4>
+                    <div class="dialog-submit">
+                        <input id="proceedBtn" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Proceed' ]]);$output .= ' &gt;&gt;">
+                    </div>
+                </div>
+            </div>
+            <div id="doneRebooting" class="dialog-box hide">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['The system has been rebooted.' ]]);$output .= '</h4>
+            </div>
+            <div id="rebootInitiated" class="dialog-box hide">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['A reboot has been initiated but the system status could not be determined.' ]]);$output .= '</h4>
+            </div>
+            <div id="unableToReachServer" class="dialog-box hide">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['Unable to initiate a reboot. Please access the server directly to reboot it.' ]]);$output .= '</h4>
+            </div>
+            <div id="actionMsg" class="callout callout-warning callout-top hide" role="alert">
+                <h4>
+                    <i class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['A reboot is now in progress …' ]]);$output .= '
+                </h4>
+            </div>
+            ';if ($stash->get(['data',0,'kernelcare_suggestion',0])){$output .= '
+            <div class="callout callout-info callout-top"  role="alert">
+                <h4>';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'title',0]);$output .= '</h4>
+                <p>
+                    ';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'details',0]);$output .= '
+                    <div>
+                        <a
+                            class="btn btn-link no-margin-top"
+                            href="';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'link',0,'url',0]);$output .= '"
+                            title="';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'link',0,'label',0]);$output .= '"
+                            target="';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'link',0,'target',0]);$output .= '">
+                                ';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'link',0,'label',0]);$output .= '
+                                <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </p>
+                ';if ($stash->get(['data',0,'kernelcare_suggestion',0,'note',0])){$output .= '
+                    <p><strong>';$output .= $stash->get(['locale',0,'maketext',['Note:' ]]);$output .= '</strong> <em>';$output .= $stash->get(['data',0,'kernelcare_suggestion',0,'note',0]);$output .= '</em></p>
+                '}$output .= '
+            </div>
+            '}$output .= "\n        </div>\n    </div>\n\n    <script>\n      ;(() => {\n        'use strict';\n\n        // ======================================== UI ======================================== //\n\n        // UI elements\n        const domElements = {\n          proceedBtnEl: document.getElementById(\"proceedBtn\"),\n          actionMsgEl: document.getElementById(\"actionMsg\"),\n          initialMessageEl: document.getElementById(\"initialMessage\"),\n          doneRebootingEl: document.getElementById(\"doneRebooting\"),\n          rebootInitiatedEl: document.getElementById(\"rebootInitiated\"),\n          unableToReachServerEl: document.getElementById(\"unableToReachServer\"),\n        };\n\n        // UI utility functions\n        function disableButton(buttonEl){\n          buttonEl.setAttribute(\"disabled\", true);\n        }\n\n        function showElement(element) {\n          element.classList.remove(\"hide\");\n        }\n\n        function hideElement(element) {\n          element.classList.add(\"hide\");\n        }\n\n        // UI functions\n        function uiShowsRebootInProgress() {\n          const { proceedBtnEl, actionMsgEl, initialMessageEl } = domElements;\n\n          disableButton(proceedBtnEl);\n          showElement(actionMsgEl);\n          hideElement(initialMessageEl);\n        }\n\n        function uiShowsRebootIsDone() {\n          const { actionMsgEl, doneRebootingEl } = domElements;\n\n          hideElement(actionMsgEl);\n          showElement(doneRebootingEl);\n        }\n\n        function uiShowsRebootInitiated() {\n            const { actionMsgEl, rebootInitiatedEl } = domElements;\n\n            hideElement(actionMsgEl);\n            showElement(rebootInitiatedEl);\n        }\n\n        function uiShowsUnableToReachServer() {\n          const { actionMsgEl, unableToReachServerEl } = domElements;\n\n          hideElement(actionMsgEl);\n          showElement(unableToReachServerEl);\n        }\n\n        // ======================================== Fetch ======================================== //\n\n        // Fetch utility functions\n        function sendError(fetchArguments, issue) {\n          const customError = new Error();\n          const initiatingReboot = !!fetchArguments.waitingOnRebootTime;\n          const issueIsAnError = issue instanceof Error;\n\n          if (initiatingReboot && issueIsAnError) {\n            customError.name = \"fetchErrorCantReboot\";\n            customError.message = `Received an error when trying to reach the server endpoint at \${fetchArguments.endpointUrl}. \${issue}`;\n          } else {\n            customError.name = \"unexpectedIssue\";\n            customError.message = \"Encountered an unexpected issue.\";\n          }\n\n          throw customError;\n        }\n\n        async function handleResponse(response, fetchArguments) {\n          const { lastrebooted } = await response.json();\n          const initiatingReboot = !!fetchArguments.waitingOnRebootTime;\n          const rebootTimeChanged = fetchArguments.rebootTime !== lastrebooted;\n\n          if (initiatingReboot || rebootTimeChanged) {\n            return lastrebooted;\n          } else {\n            return fetchArguments.additionalTries > 0 ? tryFetchingAgain(fetchArguments) : sendError(fetchArguments);\n          };\n        }\n\n        // Fetch functions\n        function tryFetchingAgain(fetchArguments) {\n            fetchArguments.additionalTries--;\n\n            return new Promise((resolve) => {\n              setTimeout(() => {\n                resolve(fetchData(fetchArguments));\n              }, fetchArguments.timeUntilNextTry);\n            });\n        }\n\n        function fetchData(fetchArguments) {\n          return fetch(fetchArguments.endpointUrl)\n            .catch((fetchError) => {\n              return fetchArguments.additionalTries > 0 ? tryFetchingAgain(fetchArguments) : sendError(fetchArguments, fetchError);\n            })\n            .then(response => {\n              const responseAfterFetchRetry = typeof response === 'string' || response === null || response === true;\n\n              if (response?.ok) {\n                return handleResponse(response, fetchArguments);\n              } else if (responseAfterFetchRetry) {\n                return response;\n              } else {\n                return fetchArguments.additionalTries > 0 ? tryFetchingAgain(fetchArguments) : sendError(fetchArguments);\n              }\n            });\n        }\n\n        // ======================================== Main ======================================== //\n\n        // Utility function for endpoint-request setup\n        function calculateAdditionalTries(totalMinutesToContinueRetrying, timeUntilNextTry) {\n          const secondsPerMinute = 60;\n          const millisecondsPerSecond = 1_000;\n          // additional tries = (minutes) * (60 seconds/minute) * (1000 milliseconds/second) / milliseconds\n          return (totalMinutesToContinueRetrying * secondsPerMinute * millisecondsPerSecond) / timeUntilNextTry;\n        }\n\n        // Endpoint-request setup functions\n        function checkIfServerHasRebooted(rebootTimeReportedByServer) {\n          // We're binding to the window so that we can override the value with something shorter during testing\n          window.checkFn_totalMinutesToContinueRetrying = window.checkFn_totalMinutesToContinueRetrying || 15;\n          window.checkFn_timeUntilNextTry = window.checkFn_timeUntilNextTry || 15_000;\n\n          const fetchArguments = {\n            endpointUrl: \"";$output .= $stash->get('cp_security_token');$output .= '/scripts/get_btime",
+            timeUntilNextTry: window.checkFn_timeUntilNextTry,
+            additionalTries: calculateAdditionalTries(window.checkFn_totalMinutesToContinueRetrying, window.rebootFn_timeUntilNextTry),
+            rebootTime: rebootTimeReportedByServer,
+          }
+
+          return fetchData(fetchArguments);
+        }
+
+        function rebootServer() {
+          // We\'re binding to the window so that we can override the value with something shorter during testing
+          window.rebootFn_totalMinutesToContinueRetrying = window.rebootFn_totalMinutesToContinueRetrying || 5;
+          window.rebootFn_timeUntilNextTry = window.rebootFn_timeUntilNextTry || 10_000;
+
+          const fetchArguments = {
+            endpointUrl: "';$output .= $stash->get('cp_security_token');$output .= '/scripts/reboot_and_get_btime",
+            timeUntilNextTry: window.rebootFn_timeUntilNextTry,
+            additionalTries: calculateAdditionalTries(window.rebootFn_totalMinutesToContinueRetrying, window.rebootFn_timeUntilNextTry),
+            waitingOnRebootTime: true,
+          }
+
+          return fetchData(fetchArguments);
+        }
+
+        // Main function
+        function rebootWithPolling() {
+          uiShowsRebootInProgress();
+          rebootServer()
+            .then(checkIfServerHasRebooted)
+            .then(uiShowsRebootIsDone)
+            .catch((error) => {
+              if (error.name === "fetchErrorCantReboot") uiShowsUnableToReachServer();
+              else uiShowsRebootInitiated();
+            });
+        }
+
+        domElements.proceedBtnEl.addEventListener(\'click\', rebootWithPolling);
+      })();
+    </script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','header'=>$stash->get(['locale',0,'maketext',['Graceful Server Reboot' ]]),'breadcrumburl'=>'/scripts/graceful_reboot_landing','app_key'=>'graceful_server_reboot','extrastyle'=>'
+       .dialog-content {
+            color: #333333;
+        }
+       .dialog-submit {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .dialog-box {
+            background-color: #F3F3F3;
+            border: 1px solid #DCDFE3;
+            margin: 10px 0 10px 0;
+            padding: 10px;
+        }
+        .cjt-pagenotice-container {
+            display:none;
+        }
+        .hide {
+            display: none!important;
+        }
+        .show {
+            display: block;
+        }
+        .callout a.btn.no-margin-top {
+            margin-top:0;
+        }
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

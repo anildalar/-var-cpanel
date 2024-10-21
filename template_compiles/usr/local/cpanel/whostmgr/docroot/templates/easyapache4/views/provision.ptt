@@ -1,0 +1,89 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/views/provision.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- Desc CONTAINER -->
+<div class="row">
+    <div class="col-xs-12 description">
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,EasyApache] is software that installs, configures, updates, and validates your web server, PHP, and other components of your web server. [asis,EasyApache 4] allows for automatic updates and uses the system package manager to install and manage software.' ]]);$output .= '
+    </div>
+</div>
+<!-- PROVISION CONTAINER -->
+<div class="row">
+    <div class="col-xs-12">
+        <h2 class="view-heading">';$output .= $stash->get(['locale',0,'maketext',['Provision' ]]);$output .= '</h2>
+        <div class="row">
+            <div class="col-xs-12">
+                <h4>{{ selectedProfile.name }}</h4>
+                <span spinner
+                    id="provisionSpinner"
+                    class="addSpinner"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Provisioning …' ]]);$output .= '">
+                </span>
+                <p id="resultText_top"
+                    class="alert"
+                    role="alert"
+                    ng-show="finished"
+                    ng-class="resultReady()">
+                    {{ resultSummary }}
+                </p>
+                <p id="logStatusText"
+                    class="text-info"
+                    role="alert"
+                    ng-show="provisionStarted">
+                    {{ logStatus }}
+                </p>
+                <!-- Realtime log is displayed in the \'pre\' tag using
+                    tail functionality -->
+                <pre class="log" id="log" ng-show="provisionStarted" aria-live="polite">
+                    <span ng-bind-html="realTimeLogDisplay"></span>
+                    <a id="bottom"></a>
+                </pre>
+                <p id="resultText_bottom"
+                    class="alert"
+                    ng-show="finished"
+                    ng-class="resultReady()">
+                    {{ resultSummary }}
+                </p>
+                <!-- Save as profile directive -->
+                <div class="row">
+                    <div class="col-xs-12" ng-show="customize.saveProfilePopup.showBottom">
+                        <div class="pop-over bottom">
+                            <save-as-profile id-prefix="saveProfile"
+                                position="{{ customize.saveProfilePopup.position }}"
+                                packages="customize.selectedPkgs"
+                                show="{{ customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom }}"
+                                on-cancel="customize.clearSaveProfilePopup(customize.saveProfilePopup.position)">
+                            </save-as-profile>
+                        </div>
+                    </div>
+                </div>
+                <!-- ACTION buttons (TODO:: Should they be enclosed in a container???) -->
+                <a id="doneButton"
+                    href="javascript:void(0)"
+                    ng-click="cancel()"
+                    class="btn btn-primary"
+                    ng-show="finished">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Done' ]]);$output .= '
+                </a>
+                <button id="btnSaveAsProfileBottom"
+                    class="btn btn-default"
+                    ng-show="finished"
+                    ng-disabled="customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom"
+                    ng-click="customize.showsaveProfilePopup(\'bottom\')"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#saveProfilePopup"
+                    aria-expanded="false"
+                    aria-controls="saveProfilePopup">
+                    <span class="far fa-save" aria-hidden="true"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save as profile[comment,button title]' ]]);$output .= '
+                </button>
+                <button id="downloadLogButton"
+                    class="btn btn-link"
+                    ng-show="finished"
+                    ng-click="saveLog()">
+                    <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Download Log' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

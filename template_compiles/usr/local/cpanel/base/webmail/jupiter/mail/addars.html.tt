@@ -1,0 +1,359 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/addars.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('auto_responders',$stash->get(['execute',['Email','list_auto_responders' ]]));$output .= '
+';$stash->set('action',$stash->get(['FORM',0,'action',0]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';$output .= $context->include('mail/auto_responder.html.tt');$output .= '
+
+    <div id="start_calendar" style="display:none;"></div>
+    <div id="stop_calendar" style="display:none;"></div>
+
+    ';$output .= $context->include('_assets/_calendar.html.tt');$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'autores.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'autoresponders','page_js'=>$stash->get('js_code'),'page_scripts'=>['/yui/calendar/calendar.js','/cjt/calendar.js' ],'page_stylesheets'=>['/yui/assets/skins/sam/calendar.css','css/calendar.css' ],'page_styles'=>$stash->get('css_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<!--[if IE 6]>
+<link rel="stylesheet" type="text/css" href="../css/calendar_ie6.css" />
+<![endif]-->
+<!--[if lt IE 9]>
+<link rel="stylesheet" type="text/css" href="../css/calendar_ie678.css" />
+<![endif]-->
+<!--[if IE 9]>
+<link rel="stylesheet" type="text/css" href="../css/calendar_ie9.css" />
+<![endif]-->
+
+<style type="text/css">
+    .yui-skin-sam .yui-calendar {
+        margin: 0 auto;
+    }
+    .yui-calcontainer .title {
+        cursor: move;
+    }
+</style>
+<!--[if lt IE 8]>
+<style type="text/css">
+    /* IE6 and IE7 will take margin:auto and expand the margins.
+       The downside of this fix is that the calendar isn\'t centered in IE6/IE7. :(
+    */
+    .yui-skin-sam .yui-calendar {
+        margin: 0;
+    }
+</style>
+<![endif]-->
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+    <script type="text/javascript">
+
+    var waitpanel;
+
+    function stop_is_after_start() {
+        var stop_text = DOM.get("stop_ts").value;
+        if ( !stop_text ) return true;
+
+        var start_text = DOM.get("start_ts").value;
+        if ( !start_text ) {
+            return ( (new Date()).getTime() < (parseInt(stop_text) * 1000) );
+        }
+        return parseInt(start_text) < parseInt(stop_text);
+    }
+
+    function interval_over_min() {                                      //Validator - is the interval a number and at least zero?
+        var interval_text = DOM.get("interval").value;
+        if ( !interval_text ) return true;                              //To us a blank is as good as a zero.
+        return ( parseInt(interval_text) >= 0 );                        //Is the result over or equal to zero?
+    }
+
+    function interval_under_max() {                                     //Validator - is the inteval at or below the maximum?
+        var interval_text = DOM.get("interval").value;
+        if ( !interval_text ) return true;                              //If it\'s blank that\'s the other validator\'s problem.
+        if ( isNaN(parseInt(interval_text)) ) {return true;}            //This validator only cares about overage, not invalids.
+        return parseInt(interval_text) <= 720;                          //720 hour (30 day) maximum.
+    }
+
+    var action = \'';$output .= $stash->get('action');$output .= '\';
+    var ars = [';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['auto_responders',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ar'}=$_tt_value;$output .= '\'';$output .= $stash->get(['ar',0,'email',0,'html',0]);$output .= '\',';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '];
+
+    var VALIDATORS = [];
+    var init = function() {
+
+        var validator,
+            VALIDATION = CPANEL.validate;
+
+        validator = new CPANEL.validate.validator("Stop Time");
+        validator.add("stop_ts", stop_is_after_start, "';$output .= $stash->get(['locale',0,'maketext',['The stop time must be later than the start time.' ]]);$output .= '");
+        VALIDATORS.push(validator);
+
+        validator = new VALIDATION.validator(LOCALE.maketext("Interval"));
+        validator.add("interval", interval_over_min, "';$output .= $stash->get(['locale',0,'maketext',['The Interval field must be a positive integer or zero (or blank).' ]]);$output .= '");
+        validator.add("interval", interval_under_max, "';$output .= $stash->get(['locale',0,'maketext',['The Interval field may not exceed 720 hours.' ]]);$output .= '");
+        VALIDATORS.push(validator);
+
+        if (YAHOO.util.Dom.inDocument("email") == true) {
+            // Setup the local part validation
+            validator = new VALIDATION.validator(LOCALE.maketext("Email"));
+            validator.add("email", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The Email field cannot be empty.' ]]);$output .= '", null, { unique_id: "username_min_length" });
+            validator.add("email", "max_length(%input%, 64)", "';$output .= $stash->get(['locale',0,'maketext',['The Email field cannot exceed [numf,_1] characters.',64 ]]);$output .= "\", null, { unique_id: \"username_max_length\" });\n            var domain_el = YAHOO.util.Dom.get(\"ddlDomain\");\n            validator.add(\"email\", function(local_el) {\n                    var username = local_el.value + \"\@\" + domain_el.value;\n                    return CPANEL.validate.max_length(username, 254);\n                },\n                LOCALE.maketext(\"The email address cannot exceed [numf,_1] characters.\", 254),\n                null,\n                { unique_id: \"username_full_length\" }\n            );\n            validator.add(\"email\", \"local_part_email(%input%,'cpanel', true)\", \"";$output .= $stash->get(['locale',0,'maketext',['You can only use letters, numbers, periods, hyphens, and underscores.' ]]);$output .= "\", null, { unique_id: \"username_valid\" });\n            validator.add(\"email\", \"no_unsafe_periods\", LOCALE.maketext(\"The Email field cannot start with a period, end with a period, or include two consecutive periods.\"), null, { unique_id: \"username_safe_periods\" });\n            validator.add(\"email\", function(local_el) {\n                if( action.toLowerCase() !== 'create' ) {\n                    return true;\n                }\n                var full_email = local_el.value + \"\@\" + domain_el.value;\n                for (var i = 0; i < ars.length; i++) {\n                    if (ars[i].toLowerCase() === full_email.toLowerCase()) {\n                        return false;\n                    }\n                }\n                return true;\n            },\n            LOCALE.maketext(\"This email address already has an autoresponder.\"),\n            null,\n            { unique_id: \"existing_responder\" }\n            );\n            VALIDATORS.push(validator);\n\n            // Setup the domain part validation\n            var email_validator = validator;\n            if (YAHOO.util.Dom.inDocument(\"ddlDomain\") == true) {\n                validator = new VALIDATION.validator(LOCALE.maketext(\"Domain\"));\n                validator.add(\"ddlDomain\", function() {\n                        email_validator.clear_messages();\n                        email_validator.verify(); // Will show up in the local parts validator\n                        return true;              // So this always passes\n                    }, \"\"\n                );\n                VALIDATORS.push(validator);\n            }\n        }\n\n        validator = new VALIDATION.validator(LOCALE.maketext(\"From\"));\n        validator.add(\"from\", \"min_length(%input%, 1)\", \"";$output .= $stash->get(['locale',0,'maketext',['The From field cannot be empty.' ]]);$output .= '");
+        VALIDATORS.push(validator);
+
+        validator = new VALIDATION.validator(LOCALE.maketext("Subject"));
+        validator.add("subject", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The Subject field cannot be empty.' ]]);$output .= '");
+        VALIDATORS.push(validator);
+
+        validator = new VALIDATION.validator(LOCALE.maketext("Body"));
+        validator.add("arbody", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The Body field cannot be empty.' ]]);$output .= '");
+        VALIDATORS.push(validator);
+
+        // Attach the validators.
+        for (i = 0, l = VALIDATORS.length; i < l; i++) {
+            VALIDATORS[i].attach();
+        }
+
+        CPANEL.validate.attach_to_form("submit-button", VALIDATORS);
+
+        // TODO: add a description for interval
+        //CPANEL.panels.create_help("interval_help_toggle", "interval_help_description");
+
+        YAHOO.util.Dom.get("charset").focus();
+    };
+
+    YAHOO.util.Event.onDOMReady(init);
+
+    var show_loading = function(action, body) {
+        if (!waitpanel) {
+            var panel_options = {
+                width: "252px",
+                fixedcenter: true,
+                close: false,
+                draggable: false,
+                modal: true,
+                visible: false
+            };
+            waitpanel = new YAHOO.widget.Panel("waitpanel", panel_options);
+        }
+        waitpanel.setHeader("<div class=\'lt\'></div><span>" + action + "</span><div class=\'rt\'></div>");
+        var loadingimg = \'<img src="img/yui/rel_interstitial_loading.gif" />\';
+        if (body) {
+            waitpanel.setBody(body + \'<br />\' + loadingimg);
+        }
+        else {
+            waitpanel.setBody(loadingimg);
+        }
+
+        waitpanel.render(document.body);
+        waitpanel.show();
+    };
+
+    </script>
+
+    <script>
+        var now = new Date();
+        var calendar_options = {
+            mindate: now,
+            default_hours: now.getHours(),
+            default_minutes: now.getMinutes(),
+            selected: [now.getMonth()+1, now.getDate(), now.getFullYear()].join("/"),
+            locale_weekdays: "1char",
+            close: true,
+            draggable: true,
+            navigator: true,
+            iframe: false  //since Overlay does this already
+        };
+
+        var start = DOM.get("mainform").start.value.trim();
+        var stop = DOM.get("mainform").stop.value.trim();
+
+        var customized_dates = { start:start, stop:stop };
+
+        var start_options = {
+            title: "';$output .= $stash->get(['locale',0,'maketext',['Start' ]]);$output .= '"
+        };
+        if (start) {
+            start = new Date( start * 1000 );
+            CPANEL.util.set_text_content( "start_link", start.toCpLocaleString() );
+            DOM.get("mainform")["start_control"][1].checked = true;
+            start_options.default_hours = start.getHours();
+            start_options.default_minutes = start.getMinutes();
+            start_options.selected = [start.getMonth()+1, start.getDate(), start.getFullYear()].join("/");
+        }
+        YAHOO.lang.augmentObject( start_options, calendar_options );
+        var stop_options = {
+            title: "';$output .= $stash->get(['locale',0,'maketext',['Stop' ]]);$output .= '"
+        };
+        if (stop) {
+            stop = new Date( stop * 1000 );
+            CPANEL.util.set_text_content( "stop_link", stop.toCpLocaleString() );
+            DOM.get("mainform")["stop_control"][1].checked = true;
+            stop_options.default_hours = stop.getHours();
+            stop_options.default_minutes = stop.getMinutes();
+            stop_options.selected = [stop.getMonth()+1, stop.getDate(), stop.getFullYear()].join("/");
+        }
+        YAHOO.lang.augmentObject( stop_options, calendar_options );
+
+        DOM.get("start_link").style.visibility = "";
+        DOM.get("stop_link").style.visibility = "";
+
+        var start_cal = new CPANEL.widgets.Calendar_With_Time( "start_calendar", start_options );
+        var stop_cal  = new CPANEL.widgets.Calendar_With_Time( "stop_calendar", stop_options );
+
+        var cals = { start:start_cal, stop:stop_cal };
+
+        //YUI Calendar\'s custom events don\'t set context to the Calendar object (grr..)
+        var update_form = function(type, selected, cal) {
+            var the_date = cals[cal].getSelectedDates()[0];
+            if ( the_date ) {
+                DOM.get("mainform")[cal].value = Math.floor(the_date.getTime() / 1000);
+                CPANEL.util.set_text_content( cal+"_link", the_date.toCpLocaleString() );
+            }
+            customized_dates[cal] = true;
+
+            for (var i = 0, l = VALIDATORS.length; i < l; i++) {
+                VALIDATORS[i].verify();
+            }
+        };
+
+        start_cal.selectEvent.subscribe(update_form, "start");
+        start_cal.hours_change_event.subscribe(update_form, "start");
+        start_cal.minutes_change_event.subscribe(update_form, "start");
+        start_cal.ampm_change_event.subscribe(update_form, "start");
+
+        stop_cal.selectEvent.subscribe(update_form, "stop");
+        stop_cal.hours_change_event.subscribe(update_form, "stop");
+        stop_cal.minutes_change_event.subscribe(update_form, "stop");
+        stop_cal.ampm_change_event.subscribe(update_form, "stop");
+
+        start_cal.render();
+        stop_cal.render();
+
+        EVENT.throwErrors = true;
+        CPANEL.util.catch_enter( [start_cal.hours_input,start_cal.minutes_input], function(e) {
+            EVENT.stopPropagation(e);
+            start_cal.hide();
+        } );
+        CPANEL.util.catch_enter( [stop_cal.hours_input,stop_cal.minutes_input], function(e) {
+            EVENT.stopPropagation(e);
+            stop_cal.hide();
+        } );
+
+        (function() {
+        var _contains = YAHOO.util.Region.prototype.contains;
+        var Region = YAHOO.util.Region;
+        Region.prototype.contains = function(region_or_point) {
+            if ( region_or_point instanceof Region ) {
+                return _contains.apply(this,arguments);
+            }
+            else return
+                this.left < region_or_point[0]
+                && region_or_point[0] < this.right
+                && this.top < region_or_point[1]
+                && region_or_point[1] < this.bottom
+            ;
+        };
+        })();
+
+        //YUI accommodates a bug in old Mac Gecko versions that no longer
+        //appears to be a problem, but it does make the tab loop focus the
+        //overlay\'s container pointlessly. So, we prevent this here.
+        YAHOO.widget.Overlay.prototype.showMacGeckoScrollbars
+            = YAHOO.widget.Overlay.prototype.hideMacGeckoScrollbars
+            = function() {}
+        ;
+
+        function custom_start(link_el, stop_instead) {
+            var the_cal = stop_instead ? stop_cal : start_cal;
+
+            var the_radio = DOM.get("mainform")[stop_instead ? "stop_control" : "start_control"][1];
+            the_radio.checked = true;
+
+            if (!the_cal._overlay) {
+                var the_div = the_cal.oDomContainer;
+
+                var insertion_point = link_el;
+                if (link_el.parentNode.tagName.toLowerCase() === "label") {
+                    insertion_point = link_el.parentNode;
+                }
+
+                var overlay = the_cal._overlay = new YAHOO.widget.Overlay( DOM.generateId(), {
+                    visible : false,
+                    zIndex  : 1005,  //so the overlay will sit above validation errors
+                    context : [ link_el, "bl", "tl" ]
+                } );
+                overlay.setBody(the_div);
+                overlay.render(document.body);
+                insertion_point.parentNode.insertBefore( overlay.element, insertion_point.nextSibling );
+
+
+                //The callback has to be defined as a local variable or else
+                //IE will not recognize "clicker" as a reference within removeListener.
+                var clicker = function (e) {
+                    var target = YAHOO.util.Event.getTarget(e) || this;
+
+                    if (target === the_div) return;
+                    if (target === link_el) return;
+                    if (target === the_radio) return;
+                    if (DOM.isAncestor(the_div,target)) return;
+
+                    //in case we drag
+                    var xy = YAHOO.util.Event.getXY(e);
+                    if ( !DOM.getRegion(the_div).contains(xy) ) {
+                        the_cal.hide();
+                    }
+                };
+
+                overlay.beforeShowEvent.subscribe( function() {
+                    update_form(null, null, stop_instead ? "stop" : "start");
+                    this.align();
+                    EVENT.on( document.body, "click", clicker );
+                } );
+                overlay.hideEvent.subscribe( function() {
+                    update_form(null, null, stop_instead ? "stop" : "start");
+                    EVENT.removeListener( document.body, "click", clicker );
+                } );
+
+
+                //Calendar rewrites all of its HTML when you change the month,
+                //so we need to refresh the drag/drop listeners whenever that happens.
+                var attach_drag_drop = function() {
+                    if ( the_cal._dd ) {
+                        the_cal._dd.unreg();
+                    }
+
+                    var title_el = DOM.getElementsByClassName("title","div",the_div)[0];
+                    if ( !title_el.id ) title_el.id = DOM.generateId();
+                    the_cal._dd = new YAHOO.util.DD(overlay.element, {
+                        dragOnly: true
+                    } );
+                    if ( overlay.cfg.getProperty("iframe") ) {
+                        the_cal._dd.onDrag = function() {
+                            overlay.syncPosition();
+                            overlay.syncIframe();
+                        };
+                    }
+                    the_cal._dd.setHandleElId( title_el.id );
+                };
+
+                attach_drag_drop();
+                the_cal.renderEvent.subscribe( attach_drag_drop );
+                the_cal.hideEvent.subscribe( overlay.hide, overlay, true );
+                the_cal.showEvent.subscribe( overlay.show, overlay, true );
+            }
+
+            the_cal.show();
+        }
+
+        function custom_stop(link_el) {
+            return custom_start(link_el, true);
+        }
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

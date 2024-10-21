@@ -1,0 +1,11 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/addwheel.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'user',0])eq 'root'){$output .= 'You cannot alter the root account.
+'}elsif (!$stash->get(['data',0,'user_exists',0])){$output .= '<h3 class=\'simpleheading\'>System Error</h3>
+User &quot;';$output .= $stash->get(['data',0,'user',0]);$output .= '&quot; does not exist!
+'}else {$output .= $stash->get(['data',0,'output',0]);if (!$stash->get(['data',0,'return_value',0])){$output .= '<h3 class=\'simpleheading\'>Problem encountered adding user &quot;';$output .= $stash->get(['data',0,'user',0]);$output .= '&quot; to the ';$output .= $stash->get(['data',0,'group',0]);$output .= ' group:
+<br />
+<br />
+<i>';$output .= $stash->get(['data',0,'return_value',0]);$output .= '</i>
+</h3>
+<br />
+'}else {$output .= '<h3 class=\'simpleheading\'>Added user &quot;';$output .= $stash->get(['data',0,'user',0]);$output .= '&quot; to the ';$output .= $stash->get(['data',0,'group',0]);$output .= ' group.</h3>
+'}}$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>($stash->get(['data',0,'group',0])eq 'compiler')? '/scripts/modwheel?compilers=1' : ($stash->get(['data',0,'group',0])eq 'sudo')? '/scripts/modwheel?sudo=1' : '/scripts/modwheel','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

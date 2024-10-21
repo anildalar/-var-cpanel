@@ -1,0 +1,85 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/locale_duplicate_form.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= "<link rel=\"stylesheet\" type=\"text/css\" href=\"/yui/container/assets/container.css\" /><script type=\"text/javascript\" src=\"/yui/utilities/utilities.js\"></script><script type=\"text/javascript\" src=\"/yui/container/container.js\"></script>\n<script type=\"text/javascript\" src=\"/js/popupbox.js\"></script>\n<style type=\"text/css\">\n        .info_box {\n            background-color:#FFFFCC;\n            border:1px solid #666666;\n            margin-left:20px;\n            padding:5px;\n            width:500px;\n        }\n        .info_box_transparent {\n            font-weight: bold;\n            border:1px solid #666666;\n            margin-left:20px;\n            padding:5px;\n            width:500px;\n        }\n        .externalLink:after {\n            font-family: \"Font Awesome 5 Free\";\n            font-weight: 600;\n            content: \"\\f35d\";\n            display: inline-block;\n            padding: 0 3px 0 3px;\n        }\n        .help-block {\n            padding-top: 10px;\n        }\n\n</style>\n\n<form method=\"post\" action=\"";$output .= $stash->get('cp_security_token');$output .= '/cgi/locale_duplicate.cgi">
+   <input type="hidden" name="validate" value="1" />
+   <table border="0" cellpadding="10">
+     <tr valign="top">
+        <td>Duplicate Locale</td>
+        <td>
+            <select name="locale">
+                ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+            </select>
+            <div class="help-block">
+                ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+            </div>
+      </td>
+    </tr>
+    <tr valign="top">
+       <td> into</td>
+       <td>';$stash->set('locale_menu_data_ar_orig',$stash->get('locale_menu_data_ar'));$stash->set('current_locale_dir_orig',$stash->get('current_locale_dir'));$stash->set('locale_menu_data_ar',$stash->get(['locale',0,'get_non_existent_locale_menu_arrayref',0]));$stash->set(['locale_menu_data_ar',0,2,0,$stash->get('current_locale'),0],$stash->get('current_locale_dir_orig'));$stash->set('selected_locale_orig',$stash->get(['data',0,'selected_locale',0]));$stash->set(['data',0,'selected_locale',0],$stash->get(['data',0,'formref',0,'into_locale',0]));$output .= '         <fieldset id="standard_locale">
+             <legend><input type="radio" id="radio1" name="into" value="locale"';if ($stash->get(['data',0,'formref',0,'into',0])ne 'i_tag'){$output .= ' checked="checked"'}$output .= ' /> Standard locale</legend>
+             <select name="into_locale">';$output .= $context->process('_locale_option_tags.tmpl');$output .= '</select>
+         </fieldset>
+or';$stash->set('current_locale_dir',$stash->get('current_locale_dir_orig'));$stash->set('locale_menu_data_ar',$stash->get('locale_menu_data_ar_orig'));$stash->set(['data',0,'selected_locale',0],$stash->get('selected_locale_orig'));$output .= '           <fieldset id="custom_locale">
+             <legend> <input type="radio" id="radio2" name="into" value="i_tag"';if ($stash->get(['data',0,'formref',0,'into',0])eq 'i_tag'){$output .= ' checked="checked"'}$output .= " /> Non standard locale</legend>\n           <table border=\"0\">\n              <tr><td>i_ tag [<a href=\"javascript:display_quickpopupbox('What is an i_ tag?','<p>Locales are identified by ISO standard language (and sometimes territory) codes.</p><p>Each locale has standard data defined in the CLDR (http://cldr.unicode.org/).</p><p>An \\'i_\\' tag is a standard way to create, identify, and work with a non-standard locale by prefixing the code with the letter \\'i\\' followed by an underscore.</p>')\">?</a>] </td><td><input type=\"text\" name=\"i_tag\"  value=\"";$output .= $stash->get(['data',0,'formref',0,'i_tag',0]);$output .= '" id="i_tag"/> <img src="" alt="" id="i_tag_error" /></td></tr>
+              <tr><td>Display Name</td><td><input type="text" name="display_name" value="';$output .= $stash->get(['data',0,'formref',0,'display_name',0]);$output .= '" id="display_name"/> <img src="" alt="" id="display_name_error" /></td></tr>';$stash->set('selected_locale_orig',$stash->get(['data',0,'selected_locale',0]));$stash->set(['data',0,'selected_locale',0],$stash->get(['data',0,'formref',0,'fallback_locale',0]));$output .= '              <tr><td>Fallback Locale</td><td><select name="fallback_locale"><option value="">Inherit (recommended)</option>';$output .= $context->process('_locale_option_tags.tmpl');$output .= '</select></td></tr>
+              <tr><td>Number Formatting</td><td><select name="numf_type"><option value="">Inherit (recommended)</option><option ';if ($stash->get(['data',0,'formref',0,'numf_type',0])eq '1'){$output .= 'selected="selected" '}$output .= 'value="1">Thousands separator: comma, Decimal: period</option><option ';if ($stash->get(['data',0,'formref',0,'numf_type',0])eq '2'){$output .= 'selected="selected" '}$output .= 'value="2">Thousands separator: period, Decimal: comma</option></select></td></tr>';$stash->set(['data',0,'selected_locale',0],$stash->get('selected_locale_orig'));$output .= '              <tr><td>Character Orientation</td><td><select name="character_orientation"><option value="">Inherit (recommended)</option><option ';if ($stash->get(['data',0,'formref',0,'character_orientation',0])eq 'left-to-right'){$output .= 'selected="selected" '}$output .= 'value="left-to-right">Left To Right</option><option ';if ($stash->get(['data',0,'formref',0,'character_orientation',0])eq 'right-to-left'){$output .= 'selected="selected" '}$output .= 'value="right-to-left">Right to Left</option></select></td></tr>
+           </table>
+           </fieldset>
+       </td>
+    </tr>
+   <tr>
+    <td>&nbsp;</td>
+    <td>
+      <input type="submit" value="Duplicate" id="submit_button" class="btn-primary" />
+    </td></tr>
+  </table>
+</form>
+
+<p><em>Comments:</em>
+    <ul>
+        <li>If a locale seems to be missing you may need to <a href="javascript:display_quickpopupbox(\'Compiling locale databases\',\'<iframe height=90% width=100% src=';$output .= $stash->get('cp_security_token');$output .= '/cgi/build_locale_databases.pl />\')">rebuild the locale databases</a> in order to bring it into the system.</li>
+    </ul>
+</p>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'copy_a_locale','content',$output })};$output .= '
+
+<script type="text/javascript">
+//<![CDATA[
+
+    var validation = new CPANEL.validate.validator("Copy a Locale");
+    var verify_once= false;
+
+    var validate_form_required = function() {
+        if ( !document.getElementsByName(\'into\')[0].checked ) {
+               if (!verify_once) {
+                verify_once = true;
+                setTimeout ("verify_once=false; validation.verify()",50);
+            }
+               var i_tag = document.getElementById(\'i_tag\').value;
+               var display_name = document.getElementById(\'display_name\').value;
+               if ( (i_tag==\'\') && ( display_name == \'\') ) return false;
+        }
+        return true;
+    }
+
+    var validate_form_itag = function() {
+        if ( document.getElementsByName(\'into\')[0].checked ) return true;
+        var i_tag = document.getElementById(\'i_tag\').value;
+        if (i_tag==\'\') return true;
+        return CPANEL.validate.sql_alphanumeric(i_tag);
+    }
+
+    var init = function() {
+        validation.add("i_tag", validate_form_required, "i_tag or Display Name must have a value.");
+        validation.add("i_tag", validate_form_itag, "Field can contain only alphanumeric characters and underscore.")
+        validation.add("display_name", validate_form_required, "i_tag or Display Name must have a value.");
+        validation.attach();
+
+        CPANEL.validate.attach_to_form("submit_button", validation);
+    }
+    YAHOO.util.Event.onDOMReady(init);
+    YAHOO.util.Event.addListener(\'radio1\', \'click\', function () { validation.clear_messages(); setTimeout("validation.clear_messages()",50);});
+    YAHOO.util.Event.addListener(\'radio2\', \'click\', function () { validation.verify(); });
+    YAHOO.util.Event.addListener(\'custom_locale\', \'click\', function() { document.getElementById(\'radio2\').checked=true; validation.verify() });
+    YAHOO.util.Event.addListener(\'standard_locale\', \'click\', function () { document.getElementById(\'radio1\').checked=true; validation.clear_messages(); setTimeout("validation.clear_messages()",50);})
+//]]>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

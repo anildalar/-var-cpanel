@@ -1,0 +1,316 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ror/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'autodirsonly',0],'1');$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'autoinput',0],'path');$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'autofunc',0],'pathDirComplete');$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['RoR','needsimport' ]]);$stash->set('api2_result_RoR_needsimport',$stash->get(['Api2',0,'exec',['RoR','needsimport',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['RoR','needsimport' ]]);$output .= '
+
+';if (($stash->get(['CPANEL',0,'CPVAR',0,'ror_needsimport',0]))){$output .= '
+    ';$output .= $stash->get(['Api2',0,'pre_exec',['RoR','importrails' ]]);$stash->set('api2_result_RoR_importrails',$stash->get(['Api2',0,'exec',['RoR','importrails',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['RoR','importrails' ]]);$output .= '
+'}$output .= '
+
+';$stash->set('list_apps',$stash->get(['Api2',0,'exec',['RoR','listapps',{}]]));$output .= '
+';$stash->set('listrewrites',$stash->get(['Api2',0,'exec',['RoR','listrewrites',{}]]));$output .= '
+
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Ruby on Rails Applications are based on the Rails framework. Rails applications must be run like any other application. After creating an application, you will need to populate it with your code. Then, you can choose to start or stop the application and even to load the application every time the server reboots.' ]]);$output .= '
+    </p>
+    <div class="alert alert-warning" id="ror-deprecation-notice">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] This interface is deprecated and will be removed in a future release.' ]]);$output .= '
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Create Ruby on Rails Application' ]]);$output .= '</h2>
+
+        <form action="addror.html" method="post" onsubmit="return checkform();" name="addrorform">
+            <div class="form-group">
+                <label for="appname">
+                    ';$output .= $stash->get(['locale',0,'maketext',['App Name' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" id="appname" name="appname" maxlength="15" onchange="setpath(this);" />
+                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['*15 character limit' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="path">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Application Path' ]]);$output .= '
+                    <span class="fas fa-home"></span>/
+                </label>
+                <div class="row">
+                    <div class="col-xs-12">
+                        ';$output .= $context->process('autodir/dirbox.html.tt');$output .= '
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="env">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Environment' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="env" id="env" class="form-control">
+                            <option value="0">';$output .= $stash->get(['locale',0,'maketext',['production[comment,type of environment]' ]]);$output .= '</option>
+                            <option value="1">';$output .= $stash->get(['locale',0,'maketext',['development[comment,type of environment]' ]]);$output .= '</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" id="loadonboot" name="loadonboot" value="1" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Load on Boot?' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Available Ruby on Rails Applications' ]]);$output .= '</h2>
+        <div id="status_bar" class="cjt_status_bar"></div>
+
+        <table class="sortable table table-striped" id="manage-ror">
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['App Name' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Rails Server' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['App Status' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Load on Boot?' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Production' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr>
+
+            ';if ($stash->get(['list_apps',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_apps');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+                <tr>
+                    <td>';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '</td>
+                    <td>
+                        <span class="fas fa-home"></span>
+                        ';$output .= $stash->get(['app',0,'path',0,'html',0]);$output .= '
+                    </td>
+                    <td>
+                        <a href="http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= ':';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['app',0,'port',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '/"
+                            title="http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= ':';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['app',0,'port',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '/">URL</a>
+                    </td>
+                    <td class="app-status">
+                        ';$output .= '1' eq $stash->get(['app',0,'running',0])? 'running' : 'not running';$output .= '
+                    </td>
+                    <td>
+                        <a id="start-button-';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '" class="btn btn-link" href="startapp.html?appname=';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '">
+                            <span class="glyphicon glyphicon-play"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Run' ]]);$output .= '
+                        </a>
+                        <a id="stop-button-';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '" class="btn btn-link" href="stopapp.html?appname=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['app',0,'name',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-stop"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Stop' ]]);$output .= '
+                        </a>
+                    </td>
+                    <td>
+                        <form action="changeboot.html">
+                            <input type="hidden" name="appname" value="';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '">
+                            <input value="1" onclick="change_boot(\'';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '\',this);" name="loadonboot" ';$output .= ($stash->get(['app',0,'loadonboot',0]))? 'checked="checked"' : '';$output .= ' type="checkbox" />
+                            <input id="submit_boot_';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" class="btn btn-primary">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="changeproduction.html">
+                            <input type="hidden" name="appname" value="';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '">
+                            <input value="1" onclick="change_production(\'';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '\',this);" name="production" ';$output .= ($stash->get(['app',0,'production',0]))? 'checked="checked"' : '';$output .= ' type="checkbox" />
+                            <input id="submit_production_';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" class="btn btn-primary">
+                        </form>
+                    </td>
+                    <td>
+                        <a class="btn btn-link" href="deleteappconfirm.html?appname=';$output .= $stash->get(['app',0,'name',0,'uri',0]);$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+        <tr>
+            <td colspan="8">
+                ';$output .= $stash->get(['locale',0,'maketext',['No applications present.' ]]);$output .= '
+            </td>
+        </tr>
+        '}$output .= '
+        </table>
+        <div id="divgen_expand"></div>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Manage Rewrites' ]]);$output .= '</h2>
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Since applications are running on a different port than the other URLs on your server, you’ll need to redirect incoming traffic to that port. To do this, you can create a URL rewrite to send users to your Ruby on Rails application.' ]]);$output .= '
+        </p>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Create A Rewrite' ]]);$output .= '</h2>
+        <table class="sortable table table-striped">
+            <tr>
+                <th align="center">';$output .= $stash->get(['locale',0,'maketext',['App Name' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Action' ]]);$output .= '</th>
+            </tr>
+            ';if ($stash->get(['list_apps',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_apps');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+                <tr>
+                    <td class="appname-cell">';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '</td>
+                    <td class="rewrite-cell">
+                        <a class="btn btn-link" href="createrewrite.html?appname=';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '&port=';$output .= $stash->get(['app',0,'port',0,'html',0]);$output .= '">
+                            <span class="glyphicon glyphicon-plus"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Create Rewrite' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+            <tr>
+                <td colspan="2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['No applications present.' ]]);$output .= '
+                </td>
+            </tr>
+            '}$output .= '
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Current Rewrites' ]]);$output .= '</h2>
+        <table class="sortable table table-striped" id="manage-ror-rewrites">
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['App Name' ]]);$output .= '</th>
+                <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Rewrite URL' ]]);$output .= '</th>
+            </tr>
+            ';if ($stash->get(['listrewrites',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('listrewrites');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'rewrite'}=$_tt_value;$output .= '
+                <tr>
+                    <form action="saverewrite.html" method="post" class="form-horizontal">
+                        <input type="hidden" name="appname" maxlength="15" value="';$output .= $stash->get(['rewrite',0,'appname',0,'html',0]);$output .= '" />
+                        <input type="hidden" name="domain" value="';$output .= $stash->get(['rewrite',0,'domain',0,'html',0]);$output .= '" />
+                        <input type="hidden" name="port" value="';$output .= $stash->get(['rewrite',0,'port',0,'html',0]);$output .= '" />
+                        <input type="hidden" name="oldurl" value="';$output .= $stash->get(['rewrite',0,'url',0,'html',0]);$output .= '" />
+                        <td>';$output .= $stash->get(['rewrite',0,'appname',0,'html',0]);$output .= '</td>
+                        <td>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['rewrite',0,'domain',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '/</span>
+                                            <input type="text" name="url" value="';$output .= $stash->get(['rewrite',0,'url',0,'html',0]);$output .= '" class="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <label class="control-label">';$output .= $stash->get(['locale',0,'maketext',['to[comment,this is meant to be a horizontal separator of 2 side by side things]' ]]);$output .= '</label>
+                                        http://';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0]);$output .= ':';$output .= $stash->get(['rewrite',0,'port',0,'html',0]);$output .= '/
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <input class="btn btn-primary" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+                                <a class="btn btn-link"
+                                    href="deleterewriteconfirm.html?appname=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['rewrite',0,'appname',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&rewritedomain=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['rewrite',0,'domain',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&rewriteurl=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['rewrite',0,'url',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                                </a>
+                            </div>
+                        </td>
+                    </form>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+            <tr>
+                <td colspan="3">
+                    ';$output .= $stash->get(['locale',0,'maketext',['No applications have rewrites.' ]]);$output .= '
+                </td>
+            </tr>
+            '}$output .= '
+        </table>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ruby_on_rails','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_styles'=>$stash->get('css_code'),'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    .nobrd-right {
+        width: 300px;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var chpanel;
+
+    // TODO: Just a quick fix. Should be re-worked in the future.
+    function nullop() {
+    }
+    // TODO: Just a quick fix. Should be re-worked in the future.
+    function showchanged(bodytxt) {
+        CPANEL.widgets.status_bar("status_bar", "success", "';$output .= $stash->get(['locale',0,'maketext',['Change Completed' ]]);$output .= '", bodytxt);
+    }
+
+    function change_production(appname,checkobj) {
+        var newval = checkobj.checked ? 0 : 1;
+        production_string = "<p>';$output .= $stash->get(['locale',0,'maketext',['Your app, [_1], has been changed to production mode. You will need to restart the app for changes to take effect.',$stash->get('appname')]]);$output .= '</p>";
+        development_string = "<p>';$output .= $stash->get(['locale',0,'maketext',['Your app, [_1], has been changed to development mode. You will need to restart the app for changes to take effect.',$stash->get('appname')]]);$output .= '</p>";
+        if (newval === 0) {
+            showchanged(production_string);
+        }
+        else {
+            showchanged(development_string);
+        }
+        cpanel_jsonapi2(nullop,\'RoR\',\'changeapp\',\'appname\',appname,\'env\',newval);
+    };
+
+    function change_boot(appname,checkobj) {
+        var newval = checkobj.checked ? 1 : 0;
+        showchanged("<p>" + appname + (checkobj.checked ? \'';$output .= $stash->get(['locale',0,'maketext',['Load on boot is enabled.' ]]);$output .= '\' : \'';$output .= $stash->get(['locale',0,'maketext',['Load on boot is disabled.' ]]);$output .= "</p>'));\n        cpanel_jsonapi2(nullop,'RoR','changeapp','appname',appname,'newloadonboot',newval);\n    };\n\n    function remove_object(thisobj) {\n        var objEl = document.getElementById(thisobj);\n        var objParent = objEl.parentNode;\n        objParent.removeChild(objEl);\n    }\n\n    function setpath(inputobj) {\n        var pathValue = document.getElementById('appname').value;\n        pathValue = pathValue.replace(/\\s/g,\"\");\n        if (document.getElementById('path').value == '') {\n            document.getElementById('path').value = 'rails_apps/' + pathValue;\n        }\n    }\n    function pathDirComplete(inputObj) {\n\n    }\n\n    function checkform () {\n        var appname = document.addrorform.appname.value;\n        if (appname == '') {\n            alert(\"";$output .= $stash->get(['locale',0,'maketext',['You must put a Application Name.' ]]);$output .= '");
+            document.addrorform.appname.select();
+            document.addrorform.appname.focus();
+            return false;
+            }
+        if (appname.length > 15) {
+            alert("';$output .= $stash->get(['locale',0,'maketext',['Your application name cannot be longer than 15 characters.' ]]);$output .= '")
+            document.addrorform.appname.select();
+            document.addrorform.appname.focus();
+            return false;
+            }
+        var path = document.addrorform.path.value;
+        if (path == \'\') {
+            alert("';$output .= $stash->get(['locale',0,'maketext',['You must put a Path for your Application.' ]]);$output .= '");
+            document.addrorform.path.select();
+            document.addrorform.path.focus();
+            return false;
+            }
+        return true;
+    }
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_apps');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+        remove_object(\'submit_production_';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '\');
+        remove_object(\'submit_boot_';$output .= $stash->get(['app',0,'name',0,'html',0]);$output .= '\');
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

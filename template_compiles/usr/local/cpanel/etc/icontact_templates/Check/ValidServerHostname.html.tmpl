@@ -1,0 +1,16 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/ValidServerHostname.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system detected an invalid hostname configuration on: [_1]',$stash->get(['NOTICE',0,'host_server',0])]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The main [output,abbr,IP,Internet Protocol] address of your [asis,cPanel] [output,amp] [asis,WHM] server is “[_1]”. The hostname does not resolve to this [output,abbr,IP,Internet Protocol] address.',$stash->get(['NOTICE',0,'ip',0])]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This misconfiguration can cause some services on your server to fail to restart properly.' ]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The cause of your misconfiguration is:' ]]);$output .= '
+</p>
+<p>';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'reason',0])}]]);$output .= '</p>
+';if ($stash->get(['NOTICE',0,'solution',0])){$output .= '
+    <p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To fix this problem, we recommend that you perform the following action:' ]]);$output .= '
+    <p>';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'solution',0])}]]);$output .= '</p>
+'}$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,39 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade-inprogress.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version' ]]),'theme'=>'bootstrap','breadcrumburl'=>'/scripts/mysqlupgrade' });$stash->set('upgrade_types',{'unattended_automatic'=>$stash->get(['locale',0,'maketext',['Unattended Upgrade' ]]),'unattended_manual'=>$stash->get(['locale',0,'maketext',['Partially-Interactive Upgrade' ]]),'interactive'=>$stash->get(['locale',0,'maketext',['Interactive Upgrade' ]])});$output .= '<div id="content">
+  <div class="callout callout-warning">
+    <div class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '</div>
+    <div>';$output .= $stash->get(['locale',0,'maketext',['We detected a database version upgrade process. Wait for the current upgrade to finish before you attempt another upgrade.' ]]);$output .= '</div>
+  </div>
+
+  <h2>';$output .= $stash->get(['locale',0,'maketext',['Upgrade Details' ]]);$output .= '</h2>
+  <table class="table table-responsive table-condensed table-striped">
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Process ID:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'pid',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Current step number:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'step',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Starting database version:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Selected database version:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '</td>
+    </tr>
+    <tr>
+      <td>';$output .= $stash->get(['locale',0,'maketext',['Upgrade Type:' ]]);$output .= '</td>
+      <td>';$output .= $stash->get(['upgrade_types',0,$stash->get(['data',0,'upgrade_type',0]),0]);$output .= '</td>
+    </tr>
+  </table>
+
+  <p>';$output .= $stash->get(['locale',0,'maketext',['If you are certain that the upgrade process that is listed here is finished, you may click the following button to restart the upgrade.' ]]);$output .= '</p>
+  <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post">
+      <input type="hidden" name="ignore_last_run" value="1">
+      <div class="form-group">
+          <button type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Ignore Current Upgrade' ]]);$output .= '</button>
+      </div>
+  </form>
+</div>
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

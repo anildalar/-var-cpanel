@@ -1,0 +1,159 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/sharedjs/zone_editor/views/domain_selection.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h2 class="view-title">';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '</h2>
+    </div>
+</div>
+<div id="notAllowedWarning" class="alert alert-danger ng-hide" ng-show="list.loading_error">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+    <div class="alert-message" ng-bind-html="list.loading_error_message">
+    </div>
+</div>
+<div id="tableShowHideContainer" ng-hide="list.loading_error">
+    <div id="paginationControls" class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search id="filterList"
+                ng-model="list.meta.filterValue"
+                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filter by domain' ]]);$output .= '"
+                autofocus
+                ng-change="list.searchList()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div id="paginator" class="pagination-container pull-right hidden-xs hidden-sm">
+                <uib-pagination id="topPager"
+                    ng-change="list.selectPage()"
+                    ng-model="list.meta.pageNumber"
+                    max-size="list.meta.maxPages"
+                    items-per-page="list.meta.pageSize"
+                    total-items="list.meta.totalItems"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">">
+                </uib-pagination>
+                <p class="text-small text-right flip"> {{list.paginationMessage()}} </p>
+            </div>
+        </div>
+    </div>
+    <div class="row action-bar">
+        <div class="col-xs-12">
+            <div class="pull-right flip">
+                <div class="btn-group" uib-dropdown auto-close="outsideClick">
+                    <button id="gearMenu" aria-label="additional actions menu" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle ng-disabled="list.ui.is_loading">
+                        <i class="fas fa-cog" aria-hidden="true"></i> <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu class="dropdown-menu-right" role="menu" aria-labelledby="gearMenu">
+                        <li role="menuitem">
+                            <div class="text-small text-uppercase">';$output .= $stash->get(['locale',0,'maketext',['Entries Per Page' ]]);$output .= '</div>
+                            <page-size-button id="pageSize"
+                                allowed-sizes="list.meta.pageSizes"
+                                total-items="list.meta.totalItems"
+                                ng-model="list.meta.pageSize"
+                                show-all="false"
+                                ng-change="list.selectPageSize()">
+                            </page-size-button>
+                        </li>
+                        <li class="divider"></li>
+                        <li role="menuitem">
+                            <a id="refreshList" href ng-click="list.refresh()">
+                                <i class="fas fa-sync-alt" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= '
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tableContainer" class="domain-selection-view">
+        <table id="table" class="table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th id="domainHeader">
+                        <span toggle-sort id="sortByDomain" onsort="list.sortList" sort-meta="list.meta" sort-field="domain">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th id="actionsHeader">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="loadingNotice" class="info empty-row ng-hide" ng-show="list.ui.is_loading">
+                    <td colspan="2" id="loadingMessage">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </td>
+                </tr>
+                <tr id="emptyListNotice" class="info empty-row ng-hide" ng-show="list.filteredList.length == 0 && !list.ui.is_loading">
+                    <td colspan="2" id="emptyMessage">';$output .= $stash->get(['locale',0,'maketext',['The system could not find any domains that match your criteria.' ]]);$output .= '</td>
+                </tr>
+                <tr ng-repeat="domain_obj in list.filteredList" ng-hide="list.ui.is_loading || list.filteredList.length == 0" class="no-animate">
+                    <td class="wordbreak" data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                        <span>{{ domain_obj.domain }}</span>
+                    </td>
+                    <td class="action-buttons" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <button type="button" id="add_a_for_{{ domain_obj.domain | qaSafeID }}"
+                            class="btn btn-outline-primary btn-sm"
+                            ng-if="list.Features.simple || list.Features.advanced"
+                            ng-click="list.create_a_record(domain_obj)">
+                            <span class="fas fa-plus" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,A] Record' ]]);$output .= '
+                        </button>
+                        <button type="button" id="add_cname_for_{{ domain_obj.domain | qaSafeID }}"
+                            class="btn btn-outline-primary btn-sm"
+                            ng-if="list.Features.simple || list.Features.advanced"
+                            ng-click="list.create_cname_record(domain_obj)">
+                            <span class="fas fa-plus" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,CNAME] Record' ]]);$output .= '
+                        </button>
+                        <button type="button" id="add_mx_for_{{ domain_obj.domain | qaSafeID }}"
+                            class="btn btn-outline-primary btn-sm"
+                            ng-if="list.Features.mx"
+                            ng-click="list.create_mx_record(domain_obj)">
+                            <span class="fas fa-plus" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,MX] Record' ]]);$output .= '
+                        </button>
+                        <button type="button" id="dnssec_for_{{ domain_obj.domain | qaSafeID }}"
+                            class="btn btn-outline-primary btn-sm"
+                            ng-if="list.Features.dnssec"
+                            ng-click="list.goToView(\'dnssec\', domain_obj.domain)">
+                            <span class="fas fa-lock" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,DNSSEC]' ]]);$output .= '
+                        </button>
+                        <button type="button" id="manage_for_{{ domain_obj.domain | qaSafeID }}"
+                            class="btn btn-outline-primary btn-sm"
+                            ng-click="list.goToView(\'manage\', domain_obj.domain)">
+                            <span class="fas fa-wrench" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div id="paginatorBottom" class="pagination-container">
+                <p class="text-small text-right flip">{{list.paginationMessage()}}</p>
+                <uib-pagination id="bottomPager"
+                    ng-change="list.selectPage()"
+                    ng-model="list.meta.pageNumber"
+                    max-size="list.meta.maxPages"
+                    items-per-page="list.meta.pageSize"
+                    total-items="list.meta.totalItems"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

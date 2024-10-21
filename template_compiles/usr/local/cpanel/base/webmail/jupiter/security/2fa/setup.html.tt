@@ -1,0 +1,124 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/security/2fa/setup.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('is_secpolicy_enabled',$stash->get(['ExpVar',0,'expand',['$is_twofactorauth_sec_policy_enabled' ]]));$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['twofactorauth' ]]));$stash->set('setup_data',{});$stash->set('api_call_result',{});$stash->set('doing_a_reset',0);$stash->set('display_user',$stash->get(['CPANEL',0,'user_with_domain',0]));if ($stash->get(['CPANEL',0,'FORM',0,'reconfigure',0])){$stash->set('doing_a_reset',1)}if ($stash->get(['CPANEL',0,'FORM',0,'defined',['enable_2fa_btn' ]])){$stash->set('api_call_result',$stash->get(['execute',['TwoFactorAuth','set_user_configuration',{'secret'=>$stash->get(['RAW_FORM',0,'item',['2fa_secret_code' ]]),'tfa_token'=>$stash->get(['RAW_FORM',0,'item',['2fa_security_token' ]])}]]));if (!$stash->get(['api_call_result',0,'status',0])){$stash->set('setup_data',{'secret'=>$stash->get(['RAW_FORM',0,'item',['2fa_secret_code' ]]),'otpauth_str'=>$stash->get(['RAW_FORM',0,'item',['2fa_otpauth_str' ]])})}}else {$stash->set('setup_call',$stash->get(['execute',['TwoFactorAuth','generate_user_configuration',{}]]));if ($stash->get(['setup_call',0,'status',0])){$stash->set('setup_data',{'secret'=>$stash->get(['setup_call',0,'data',0,'secret',0]),'otpauth_str'=>$stash->get(['setup_call',0,'data',0,'otpauth_str',0])})}}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+';if ($stash->get('is_secpolicy_enabled')&& $stash->get('has_feature')){$output .= '
+    <p class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['To use two-factor authentication, you will need a [output,url,_1,supported phone app,_2].','https://go.cpanel.net/2facp',{'id'=>'2fa_external_link','target'=>'_blank' }]]);$output .= '
+    </p>
+
+
+    ';if ($stash->get(['api_call_result',0,'defined',['status' ]])&& $stash->get(['api_call_result',0,'status',0])){$output .= '
+        <div id="success" class="alert alert-success">
+            <span id="successImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Success:] Two-factor authentication is now configured on your account.' ]]);$output .= '
+            </div>
+        </div>
+        ';$stash->set('return_link','index.html');$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+
+        ';if ($stash->get('doing_a_reset')){$output .= '
+            <div id="reset_warning" class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] This will overwrite your current [output,acronym,2FA,Two-Factor Authentication] configuration; any existing configurations will no longer produce valid security codes.' ]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+
+        ';if ($stash->get(['api_call_result',0,'defined',['status' ]])&&!$stash->get(['api_call_result',0,'status',0])){$output .= '
+            <div id="error" class="alert alert-danger">
+                <span id="errorImg" class="glyphicon glyphicon-remove-sign"></span>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['api_call_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+                <div class="alert-message">
+                    ';$output .= $stash->get(['msg',0,'html',0]);$output .= '
+                </div>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </div>
+        '}$output .= '
+    <form class="layout-medium" action="setup.html" method="post">
+    <input type="hidden" id="2fa_secret_code" name="2fa_secret_code" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['setup_data',0,'secret',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" id="2fa_otpauth_str" name="2fa_otpauth_str" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['setup_data',0,'otpauth_str',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" id="reconfigure" name="reconfigure" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('doing_a_reset');&$_tt_filter($output)};$output .= '">
+
+    <div class="row section">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
+            <h3 class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step [numf,_1]',1 ]]);$output .= '</h3>
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Scan the following [asis,QR code] with a two-factor authentication app on your phone.' ]]);$output .= '
+            </p>
+
+            <div class="image-container center-block" id="qr_code_container"></div>
+
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <div class="alert-message">
+                    <p>
+                    <strong>';$output .= $stash->get(['locale',0,'maketext',['Don’t have a [asis,QR code] reader?' ]]);$output .= '</strong>
+                    </p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Enter the following information to manually configure two-factor authentication in your app:' ]]);$output .= '</p>
+                    <p><strong>';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '</strong></p>
+                    <pre><code id="2fa_account">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('display_user');&$_tt_filter($output)};$output .= '</code></pre>
+                    <p><strong>';$output .= $stash->get(['locale',0,'maketext',['Key' ]]);$output .= '</strong></p>
+                    <pre><code id="2fa_secret_text_code">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['setup_data',0,'secret',0]);&$_tt_filter($output)};$output .= '</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row section">
+        <div class="col-xs-12 col-sm-8 col-md-8 col-lg-6">
+            <h3 class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step [numf,_1]',2 ]]);$output .= '</h3>
+            <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Enter the security code generated by your two-factor authentication app.' ]]);$output .= '
+            </p>
+
+            <div class="form-group">
+                <label for="2fa_security_token">
+                   ';$output .= $stash->get(['locale',0,'maketext',['Security Code' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text"
+                            id="2fa_security_token"
+                            name="2fa_security_token"
+                            class="form-control"
+                            autocomplete="off"
+                            maxlength="10"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['six-digit code' ]]);$output .= '"
+                            >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group action-group">
+        <button type="submit"
+            class="btn btn-primary"
+            id="enable_2fa_btn"
+            name="enable_2fa_btn"
+            >';$output .= $stash->get(['locale',0,'maketext',['Configure Two-Factor Authentication' ]]);$output .= '</button>
+    </div>
+    </form>
+    '}$output .= '
+'}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature. You must have the [asis,Two-factor Authentication] feature enabled for your account to use this interface.' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'two_factor_authentication','include_legacy_stylesheets'=>0,'page_stylesheets'=>['security/2fa/index.min.css' ],'page_scripts'=>['libraries/qrcodejs/0.0.1/qrcode.min.js','security/2fa/index.min.js' ],'page_init_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    window.PAGE.setup_data = ';$output .= $stash->get(['setup_data',0,'json',0])|| '{}';$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,28 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/contact/contact_validator.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<script type="text/javascript">
+//<![CDATA[
+var init = function() {
+
+    var restricted_domain = \'';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0]);$output .= '\';
+
+    var validation = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Contact Information' ]]);$output .= '");
+
+    // Attach validation events
+    ';if ($stash->get(['CPANEL',0,'is_team_user',0])){$output .= '
+        validation.add("email", "min_length(%input%, 1)", LOCALE.maketext("You must enter an email address."));
+    '}$output .= '
+    validation.add("email", "if_not_empty(%input%, CPANEL.validate.email)", \'';$output .= $stash->get(['locale',0,'maketext',['Please use a valid email format.' ]]);$output .= '\');
+    validation.add("second_email", "if_not_empty(%input%, CPANEL.validate.email)", \'';$output .= $stash->get(['locale',0,'maketext',['Please use a valid email format.' ]]);$output .= '\');
+    validation.add("pushbullet_access_token", "if_not_empty(%input%, CPANEL.validate.no_unsafe_periods)", \'';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] use an alphanumeric access token.' ]]);$output .= '\');
+
+    validation.attach();
+
+    CPANEL.validate.attach_to_form("submit-button", validation);
+
+    YAHOO.util.Dom.get("email").focus();
+};
+
+YAHOO.util.Event.onDOMReady(init);
+
+//]]>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

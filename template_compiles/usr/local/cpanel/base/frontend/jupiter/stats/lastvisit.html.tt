@@ -1,0 +1,224 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/lastvisit.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+
+';$stash->set('Api2',$context->plugin('Api2'));$stash->set('CPList',$context->plugin('CPList'));$stash->set('HTTP',$context->plugin('HTTP'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('NVData',$context->plugin('NVData'));$output .= $context->process('_assets/_ajaxapp_header.html.tt');$stash->set('nvdata',$stash->get(['NVData',0,'get_page_nvdata',0]));if ((!$stash->get('nvdata'))){$stash->set('nvdata',$stash->get(['Api2',0,'exec',['NVData','get',{'names'=>'latest_visitors' }],0,0,'value',0]));if ($stash->get('nvdata')){$stash->set('nvdata',$stash->get(['JSON',0,'parse',[$stash->get('nvdata')]]))}}$stash->set('last_apache_hits',$stash->get(['Api2',0,'exec',['Stats','lastapachehits',{'domain'=>$stash->get(['CPANEL',0,'FORM',0,'domain',0]),'ssl'=>$stash->get(['CPANEL',0,'FORM',0,'ssl',0]),'api2_sort'=>1,'api2_sort_column_1'=>'line','api2_sort_method_1'=>'numeric','api2_sort_reverse_1'=>1 }]]));$stash->set('total_bytes',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('last_apache_hits');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hit'}=$_tt_value;$stash->set('match',$stash->get(['hit',0,'tz',0,'match',['([-+]?)([0-9]{2})([0-9]{2})' ]]));$stash->set(['hit',0,'tz_adjusted_timestamp',0],$stash->get(['hit',0,'timestamp',0])+ ($stash->get(['match',0,0,0])eq '-' ? -1 : 1)* ($stash->get(['match',0,1,0])* 3600 + $stash->get(['match',0,2,0])* 60));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('adjusted_timestamp2locale',$stash->get(['locale',0,'get_lookup_hash_of_multi_epoch_datetime',[$stash->get(['last_apache_hits',0,'ofeach',['tz_adjusted_timestamp' ]]),'datetime_format_short' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('last_apache_hits');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hit'}=$_tt_value;$stash->set(['hit',0,'localtime',0],$stash->get(['adjusted_timestamp2locale',0,$stash->get(['hit',0,'tz_adjusted_timestamp',0]),0]));$output .= $stash->get(['hit',0,'delete',['tz_adjusted_timestamp' ]]);$stash->set('total_bytes',$stash->get('total_bytes')+ $stash->get(['hit',0,'size',0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('TABLE_ID','latest_visitors_hits');$output .= '
+<style type="text/css">
+p {
+    font-size:13px;
+    color:#666;
+    line-height:19px;
+}
+
+a {
+    text-decoration:none;
+}
+
+.yui-skin-sam .yui-dt td.long_string {
+    text-align: left;
+}
+
+.yui-skin-sam .yui-dt td.numeric_data {
+    text-align: right;
+}
+
+#content .body-content,
+.body-content {
+    padding:0px;
+}
+
+.std_table_container,
+.cjt_table_section,
+.yui-dt-liner {
+    width: 100% !important;
+}
+
+.yui-dt {
+    overflow-x: auto;
+}
+
+#latest_visitors_hits_container > table {
+    width: 100% !important;
+}
+</style>
+
+
+<div class="body-content">
+
+<div id="latestVisitorsContainer">
+    <div id="descLatestVisitors" class="page-heading">';$output .= $stash->get(['locale',0,'maketext',['Latest visitors to “[_1]”.',$stash->get(['CPANEL',0,'FORM',0,'domain',0])]]);$output .= '</div>
+    <br />
+    <div id="big_info_container" class="data-info"></div>
+    <div id="latestVisitorsClear" class="clear"></div>
+    <div class="std_table_container">
+        ';$output .= $context->process('_assets/_standard_table.html.tt',{'id'=>$stash->get('TABLE_ID')});$output .= '    </div>
+</div>
+
+</div>
+
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'lastvisitors_landing.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '
+
+<script type="text/plain" id="status_code_hover_template">
+<abbr title="{string_html}">{code}</abbr>
+</script>
+<script type="text/plain" id="big_info_template">
+<table cellspacing="0" id="big_info_table" style="margin-bottom:20px">
+<tr><th style="text-align:left">';$output .= $stash->get(['locale',0,'maketext',['Reporting Period:' ]]);$output .= '</th><td>{first_time} &nbsp;&ndash;&nbsp; {last_time}</td></tr>
+<tr><th style="text-align:left">';$output .= $stash->get(['locale',0,'maketext',['Total Data Sent:' ]]);$output .= '</th><td>{total_data_localized}</td></tr>
+</table>
+</script>
+<script type="text/plain" id="url_template">
+<a href="{protocol}://{domain_html}{url_html}">{url_html}</a>
+</script>
+<script type="text/plain" id="url_template_only_url">
+<a href="{url_html}">{url_html}</a>
+</script>
+
+<script type="text/javascript">
+YAHOO.util.Event.throwErrors = true;
+
+var status_codes = ';$output .= $stash->get(['HTTP',0,'STATUS_CODES',0,'json',0]);$output .= ';
+
+var last_apache_hits = ';$output .= $stash->get(['last_apache_hits',0,'json',0])|| 'null';$output .= ';
+
+
+//----------------------------------------------------------------------
+// COLUMN DEFINITIONS
+
+var _url_template = DOM.get("url_template").text.trim();
+var _url_template_only_url = DOM.get("url_template_only_url").text.trim();
+var template_to_use;
+//FF4b7 dies on this..?!?
+//var form_domain_html = (';$output .= $stash->get(['CPANEL',0,'FORM',0,'domain',0,'json',0]);$output .= ').html_encode();
+var format_url = function(el,rec,col,d) {
+    //if the URL has a colon, then do not prefix protocol nor domain to it
+    template_to_use = (d.indexOf("://") === -1) ? _url_template : _url_template_only_url;
+    el.innerHTML = YAHOO.lang.substitute( template_to_use, {
+        protocol    : "';$output .= $stash->get(['CPANEL',0,'FORM',0,'ssl',0])? 'https' : 'http';$output .= '",
+        domain_html : ';$output .= $stash->get(['CPANEL',0,'FORM',0,'domain',0,'json',0]);$output .= '.html_encode(),
+        url_html    : d.html_encode()
+    } );
+};
+
+var status_code_images = {
+    2: CPANEL.icons.success,
+    4: CPANEL.icons.error,
+    5: CPANEL.icons.error
+};
+var _code_html;
+var format_status = function(el,rec,col,d) {
+    d = String(d);
+    _code_html = d.html_encode();
+    el.innerHTML = (status_code_images[d.charAt(0)] || "") + " " + _code_html;
+    el.title = status_codes[d] || _code_html;
+};
+
+var column_defs = [
+    {
+        key: "ip",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['IP' ]]);$output .= '",
+        formatter: "text",
+        sortable: true,
+        resizeable: false,
+        sortOptions: { field: "_ipnum" },
+        size_to_data: true
+    },
+    {
+        key: "url",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['URL' ]]);$output .= '",
+        formatter: format_url,
+        sortable: true,
+        resizeable: false,
+        className: "long_string"
+    },
+    {
+        key: "localtime",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Time' ]]);$output .= '",
+        formatter: "text",
+        sortable: true,
+        resizeable: false,
+        sortOptions: { defaultOrder: "desc", field: "line" },
+        default_width_is_absolute: true
+    },
+    {
+        key: "size",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Size (bytes)' ]]);$output .= '",
+        formatter: "text",
+        sortable: true,
+        resizeable: false,
+        sortOptions: { defaultOrder: "desc" },
+        className: "numeric_data",
+        default_width_is_absolute: true
+    },
+    {
+        key: "status",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '",
+        formatter: format_status,
+        sortable: true,
+        resizeable: false,
+        hidden: true,
+        default_width_is_absolute: true
+    },
+    {
+        key: "method",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Method' ]]);$output .= '",
+        formatter: "text",
+        sortable: true,
+        resizeable: false,
+        hidden: true,
+        default_width_is_absolute: true
+    },
+    {
+        key: "protocol",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Protocol' ]]);$output .= '",
+        formatter: "text",
+        sortable: true,
+        resizeable: false,
+        hidden: true,
+        default_width_is_absolute: true
+    },
+    {
+        key: "referer",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['Referring URL' ]]);$output .= '",
+        formatter: "text",
+        sortable:true,
+        resizeable: false,
+        className: "long_string"
+    },
+    {
+        key: "agent",
+        label: "';$output .= $stash->get(['locale',0,'maketext',['User Agent' ]]);$output .= "\",\n        formatter: \"text\",\n        sortable: true,\n        resizeable: false,\n        className: \"long_string\"\n    }\n];\n\n\n\n// INITIAL SORT\n//this is how the API call gives the data sorted\nvar api_sort = {\n    key: \"localtime\",\n    dir: YAHOO.widget.DataTable.CLASS_DESC\n};\n\n\nvar data_table;\nif ( last_apache_hits && last_apache_hits.length ) {\n    var hits_count = last_apache_hits.length;\n    var ip_num_lookup = {};\n    for (var i=0; i<hits_count; i++ ) {\n        var d = last_apache_hits[i];\n        //use match() here in case a hostname shows up instead of an IP\n        var cur_ip = d.ip;\n        var ipnum = ( d._ipnum = ip_num_lookup[cur_ip] );\n        if ( ipnum === undefined ) {\n            var match = cur_ip.match(/\\d+/g);\n            ipnum = 0;\n            if ( match ) {\n                while ( match.length ) ipnum = ipnum*256 + parseInt(match.shift());\n            }\n            d._ipnum = (ip_num_lookup[cur_ip] = ipnum);\n        }\n\n        var cur_size = ( d.size = parseInt(d.size) || 0 );\n        d.status = parseInt(d.status) || 0;\n        d.line = parseInt(d.line) || 0;\n    };\n\n    DOM.get(\"big_info_container\").innerHTML = YAHOO.lang.substitute(\n        DOM.get(\"big_info_template\").text,\n        {\n            total_data_localized: ";$output .= $stash->get(['locale',0,'format_bytes',[$stash->get('total_bytes')],'json',0])|| 'null';$output .= ',
+            //the dates are sorted in reverse
+            first_time: last_apache_hits[ last_apache_hits.length-1 ].localtime,
+            last_time:  last_apache_hits[0].localtime
+        }
+    );
+
+    //stuff to be passed in
+    var nvdata = ';$output .= $stash->get('nvdata')? $stash->get(['JSON',0,'stringify',[$stash->get('nvdata')]]): '{}';$output .= ';
+    var data_object = new YAHOO.util.LocalDataSource( last_apache_hits, {
+        cloneBeforeCaching: true,
+        maxCacheEntries: 25
+    } );
+
+    window.data_table = new CPANEL.datatable.Standard_Table(
+        "';$output .= $stash->get('TABLE_ID');$output .= '",
+        column_defs,
+        data_object,
+        {
+            sortedBy:  api_sort,
+            nvdata:    nvdata
+        }
+    );
+
+    data_table.do_text_search();
+}
+</script>
+
+
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'visitors','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

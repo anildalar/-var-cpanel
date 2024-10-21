@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listbwdescp.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get('done')){$output .= do {my$output='';$output .= 'Bandwidth limit for ';$output .= $stash->get(['data',0,'user',0]);$output .= ' (';$output .= $stash->get(['data',0,'domain',0]);$output .= ') has been reset to the default for
+';if ($stash->get(['data',0,'plan',0])){$output .= 'package "';$output .= $stash->get(['data',0,'plan',0]);$output .= '"
+'}else {$output .= 'the default package
+'}$output .= '(';$output .= $stash->get(['data',0,'bwlimit',0])|| 'unlimited';$output .= ' MB).
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'reset_account_bandwidth_limit','content',$output })}}else {$output .= '
+
+
+
+';$stash->set('CPMath',$context->plugin('CPMath'));$output .= do {my$output='';$output .= '<p>This function will show every account where the bandwidth limit has been changed from the package default and will let you easily reset it to the limit that the package has.</p>
+';if ($stash->get(['data',0,'userdata',0,'size',0])> 0){$output .= '<table id=resettbl border="0" class="sortable">
+<tr>
+    <th class="heavybg">Domain</td>
+    <th class="heavybg">User</td>
+    <th class="heavybg">Package</td>
+    <th class="heavybg">Package Bandwidth Limit</td>
+    <th class="heavybg">Current Bandwidth Limit</td>
+    <th class="heavybg">Reset</td>
+</tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdata',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$stash->set('planlimit',$stash->get(['data',0,'planlimits',0,$stash->get(['userdata',0,'plan',0]),0])|| 'unlimited');$stash->set('userlimit',$stash->get(['userdata',0,'bwlimit',0])|| 'unlimited');$stash->set('changed',$stash->get('userlimit')ne $stash->get('planlimit'));$output .= '<tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade2' : 'tdshade1';$output .= '">
+    <td>';$output .= $stash->get(['userdata',0,'domain',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['userdata',0,'user',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['userdata',0,'plan',0]);$output .= '</td>
+    <td>';$output .= $stash->get('planlimit');$output .= ' MB</td>
+    <td>';$output .= $stash->get('userlimit');$output .= ' MB</td>
+';if ($stash->get('changed')){$output .= '    <td>
+        <form method="post">
+            <input type="hidden" name="user" value="';$output .= $stash->get(['userdata',0,'user',0]);$output .= '">
+            <input type="submit" value="Reset to Package Bandwidth Limit">
+        </form>
+    </td>
+'}else {$output .= '
+    <td>(Bandwidth limit is unchanged.)</td>
+'}$output .= '</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+'}else {$output .= '<p>Every account on this system has its Package Bandwith Limit.</p>
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'reset_account_bandwidth_limit','scripts'=>['/js/sorttable.js' ],'extrastyle'=>'
+td {
+    padding: 3px ! important;
+}
+tr.unchanged td {
+    font-style: italic;
+}
+','content',$output })}}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

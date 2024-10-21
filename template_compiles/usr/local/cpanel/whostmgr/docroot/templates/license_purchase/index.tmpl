@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/license_purchase/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('styleSheets',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/license_purchase/index.min.css' ]])]);$stash->set('PAGE_BASE','/scripts12/license_purchase_status');$stash->set('PAGE_PATH',$stash->get('cp_security_token').$stash->get('PAGE_BASE'));$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('VIEW_NAME',$stash->get(['String',0,'new',[$stash->get(['Whostmgr',0,'ENV',0,'SCRIPT_NAME',0])],'remove',[$stash->get('PAGE_PATH')],'text',0])|| '/checkout');$stash->set('PAGE_URL',$stash->get('PAGE_BASE').$stash->get('VIEW_NAME'));$stash->set('WHM_URL',($stash->get(['Whostmgr',0,'ENV',0,'HTTPS',0])eq 'on' ? 'https://' : 'http://').$stash->get(['Whostmgr',0,'ENV',0,'HTTP_HOST',0]).':' .$stash->get(['Whostmgr',0,'ENV',0,'SERVER_PORT',0]).$stash->get('cp_security_token'));$output .= do {my$output='';$output .= '
+
+        <div class="license-information">
+            <h1>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] License Checkout' ]]);$output .= '</h1>
+            <ol>
+                <li id="licenseTypeInfo">
+                    ';$output .= $stash->get(['locale',0,'maketext',['License Type: “[_1]” - Monthly',$stash->get(['vars',0,'envtype',0])&& $stash->get(['vars',0,'envtype',0])ne 'standard' ? 'VPS' : 'Dedicated' ]]);$output .= '
+                </li>
+                <li id="mainServerIPInfo">';$output .= $stash->get(['locale',0,'maketext',['IP Address: “[_1]”',$stash->get(['vars',0,'publicmainserverip',0])]]);$output .= '</li>
+            </ol>
+        </div>
+        <div id="content">
+            <div growl></div>
+            ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+            <div class="span12" ng-controller="BaseController as base"
+            class="ng-cloak"
+            ng-cloak>
+                <div ng-class="{\'view-disabled\': loading}" class="animate-view" ng-view>
+                </div>
+            </div>
+            '}else {$output .= '
+            <div  class="callout callout-info">
+                ';$output .= $stash->get(['locale',0,'maketext',['To use this feature, you must log in as the root user or a root-enabled reseller.' ]]);$output .= '
+            </div>
+            '}$output .= '
+        </div>
+
+    <script type="text/javascript">
+        PAGE = {
+            baseURL: ';$output .= $stash->get(['WHM_URL',0,'json',0]);$output .= ',
+            pageURL: ';$output .= $stash->get(['PAGE_URL',0,'json',0]);$output .= '
+        }
+    </script>
+    ';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'skipbreadcrumb'=>1,'hide_license_warnings'=>1,'hide_navigation'=>1,'base'=>$stash->get('PAGE_URL'),'stylesheets'=>$stash->get('styleSheets'),'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

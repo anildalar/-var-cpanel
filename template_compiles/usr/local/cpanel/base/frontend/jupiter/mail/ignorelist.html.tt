@@ -1,0 +1,44 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/ignorelist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('is_demo_mode',$stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]]));if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){if (!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}}if (!$stash->get(['FORM',0,'item',['account' ]])){$stash->set('fetch_cfg',{'status'=>0,'errors'=>($stash->get(['locale',0,'maketext',['The “[_1]” parameter is required, and you must pass a valid string value.','account' ]]))})}else {$stash->set('fetch_cfg',$stash->get(['execute',['BoxTrapper','get_ignorelist',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]])}]]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'account',0])eq $stash->get(['CPANEL',0,'authuser',0])))|| $stash->get('is_demo_mode')){$output .= '
+    <div id="ignorelistErrorMsg" class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '
+        </div>
+    </div>
+    '}$output .= '
+
+    ';if ((!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')|| $stash->get(['FORM',0,'account',0])eq $stash->get(['CPANEL',0,'authuser',0]))){$output .= '
+    <div class="section">
+        <h2 id="hdrIgnoreist">';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] Ignore List for “[output,class,_1,status]”',$stash->get(['FORM',0,'account',0])]]);$output .= '</h2>
+
+        <div id="descIgnorelist">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The Ignore List is a list of users or subjects whose email you do not wish to receive.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The list should contain one entry per line. Each entry should be formatted as a Perl regular expression.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['For example: [asis,john@example.com] would be john[output,chr,92][asis,@example][output,chr,92][asis,.com] and all addresses at [asis,example.com] would be [asis,.+][output,chr,92][asis,@example][output,chr,92][asis,.com]' ]]);$output .= '</p>
+        </div>
+
+        ';$output .= $context->include('boxtrapper_edit_list_form_include.html.tt',{'status'=>$stash->get(['fetch_cfg',0,'status',0]),'list_items'=>$stash->get(['fetch_cfg',0,'data',0]),'errors'=>$stash->get(['fetch_cfg',0,'errors',0]),'account'=>$stash->get(['FORM',0,'account',0]),'list_type'=>'ignorelist' });$output .= '
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'editlists.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_js'=>$stash->get('js_code'),'page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        var form_control = document.getElementById("list_ta");
+        if (form_control) {
+          form_control.focus();
+        }
+    });
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

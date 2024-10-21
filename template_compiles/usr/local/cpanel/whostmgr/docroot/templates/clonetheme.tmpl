@@ -1,0 +1,10 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/clonetheme.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if (!$stash->get(['data',0,'theme_exists',0])){$output .= 'Sorry, that theme does not exist.
+'}else {$output .= '   Cloning <img src="/images/';$output .= $stash->get(['data',0,'image',0]);$output .= '" align="absmiddle"> theme: ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'theme',0]);&$_tt_filter($output)};$output .= '<br />
+   <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/doclonetheme" method="POST">
+   <input type="hidden" name="theme" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'theme',0]);&$_tt_filter($output)};$output .= '" />
+   <input type="hidden" name="themetype" value="';$output .= $stash->get(['data',0,'themetype',0]);$output .= '" />
+   Please enter a name for the new theme: <input type="text" name="newtheme" />
+   <input type="submit" class="btn-primary" value="Submit" />
+   </form>
+
+';$output .= $context->process('_returnlink.tmpl',{'url'=>($stash->get('cp_security_token').'/scripts/thememanager?app=' .$stash->get('themetype'))})}$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts/thememanager_landing','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

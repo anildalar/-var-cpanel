@@ -1,0 +1,64 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backuprestore.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+<p class="alert alert-info">
+  ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel amp() WHM] will deprecate the Legacy Backup system in the near future. We [output,strong,strongly] recommend that you upgrade to the new Backup system.' ]]);$output .= '
+</p>
+
+';$stash->set('Postgresql',$context->plugin('Postgresql'));if ($stash->get(['data',0,'disabled',0])){$output .= '<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['Backup is not enabled.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If you are trying to restore a crashed system, please set backup to “[_1]”.',$stash->get(['locale',0,'maketext',['Restore Only' ]])]]);$output .= '</h3>
+'}elsif (!$stash->get(['data',0,'restoretype',0])){if ($stash->get(['data',0,'backupdirs',0,'size',0])eq 0){$output .= '<span class="b2">Sorry, there are no backups located at ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'backupbase',0]);&$_tt_filter($output)};$output .= '.</span>
+'}else {$output .= '
+';$output .= $context->include('_pending_transfers.tmpl');$output .= '
+
+';$output .= $stash->get(['locale',0,'maketext',['Please select which type of backup to restore:' ]]);$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/backuprestore">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'backupdirs',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'backupdir'}=$_tt_value;$output .= '<input type="submit" class="btn btn-primary" name="restoretype" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('backupdir');&$_tt_filter($output)};$output .= '" />
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</form>
+'}}else {$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/checkdboverwrite">
+  <h3>';$output .= $stash->get(['locale',0,'maketext',['Restoring a “[_1]” backup …',$stash->get(['data',0,'restoretype',0,'html',0])]]);$output .= '</h3>
+      <input type="hidden" name="restoretype" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoretype',0]);&$_tt_filter($output)};$output .= '" />
+      <div>
+          <h4>';$output .= $stash->get(['locale',0,'maketext',['User Selection' ]]);$output .= '</h4>
+          <ul>
+            <li style="list-style:none">
+              <select size="7" name="user">
+              ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'users',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('user');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('user');&$_tt_filter($output)};$output .= '</option>
+              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '              </select>
+            </li>
+          </ul>
+        <div>
+      <div>
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Restore Options' ]]);$output .= '</h4>
+        <ul>
+            <li style="list-style:none"><input type="checkbox" id="restoreip" name="restoreip" value="1"> <label for="restoreip">';$output .= $stash->get(['locale',0,'maketext',['Dedicated IP Address (only if recreating)' ]]);$output .= '</label></li>
+            <li style="list-style:none"><input type="checkbox" id="restoresubs" name="restoresubs" value="1" checked="checked"> <label for="restoresubs">';$output .= $stash->get(['locale',0,'maketext',['Restore SubDomain Entries' ]]);$output .= '</label></li>
+            <li style="list-style:none"><input type="checkbox" id="restoremail" name="restoremail" checked="checked" value="1"> <label for="restoremail">';$output .= $stash->get(['locale',0,'maketext',['Restore Mail Config' ]]);$output .= '</label></li>
+            <li style="list-style:none"><input type="checkbox" id="restorebwdata" name="restorebwdata" checked="checked" value="1"> <label for="restorebwdata">';$output .= $stash->get(['locale',0,'maketext',['Restore Bandwidth Data' ]]);$output .= '</label></li>
+            <li style="list-style:none"><input type="checkbox" id="restoremysql" name="restoremysql" checked="checked" value="1"> <label for="restoremysql">';$output .= $stash->get(['locale',0,'maketext',['Restore MySQL Databases' ]]);$output .= '</label></li>
+            ';if ($stash->get(['Postgresql',0,'is_configured',0])){$output .= '            <li style="list-style:none"><input type="checkbox" id="restorepsql" name="restorepsql" checked="checked" value="1"> <label for="restorepsql">';$output .= $stash->get(['locale',0,'maketext',['Restore PostgreSQL Databases' ]]);$output .= '</label></li>
+            '}$output .= '
+        </ul>
+      </div>
+
+      <div>
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Database Restore Options' ]]);$output .= '</h4>
+        <ul>
+          <li style="list-style:none"><input type="radio" checked="checked" id="db_restore_method-overwrite_sameowner" name="db_restore_method" value="overwrite_sameowner"> <label for="db_restore_method-overwrite_sameowner">';$output .= $stash->get(['locale',0,'maketext',['Overwrite local databases only if they have the same owner.' ]]);$output .= '</label></li>
+          <li style="list-style:none"><input type="radio" id="db_restore_method-overwrite_all" name="db_restore_method" value="overwrite_all"> <label for="db_restore_method-overwrite_all">';$output .= $stash->get(['locale',0,'maketext',['Overwrite local databases regardless of owner.' ]]);$output .= '</label></li>
+          <li style="list-style:none"><input type="radio" id="db_restore_method-select" name="db_restore_method" value="select"> <label for="db_restore_method-select">';$output .= $stash->get(['locale',0,'maketext',['Manually select which databases to restore.' ]]);$output .= '</label></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Database User Restore Options' ]]);$output .= '</h4>
+        <ul>
+          <li style="list-style:none"><input type="radio" checked="checked" id="dbuser_restore_method-overwrite_sameowner" name="dbuser_restore_method" value="overwrite_sameowner"> <label for="dbuser_restore_method-overwrite_sameowner">';$output .= $stash->get(['locale',0,'maketext',['Overwrite local database users only if they have the same owner.' ]]);$output .= '</label></li>
+          <li style="list-style:none"><input type="radio" id="dbuser_restore_method-overwrite_all" name="dbuser_restore_method" value="overwrite_all"> <label for="dbuser_restore_method-overwrite_all">';$output .= $stash->get(['locale',0,'maketext',['Overwrite local database users regardless of owner.' ]]);$output .= '</label></li>
+        </ul>
+      </div>
+
+      <input type="submit" class="btn btn-primary" value="Start Restore">
+</form>
+'}$output .= '
+';$output .= $context->include('_transfer_api_info.tmpl');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'legacy_restore_backups','theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

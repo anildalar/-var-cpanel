@@ -1,0 +1,131 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/viewcsr.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));if ($stash->get(['RAW_FORM',['op' ]])eq 'save'){$stash->set('do_save',$stash->get(['execute',['SSL','set_csr_friendly_name',{'id'=>$stash->get(['RAW_FORM',['id' ]]),'new_friendly_name'=>$stash->get(['RAW_FORM',['fname' ]])}]]));$stash->set('save_success',$stash->get(['do_save',0,'status',0]))}$stash->set('csr_param_missing',$stash->get(['RAW_FORM',['id' ]])eq '');if (!$stash->get('csr_param_missing')){$stash->set('show_csr',$stash->get(['execute',['SSL','show_csr',{'id'=>$stash->get(['RAW_FORM',['id' ]])}]]))}$stash->set('has_error',$stash->get('show_csr')&& (!$stash->get(['show_csr',0,'status',0])|| ($stash->get(['show_csr',0,'status',0])&& $stash->get(['show_csr',0,'data',0,'csr',0,'search',['Sorry' ]]))));$stash->set('common_name',!$stash->get('has_error')? $stash->get(['show_csr',0,'data',0,'details',0,'commonName',0]): '');$stash->set('domains',!$stash->get('has_error')? $stash->get(['show_csr',0,'data',0,'details',0,'domains',0]): []);$stash->set('friendly_name',!$stash->get('has_error')? $stash->get(['show_csr',0,'data',0,'details',0,'friendly_name',0]): '');$stash->set('keys',$stash->get(['execute',['SSL','list_keys',{'api.filter_column'=>'modulus','api.filter_term'=>$stash->get(['show_csr',0,'data',0,'details',0,'modulus',0])}]]));$stash->set('is_wildcard',$stash->get(['common_name',0,'search',['[*]' ]]));if (($stash->get(['show_csr',0,'status',0])&& $stash->get(['show_csr',0,'data',0,'csr',0,'search',['Sorry' ]]))){$stash->set('errors_as_string',$stash->get(['show_csr',0,'data',0,'csr',0]))}elsif ((!$stash->get(['show_csr',0,'status',0]))){$stash->set('errors_as_string',$stash->get(['show_csr',0,'errors_as_string',0]))}$stash->set('safe_id',$stash->get(['RAW_FORM',['id' ],'html',0]));$stash->set('safe_friendly_name',$stash->get(['friendly_name',0,'html',0]));$stash->set('safe_common_name',$stash->get(['common_name',0,'html',0]));$stash->set('ref',$stash->get(['FORM',0,'ref',0])|| '');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <div class="section">
+        <h2 id="hdrViewCsr">
+            ';$output .= $stash->get(['locale',0,'maketext',['View Certificate Signing Request' ]]);$output .= '
+        </h2>
+
+    ';if ($stash->get('csr_param_missing')){$output .= '
+        <p id="show-failed" style="display:none">
+            ';$output .= $stash->get(['locale',0,'maketext',['Failed to load the certificate signing request because the “[_1]” field was not present.','id' ]]);$output .= '
+        </p>
+    '}elsif ($stash->get('has_error')){$output .= '        <p id="show-failed" style="display:none">
+            ';$output .= $stash->get(['locale',0,'maketext',['Unable to retrieve the requested [output,acronym,CSR,Certificate Signing Request].' ]]);if ($stash->get('errors_as_string')){$output .= '            <div class="error_details">
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('errors_as_string');&$_tt_filter($output)};$output .= '
+            </div>
+            '}$output .= '
+        </p>
+
+    '}else {$output .= '
+
+        <p>
+        ';if (!$stash->get('is_wildcard')){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You are viewing the [output,acronym,CSR,Certificate Signing Request] you selected. To purchase a trusted certificate, you must copy the Encoded [output,acronym,CSR,Certificate Signing Request] below and send it to the Certificate Authority. Follow the instructions provided by your certificate authority.' ]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You are viewing the [output,acronym,CSR,Certificate Signing Request] you selected. It contains at least one wild-card domain. To purchase a wild-card certificate, you must copy the Encoded [output,acronym,CSR,Certificate Signing Request] below and send it to the Certificate Authority. Follow the instructions provided by your certificate authority.' ]]);$output .= '
+        '}$output .= '
+        </p>
+
+        ';if ($stash->get(['RAW_FORM',['op' ]])eq 'save'){$output .= '
+            <p id="save-status" style="display:none">
+            ';if ($stash->get('save_success')){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Successfully saved the changes.' ]]);$output .= '
+            '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['The changes could not be saved because an error occurred: [_1]',$stash->get(['do_save',0,'errors',0,'join',[' ' ],'html',0])]]);$output .= '
+            '}$output .= '
+            </p>
+        '}$output .= '
+
+        <div class="form-group">
+            <label id="lblDomain" for="domain">';$output .= $stash->get(['locale',0,'maketext',['[numerate,_1,Domain,Domains]:',$stash->get(['domains',0,'size',0])]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    ';if ($stash->get('domains')&& $stash->get(['domains',0,'size',0])> 1){$output .= '                        <ul>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+                            <li>';$output .= $stash->get(['domain',0,'html',0,'breakOn',['\.' ]]);$output .= '</li>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </ul>'}else {$output .= '                        <p>
+                            ';$output .= $stash->get(['domains',0,0,0,'html',0,'breakOn',['\.' ]]);$output .= '
+                        </p>
+                    '}$output .= '                </div>
+            </div>
+        </div>
+
+        <form action="viewcsr.html" method="post" enctype="multipart/form-data">
+            <input id="hidOp" name="op" value="save" type="hidden" />
+            <input id="hidRef" name="ref" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['FORM',0,'ref',0]);&$_tt_filter($output)};$output .= '" type="hidden" />
+            <input id="hidId" name="id" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['FORM',0,'id',0]);&$_tt_filter($output)};$output .= '" type="hidden" />
+
+            <div class="form-group">
+                <label id="lblFname" for="fname">';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea type="text" class="form-control" name="fname" id="fname" rows="2">';$output .= $stash->get('safe_friendly_name');$output .= '</textarea>
+                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You can use this field to provide context for the usage of this [output,acronym,CSR,Certificate Signing Request].' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input id="update-csr-action" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Update Name' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <div class="form-group">
+            <label id="lblEncodedCsr" for="encoded-csr">';$output .= $stash->get(['locale',0,'maketext',['Encoded [output,acronym,CSR,Certificate Signing Request]:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="encoded-csr">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'csr',0]);&$_tt_filter($output)};$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblDecodedCsr" for="decoded-csr">';$output .= $stash->get(['locale',0,'maketext',['Decoded [output,acronym,CSR,Certificate Signing Request]:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="decoded-csr">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'text',0]);&$_tt_filter($output)};$output .= '</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+    '}$output .= '
+
+    <div class="section">
+    ';if ($stash->get('keys')&& $stash->get(['keys',0,'status',0])&& $stash->get(['keys',0,'data',0])&& $stash->get(['keys',0,'data',0,0,0])){$output .= '
+        <div class="form-group">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This CSR uses the following key:' ]]);$output .= '</p>
+            <ul>
+                ';$stash->set('item',$stash->get(['keys',0,'data',0,0,0]));$output .= '
+                ';if ($stash->get(['item',0,'friendly_name',0])){$output .= '
+                <li><a id="lnkViewKey" href="viewkey.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['item',0,'id',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Key ([output,strong,_1])',$stash->get(['item',0,'friendly_name',0,'html',0])]]);$output .= '</a></li>
+                '}else {$output .= '
+                <li><a id="lnkViewKey" href="viewkey.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['item',0,'id',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Key ([output,strong,_1])',$stash->get(['item',0,'id',0,'html',0])]]);$output .= '</a></li>
+                '}$output .= '
+            </ul>
+        </div>
+    '}$output .= '
+
+        <div class="form-group">
+            <a id="btnDelete" class="btn btn-primary" href="deletecsrconfirm.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'details',0,'id',0]);&$_tt_filter($output)};$output .= '&host=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'details',0,'domains',0,0,0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Delete [output,acronym,CSR,Certificate Signing Request]' ]]);$output .= '</a>
+        </div>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'csrs.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'embed_stylesheets'=>['css/ssl.css' ],'embed_scripts'=>['js2/ssl/viewcsr.js' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n(function() {\n    /**\n     * This module contains all the page specific constants generated by the server.\n     * \@module PAGE.Properties\n     */\n     var PAGE = {\n        properties : {\n            csr_properties_saved :  ";$output .= $stash->get(['RAW_FORM',['op' ]])eq 'save' ? 'true' : 'false';$output .= ',
+            csr_properties_saved_success :  ';$output .= $stash->get('save_success')? 'true' : 'false';$output .= '
+        }
+    }
+
+    // Publish the PAGE object;
+     window["PAGE"] = PAGE;
+})();
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

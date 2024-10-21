@@ -1,0 +1,91 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/configure_cpanel_analytics/views/mainView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <main class="col-xs-12 col-sm-8">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['You can allow [asis,cPanel~, L.L.C.] to collect data about your users’ interaction with the product. We record data about your server and how [asis,cPanel]®, [asis,WHM]®, and Webmail account owners (“users”) navigate the interface.' ]]);$output .= '
+        </p>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['For more information about the data we collect and how we use it, read our [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/analytics','analytics-documentation','analytics-documentation-link' ]]);$output .= '
+        </p>
+
+        <cp:alert ng-if="vm.isUserChoiceEnabled && vm.isTrialLicense && vm.isEnabledForCurrentUser && vm.isRootUser && vm.defaultToOn" type="info" closable="false">
+            ';$output .= $stash->get(['locale',0,'maketext',['Behavioral data collection for the root user for [asis,WHM] is enabled by default since your server is running with a trial license.' ]]);$output .= '
+        </cp:alert>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="toggle-option">
+                    <div class="toggle-label-container">
+                        <label for="interface-analytics" id="toggle-label">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Interface Analytics' ]]);$output .= '
+                        </label>
+                        <div>
+                            <small ng-show="vm.isUserChoiceEnabled">';$output .= $stash->get(['locale',0,'maketext',['Interface Analytics are enabled server-wide. Users can opt-in for their individual accounts.' ]]);$output .= '</small>
+                            <small ng-show="!vm.isUserChoiceEnabled">';$output .= $stash->get(['locale',0,'maketext',['Interface Analytics are disabled server-wide. Individual users cannot opt in.' ]]);$output .= '</small>
+                        </div>
+                    </div>
+                    <toggle-switch
+                        ng-model="vm.isUserChoiceEnabled"
+                        on-toggle="vm.toggleInterfaceAnalytics()"
+                        label-position="left"
+                        spinner-position="left"
+                        id="interface-analytics"
+                        aria-labelledby="toggle-label"
+                    />
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="compact-description">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Interface Analytics collects data the cPanel Development team uses to improve the product.' ]]);$output .= '</p>
+                </div>
+                <div class="extended-description"
+                     id="interface-analytics-extended-description"
+                     uib-collapse="vm.isCollapsed"
+                     aria-live="polite">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['We collect the following kinds of data when you enable Interface Analytics:' ]]);$output .= '</p>
+                    <p>
+                        <ul>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Behavioral data about how users interact with [asis,cPanel], [asis,WHM], and [asis,Webmail] interfaces.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Devices used to access the user interface.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Features used in the product.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Specific [asis,cPanel amp() WHM] configurations.' ]]);$output .= ' </li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['The [asis,cPanel amp() WHM] version.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['The operating system version.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['License related information.' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['User account types.' ]]);$output .= '</li>
+
+                        </ul>
+                    </p>
+                    <p ng-if="vm.isTrialLicense">';$output .= $stash->get(['locale',0,'maketext',['After you enable Interface Analytics here, we will [output,strong,not] collect behavioral data for specific users, until the non-root user also consents. Users enable and disable Interface Analytics for [asis,cPanel], [asis,WHM], and [asis,Webmail] separately.' ]]);$output .= '</p>
+                    <p ng-if="!vm.isTrialLicense">';$output .= $stash->get(['locale',0,'maketext',['After you enable Interface Analytics here, we will [output,strong,not] collect behavioral data for specific users until the user also consents. Users enable and disable Interface Analytics for [asis,cPanel], [asis,WHM], and [asis,Webmail] separately.' ]]);$output .= '</p>
+                </div>
+            </div>
+            <div class="panel-footer">
+                <button class="btn btn-link btn-block" ng-click="vm.toggleIsCollapsed()" aria-expanded="{{ !vm.isCollapsed }}" aria-controls="interface-analytics-extended-description">
+                    <span ng-show="vm.isCollapsed">
+                        <span class="underline-on-hover" aria-hidden="true">';$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= '</span>
+                        <span class="underline-on-hover sr-only">';$output .= $stash->get(['locale',0,'maketext',['Learn more about Interface Analytics.' ]]);$output .= '</span>
+                    </span>
+                    <span ng-show="!vm.isCollapsed">
+                        <span class="underline-on-hover" aria-hidden="true">';$output .= $stash->get(['locale',0,'maketext',['Hide' ]]);$output .= '</span>
+                        <span class="underline-on-hover sr-only">';$output .= $stash->get(['locale',0,'maketext',['Hide information about Interface Analytics.' ]]);$output .= '</span>
+                    </span>
+                    <i class="fas fa-caret-up" ng-class="{ \'fa-caret-up-rotated\': vm.isCollapsed }"></i>
+                </button>
+            </div>
+        </div>
+    </main>
+    <aside class="col-xs-12 col-sm-4">
+        <section class="widget">
+            <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['More about [asis,cPanel] Analytics' ]]);$output .= '</h3>
+            <ul class="fa-ul">
+                <li ng-if="vm.isTrialLicense"><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['We automatically collect behavioral data for the root user in [asis,WHM] since you started with a trial license.' ]]);$output .= '</li>
+                <li ng-if="vm.isTrialLicense"><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] Analytics behavioral data collection is opt-in for other user accounts. User privacy is important to us whenever we gather data. Also, we do not collect individual users’ data without consent. We do not collect information about who users are or the private data related to their accounts.' ]]);$output .= '</li>
+                <li ng-if="!vm.isTrialLicense"><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] Analytics behavioral data collection is opt-in only. User privacy is important to us whenever we gather data. We do [output,strong,not] collect data without your consent. We do not collect information about who users are or the private data related to their accounts.' ]]);$output .= '</li>
+                <li><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['We use the collected data to improve your [asis,cPanel amp() WHM]® experience. This data will allow us to target the most popular interfaces for improvements. Enabling [asis,cPanel] Analytics makes sure that your voice is heard when we plan the future of [asis,cPanel amp() WHM].' ]]);$output .= '</li>
+                <li><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['You can find out more about [asis,cPanel] Analytics and how we protect your privacy in our [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/analytics','analytics-documentation','analytics-documentation-link' ]]);$output .= '</li>
+                <li><span class="fa-li" ><i class="fas fa-check"></i></span>';$output .= $stash->get(['locale',0,'maketext',['We keep [asis,cPanel] Analytics data for 26 months and then delete it.' ]]);$output .= '</li>
+            </ul>
+        </section>
+    </aside>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

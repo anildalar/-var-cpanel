@@ -1,0 +1,52 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ftp/anonymous.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('welcome_message',$stash->get(['execute',['Ftp','get_welcome_message' ],'data',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('ftpPath','ftp://ftp.' .$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]));$stash->set('ftpIncoming',$stash->get('ftpPath').'/incoming');$output .= '
+
+
+';$output .= do {my$output='';$output .= '
+';$stash->set('anon',$stash->get(['execute',['Ftp','allows_anonymous_ftp' ],'data',0,'allows',0])? 'checked="checked"' : '');$output .= '
+';$stash->set('anon_in',$stash->get(['execute',['Ftp','allows_anonymous_ftp_incoming' ],'data',0,'allows',0])? 'checked="checked"' : '');$output .= '
+
+<div class="body-content">
+    <p class="description" id="descAnonFtp">
+        ';$output .= $stash->get(['locale',0,'maketext',['Allow visitors to connect to your anonymous FTP directory without a password. This is useful if you want to make some content publicly available to download. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/AnonymousFtp','_blank','lnkAnonymousFtpDocumentation' ]]);$output .= '
+    </p>
+    <div class="section">
+        <form action="ftpset.html" method="post">
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input ';$output .= $stash->get('anon');$output .= ' name="allowanonftp" type="checkbox" value="1" id="chkAnonFtp">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Allow anonymous access to “[_1]”.',$stash->get('ftpPath')]]);$output .= '
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input ';$output .= $stash->get('anon_in');$output .= ' name="allowanonftpin" type="checkbox" value="1" id="chkAnonFtpUpload">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Allow anonymous uploads to “[_1]”.',$stash->get('ftpIncoming')]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" id="btnSaveAnonFtp">
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['Anonymous FTP Welcome Message' ]]);$output .= '
+        </h2>
+        <p class="description" id="descMotd">
+            ';$output .= $stash->get(['locale',0,'maketext',['Enter the message your visitors will see when they connect to your anonymous FTP server.' ]]);$output .= '
+        </p>
+        <form action="dochmsg.html" method="post">
+            <div class="form-group">
+                <textarea cols="40" name="ftpwelcome" rows="7" class="form-control" id="txtMotd">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('welcome_message');&$_tt_filter($output)};$output .= '</textarea>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" id="btnSaveMotd"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'anonymous_ftp','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

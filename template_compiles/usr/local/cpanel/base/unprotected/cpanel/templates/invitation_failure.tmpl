@@ -1,0 +1,33 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/invitation_failure.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= ' <div id="notify">
+    <div id="login-status"
+         class="';$output .= $stash->get('notice_class')|| 'error-notice';$output .= '">
+        <div id="login-detail">
+            <div id="login-status-icon-container">
+                <span class="login-status-icon"></span>
+            </div>
+            ';if ($stash->get('reason')eq 'unknown'){$output .= '
+            <div id="unknown" class="login-status-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system could not process the invitation due to an unknown error.' ]]);$output .= '
+            </div>
+            '}elsif ($stash->get('reason')eq 'bad-request'){$output .= '
+            <div id="bad-request" class="login-status-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['This invitation is not valid. It may have expired or the server administrator withdrew the invitation.' ]]);$output .= '
+            </div>
+            '}elsif ($stash->get('reason')eq 'suspended'){$output .= '
+            <div id="suspended" class="login-status-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['You cannot set your password because the [asis, cPanel] account that owns your [asis,Subaccount] is suspended.' ]]);$output .= '
+            </div>
+            '}elsif ($stash->get('reason')eq 'flooding'){$output .= '
+            <div id="flooding" class="login-status-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['You exceeded the maximum number of attempts to set your new account’s password. Try again in one hour.' ]]);$output .= '
+            </div>
+            '}else {$output .= '
+            <div id="change-password-failure" class="login-status-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system failed to update your account’s password. Additional information may exist in the server error log. Contact your server account provider, server administrator, or hosting provider.' ]]);$output .= '
+            </div>
+            '}$output .= '
+        </div>
+    </div>
+</div>
+<span id="invitation-failure">';$output .= '</span>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

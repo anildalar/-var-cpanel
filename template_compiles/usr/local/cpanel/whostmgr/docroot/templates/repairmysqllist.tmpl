@@ -1,0 +1,33 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/repairmysqllist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+';if ($stash->get(['data',0,'is_remote',0])){$output .= '
+<div class="alert alert-info">
+    <span class=\'glyphicon glyphicon-info-sign\' aria-hidden="true"></span>
+    <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['The system is configured to use a remote database server profile. This feature is disabled and repairs will need to be made on the remote server “[_1]”.',$stash->get(['data',0,'host',0])]]);$output .= '
+    </div>
+</div>
+'}elsif ($stash->get(['data',0,'display_dbs',0])){$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/repairmysql">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <label for="user">';$output .= $stash->get(['locale',0,'maketext',['Select a database to repair:' ]]);$output .= '</label>
+                <select class="form-control" name="user" id="user" size="7">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'display_dbs',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$output .= '<option value="';$output .= $stash->get(['db',0,'html',0]);$output .= '">';$output .= $stash->get(['db',0,'html',0]);$output .= '</option>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="Repair Database" name="submit" id="submit">
+    </div>
+</form>
+'}else {$output .= '
+<div class="alert alert-info">
+    <span class=\'glyphicon glyphicon-info-sign\' aria-hidden="true"></span>
+    <div class="alert-message"> ';$output .= $stash->get(['locale',0,'maketext',['No databases found.' ]]);$output .= ' </div>
+</div>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'repair_a_mysql_database','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

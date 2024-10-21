@@ -1,0 +1,96 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/userlist/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts/userlist/');$stash->set('PAGE_PATH',$stash->get(['data',0,'page_path',0]));$stash->set('PAGE_NAME',$stash->get(['data',0,'page_title',0]));$stash->set('APP_KEY',$stash->get(['data',0,'app_key',0]));$stash->set('user_not_required',$stash->get(['data',0,'user_not_required',0]));$output .= do {my$output='';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+<div id="content" autofocus="true">
+    ';if ($stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get('APP_KEY')eq 'quota_modification'){$output .= '
+    <div class="alert alert-warning quota_sensitive" style="display:none;">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        ';if ($stash->get(['Whostmgr',0,'template_vars',0,'needs_reboot',0,'quota',0])){$output .= '
+        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Quotas are currently disabled. Quotas defined in packages will not function until you [output,url,_1,reboot,target,_blank].',($stash->get('cp_security_token').'/scripts/graceful_reboot_landing?suggest=1')]]);$output .= '</div>
+        '}else {$output .= '
+        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Quotas are currently disabled. Quotas defined in packages will not function until you [output,url,_1,enable,target,_blank] them.',($stash->get('cp_security_token').'/scripts/dialog?dialog=quotas')]]);$output .= '</div>
+        '}$output .= '
+    </div>
+    '}$output .= '
+
+
+    <div id="userListWidget"
+         ng-controller="UserListController as base"
+         class="ng-cloak form-area"
+         ng-cloak >
+
+        <form name="userSelectionForm" method="post" class="layout-medium" action="';$output .= $stash->get(['data',0,'form_tag_action_param',0]);$output .= '" ng-submit="can_submit()" novalidate>
+
+            ';if ($stash->get(['data',0,'description_text',0])){$output .= '                <p>
+                    ';$output .= $stash->get(['data',0,'description_text',0]);$output .= '
+                </p>
+            '}$output .= '
+            <input
+                type=\'hidden\'
+                name="user"
+                ';if (!$stash->get('user_not_required')){$output .= '
+                required
+                '}$output .= '
+                value="{{selectedDomain.user}}" />
+
+            ';$output .= '            <input
+                type=\'hidden\'
+                name="domain"
+                required
+                value="{{selectedDomain.user}}" />
+
+            <!-- Some pages require additional custom form fields (add a dns / change password) -->
+
+            ';if ($stash->get(['data',0,'form_widget_top',0])){$output .= '                <div class="form-widget form-widget-top">
+                    ';$stash->set('widget_template','userlist/widgets/' .$stash->get(['data',0,'form_widget_top',0]).'.ptt');$output .= '
+                    ';$output .= $context->process($stash->get('widget_template'));$output .= '
+                </div>
+            '}$output .= '
+            ';$output .= '
+            <user-domain-list
+                id="userDomainList"
+                ng-hide="!domains.length && ';$output .= $stash->get('user_not_required');$output .= '"
+                domains="domains"
+                edit-locked-accounts="editLockedAccounts"
+                selection-required="userRequired"
+                ng-model="selectedDomain"
+                ></user-domain-list>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group action-group">
+                        ';if ($stash->get(['data',0,'userdomains',0,'size',0])> 0 || $stash->get('user_not_required')){$output .= "\n                        <button type=\"submit\" ng-disabled=\"!userSelectionForm.\$valid\" class=\"btn btn-primary\" id=\"userDomainListSaveButton\">";$output .= $stash->get(['data',0,'button_text',0]);$output .= '</button>
+                        '}$output .= '
+                        ';if ($stash->get(['data',0,'additional_actions',0])){$output .= '
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'additional_actions',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'action'}=$_tt_value;$output .= '
+                                <a id="';$output .= $stash->get(['action',0,'id',0]);$output .= '" href="';$output .= $stash->get(['action',0,'uri',0]);$output .= '" class="btn btn-default">
+                                    ';if ($stash->get(['action',0,'icon',0])){$output .= '
+                                        <span class="';$output .= $stash->get(['action',0,'icon',0]);$output .= '"></span>
+                                    '}$output .= '
+                                    ';$output .= $stash->get(['action',0,'label',0]);$output .= '
+                                </a>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        '}$output .= '
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div growl></div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.domains = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'userdomains',0])]]);$output .= ';
+    PAGE.childWorkloadAccounts = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'child_workload_accts',0])]]);$output .= ';
+    PAGE.userRequired = \'';$output .=!$stash->get('user_not_required');$output .= '\';
+</script>
+
+<style type="text/css">
+    .validation-container {
+        margin-top:5px;
+    }
+</style>
+
+';$context->include('master_templates/master.tmpl',{'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_PATH'),'header'=>$stash->get('PAGE_NAME'),'theme'=>'bootstrap','app_key'=>$stash->get('APP_KEY'),'CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

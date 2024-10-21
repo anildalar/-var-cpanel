@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/net/dnslook.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api2',0,'pre_exec',['Net','dnszone' ]]);$stash->set('dns_zone',$stash->get(['Api2',0,'exec',['Net','dnszone',{'host'=>$stash->get(['RAW_FORM',0,'item',['dns' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Net','dnszone' ]]);$stash->set('dns_lookup',$stash->get(['execute',['DNS','lookup',{'domain'=>$stash->get(['RAW_FORM',0,'dns',0])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p>
+        ';if ($stash->get(['dns_lookup',0,'status',0])){$output .= '
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['dns_lookup',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'result'}=$_tt_value;$output .= '
+                ';$output .= $stash->get(['result',0,'html',0]);$output .= '<br>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        '}else {$output .= '
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['dns_lookup',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    <div class="alert-message">
+                        <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                        <span class="alert-body" id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                        </span>
+                    </div>
+                </div>
+
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        '}$output .= '
+    </p>
+    <h2>
+        ';$output .= $stash->get(['locale',0,'maketext',['Zone Information' ]]);$output .= '
+    </h2>
+    ';if ($stash->get(['Api2',0,'status',0,'event',0,'result',0])){$output .= '
+    <textarea class="form-control" name="zoneinfo" cols="80" rows="15" readonly="readonly">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('dns_zone');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'row'}=$_tt_value;$output .= '    ';$output .= $stash->get(['row',0,'line',0,'html',0]).('' .'
+');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </textarea>
+    '}else {$output .= '
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+            </strong>
+            <span class="alert-body">
+                ';$output .= $stash->get(['Api2',0,'status',0,'event',0,'reason',0,'html',0]);$output .= '
+            </span>
+        </div>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'track_dns','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

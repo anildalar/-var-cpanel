@@ -1,0 +1,34 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/filtertest.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= $stash->get(['Api2',0,'pre_exec',['Email','tracefilter' ]]);$stash->set('api2_result_Email_tracefilter',$stash->get(['execute',['Email','trace_filter',{'msg'=>$stash->get(['FORM',0,'test_msg',0]),'account'=>$stash->get(['FORM',0,'account',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','tracefilter' ]]);$stash->set('email_acct',$stash->get(['execute',['Email','account_name',{'account'=>$stash->get(['FORM',0,'account',0]),'display'=>'0' }],'data',0]));$output .= '
+
+';if ($stash->get(['FORM',0,'account',0])ne '' || $stash->get('email_acct')ne ''){$stash->set('app_name','email_filters')}else {$stash->set('app_name','global_email_filters')}$output .= '
+
+';$output .= do {my$output='';$output .= '
+    <div class="body-content">
+        <div class="section">
+            ';if ($stash->get(['api2_result_Email_tracefilter',0,'status',0])){$output .= '                <h2 id="hdrResults">';$output .= $stash->get(['locale',0,'maketext',['Filter Trace Results:' ]]);$output .= '</h2>
+
+            <!--
+                x3 stdmheader.html listens for "msg" in the form
+                to disable home and help links, so use test_msg instead.
+            -->
+                <div name="tracefilter">
+                    <pre id="txtFilterTraceResults">';$output .= $stash->get(['api2_result_Email_tracefilter',0,'data',0,'trace',0]);$output .= '</pre>
+                </div>
+            '}else {$output .= '                ';$output .= '                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    <div class="alert-message">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['api2_result_Email_tracefilter',0,'errors_as_string',0]);$output .= '                    </div>
+                </div>
+            '}$output .= '        </div>
+
+        ';if ($stash->get(['FORM',0,'account',0])){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html?account=' .$stash->get(['FORM',0,'account',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}$output .= '
+
+    </div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('app_name'),'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

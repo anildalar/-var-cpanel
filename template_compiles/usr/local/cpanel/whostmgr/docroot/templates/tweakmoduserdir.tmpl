@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/tweakmoduserdir.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'webserver_runs_as_user',0])){$output .= '
+<div id="cjt_static_notice_container" class="cjt-pagenotice-container cjt-notice-container">
+    <div class="yui-module cjt-notice cjt-pagenotice cjt-notice-warn">
+        <div class="bd">
+            <div class="cjt-notice-content">';$output .= $stash->get(['locale',0,'maketext',['[asis,mod_userdir] is disabled' ]]);$output .= '</div>
+            <div>';$output .= $stash->get(['locale',0,'maketext',['Web server processes on this system currently run as the user. For security reasons, the system disabled [asis,mod_userdir]. Any changes that you make in this interface will not take effect until you enable [asis,mod_userdir]. To use [asis,mod_userdir], you must disable [list_and,_1] and recompile [asis,EasyApache].',['mod_ruid2','mod_itk','mod_passenger' ]]]);$output .= '</div>
+        </div>
+    </div>
+</div>
+'}$output .= '
+<p>';$output .= $stash->get(['locale',0,'maketext',['[asis,Apache httpd]’s [asis,mod_userdir] makes [asis,URL]s like “[_1]” resolve to the indicated user’s (for example, the user “[_2]”’s) primary web virtual host.','http://example.com/~fred','fred' ]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['locale',0,'maketext',['In the above scenario, the transferred data counts against the bandwidth limit for the user that owns “[_1]”, not against “[_2]”’s bandwidth limit. This is often an undesirable behavior.','example.com','fred' ]]);$output .= '</p>
+
+<p>';$output .= $stash->get(['locale',0,'maketext',['WHM’s [asis,mod_userdir Protection] feature addresses this problem by restricting [asis,mod_userdir] to [asis,URL]s whose users own the [asis,URL]’s domains.' ]]);$output .= '</p>
+
+<form method="POST" action="';$output .= $stash->get(['data',0,'action',0]);$output .= '">
+    <input type="checkbox" value="1" name="moduserdir"
+        ';if ($stash->get(['data',0,'hasmoddirsec',0])){$output .= 'checked'}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,mod_userdir] Protection' ]]);$output .= '</input>
+    <table width="90%" class="sortable">
+        <tr class="tblheader0">
+            <th nonsortable="true"><span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Host' ]]);$output .= '</span></th>
+            <th nonsortable="true"><span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Exclude Protection' ]]);$output .= '</span></th>
+            <th nonsortable="true"><span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Additional Users' ]]);$output .= '</span></th>
+        </tr>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdir_domains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'d'}=$_tt_value;$output .= '
+        <tr>
+            <td>';$output .= $stash->get(['d',0,'domain',0]);$output .= ' (';$output .= $stash->get(['d',0,'user',0]);$output .= ')</td>
+            <td><input type="checkbox" value="1" name="userdir-';$output .= $stash->get(['d',0,'domain',0]);$output .= '"
+                ';if ($stash->get(['d',0,'checked',0])){$output .= 'checked'}$output .= '/></td>
+            <td><input type="text" value="';$output .= $stash->get(['d',0,'add_users',0]);$output .= '" name="userdirusers-';$output .= $stash->get(['d',0,'domain',0]);$output .= '" /></td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </table>
+    <input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+</form>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'apache_mod_userdir_tweak','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

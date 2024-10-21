@@ -1,0 +1,129 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/greylisting/views/domains.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="alert alert-danger" ng-show="!hasFeature">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message" id="noFeature">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] is not enabled for your account.' ]]);$output .= '
+    </div>
+</div>
+<div class="alert alert-info" ng-show="hasFeature && !isEnabled">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message" id="disabledInfo">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Info:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] is not enabled on your server.' ]]);$output .= '
+    </div>
+</div>
+<div ng-show="isEnabled && hasFeature">
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Enable [asis,Greylisting] on your domains. Use this feature to reduce incoming spam. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/greylisting','_blank','lnkGreylisting' ]]);$output .= '</p>
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-6">
+            <div class="row">
+                <div class="col-xs-10">
+                    <div class="input-group filter-controls">
+                        <input  id="domainListFilter"
+                                class="form-control"
+                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= "\"\n                                ng-model=\"meta.filterValue\"\n                                ng-keyup=\"triggerToggleSearch(\$event)\"\n                                autocomplete=\"off\"\n                                auto-focus>\n                        <span class=\"input-group-btn\">\n                            <button id=\"btnSearch\"\n                                    type=\"button\"\n                                    class=\"btn btn-default\"\n                                    ng-click=\"toggleSearch(true)\">\n                                <span class=\"glyphicon\" ng-class=\"{ 'glyphicon-search': !activeSearch, 'glyphicon-remove': activeSearch }\"></span>\n                            </button>\n                        </span>\n                    </div>\n                </div>\n                <div class=\"col-xs-2\">\n                    <span spinner id=\"loadingSpinner\" class=\"headerSpinner\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-7 col-md-6">
+            <div class="pagination-container hidden-xs hidden-sm">
+                <page-size id="ddlPageSizeTop"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <div id="topPager"
+                    uib-pagination
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="0"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"
+                    class="pagination-small">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row hidden-xs hidden-sm">
+        <div class="col-xs-12 col-md-offset-7 col-md-5">
+            <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.start }}','{{ meta.limit }}','{{ totalItems }}' ]]);$output .= '</p>
+        </div>
+    </div>
+    <table class="table table-striped table-condensed">
+        <thead>
+            <tr>
+                <th class="domain">
+                    <toggle-sort id="sortDomain"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="domain">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="domain-status">
+                    <toggle-sort id="sortEnabled"
+                                 onsort="sortList"
+                                 sort-meta="meta"
+                                 sort-field="enabled">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                    </toggle-sort>
+                </th>
+                <th class="gear-column">
+                    <span id="gearMenuContainer" class="dropdown" uib-dropdown>
+                        <a id="gearMenu" href class="dropdown-toggle" uib-dropdown-toggle ng-class="{disabled: hasNoDomains()}">
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul id="gearMenuItems" class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear-menu" uib-dropdown-menu>
+                            <li ng-class="{disabled: allDomainsAreEnabled()}">
+                                <a href class="dropdown-toggle" data-toggle="dropdown" ng-click="enableAllDomains()">';$output .= $stash->get(['locale',0,'maketext',['Enable All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: allDomainsAreDisabled()}">
+                                <a href class="dropdown-toggle" data-toggle="dropdown" ng-click="disableAllDomains()">';$output .= $stash->get(['locale',0,'maketext',['Disable All' ]]);$output .= "</a>\n                            </li>\n                        </ul>\n                    </span>\n                </th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr ng-repeat-start=\"domain in domainList\">\n                <td class=\"domain\" id=\"domainData{{\$index}}\">\n                    <span ng-bind-html=\"domain.domain | wrap: '[-._]'\"></span>\n                    <a  id=\"lnkShowRelatedDomains{{\$index}}\"\n                        href=\"#\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Show Related Domains' ]]);$output .= "\"\n                        ng-show=\"domain.dependencies.length > 0\"\n                        ng-click=\"toggleRow(\$event, \$index)\">\n                        <span class=\"badge\">{{domain.dependencies.length}}</span>\n                    </a>\n                </td>\n                <td class=\"domain-status\" id=\"enabledData{{\$index}}\">\n                    <div class=\"btn-group btn-group-nowrap\">\n                        <label  id=\"btnDomainEnable{{\$index}}\"\n                                class=\"btn\"\n                                ng-model=\"domain.enabled\"\n                                uib-btn-radio=\"1\"\n                                ng-class=\"{ 'btn-primary': domain.enabled, 'btn-default btn-none': !domain.enabled }\"\n                                ng-change=\"setDomain(domain)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= "</label>\n                        <label  id=\"btnDomainDisable{{\$index}}\"\n                                class=\"btn btn-default\"\n                                ng-model=\"domain.enabled\"\n                                uib-btn-radio=\"0\"\n                                ng-class=\"{ 'btn-none': domain.enabled }\"\n                                ng-change=\"setDomain(domain)\">";$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= "</label>\n                    </div>\n                </td>\n                <td class=\"gear-column\">&nbsp;</td>\n            </tr>\n            <tr ng-repeat-end class=\"active\" ng-if=\"\$index === selectedRow\">\n                <td colspan=\"3\" class=\"domain-dependency\" id=\"domainDependencies{{\$index}}\">\n                    <span class=\"label label-primary\">";$output .= $stash->get(['locale',0,'maketext',['Related Domains' ]]);$output .= "</span>\n                    <span id=\"domainDependencies{{\$index}}\" ng-repeat=\"dependency in domain.dependencies\">\n                        <span  ng-bind-html=\"dependency | wrap:'[.?=]':20\"></span>\n                    </span>\n                </td>\n            </tr>\n            <tr class=\"info emptyrow\" ng-hide=\"domainList.length\">\n                <td colspan=\"3\" id=\"noRecords\">\n                    ";$output .= $stash->get(['locale',0,'maketext',['[output,strong,0] domains have been found.' ]]);$output .= '
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-12">
+            <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.start }}','{{ meta.limit }}','{{ totalItems }}' ]]);$output .= '</p>
+        </div>
+    </div>
+    <div class="row search-page-container visible-xs-block visible-sm-block hidden-md hidden-lg">
+        <div class="col-xs-12 col-sm-12">
+            <div class="pagination-container">
+                <page-size id="ddlPageSizeBottom"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <div id="bottomPager"
+                    uib-pagination
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="0"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"
+                    class="pagination-small">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

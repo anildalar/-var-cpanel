@@ -1,0 +1,17 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/save.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_link','index.html?account=' .$stash->get(['FORM',0,'account',0,'uri',0]));$stash->set('source_ip_check_account',$stash->get(['Api2',0,'exec',['SourceIPCheck','getaccount',{'account'=>$stash->get(['FORM',0,'account',0])}],0,0]));$stash->set('source_ip_save_security_questions',$stash->get(['Api2',0,'exec',['SourceIPCheck','savesecquestions',{'q3ques'=>$stash->get(['FORM',0,'q3ques',0]),'q2answer'=>$stash->get(['FORM',0,'q2answer',0]),'account'=>$stash->get(['FORM',0,'account',0]),'q2ques'=>$stash->get(['FORM',0,'q2ques',0]),'q4answer'=>$stash->get(['FORM',0,'q4answer',0]),'q3answer'=>$stash->get(['FORM',0,'q3answer',0]),'q4ques'=>$stash->get(['FORM',0,'q4ques',0]),'q1ques'=>$stash->get(['FORM',0,'q1ques',0]),'q1answer'=>$stash->get(['FORM',0,'q1answer',0])}],0,0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Confirm Security Questions and Answers for “[output,inline,_1,class,status]”',$stash->get(['source_ip_check_account',0,'account',0])]]);$output .= '</h2>
+
+    ';if ($stash->get(['CPANEL',0,'CPVAR',0,'questions',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= ' ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'questions',0,'html',0]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Your answers have been saved.' ]]);$output .= '
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

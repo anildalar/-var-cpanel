@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/indexmanager/changepro.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('results',$stash->get(['execute',['DirectoryIndexes','set_indexing',{'dir'=>$stash->get(['RAW_FORM',0,'dir',0]),'type'=>$stash->get(['RAW_FORM',0,'listable_type',0])}]]));$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+';if ($stash->get(['results',0,'status',0])){$output .= '
+    <div class="alert alert-success" id="indexSetingSuccess">
+        <span class="glyphicon glyphicon-ok-sign" id="indexSetingSuccessImg"></span>
+        <div class="alert-message" id="indexSettingSuccessMsg">
+            ';$output .= $stash->get(['locale',0,'maketext',['The system updated the directory index settings for the “[_1]” directory.',$stash->get(['FORM',0,'dir',0])]]);$output .= '
+            ';do {my$_tt_result=$stash->get(['results',0,'data',0]);my$_tt_match;SWITCH: {$_tt_match='inherit';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This directory will inherit from the parent directory’s settings or use the system’s default settings.' ]]);$output .= '
+            ';last SWITCH}$_tt_match='disabled';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Directory indexing is disabled.' ]]);$output .= '
+            ';last SWITCH}$_tt_match='standard';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Directory indexing will show only the filename.' ]]);$output .= '
+            ';last SWITCH}$_tt_match='fancy';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Directory indexing will show the filename and description.' ]]);$output .= '
+            ';last SWITCH}}};$output .= '
+        </div>
+    </div>
+'}else {$output .= '
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+            </strong>
+            <span class="alert-body">
+                <span id="error-config">
+                    ';$output .= $stash->get(['results',0,'errors_as_string',0,'html',0]);$output .= '
+                </span>
+            </span>
+        </div>
+    </div>
+'}$output .= '
+</div>
+';$stash->set('return_url','dohtaccess.html?dir=' .$stash->get(['RAW_FORM',0,'dir',0,'uri',0]).'&is_parent=' .$stash->get(['RAW_FORM',0,'is_parent',0,'uri',0]));$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'indexes','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

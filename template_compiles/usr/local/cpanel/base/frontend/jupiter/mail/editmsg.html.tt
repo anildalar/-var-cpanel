@@ -1,0 +1,62 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/editmsg.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}$stash->set('template',$stash->get(['execute',['BoxTrapper','get_email_template',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]]),'template'=>$stash->get(['RAW_FORM',0,'item',['form' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    <div class="section">
+
+        ';if (!$stash->get(['template',0,'status',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['template',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+
+            <h2 id="descBoxtrapperMessage">
+                ';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] message for “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+            </h2>
+
+            <p id="descEditingMsg">
+                ';if ($stash->get(['FORM',0,'item',['form' ]])eq 'verify'){$output .= $stash->get(['locale',0,'maketext',['You must leave “[_1]” line exactly as it appears for BoxTrapper to function correctly. When editing the verify message, you must leave “[_2]” in the subject line exactly as it appears. If you change this part of the subject line, BoxTrapper will not function correctly.','To: %email%','verify#%msgid%' ]])}else {$output .= $stash->get(['locale',0,'maketext',['You must leave “[_1]” line exactly as it appears for BoxTrapper to function correctly.','To: %email%' ]])}$output .= '
+            </p>
+            <form action="savefile.html" method="post">
+                <input id="hidTemplate" type="hidden" name="form" value="';$output .= $stash->get(['FORM',0,'item',['form' ]]);$output .= '">
+                <input id="hidAccount" type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                <input id="hidFileType" type="hidden" name="filetype" value="msg">
+                <input id="hidDir" type="hidden" name="dir" value="';$output .= $stash->get(['FORM',0,'item',['emaildir' ]]);$output .= '">
+                <input id="hidFile" type="hidden" value="';$output .= $stash->get(['FORM',0,'item',['form' ]]);$output .= '" name="file">
+
+                <div class="form-group">
+                    <label id="lblConfig" for="txtConfigFile">
+                        ';$output .= $stash->get(['locale',0,'maketext',['You are editing: [output,strong,_1]',$stash->get(['FORM',0,'item',['form' ]])]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <textarea id="txtConfigFile" name="page" rows="20" class="form-control">';$output .= $stash->get(['FORM',0,'page',0])? $stash->get(['FORM',0,'page',0]): $stash->get(['template',0,'data',0,'html',0]);$output .= '</textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input id="btnSave" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" class="btn btn-primary">
+                </div>
+
+            </form>
+        '}$output .= '
+</div>
+
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'editmsgs.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

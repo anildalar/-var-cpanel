@@ -1,0 +1,14 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/domysqladdonhosts.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+';if ($stash->get(['data',0,'success',0])){$output .= '<h3 class="simpleheading">Database access hosts saved.</h3>
+'}else {$output .= 'Could not save access hosts.
+'}$output .= '
+';if ($stash->get(['data',0,'errors',0])){$output .= '
+    <h3 class="simpleheading">Invalid database hosts</h3>
+    <ul>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$output .= '
+        <li>';$output .= $stash->get('host');$output .= '</li>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </ul>
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts2/mysqladdonhosts','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

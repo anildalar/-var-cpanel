@@ -1,0 +1,325 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/master_templates/_defheader.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('UIAnalytics',$context->plugin('UIAnalytics'));$stash->set('Verify',$context->plugin('Verify'));$stash->set('app_key','home',1);if (!$stash->get(['Whostmgr',0,'acls_are_initialized',0])){$stash->set('acls_are_initialized',$stash->get(['Whostmgr',0,'init_acls',0]))}$stash->set('has_component_system',$stash->get(['template_exists',['/usr/local/cpanel/whostmgr/docroot/templates/master_templates/component.html.tt' ]]));if ($stash->get('has_component_system')){$stash->set('Components',$context->plugin('Components'))}$stash->set('whm_variables',$stash->get(['Whostmgr',0,'template_vars',0]));$stash->set('plugins',$stash->get(['Whostmgr',0,'plugins_data',0]));$stash->set('show_reboot_banner',$stash->get(['Whostmgr',0,'check_flag',['CPCONF=show_reboot_banner' ]]));$stash->set('needs_reboot_result',$stash->get(['whm_variables',0,'needs_reboot',0]));$stash->set('quota_broken',$stash->get(['whm_variables',0,'quota_broken',0]));$stash->set('has_root_privileges',$stash->get(['Whostmgr',0,'hasroot',0]));$stash->set('initial_setup_will_show',$stash->get('has_root_privileges')&& (!$stash->get(['Whostmgr',0,'get_initial_setup_status',0,'has_completed_initial_setup',0])||!$stash->get(['Whostmgr',0,'get_initial_setup_status',0,'has_accepted_legal_agreements',0])));if ($stash->get(['Whostmgr',0,'has_license_flag',['dev' ]])){$stash->set('license_type','Developer')}elsif ($stash->get(['Whostmgr',0,'has_license_flag',['trial' ]])){$stash->set('license_type','Trial')}elsif ($stash->get(['Whostmgr',0,'is_test_build',0])){$stash->set('license_type','Test')}else {$stash->set('license_type','Standard')}$stash->set('app_list',$stash->get(['Whostmgr',0,'get_application_list',0]));$stash->set('notifications',[{'type'=>'warning','api_check'=>0,'name'=>'mysql_eol_warning','text'=>$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0,'soon',0])? $stash->get(['locale',0,'maketext',['[_1][comment,a software name] [_2][comment,a software version] will reach [asis,EOL] soon.',$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0,'display_name',0]),$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0,'version',0])]]): $stash->get(['locale',0,'maketext',['[_1][comment,a software name] [_2][comment,a software version] has reached [asis,EOL].',$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0,'display_name',0]),$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0,'version',0])]]),'title'=>$stash->get(['locale',0,'maketext',['Upgrade Now' ]]),'isShown'=>$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0])? 1 : 0,'url'=>'scripts/mysqlupgrade','id'=>'lnkUpdateMysql' },{'type'=>'warning','api_check'=>0,'name'=>'reboot_quota','text'=>$stash->get(['locale',0,'maketext',['You must reboot your server to enable quotas.' ]]),'title'=>$stash->get(['locale',0,'maketext',['You must reboot your server to enable quotas.' ]]),'isShown'=>($stash->get('has_root_privileges')&& $stash->get('show_reboot_banner')&& $stash->get(['needs_reboot_result',0,'quota',0]))? 1 : 0,'url'=>'scripts/graceful_reboot_landing?suggest=1','id'=>'lnkRebootRequiredQuota' },{'type'=>'warning','api_check'=>0,'name'=>'quota_broken','text'=>$stash->get(['locale',0,'maketext',['Quotas are currently broken on your server.' ]]),'title'=>$stash->get(['locale',0,'maketext',['Quotas are currently broken on your server.' ]]),'isShown'=>($stash->get('has_root_privileges')&& $stash->get('quota_broken'))? 1 : 0,'url'=>'scripts/dialog?dialog=quotas','id'=>'lnkBrokenQuota' },{'type'=>'warning','api_check'=>0,'name'=>'reboot_kernel','text'=>$stash->get(['locale',0,'maketext',['You must reboot your server to apply kernel updates.' ]]),'title'=>$stash->get(['locale',0,'maketext',['You must reboot your server to apply kernel updates.' ]]),'isShown'=>($stash->get('has_root_privileges')&& $stash->get('show_reboot_banner')&& $stash->get(['needs_reboot_result',0,'kernel',0]))? 1 : 0,'url'=>'scripts/graceful_reboot_landing?suggest=1','id'=>'lnkRebootRequiredKernel' },{'type'=>'warning','api_check'=>0,'name'=>'reboot_updates','text'=>$stash->get(['locale',0,'maketext',['You must reboot your server to apply software updates.' ]]),'title'=>$stash->get(['locale',0,'maketext',['You must reboot your server to apply software updates.' ]]),'isShown'=>($stash->get('has_root_privileges')&& $stash->get('show_reboot_banner')&& $stash->get(['needs_reboot_result',0,'kernel',0]))? 1 : 0,'url'=>'scripts/graceful_reboot_landing?suggest=1','id'=>'lnkRebootRequiredSoftware' },{'type'=>'warning','api_check'=>0,'name'=>'reboot_updates','text'=>$stash->get(['locale',0,'maketext',['You must reboot your server to use CloudLinux features.' ]]),'title'=>$stash->get(['locale',0,'maketext',['You must reboot your server to use CloudLinux features.' ]]),'isShown'=>($stash->get('has_root_privileges')&& $stash->get('show_reboot_banner')&& $stash->get(['needs_reboot_result',0,'needs_cloudlinux',0]))? 1 : 0,'url'=>'scripts/graceful_reboot_landing?suggest=1','id'=>'lnkRebootRequiredCloudLinux' },{'type'=>'warning','api_check'=>!$stash->get(['Whostmgr',0,'dnsonly',0])&& $stash->get('has_root_privileges')&&!$stash->get(['whm_variables',0,'needs_reboot',0,'quota',0]),'name'=>'quota_disabled','text'=>$stash->get(['locale',0,'maketext',['Filesystem quotas are currently disabled.' ]]),'title'=>$stash->get(['locale',0,'maketext',['Click to enable quotas.' ]]),'isShown'=>0,'url'=>'scripts/dialog?dialog=quotas','id'=>'lnkUpdateBlocker' },{'type'=>'warning','api_check'=>0,'name'=>'version_update_blocked','text'=>$stash->get(['locale',0,'maketext',['The last attempt to update [asis,cPanel amp() WHM] was blocked.' ]]),'title'=>$stash->get(['locale',0,'maketext',['Details' ]]),'isShown'=>$stash->get(['whm_variables',0,'update_blocked',0])? 1 : 0,'url'=>'scripts7/review_upcp_blockers','id'=>'lnkUpdateBlocker' },{'type'=>'warning','api_check'=>!$stash->get(['whm_variables',0,'update_blocked',0]),'name'=>'version_update_available','text'=>'','title'=>$stash->get(['locale',0,'maketext',['Update Now' ]]),'isShown'=>0,'url'=>'scripts2/upcpform','id'=>'lnkUpdateNow' }]);if (!$stash->get(['breadcrumbdata',0,'defined',0])){$stash->set('breadcrumbdata',$stash->get(['Whostmgr',0,'get_breadcrumb_data_for_master',0]))}$stash->set('dnsonlytext',$stash->get(['breadcrumbdata',0,'dnsonly',0])? 'dnsonly' : '');if (($stash->get(['breadcrumbdata',0,'url',0]))){if ((!$stash->get('icon'))){$stash->set('icon',$stash->get(['breadcrumbdata',0,'icon',0]))}if ((!$stash->get('header'))){$stash->set('header',$stash->get(['locale',0,'makevar',[$stash->get(['breadcrumbdata',0,'name',0])]]))}}$stash->set('Command',$context->plugin('Command'));if ((!$stash->get('unprotected'))){$stash->set('unprotected',0)}if (!$stash->get(['include_legacy_stylesheets',0,'defined',0])){$stash->set('include_legacy_stylesheets',0)}if (!$stash->get(['inside_frame_or_tab_or_popup',0,'defined',0])){$stash->set('inside_frame_or_tab_or_popup',0)}if (!$stash->get(['skipheader',0,'defined',0])){$stash->set('skipheader',0)}if (!$stash->get(['hide_header',0,'defined',0])){$stash->set('hide_header',0)}if (!$stash->get(['hide_navigation',0,'defined',0])){$stash->set('hide_navigation',0)}if (!$stash->get(['hide_license_warnings',0,'defined',0])){$stash->set('hide_license_warnings',0)}$stash->set('locale_tag',$stash->get(['locale',0,'get_language_tag',0]));$stash->set('locale_version',$stash->get(['calculate_magic_lex_mtime',[$stash->get('locale_tag')]]));$stash->set('locale_query_string','?locale=' .$stash->get('locale_tag').'&locale_revision=' .$stash->get('locale_version'));if (!$stash->get(['app_key',0,'defined',0])){$stash->set('app_key','')}$stash->set('is_home_page',($stash->get(['Whostmgr',0,'page_name',0])eq '' || $stash->get(['Whostmgr',0,'page_name',0])eq 'Home')&& $stash->get('app_key')ne '');$stash->set('server_environment',$stash->get(['whm_variables',0,'BASEOS',0]).' ' .$stash->get(['whm_variables',0,'profile',0]).' ' .$stash->get(['whm_variables',0,'envtype',0]));if ($stash->get('inside_frame_or_tab_or_popup')|| $stash->get('initial_setup_will_show')){$stash->set('hide_top_chrome',1)}else {$stash->set('hide_top_chrome',0)}if ($stash->get('is_home_page')|| $stash->get(['breadcrumbdata',0,'list',0,'size',0])eq 0){$stash->set('skipbreadcrumb',1)}if ($stash->get('inside_frame_or_tab_or_popup')){$stash->set('hide_header',1);$stash->set('hide_navigation',1);$stash->set('hide_license_warnings',1);$stash->set('skipbreadcrumb',1);$stash->set('skipsupport',1)}if ($stash->get('skipbreadcrumb')){$stash->set('skipsupport',1)}$stash->set('permissions',{'all'=>$stash->get(['Whostmgr',0,'checkacl',['all' ]]),'listAccounts'=>$stash->get(['Whostmgr',0,'checkacl',['list-accts' ]]),'modifyAccount'=>$stash->get(['Whostmgr',0,'checkacl',['edit-account' ]]),'impersonateAccountTweakSettingValue'=>$stash->get(['Whostmgr',0,'get_account_impersonation_permission_value',0]),'basicWHMFunctions'=>$stash->get(['Whostmgr',0,'checkacl',['basic-whm-functions' ]])});$stash->set('whm_analytics_include_template','/var/cpanel/customizations/whm/includes/cp_analytics_whm.html.tt');$stash->set('is_trial_license',$stash->get(['Verify',0,'is_trial',0]));$stash->set('is_root_user',$stash->get(['CPANEL',0,'authuser',0])eq 'root');$stash->set('is_analytics_enabled_server_side',$stash->get(['Whostmgr',0,'is_server_analytics_enabled',0]));$stash->set('user_analytics_consent_setting',$stash->get(['NVData',0,'get',['analytics',$stash->get('undef'),0,'whm' ]]));if ($stash->get('user_analytics_consent_setting')ne 'on' && $stash->get('user_analytics_consent_setting')ne 'off'){if ($stash->get('is_trial_license')&& $stash->get('is_root_user')){$stash->set('user_analytics_consent_setting','on')}else {$stash->set('user_analytics_consent_setting','')}}$stash->set('analytics_page_meta',{'product_feature'=>$stash->get('app_key'),'product_feature_group'=>'','framework_js'=>'','framework_css'=>'' });$stash->set('analytics_opt_in',0);if ($stash->get('is_analytics_enabled_server_side')&& $stash->get('user_analytics_consent_setting')eq 'on'){$stash->set('analytics_opt_in',1)}$stash->set('cp_analytics_data',$stash->get(['UIAnalytics',0,'get_whm_analytics_data',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['analytics_page_meta',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$stash->set(['cp_analytics_data',0,$stash->get('key'),0],$stash->get(['analytics_page_meta',0,$stash->get('key'),0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('analyticsConfig',{'cpAnalyticsData'=>$stash->get('cp_analytics_data'),'optInAnalytics'=>$stash->get('analytics_opt_in'),'debugMode'=>$stash->get(['CPANEL',0,'is_debug_mode_enabled',0]),'loginUser'=>$stash->get(['CPANEL',0,'authuser',0]),'isSandbox'=>$stash->get(['Whostmgr',0,'is_sandbox',0])});$output .= '<!DOCTYPE html>
+<html lang="';$output .= $stash->get('locale_tag');$output .= '" dir="';$output .= $stash->get(['locale',0,'get_html_dir_attr',0]);$output .= '">
+    <head>
+
+        <!-- HTML HEAD SECTION -->
+        <!-- bootstrap requires IE=edge -->
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <!-- Title -->
+        <title>WHM [';$output .= $stash->get(['Whostmgr',0,'shorthostname',0]);$output .= '] ';$output .= $stash->get('header');$output .= ' - ';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= '</title>
+        ';if ($stash->get('base')){$output .= '
+        <base href="';$output .= ($stash->get(['base',0,'match',[$stash->get('cp_security_token')]]))? $stash->get('base'): $stash->get('cp_security_token').$stash->get('base');$output .= '">
+        '}$output .= '
+        <!-- Fav Icon -->
+        <link rel="shortcut icon" href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['favicon.ico',$stash->get('unprotected')]]);$output .= '" type="image/x-icon" />
+        ';$stash->set('rtl_extension',$stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl' ? '.rtl' : '');$output .= '
+        <link rel=\'stylesheet\' type=\'text/css\' href=\'';$output .= $stash->get(['MagicRevision',[('/jupiter_styles/fonts' .$stash->get('rtl_extension').'.min.css')]]);$output .= '\' id=\'custom-fonts-stylesheet\' />
+        <link rel=\'stylesheet\' type=\'text/css\' href=\'';$output .= $stash->get(['MagicRevision',[('/core/main_content/main_content_spacing' .$stash->get('rtl_extension').'.min.css')]]);$output .= '\' />
+        <link rel=\'stylesheet\' type=\'text/css\' href=\'';$output .= $stash->get(['MagicRevision',[('/core/main_content/main_content' .$stash->get('rtl_extension').'.min.css')]]);$output .= '\' />
+        <link rel=\'stylesheet\' type=\'text/css\' href=\'';$output .= $stash->get(['MagicRevision',[('/jupiter_styles/preload_styles' .$stash->get('rtl_extension').'.min.css')]]);$output .= '\' />
+
+        <!-- Meta Data -->
+        <meta http-equiv="Content-Type" content="text/html; charset=';$output .= $stash->get(['locale',0,'encoding',0]);$output .= '" />
+
+        <meta name="referrer" content="origin">
+
+        ';if ($stash->get('meta_block')){$output .= $stash->get('meta_block')}if ($stash->get('meta')){if ($stash->get(['ref',[$stash->get('meta')]])eq 'ARRAY'){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('meta');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'meta_item'}=$_tt_value;$output .= '<meta ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['meta_item',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'key'}=$_tt_value;$output .= $stash->get('key').'="' .$stash->get(['meta_item',0,$stash->get('key'),0]).'" ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '/>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '<meta ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['meta',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$output .= $stash->get('key').'="' .$stash->get(['meta',0,$stash->get('key'),0]).'" ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '/>'}}$output .= '        ';$output .= '
+        <script nonce="';$output .= $stash->get(['CPANEL',0,'nonce',0]);$output .= '">
+            window.COMMON = window.COMMON || {};
+            window.COMMON.hasRootPrivileges = ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= 'true'}else {$output .= 'false'}$output .= ';
+            window.COMMON.securityToken = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('cp_security_token')]]);$output .= ';
+            window.COMMON.userName = "';$output .= $stash->get(['whm_variables',0,'remote_user',0]);$output .= '";
+            window.COMMON.isDnsOnly = ';if ($stash->get(['Whostmgr',0,'dnsonly',0])){$output .= 'true'}else {$output .= 'false'}$output .= ';
+            ';if (!$stash->get('hide_navigation')){$output .= '
+            window.COMMON.leftNavNVData = ';$output .= $stash->get(['NVData',0,'get',['whmcommand:','',1,'whm' ],'json',0])|| 'null';$output .= ';
+            '}$output .= '
+        </script>
+
+        ';$output .= '
+        ';if (!$stash->get('inside_frame_or_tab_or_popup')){$output .= '
+        <script>
+
+        ';$stash->set('license_type',$stash->get(['CPANEL',0,'get_producttype',0]));if ($stash->get(['Whostmgr',0,'has_license_flag',['dev' ]])){$stash->set('license_type',$stash->get('license_type').' DEVELOPER')}elsif ($stash->get(['Whostmgr',0,'has_license_flag',['trial' ]])){$stash->set('license_type',$stash->get('license_type').' TRIAL')}elsif ($stash->get(['Whostmgr',0,'is_test_build',0])){$stash->set('license_type',$stash->get('license_type').' TEST')}$output .= '
+
+        </script>
+        '}$output .= '
+
+        ';$stash->set('src_js',[]);$stash->set('CJT2_EXCLUSIVE',0,1);if (!$stash->get('CJT2_EXCLUSIVE')&&!$stash->get('is_ng')){$output .= $stash->get(['src_js',0,'push',[$stash->get(['CPANEL',0,'get_js_url',['/yui-gen/utilities_container/utilities_container.js' ]])]]);if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= $stash->get(['src_js',0,'push',[$stash->get(['CPANEL',0,'get_js_url',['/cjt/cjt.js' ]]).$stash->get('locale_query_string')]])}else {$output .= $stash->get(['src_js',0,'push',[$stash->get(['CPANEL',0,'get_js_url',['/cjt/cjt-min.js' ]]).$stash->get('locale_query_string')]])}}do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('src_js');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;if ($stash->get('src')){if (!$stash->get('LOADED')){$stash->set('LOADED',[])}$stash->set('src',$stash->get(['CPANEL',0,'get_js_localized_url',[$stash->get('src')]]));if ($stash->get(['LOADED',0,'grep',['^' .$stash->get('src').'$' ],'size',0])eq 0){$output .= ('<script type=\'text/javascript\' src=\'' .$stash->get('src').'\'></script>');$output .= $stash->get(['LOADED',0,'push',[$stash->get('src')]])}};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        ';if ($stash->get('theme')eq 'bootstrap'){$output .= '
+                ';$output .= '
+                    ';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '
+                    <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/styles/master-rtl.cmb.min.css' ]]);$output .= '" />
+                    '}else {$output .= '
+                    <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/styles/master-ltr.cmb.min.css' ]]);$output .= '" />
+                    '}$output .= '
+
+                ';if ($stash->get('include_legacy_stylesheets')){$output .= '
+                    <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/styles/legacy_yui_styles.min.css' ]]);$output .= '" />
+                '}$output .= '
+
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Whostmgr',0,'get_page_css_url',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'page_css_url'}=$_tt_value;$output .= ('<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get('page_css_url').'\' />');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}elsif ($stash->get('theme')eq 'jupiter'){$output .= '
+                <link rel=\'stylesheet\' type=\'text/css\' href=\'';$output .= $stash->get(['MagicRevision',[('/jupiter_styles/jupiter-styles/dist/css/main' .$stash->get('rtl_extension').'.min.css')]]);$output .= '\' />
+
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Whostmgr',0,'get_page_css_url',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'page_css_url'}=$_tt_value;$output .= ('<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get('page_css_url').'\' />');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}elsif ($stash->get('theme')eq 'yui'){$output .= '
+               ';if ($stash->get('unprotected')){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Whostmgr',0,'defheader_unprot_css_urls',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= ('<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get('src').'\' />');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Whostmgr',0,'basic_css_urls',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= ('<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get('src').'\' />');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+
+                ';if ($stash->get('scripts')){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['scripts',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= $context->process('_loadjs.tmpl');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+            '}else {$output .= '
+                <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['styles/unified_optimized.css' ]]);$output .= '" />
+
+                ';if ($stash->get('scripts')){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['scripts',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;$output .= $context->process('_loadjs.tmpl');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}}$output .= '
+        ';if ($stash->get('is_ng')&& $stash->get('theme')ne 'jupiter'){$output .= $stash->get(['stylesheets',0,'push',['/css/ux-styles.min.css' ]])}$output .= '
+
+        ';$stash->set('stylesheets',$stash->get(['stylesheets',0,'list',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('stylesheets');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'src'}=$_tt_value;if ($stash->get('unprotected')){$output .= '<link rel=\'stylesheet\' type=\'text/css\' href=\'/unprotected/cpanel' .$stash->get('src').'\' />'}else {$output .= '<link rel=\'stylesheet\' type=\'text/css\' href=\'' .$stash->get(['MagicRevision',[$stash->get('src')]]).'\' />'};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        <style type="text/css">
+        ';if ($stash->get('theme')eq 'yui'){$output .= '
+            ';$output .= $stash->get(['Whostmgr',0,'get_page_css',0]);$output .= '        '}$output .= '
+
+        /* Extra Styles - \'extrastyle\' */
+        ';if ($stash->get('extrastyle')){$output .= '            ';$output .= $stash->get('extrastyle');$output .= '        '}$output .= '
+        ';if ($stash->get('hide_navigation')){$output .= '
+        html[dir="rtl"] #pageContainer,
+        #pageContainer {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        '}$output .= '
+
+        ';if ($stash->get('inside_frame_or_tab_or_popup')){$output .= '
+        body
+        {
+            overflow: auto;
+            height: auto;
+        }
+
+        #masterContainer,
+        #contentContainer,
+        #pageContainer{
+            height: auto;
+        }
+
+        #masterContainer,
+        #pageContainer{
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        #contentContainer{
+            padding: 20px 20px 0 20px;
+        }
+        '}$output .= '
+        ';if (($stash->get(['whm_variables',0,'osname',0])eq 'CENTOS' || $stash->get(['whm_variables',0,'osname',0])eq 'CLOUDLINUX')&& $stash->get(['whm_variables',0,'osversion',0])>= 8 &&!$stash->get('inside_frame_or_tab_or_popup')){$output .= '
+        #pageContainer #contentContainer #c8Warn.callout-warning {
+            color: black;
+        }
+        #c8DocsLink
+        {
+            color: #428BCA;
+        }
+        #c8Warn .callout {
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+        #c8Warn h3 {
+            margin-top: 5px;
+        }
+        #c8Warn p {
+            margin-bottom: 0;
+        }
+        '}$output .= '
+        ';if ($stash->get(['Whostmgr',0,'is_mobile_or_tablet',0])){$output .= "\n        /* This is needed because of how Mobile Safari and Mobile Google Chrome treat\n         * VH units. Until we restructure WHM to not need VH units for the height, this\n         * is required for WHM to display properly on mobile devices using those browsers.\n         */\n        html, body {\n            height: 100% !important;\n        }\n        /* We increase the height here to make sure we can clear the lower browser bar\n         * that shows up on the mobile browsers.\n         */\n        /* mobile first */\n        #contentContainer {\n            min-height: calc(100vh - 135px) !important;\n        }\n        /* tablets next */\n        \@media (min-width: 769px) {\n            #contentContainer {\n                min-height: calc(100vh - 185px) !important;\n            }\n        }\n        "}$output .= '
+        html
+        {
+            font-size: 16px;
+        }
+        </style>';if ($stash->get('is_ng')|| $stash->get('CJT2_EXCLUSIVE')){$output .= '            <script>
+            window.LEXICON = window.LEXICON || {};
+            ';$stash->set('cldr_path','libraries/cldr/' .$stash->get(['locale',0,'get_language_tag',0]).'.js');$output .= $context->insert($stash->get('cldr_path'));$output .= '
+            </script>'}$output .= '        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+        ';if ($stash->get(['CPANEL',0,'is_qa_mode_enabled',0])){$output .= '
+            <script nonce="';$output .= $stash->get(['CPANEL',0,'nonce',0]);$output .= '">
+                ';$output .= $context->insert('libraries/axe-core/axe.min.js');$output .= '
+                window.AXE_CONFIG = {
+                    "context": "#contentContainer",
+                    "options": {
+                        "runOnly": {
+                            "type": "tag",
+                            "values": ["wcag2a", "wcag2aa"]
+                        },
+
+                        "rules": {
+                            "color-contrast": { "enabled": false },
+                            "valid-lang": { "enabled": false }
+                        },
+                        "resultTypes": ["violations"]
+                    }
+                };
+                ';$output .= $context->insert('libraries/cjt2/webAccessibilityChecker.js');$output .= '
+
+                ';$output .= $context->insert('libraries/cjt2/e2e.js');$output .= '
+            </script>
+        '}$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= '
+        <script src="';$output .= $stash->get(['MagicRevision',['/core/web-components/dist/jupiter-web-components.cmb.js' ]]);$output .= '"></script>
+        '}else {$output .= '
+        <script src="';$output .= $stash->get(['MagicRevision',['/core/web-components/dist/jupiter-web-components.cmb.min.js' ]]);$output .= '"></script>
+        '}$output .= '
+
+        ';if ($stash->get('link_block')){$output .= '            ';$output .= $stash->get('link_block');$output .= '        '}$output .= '
+        ';if ($stash->get('js_first_block')){$output .= '            ';$output .= $stash->get('js_first_block');$output .= '        '}$output .= '    </head>
+    ';$output .= '
+    ';$output .= '
+    ';$stash->set('whmnav',$stash->get(['NVData',0,'get',['whmcommand:navigation' ]])|| 0);$output .= '
+    ';$stash->set('page_class',($stash->get(['breadcrumburl',0,'length',0]))? $stash->get(['breadcrumburl',0,'replace',['/','-' ],'substr',[1 ]]): '');$output .= '
+    ';if ($stash->get('theme')eq 'yui'){$output .= '
+    <body class="whostmgr yui-skin-sam ';$output .= $stash->get('whmnav')eq 1 ? 'nav-collapsed' : '';$output .= ' page-';$output .= $stash->get('page_class');$output .= '" id="';$output .= $stash->get('breadcrumburl');$output .= '">
+    '}elsif ($stash->get('skipbreadcrumb')){$output .= '
+    <body class="whostmgr no-breadcrumbs ';$output .= $stash->get('whmnav')eq 1 ? 'nav-collapsed' : '';$output .= ' page-';$output .= $stash->get('page_class');$output .= '" id="';$output .= $stash->get('breadcrumburl');$output .= '">
+    '}else {$output .= '
+    <body class="whostmgr ';$output .= $stash->get('whmnav')eq 1 ? 'nav-collapsed' : '';$output .= ' page-';$output .= $stash->get('page_class');$output .= '" id="';$output .= $stash->get('breadcrumburl');$output .= '">
+    '}$output .= '
+
+    ';$output .= '
+    <div id="topFrameWrapper" class="topFrameWrapper" style="display:none;visibility:hidden">
+        <div class="informationWrapper">
+            <div class="infoContainer">
+                ';if ($stash->get('has_root_privileges')){$output .= '
+                <a id="lnkWHMVersion"></a>
+                '}else {$output .= '
+                <span id="lblWHMVersion"></span>
+                '}$output .= '
+            </div>
+        </div>
+    </div>
+
+    ';$stash->set('whm_logos',['WhmDarkLg','WhmWhiteLg' ]);$stash->set('whm_logos',$stash->get(['Whostmgr',0,'get_whm_logos',[$stash->get('whm_logos')]]));$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['whm_logos',0,'pairs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'name_path'}=$_tt_value;$output .= '
+        <link rel="preload" as="image" href="';$output .= $stash->get(['name_path',0,'value',0]);$output .= '">
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    <cp-root-variables
+        directory-prefix="';$output .= $stash->get('cp_security_token');$output .= '"
+        permissions="';$output .= $stash->get(['permissions',0,'json',0,'html',0]);$output .= '"
+        app-name="whm"
+        host-name=';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['Whostmgr',0,'hostname',0])]]);$output .= '
+        category-list="';$output .= $stash->get(['Whostmgr',0,'get_application_list',0,'json',0,'html',0]);$output .= '"
+        favorites="';$output .= $stash->get(['Whostmgr',0,'get_favorites',0,'json',0,'html',0]);$output .= '"
+        server-environment="';$output .= $stash->get('server_environment');$output .= '"
+        user="';$output .= $stash->get(['whm_variables',0,'remote_user',0]);$output .= '"
+        version="';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= '"
+        ';if ($stash->get('plugins')){$output .= '
+        plugins="';$output .= $stash->get(['plugins',0,'json',0,'html',0]);$output .= '"
+        '}$output .= '
+        whm-notifications="';$output .= $stash->get(['notifications',0,'json',0,'html',0]);$output .= '"
+        license-type="';$output .= $stash->get('license_type');$output .= '"
+        app-search-results-limit="7"
+        initial-nav-url="';$output .= $stash->get(['Whostmgr',0,'get_initial_nav_url',0,'html',0]);$output .= '"
+        whm-logos-json="';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('whm_logos')],'html',0]);$output .= '"
+    >
+    </cp-root-variables>
+
+    ';if (!$stash->get('inside_frame_or_tab_or_popup')&& $stash->get(['template_exists',[$stash->get('whm_analytics_include_template')]])){if ($cVC::S{'is_package_update_enabled'}){$output .= do {my$output='';my ($_tt_error,$_tt_handler);eval {$output .= '<div id="cp-analytics-whm">';$output .= $context->include($stash->get('whm_analytics_include_template'));$output .= '</div>'};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error if$_tt_error->type =~ /^(return|stop)$/;$stash->set('error',$_tt_error);$stash->set('e',$_tt_error);if (defined ($_tt_handler=$_tt_error->select_handler())){$_tt_error=0}else {$output .= '';$_tt_error=''}}die$_tt_error if$_tt_error;$output}}elsif ($stash->get('is_analytics_enabled_server_side')){$output .= do {my$output='';my ($_tt_error,$_tt_handler);eval {$output .= '<div id="cp-analytics-whm">';$output .= $context->include($stash->get('whm_analytics_include_template'));$output .= '</div>'};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error if$_tt_error->type =~ /^(return|stop)$/;$stash->set('error',$_tt_error);$stash->set('e',$_tt_error);if (defined ($_tt_handler=$_tt_error->select_handler())){$_tt_error=0}else {$output .= '';$_tt_error=''}}die$_tt_error if$_tt_error;$output}}}$output .= '
+
+    <cp-ui-load-analytics
+        analytics-config="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['analyticsConfig',0,'json',0]);&$_tt_filter($output)};$output .= '"
+    >
+    </cp-ui-load-analytics>
+
+    <div id="page-overlay" class="page-overlay"></div>
+
+    <div id="wrap" class="cp-layout-page">
+        <div id="glass-navbar-overlay"></div>
+        <!-- Global Banner -->
+        ';if ($stash->get(['template_exists',['/var/cpanel/customizations/whm/includes/global_banner.html.tt' ]])){$output .= '
+            ';$output .= $context->include('/var/cpanel/customizations/whm/includes/global_banner.html.tt');$output .= '
+        '}$output .= '
+
+        ';if (!$stash->get('hide_navigation')){$output .= '
+        <nav aria-label="';$output .= $stash->get(['locale',0,'maketext',['Main menu' ]]);$output .= '" id="cp-main-menu-container" class="cp-layout-main-menu">
+            <cp-main-menu
+                logo-alt-text=\'';$output .= $stash->get(['locale',0,'maketext',['WebHost Manager Logo' ]]);$output .= '\'
+            ></cp-main-menu>
+        </nav>
+        '}$output .= '
+        <div class="cp-layout-wrapper ';$output .= $stash->get('hide_navigation')? 'cp-layout-wrapper--full-width' : '';$output .= '">
+            <!-- Header Section -->
+            ';if (!$stash->get('hide_top_chrome')){$output .= '
+            <header role="banner" class="cp-layout-header cp-layout-header--with-main-menu">
+                <cp-whm-header-stats-control>
+                </cp-whm-header-stats-control>
+                ';$output .= '
+                <cp-header
+                    focus-search=\'true\'
+                    logo-alt-text=\'';$output .= $stash->get(['locale',0,'maketext',['WebHost Manager Logo' ]]);$output .= '\'>
+                </cp-header>
+            </header>
+            '}$output .= '
+
+        <script type="text/javascript">
+            (function() {
+                const header = document.querySelector(\'cp-header\');
+                if(header) {
+                    header.addEventListener(\'menuItemPress\', event => {
+                    if(event.detail.id === "menu-reset-link") {
+                        reset_all_interface_settings(\'';$output .= $stash->get('cp_security_token');$output .= '\')
+                    }
+                });
+                }
+            })();
+        </script>
+        <!-- masterContainer Start -->
+        ';if ($stash->get('theme')ne 'legacy'){$output .= '
+        <div id="masterContainer" data-app-key="';$output .= $stash->get('app_key');$output .= '">
+        '}else {$output .= '
+        <div id="masterContainer" class="grid-container-fluid" data-app-key="';$output .= $stash->get('app_key');$output .= '">
+        '}$output .= '
+        ';if (!$stash->get('hide_navigation')){$output .= '
+        <div style="display: none;">
+            ';$output .= $stash->get(['Command',0,'get',0]);$output .= '        </div>
+        '}$output .= '
+        <!-- pageContainer Start -->
+        <div id="pageContainer">
+            <!-- contentContainer Start -->
+            <div id="contentContainer">
+            ';if (!$stash->get('hide_license_warnings')){$output .= '
+                <div>
+                    <!-- unsupported distro -->
+                    ';$output .= $context->process('menu/_unsupported_distro.tmpl');$output .= '                    <!-- trial or dev license warning -->
+                    ';$output .= $context->process('menu/_trial.tmpl');$output .= '                </div>
+            '}$output .= '
+
+            ';if (!$stash->get('hide_banner_ad')&& $stash->get(['banner',0,'defined',0])&&!($stash->get('theme')eq 'bootstrap' || $stash->get('theme')eq 'jupiter')){$output .= '
+                ';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '
+                    <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/styles/master-rtl.cmb.min.css' ]]);$output .= '" />
+                '}else {$output .= '
+                    <link rel=\'stylesheet\' type=\'text/css\' href="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/styles/master-ltr.cmb.min.css' ]]);$output .= '" />
+                '}$output .= '
+            '}$output .= '
+
+            <!-- PAGE HEADER -->';if (!$stash->get('skipheader')){$output .= '
+                <div class="pageTitle" id="pageTitle-';$output .= $stash->get('app_key');$output .= '">
+            ';$stash->set('header',$stash->get('header')|| $stash->get(['locale',0,'maketext',['Results of Your Request' ]]));$output .= '            ';if ($stash->get('icon')){$output .= '            ';if (!$stash->get(['icon',0,'match',['\A/' ]])){$stash->set('icon',$stash->get(['Whostmgr',0,'find_file_url',['icons/' .$stash->get('icon')]]))}$output .= '                    <h1><img class="whm-app-title__image" src="';$output .= $stash->get('icon');$output .= '" alt="" /> <span>';$output .= $stash->get('header');$output .= '</span></h1>
+            '}else {$output .= '                ';if (!$stash->get('is_home_page')){$output .= '
+                    <h1>';$output .= $stash->get('header');$output .= '</h1>
+                '}$output .= '
+            '}$output .= '                </div>
+            '}$output .= '            <!-- Breadcrumbs Section -->';if (!$stash->get('skipbreadcrumb')){$output .= '
+                ';$output .= $context->process('master_templates/breadcrumbs.tmpl');$output .= '            '}$output .= '
+
+            <!-- Banner Section - now controlled via a plugin -->
+            ';if ($stash->get(['template_exists',['/usr/local/cpanel/whostmgr/docroot/templates/master_templates/banner.tmpl' ]])){$output .= '
+            ';$output .= $context->include('master_templates/banner.tmpl');$output .= '            '}$output .= '
+
+            <!-- PageTop Component -->
+            <!-- has_component_system: ';$output .= $stash->get('has_component_system')? 'true' : 'false';$output .= ' -->
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['whostmgr',$stash->get('app_key'),'page-top' ]])){$output .= $context->process('master_templates/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'page-top' })}$output .= '
+            <!-- PageTop Component End -->
+
+            ';if ($stash->get('theme')eq 'yui'){$output .= $stash->get('extrahtml')|| '';if ($stash->get('status')){$output .= $context->process('_loadstatusbox.tmpl',{'appname'=>$stash->get('statusapp')|| $stash->get('header')});$output .= $context->process('_setstatus.tmpl')}$output .= '            '}$output .= '
+            <!-- PAGE TEMPLATE\'S CONTENT -->
+
+            ';if ($stash->get('warn_linked_nodes')){$output .= '                ';$stash->set('num_linked_nodes',$stash->get(['Whostmgr',0,'count_linked_nodes',0]));$output .= '                ';if ($stash->get('num_linked_nodes')){$output .= '                <div class="callout callout-warning">
+                    ';$output .= $stash->get(['locale',0,'maketext',['This server uses [quant,_1,linked node,linked nodes]. To adjust a linked node’s configuration you must log in to that node directly. This interface will only affect the local server’s configuration. Use the “[output,url,_2,_3]” interface to manage this server’s linked nodes.',$stash->get('num_linked_nodes'),($stash->get('cp_security_token').'/scripts7/link-server-nodes/'),$stash->get(['locale',0,'maketext',['Link Server Nodes' ]])]]);$output .= '                </div>
+                '}$output .= '            '}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

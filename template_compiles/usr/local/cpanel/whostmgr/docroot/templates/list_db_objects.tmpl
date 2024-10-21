@@ -1,0 +1,157 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/list_db_objects.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Postgresql',$context->plugin('Postgresql'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('CpanelDB',$context->plugin('CpanelDB'));$output .= do {my$output='';$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+';if ($stash->get(['CpanelDB',0,'use_prefix',0])){$output .= '
+    <section class="callout callout-info">
+        <div class="limit-info">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: This interface does not enforce database prefixing. It is possible to rename a prefixed name to a non-prefixed name, but the ownership will not change.' ]]);$output .= '
+        </div>
+    </section>
+'}$output .= '
+
+<div id="cjt_pagenotice_container"></div>
+
+<div id="content" ng-app="getAcctList" ng-controller="initData" ng-cloak>
+    <div ng-if="!all_db_objects.length" class="alert alert-info">
+        <div class="alert-message" ng-bind="empty_message"></div>
+    </div>
+    <div ng-if="show_search">
+        <div class="row search-row">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <div class="input-group">
+                    <input name="find" id="database_filter"
+                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                class="form-control filter-list-input"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= '"
+                                autocomplete="off"
+                                ng-model="meta.filter"
+                                ng-change="meta.currentPage = 1;"
+                                ng-debounce
+                    />
+                    <div id="searchAction" class="input-group-btn search-list search" ng-click="toggleFilter()" focus-input>
+                        <button class="btn btn-default" ng-click="meta.filter = \'\'">
+                            <span class="glyphicon" ng-class="{ \'glyphicon-search\': !meta.filter, \'glyphicon-remove\': meta.filter }" ></span>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 col-xs-offset-1">
+                <div class="form-inline pull-right" ng-if="pageSizes.length > 1">
+                    <div class="form-group page-size-controller">
+                        <select id="package-table-page-size-top" class="form-control" ng-model="meta.pageSize" ng-options="item.value as item.label for item in pageSizes"></select>
+                    </div>
+                    <uib-pagination ng-change="selectPage()"
+                                ng-model="meta.currentPage"
+                                items-per-page="meta.pageSize"
+                                total-items="meta.filteredResults.length"
+                                max-size="4"
+                                direction-links="false"
+                                boundary-links="true"
+                                first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                                last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                                class="pagination-small">
+                    </uib-pagination>
+                </div>
+            </div>
+        </div>
+        <p class="label label-primary" ng-click="meta.selected = \'\';">{{ filterMsg() }}</p>
+    </div>
+    <table ng-if="all_db_objects.length" id="pkgtbl" role="table" class="table">
+        <thead>
+            <tr>
+                <th ng-click="toggleSort(meta, \'name\')" ng-class="selectedHeaderClass(\'name\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                    </a>
+                </th>
+';if ($stash->get(['Postgresql',0,'is_configured',0])){$output .= '                <th ng-click="toggleSort(meta, \'engine\')" ng-class="selectedHeaderClass(\'engine\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Database Engine' ]]);$output .= '
+                    </a>
+                </th>
+'}$output .= '                <th ng-click="toggleSort(meta, \'cpuser\')" ng-class="selectedHeaderClass(\'cpuser\')">
+                    <a href="">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '
+                    </a>
+                </th>
+                <th ng-if="!expand_all_rows">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat-start="dbobj in ((meta.filteredResults = (all_db_objects | filter:meta.filter | orderBy:meta.order:meta.reverse)) | startFrom:(meta.currentPage-1)*meta.pageSize | cpLimitTo:meta.pageSize)">
+                <td ng-bind="dbobj.name" ng-class="selectedColClass(\'name\')">
+                </td>
+';if ($stash->get(['Postgresql',0,'is_configured',0])){$output .= '                <td ng-bind="engineToDisplay[dbobj.engine]" ng-class="selectedColClass(\'engine\')">
+                </td>
+'}$output .= '                <td ng-bind="dbobj.cpuser" ng-class="selectedColClass(\'cpuser\')">
+                </td>
+                <td ng-if="!expand_all_rows">
+                    <button id="db_action_{{dbobj.engine}}_{{dbobj.name}}" type="button" class="btn btn-default btn-sm" ng-click="toggleEdit(this,dbobj)" title="';$output .= $stash->get(['data',0,'db_object_type',0])eq 'user' ? $stash->get(['locale',0,'maketext',['Rename this user or set its password.' ]]): $stash->get(['locale',0,'maketext',['Rename this database.' ]]);$output .= '">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </button>
+                </td>
+            </tr>
+            <tr ng-repeat-end ng-if="expand_all_rows || dbobj.inEdit" class="active">
+                <td colspan="99" id="edit_{{dbobj.engine}}_{{dbobj.name}}">
+                    <form id="xfer_cpanel_{{dbobj.cpuser}}" action=\'/xfercpanel\' method=\'POST\' target=\'_blank\'>
+                        <input type=\'hidden\' name=\'user\' value="{{dbobj.cpuser}}">
+                        <input type=\'hidden\' name=\'token\' value="';$output .= $stash->get('cp_security_token');$output .= '">
+                    </form>
+                    <form ng-init="!dbobj.newName && (dbobj.newName = dbobj.name)" ng-submit="submitDbObjectEdit(dbobj)">
+                        <div class="alert alert-warning" ng-if="dbobj.engine === \'mysql\' && db_object_type === \'database\'">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <div class="alert-message" ng-bind-html="getRenameWarning(dbobj) | trustAsHtml">
+                            </div>
+                        </div>
+
+                        <div class="alert alert-warning" ng-if="dbobj.engine === \'postgresql\' && db_object_type === \'user\'">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['PostgreSQL uses a user’s name to secure the user’s password internally. As a consequence of this, you must set the user’s password again as part of renaming the user.' ]]);$output .= '</div>
+                        </div>
+
+                        <div id="notice_area_for_{{dbobj.engine}}_{{dbobj.name}}"></div>
+
+                        <div ng-class="{\'has-error\':dbobj.error.name}">
+                            <label for="rename_input_{{dbobj.name}}">';$output .= $stash->get(['locale',0,'maketext',['Rename to:' ]]);$output .= '</label>
+                            <input id="rename_input_{{dbobj.name}}" type="text" size="{{renameSize(dbobj)}}" ng-init="validateName(dbobj)" ng-change="validateName(dbobj); validatePassword(dbobj)" ng-model="dbobj.newName" maxlength="{{CPANEL.sql.get_name_length_limit(dbobj.engine,db_object_type)}}">
+                            <span ng-if="dbobj.error.name">{{dbobj.error.name}}</span>
+                        </div>
+
+                        <div ng-if="db_object_type === \'user\'" ng-class="{\'has-error\':dbobj.error.password}">
+                            <label for="set_password_{{dbobj.name}}">';$output .= $stash->get(['locale',0,'maketext',['Set Password:' ]]);$output .= '</label>
+                            <input type="password" id="set_password_{{dbobj.name}}" type="text" ng-change="validatePassword(dbobj)" ng-model="dbobj.password" ng-debounce placeholder="';$output .= $stash->get(['locale',0,'maketext',['No change' ]]);$output .= '">
+                            <span ng-if="dbobj.password && !dbobj.passwordStrength">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+                            <span ng-if="dbobj.password && dbobj.passwordStrength">';$output .= $stash->get(['locale',0,'maketext',['Strength:' ]]);$output .= ' {{ dbobj.passwordStrengthStr }}</span>
+                            <br />
+                            <span ng-if="dbobj.error.password">{{dbobj.error.password}}</span>
+                        </div>
+
+                        <div class="button-area">
+                            <button type="submit" class="btn btn-default" ng-disabled="(dbobj.name === dbobj.newName) && ((db_object_type !== \'user\') || !dbobj.password)"><span class="glyphicon glyphicon-ok"></span> ';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '</button>
+                            <button class="btn btn-link" ng-click="dbobj.inEdit = false"><span class="glyphicon glyphicon-remove"></span> ';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+';$output .= "<script type=\"text/plain\" id=\"ng_pagination_html\">\n    <ul class=\"pagination\">\n        <li ng-repeat=\"page in pages\" ng-class=\"{active: page.active, disabled: page.disabled}\">\n            <a ng-if='!page.active' href=\"\" ng-click=\"selectPage(page.number)\">{{page.text}}</a>\n            <input ng-if='page.active' defaultValue='{{page.number}}' ng-keypress='(\$event.keyCode === 13) && selectPage(jumpPage)' title=\"";$output .= $stash->get(['locale',0,'maketext',['Enter a page number to jump to that page.' ]]);$output .= '" maxlength=\'{{(""+totalPages).length}}\' class=\'cp-page-jumper\' size=\'{{(""+totalPages).length}}\' ng-model=\'jumpPage\' ng-init=\'jumpPage = page.number\' ng-disabled=\'page.disabled || (totalPages === 1)\'>
+        </li>
+    </ul>
+</script>
+
+<script>
+    window.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('data')]]);$output .= ';
+    window.MYSQL_SERVER_VERSION = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'mysql_server_version',0])]]);$output .= ';
+</script>
+
+';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/cjt/sql.js','/cjt/sql.js' ]]));$output .= '
+';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+<script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/cjt/sql.js' ]]);$output .= '"></script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'header',0]),'app_key'=>$stash->get(['data',0,'db_object_type',0])eq 'database' ? 'manage_databases' : 'manage_database_users','stylesheets'=>['/css/whm_dynamic_notices.css' ],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angularjs/1.4.4/angular-animate.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/angular-ui-bootstrap/optimized/ui-bootstrap-tpls-1.2.5.min.js' ]])],'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

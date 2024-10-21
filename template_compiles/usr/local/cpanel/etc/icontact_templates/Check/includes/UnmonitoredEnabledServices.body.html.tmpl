@@ -1,0 +1,23 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/includes/UnmonitoredEnabledServices.body.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['NOTICE',0,'table_titles',0],[$stash->get(['CPANEL',0,'locale',0,'maketext',['Service' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Description' ]])]);$stash->set(['NOTICE',0,'table_items',0],[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'services',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= $stash->get(['NOTICE',0,'table_items',0,'push',[[$stash->get(['item',0,'name',0]),$stash->get(['item',0,'display_name',0])]]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= $context->process('include/code_standout.tmpl');$output .= '
+
+
+
+    ';$output .= $stash->get(['zebra_table',[{'titles'=>$stash->get(['NOTICE',0,'table_titles',0]),'items'=>$stash->get(['NOTICE',0,'table_items',0])}]]);$output .= '
+
+
+    <p>
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['When you enable [asis,cPanel]’s [asis,chkservd] service, it can monitor services and restore them if they fail.' ]]);$output .= '
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If monitoring is disabled, the system will not be able to automagically restore services if they fail.' ]]);$output .= '
+      ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can enable monitoring of services in [asis,WHM]’s “[_1]” interface with the “[_2]” link below.',$stash->get(['CPANEL',0,'locale',0,'maketext',['Service Manager' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Configure Monitor[comment,program that observes] Settings' ]])]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To enable monitoring of [output,strong,all] of these services from the command line, use the following command:' ]]);$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get(['NOTICE',0,'enable_monitor_all_enabled_services_command',0])}]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Configure Monitor[comment,program that observes] Settings' ]]);$output .= ':<br>
+        <a href="';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'service_manager_url',0]);$output .= '</a>
+    </p>
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,103 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listsubdomains/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts2/listsubdomains/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+<div ng-controller="tableCtrl" class="list-container" ng-cloak>
+  <div class="row search-page-container">
+      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+          <div class="pagination-container hidden-xs hidden-sm">
+              <page-size id="pageSize"
+                  allowed-sizes="meta.pageSizes"
+                  total-items="meta.totalItems"
+                  ng-model="meta.pageSize"
+                  show-all="true"
+                  ng-show="showPager"
+                  ng-change="selectPageSize()">
+              </page-size>
+              <uib-pagination id="paginateItems"
+                  total-items="meta.totalItems"
+                  ng-model="meta.currentPage"
+                  max-size="0"
+                  boundary-links="true"
+                  rotate="false"
+                  previous-text="<"
+                  next-text=">"
+                  first-text="<<"
+                  last-text=">>"
+                  items-per-page="meta.pageSize"
+                  ng-show="showPager"
+                  ng-change="selectPage()">
+              </uib-pagination>
+          </div>
+      </div>
+  </div>
+  <div class="row hidden-xs hidden-sm">
+    <div class="col-xs-8">
+    </div>
+    <div class="col-xs-4">
+      <div class="page-stats pull-right">
+        <span class="title">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Showing] [_1] - [_2] of [_3] items','{{ meta.start }}','{{ meta.limit }}','{{ meta.totalItems }}' ]]);$output .= '</span>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped responsive-table">
+    <thead>
+      <tr>
+        <th><span toggle-sort sort-meta="meta" sort-field="domain" onSort="sortList">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</span></th>
+        <th><span toggle-sort sort-meta="meta" sort-field="user" onSort="sortList">';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</span></th>
+        <th><span toggle-sort sort-meta="meta" sort-field="subdomain" onSort="sortList">';$output .= $stash->get(['locale',0,'maketext',['Subdomain' ]]);$output .= '</span></th>
+        <th><span>';$output .= $stash->get(['locale',0,'maketext',['Addon or Parked Domain' ]]);$output .= '</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="subdomain in filteredList">
+          <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+            <span>{{ subdomain.domain }}</span>
+            <span ng-if="subdomain.parked">(';$output .= $stash->get(['locale',0,'maketext',['Parked' ]]);$output .= ')</span>
+          </td>
+          <td data-title="';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '">{{ subdomain.user }}</td>
+          <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Subdomain' ]]);$output .= '">
+            <span>{{ subdomain.subdomain }}</span>
+            <span ng-if="subdomain.user !== \'nobody\'">
+                <form action="';$output .= $stash->get('cp_security_token').'/xfercpanel';$output .= '"
+                    method="post"
+                    class="form-inline-block"
+                    target="_blank"
+                    id="removeForm_{{ subdomain.subdomain }}">
+                    <input type="hidden" name="user" value="{{ subdomain.user }}">
+                    <input type="hidden" name="goto_app" value="Domains_SubDomains">
+                    <button type="submit" id="remove_{{ subdomain.subdomain }}" class="btn btn-link">
+                        <span class="fas fa-trash"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '
+                    </button>
+                </form>
+            </span>
+        </td>
+          <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Addon or Parked Domain' ]]);$output .= '">
+            <div ng-repeat="parkeddomain in subdomain.parkeddomains">
+              <div ng-if="parkeddomain">
+                  <span>{{ parkeddomain }}</span>
+                  <form action="';$output .= $stash->get('cp_security_token').'/scripts2/unpark';$output .= '"
+                      method="post"
+                      class="form-inline-block"
+                      id="unparkForm_{{ parked }}">
+                      <input type="hidden" name="pdomain" value="{{ parkeddomain }}">
+                      <button type="submit" id="unpark_{{ parkeddomain }}" class="btn btn-link">
+                          <span class="fas fa-times"></span>
+                          ';$output .= $stash->get(['locale',0,'maketext',['Unpark' ]]);$output .= '
+                      </button>
+                  </form>
+              </div>
+            </div>
+          </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.domains = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'domaindata',0])]]);$output .= ';
+    PAGE.searchDomain = \'';$output .= $stash->get(['data',0,'search',0,'html',0]);$output .= '\';
+</script>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'list_subdomains','breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

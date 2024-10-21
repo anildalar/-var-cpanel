@@ -1,0 +1,148 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard-restore-type.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block',{'name'=>$stash->get(['FORM',0,'type',0])});$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        <div id="backup-nav" class="row">
+            <div class="col-xs-12">
+                <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                <ol>
+                    <li id="tabBackupRestore" class="one"><a href="wizard.html" id="backupRestore"><span>';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></a></li>
+                    <li id="tabFullPartial" class="two"><a href="wizard-restore.html" id="restoreType"><span>';$output .= $stash->get(['locale',0,'maketext',['Select Restore Type' ]]);$output .= '</span></a></li>
+                    <li id="tabRestore" class="three"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="br-wrap" class="row">
+
+            <div class="col-xs-12">
+                <h2 id="hdrFinalStep">';$output .= $stash->get(['locale',0,'maketext',['Final Step' ]]);$output .= '</h2>
+                <p id="descFinalStep">';$output .= $stash->get(['locale',0,'maketext',['Restore your backup.' ]]);$output .= '</p>
+
+                <div id="br-content-wide">
+                    ';if (($stash->get(['FORM',0,'type',0])eq 'home')){$output .= '
+                    <h4 id="restore-home-form-title">';$output .= $stash->get(['locale',0,'maketext',['Restore a Home Directory Backup' ]]);$output .= '</h4>
+                    <form id="restore-home-form">
+                        ';$output .= $context->process('form',{'name'=>$stash->get(['FORM',0,'type',0])});$output .= '
+                    </form>
+                    '}elsif (($stash->get(['FORM',0,'type',0])eq 'db')){$output .= '
+                    <h4 id="restore-db-form-title">';$output .= $stash->get(['locale',0,'maketext',['Restore a Database Backup' ]]);$output .= '</h4>
+                    <form id="restore-db-form">
+                        ';$output .= $context->process('form',{'name'=>$stash->get(['FORM',0,'type',0])});$output .= '
+                    </form>
+                    '}elsif (($stash->get(['FORM',0,'type',0])eq 'forwarder')){$output .= '
+                    <h4 id="restore-forwarder-form-title">';$output .= $stash->get(['locale',0,'maketext',['Restore an Email Forwarders Backup' ]]);$output .= '</h4>
+                    <form id="restore-forwarder-form">
+                        ';$output .= $context->process('form',{'name'=>$stash->get(['FORM',0,'type',0])});$output .= '
+                    </form>
+                    '}elsif (($stash->get(['FORM',0,'type',0])eq 'filter')){$output .= '
+                    <h4 id="restore-filter-form-title">';$output .= $stash->get(['locale',0,'maketext',['Restore an Email Filters Backup' ]]);$output .= '</h4>
+                    <form id="restore-filter-form">
+                        ';$output .= $context->process('form',{'name'=>$stash->get(['FORM',0,'type',0])});$output .= '
+                    </form>
+                    '}$output .= '
+                </div>
+            </div>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'wizard-restore.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+
+<script type="text/x-handlebars-template" id="success-template">
+    <div id="{{id}}" class="alert alert-success" role="alert">
+        <button id="{{id}}-close" type="button"
+            class="close" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong>
+            <span class="alert-body"><span id="{{id}}-message">{{message}}</span></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="error-template">
+    <div id="{{id}}" class="alert alert-danger" role="alert">
+        <button id="{{id}}-close" type="button"
+            class="close" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            <span class="alert-body"><span id="{{id}}-message">{{message}}</span></span>
+            {{#if rest.length}}
+            <p class="alert-more">
+                <b>';$output .= $stash->get(['locale',0,'maketext',['Additional Information:' ]]);$output .= '</b>
+                <ul class="people_list">
+                  {{#each rest}}
+                  <li>{{this}}</li>
+                  {{/each}}
+                </ul>
+            </p>
+            {{/if}}
+        </div>
+    </div>
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'page_stylesheets'=>['css2-min/backup.css' ],'page_scripts'=>['libraries/handlebars/handlebars.js','backup/index.js' ],'content',$output })};$output .= '
+
+';$output .= '
+
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    ';$stash->set('polyfills',[$stash->get(['theme_magic_url',['libraries/promise/bluebird.core.min.js' ]]),$stash->get(['theme_magic_url',['libraries/fetch/fetch.umd.min.js' ]])]);$output .= '
+
+    if (!PAGE) {
+        PAGE = {};
+    }
+    PAGE.validationTitle = ';$output .= $stash->get(['locale',0,'maketext',['Restore' ],'json',0]);$output .= ';
+    PAGE.missingFile     = ';$output .= $stash->get(['locale',0,'maketext',['You must select a file to restore.' ],'json',0]);$output .= ';
+
+    PAGE.restoringDb         = ';$output .= $stash->get(['locale',0,'maketext',['Restoring database …' ],'json',0]);$output .= ';
+    PAGE.restoringHome       = ';$output .= $stash->get(['locale',0,'maketext',['Restoring files …' ],'json',0]);$output .= ';
+    PAGE.restoringFilters    = ';$output .= $stash->get(['locale',0,'maketext',['Restoring email filters …' ],'json',0]);$output .= ';
+    PAGE.restoringForwarders = ';$output .= $stash->get(['locale',0,'maketext',['Restoring email forwarders …' ],'json',0]);$output .= ';
+
+    PAGE.session         = ';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'json',0]);$output .= ';
+    PAGE.polyfills       = ';$output .= $stash->get(['polyfills',0,'json',0]);$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'form'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<div class="form-group">
+    <div id="restore-';$output .= $stash->get('name');$output .= '-message-container" class="row">
+        <div class="col-xs-12">
+            <span id="restore-';$output .= $stash->get('name');$output .= '-spinner" style="display:none">
+              <i class="fas fa-spinner fa-spin"></i>
+            </span>
+            <span id="restore-';$output .= $stash->get('name');$output .= '-message">
+            </span>
+        </div>
+    </div>
+    <div class="row" id="restore-';$output .= $stash->get('name');$output .= '-fields">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <input type="hidden" value="';$output .= $stash->get(['CPANEL',0,'homedir',0]);$output .= '" name="dir" />
+            <input type="file" id="restore-';$output .= $stash->get('name');$output .= '-file" name="file1" />
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div id="restore-';$output .= $stash->get('name');$output .= '-file_error"></div>
+        </div>
+    </div>
+</div>
+<div class="form-group">
+    <button id="restore-';$output .= $stash->get('name');$output .= '-submit-button"
+            type="submit"
+            class="btn btn-primary">
+           ';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '
+    </button>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

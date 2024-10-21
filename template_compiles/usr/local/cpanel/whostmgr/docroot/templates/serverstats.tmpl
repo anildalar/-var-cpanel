@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/serverstats.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('labels',{'vendor'=>'Vendor','name'=>'Name','speed'=>'Speed','cache'=>'Cache' });$output .= do {my$output='';$output .= '<div class=\'brickcontainer\'><div class=\'brickcontainer2\'>
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Processor Information' });if (!$stash->get(['data',0,'processors',0,'exists',['error' ]])){$output .= '
+Total processors: ';$output .= $stash->get(['data',0,'processors',0,'keys',0,'size',0]);$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'processors',0,'keys',0,'nsort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'proc_index'}=$_tt_value;$stash->set(['data',0,'processors',0,$stash->get('proc_index'),0,'speed',0],$stash->get(['data',0,'processors',0,$stash->get('proc_index'),0,'speed',0]).' MHz');$output .= '<dl class=\'processors\'>
+<dt>Processor #';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '</dt>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=['vendor','name','speed','cache' ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'label'}=$_tt_value;if ($stash->get(['data',0,'processors',0,$stash->get('proc_index'),0,$stash->get('label'),0])){$output .= ('<dd><dl><dt>' .$stash->get(['labels',0,$stash->get('label'),0]).'</dt><dd>' .$stash->get(['data',0,'processors',0,$stash->get('proc_index'),0,$stash->get('label'),0]).'</dd></dl></dd>')}$output .= '</dl>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '
+';$output .= $stash->get(['data',0,'processors',0,'error',0]);$output .= '
+'}$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Memory Information' });$output .= '<pre>
+';$output .= $stash->get(['data',0,'memory',0]);$output .= '</pre>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'System Information' });$output .= '<pre>
+';$output .= $stash->get(['data',0,'system',0]);$output .= '</pre>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Physical Disks' });$output .= '<pre>
+';$output .= $stash->get(['data',0,'disks',0]);$output .= '
+</pre>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Current Memory Usage' });$output .= '<pre>
+';$output .= $stash->get(['data',0,'memory_usage',0]);$output .= '</pre>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>'Current Disk Usage' });$output .= '<pre>
+';$output .= $stash->get(['data',0,'disk_usage',0]);$output .= '</pre>
+';$output .= $context->process('_brickend.tmpl');$output .= '</div></div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'server_information','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

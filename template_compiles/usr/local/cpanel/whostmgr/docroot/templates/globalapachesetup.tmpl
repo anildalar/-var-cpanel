@@ -1,0 +1,28 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/globalapachesetup.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Encoder',$context->plugin('Encoder'));$output .= '
+';$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<div id="tweak_content">
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['Changes to these settings do not take effect until the main Apache configuration file is rebuilt.' ]]);$output .= '
+        </div>
+    </div>
+
+    ';$output .= $context->process('_local_template_warning_message.tmpl');$output .= '
+
+    <form method="post" action="';$output .= $stash->get('action');$output .= '">
+    ';$stash->set('tweakcfg',{'display_label'=>1 });$output .= '    ';$output .= $context->include('_gentweakpage.tmpl',{'bootstrap'=>1 });$output .= '
+    <div style="text-align:center">
+    <button class="btn btn-primary" type="submit">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+    </div>
+    <input type="hidden" name="its_for_real" value="1" />
+    </form>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','extrastyle'=>'
+    .searchhide {
+        display:none;
+    }
+    td.label_and_help, th.label_and_help {
+        width: 30%;
+    }
+    ','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['css/_gentweakpage.css' ]])],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

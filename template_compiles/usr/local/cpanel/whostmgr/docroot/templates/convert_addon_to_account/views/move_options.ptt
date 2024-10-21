@@ -1,0 +1,359 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/move_options.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPUsername',$context->plugin('CPUsername'));$output .= '
+';$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+<div class="ng-hide" ng-show="move_options_vm.ui.is_loading">
+    <div class="alert alert-info">
+        <div class="alert-message">
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+    </div>
+</div>
+<div class="ng-hide" ng-show="!move_options_vm.ui.is_loading && !move_options_vm.ui.domain_exists">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['The system could not find the addon domain “[_1]”.','{{ move_options_vm.domain_name }}' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Go back,_2].','main',{'id'=>'backToMainView' }]]);$output .= '
+        </div>
+    </div>
+</div>
+';if (!$stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+<div class="ng-hide" ng-show="!move_options_vm.ui.is_loading && !move_options_vm.account_packages.length">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['Verify that a valid package exists and you have not exceeded your reseller restrictions.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Go back,_2].','main',{'id'=>'backToMainView' }]]);$output .= '
+        </div>
+    </div>
+</div>
+'}$output .= '
+<div ng-hide="move_options_vm.ui.is_loading || !move_options_vm.ui.domain_exists || !move_options_vm.account_packages.length">
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Account Settings for “[_1]”','{{ move_options_vm.domain_name }}' ]]);$output .= '</span>
+                </div>
+                <div class="panel-body">
+                    <form id="account_settings"
+                        name="account_settings"
+                        class="layout-medium"
+                        autocomplete="off"
+                        novalidate>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label id="username_label"
+                                        for="username">';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <input type="text"
+                                        id="username"
+                                        name="username"
+                                        ng-model="move_options_vm.this_domain.account_settings.username"
+                                        required
+                                        ng-pattern="';$output .= '/' .$stash->get(['CPUsername',0,'make_strict_regexp_str',0]).'/';$output .= '"
+                                        maxlength="';$output .= $stash->get(['CPUsername',0,'get_max_username_length',0]);$output .= '"
+                                        class="form-control">
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <ul validation-container field-name="username">
+                                        <li validation-item field-name="username" validation-name="required" id="val-username-required">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                                        </li>
+                                        <li validation-item field-name="username" validation-name="pattern" id="val-username-required">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['This is not a valid username.' ]]);$output .= '
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label id="email_label"
+                                        for="email">';$output .= $stash->get(['locale',0,'maketext',['Contact Email (optional)' ]]);$output .= '</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <input id="email"
+                                        name="email"
+                                        type="text"
+                                        email="rfc"
+                                        class="form-control"
+                                        ng-model="move_options_vm.this_domain.account_settings.email">
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-6">
+                                    <ul validation-container field-name="email"></ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <label id="package-label"
+                                    ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '                                        for="package">';$output .= $stash->get(['locale',0,'maketext',['Package (optional)' ]]);$output .= '</label>
+                                    '}else {$output .= '
+                                        for="package">';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</label>
+                                    '}$output .= '
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <select class="form-control"
+                                        name="package"
+                                        id="package"
+                                        ng-model="move_options_vm.selected_package"
+                                        ng-options="package.name for package in move_options_vm.account_packages">
+                                        ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '                                        <option value=""></option>
+                                        '}$output .= '
+                                    </select>
+                                </div>
+                                <div class="col-xs-12 col-sm-4 col-md-6">
+                                ';if (!$stash->get(['Whostmgr',0,'hasroot',0])){$output .= '                                    <ul validation-container field-name="package">
+                                        <li validation-item field-name="package" validation-name="required" id="val-package-required">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You must choose a valid package.' ]]);$output .= '
+                                        </li>
+                                    </ul>
+                                '}$output .= '
+                                </div>
+                            </div>
+                        </div>
+                        ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <div class="checkbox">
+                                  <label>
+                                    <input type="checkbox" id="cbPreserveOwnership" value="true" ng-model="move_options_vm.this_domain.move_options[\'preserve-ownership\']">
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Preserve Account Ownership' ]]);$output .= '</span>
+                                  </label>
+                                </div>
+                             </div>
+                             <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                             <!-- not validating you -->
+                             </div>
+                        </div>
+                        '}$output .= '
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class=""> ';$output .= $stash->get(['locale',0,'maketext',['Selection Details for “[_1]”','{{ move_options_vm.domain_name }}' ]]);$output .= ' </h2>
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <item-move-status
+                        id="docroot_move_status"
+                        ng-model="move_options_vm.move_website_data"></item-move-status>
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Website Configuration' ]]);$output .= '</span>
+
+                    <div class="pull-right flip">
+                        <button id="editDocroot"
+                            name="editDocroot"
+                            class="btn btn-sm btn-primary"
+                            ng-click="move_options_vm.goToEditView(\'docroot\')">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</button>
+                    </div>
+                </div>
+                <div class="panel-body ng-hide" ng-show="move_options_vm.move_website_data">
+                    <ul>
+                        <li ng-hide="!move_options_vm.this_domain.move_options[\'docroot\']">';$output .= $stash->get(['locale',0,'maketext',['Website document root' ]]);$output .= '</li>
+                        <li ng-hide="!move_options_vm.this_domain.move_options[\'custom-vhost-includes\']">';$output .= $stash->get(['locale',0,'maketext',['Custom [asis,VirtualHost] include files' ]]);$output .= '</li>
+                        <li ng-hide="!move_options_vm.show_ssl_copy_option">';$output .= $stash->get(['locale',0,'maketext',['[output,abbr,SSL,Secure Sockets Layer] certificate' ]]);$output .= '</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <item-move-status
+                        id="dns_move_status"
+                        ng-model="move_options_vm.this_domain.move_options[\'custom-dns-records\']"></item-move-status>
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Custom [asis,DNS] Records' ]]);$output .= '</span>
+
+                    <div class="pull-right flip">
+                        <button id="editDns"
+                            name="editDns"
+                            class="btn btn-sm btn-primary"
+                            ng-click="move_options_vm.goToEditView(\'dns\')">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</button>
+                    </div>
+                </div>
+                <div class="panel-body ng-hide"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <item-move-status
+                        id="email_move_status"
+                        ng-model="move_options_vm.move_email_category"></item-move-status>
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</span>
+                    <div class="pull-right flip config-button-container">
+                        <div class="alert-icon-combo">
+                            <div class="alert-icon alert-icon__table-cell">
+                                    <i class="fas fa-exclamation-triangle ng-hide"
+                                        ng-show="move_options_vm.disable_email_button"
+                                        uib-tooltip="{{move_options_vm.no_email_tooltip}}"
+                                        tooltip-append-to-body="true"></i>
+                            </div>
+                            <div class="configure-button">
+                                <button id="editEmail"
+                                    type="button"
+                                    name="editEmail"
+                                    ng-disabled="move_options_vm.disable_email_button"
+                                    class="btn btn-sm btn-primary"
+                                    ng-click="move_options_vm.goToEditView(\'email\')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="callout callout-info callout-top">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The conversion process moves the following items even if you do not copy any email data:' ]]);$output .= '
+                        <ul>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Mailing Lists' ]]);$output .= '</li>
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['[asis,Roundcube] webmail data' ]]);$output .= '</li>
+                        </ul>
+                        ';$output .= $stash->get(['locale',0,'maketext',['The addon domain’s new account will inherit the mailbox storage format of its original parent account.' ]]);$output .= '
+                    </div>
+                    <ul>
+                        <li ng-show="move_options_vm.this_domain.move_options[\'email-accounts\']">{{ move_options_vm.stats.email.accounts }}</li>
+                        <li ng-show="move_options_vm.this_domain.move_options[\'email-forwarders\']">{{ move_options_vm.stats.email.forwarders }}</li>
+                        <li ng-show="move_options_vm.this_domain.move_options[\'autoresponders\']">{{ move_options_vm.stats.email.autoresponders }}</li>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Webmail data ([list_and,_1])',['Horde' ]]]);$output .= '</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <item-move-status
+                        id="db_move_status"
+                        ng-model="move_options_vm.move_db_category"></item-move-status>
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '</span>
+                    <div class="pull-right flip config-button-container">
+                        <div class="alert-icon-combo">
+                            <div class="alert-icon alert-icon__table-cell">
+                                <i class="fas fa-exclamation-triangle ng-hide"
+                                    ng-show="!move_options_vm.enable_db_button"
+                                    uib-tooltip="{{move_options_vm.no_databases_tooltip}}"
+                                    tooltip-append-to-body="true"></i>
+                            </div>
+                            <div class="configure-button">
+                                <button id="mysqlDbs"
+                                    type="button"
+                                    name="mysqlDbs"
+                                    class="btn btn-sm btn-primary"
+                                    ng-disabled="!move_options_vm.enable_db_button"
+                                    uib-tooltip="{{move_options_vm.database_tooltip()}}"
+                                    ng-click="move_options_vm.goToEditView(\'databases\')">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body"
+                    ng-show="move_options_vm.move_db_category">
+                    <div>
+                        <p ng-if="move_options_vm.this_domain.move_options.mysql_dbs.length > 0">{{ move_options_vm.selected_dbs_message }}</p>
+                        <ul id="mysql_dbs_to_move">
+                            <li ng-repeat="db in move_options_vm.this_domain.move_options.mysql_dbs | orderBy:\'name\'">
+                                <span ng-if="move_options_vm.copy_mysql_dbs">';$output .= $stash->get(['locale',0,'maketext',['“[_1]” as “[_2]”','{{:: db.name }}','{{ move_options_vm.addDbPrefix(db.new_name) }}' ]]);$output .= '</span>
+                                <span ng-if="!move_options_vm.copy_mysql_dbs">{{:: db.name }}</span>
+                            </li>
+                        </ul>
+                        <div ng-if="!move_options_vm.copy_mysql_dbs && move_options_vm.this_domain.move_options.mysql_users.length > 0">
+                            <p>';$output .= $stash->get(['locale',0,'maketext',['You selected the following database users to move:' ]]);$output .= '</p>
+                            <ul id="mysql_users_to_move">
+                                <li ng-repeat="user in move_options_vm.this_domain.move_options.mysql_users | orderBy:\'name\'">
+                                    <span>{{:: user.name }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12 col-lg-8">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <item-move-status
+                        id="subaccount_move_status"
+                        ng-model="move_options_vm.move_subaccount_category"></item-move-status>
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Subaccounts' ]]);$output .= '</span>
+                    <div class="pull-right flip config-button-container">
+                        <button id="editSubaccounts"
+                            type="button"
+                            name="editSubaccounts"
+                            class="btn btn-sm btn-primary"
+                            ng-click="move_options_vm.goToEditView(\'subaccounts\')">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</button>
+                    </div>
+                </div>
+                <div class="panel-body"
+                    ng-show="move_options_vm.move_subaccount_category">
+                    <ul>
+                        <li ng-show="move_options_vm.this_domain.move_options[\'ftp-accounts\']">';$output .= $stash->get(['locale',0,'maketext',['[asis,FTP] accounts' ]]);$output .= '</li>
+                        <li ng-show="move_options_vm.this_domain.move_options[\'webdisk-accounts\']">';$output .= $stash->get(['locale',0,'maketext',['Web Disk accounts' ]]);$output .= '</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="alert alert-warning ng-hide" ng-show="move_options_vm.ip_addr_will_change">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] The [asis,IP] address for the converted addon domain will change. Review any [asis,DNS] settings that may be affected.' ]]);$output .= '
+        </div>
+    </div>
+
+    <div class="callout callout-info">
+        ';$output .= $stash->get(['locale',0,'maketext',['This feature is still a work in progress. It will migrate most, but not all, of the account data. For more information, read our [output,url,_1,documentation,target,_2].','https://go.cpanel.net/AddonConversionList','_blank' ]]);$output .= '
+    </div>
+
+    <div class="form-group action-group">
+        <button type="submit"
+            id="save_options"
+            name="save_options"
+            cp-action="move_options_vm.startConversion(account_settings)"
+            button-class="btn-primary"
+            ng-disabled="move_options_vm.disableSave(account_settings)">';$output .= $stash->get(['locale',0,'maketext',['Start Conversion' ]]);$output .= '</button>
+        <button type="button"
+            id="go_back"
+            name="go_back"
+            ng-click="move_options_vm.goToMain()"
+            class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

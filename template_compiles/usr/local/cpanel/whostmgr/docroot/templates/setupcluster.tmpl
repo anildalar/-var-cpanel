@@ -1,0 +1,106 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/setupcluster.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('transfer_tool_url',$stash->get('cp_security_token').'/scripts5/account_copy_input');$stash->set('update_preferences_url',$stash->get('cp_security_token').'/scripts2/updateconf');$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="row">
+    <div class="col-md-8">
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to link this server to other servers in a configuration cluster.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You can then copy this server’s configuration settings to the cluster’s servers in [asis,WHM]’s [output,url,_1,Update Preferences,target,_2] interface.',$stash->get('update_preferences_url'),'_blank' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['When you update a setting, you can choose to copy this server’s changes out to all of its cluster servers.' ]]);$output .= '
+        </p>
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['To import a configuration from a remote server, you must use the [output,url,_1,Transfer Tool,target,_2] interface. You can transfer the following: [list_and_quoted,_3]',$stash->get('transfer_tool_url'),'_blank',$stash->get(['data',0,'transfer_modules',0])]]);$output .= '</p>
+<div id="formDryDock" class="hidden">
+    <table id="tableAlerts">
+        <tr id="confirmDelete" class="alert danger hidden">
+            <td colspan="4" class="text-center">
+                <form id="confirmDeleteForm">
+                    <div id="confirmDeleteAlertIcon"><span class="glyphicon glyphicon-question-sign"></span></div>
+                    <div id="confirmMessage"></div>
+                    <div id="confirmDeleteButtons">
+                        <input type="hidden" id="serverToDelete" value="">
+                        <button type="button" id="serverDeleteContinueBtn" class="btn btn-xs btn-danger">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+                        <button type="button" id="serverDeleteCancelBtn" class="btn btn-xs btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="noticeBox">
+    <div id="globalSuccessNotice" class="alert alert-success hidden">
+        <span class="glyphicon glyphicon-ok-sign"></span><span id="globalSuccessMessage"></span>
+        <button id="hideSuccessAlertBtn" type="button" class="close" aria-hidden="true">&times;</button>
+    </div>
+    <div id="globalFailureNotice" class="alert alert-danger hidden">
+        <span class="glyphicon glyphicon-exclamation-sign"></span><span id="globalFailureMessage"></span>
+        <button id="hideFailureAlertBtn" type="button" class="close" aria-hidden="true">&times;</button>
+    </div>
+    <div id="globalInfoNotice" class="alert alert-warning hidden">
+        <span class="glyphicon glyphicon-info-sign" id="validationIcon"></span>
+        <span id="globalInfoMessage"></span><button id="hideFailureAlertBtn" type="button" class="close" aria-hidden="true">&times;</button>
+    </div>
+</div>
+<p id="createBtnContainer" class="text-right"><button id="createBtn" type="button" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '</button></p>
+<table class="table table-striped table-hover" id="serverList">
+        <thead>
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Server' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['API Token' ]]);$output .= '</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr id="noLinksDefined"';if ($stash->get(['data',0,'servers',0,'size',0])> 0){$output .= 'class="hidden"'}$output .= '>
+            <td colspan="4" class="alert alert-info text-center">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <span id="noLinksMessage">
+                    ';$output .= $stash->get(['locale',0,'maketext',['No servers are defined for this configuration cluster. Click [output,strong,Create] to add one.' ]]);$output .= '
+                </span>
+            </td>
+        </tr>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'servers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'server'}=$_tt_value;$output .= '            <tr class="serverLink" data-server="';$output .= $stash->get(['server',0,'key',0]);$output .= '">
+                <td class="serverName">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('trim')|| $context->throw($context->error);$output .= $stash->get(['server',0,'key',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '                </td>
+                <td class="userName">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('trim')|| $context->throw($context->error);$output .= $stash->get(['server',0,'value',0,'user',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '                </td>
+                <td class="hashValue">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('trim')|| $context->throw($context->error);$output .= $stash->get(['server',0,'value',0,'signature',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '                </td>
+                <td class="actions text-right">
+                    <button type="button" class="deleteBtn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Delete entry for “[_1]”.',$stash->get(['server',0,'key',0])]]);$output .= '" >
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                    <button type="button" class="manageBtn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Edit entry for “[_1]”.',$stash->get(['server',0,'key',0])]]);$output .= '">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                            <span class="glyphicon glyphicon-chevron-left"></span>'}else {$output .= '                            <span class="glyphicon glyphicon-chevron-right"></span>'}$output .= '                    </button>
+                </td>
+            </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </tbody>
+</table>
+<p id="extraCreateButton" class="text-right"><button id="createBtn2" type="button" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '</button></p>
+<div id="serverLinkEditor" class="hidden">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 id="addServerHeadline" class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Add Server' ]]);$output .= '</h4>
+            <h4 id="editServerHeadline" class="panel-title hidden">';$output .= $stash->get(['locale',0,'maketext',['Edit Server' ]]);$output .= '</h4>
+        </div>
+        <div class="panel-body">
+            <form role="form">
+                <div class="form-group">
+                    <label for="serverNameEditor">';$output .= $stash->get(['locale',0,'maketext',['Server' ]]);$output .= '</label>
+                    <input type="text" class="form-control" id="serverNameEditor" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Server Name or IP Address' ]]);$output .= '">
+                </div>
+                <div class="form-group">
+                    <label for="serverUserEditor">';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</label>
+                    <input type="text" class="form-control" id="serverUserEditor" value="root" placeholder="';$output .= $stash->get(['locale',0,'maketext',['The username for the API token.' ]]);$output .= '">
+                </div>
+                <div class="form-group">
+                    <label for="serverKeyEditor">';$output .= $stash->get(['locale',0,'maketext',['API Token' ]]);$output .= '</label>
+                    <textarea id="serverKeyEditor" class="form-control" rows="5" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Paste the server’s API token here.' ]]);$output .= '" data-gramm_editor="false"></textarea>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-primary" id="serverSaveChanges">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button><button type="button" id="goBack" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+';$context->include('master_templates/master.tmpl',{'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),'/templates/setupcluster/page.min.js' ],'stylesheets'=>['/templates/setupcluster/page.min.css' ],'theme'=>'bootstrap','app_key'=>'configuration_cluster','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

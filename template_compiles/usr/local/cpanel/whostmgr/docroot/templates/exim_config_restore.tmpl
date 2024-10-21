@@ -1,0 +1,180 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/exim_config_restore.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+';if ($stash->get('run')){$output .= '
+
+    ';$stash->set('tabid','restore');$output .= '
+
+
+    ';if ($stash->get(['restore',0,'status',0])){$output .= '
+        <div class="okmsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['restore',0,'statusmsg',0])]]);$output .= '</div>
+    '}else {$output .= '
+        <div class="errormsg">';$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['restore',0,'statusmsg',0])]]);$output .= '</div>
+    '}$output .= '
+
+
+    ';if ($stash->get(['restore',0,'status',0])eq 1 && $stash->get(['restore',0,'versionmatch',0])){$output .= '
+        <script>
+        var Event = YAHOO.util.Event;
+        Event.on(window, "load", function() {
+                    //install_exim_configuration will reload the tabs and check the config
+                    window.location.href = \'install_exim_configuration?in_tab=';$output .= $stash->get('in_tab');$output .= '&tabid=';$output .= $stash->get('tabid');$output .= '\';
+                });
+        </script>
+
+    '}elsif ($stash->get(['restore',0,'status',0])eq 1){$output .= '
+        ';$output .= $context->process('notify_displayeximconfforedit.tmpl');$output .= '
+
+        <script src="';$output .= $stash->get(['MagicRevision',['/js/exim_tabs_optimized.js' ]]);$output .= '"></script>
+
+        <script>
+        var Event = YAHOO.util.Event;
+        Event.on(window, "load", function() {
+                ';if ($stash->get('in_tab')){$output .= '
+                    parent.reload_tab(\'restore\');
+                    parent.reload_tab(\'advanced\', { \'skip_dry_run_warning\':1  });
+
+                    //A narrowly-scoped hack to ensure that the popup
+                    //is visible.
+                    document.body.style.height = "100%";
+                    document.documentElement.style.height = "100%";
+                    document.getElementById("contentContainer").style.height = "100%";
+                '}$output .= '
+                notify_restore_config_incompat();
+                });
+
+        function notify_restore_config_incompat() {
+                var  restore_config_incompat_panel = new YAHOO.widget.Dialog("restore_config_incompat_panel", {
+                            width:"320px",
+                            visible:false,
+                            modal:true,
+                            constraintoviewport:true,
+                            close:false,
+                            fixedcenter:true,
+                            buttons : [ { text:"Edit", handler:function() {
+                                    ';if ($stash->get('in_tab')){$output .= '
+                                         select_exim_advanced();
+                                    '}else {$output .= '
+                                         select_exim_advanced(1, { \'skip_dry_run_warning\':1 });
+                                    '}$output .= '
+                                    } , isDefault:true } ]
+                            } );
+                document.getElementById(\'restore_config_incompat_panel\').style.display=\'\';
+                restore_config_incompat_panel.render();
+                restore_config_incompat_panel.show();
+        }
+
+        </script>
+
+
+        <div id="restore_config_incompat_panel" style="display:none;">
+            <div class="hd" id="statushd">Restored Configuration Version Mismatch</div>
+            <div class="bd">
+                <div id="status">The configuration you have attempted to restore is for template version: ';$output .= $stash->get(['restore',0,'restoredversion',0]);$output .= '.  This version of cPanel/WHM uses template version: ';$output .= $stash->get(['data',0,'current_template_version',0]);$output .= '.  The configuration will be loaded into the "Advanced Editor."   Please make the necessary changes to ensure the configuration will function properly, and save when complete.</div>
+            </div>
+            <div class="ft" id="statusft"></div>
+        </div>
+    '}else {$output .= '
+        ';$output .= $context->process('notify_displayeximconfforedit.tmpl');$output .= '
+    '}$output .= '
+
+
+'}else {$output .= '
+
+    ';$output .= do {my$output='';$output .= '    <p>You can restore the Exim configuration from an existing backup file.</p>
+
+    <p><strong>Note:</strong> If the configuration that you want to restore matches the Exim configuration template that WHM currently utilizes (template version: ';$output .= $stash->get(['data',0,'current_template_version',0]);$output .= '), WHM will restore the backup file. If these versions do not match, WHM will upload the backup file to the <em>Advanced Editor</em> tab. You will be redirected to this tab to edit the uploaded configuration for compatibility with the current Exim version.</p>
+
+    <div>
+        <h2>Upload backup from your computer</h2>
+        <form id="restorebck" method="POST" ENCTYPE="multipart/form-data" ';if ($stash->get('in_tab')){$output .= 'target="tabaction"'}$output .= ' action="exim_config_restore" onSubmit="notify_parent_submit();">
+
+            Backup File to Restore: <input type="file" id="file_upload_id" name="backup">
+            <span id="file_upload_id_error"></span>
+            <input type="hidden" name="run" value="1">
+            <input type="hidden" name="serverfile">
+            <input type="hidden" name="in_tab" value="';$output .= $stash->get('in_tab');$output .= '">
+            <div>
+                <input type="submit" value="Upload" class="btn-primary" id="restore_upload_button" />
+            </div>
+        </form>
+    </div>
+
+     ';if (!$stash->get(['data',0,'list_status',0])){$output .= '
+                <p class="description">';$output .= $stash->get(['data',0,'list_statusmsg',0]);$output .= '</p>
+     '}$output .= '
+
+     ';if ($stash->get(['data',0,'current_server_side_backups',0,'size',0])> 0){$output .= '
+         <div>
+            <h2>Restore backup from the server</h2>
+            <table>
+             <tr>
+                <th>File</th>
+                <th>Time</th>
+                <th>Version</th>
+                <th>Actions</th>
+                 ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'current_server_side_backups',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'backup'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>';$output .= $stash->get(['backup',0,'file',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['backup',0,'servertime',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['backup',0,'version',0]);$output .= '</td>
+                        <td><a onclick="restore_server_file(\'';$output .= $stash->get(['backup',0,'file',0,'cpanel_safe_html_encode_str',0]);$output .= '\'); return false;" href=\'#\'>Restore</a></td>
+                    </tr>
+                 ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+              </tr>
+            </table>
+         </div>
+     '}$output .= '
+
+    ';$context->include('_brick.tmpl',{'bricktitle'=>'Restore the Exim Configuration','brickpercent'=>'auto','content',$output })};$output .= '
+
+    <script>
+    function restore_server_file(file) {
+        var formEl = document.getElementById(\'restorebck\');
+        if ( confirm(\'Are you sure you want to overwrite the current configuration and restore this backup?\') ) { notify_parent_submit();
+            formEl.serverfile.value = file;
+            formEl.submit();
+        }
+    }
+    function notify_parent_submit() {
+        if (parent && parent.notify_submit)  {
+            parent.notify_submit(\'restore\',\'Restoring Configuration...\');
+        }
+    }
+
+    document.getElementById(\'restorebck\').serverfile.value = \'\';
+
+    var init = function() {
+        var validator = new CPANEL.validate.validator("Backup File to Restore");
+        validator.add("file_upload_id", \'min_length(%input%, 1)\', \'';$output .= $stash->get(['locale',0,'maketext',['Sorry, you must select a file to restore.' ]]);$output .= '\');
+        validator.attach();
+        CPANEL.validate.attach_to_form("restore_upload_button", validator);
+    };
+
+    YAHOO.util.Event.onDOMReady(init);
+
+</script>
+
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','inside_frame_or_tab_or_popup'=>$stash->get('in_tab'),'skipheader'=>$stash->get('in_tab'),'breadcrumburl'=>'/scripts2/displayeximconfforedit','extrastyle'=>'
+/* Tab Style */
+#pageContainer {
+  margin: 0;
+  padding: 0;
+}
+
+#contentContainer{
+    max-width: inherit !important;
+}
+/* End Tab Style */
+
+html[dir="rtl"] .sortable .cell,
+html[dir="rtl"] .fixedtable .cell,
+html[dir="rtl"] .datatable .cell{
+    border-left: 1px solid #ccc;
+}
+
+html[dir="rtl"] .yui-panel .container-close{
+    left: 4px;
+    right: auto;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

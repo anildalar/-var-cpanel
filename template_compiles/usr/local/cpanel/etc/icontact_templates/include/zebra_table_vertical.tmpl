@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/include/zebra_table_vertical.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('zebra_table_vertical',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '
+';$output .= '
+';$output .= $context->process('include/code_standout.tmpl');$stash->set('no_information_text',$stash->get(['CPANEL',0,'locale',0,'maketext',['No information found.' ]]),1);$output .= '
+
+';$stash->set('items_to_display',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['items',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;if ($stash->get(['items',0,$stash->get('item'),0])){$stash->set('items_to_display',1);last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    ';if ($stash->get('title')){$output .= '
+        <p style="font-family:';$output .= $stash->get('font_family');$output .= ';font-size:14px;color:';$output .= $stash->get('header_txt_color');$output .= '">
+            ';$output .= $stash->get('title');$output .= '
+        </p>
+    '}$output .= '
+
+    ';$stash->set('zebra_counter',1);$output .= '
+    ';if ($stash->get('items_to_display')){$output .= '
+       <table  style="
+            margin: 5px 10px;
+            border: 2px solid ';$output .= $stash->get('medium_gray');$output .= ';
+            padding: 0;"
+            cellpadding="5" cellspacing="0"
+            width="';$output .= $stash->get('content_width')- 20;$output .= 'px">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['items',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '
+                ';if ($stash->get(['items',0,$stash->get('item'),0])){$output .= '
+                    ';$stash->set('zebra_counter',!$stash->get('zebra_counter'));$output .= '
+                    <tr style="background-color:';$output .= $stash->get('zebra_counter')? $stash->get('light_gray'): $stash->get('white');$output .= '">
+                        <th align="left">
+                            ';$output .= $stash->get('item');$output .= '
+                        </th>
+                        <td>
+                            ';$output .= $stash->get(['items',0,$stash->get('item'),0]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+       </table>
+    '}elsif ($stash->get('title')){$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get('no_information_text')}]]);$output .= '
+    '}$output .= '
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

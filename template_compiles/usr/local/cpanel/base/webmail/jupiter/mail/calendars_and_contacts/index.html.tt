@@ -1,0 +1,45 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/calendars_and_contacts/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('user',$stash->get(['CPANEL',0,'FORM',0,'user',0]));$stash->set('is_me',!$stash->get('user'));$stash->set('config',$stash->get(['Uapi',0,'exec',['DAV','get_calendar_contacts_config',{'user'=>$stash->get('user')}]]));$stash->set('cpdavd_enabled',$stash->get(['ExpVar',0,'expand',['$hascpdavd' ]])? 1 : 0);$stash->set('user',$stash->get(['config',0,'data',0,'user',0]));$stash->set('title',($stash->get('is_me')? $stash->get(['locale',0,'maketext',['Calendars and Contacts Configuration' ]]): $stash->get(['locale',0,'maketext',['Calendars and Contacts Configuration for: [_1]',$stash->get('user')]])));$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['caldavcarddav' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+    <div class="body-content">
+        ';if (!$stash->get('has_feature')){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature!' ]]);$output .= '
+            </div>
+        </div>
+        '}elsif (!$stash->get('cpdavd_enabled')){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['Your server administrator must enable the [asis,cpdavd] service to use this feature.' ]]);$output .= '
+            </div>
+        </div>
+        '}$output .= '
+        ';if (!$stash->get(['config',0,'status',0])){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+            </div>
+        </div>
+        '}else {$output .= '
+        <div ng-controller="applicationController">
+            <div id="viewContent"
+                 class="ng-cloak"
+                 ng-view
+                 ng-cloak></div>
+        </div>
+        '}$output .= '
+     </div>
+
+    ';if ($stash->get('has_feature')){$output .= '
+
+    <script type="text/javascript">
+        PAGE.config   = ';$output .= $stash->get(['config',0,'data',0,'json',0]);$output .= ';
+    </script>
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+    '}$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'calendar_and_contacts','page_title'=>$stash->get('title'),'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>1,'include_cjt'=>1,'use_master_bootstrap'=>0,'page_stylesheets'=>['mail/calendars_and_contacts/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

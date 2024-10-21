@@ -1,0 +1,77 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/twofactorauth/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/twofactorauth/index.css' ]])]);$stash->set('debug_mode',$stash->get(['CPANEL',0,'is_debug_mode_enabled',0]));$stash->set('has_root',$stash->get(['Whostmgr',0,'hasroot',0]));$stash->set('policy_active',$stash->get(['data',0,'status',0]));$stash->set('issuer',$stash->get(['data',0,'issuer',0]));$stash->set('system_wide_issuer',$stash->get(['data',0,'system_wide_issuer',0]));$stash->set('current_users_status',$stash->get(['data',0,'user_status',0]));$stash->set('server_info',$stash->get(['Whostmgr',0,'get_server_info',0]));$stash->set('server_hostname',$stash->get(['server_info',0,'hostname',0]));$stash->set('on_switch_text','ON');$stash->set('off_switch_text','OFF');if (($stash->get(['locale',0,'get_language_tag',0])ne 'en')){$stash->set('on_switch_text','I');$stash->set('off_switch_text','O')}$stash->set('BREADCRUMB','/scripts7/twofactorauth/');$stash->set('ROOT_URL',($stash->get(['Whostmgr',0,'ENV',0,'HTTPS',0])eq 'on' ? 'https://' : 'http://').$stash->get(['Whostmgr',0,'ENV',0,'HTTP_HOST',0]).':' .$stash->get(['Whostmgr',0,'ENV',0,'SERVER_PORT',0]).$stash->get('cp_security_token'));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div id="content" class="ng-cloak" ng-cloak>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Two-factor authentication (2FA) is an improved security measure that requires two forms of identification: your password and a generated security code. When 2FA is enabled, an app on your smartphone supplies a code that you must enter with your password to log in.' ]]);$output .= '</p>
+    <div ng-controller="enableController as enabler">
+        <div id="enable_disable_control">
+            <div class="enable_disable_row">
+                ';if ($stash->get('has_root')){$output .= '                <div class="enable_disable_cell" class="ng-hide" ng-show="enabler.hasRoot">
+                    <toggle-switch
+                        id="tfa_status_toggle"
+                        ng-model="enabler.tfaEnabled"
+                        on-toggle="enabler.toggle_status()"
+                        ng-disabled="enabler.changing_status"
+                        no-spinner="true"
+                        enabled-label="';$output .= $stash->get('on_switch_text');$output .= '"
+                        disabled-label="';$output .= $stash->get('off_switch_text');$output .= '"
+                        aria-label="';$output .= $stash->get(['locale',0,'maketext',['Configure Two-Factor Authentication' ]]);$output .= '"
+                    ></toggle-switch>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!enabler.changing_status">
+                    <span class="fas fa-spinner fa-spin"></span>
+                </div>
+                '}$output .= '                <div class="enable_disable_cell" ng-hide="enabler.tfaEnabled || enabler.changing_status">
+                    <div class="led led-red"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="!enabler.tfaEnabled || enabler.changing_status">
+                    <div class="led led-green"></div>
+                </div>
+                <div class="enable_disable_cell" ng-hide="enabler.changing_status">
+                    <span class="tfa_status_message" ng-hide="!enabler.tfaEnabled">';$output .= $stash->get(['locale',0,'maketext',['The Two-Factor Authentication Security Policy is [output,strong,Enabled]' ]]);$output .= '</span>
+                    <span class="tfa_status_message" ng-hide="enabler.tfaEnabled">';$output .= $stash->get(['locale',0,'maketext',['The Two-Factor Authentication Security Policy is [output,strong,Disabled]' ]]);$output .= '</span>
+                </div>
+            </div>
+        </div>
+        <div id="tabContainer">
+            <ul class="nav nav-tabs">
+                <li ng-class="{active: currentRoute === \'/config\'}"><a href="config">';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/users\'}"><a href="users">';$output .= $stash->get(['locale',0,'maketext',['Manage Users' ]]);$output .= '</a></li>
+                <li ng-class="{active: currentRoute === \'/myaccount\'}"><a href="myaccount">';$output .= $stash->get(['locale',0,'maketext',['Manage My Account' ]]);$output .= '</a></li>
+            </ul>
+            <div class="tab-content" ng-view></div>
+        </div>
+    </div>
+    <div growl></div>
+    ';$output .= '
+    ';if ($stash->get('debug_mode')){$output .= '
+    <script type="text/ng-template" id="';$output .= $stash->get('ROOT_URL');$output .= '/libraries/cjt2/directives/toggleSwitch.phtml">
+    '}else {$output .= '
+    <script type="text/ng-template" id="libraries/cjt2/directives/toggleSwitch.phtml">
+    '}$output .= "\n        <div role=\"checkbox\"\n            class=\"tfa-toggle-switch toggle-switch-wrapper\"\n            tabindex=\"0\"\n            aria-checked=\"{{ get_aria_value() }}\"\n            aria-label=\"{{ariaLabel}}\"\n            ng-click=\"toggle_status()\"\n            ng-keyup=\"handle_keyup(\$event)\"\n            ng-keydown=\"handle_keydown(\$event)\"\n            ng-class=\"{disabled: (changing_status || isDisabled), 'switch-off': !ngModel, 'switch-on': ngModel, 'no-label':noLabel}\">\n            <div\n                class=\"toggle-switch\"\n                ng-class=\"{disabled: (changing_status || isDisabled)}\">\n                <div id=\"{{parentID}}_toggle_visual\" class=\"toggle-switch-animate\" ng-class=\"{'switch-off': !ngModel, 'switch-on': ngModel}\">\n                    <span class=\"switch-left\">{{ enabledLabel }}</span>\n                    <span class=\"knob\">&nbsp;</span>\n                    <span class=\"switch-right\">{{ disabledLabel }}</span>\n                </div>\n            </div>\n        </div>\n    </script>\n\n    <script type=\"text/ng-template\" id=\"confirm_disable.html\">\n        <div class=\"modal-header\">\n            <h4><span class=\"glyphicon glyphicon-check\"></span><span class=\"confirm_message\">";$output .= $stash->get(['locale',0,'maketext',['Confirm Removal of Two-Factor Authentication' ]]);$output .= '</span></h4>
+        </div>
+        <div class="modal-body">
+            {{dc.disableConfirmationMessage()}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary btn-sm" ng-click="dc.disableTFAFor()">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+            <button class="btn btn-link btn-sm" ng-click="dc.cancelDisable()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+        </div>
+    </script>
+</div>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.tfa_status = ';$output .= $stash->get(['policy_active',0,'json',0]);$output .= ';
+    PAGE.has_root = ';$output .= $stash->get(['has_root',0,'json',0]);$output .= ';
+    PAGE.user = ';$output .= $stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0,'json',0]);$output .= ';
+    PAGE.issuer = ';$output .= $stash->get(['issuer',0,'json',0]);$output .= ';
+    PAGE.system_wide_issuer = ';$output .= $stash->get(['system_wide_issuer',0,'json',0]);$output .= ';
+    PAGE.current_user_tfa_status = ';$output .= $stash->get(['current_users_status',0,'json',0]);$output .= ';
+    PAGE.server_hostname = ';$output .= $stash->get(['server_hostname',0,'json',0]);$output .= ';
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Two-Factor Authentication' ]]),'breadcrumburl'=>$stash->get('BREADCRUMB'),'base'=>$stash->get('BREADCRUMB'),'stylesheets'=>$stash->get('stylesheet_includes'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'two_factor_authentication','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

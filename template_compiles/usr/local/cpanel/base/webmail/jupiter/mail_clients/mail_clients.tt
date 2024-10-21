@@ -1,0 +1,436 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail_clients/mail_clients.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));if (!$stash->get(['global',0,'mail_client_list',0])){$stash->set(['global',0,'mail_client_list',0],$stash->get(['execute',['WebmailApps','list_webmail_apps',{'theme'=>$stash->get(['CPANEL',0,'CPDATA',0,'RS',0])}],'data',0]))}$stash->set('NVData',$stash->get(['Api2',0,'exec',['NVData','get',{'names'=>'default_webmail_app','html_encoded'=>'1' }],0,0]));$stash->set('default_webmail_app',$stash->get('NVData')|| '');$output .= '
+<section class="mail-client-section">
+    <div class="row constrained">
+    ';if ($stash->get(['global',0,'mail_client_list',0,'size',0])> 0){$output .= '
+        <div id="clientColumn" class="col-xs-12 col-md-5">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Open your inbox' ]]);$output .= '</h3>
+            <div id="activeClientContainer" class="panel panel-default">
+                <button tabindex="0" type="button" class="panel-body" id="activeClientLogoContainer" autofocus title="';$output .= $stash->get(['locale',0,'maketext',['Open your inbox' ]]);$output .= '" aria-disabled="false">
+                    <img id="activeClientLogo" src="" aria-hidden="true">
+                </button>
+                <div id="activeClientButtons" class="panel-footer">
+                    <button id="launchActiveButton" type="button" tabindex="0" class="btn btn-primary" autofocus aria-label="';$output .= $stash->get(['locale',0,'maketext',['Open my active mail client.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Open' ]]);$output .= '</button>
+                    <input type="checkbox" id="setActiveAsDefault" tabindex="0"><label for="setActiveAsDefault">';$output .= $stash->get(['locale',0,'maketext',['Open my inbox when I log in' ]]);$output .= '</label>
+                </div>
+            </div>
+            ';if ($stash->get(['global',0,'mail_client_list',0,'size',0])> 1){$output .= '
+            <div>
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Change your webmail client' ]]);$output .= '</h3>
+            </div>
+            <div class="row clientDock">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['global',0,'mail_client_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'mail_client'}=$_tt_value;$output .= '
+                    ';$output .= $context->process('available_client',{'client'=>$stash->get('mail_client')});$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </div>
+            '}$output .= '
+        </div>
+    '}$output .= '
+        <div id="checkWithDevice" class="col-xs-12 col-md-5">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Set up email on your device' ]]);$output .= '</h3>
+            <form id="sendDeviceConfig">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="sendEmailFormLabel">';$output .= $stash->get(['locale',0,'maketext',['Select the device you will use:' ]]);$output .= '</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <select name="sendDeviceConfigFor" id="sendDeviceConfigFor" class="form-control" tabindex="0">
+                                <option value="apple">Apple® (iPhone®, iPad®)</option>
+                                <option value="android">';$output .= $stash->get(['locale',0,'maketext',['Android™ (Google Pixel™, Samsung Galaxy®, etc.)' ]]);$output .= '</option>
+                                <option value="other">';$output .= $stash->get(['locale',0,'maketext',['I’m not sure. Send me general instructions.' ]]);$output .= '</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="sendEmailFormLabel">';$output .= $stash->get(['locale',0,'maketext',['Enter an email address that you can access from your device:' ]]);$output .= '</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <input type="text" id="availableEmail" name="availableEmail" class="form-control" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Example:' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['[asis,user@example.com]' ]]);$output .= '" tabindex="0">
+                            <div id="emailFormValidation" class="alert alert-danger invisible">
+                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                <div>';$output .= $stash->get(['locale',0,'maketext',['Enter a valid email address.' ]]);$output .= '</div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h5 class="sendEmailFormLabel">';$output .= $stash->get(['locale',0,'maketext',['Select the configurations that you would like to set up:' ]]);$output .= '</h5>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div>
+                                <table><tr><td>
+                                <label for="selectEmailConfig" style="font-weight: normal;">
+                                    <input type="checkbox" id="selectEmailConfig" value="email" checked/>
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</span>
+                                </label>
+                                </td>
+								<td style="padding-left: 10px;">
+                                <label for="selectCalendarConfig" style="font-weight: normal;">
+                                    <input type="checkbox" id="selectCalendarConfig" value="caldav" checked/>
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Calendar' ]]);$output .= '</span>
+                                </label>
+                                </td><td style="padding-left: 10px;">
+                                <label for="selectContactsConfig" style="font-weight: normal;">
+                                    <input type="checkbox" id="selectContactsConfig" value="carddav" checked/>
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Contacts' ]]);$output .= '</span>
+                                </label>
+                                </td>
+								</tr></table>
+                            </div>
+                            <div id="configsSelectValidation" class="alert alert-danger invisible">
+                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                <div>';$output .= $stash->get(['locale',0,'maketext',['You must select at least one configuration.' ]]);$output .= '</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button type="button" id="sendInstructionsBtn" class="btn btn-default" tabindex="0" aria-disabled="true" disabled>
+                                <span id="send-label" class="overexposed">';$output .= $stash->get(['locale',0,'maketext',['Send' ]]);$output .= '</span>
+                                <span id="send-spinner" class="invisible"><i class="fas fa-sync-alt fa-spin"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="emailFormSuccess" class="alert alert-success invisible">
+                                <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+                                <div>';$output .= $stash->get(['locale',0,'maketext',['Success! Check your inbox.' ]]);$output .= '</div>
+                            </div>
+                            <div id="emailFormDanger" class="alert alert-danger alert-dismissible invisible">
+                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                <button type="button" class="close" id="hideEmailErrorMessageBtn" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close error message' ]]);$output .= '">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <div>
+                                    <div id="basicErrorMsg">';$output .= $stash->get(['locale',0,'maketext',['The system was unable to send email.' ]]);$output .= '
+                                    </div>
+                                    <div id="errorDetailsHeader">
+                                        <button type="button"
+                                            id="showHideErrorDetails"
+                                            class="btn btn-link btn-show-hide"
+                                            data-toggle="collapse"
+                                            data-target="#errorDetails">
+                                            <span id="showErrorDetailsLabel">Show Details <i class="fas fa-angle-double-down"></i></span>
+                                            <span id="hideErrorDetailsLabel" class="invisible">Hide Details <i class="fas fa-angle-double-up"></i></span></button>
+                                    </div>
+                                    <div class="collapse" id="errorDetails">
+                                        <div id="errorDetailDisplay" class="card card-body">
+                                            Something really bad happened here!
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <p><a id="autoConfigDeviceLnk" href="';$output .= $stash->get('prefix');$output .= 'mail/clientconf.html">';$output .= $stash->get(['locale',0,'maketext',['Automatically configure my device' ]]);$output .= '</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="stats" class="col-xs-12 col-md-2">
+            <div id="generalInfoSection" class="panel panel-widget">
+            <div id="generalInfoHeaderSection" class="panel-heading widget-heading">
+                <span role="heading" aria-level="3">';$output .= $stash->get(['locale',0,'maketext',['General Information' ]]);$output .= '</span>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <label id="lblEmailId" class="general-info-label updating-elements">';$output .= $stash->get(['locale',0,'maketext',['Email Address' ]]);$output .= '</label>
+                            <span id="txtEmailId" class="general-info-value">';$output .= $stash->get('auth_user');$output .= '</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <div class="gen-info__title_row">
+                                <label id="lblAcctUuid" class="general-info-label gen-info__details-title">';$output .= $stash->get(['locale',0,'maketext',['Email User Analytics ID' ]]);$output .= '</label>
+                                <span id="copyMsgContainer" class="copy-msg-container label label-success">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Copied' ]]);$output .= '
+                                </span>
+                            </div>
+                            <div id="acctUuidContainer" class="general-info-value uuid-copy-container">
+                                <i id="iconCopyUuid" class="fas fa-sharp fa-solid fa-copy" title="';$output .= $stash->get(['locale',0,'maketext',['Click to copy the email user analytics ID.' ]]);$output .= '" aria-hidden="true"></i>
+                                <a id="linkCopyUuid" href="javascript:void(0);" title="';$output .= $stash->get(['locale',0,'maketext',['Click to copy the email user analytics ID.' ]]);$output .= '">
+                                    <span id="txtAcctUuid" class="general-info-value long-text-fade-overflow">';$output .= $stash->get(['CPANEL',0,'email_account_uuid',0]);$output .= '</span>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+    </div>
+<script>
+// this script block is run before the initialization code in base.js, so any variables
+// that depend on template toolkit input need to be created here as well as globals
+// needed there
+var dispatchSettingURL= "';$output .= $stash->get('cp_security_token');$output .= '/execute/Email/dispatch_client_settings?account=';$output .= $stash->get(['CPANEL',0,'user',0]);$output .= "\@";$output .= $stash->get(['mail_client_settings',0,'domain',0]);$output .= ' &to=";
+var sendButton = document.getElementById("sendInstructionsBtn");
+var sendLabel = document.getElementById("send-label");
+var sendSpinner = document.getElementById("send-spinner");
+var toAddressInput = document.getElementById("availableEmail");
+var emailConfigSelect = document.getElementById("selectEmailConfig");
+var calendarConfigSelect = document.getElementById("selectCalendarConfig");
+var contactsConfigSelect = document.getElementById("selectContactsConfig");
+var showHideErrorDetails = document.getElementById("showHideErrorDetails");
+var errorDisplays = {
+    error: document.getElementById("emailFormDanger"),
+    validation : document.getElementById("emailFormValidation"),
+    success: document.getElementById("emailFormSuccess"),
+    configsSelectValidation: document.getElementById("configsSelectValidation")
+};
+
+emailConfigSelect.addEventListener("click", validateFormInputs);
+if (calendarConfigSelect) {
+    calendarConfigSelect.addEventListener("click", validateFormInputs);
+}
+if (contactsConfigSelect) {
+    contactsConfigSelect.addEventListener("click", validateFormInputs);
+}
+showHideErrorDetails.addEventListener("click", toggleErrorDetailsLabel);
+
+function hidePreviousMessages() {
+    errorDisplays["error"].classList.add("invisible");
+    errorDisplays["success"].classList.add("invisible");
+}
+
+function validateFormInputs() {
+    var validationResult = CPANEL.validate.email(toAddressInput.value);
+    var configsList = buildSelectedConfigsList();
+
+    if(!validationResult || configsList === null) {
+        sendButton.disabled = true;
+        sendButton.setAttribute("aria-disabled", "true");
+    } else {
+        sendButton.disabled = false;
+        sendButton.setAttribute("aria-disabled", "false");
+    }
+
+    if(configsList === null) {
+        errorDisplays["configsSelectValidation"].classList.remove("invisible");
+    } else {
+        errorDisplays["configsSelectValidation"].classList.add("invisible");
+    }
+
+    if(!validationResult) {
+        if (toAddressInput.value.length > 0) {
+            errorDisplays["validation"].classList.remove("invisible");
+            toAddressInput.classList.add("invalid");
+        } else {
+            errorDisplays["validation"].classList.add("invisible");
+            toAddressInput.classList.remove("invalid");
+        }
+    } else {
+        errorDisplays["validation"].classList.add("invisible");
+        toAddressInput.classList.remove("invalid");
+    }
+    hidePreviousMessages();
+}
+
+toAddressInput.addEventListener("input", validateFormInputs);
+
+function showSuccessMessage() {
+    errorDisplays["success"].classList.remove("invisible");
+    window.setTimeout(function() {
+        errorDisplays["success"].classList.add("invisible")
+    }, 5000);
+}
+
+function showErrorMessage(additionalMessage) {
+    if (additionalMessage) {
+        var errorMessageContainer = document.getElementById("errorDetailDisplay");
+        errorMessageContainer.innerHTML = additionalMessage;
+        document.getElementById("errorDetailsHeader").classList.remove("invisible");
+        document.getElementById("errorDetails").classList.remove("invisible");
+    }
+    else {
+        document.getElementById("errorDetailsHeader").classList.add("invisible");
+        document.getElementById("errorDetails").classList.add("invisible");
+    }
+
+    errorDisplays["error"].classList.remove("invisible");
+}
+
+function toggleSendButtonState() {
+    sendButton.disabled = sendButton.disabled ? false : true;
+    sendLabel.classList.toggle("invisible");
+    sendLabel.classList.toggle("overexposed");
+    sendSpinner.classList.toggle("invisible");
+    sendSpinner.classList.toggle("overexposed");
+}
+
+function toggleErrorDetailsLabel() {
+    showErrorDetailsLabel.classList.toggle("invisible");
+    hideErrorDetailsLabel.classList.toggle("invisible");
+}
+
+function buildErrorList(errorData) {
+    if (errorData.status === 0 && errorData.errors &&  errorData.errors.length > 0) {
+        var errorList = "<ul>";
+        for (var errorIdx = 0; errorIdx < errorData.errors.length; errorIdx++) {
+            errorList += "<li>";
+            errorList += errorData.errors[errorIdx];
+            errorList += "</li>";
+        }
+        errorList += "</ul>";
+        return errorList;
+    }
+    return null;
+}
+
+function buildSelectedConfigsList() {
+    var configsList="selected_account_services="
+    var emailValue = emailConfigSelect.checked ? emailConfigSelect.value : null;
+    var calendarValue = calendarConfigSelect?.checked ? calendarConfigSelect.value : null;
+    var contactsValue = contactsConfigSelect?.checked ? contactsConfigSelect.value : null;
+
+    if(!emailValue && !calendarValue && !contactsValue) {
+        return null;
+    } else {
+        if(emailValue) {
+            configsList = configsList + emailValue + ",";
+        }
+
+        if(calendarValue) {
+            configsList = configsList + calendarValue + ",";
+        }
+
+        if(contactsValue) {
+            configsList = configsList + contactsValue;
+        }
+    }
+    return configsList;
+}
+
+function toggleConfigsSelectState() {
+    emailConfigSelect.disabled = !emailConfigSelect.disabled;
+    if (calendarConfigSelect) {
+        calendarConfigSelect.disabled = !calendarConfigSelect.disabled;
+    }
+    if (contactsConfigSelect) {
+        contactsConfigSelect.disabled = !contactsConfigSelect.disabled;
+    }
+}
+
+function dispatchClientConfigEmail() {
+    hidePreviousMessages();
+    toggleSendButtonState();
+    toggleConfigsSelectState();
+    var configsList = buildSelectedConfigsList();
+    var device = document.getElementById("sendDeviceConfigFor").value;
+    var fullUrl = dispatchSettingURL + toAddressInput.value + "&block_on_send=1" + "&" + configsList + "&selected_device=" + device;
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET", fullUrl, true);
+    xhr.onload = function (e) {
+        if (xhr.readyState === 4) {
+            if (xhr.status === 200) {
+                data = JSON.parse(xhr.responseText);
+                if(data.status) {
+                    showSuccessMessage();
+                }
+                else {
+                    showErrorMessage(buildErrorList(data));
+                }
+            } else {
+                showErrorMessage(buildErrorList(JSON.parse(xhr.responseText)));
+            }
+        }
+        // add a little delay so the button spinner spins for a bit
+        setTimeout(function(){
+            toggleSendButtonState();
+            toggleConfigsSelectState();
+        }, 2000);
+    };
+    xhr.onerror = function (e) {
+        showErrorMessage(buildErrorList(JSON.parse(xhr.responseText)));
+    };
+    xhr.send(null);
+}
+
+var defaultClient = ';$output .= $stash->get(['default_webmail_app',0,'json',0]);$output .= ';
+
+window.NVData["prefix"] = "';$output .= $stash->get('prefix');$output .= '";
+window.NVData["default_webmail_app"] = defaultClient.value;
+
+var clientList = ';$output .= $stash->get(['global',0,'mail_client_list',0,'json',0]);$output .= ';
+
+var launchActiveButton = document.getElementById("launchActiveButton");
+var setDefaultCheckbox = document.getElementById("setActiveAsDefault");
+var logoContainer = document.getElementById("activeClientLogoContainer");
+var sendInstructionsButton = document.getElementById("sendInstructionsBtn");
+var hideEmailDangerAlert = document.getElementById("hideEmailErrorMessageBtn");
+sendInstructionsButton.addEventListener("click", dispatchClientConfigEmail);
+var sendEmailForm = document.getElementById("sendDeviceConfig");
+if (hideEmailDangerAlert) {
+    hideEmailDangerAlert.addEventListener("click", function() {
+        errorDisplays["error"].classList.add("invisible");
+    });
+}
+if (sendEmailForm) {
+    sendEmailForm.addEventListener("keydown", function(kbEvent) {
+        if ((kbEvent.key && kbEvent.key === "Enter") ||
+            (kbEvent.keyCode && kbEvent.keyCode === 13)) {
+            kbEvent.preventDefault();
+            if (!sendInstructionsButton.disabled) {
+                dispatchClientConfigEmail();
+            }
+        }
+    });
+}
+
+function copyUuidHandler() {
+    var uuidTxtEl = document.getElementById("txtAcctUuid");
+    var copyMsgEl = document.getElementById("copyMsgContainer");
+    const copyText = uuidTxtEl.textContent;
+
+    navigator.clipboard
+        .writeText(copyText)
+        .then(() => {
+            copyMsgEl.classList.add("show-copy-success");
+            window.setTimeout(function() {
+                copyMsgEl.classList.remove("show-copy-success");
+            }, 3000);
+        },
+        (err) => {
+            console.error(err);
+        });
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    // Account UUID copy event handler.
+    var copyUuidLinkEl = document.getElementById("linkCopyUuid");
+    var copyUuidIconEl = document.getElementById("iconCopyUuid");
+    if (copyUuidLinkEl) {
+        copyUuidLinkEl.addEventListener("click", copyUuidHandler);
+    }
+    if (copyUuidIconEl) {
+        copyUuidIconEl.addEventListener("click", copyUuidHandler);
+    }
+});
+</script>
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'available_client'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <button type="button" id="setAsActive-';$output .= $stash->get(['client',0,'id',0]);$output .= '" class="availableClientDock" tabindex="0" aria-disabled="false" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Click to make “[_1]” the active mail client.',$stash->get(['client',0,'id',0])]]);$output .= '">
+        <img class="availableClientDock" src="';$output .= $stash->get(['client',0,'icon',0]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Select “[_1]”',$stash->get(['client',0,'id',0])]]);$output .= '"  title="';$output .= $stash->get(['locale',0,'maketext',['Select “[_1]”',$stash->get(['client',0,'id',0])]]);$output .= '" aria-hidden="true">
+    </button>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

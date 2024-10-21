@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/multiphp_ini_editor/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('EasyApache',$context->plugin('EasyApache'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('styleSheets',['multiphp_ini_editor/index.css' ]);$stash->set('locale_is_rtl',0);if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$stash->set('locale_is_rtl',1);$output .= $stash->get(['styleSheets',0,'push',['libraries/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]])}$stash->set('ea_version',$stash->get(['EasyApache',0,'get_ea_version',0]));$output .= '
+
+';$output .= do {my$output='';if ($stash->get('ea_version')>= 4){$stash->set('ini_paths_data',$stash->get(['Uapi',0,'exec',['LangPHP','php_ini_get_user_paths',{}]]));$output .= '<div class="body-content">
+    <!-- NOTE: leave the alert-group in single quotes -->
+    <cp-alert-list alert-group="\'multiphpIniEditor\'"></cp-alert-list>
+    <div id="viewContent"
+         ng-cloak>
+        <!-- INI settings information -->
+        <div id="alertIniFiltering" class="row callout callout-info">
+            <div class="col-xs-12">
+                ';$stash->set('file_types',['.htaccess','.user.ini','php.ini' ]);$output .= $stash->get(['locale',0,'maketext',['The MultiPHP INI editor writes to the [list_and,_1] [numerate,_2,file,files]. The system will only write a directive to a file if it is a valid directive for that file type. For more information, read our [output,url,_3,MultiPHP INI Editor documentation,target,_blank].',$stash->get('file_types'),$stash->get(['file_types',0,'size',0]),'https://go.cpanel.net/cPanelMultiPHPINI' ]]);$output .= '            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li ng-class="{active: currentRoute === \'/basic\'}"><a href="#/basic">';$output .= $stash->get(['locale',0,'maketext',['Basic Mode' ]]);$output .= '</a></li>
+            <li ng-class="{active: currentRoute === \'/editor\'}"><a href="#/editor">';$output .= $stash->get(['locale',0,'maketext',['Editor Mode' ]]);$output .= '</a></li>
+        </ul>
+        <div class="tab-content" ng-view></div>
+    </div>
+    <!--TODO remove this once we replace the info growl thing -->
+    <div growl></div>
+ </div>
+
+<script type="text/javascript">
+    PAGE.php_ini_data = ';$output .= $stash->get(['ini_paths_data',0,'json',0]);$output .= ';
+    PAGE.locale_is_RTL = ';$output .= $stash->get('locale_is_rtl');$output .= ';
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+'}else {$output .= '<div class="body-content">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['This application only works with [asis,EasyApache4]. Contact your administrator to upgrade to [asis,EasyApache4].' ]]);$output .= '
+        </div>
+    </div>
+</div>
+'}$context->include('_assets/master.html.tt',{'app_key'=>'multiphp_ini_editor','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>$stash->get('styleSheets'),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

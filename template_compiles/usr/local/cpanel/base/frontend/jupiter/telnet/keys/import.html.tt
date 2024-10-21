@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/telnet/keys/import.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['FORM',0,'privkey',0])){$output .= '
+    <p id="sectionPrivKey">
+        ';$output .= $stash->get(['Api2',0,'pre_exec',['SSH','importkey' ]]);$stash->set('importkey',$stash->get(['Api2',0,'exec',['SSH','importkey',{'pass'=>($stash->get(['RAW_FORM',0,'pass',0])),'name'=>($stash->get(['RAW_FORM',0,'keyname',0])),'key'=>($stash->get(['RAW_FORM',0,'privkey',0]))}]]));$output .= $stash->get(['Api2',0,'post_exec',['SSH','importkey' ]]);$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'CPERROR',0,'ssh',0])){$output .= '
+            <div id="importPrivError" class="alert alert-danger">
+                <span id="importPrivErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+                <div id="importPrivErrorMsg" class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Failed to import private key named “[_1]”.',$stash->get(['FORM',0,'keyname',0])]]);$output .= '<br>
+                    ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'ssh',0,'html',0]);$output .= '
+                </div>
+            </div>
+        '}else {$output .= '
+            ';if (!($stash->get(['FORM',0,'privkey',0])eq $stash->get('undef'))){$output .= '
+                <div id="importPrivSuccess" class="alert alert-success">
+                    <span id="importPrivSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+                    <div id="importPrivSuccessMsg" class="alert-message">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The key named “[_1]” was imported.',$stash->get(['FORM',0,'keyname',0])]]);$output .= '
+                    </div>
+                </div>
+            '}$output .= '
+        '}$output .= '
+    </p>
+    '}$output .= '
+
+    ';if (!($stash->get(['FORM',0,'pubkey',0])eq $stash->get('undef'))){$output .= '
+        ';$output .= $stash->get(['Api2',0,'pre_exec',['SSH','importkey' ]]);$stash->set('importkey',$stash->get(['Api2',0,'exec',['SSH','importkey',{'name'=>$stash->get(['RAW_FORM',0,'keyname',0]).'.pub','key'=>$stash->get(['RAW_FORM',0,'pubkey',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['SSH','importkey' ]]);$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'CPERROR',0,'ssh',0])){$output .= '
+            <div id="importPubError" class="alert alert-danger">
+                <span id="importPubErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+                <div id="importPubErrorMsg" class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Failed to import public key named “[_1]”.',$stash->get(['FORM',0,'keyname',0])]]);$output .= '<br>
+                    ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'ssh',0,'html',0]);$output .= '
+                </div>
+            </div>
+        '}else {$output .= '
+            ';if (!($stash->get(['FORM',0,'pubkey',0])eq $stash->get('undef'))){$output .= '
+                <div id="importPubSuccess" class="alert alert-success">
+                    <span id="importPubSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+                    <div id="importPubSuccessMsg" class="alert-message">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The key named “[_1]” was imported.',$stash->get(['FORM',0,'keyname',0])]]);$output .= '
+                    </div>
+                </div>
+            '}$output .= '
+        '}$output .= '
+    </p>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Back to Manage Keys' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssh_access','feature'=>'ssh','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

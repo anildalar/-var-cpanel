@@ -1,0 +1,582 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/hulkd/views/historyView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<section id="actionArea">
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <form class="form-inline">
+            <div class="form-group">
+                <label for="selectTable" class="col-sm-12 control-label">';$output .= $stash->get(['locale',0,'maketext',['Select a Report:' ]]);$output .= '</label>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-8">
+                    <select name="selectTable"
+                        id="selectTable"
+                        class="form-control"
+                        ng-model="selectedTable"
+                        ng-disabled="loadingPageData"
+                        ng-change="loadTable()">
+                        <option value="failedLogins" selected="selected">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Failed Logins' ]]);$output .= '</option>
+                        <option value="users">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Blocked Users' ]]);$output .= '</option>
+                        <option value="brutes">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Blocked IP Addresses' ]]);$output .= '</option>
+                        <option value="excessiveBrutes">
+                            ';$output .= $stash->get(['locale',0,'maketext',['One-day Blocks' ]]);$output .= '</option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="pull-right">
+            <button type="button"
+                spinner-id="refreshHistory"
+                cp-action="refreshLogins()"
+                button-class="btn-default"
+                ng-disabled="loadingPageData">';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '</button>
+            <button type="button"
+                spinner-id="clearHistory"
+                cp-action="clearHistory()"
+                button-class="btn-primary"
+                ng-disabled="clearingHistory">';$output .= $stash->get(['locale',0,'maketext',['Remove Blocks and Clear Reports' ]]);$output .= '</button>
+        </div>
+    </div>
+</div>
+</section>
+
+<div ng-switch on="selectedTable">
+
+<section id="brutes" ng-switch-when="brutes">
+<h3>';$output .= $stash->get(['locale',0,'maketext',['Blocked IP Addresses' ]]);$output .= '</h3>
+<p>{{ blockedIPsDescription(config_settings) }}</p>
+<div class="alert alert-info" ng-show="!config_settings.ip_based_protection">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address-based protection is currently disabled. [asis,cPHulk] will not create new blocks, but existing blocks will remain.' ]]);$output .= '
+    </div>
+</div>
+<div class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="search-container">
+            <label for="brutesFilter">';$output .= $stash->get(['locale',0,'maketext',['Filter' ]]);$output .= '</label>
+            <div class="search">
+                <search id="brutesFilter" ng-model="meta.brutes.filterValue" ng-change="search(\'brutes\')"></search>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <div class="pagination-container hidden-xs hidden-sm">
+            <page-size id="topBrutesPageSize"
+                allowed-sizes="meta.pageSizes"
+                total-items="meta.brutes.totalRows"
+                ng-model="meta.brutes.pageSize"
+                show-all="false"
+                ng-change="changePageSize(\'brutes\')">
+            </page-size>
+            <uib-pagination id="topBrutesPager"
+                ng-change="fetchPage(\'brutes\', page)"
+                ng-model="meta.brutes.pageNumber"
+                max-size="meta.maxPages"
+                items-per-page="meta.brutes.pageSize"
+                total-items="meta.brutes.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div class="row hidden-xs hidden-sm">
+    <div class="col-xs-12 col-md-offset-7 col-md-5">
+        <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.brutes.pageNumberStart }}','{{ meta.brutes.pageNumberEnd }}','{{ meta.brutes.totalRows }}' ]]);$output .= '</p>
+    </div>
+</div>
+
+
+<table id="brutesTable" class="table table-striped table-condensed">
+    <thead>
+        <th>
+            <span toggle-sort id="sortIp" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="ip">
+                ';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortCountry" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="country_code">
+                ';$output .= $stash->get(['locale',0,'maketext',['Country' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortComments" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="notes">
+                ';$output .= $stash->get(['locale',0,'maketext',['Notes' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortBegin" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="logintime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Begin Time' ]]);$output .= '
+            </span>
+        <th>
+            <span toggle-sort id="sortExpTime" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="exptime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Expiration Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortTimeLeft" onsort="sortBruteList" sort-meta="meta.brutes" sort-field="timeleft" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Minutes Remaining' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\n        </th>\n    </thead>\n    <tbody ng-class=\"{ 'table-overlay': updatingPageData }\">\n        <tr ng-repeat=\"brute in brutes\">\n            <td>{{ brute.ip }}</td>\n            <td>{{ brute.country_code }}</td>\n            <td ng-bind-html=\"brute.notes\"></td>\n            <td>{{ brute.logintime }}</td>\n            <td>{{ brute.exptime }}</td>\n            <td>{{ brute.timeleft }}</td>\n            <td>\n                <button\n                    name=\"unblock_brute_{{ \$id }}\"\n                    id=\"unblock_brute_{{ \$id }}\"\n                    class=\"btn btn-link\"\n                    ng-click=\"unBlockAddress(brute.ip, \$event)\">\n                    <span class='glyphicon glyphicon-trash'></span>\n                    ";$output .= $stash->get(['locale',0,'maketext',['Remove Block' ]]);$output .= '</button>
+            </td>
+        </tr>
+        <tr class="info emptyrow" ng-hide="brutes.length" ng-switch="loadingPageData">
+            <td colspan="7" id="noRecords" ng-switch-when="true">
+                <i id="loading_brutes_spinner" class="fas fa-spinner fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system is retrieving the Blocked IP Addresses list.' ]]);$output .= '
+            </td>
+            <td colspan="7" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The Blocked IP Addresses list is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+<div class="search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <uib-pagination id="bottomBrutesPager"
+                    ng-change="fetchPage(\'brutes\', page)"
+                    ng-model="meta.brutes.pageNumber"
+                    max-size="meta.maxPages"
+                    items-per-page="meta.brutes.pageSize"
+                    total-items="meta.brutes.totalRows"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"></uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.brutes.pageNumberStart }}','{{ meta.brutes.pageNumberEnd }}','{{ meta.brutes.totalRows }}' ]]);$output .= '</p>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<section id="excessiveBrutes" ng-switch-when="excessiveBrutes">
+<h3>';$output .= $stash->get(['locale',0,'maketext',['One-day Blocks' ]]);$output .= '</h3>
+<p>';$output .= $stash->get(['locale',0,'maketext',['The system blocks IP addresses with excessive login failures for a duration of “[_1]” [numerate,_1,day,days].','1' ]]);$output .= '</p>
+<div class="alert alert-info" ng-show="!config_settings.ip_based_protection">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,IP] Address-based protection is currently disabled. [asis,cPHulk] will not create new blocks, but existing blocks will remain.' ]]);$output .= '
+    </div>
+</div>
+<div class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="search-container">
+            <label for="excessiveBrutesFilter">';$output .= $stash->get(['locale',0,'maketext',['Filter' ]]);$output .= '</label>
+            <div class="search">
+                <search id="excessiveBrutesFilter" ng-model="meta.excessiveBrutes.filterValue" ng-change="search(\'excessiveBrutes\')"></search>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <div class="pagination-container hidden-xs hidden-sm">
+            <page-size id="topExcessiveBrutesPageSize"
+                allowed-sizes="meta.pageSizes"
+                total-items="meta.excessiveBrutes.totalRows"
+                ng-model="meta.excessiveBrutes.pageSize"
+                show-all="false"
+                ng-change="changePageSize(\'excessiveBrutes\')">
+            </page-size>
+            <uib-pagination id="topExcessiveBrutesPager"
+                ng-change="fetchPage(\'excessiveBrutes\', page)"
+                ng-model="meta.excessiveBrutes.pageNumber"
+                max-size="meta.maxPages"
+                items-per-page="meta.excessiveBrutes.pageSize"
+                total-items="meta.excessiveBrutes.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div class="row hidden-xs hidden-sm">
+    <div class="col-xs-12 col-md-offset-7 col-md-5">
+        <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.excessiveBrutes.pageNumberStart }}','{{ meta.excessiveBrutes.pageNumberEnd }}','{{ meta.excessiveBrutes.totalRows }}' ]]);$output .= '</p>
+    </div>
+</div>
+
+
+<table id="excessiveBrutesTable" class="table table-striped table-condensed">
+    <thead>
+        <th>
+            <span toggle-sort id="sortIp" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="ip">
+                ';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortCountry" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="country_code">
+                ';$output .= $stash->get(['locale',0,'maketext',['Country' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortComments" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="notes">
+                ';$output .= $stash->get(['locale',0,'maketext',['Notes' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortBegin" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="logintime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Begin Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortExpTime" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="exptime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Expiration Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortTimeLeft" onsort="sortExcessiveBruteList" sort-meta="meta.excessiveBrutes" sort-field="timeleft" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Minutes Remaining' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\n        </th>\n    </thead>\n    <tbody ng-class=\"{ 'table-overlay': updatingPageData }\">\n        <tr ng-repeat=\"brute in excessiveBrutes\">\n            <td>{{ brute.ip }}</td>\n            <td>{{ brute.country_code }}</td>\n            <td ng-bind-html=\"brute.notes\"></td>\n            <td>{{ brute.logintime }}</td>\n            <td>{{ brute.exptime }}</td>\n            <td>{{ brute.timeleft }}</td>\n            <td>\n                <button\n                    name=\"unblock_excessive_brute_{{ \$id }}\"\n                    id=\"unblock_excessive_brute_{{ \$id }}\"\n                    class=\"btn btn-link\"\n                    ng-click=\"unBlockAddress(brute.ip, \$event)\">\n                    <span class='glyphicon glyphicon-trash'></span>\n                    ";$output .= $stash->get(['locale',0,'maketext',['Remove Block' ]]);$output .= '</button>
+            </td>
+        </tr>
+        <tr class="info emptyrow" ng-hide="excessiveBrutes.length" ng-switch="loadingPageData">
+            <td colspan="7" id="noRecords" ng-switch-when="true">
+                <i id="loading_brutes_spinner" class="fas fa-spinner fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system is retrieving the One-day Blocks list.' ]]);$output .= '
+            </td>
+            <td colspan="7" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The One-day Blocks list is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+<div class="search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <uib-pagination id="bottomExcessiveBrutesPager"
+                    ng-change="fetchPage(\'excessiveBrutes\', page)"
+                    ng-model="meta.excessiveBrutes.pageNumber"
+                    max-size="meta.maxPages"
+                    items-per-page="meta.excessiveBrutes.pageSize"
+                    total-items="meta.excessiveBrutes.totalRows"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"></uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.excessiveBrutes.pageNumberStart }}','{{ meta.excessiveBrutes.pageNumberEnd }}','{{ meta.excessiveBrutes.totalRows }}' ]]);$output .= '</p>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<section id="blockedUsers" ng-switch-when="users">
+<h3>';$output .= $stash->get(['locale',0,'maketext',['Blocked Users' ]]);$output .= '</h3>
+<p> {{ blockedUsersDescription(config_settings) }} </p>
+<div class="alert alert-info" ng-show="!config_settings.username_based_protection && !config_settings.username_based_protection_local_origin">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['Username-based protection is currently disabled. [asis,cPHulk] will not lock user accounts, but existing account locks will remain.' ]]);$output .= '
+    </div>
+</div>
+<div class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="search-container">
+            <label for="blockedUsersFilter">';$output .= $stash->get(['locale',0,'maketext',['Filter' ]]);$output .= '</label>
+            <div class="search">
+                <search id="blockedUsersFilter" ng-model="meta.users.filterValue" ng-change="search(\'users\')"></search>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <div class="pagination-container hidden-xs hidden-sm">
+            <page-size id="topBlockedUsersPageSize"
+                allowed-sizes="meta.pageSizes"
+                total-items="meta.users.totalRows"
+                ng-model="meta.users.pageSize"
+                show-all="false"
+                ng-change="changePageSize(\'users\')">
+            </page-size>
+            <uib-pagination id="topBlockedUsersPager"
+                ng-change="fetchPage(\'users\', page)"
+                ng-model="meta.users.pageNumber"
+                max-size="meta.maxPages"
+                items-per-page="meta.users.pageSize"
+                total-items="meta.users.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div class="row hidden-xs hidden-sm">
+    <div class="col-xs-12 col-md-offset-7 col-md-5">
+        <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.users.pageNumberStart }}','{{ meta.users.pageNumberEnd }}','{{ meta.users.totalRows }}' ]]);$output .= '</p>
+    </div>
+</div>
+
+
+<table id="blockedUsersTable" class="table table-striped table-condensed">
+    <thead>
+        <th>
+            <span toggle-sort id="sortUser" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="user">
+                ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortLoginIP Address" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="ip">
+                ';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortLoginCountry" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="country_code">
+                ';$output .= $stash->get(['locale',0,'maketext',['Country' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortService" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="service">
+                ';$output .= $stash->get(['locale',0,'maketext',['Service' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortAuthService" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="authservice">
+                ';$output .= $stash->get(['locale',0,'maketext',['Authentication Service' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortLoginTime" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="logintime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Login Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortExpTime" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="exptime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Expiration Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortTimeLeft" onsort="sortBlockedUsers" sort-meta="meta.users" sort-field="timeleft" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Minutes Remaining' ]]);$output .= '
+            </span>
+        </th>
+    </thead>
+    <tbody ng-class="{ \'table-overlay\': updatingPageData }">
+        <tr ng-repeat="user in users">
+            <td ng-bind-html="user.user"></td>
+            <td>{{ user.ip }}</td>
+            <td>{{ user.country_code }}</td>
+            <td ng-bind-html="user.service"></td>
+            <td ng-bind-html="user.authservice"></td>
+            <td>{{ user.logintime }}</td>
+            <td>{{ user.exptime }}</td>
+            <td>{{ user.timeleft }}</td>
+        </tr>
+        <tr class="info emptyrow" ng-hide="users.length" ng-switch="loadingPageData">
+            <td colspan="8" id="noRecords" ng-switch-when="true">
+                <i id="loading_users_spinner" class="fas fa-spinner fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system is retrieving the Blocked Users list.' ]]);$output .= '
+            </td>
+            <td colspan="8" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The Blocked Users list is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+<div class="search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <uib-pagination id="bottomBlockedUsersPager"
+                    ng-change="fetchPage(\'users\', page)"
+                    ng-model="meta.users.pageNumber"
+                    max-size="meta.maxPages"
+                    items-per-page="meta.users.pageSize"
+                    total-items="meta.users.totalRows"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"></uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.users.pageNumberStart }}','{{ meta.users.pageNumberEnd }}','{{ meta.users.totalRows }}' ]]);$output .= '</p>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<section id="failedLogins" ng-switch-default>
+<h3>';$output .= $stash->get(['locale',0,'maketext',['Failed Logins' ]]);$output .= '</h3>
+<p>{{ lookbackPeriodMinsDescription(config_settings) }}</p>
+<div class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="search-container">
+            <label for="failedLoginsFilter">';$output .= $stash->get(['locale',0,'maketext',['Filter' ]]);$output .= '</label>
+            <div class="search">
+                <search id="failedLoginsFilter" ng-model="meta.logins.filterValue" ng-change="search(\'logins\')"></search>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <div class="pagination-container hidden-xs hidden-sm">
+            <page-size id="topFailedLoginsPageSize"
+                allowed-sizes="meta.pageSizes"
+                total-items="meta.logins.totalRows"
+                ng-model="meta.logins.pageSize"
+                show-all="false"
+                ng-change="changePageSize(\'logins\')">
+            </page-size>
+            <uib-pagination id="topFailedLoginsPager"
+                ng-change="fetchPage(\'logins\', page)"
+                ng-model="meta.logins.pageNumber"
+                max-size="meta.maxPages"
+                items-per-page="meta.logins.pageSize"
+                total-items="meta.logins.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div class="row hidden-xs hidden-sm">
+    <div class="col-xs-12 col-md-offset-7 col-md-5">
+        <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.logins.pageNumberStart }}','{{ meta.logins.pageNumberEnd }}','{{ meta.logins.totalRows }}' ]]);$output .= '</p>
+    </div>
+</div>
+
+
+<table id="failedLoginsTable" class="table table-striped table-condensed">
+    <thead>
+        <th>
+            <span toggle-sort id="sortUser" onsort="sortLoginList" sort-meta="meta.logins" sort-field="user">
+                ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortLoginIP Address" onsort="sortLoginList" sort-meta="meta.logins" sort-field="ip">
+                ';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortCountry" onsort="sortLoginList" sort-meta="meta.logins" sort-field="country_code">
+                ';$output .= $stash->get(['locale',0,'maketext',['Country' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortService" onsort="sortLoginList" sort-meta="meta.logins" sort-field="service">
+                ';$output .= $stash->get(['locale',0,'maketext',['Service' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortAuthService" onsort="sortLoginList" sort-meta="meta.logins" sort-field="authservice">
+                ';$output .= $stash->get(['locale',0,'maketext',['Authentication Service' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortLoginTime" onsort="sortLoginList" sort-meta="meta.logins" sort-field="logintime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Login Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortExpTime" onsort="sortLoginList" sort-meta="meta.logins" sort-field="exptime">
+                ';$output .= $stash->get(['locale',0,'maketext',['Expiration Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortTimeLeft" onsort="sortLoginList" sort-meta="meta.logins" sort-field="timeleft" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Minutes Remaining' ]]);$output .= '
+            </span>
+        </th>
+    </thead>
+    <tbody ng-class="{ \'table-overlay\': updatingPageData }">
+        <tr ng-repeat="failure in logins">
+            <td ng-bind-html="failure.user"></td>
+            <td>{{ failure.ip }}</td>
+            <td>{{ failure.country_code }}</td>
+            <td ng-bind-html="failure.service"></td>
+            <td ng-bind-html="failure.authservice"></td>
+            <td>{{ failure.logintime }}</td>
+            <td>{{ failure.exptime }}</td>
+            <td>{{ failure.timeleft }}</td>
+        </tr>
+        <tr class="info emptyrow" ng-hide="logins.length" ng-switch="loadingPageData">
+            <td colspan="8" id="noRecords" ng-switch-when="true">
+                <i id="loading_logins_spinner" class="fas fa-spinner fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system is retrieving the Failed Logins list.' ]]);$output .= '
+            </td>
+            <td colspan="8" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The Failed Logins list is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+<div class="search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <uib-pagination id="bottomFailedLoginsPager"
+                    ng-change="fetchPage(\'logins\', page)"
+                    ng-model="meta.logins.pageNumber"
+                    max-size="meta.maxPages"
+                    items-per-page="meta.logins.pageSize"
+                    total-items="meta.logins.totalRows"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"></uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.logins.pageNumberStart }}','{{ meta.logins.pageNumberEnd }}','{{ meta.logins.totalRows }}' ]]);$output .= '</p>
+        </div>
+    </div>
+</div>
+</section>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,62 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/uploadkey.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['FORM',0,'type',0])eq 'paste'){$stash->set('upload_key',$stash->get(['execute',['SSL','upload_key',{'key'=>$stash->get(['RAW_FORM',['key' ]]),'friendly_name'=>$stash->get(['RAW_FORM',['fname' ]])}]]))}else {$stash->set('upload_key',$stash->get(['execute',['SSL','upload_key',$stash->get('RAW_FORM')]]))}$stash->set('ref',$stash->get(['FORM',0,'ref',0])|| '');$stash->set('safe_id',$stash->get(['upload_key',0,'data',0,0,0,'id',0,'html',0]));$stash->set('safe_name',$stash->get(['upload_key',0,'data',0,0,0,'friendly_name',0,'html',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['FORM',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'a_key'}=$_tt_value;$stash->set('matches',$stash->get(['a_key',0,'match',['^file-(.*)-key$' ]]));if ($stash->get('matches')){$stash->set('safe_file_name',$stash->get(['matches',0,0,0,'html',0]))}if ($stash->get('matches')){last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrUploadKey">
+        ';if ($stash->get(['FORM',0,'type',0])eq 'paste'){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Upload Key' ]]);$output .= '
+        '}elsif ($stash->get(['FORM',0,'type',0])eq 'upload'){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Upload Key File' ]]);$output .= '
+        '}$output .= '
+    </h2>
+
+    ';if ($stash->get(['upload_key',0,'status',0])){$output .= '
+        <div id="uploadSuccess" class="alert alert-success">
+            <span id="uploadSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="uploadSuccessMsg" class="alert-message">
+        ';if ($stash->get(['FORM',0,'type',0])eq 'paste'){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You have successfully uploaded the private key to your account.' ]]);$output .= '
+        '}elsif ($stash->get(['FORM',0,'type',0])eq 'upload'){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You have successfully uploaded the private key file “[_1]” to your account.',$stash->get('safe_file_name')]]);$output .= '
+        '}$output .= '
+        ';if ($stash->get(['upload_key',0,'messages_as_string',0])){$output .= '
+            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['upload_key',0,'messages_as_string',0]);&$_tt_filter($output)};$output .= '
+        '}$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Name]: [_1]',$stash->get('safe_name')]]);$output .= '
+            </p>
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,ID]: [_1]',$stash->get('safe_id')]]);$output .= '
+            </p>
+            </div>
+        </div>
+    '}else {$output .= '
+        <div id="uploadError" class="alert alert-danger">
+            <span id="uploadErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="uploadErrorMsg" class="alert-message">
+        ';if ($stash->get(['FORM',0,'type',0])eq 'paste'){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['The system failed to save the private key to your account.' ]]);$output .= '
+        '}elsif ($stash->get(['FORM',0,'type',0])eq 'upload'){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['The system failed to save the private key file “[_1]” to your account.',$stash->get('safe_file_name')]]);$output .= '
+        '}$output .= '
+        ';if ($stash->get(['upload_key',0,'errors_as_string',0])){$output .= '
+            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['upload_key',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+        '}$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    <ul class="list-inline text-center">';if ($stash->get('ref')){do {my$_tt_result=$stash->get('ref');my$_tt_match;SWITCH: {$_tt_match='csrs';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCSR','return_location'=>'csrs.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificate Signing Requests' ]])});$output .= '
+            </li>';last SWITCH}$_tt_match='crts';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '            <li>
+                ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCRT','return_location'=>'crts.html?selkey=' .$stash->get(['generate_key',0,'data',0,'id',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificates' ]])});$output .= '
+            </li>';last SWITCH}}}}$output .= '        <li>
+        ';if ($stash->get('ref')){$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html?ref=' .$stash->get(['ref',0,'uri',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'keys.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        '}$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

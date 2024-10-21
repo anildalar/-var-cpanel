@@ -1,0 +1,12 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/locale_duplicate_verify_overwrite.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'theme'=>'yui','app_key'=>'copy_a_locale' });$stash->set('back','?' .$stash->get(['data',0,'back_query_string',0]));$output .= '
+<h3>The locale “';$output .= $stash->get(['data',0,'existing_target',0]);$output .= '” already exists. Are you sure you want to overwrite it with “';$output .= $stash->get(['data',0,'encoded_formref',0,'locale',0]);$output .= '”?</h3>
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/cgi/locale_duplicate.cgi">
+   <input type="hidden" name="verify_overwrite" value="1"/>
+   ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'encoded_formref',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '
+   <input type="hidden" name="';$output .= $stash->get(['pair',0,'key',0]);$output .= '" value="';$output .= $stash->get(['pair',0,'value',0]);$output .= '" />
+   ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+   <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '" class="btn-primary" />
+</form>
+<p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_duplicate_form';$output .= $stash->get('back');$output .= '">Back</a></p>
+
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' })}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

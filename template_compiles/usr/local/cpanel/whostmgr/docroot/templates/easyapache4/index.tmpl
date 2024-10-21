@@ -1,0 +1,195 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/easyapache4/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('styleSheets',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/easyapache4/index.min.css' ]])]);$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'os_is_compatible',0])){$output .= '<!--
+    NOTE: Customize controller is used as a parent controller here because
+    there is no way to nested views and all views share same index file.
+    When we can use angular-ui-router, we can separate profile view from
+    customize wizard views.
+-->
+<div id="mainContainer"
+    ng-controller="customize"
+    class="layout-medium ea4-view"
+    ng-cloak>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="top-links">
+                <!-- Single button -->
+                <button id="btnEasyApache4Updates"
+                    type="button"
+                    class="btn"
+                    ng-class="customize.checkUpdateInfo.btnCss"
+                    ng-show="currentRoute === \'/profile\'"
+                    ng-click="customize.provisionEA4Updates()"
+                    ng-disabled="customize.checkUpdateInfo.isLoading || customize.checkUpdateInfo.pkgNumber === 0"
+                    title="{{ customize.checkUpdateInfo.btnTitle }}">
+                    <span ng-show="customize.checkUpdateInfo.isLoading">
+                        <span id="spinner_checkUpdate" class="fas fa-spinner fa-spin"></span>
+                    </span>
+                    <span id="updatePkgNumber"
+                        class="badge badge-info"
+                        ng-show="customize.checkUpdateInfo.pkgNumber > 0 && !customize.checkUpdateInfo.isLoading">
+                        {{ customize.checkUpdateInfo.pkgNumber }}
+                        <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Packages' ]]);$output .= '</span>
+                    </span>
+                    {{ customize.checkUpdateInfo.btnText }}
+                </button>
+                <div id="help_links" class="btn-group" uib-dropdown>
+                    <button id="btnHelpLinkToggle" type="button"
+                        class="btn btn-default dropdown-toggle"
+                        uib-dropdown-toggle>
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Help Links' ]]);$output .= '
+                        <span class="caret"></span>
+                    </button>
+                    <ul id="ddlHelpMenu" class="dropdown-menu open-opposite-side"
+                        role="menu"
+                        uib-dropdown-menu>
+                        <li>
+                            <a id="linkHowToPackageManager" href="https://go.cpanel.net/packagemanager" target="_blank">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Package Manager Basics[comment,no punctuation due to usage]' ]]);$output .= '
+                            </a>
+                        </li>
+                        <li>
+                            <a id="linkHowToMakeNewProfile" href="https://go.cpanel.net/EA4profile" target="_blank">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,EasyApache 4] - Create a Profile[comment,no punctuation due to usage]' ]]);$output .= '
+                            </a>
+                        </li>
+                        <li>
+                            <a id="link_EA4_Faq" href="https://go.cpanel.net/EA4FAQ" target="_blank">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,EasyApache 4] FAQ[comment,no punctuation due to usage]' ]]);$output .= '
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <button id="btnSaveAsProfileTop"
+                    class="btn btn-default"
+                    ng-show="customize.wizard.showWizard"
+                    ng-disabled="customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom"
+                    ng-click="customize.showsaveProfilePopup(\'top\')"
+                    type="button"
+                    data-toggle="collapse"
+                    data-target="#saveProfilePopup"
+                    aria-expanded="false"
+                    aria-controls="saveProfilePopup">
+                    <span class="far fa-save"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save as profile[comment,button title]' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+    ';if ($stash->get(['data',0,'show_litespeed',0])){$output .= '
+    ';$output .= $context->process('easyapache4/views/litespeed.ptt');$output .= '
+    '}$output .= '
+
+    <!-- Save as profile directive -->
+    <div class="row">
+        <div class="col-xs-12" ng-if="customize.saveProfilePopup.showTop">
+            <div class="pop-over right top">
+                <save-as-profile id-prefix="saveProfile"
+                    position="{{ customize.saveProfilePopup.position }}"
+                    packages="customize.selectedPkgs"
+                    show="{{ customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom }}"
+                    on-cancel="customize.clearSaveProfilePopup(customize.saveProfilePopup.position)">
+                </save-as-profile>
+            </div>
+        </div>
+    </div>
+    <div class="row ea-container">
+        <!-- Wizard Left Nav -->
+        <div class="col-xs-3" ng-show="customize.wizard.showWizard">
+            <ul id="ea4CustomizeWizard" class="nav nav-pills nav-stacked">
+                <li ng-class="customize.getStepClass(name)"
+                    ng-repeat="(name, data) in customize.wizard.steps track by name | orderBy:\'data.stepIndex\'">
+                    <a id="{{ ::name }}Step" href="javascript:void(0)" ng-click="customize.proceed(data.path)" ng-bind-html="::data.title">
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div ng-class="customize.getViewWidthCss(customize.wizard.showWizard)">
+            <div class="row">
+                <div class="ng-cloak col-xs-12">
+                    <cp-alert-list></cp-alert-list>
+                </div>
+                <div class="col-xs-12">
+                    <div ng-view class="animate-view"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Wizard Footer -->
+    <div class="row"  ng-show="customize.wizard.showFooter">
+        <div class="col-xs-12">
+            <div class="row">
+                <div class="col-xs-12" ng-if="customize.saveProfilePopup.showBottom">
+                    <div class="pop-over right bottom">
+                      <save-as-profile id-prefix="saveProfile"
+                            position="{{ customize.saveProfilePopup.position }}"
+                            packages="customize.selectedPkgs"
+                            show="{{ customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom }}"
+                            on-cancel="customize.clearSaveProfilePopup(customize.saveProfilePopup.position)">
+                        </save-as-profile>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <!-- Place holder to ensure action buttons stay below the package list section -->
+                <div class="col-xs-3"></div>
+                <!-- ACTION BUTTONS -->
+                <div class="col-xs-9">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <button id="proceed" class="btn btn-primary"
+                                ng-click="customize.proceed()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '
+                            </button>
+                          </div>
+                        <div class="col-xs-6 text-dir-right">
+                            <button id="btnSaveAsProfileBottom"
+                                class="btn btn-default"
+                                ng-disabled="customize.saveProfilePopup.showTop || customize.saveProfilePopup.showBottom"
+                                ng-click="customize.showsaveProfilePopup(\'bottom\')"
+                                type="button"
+                                data-toggle="collapse"
+                                data-target="#saveProfilePopup"
+                                aria-expanded="false"
+                                aria-controls="saveProfilePopup">
+                                <span class="far fa-save"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Save as profile[comment,button title]' ]]);$output .= '
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div growl></div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.NAME = "easyapache4";
+    PAGE.cl_data = ';$output .= $stash->get(['data',0,'cl_data',0,'json',0]);$output .= ';
+    PAGE.cl_licensed = ';$output .= $stash->get(['data',0,'cl_licensed',0])? 'true' : 'false';$output .= ';
+</script>
+
+<script type="text/ng-template" id="directives/saveAsProfile.ptt">
+';$output .= $context->process('easyapache4/directives/saveAsProfile.ptt');$output .= '
+</script>
+<script type="text/ng-template" id="directives/eaWizard.ptt">
+';$output .= $context->process('easyapache4/directives/eaWizard.ptt');$output .= '
+</script>
+'}else {$output .= '<div id="incompatibleOSMsg" class="alert alert-info alert-dismissable">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Info:' ]]);$output .= '</strong>
+        ';$output .= $stash->get(['locale',0,'maketext',['[asis,EasyApache 4] requires [list_or,_1][comment,List of OSs]. You must upgrade your system to a compatible operating system before you can migrate to [asis,EasyApache 4].',['CentOS 6+','RHEL 6+','CloudLinux 6+' ]]]);$output .= '
+    </div>
+</div>
+ %]
+'}$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'easyapache_4','header'=>$stash->get(['locale',0,'maketext',['[asis,EasyApache 4][comment,nothing to translate but it makes it clear that the term has been vetted and is not overlooked hardcoded text]' ]]),'breadcrumburl'=>'/scripts7/EasyApache4','base'=>'/scripts7/EasyApache4/','stylesheets'=>$stash->get('styleSheets'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

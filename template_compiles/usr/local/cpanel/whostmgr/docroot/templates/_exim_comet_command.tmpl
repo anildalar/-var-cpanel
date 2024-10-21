@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/_exim_comet_command.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<style>
+.eximtxt { margin:0; }
+.termtxt {
+    font-family:     "Courier New",
+    Courier,
+    monospace;
+}
+</style>
+
+<h3 class="simpleheading">';$output .= $stash->get('actionmsg');$output .= '</h3>
+
+<textarea class="termtxt" id="msgs" rows="25" cols="80"></textarea>
+
+<div style="display:none;" id="finished">Complete.</div>
+
+<div id="actionpanel" style="display:none;">
+    <div class="hd" id="statushd">';$output .= $stash->get('actionmsg');$output .= '</div>
+    <div class="bd">
+            <div id="status">Connecting...</div>
+    </div>
+    <div class="ft" id="statusft"></div>
+</div>
+
+<script>
+
+var cometd = new YAHOO.util.Cometd;
+var  actionpanel = new YAHOO.widget.Panel("actionpanel", { width:"320px", visible:false, constraintoviewport:true, close:false, fixedcenter:true } );
+
+function read_deliver_messages_mail_queue() {
+    cometd.configure(\'';$output .= $stash->get('cp_security_token');$output .= '/cometd\');
+    cometd.handshake();
+    var lastmsgid;
+
+    var this_sub = cometd.subscribe(\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cfg',0,'channel',0]);&$_tt_filter($output)};$output .= "', function(o) {\n            if (o.complete) {\n                cometd.unsubscribe(this_sub);\n                cometd.disconnect();\n                document.getElementById('finished').style.display='';\n                actionpanel.hide();\n                alert(\"Process Complete\");\n                return;\n            }\n\n            var msgsEl = document.getElementById('msgs');\n\n            var messages = o.data.split(\"\\n\");\n            for(var i=0;i<messages.length;i++) {\n                var thismsg = messages[i];\n                var thismatch = thismsg.match(/\\s+([A-Za-z0-9]+-[A-Za-z0-9]+-[A-Za-z0-9]+)/);\n                if (thismatch && thismatch[0]) {\n                    lastmsgid = thismatch[0];\n                    document.getElementById('status').innerHTML='";$output .= $stash->get('action');$output .= " ' + thismatch[0] + ' <img align=\"absmiddle\" src=\"/img/yui/rel_interstitial_loading.gif\">';\n                } else {\n                    var statusmatch = thismsg.match(/^\\s+(.*)/);\n                    if(statusmatch && statusmatch[0] && !statusmatch[0].match(/^\\s+cwd=/)) {\n                        document.getElementById('statusft').innerHTML='Previous Message: ' + lastmsgid + ': ' + statusmatch[0];\n                    }\n                }\n            }\n            msgsEl.value += o.data;\n        }\n    );\n\n    document.getElementById('actionpanel').style.display='';\n    actionpanel.render();\n    actionpanel.show();\n\n    setup_request();\n}\n\nfunction setup_request() {\n    if ( cometd.getStatus() == \"connected\") {\n        YAHOO.util.Connect.asyncRequest('POST', \"";$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('uri');&$_tt_filter($output)};$output .= '" , function() {}, \'channel=\' + \'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cfg',0,'channel',0]);&$_tt_filter($output)};$output .= '\'  + \'&msgids=\' + \'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['cfg',0,'msgids',0]);&$_tt_filter($output)};$output .= '\' );
+    } else {
+        setTimeout(setup_request,1000);
+    }
+}
+
+YAHOO.util.Event.onDOMReady( read_deliver_messages_mail_queue );
+
+</script>
+
+
+
+';$output .= $context->include('_exim_queue_function.tmpl');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts11/fetch_mail_queue','scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['sharedjs/cometd_optimized.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['sharedjs/yui/yui.cometd_optimized.js' ]])],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,30 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Update/ServiceDeprecated.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'custom_subject',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['NOTICE',0,'custom_subject',0]))}else {if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])&& $stash->get(['NOTICE',0,'hrs_left',0,'defined',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The service, [_1], has been deprecated and will be removed automatically in [quant,_2,day,days] and [quant,_3,hour,hours].',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'hrs_left',0])]]))}else {if ($stash->get(['NOTICE',0,'failed_to_convert',0])){if ($stash->get(['NOTICE',0,'replacement',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to replace [_1] with [_2].',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'replacement',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to automatically remove [_1] from the server.',$stash->get(['NOTICE',0,'service_name',0])]]))}}else {if ($stash->get(['NOTICE',0,'replacement',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system replaced the service [_1] with [_2].',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'replacement',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system removed the service: [_1].',$stash->get(['NOTICE',0,'service_name',0])]]))}}}}$output .= '
+
+<p>
+';if ($stash->get(['NOTICE',0,'days_left',0,'defined',0])&& $stash->get(['NOTICE',0,'hrs_left',0,'defined',0])){$output .= '
+    <p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [asis,cPanel amp() WHM] update cannot proceed because the following service has been deprecated: [_1]',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    </p>';if ($stash->get(['NOTICE',0,'replacement',0])){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You have [quant,_1,day,days] and [quant,_2,hour,hours] until we replace [_3] with [_4].',$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'hrs_left',0]),$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'replacement',0])]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You have [quant,_1,day,days] and [quant,_2,hour,hours] until we remove [_3].',$stash->get(['NOTICE',0,'days_left',0]),$stash->get(['NOTICE',0,'hrs_left',0]),$stash->get(['NOTICE',0,'service_name',0])]])}$output .= '<p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To continue using [_1], you must change your Update Preferences in [asis,WHM] to Long Term Support (LTS).',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['By switching to LTS, you will not receive new features and eventually will stop receiving security updates.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel amp() WHM] version [_1] will be the last [output,abbr,LTS,Long Term Support] version to support [_2].',$stash->get(['NOTICE',0,'last_version',0]),$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For more information about Long Term Support, read the following: [output,url,_1,target,_2]','https://go.cpanel.net/longtermsupport','_blank' ]]);$output .= '
+        <br>
+        <br>
+    </p>
+'}else {$output .= '
+    ';if ($stash->get(['NOTICE',0,'failed_to_convert',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to remove the service, [_1], automatically.',$stash->get(['NOTICE',0,'service_name',0])]]);$output .= '
+    '}else {if ($stash->get(['NOTICE',0,'replacement',0])){$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The deprecated service, [_1], has been removed and replaced with [_2].',$stash->get(['NOTICE',0,'service_name',0]),$stash->get(['NOTICE',0,'replacement',0])]])}else {$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The deprecated service, [_1], has been removed.',$stash->get(['NOTICE',0,'service_name',0])]])}}$output .= '
+    <br>
+    <br>';if ($stash->get(['NOTICE',0,'script_output',0])){$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'script_output',0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Review the log for further details:' ]])}]])}}$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

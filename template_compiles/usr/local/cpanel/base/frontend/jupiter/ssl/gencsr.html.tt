@@ -1,0 +1,98 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/gencsr.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('domains_ar',$stash->get(['RAW_FORM',['domains' ],'trim',0,'split',['[,;\s]+' ],'unique',0]));$stash->set('key_id',$stash->get(['RAW_FORM',['key_id' ]]));if (!$stash->get('key_id')&& $stash->get(['RAW_FORM',['domains' ]])){$stash->set('KEY_TYPE',$stash->get(['RAW_FORM',['default_key_type' ]])? $stash->get(['RAW_FORM',['default_key_type' ]]): '');$stash->set('generate_key',$stash->get(['execute',['SSL','generate_key',{'keytype'=>$stash->get('KEY_TYPE'),'friendly_name'=>$stash->get(['locale',0,'list_and',[$stash->get('domains_ar')]])}]]));if ($stash->get(['generate_key',0,'status',0])){$stash->set('key_id',$stash->get(['generate_key',0,'data',0,'id',0]))}}if ($stash->get('key_id')){$stash->set('generate_csr',$stash->get(['execute',['SSL','generate_csr',{'key_id'=>$stash->get('key_id'),'domains'=>$stash->get(['domains_ar',0,'join',[' ' ]]),'countryName'=>$stash->get(['CPScalar',0,'uc',[$stash->get(['RAW_FORM',['country' ]])]]),'stateOrProvinceName'=>$stash->get(['RAW_FORM',['state' ]]),'localityName'=>$stash->get(['RAW_FORM',['city' ]]),'organizationName'=>$stash->get(['RAW_FORM',['company' ]]),'organizationalUnitName'=>$stash->get(['RAW_FORM',['companydivision' ]]),'emailAddress'=>$stash->get(['RAW_FORM',['email' ]]),'pass'=>$stash->get(['RAW_FORM',['pass' ]]),'friendly_name'=>$stash->get(['RAW_FORM',['friendly_name' ]])}]]));$stash->set('generate_successful',$stash->get(['generate_csr',0,'status',0]));if ($stash->get('generate_successful')){$stash->set('show_csr',$stash->get(['execute',['SSL','show_csr',{'id'=>$stash->get(['generate_csr',0,'data',0,'id',0])}]]))}$stash->set('domains',$stash->get('generate_successful')&& $stash->get(['show_csr',0,'data',0,'details',0,'domains',0])? $stash->get(['show_csr',0,'data',0,'details',0,'domains',0]): []);$stash->set('safe_hosts',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$stash->set('safe_host',$stash->get(['host',0,'html',0]));$output .= $stash->get(['safe_hosts',0,'push',[$stash->get('safe_host')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('safe_host',$stash->get(['locale',0,'list_and',[$stash->get('safe_hosts')]]));$stash->set('show_key',$stash->get(['execute',['SSL','show_key',{'id'=>$stash->get('key_id')}]]))}$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrGenerate">
+        ';$output .= $stash->get(['locale',0,'maketext',['Generated Certificate Signing Request' ]]);$output .= '
+    </h2>
+
+    ';if ($stash->get('generate_successful')){$output .= '
+        <div id="generateSuccess" class="alert alert-success">
+            <span id="generateSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="generateSuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The Certificate Signing Request for “[_1]” has been generated and saved in your user directory. To purchase a trusted certificate, you must copy the Encoded Certificate Signing Request below and send it to the Certificate Authority. Follow the instructions provided by your Certificate Authority.',$stash->get('safe_host')]]);$output .= '
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblDomain" for="domain">';$output .= $stash->get(['locale',0,'maketext',['[numerate,_1,Domain,Domains]:',$stash->get(['domains',0,'size',0])]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    ';if ($stash->get('domains')&& $stash->get(['domains',0,'size',0])> 1){$output .= '                        <ul>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+                            <li>';$output .= $stash->get(['domain',0,'html',0,'breakOn',['\.' ]]);$output .= '</li>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </ul>'}else {$output .= '                        <p>
+                            ';$output .= $stash->get(['domains',0,0,0,'html',0,'breakOn',['\.' ]]);$output .= '
+                        </p>
+                    '}$output .= '                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblDescription" for="description">';$output .= $stash->get(['locale',0,'maketext',['Description:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <p>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'details',0,'friendly_name',0]);&$_tt_filter($output)};$output .= '</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblEncodedCsr" for="encoded-csr">';$output .= $stash->get(['locale',0,'maketext',['Encoded Certificate Signing Request:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="encoded-csr">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'csr',0]);&$_tt_filter($output)};$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblDecodedCsr" for="decoded-csr">';$output .= $stash->get(['locale',0,'maketext',['Decoded Certificate Signing Request:' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <pre id="decoded-csr">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['show_csr',0,'data',0,'text',0]);&$_tt_filter($output)};$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+        ';if ($stash->get(['generate_key',0,'status',0])){$output .= '            <div class="form-group">
+                <label id="lblEncodedKey" for="encoded-key">';$output .= $stash->get(['locale',0,'maketext',['Encoded Key:' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <pre id="encoded-key">';$output .= $stash->get(['generate_key',0,'data',0,'text',0]);$output .= '</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblDecodedKey" for="decoded-key">';$output .= $stash->get(['locale',0,'maketext',['Decoded Key:' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <pre id="decoded-key">';$output .= $stash->get(['show_key',0,'data',0,'text',0]);$output .= '</pre>
+                    </div>
+                </div>
+            </div>
+        '}$output .= '    '}else {$output .= '
+        <div id="generateError" class="alert alert-danger">
+            <span id="generateErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="generateErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Sorry, there was a problem generating the key.' ]]);$output .= '
+                ';if ($stash->get(['generate_csr',0,'errors',0,0,0])){$output .= '
+                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['generate_csr',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+                '}elsif ($stash->get(['generate_key',0,'errors',0,0,0])){$output .= '                    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['generate_key',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+                '}$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    <ul class="list-inline text-center">
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkCSR','return_location'=>'csrs.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Certificate Signing Request' ]])});$output .= '
+        </li>
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Manager' ]])});$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'embed_stylesheets'=>['css/ssl.css' ],'embed_scripts'=>['js2/ssl/gencsr.js' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

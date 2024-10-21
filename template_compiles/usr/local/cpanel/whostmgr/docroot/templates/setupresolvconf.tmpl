@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/setupresolvconf.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'has_cpanel',0])){$output .= '&nbsp;You currently have one or more of cPanel.net\'s dns resolvers in your /etc/resolv.conf.
+You will need to set these to your datacenter\'s local resolvers as these servers are
+only intended for use during a cPanel install. If you continue to use them connections
+to your server be <span class="b2">exceedingly slow</span> because of the time it
+takes to complete a dns lookup.
+'}$output .= '<br />
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/setupresolvconf2">
+<table width="95%">
+    <tr>
+        <td>This wizard will guide you through setting up your resolver configuration (/etc/resolv.conf).</td>
+    </tr>
+    <tr>
+        <td>
+        ';$output .= $stash->get('has_cpanel');$output .= '
+        </td>
+    </tr>
+    <tr>
+        <td><input type="submit" class="btn-primary" value="Proceed"></td>
+    </tr>
+</table>
+</form>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'resolver_configuration','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

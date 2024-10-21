@@ -1,0 +1,59 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/addaforns.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('stylesheet_includes',[]);$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'status',0])){$output .= '
+<table class="table table-condensed" id="datatbl1">
+<thead>
+<tr>
+    <th>Nameserver</th>
+    <th colspan="2">IP Addresses</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+    <td rowspan="2">';$output .= $stash->get(['data',0,'nameserver',0,'html',0]);$output .= '</td>
+    <td>IPv4</td>
+    <td>';$output .= $stash->get(['data',0,'nsips',0,'ipv4',0])? $stash->get(['data',0,'nsips',0,'ipv4',0,'html',0]): 'None';$output .= '</td>
+</tr>
+<tr>
+    <td>IPv6</td>
+    <td>';$output .= $stash->get(['data',0,'nsips',0,'ipv6',0])? $stash->get(['data',0,'nsips',0,'ipv6',0,'html',0]): 'None';$output .= '</td>
+</tr>
+</tbody>
+</table>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/doaddaforns">
+    <input type="hidden" name="nameserver" value="';$output .= $stash->get(['data',0,'nameserver',0,'html',0]);$output .= '">
+    <div class="form-group">
+        <label for="ip">
+        ';if ($stash->get(['data',0,'nsips',0,'ipv4',0])){$output .= '
+        Confirm the IPv4 address
+        '}else {$output .= '
+        Enter an IPv4 address
+        '}$output .= '
+        to create an A record
+        </label>
+        <input type="text" class="form-control" name="ip" id="ip" value="';$output .= ($stash->get(['data',0,'nsips',0,'ipv4',0]))? $stash->get(['data',0,'nsips',0,'ipv4',0,'html',0]): '';$output .= '">
+    </div>
+    <div class="form-group">
+        <label for="ip6">
+        ';if ($stash->get(['data',0,'nsips',0,'ipv6',0])){$output .= '
+        Confirm the IPv6 address
+        '}else {$output .= '
+        Enter an IPv6 address
+        '}$output .= '
+        to create an AAAA record (optional)
+        </label>
+        <input type="text" class="form-control" name="ip6" id="ip6" value="';$output .= ($stash->get(['data',0,'nsips',0,'ipv6',0]))? $stash->get(['data',0,'nsips',0,'ipv6',0,'html',0]): '';$output .= '">
+    </div>
+    <div class="form-group" id="add-address-record-btn-group">
+        <input type="submit" name="add_a_entry" id="add_a_entry" class="btn btn-primary" value="Configure Address Records" />
+    </div>
+</form>
+'}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['data',0,'statusmsg',0,'html',0]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Configure Address Records for nameserver “[_1]”.',$stash->get(['data',0,'nameserver',0])]]),'theme'=>'bootstrap','inside_frame_or_tab_or_popup'=>1,'extrastyle'=>'.container, #add-address-record-btn-group { margin-bottom: 0; } #masterContainer { margin-top: 0px; }','stylesheets'=>$stash->get('stylesheet_includes'),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

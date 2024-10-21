@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/SSLCertExpiresSoon.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= $context->process('include/certificate_info.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,SSL,Secure Sockets Layer] certificate for “[_1]” on “[_2]” will expire in less than [quant,_3,day,days].',$stash->get(['NOTICE',0,'service',0]),$stash->get(['NOTICE',0,'hostname',0]),30 ]]));$output .= '
+
+<p>
+    <u>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The certificate has the following properties:' ]]);$output .= '</u>
+    ';$output .= $stash->get(['certificate_info',[{'certificate'=>$stash->get(['NOTICE',0,'certificate',0]),'certificate_error'=>$stash->get(['NOTICE',0,'certificate_error',0])}]]);$output .= '
+</p>
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You need to install a new certificate as soon as possible.' ]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can do this with [asis,WHM]’s “[_1]” interface at [output,url,_2,_2,target,_3].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Manage Service SSL Certificates' ]]),$stash->get(['NOTICE',0,'manage_service_certificates_url',0]),'_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

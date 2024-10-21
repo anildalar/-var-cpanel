@@ -1,0 +1,69 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/suspendlist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPDate',$context->plugin('CPDate'));$output .= do {my$output='';$output .= $context->process('selscript.tmpl',{'xml'=>'data.xml' });$output .= $context->process('_ajaxapp_header.tmpl');$output .= '<table class="sortable" id="sus">
+    <tr class="cellheader">
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">Domain</th>
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">User</th>
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">Owner</th>
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">Date Suspended</th>
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">Reason</th>
+        <th class="scellheader" background="';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= '">Locked</th>
+        <th class="scellheader"></th>
+        <th class="scellheader"></th>
+    </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'suspend_data',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'suspend'}=$_tt_value;$output .= '
+                <tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade1' : 'tdshade2';$output .= '">
+                    <td class="tbcell">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'domain',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="tbcell">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'user',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="tbcell">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'owner',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="tbcell">
+';if ($stash->get(['suspend',0,'when',0])){$output .= '<div style="display: none">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'when',0]);&$_tt_filter($output)};$output .= '</div>
+';$output .= $stash->get(['CPDate',0,'localtime',[$stash->get(['suspend',0,'when',0])]])}else {$output .= 'unknown
+'}$output .= '</td>
+                    <td class="tbcell">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'why',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td class="tbcell">';if ($stash->get(['suspend',0,'is_locked',0])){$output .= 'Yes'}else {$output .= 'No'}$output .= '</td>
+                    <td>
+
+';if ($stash->get(['suspend',0,'bandwidth_exceeded',0])){$output .= '                    <form action="../scripts2/limitbw" method="GET">
+                    <input type="hidden" name="domain" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'domain',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'user',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="submit" value="Modify Bandwidth" class="btn-primary">
+                    </form>
+'}else {$output .= '                    <form action="../scripts2/suspendacct">
+                    <input type="hidden" name="domain" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'domain',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'user',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="hidden" name="unsuspend-user" value="UnSuspend">
+                    <input type="submit" value="Unsuspend" class="btn-primary">
+                    ';if ($stash->get(['suspend',0,'user_is_proxied',0])){$output .= '
+                        <br />
+                        <span class="checkbox" id="retain-proxying" >
+                            <label>
+                                <input type="checkbox" class="form-control" name="retain-proxying" value="1" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Retain [output,url,_1,Service Proxying,target,serviceProxyingDocs]','https://go.cpanel.net/ServiceProxying' ]]);$output .= '
+                            </label>
+                            <span
+                                id=\'retain-proxying-info\'
+                                onclick=\'CPANEL.ajax.toggleToolTip(this,"';$output .= $stash->get(['locale',0,'maketext',['Retain Service Proxying' ]]);$output .= '");\'
+                                title=\'';$output .= $stash->get(['locale',0,'maketext',['Select this checkbox to keep the account’s current service proxying settings. If you do not select this checkbox, the system will disable service proxying by default.' ]]);$output .= '\'>
+                                    <span class=\'fas fa-question-circle fa-large\' aria-hidden></span>
+                            </span>
+                        </span>
+                    '}$output .= '
+                    </form>
+'}$output .= '                    </td>
+                    <td>
+                    <form action="../scripts4/multikillacct/';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'user',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="hidden" name="selectuser" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suspend',0,'user',0]);&$_tt_filter($output)};$output .= '">
+                    <input type="submit" value="Terminate" class="btn-secondary">
+                    </form>
+                    </td>
+                    </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</table>
+';$output .= $context->process('_ajaxapp_footer.tmpl');$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'list_suspended_accounts','header'=>$stash->get(['locale',0,'maketext',['Suspended Accounts' ]]),'scripts'=>['/js/sorttable.js' ],'extrastyle'=>'
+td {
+    padding-left: 8px ! important;
+    padding-right: 8px ! important;
+}
+#retain-proxying-info {
+    cursor:help;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

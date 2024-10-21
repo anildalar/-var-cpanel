@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/cron/edit_module.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('schedule',[{'name'=>'minute','text'=>$stash->get(['locale',0,'maketext',['Minute' ]])},{'name'=>'hour','text'=>$stash->get(['locale',0,'maketext',['Hour' ]])},{'name'=>'day','text'=>$stash->get(['locale',0,'maketext',['Day' ]])},{'name'=>'month','text'=>$stash->get(['locale',0,'maketext',['Month' ]])},{'name'=>'weekday','text'=>$stash->get(['locale',0,'maketext',['Weekday' ]])}]);$stash->set('common_settings',[{'value'=>'* * * * *','name'=>$stash->get(['locale',0,'maketext',['Every Minute' ]])},{'value'=>'*/5 * * * *','name'=>$stash->get(['locale',0,'maketext',['Every 5 Minutes' ]])},{'value'=>'0,30 * * * *','name'=>$stash->get(['locale',0,'maketext',['Twice an Hour' ]])},{'value'=>'0 * * * *','name'=>$stash->get(['locale',0,'maketext',['Once an Hour' ]])},{'value'=>'0 0,12 * * *','name'=>$stash->get(['locale',0,'maketext',['Twice a Day' ]])},{'value'=>'0 0 * * *','name'=>$stash->get(['locale',0,'maketext',['Once a Day' ]])},{'value'=>'0 0 * * 0','name'=>$stash->get(['locale',0,'maketext',['Once a Week' ]])},{'value'=>'0 0 1,15 * *','name'=>$stash->get(['locale',0,'maketext',['1st and 15th' ]])},{'value'=>'0 0 1 * *','name'=>$stash->get(['locale',0,'maketext',['Once a Month' ]])},{'value'=>'0 0 1 1 *','name'=>$stash->get(['locale',0,'maketext',['Once a Year' ]])}]);$output .= '<div class="dt_module" id="edit_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '" style="display: none">
+    <div class="form-group">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('schedule');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'field'}=$_tt_value;$output .= '            <label>';$output .= $stash->get(['field',0,'text',0]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-2">
+                    <input id="';$output .= $stash->get(['field',0,'name',0]);$output .= '_';$output .= $stash->get(['q',0,'count',0]);$output .= '"
+                        type="text"
+                        class="form-control"
+                        size="4" />
+                </div>
+                <div id="';$output .= $stash->get(['field',0,'name',0]);$output .= '_';$output .= $stash->get(['q',0,'count',0]);$output .= '_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-sm-6 col-md-4">
+            <select id="common_options_';$output .= $stash->get(['q',0,'count',0]);$output .= '"
+                onchange="select_common_option(\'';$output .= $stash->get(['q',0,'count',0]);$output .= '\')"
+                class="form-control">
+                <option value="--">-- ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= ' --</option>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('common_settings');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'setting'}=$_tt_value;$output .= '
+                    <option value="';$output .= $stash->get(['setting',0,'value',0]);$output .= '">
+                        ';$output .= $stash->get(['setting',0,'name',0]);$output .= '
+                        (';$output .= $stash->get(['setting',0,'value',0]);$output .= ')
+                    </option>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-xs-12 col-md-8">
+            <label>';$output .= $stash->get(['locale',0,'maketext',['Command' ]]);$output .= '</label>
+            <input id="command_';$output .= $stash->get(['q',0,'count',0]);$output .= '"
+                type="text"
+                class="form-control"
+                size="45" />
+            <div id="command_';$output .= $stash->get(['q',0,'count',0]);$output .= '_error"></div>
+        </div>
+    </div>
+    <div class="form-group" id="edit_input_';$output .= $stash->get(['q',0,'count',0]);$output .= '">
+        <input id="edit_line_';$output .= $stash->get(['q',0,'count',0]);$output .= '"
+            type="button"
+            class="btn btn-primary"
+            value="';$output .= $stash->get(['locale',0,'maketext',['Edit Line' ]]);$output .= '" />
+        <button class="btn btn-link" onclick="toggle_module(\'edit_module_';$output .= $stash->get(['q',0,'count',0]);$output .= '\')">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+    </div>
+    <div id="edit_status_';$output .= $stash->get(['q',0,'count',0]);$output .= '"></div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

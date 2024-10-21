@@ -1,0 +1,45 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/telnet/keys/puttyexport.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= '
+';$output .= $stash->get(['Api2',0,'pre_exec',['SSH','converttoppk' ]]);$stash->set('convert_ppk',$stash->get(['Api2',0,'exec',['SSH','converttoppk',{'pass'=>$stash->get(['RAW_FORM',0,'pass',0]),'name'=>$stash->get(['FORM',0,'key',0])}],0,0]));$output .= $stash->get(['Api2',0,'post_exec',['SSH','converttoppk' ]]);$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'item',['ssh' ]])){$output .= '
+    <div id="sshError" class="alert alert-danger">
+        <span id="sshErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+        <div id="sshErrorMsg" class="alert-message">
+            ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'item',['ssh' ],'html',0]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <div class="section">
+        <h2 id="hdrViewKeys"> ';$output .= $stash->get(['locale',0,'maketext',['View/Download SSH Keys “[_1]”',$stash->get(['FORM',0,'key',0])]]);$output .= '</h2>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <strong>
+                        <span id="descPpkConvert">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Convert the “[_1]” key to [output,acronym,PPK,Public Private Key] format:',$stash->get(['FORM',0,'key',0])]]);$output .= '
+                        </span>
+                    </strong>
+                    <pre id="puttykey">';$output .= $stash->get(['convert_ppk',0,'key',0,'html',0]);$output .= '</pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <a id="lnkDownloadKey" class="btn btn-primary" href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);&$_tt_filter($output)};$output .= '/download/.ssh/putty/';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['FORM',0,'key',0]);&$_tt_filter($output)};$output .= '.ppk">';$output .= $stash->get(['locale',0,'maketext',['Download Key' ]]);$output .= '</a>
+        </div>
+    </div>
+    '}$output .= '
+
+    <ul class="list-inline text-center">
+        <li>
+            ';$stash->set('return_url','editkey.html?key=' .$stash->get(['FORM',0,'key',0]));$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkEditKey','return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        </li>
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Back to Manage Keys' ]])});$output .= '
+        </li>
+    </ul>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssh_access','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

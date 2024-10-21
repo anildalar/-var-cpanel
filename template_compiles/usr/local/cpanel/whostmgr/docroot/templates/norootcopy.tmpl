@@ -1,0 +1,79 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/norootcopy.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+';if ($stash->get(['Whostmgr',0,'get_max_users',0])&& $stash->get(['Whostmgr',0,'minimum_accounts_needed',[$stash->get(['Whostmgr',0,'get_max_users',0])]])){$output .= $context->process('menu/_license_excess_create.tmpl');$output .= '    ';$output .= '
+    <input aria="hidden" id="submit-button" type="hidden"></input>
+'}else {$output .= '
+
+    <div id="content">
+        <div id="infoField">
+            <p>
+                <ul>
+                    <li>';$output .= $stash->get(['locale',0,'maketext',['This feature uses the cPanel API to generate a backup of the account and transfer it to the server for restoration.' ]]);$output .= '</li>
+                    <li>';$output .= $stash->get(['locale',0,'maketext',['If you are able to create a full backup, it is much preferable to do so and restore the backup file via [output,url,_1,Restore a Full Backup/cpmove file].','../scripts5/quickrestorecpmovefile' ]]);$output .= '</li>
+                </ul>
+            </p>
+        </div>
+
+        ';$output .= $context->include('_pending_transfers.tmpl');$output .= '
+        <div class="row">
+            <form class="col-sm-6" action="../scripts5/donorootcopy" method="POST" name="mainform" id="mainform" role="form">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+
+                ';$stash->set('restricted_by_default',1);$output .= '
+                ';$output .= $context->process('_restricted_restore_option.tmpl');$output .= '
+                <fieldset>
+                    <legend>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '
+                    </legend>
+                    <div class="form-group">
+                        <label for="host">';$output .= $stash->get(['locale',0,'maketext',['Server to copy from (IP or FQDN):' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="host" name="host" class="form-control">
+                            </div>
+                            <div class="col-sm-6">
+                                <div id="host_error">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['If the site is not reachable and the server is online, this should be the address of the server that contains the account.' ]]);$output .= '
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="user">';$output .= $stash->get(['locale',0,'maketext',['Username to copy:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="text" id="user" name="user" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="pass">';$output .= $stash->get(['locale',0,'maketext',['User’s password:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="password" autocomplete=\'off\' id="pass" name="pass" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="ip"
+                                    id="ip"
+                                    value="1"/>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Give New Account an IP Address' ]]);$output .= '
+                        </label>
+                    </div>
+                </fieldset>
+                <button type="submit" title="Copy Account" class="btn btn-primary" id="submit-button">
+                    <div class="button-text">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Copy Account' ]]);$output .= '
+                    </div>
+                </button>
+            </form>
+        </div>
+    </div>
+    ';$output .= $context->include('_transfer_api_info.tmpl');$output .= '
+'}$context->include('master_templates/master.tmpl',{'app_key'=>'copy_an_account_from_another_server_with_an_account_password','stylesheets'=>['/css/whm_dynamic_notices.css' ],'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

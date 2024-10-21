@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Accounts/ChildDistributionFailure.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Failure: The Server Failed to Offloaded “[_1]” for the user “[_2]”.',$stash->get(['NOTICE',0,'worker_type',0]),$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'worker_alias',0])]]));$output .= '
+
+<p style="margin-bottom:25px;">
+';do {my$_tt_result=$stash->get(['NOTICE',0,'worker_type',0]);my$_tt_match;SWITCH: {$_tt_match='Mail';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The server failed to offload mail functionality and storage to “[_1]” for the user “[_2]”.',$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'worker_alias',0])]]);$output .= '
+';last SWITCH}$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The child node “[_1]” failed to handle “[_2]” functionality for the user “[_3]”.',$stash->get(['NOTICE',0,'worker_type',0]),$stash->get(['NOTICE',0,'user',0]),$stash->get(['NOTICE',0,'worker_alias',0])]]);$output .= '
+'}};$output .= '
+</p>
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The server will now attempt to revert any changes.' ]]);$output .= '
+</p>
+
+';if ($stash->get(['NOTICE',0,'distribution_errors',0,'size',0])){$output .= '
+    <p>';$output .= $context->process('include/zebra_table.tmpl');$stash->set('lead_in_phrase',$stash->get(['CPANEL',0,'locale',0,'maketext',['The following [numerate,_1,error,errors] caused the failure:',$stash->get(['NOTICE',0,'distribution_errors',0,'size',0])]]));$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'distribution_errors',0]),'titles'=>[$stash->get('lead_in_phrase')]}]]);$output .= '    </p>
+'}$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

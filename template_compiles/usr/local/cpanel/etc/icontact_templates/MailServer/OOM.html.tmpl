@@ -1,0 +1,40 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/MailServer/OOM.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/icons.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_standout.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The “[_1]” service reached its memory limit while it accessed mail for the account “[_2]”.',$stash->get(['NOTICE',0,'service',0]),$stash->get(['NOTICE',0,'account',0])]]));$stash->set('zebra_stripe',0);$output .= '
+      ';$stash->set('maximum_mail_process_size_text',$stash->get(['CPANEL',0,'locale',0,'maketext',['Maximum Size of a Mail Process' ]]));$output .= '
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['When the “[_1]” service reaches its memory limit, the system performance will suffer because the service must start a new process and it will lose all of the data that it has cached in memory.',$stash->get(['NOTICE',0,'service',0])]]);$output .= '
+    </p>
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You should increase the current memory limit of “[format_bytes,_1]” or remove any unwanted email from the “[_2]” account. To increase the memory limit, use the “[_3]” setting in the “[output,url,_4,Mailserver Configuration]” interface in WHM.',$stash->get(['NOTICE',0,'current_memory_limit',0])* 1024 * 1024,$stash->get(['NOTICE',0,'account',0]),$stash->get('maximum_mail_process_size_text'),$stash->get(['NOTICE',0,'whm_mailserver_config_url',0])]]);$output .= '
+    </p>
+
+     <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To increase the memory limit from the command line, use the following command:' ]]);$output .= '
+        ';$stash->set('command_text','whmapi1 set_service_config_key service=dovecot key=mail_process_size value=' .($stash->get(['NOTICE',0,'current_memory_limit',0])* 2));$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get('command_text')}]]);$output .= '
+        ';$stash->set('command_text','whmapi1 restartservice service=imap');$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>$stash->get('command_text')}]]);$output .= '
+
+    </p>
+
+
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To remove all email older than one year from this account’s Junk folder via the command line, use the following command:' ]]);$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>'whmapi1 expunge_mailbox_messages account=' .$stash->get(['NOTICE',0,'account',0]).' mailbox=INBOX.Junk query=' .'\'savedbefore 52w\'' }]]);$output .= '
+
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To remove all email older than one year from this account’s INBOX via the command line, use the following command:' ]]);$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>'whmapi1 expunge_mailbox_messages account=' .$stash->get(['NOTICE',0,'account',0]).' mailbox=INBOX query=' .'\'savedbefore 52w\'' }]]);$output .= '
+    </p>
+
+
+    <h4>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Usage report for the “[_1]” account:',$stash->get(['NOTICE',0,'account',0])]]);$output .= '</h4>
+    ';$stash->set('mailbox_table_items',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'mailbox_status',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'mailbox'}=$_tt_value;$output .= $stash->get(['mailbox_table_items',0,'push',[[$stash->get(['mailbox',0,'key',0]),$stash->get(['CPANEL',0,'locale',0,'format_bytes',[$stash->get(['mailbox',0,'value',0,'vsize',0])]]),$stash->get(['CPANEL',0,'locale',0,'numf',[$stash->get(['mailbox',0,'value',0,'messages',0])]])]]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= $stash->get(['zebra_table',[{'titles'=>[$stash->get(['CPANEL',0,'locale',0,'maketext',['Mailbox' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Size' ]]),$stash->get(['CPANEL',0,'locale',0,'maketext',['Message Count' ]])],'items'=>$stash->get('mailbox_table_items')}]]);$output .= '
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To get an updated report for this account from the command line, use the following command:' ]]);$output .= '
+        ';$output .= $stash->get(['code_standout',[{'command'=>'whmapi1 get_mailbox_status account=' .$stash->get(['NOTICE',0,'account',0])}]]);$output .= '
+    </p>
+    ';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

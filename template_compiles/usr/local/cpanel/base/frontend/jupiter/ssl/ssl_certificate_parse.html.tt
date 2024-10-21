@@ -1,0 +1,52 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/ssl_certificate_parse.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPIcons',$context->plugin('CPIcons'));$stash->set('SSL',$context->plugin('SSL'));$stash->set('RECOMMENDED_MODULUS_LENGTH',$stash->get(['SSL',0,'DEFAULT_KEY_SIZE',0]));$stash->set('warn_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['warning',16 ]]));$stash->set('error_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['error',16 ]]));$stash->set('expire_error_msg',$stash->get(['locale',0,'maketext',['This certificate is expired.' ]]));$stash->set('self_signed_warn_msg',$stash->get(['locale',0,'maketext',['Self-signed certificates will cause browser warnings.' ]]));$stash->set('mod_error_msg',$stash->get(['locale',0,'maketext',['A key that does not use [asis,ECDSA] or at least [numf,_1]-bit [asis,RSA] does not provide adequate security.',$stash->get('RECOMMENDED_MODULUS_LENGTH')]]));$stash->set('ssl_certificate_parse_lexicon',{'Contact your certificate authority ([_1]) to reissue this certificate with a longer key.'=>$stash->get(['locale',0,'lextext',['Contact your certificate authority ([_1]) to reissue this certificate with a longer key.' ]]),'Contact your certificate authority to reissue this certificate with a longer key.'=>$stash->get(['locale',0,'lextext',['Contact your certificate authority to reissue this certificate with a longer key.' ]]),'Certificate Expiration'=>$stash->get(['locale',0,'lextext',['Certificate Expiration' ]]),'It is highly recommended that you do not install this certificate.'=>$stash->get(['locale',0,'lextext',['It is highly recommended that you do not install this certificate.' ]]),'Certificate Key Sizes'=>$stash->get(['locale',0,'lextext',['Certificate Key Sizes' ]]),'Generate and install a new self-signed certificate immediately. Then, replace this certificate with a certificate signed by a valid certificate authority as soon as possible.'=>$stash->get(['locale',0,'lextext',['Generate and install a new self-signed certificate immediately. Then, replace this certificate with a certificate signed by a valid certificate authority as soon as possible.' ]]),'You should request a replacement certificate from the issuer ([_1]) as soon as possible.'=>$stash->get(['locale',0,'lextext',['You should request a replacement certificate from the issuer ([_1]) as soon as possible.' ]]),'Self-Signed Certificates'=>$stash->get(['locale',0,'lextext',['Self-Signed Certificates' ]]),'This certificate’s key is too short ([quant,_1,bit,bits]). This key will not protect against a spoofing attack. Currently, a certificate’s key should be least [quant,_2,bit,bits] long.'=>$stash->get(['locale',0,'lextext',['This certificate’s key is too short ([quant,_1,bit,bits]). This key will not protect against a spoofing attack. Currently, a certificate’s key should be least [quant,_2,bit,bits] long.' ]]),'You should generate another self-signed certificate for this domain with a [numf,_1]-bit key.'=>$stash->get(['locale',0,'lextext',['You should generate another self-signed certificate for this domain with a [numf,_1]-bit key.' ]]),'Your certificate will expire in [quant,_1,day,days].'=>$stash->get(['locale',0,'lextext',['Your certificate will expire in [quant,_1,day,days].' ]]),'[quant,_1,bit,bits] ([output,class,_2,_3] …)'=>$stash->get(['locale',0,'lextext',['[quant,_1,bit,bits] ([output,class,_2,_3] …)' ]]),'The recommended key size for a certificate is currently [quant,_1,bit,bits].'=>$stash->get(['locale',0,'lextext',['The recommended key size for a certificate is currently [quant,_1,bit,bits].' ]]),'This certificate may be vulnerable to attack because of its key length ([quant,_1,bit,bits]).'=>$stash->get(['locale',0,'lextext',['This certificate may be vulnerable to attack because of its key length ([quant,_1,bit,bits]).' ]]),'This certificate’s key is too short ([quant,_1,bit,bits]). This key will not protect against a spoofing attack.'=>$stash->get(['locale',0,'lextext',['This certificate’s key is too short ([quant,_1,bit,bits]). This key will not protect against a spoofing attack.' ]])});$output .= '
+<script>
+';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= $context->insert('libraries/handlebars/handlebars.js')}else {$output .= $context->insert('libraries/handlebars/handlebars.min.js')}$output .= '
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('ssl_certificate_parse_lexicon')]]);$output .= ' );
+</script>
+
+';do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'list'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '(<a href="javascript:void(0)" class="';$output .= $stash->get(['item',0,0,0]);$output .= '" title="';$output .= $stash->get(['item',0,1,0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['More information' ],'replace',[' ','&nbsp;' ]]);$output .= '</a>)
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('more_info_link',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$output .= '
+';$stash->set('self_signed_more_info',$stash->get(['more_info_link',0,'print',[['self-signed-info',$stash->get(['locale',0,'maketext',['This is a self-signed certificate. Self-signed certificates are easy for attackers to spoof, and they generate security warnings in a user’s web browser. You should only temporarily install this certificate until a valid certificate authority issues a signed certificate to replace it.' ]])]]]));$stash->set('modulus_more_info',$stash->get(['more_info_link',0,'print',[['modulus-info',$stash->get(['locale',0,'maketext',['A key’s size indicates how hard it is to forge a signature from that key. Computers need more time to process longer keys, whether the computer is a legitimate user or an attacker. The key should be long enough to deter attackers but short enough that it does not slow down the website significantly for legitimate users. As computers become faster, longer keys are necessary to keep websites secure. [quant,_1,bit,bits] is currently the recommended size for [asis,RSA] keys.',$stash->get(['SSL',0,'DEFAULT_KEY_SIZE',0])]])]]]));$stash->set('expire_info',$stash->get(['more_info_link',0,'print',[['expiration-info',$stash->get(['locale',0,'maketext',['A certificate that remains active after its expiration date will generate security warnings in users’ web browsers.' ]])]]]));$output .= '
+<script type="text/x-handlebars-template" id="ssl_certificate_parse_template">
+    <table class="ssl-certificate-parse">
+        {{#each leading_rows}}
+            <tr>
+                <th>{{{this.key_html}}}</th>
+                <td>{{{this.value_html}}}</td>
+            </tr>
+        {{/each}}
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Domains:' ]]);$output .= '</th>
+            <td {{#if domains_warn}}class=\'ssl-certificate-parse-error\'{{/if}}>
+                <ul class="ssl-certificate-parse-domains">{{#each domains}}
+                    <li>{{this}}</li>
+                {{/each}}</ul>
+            </td>
+        </tr>
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Issuer:' ]]);$output .= '</th>
+            <td {{#if issuer_warn}}class=\'ssl-certificate-parse-warn\'{{/if}}>
+                {{#if isSelfSigned}}
+                <span>';$output .= $stash->get(['locale',0,'maketext',['(self-signed)' ]]);$output .= '</span>
+                {{#if issuer_warn}}';$output .= $stash->get('warn_icon');$output .= '<div class="warn"><span>';$output .= $stash->get('self_signed_warn_msg');$output .= ' ';$output .= $stash->get('self_signed_more_info');$output .= '</span></div>{{/if}}
+                {{else}}<span>{{issuer}}</span>{{/if}}
+            </td>
+        </tr>
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Key:' ]]);$output .= '</th>
+            <td {{#if key_critical}}class=\'ssl-certificate-parse-error\'{{/if}}>
+                <span>{{{keyinfo_html}}}</span>
+                {{#if key_critical}}';$output .= $stash->get('error_icon');$output .= '<div class="error"><span>';$output .= $stash->get('mod_error_msg');$output .= ' ';$output .= $stash->get('modulus_more_info');$output .= '</span></div>{{/if}}
+            </td>
+        </tr>
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Expiration:' ]]);$output .= '</th>
+            <td {{#if expiration_warn}}class=\'ssl-certificate-parse-warn\'{{/if}}{{#if expiration_error}}class=\'ssl-certificate-parse-error\'{{/if}}>
+                <span>{{{expiration_html}}}</span>
+                {{#if expiration_warn}}';$output .= $stash->get('warn_icon');$output .= '<div class="warn"><span>{{expire_warn_msg}} ';$output .= $stash->get('expire_info');$output .= '</span></div>{{/if}}
+                {{#if expiration_error}}';$output .= $stash->get('error_icon');$output .= '<div class="error"><span>';$output .= $stash->get('expire_error_msg');$output .= ' ';$output .= $stash->get('expire_info');$output .= '</span></div>{{/if}}
+            </td>
+        </tr>
+    </table>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

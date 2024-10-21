@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/Biglog.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Large logs detected.' ]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The following log files are almost 2 gigabytes in size. You should rotate or remove them to prevent an “File Size Exceeded” error in [asis,Apache].' ]]);$output .= '
+
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can configure automatic log rotation in [asis,WHM]’s [_1] interface at: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['Log Rotation' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['cgi/apache_log_rotation.pl' ]]),'_blank' ]]);$output .= '
+
+</p>
+<p>
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,0,0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Big log list preview:' ]])}]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,112 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/webdav/passwd.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('required_strength_resp',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'webdisk' }]]));if ($stash->get(['required_strength_resp',0,'size',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,0,0,'strength',0]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+<div class="body-content">
+
+    <form method="post" action="dopasswd.html" name="mainform" id="mainform">
+        <!-- prevent password autofill -->
+        <input type="text" style="display:none">
+        <input type="password" autocomplete=\'off\' style="display:none">
+        <input type="hidden" value="';$output .= $stash->get(['FORM',0,'login',0]);$output .= '" id="login" name="login" />
+
+        <p>
+        ';if ($stash->get(['FORM',0,'digest_only',0])){$output .= '
+            <input type="hidden" name="enabledigest" id="hidEnableDigest" value="1">
+            ';$output .= $stash->get(['locale',0,'maketext',['Activating Digest Authentication (Windows® Vista, or newer, support) for the user “[_1]”.',$stash->get(['FORM',0,'login',0])]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Changing password for the user “[_1]”.',$stash->get(['FORM',0,'login',0])]]);$output .= '
+        '}$output .= '
+        </p>
+
+        <div class="form-group">
+            <label for="password" id="password-label-cell">
+                ';$output .= $stash->get(['locale',0,'maketext',['New Password' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' name="password" id="password" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblPassword2" for="password2">
+                ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' name="password2" id="password2" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password2_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label id="lblPasswordStrength">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                        <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                    ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="password_strength" class="password_strength"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="button" id="create_strong_password" class="btn btn-default"
+                        value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                </div>
+            </div>
+        </div>
+
+
+        ';if ($stash->get(['FORM',0,'digest_only',0])){$output .= '
+            <div id="add-submit-row" class="form-group">
+                <input id="submit-button" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Activate' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Change the password for “[_1]”.',$stash->get(['FORM',0,'login',0])]]);$output .= '" />
+            </div>
+        '}else {$output .= '
+            <div id="add-auth-row">
+                <div class="form-group">
+                    <div class="checkbox">
+                        <label id="lblEnableDigest">
+                            <input id="enabledigest" type="checkbox" ';$output .= ($stash->get(['FORM',0,'hasdigest',0]))? 'checked="checked"' : '';$output .= ' value="1" name="enabledigest" />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign" id="enabledigest-info" onclick="CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication' ]]);$output .= '\');" title="';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '" />
+                    </div>
+                </div>
+            </div>
+            <div id="add-submit-row" class="form-group">
+                <input id="submit-button" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Change the password for “[_1]”.',$stash->get(['FORM',0,'login',0])]]);$output .= '" />
+            </div>
+        '}$output .= '
+
+    </form>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'accounts_webdav.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'web_disk','feature'=>'webdisk','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var init = function() {
+        var validation = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Web Disk Accounts' ]]);$output .= '");
+        var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get('required_strength');$output .= '\', 10) || 0;
+
+        var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+        CPANEL.validate.attach_to_form("submit", password_validators);
+    };
+
+    YAHOO.util.Event.onDOMReady(init);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,106 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/multirestorecon.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+<style type="text/css">
+.alert-info {
+  background-color: #d7edf9;
+  border: 1px solid #2980b9;
+  color: #31708f;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  margin: 0 0 10px;
+}
+</style>
+
+<div class="alert-info">
+  ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel amp() WHM] will deprecate the Legacy Backup system in the near future. We [output,strong,strongly] recommend that you upgrade to the new Backup system.' ]]);$output .= '
+</div>
+
+';if ($stash->get(['data',0,'disabled',0])){$output .= '<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['Backup is not enabled.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If you are trying to restore a crashed system, please set backup to “[_1]”.',$stash->get(['locale',0,'maketext',['Restore Only' ]])]]);$output .= '</h3>
+'}elsif (!$stash->get(['data',0,'restoretype',0])){if ($stash->get(['data',0,'backupdirs',0,'size',0])eq 0){$output .= '<span class="b2">Sorry, there are no backups located at ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'backupbase',0]);&$_tt_filter($output)};$output .= '.</span>
+'}else {$output .= '
+';$output .= $context->include('_pending_transfers.tmpl');$output .= '
+
+';$output .= $stash->get(['locale',0,'maketext',['Please select which type of backup to restore:' ]]);$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/multirestorecon">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'backupdirs',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'backupdir'}=$_tt_value;$output .= '<input type="submit" class="btn-primary" name="restoretype" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('backupdir');&$_tt_filter($output)};$output .= '" />
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</form>
+'}}else {$output .= $context->process('_loadjs.tmpl',{'src'=>'/js/checkselect.js' });$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['We are restoring a “[_1]” backup …',$stash->get(['data',0,'restoretype',0,'html',0])]]);$output .= '<br />
+';$output .= $stash->get(['locale',0,'maketext',['Please select users to restore:' ]]);$output .= '<br />
+<form method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/domultibackuprestore" target="_blank">
+  <input type="hidden" name="restoretype" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoretype',0]);&$_tt_filter($output)};$output .= '" />
+  <table class=sortable id=accts>
+    <tr>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Give IP Address (only if recreating)' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Restore Subdomains' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Restore Mail Config' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Restore Databases' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Restore Bandwidth Data' ]]);$output .= '</th>
+   </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'users',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '    <tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade2' : 'tdshade1';$output .= '">
+            <td><input value="1" type="checkbox" name="whm530restore-';$output .= $stash->get('user');$output .= '"></td>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('user');&$_tt_filter($output)};$output .= '</td>
+            <td><input value="1" type="checkbox" name="whm530restoreip-';$output .= $stash->get('user');$output .= '"></td>
+            <td><input value="1" type="checkbox" name="whm530restoresubs-';$output .= $stash->get('user');$output .= '" checked="checked"></td>
+            <td><input value="1" type="checkbox" name="whm530restoremail-';$output .= $stash->get('user');$output .= '" checked="checked"></td>
+            <td><input value="1" type="checkbox" name="whm530restoremysql-';$output .= $stash->get('user');$output .= '" checked="checked"></td>
+            <td><input value="1" type="checkbox" name="whm530restorebwdata-';$output .= $stash->get('user');$output .= '" checked="checked"></td>
+    </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    <tr class="';$output .= $stash->get(['data',0,'users',0,'max',0])? 'tdshade2' : 'tdshade1';$output .= '">
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restore-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restore-\',1);" value="Deselect Column"></td>
+        <td></td>
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoreip-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoreip-\',1);" value="Deselect Column"></td>
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoresubs-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoresubs-\',1);" value="Deselect Column"></td>
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoremail-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoremail-\',1);" value="Deselect Column"></td>
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoremysql-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restoremysql-\',1);" value="Deselect Column"></td>
+        <td><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restorebwdata-\');" value="Select Column"><br /><input type="button" class="btn-secondary" onClick="checkall(this.form,\'whm530restorebwdata-\',1);" value="Deselect Column"></td>
+    </tr>
+  </table>
+  <input type="button" class="btn-secondary" onClick="selectAll(this.form,0)" value="Select All"> <br />
+  <input type="button" class="btn-secondary" onClick="selectAll(this.form,1)" value="Reverse Selection">
+  <br />
+  <input type="submit" class="btn-primary" value="Start Restore">
+</form>
+
+<script type="text/javascript">
+
+checkarea=\'accts\';
+YAHOO.util.Event.addListener( document.getElementById(checkarea) , "mousedown" , handleSelectBoxMouseDown);
+
+function selectAll(formObj, isInverse)
+{
+    for (var i=0;i < formObj.length;i++)
+    {
+        fldObj = formObj.elements[i];
+        if (fldObj.type == \'checkbox\')
+        {
+        if(isInverse)
+        fldObj.checked = (fldObj.checked) ? false : true;
+        else fldObj.checked = true;
+        }
+    }
+}
+function checkall(formObj,matchtext,isInverse)
+{
+    for (var i=0;i < formObj.length;i++)
+    {
+        fldObj = formObj.elements[i];
+        if (fldObj.type == \'checkbox\')
+        {
+        var elename = fldObj.name;
+        if (elename.substr(0,matchtext.length) == matchtext) {
+            if (isInverse) {
+                fldObj.checked = false;
+            } else {
+                fldObj.checked = true;
+            }
+        }
+        }
+    }
+}
+</script>
+'}$output .= '
+';$output .= $context->include('_transfer_api_info.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'legacy_restore_multiple_backups','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

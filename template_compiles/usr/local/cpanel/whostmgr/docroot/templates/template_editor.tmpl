@@ -1,0 +1,363 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/template_editor.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= '<link rel="stylesheet" href="';$output .= $stash->get(['MagicRevision',['/yui/tabview/assets/tabview-core.css' ]]);$output .= '" type="text/css" media="screen,projection" />
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/yui/tabview/tabview-min.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/libraries/editarea/0.8.2/edit_area/edit_area_full.js' ]]);$output .= '"></script>
+
+';$stash->set('stag',('' .'[%'));$stash->set('etag',('' .'%]'));$output .= '
+<script type="text/javascript">
+//<![CDATA[
+function init_editors () {
+
+    // create the tab view object
+    var my_tab_view = new YAHOO.widget.TabView(\'tabs\');
+
+    var pagelist = [];
+    var tab_index = {};
+    my_tab_view.get("tabs").forEach( function(t) {
+        var name = t.get("href").replace(/^.*#tab_/,"");
+        tab_index[name] = pagelist.length;
+        pagelist.push(name);
+    } );
+
+    var setup_active_tab = function(tab) {
+        var tabkey = tab.get(\'element\').id.split(\'_\');
+        var tabname = tabkey.pop();
+        init_editor(\'editor_\' + tabname);
+    };
+
+    // event handler function for changing tabs
+    var change_tab = function(ev) {
+        setup_active_tab(ev.newValue);
+    };
+    my_tab_view.on(\'activeTabChange\', change_tab);
+
+    // add event handlers for the revert, preview, save, etc. buttons
+    for(var page=0; page<pagelist.length; page++) {
+        var pagename= pagelist[page];
+        YAHOO.util.Event.addListener(\'action_preview_\' + pagename, "click", function() { preview(this); } );
+        YAHOO.util.Event.addListener(\'action_revert_\' + pagename, "click", function() { revert(this); } );
+        YAHOO.util.Event.addListener(\'action_revertdef_\' + pagename, "click", function() { revertdef(this); } );
+        YAHOO.util.Event.addListener(\'action_save_\' + pagename, "click", function() { save(this); } );
+    }
+
+    var default_tab;
+
+    var from_fragment = location.hash && location.hash.replace(/#tab_/,"");
+
+    if ( from_fragment && (from_fragment in tab_index) ) {
+        default_tab = tab_index[from_fragment];
+    }
+    else {
+        var query_match = location.search.match(/pagename=([^&]+)/);
+        if ( query_match ) {
+            var query_tab = decodeURIComponent( query_match[1] );
+            if (query_tab in tab_index) {
+                default_tab = tab_index[query_tab];
+            }
+        }
+    }
+
+    //Necessary even when the index is 0 for setup_active_tab to be called.
+    my_tab_view.selectTab( default_tab || 0 );
+}
+
+function revertdef(El) {
+    var pagename = (El.id.split(\'_\'))[2];
+    YAHOO.util.Dom.get(\'revertform_pagename\').value = pagename;
+    YAHOO.util.Dom.get(\'revertform\').submit();
+}
+function preview(El) {
+    var pagename = (El.id.split(\'_\'))[2];
+    YAHOO.util.Dom.get(\'previewform_pagename\').value = pagename;
+    YAHOO.util.Dom.get(\'previewform_page\').value = editAreaLoader.getValue(\'editor_\' + pagename);
+    YAHOO.util.Dom.get(\'previewform\').submit();
+}
+function revert(El) {
+    var pagename = (El.id.split(\'_\'))[2];
+    editAreaLoader.setValue( \'editor_\' + pagename, YAHOO.util.Dom.get(\'editor_text_\' + pagename).value );
+}
+function save(El) {
+    var pagename = (El.id.split(\'_\'))[2];
+    YAHOO.util.Dom.get(\'saveform_pagename\').value = pagename;
+    YAHOO.util.Dom.get(\'saveform_page\').value = editAreaLoader.getValue(\'editor_\' + pagename);
+    YAHOO.util.Dom.get(\'saveform\').submit();
+}
+
+var init_editor = function(editor) {
+    var pagename = (editor.split(\'_\'))[1];
+    YAHOO.util.Dom.get(\'editor_text_\' + pagename).value = YAHOO.util.Dom.get(\'editor_\' + pagename).value;
+
+    // initialization
+    editAreaLoader.init({
+        id: editor
+        ,start_highlight: true  // if start with highlight
+        ,allow_resize: "both"
+        ,allow_toggle: false
+        ,language: "en"
+        ,toolbar: "search, go_to_line,|, undo, redo, |, select_font,|, change_smooth_selection, highlight, reset_highlight, |, help"
+        ,syntax: "css"
+    });
+}
+
+YAHOO.util.Event.onDOMReady(init_editors);
+//]]>
+</script>
+<style type="text/css">
+body {
+    font-family: verdana;
+}
+
+.yui-nav li a {
+    background: #eee;
+    color: #666;
+    padding: 7px 10px;
+    text-decoration: none;
+}
+.yui-nav li.selected a {
+    background:#4c4c4c;
+}
+.yui-content {
+    border: 5px solid #4c4c4c;
+    padding: 10px;
+}
+.mod_suspension_area {
+    height: 300px;
+    overflow: auto;
+    width: 100%;
+}
+.save_form {
+    padding: 1px 10px;
+}
+
+#mod_suspension {
+    margin: 20px 0 0;
+}
+
+.yui-nav li.selected a {
+    color: #fff !important;
+    font-weight: bold;
+}
+
+.yui-nav li a {
+    padding: 7px 10px 20px !important;
+}
+
+.area_toolbar {
+    background-color: #F1F6F7;
+    *padding: 10px;
+}
+
+.upload_template {
+    background: #eee;
+    padding: 1px 10px;
+    *margin-bottom: 10px;
+    *padding: 10px;
+}
+
+</style>
+</head>
+<body>
+<form id="revertform" action="template_editor_revert" method="POST">
+<input type="hidden" name="pagename" id="revertform_pagename">
+</form>
+<form id="previewform" action="template_editor_preview" method="POST">
+<input type="hidden" name="page" id="previewform_page">
+<input type="hidden" name="pagename" id="previewform_pagename">
+</form>
+<form id="saveform" action="template_editor_save" method="POST">
+<input type="hidden" name="page" id="saveform_page">
+<input type="hidden" name="pagename" id="saveform_pagename">
+</form>
+<div class="body-content">
+<p>    The <strong>Web Template Editor</strong> allows you to create placeholder web pages. These pages will appear to visitors who navigate to a site on your server that:</p>
+<ul>
+    <li>Has not yet been configured by the domain owner (see the Default Website Page tab)</li>
+    <li>Has moved (see the Account Move tab)</li>
+    <li>Is experiencing a connection or firewall problem (see the Connection Selection tab)</li>
+    <li>Has been suspended (see the Account Suspended tab)</li>
+</ul>
+<div id="tabs">
+    <div id="mod_suspension" class="yui-navset">
+    <ul class="yui-nav">
+        <li class="selected" id="tab_selector_default"><a href="#tab_default"><em>Default Website Page</em></a></li>
+        <li id="tab_selector_moving"><a href="#tab_moving"><em>Account Move</em></a></li>
+        <li id="tab_selector_redirect"><a href="#tab_redirect"><em>Connection Selection</em></a></li>
+        <li id="tab_selector_suspended"><a href="#tab_suspended"><em>Account Suspended</em></a></li>
+    </ul>
+    <div class="yui-content">
+        <div id="tab_default">
+               <p>You are editing the <strong>Default Website Template</strong>.</p>
+            <p>This page appears to visitors who navigate to a site that has not been configured by the domain owner and sites that have been deleted.</p>
+            ';if (($stash->get(['data',0,'owner',0])eq 'root')){$output .= '
+                <p> <b> If you have created index.php, index.cgi, or index.pl in Apache’s docroot this page will be overridden by these scripts</b> </p>
+            '}$output .= '
+            <p>This template file will be saved as <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/default.tmpl</strong></p>
+            <form id="editform_default">
+            <textarea name="editor_default" id="editor_default" class="mod_suspension_area">';$output .= $stash->get(['pages',0,'default',0]);$output .= '</textarea>
+            <input type="hidden" name="editor_text_default" id="editor_text_default">
+        <div class="save_form">
+            <p>
+            <input type="button" id="action_revert_default" value="Revert" class="btn-secondary" />&nbsp;
+            <input type="button" id="action_preview_default" value="Preview" class="btn-secondary" />&nbsp;
+            <input type="button" id="action_save_default" value="Save" class="btn-primary" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="action_revertdef_default" value="Revert to Default" class="btn-secondary" />
+            </p>
+        </div>
+            </form>
+            <form id="uploadform_default" action="template_editor_upload" method="POST" ENCTYPE="multipart/form-data">
+                <input type="hidden" name="pagename" value="default">
+
+        <div class="upload_template">
+            <h3>Upload Your Own Template</h3>
+            <p>You can upload your own custom template below:</p>
+            <div class="upload_form"><input type="file" name="file_upload" value="" id="file_upload_default" /></div>
+            <p><input type="submit" value="Upload Template" class="btn-primary" /></p>
+        </div>
+        </form>
+           <div class="available_tags">
+            <h3>Note</h3>
+            <p>If this domain has been redirected, visitors <strong>will not</strong> see this page. In order for visitors to see the template, you must copy <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/default.tmpl</strong> to the <strong>/home/username/public_html</strong> directory of the destination domain (the domain to which this website redirects visitors).</p>
+            <h3>Available Tags</h3>
+                     <p>You may use the following tags on this page: </p>
+            <ul>
+                <li>';$output .= $stash->get('stag');$output .= ' data.protocol ';$output .= $stash->get('etag');$output .= ' = https or http (useful for linking to images and objects outside of img-sys)</li>
+                </ul>
+            <h3>Images</h3>
+                <p>Images used in these templates must be placed in /usr/local/cpanel/img-sys/ and linked via /img-sys/ if you have access to this directory.</p>
+           </div>
+
+
+            </div>
+        <div id="tab_moving">
+               <p>You are editing the <strong>Account Move Template</strong>.</p>
+            <p>This page appears to visitors who navigate to a site that has moved.</p>
+            <p>This template file will be saved as <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/moving.tmpl</strong></p>
+            <form id="editform_moving">
+            <textarea name="editor_moving" id="editor_moving" class="mod_suspension_area">';$output .= $stash->get(['pages',0,'moving',0]);$output .= '</textarea>
+            <input type="hidden" name="editor_text_moving" id="editor_text_moving">
+        <div class="save_form">
+            <p>
+            <input type="button" id="action_revert_moving" value="Revert" class="btn-secondary" />&nbsp;
+            <input type="button" id="action_preview_moving" value="Preview" class="btn-secondary"/>&nbsp;
+            <input type="button" id="action_save_moving" value="Save" class="btn-primary" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="action_revertdef_moving" value="Revert to Default" class="btn-secondary"/>
+            </p>
+        </div>
+            </form>
+            <form id="uploadform_moving" action="template_editor_upload" method="POST" ENCTYPE="multipart/form-data">
+                <input type="hidden" name="pagename" value="moving">
+        <div class="upload_template">
+            <h3>Upload Your Own Template</h3>
+            <p>You can upload your own custom template below:</p>
+            <div class="upload_form"><input type="file" name="file_upload" value="" id="file_upload_moving" /></div>
+            <p><input type="submit" value="Upload Template" class="btn-primary"/></p>
+        </div>
+            </form>
+        <div class="available_tags">
+            <h3>Note</h3>
+            <p>If this domain has been redirected, visitors <strong>will not</strong> see this page. In order for visitors to see the template, you must copy <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/moving.tmpl</strong> to the <strong>/home/username/public_html</strong> directory of the destination domain (the domain to which this website redirects visitors).</p>
+                <h3>Available Tags</h3>
+                     <p>You may use the following tags on this page: </p>
+                <ul>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.protocol ';$output .= $stash->get('etag');$output .= ' = https or http (useful for linking to images and objects outside of img-sys)</li>
+                </ul>
+
+            <h3>Images</h3>
+                <p>Images used in these templates must be placed in /usr/local/cpanel/img-sys/ and linked via /img-sys/ if you have access to this directory.</p>
+        </div>
+
+
+        </div>
+           <div id="tab_redirect">
+               <p>You are editing the <strong>Connection Selection Template</strong>.</p>
+            <p>This page will appear to visitors who navigate to a site that is experiencing a connection or firewall problem.</p>
+            <p>This template file will be saved as <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/redirect.tmpl</strong></p>
+            <form id="editform_redirect">
+            <textarea name="editor_redirect" id="editor_redirect" class="mod_suspension_area">';$output .= $stash->get(['pages',0,'redirect',0]);$output .= '</textarea>
+            <input type="hidden" name="editor_text_redirect" id="editor_text_redirect">
+            <div class="save_form">
+            <p>
+            <input type="button" id="action_revert_redirect" class="btn-secondary" value="Revert" />&nbsp;
+            <input type="button" id="action_preview_redirect" class="btn-secondary" value="Preview" />&nbsp;
+            <input type="button" id="action_save_redirect" class="btn-primary" value="Save" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="action_revertdef_redirect" class="btn-secondary" value="Revert to Default" />
+            </p>
+            </div>
+            </form>
+            <form id="uploadform_redirect" action="template_editor_upload" method="POST" ENCTYPE="multipart/form-data">
+                <input type="hidden" name="pagename" value="redirect">
+
+            <div class="upload_template">
+                <h3>Upload Your Own Template</h3>
+                <p>You can upload your own custom template below:</p>
+                <div class="upload_form"><input type="file" name="file_upload" value="" id="file_upload_redirect" /></div>
+                <p><input type="submit" value="Upload Template" class="btn-primary"/></p>
+            </div>
+            </form>
+            <div class="available_tags">
+                <h3>Note</h3>
+                <p>If this domain has been redirected, visitors <strong>will not</strong> see this page. In order for visitors to see the template, you must copy <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/redirect.tmpl</strong> to the <strong>/home/username/public_html</strong> directory of the destination domain (the domain to which this website redirects visitors).</p>
+                <h3>Available Tags</h3>
+                <p>You may use the following tags on this page: </p>
+                <ul>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.ishttps ';$output .= $stash->get('etag');$output .= ' -- Inserts 1 if the visitor accessed the site at a secure port (2083, 2087, or 2096), or 0 otherwise.</li>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.port ';$output .= $stash->get('etag');$output .= ' -- Inserts cPanel port number.</li>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.js_safe_redirecturl ';$output .= $stash->get('etag');$output .= ' -- Inserts the URL of the domain\'s cPanel interface.</li>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.js_safe_proxyurl ';$output .= $stash->get('etag');$output .= ' -- Inserts the URL of the cPanel proxy.</li>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.protocol ';$output .= $stash->get('etag');$output .= ' = Inserts "https" or "http." (This is useful for linking to images and objects outside of img-sys.)</li>
+                </ul>
+                <h3>Images</h3>
+                <p>Images used in these templates must be placed in /usr/local/cpanel/img-sys/ and linked via /img-sys/ if you have access to this directory.</p>
+            </div>
+
+
+
+            </div>
+        <div id="tab_suspended">
+               <p>You are editing the <strong>Account Suspended Template</strong>.</p>
+            <p>This page will appear to visitors who navigate to a site that has been suspended.</p>
+            <p>This template file will be saved as <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/suspended.tmpl</strong></p>
+            <form id="editform_suspended">
+            <textarea name="editor_suspended" id="editor_suspended" class="mod_suspension_area">';$output .= $stash->get(['pages',0,'suspended',0]);$output .= '</textarea>
+            <input type="hidden" name="editor_text_suspended" id="editor_text_suspended">
+            <div class="save_form">
+                <p>
+                <input type="button" id="action_revert_suspended" class="btn-secondary" value="Revert" />&nbsp;
+                <input type="button" id="action_preview_suspended" class="btn-secondary" value="Preview" />&nbsp;
+                <input type="button" id="action_save_suspended" class="btn-primary" value="Save" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" id="action_revertdef_suspended" class="btn-secondary" value="Revert to Default" />
+                </p>
+            </div>
+            </form>
+            <form id="uploadform_suspended" action="template_editor_upload" method="POST" ENCTYPE="multipart/form-data">
+                <input type="hidden" name="pagename" value="suspended">
+            <div class="upload_template">
+                <h3>Upload Your Own Template</h3>
+                <p>You can upload your own custom template below:</p>
+                <div class="upload_form"><input type="file" name="file_upload" value="" id="file_upload_suspended" /></div>
+                <p><input type="submit" value="Upload Template" class="btn-primary"/></p>
+            </div>
+            </form>
+            <div class="available_tags">
+                <h3>Note</h3>
+                <p>If this domain has been redirected, visitors <strong>will not</strong> see this page. In order for visitors to see the template, you must copy <strong>/var/cpanel/webtemplates/';$output .= $stash->get(['data',0,'owner',0]);$output .= '/english/suspended.tmpl</strong> to the <strong>/home/username/public_html</strong> directory of the destination domain (the domain to which this website redirects visitors).</p>
+                <h3>Available Tags</h3>
+                <p>You may use the following tags on this page: </p>
+                <ul>
+                    <li>';$output .= $stash->get('stag');$output .= ' data.protocol ';$output .= $stash->get('etag');$output .= ' = https or http (useful for linking to images and objects outside of img-sys)</li>
+                </ul>
+                <h3>Images</h3>
+                <p>Images used in these templates must be placed in /usr/local/cpanel/img-sys/ and linked via /img-sys/ if you have access to this directory.</p>
+            </div>
+
+            </div>
+    </div>
+    <!-- END .yui-content -->
+        </div>
+    <!-- END #mod_suspension -->
+
+</div>
+<!-- END #tabs -->
+</div>
+</body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

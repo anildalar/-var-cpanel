@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/_pending_transfers.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['data',0,'pending_sessions',0,'size',0])){$output .= '
+    <div class="row">
+        <div id="pending_sessions" class="col-sm-6 col-md-8">
+            <fieldset>
+                <legend>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Sessions in Progress' ]]);$output .= '
+                </legend>
+                <div class="table-responsive">
+                    <table class="table table-condensed">
+                        <thead>
+                            <tr>
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['Session' ]]);$output .= '</th>
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['Source Host' ]]);$output .= '</th>
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['Start Time' ]]);$output .= '</th>
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['State' ]]);$output .= '</th>
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'pending_sessions',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'session'}=$_tt_value;$output .= '
+                                ';$stash->set('session_state_number',$stash->get(['session',0,'value',0,'state',0]));$output .= '
+                                ';$stash->set('session_state_name',$stash->get(['data',0,'transfer_states',0,$stash->get('session_state_number'),0]));$output .= '
+                                <tr>
+                                    <td>';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['session',0,'value',0,'source_host',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['session',0,'value',0,'starttime',0]);$output .= '</td>
+                                    <td>';if ($stash->get('session_state_name')){$output .= $stash->get('session_state_name')}else {$output .= $stash->get(['locale',0,'maketext',['UNKNOWN: [_1]',$stash->get(['session',0,'value',0,'state',0])]])}$output .= '</td>
+                                    <td>
+                                        <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '"
+                                            id="view_';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '_link"
+                                            target="_blank">';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '</a>
+                                        <br /><!-- FIXME: remove br -->
+                                        ';if ($stash->get('session_state_name')eq 'PAUSED'){$output .= '
+                                            <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '&action=resume"
+                                                id="resume_';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '_link"
+                                                target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Resume' ]]);$output .= '</a>
+                                        '}$output .= '
+                                        ';if ($stash->get('session_state_name')eq 'PAUSED' || $stash->get('session_state_name')eq 'PAUSING' || $stash->get('session_state_name')eq 'RUNNING'){$output .= '
+                                            <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '&action=abort"
+                                                id="abort_';$output .= $stash->get(['session',0,'value',0,'sessionid',0]);$output .= '_link"
+                                                target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Abort' ]]);$output .= '</a>
+                                        '}$output .= '
+                                    </td>
+                                </tr>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </tbody>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

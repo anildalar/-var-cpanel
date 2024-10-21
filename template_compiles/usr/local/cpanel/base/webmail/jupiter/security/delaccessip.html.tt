@@ -1,0 +1,19 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/security/delaccessip.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('account_name',$stash->get(['CPANEL',0,'FORM',0,'account',0]));$stash->set('ip',$stash->get(['CPANEL',0,'FORM',0,'ip',0]));$stash->set('ip2',$stash->get(['CPANEL',0,'FORM',0,'ip2',0]));$stash->set('ip3',$stash->get(['CPANEL',0,'FORM',0,'ip3',0]));$stash->set('ip4',$stash->get(['CPANEL',0,'FORM',0,'ip4',0]));$stash->set('account_info',$stash->get(['Api2',0,'exec',['SourceIPCheck','getaccount',{'account'=>$stash->get('account_name')}]]));$stash->set('delip_result',$stash->get(['Api2',0,'exec',['SourceIPCheck','delip',{'ip'=>$stash->get('ip'),'ip2'=>$stash->get('ip2'),'ip3'=>$stash->get('ip3'),'ip4'=>$stash->get('ip4'),'account'=>$stash->get(['account_info',0,0,0,'account',0])}]]));$stash->set('return_link','accessip.html?account=' .$stash->get(['account_info',0,0,0,'account',0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+';if ($stash->get(['delip_result',0,0,0,'status',0])eq 1){$output .= '        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message" id="delip-success">
+                ';$output .= $stash->get(['locale',0,'maketext',['The access IP “[_1]” has been removed.',$stash->get(['delip_result',0,0,0,'ip',0,'html',0])]]);$output .= '
+            </div>
+        </div>'}else {$output .= '        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message" id="delip-error">
+                ';$output .= $stash->get(['delip_result',0,0,0,'error',0,'html',0]);$output .= '
+            </div>
+        </div>'}$output .= '
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

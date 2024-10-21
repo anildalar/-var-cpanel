@@ -1,0 +1,202 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/basic_exim_editor.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '<div class="brickcontainer tweaksettings">
+<div class="brickcontainer2">
+<script type="text/javascript">
+function handleClose() {
+    this.hide();
+}
+
+var newdlg;
+function rendernewdlg() {
+    if (!newdlg) {
+        newdlg = new YAHOO.widget.Panel(
+            "newdlg",
+            {
+                width: "620px",
+                fixedcenter: true,
+                visible: false,
+                draggable: false,
+                close: true,
+                constraintoviewport: true,
+                buttons: [
+                    {
+                        text: "Close",
+                        handler: handleClose,
+                        isDefault: true
+                    }
+                ]
+            }
+        );
+
+        newdlg.element.style.display = "none";
+        newdlg.render();
+    }
+}
+
+function vizacls() {
+    // Instantiate the Dialog
+    var eform = document.getElementById(\'eximopts\');
+    var formA = getFormData(eform);
+    var uriA = [];
+    for(var i in formA) {
+        if (i == \'module\' || i == \'viz\') { continue; }
+        if (formA[i] == true || formA[i] == false) {
+            uriA.push(i + \'=\' + (formA[i] ? 1 : 0));
+        } else {
+            uriA.push(i + \'=\' + encodeURIComponent(formA[i]));
+        }
+    }
+    var qs = uriA.join(\'&\');
+    newdlg.setBody(\'<iframe src="';$output .= $stash->get('cp_security_token');$output .= '/cgi/mailflow.cgi?use_form=1&\' + qs + \'" style="height:400px;width:610px;margin:0:padding:0;"></iframe>\');
+    newdlg.element.style.display = "";
+    newdlg.show();
+}
+YAHOO.util.Event.onAvailable(\'newdlg\', rendernewdlg);
+
+function notify_parent_submit() {
+    if (parent && parent.notify_submit)  {
+        parent.notify_submit(\'basic\',\'Saving Basic Configuration...\');
+    }
+}
+
+</script>
+
+';$output .= do {my$output='';$output .= 'Note that a warning icon before an option indicates that it has not been previously set.
+Please review all new options carefully before saving your changes.<br/><br/>
+Options in <i>italics</i> are unavailable because of other options that are set.
+';$context->include('_brick.tmpl',{'bricktitle'=>'Standard options','content',$output })};$output .= '<br />
+<br />
+
+<form ';if ($stash->get('in_tab')){$output .= 'target="tabaction"'}$output .= ' action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/saveeximtweaks" method="post" name="exopt" id="eximopts" onSubmit="notify_parent_submit();">
+<input type="hidden" name="in_tab" value="';$output .= $stash->get('in_tab');$output .= '">
+';$stash->set('extra_settings',{});$stash->set('extra_texts',{'RBLs'=>{},'Filters'=>{}});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'rbls',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'rbl'}=$_tt_value;if ($stash->get(['rbl',0,'dist',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set(['rbl',0,'name',0],$stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['rbl',0,'name',0])]]));$stash->set(['rbl',0,'url',0],$stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['rbl',0,'url',0])]]));$stash->set('ts_name',('acl_' .$stash->get(['rbl',0,'name',0]).'_rbl'));$stash->set(['extra_settings',0,$stash->get('ts_name'),0],{'default'=>0,'type'=>'binary' });$stash->set(['extra_texts',0,'RBLs',0,$stash->get('ts_name'),0],{'label'=>('Custom RBL: ' .$stash->get(['rbl',0,'name',0])),'help'=>('Reject mail at SMTP time if the sender host is in the ' .$stash->get(['rbl',0,'name',0]).' RBL').($stash->get(['rbl',0,'url',0])? ((' [<a href=\'' .$stash->get(['rbl',0,'url',0]).'\'>INFO</a>]<br />DNS list: ').$stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['rbl',0,'dnslists',0,'join',[', ' ]])]])): '')});;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'filters',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'filter'}=$_tt_value;if ($stash->get(['filter',0,'dist',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set(['filter',0,'name',0],$stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['filter',0,'name',0])]]));$stash->set('ts_name',('filter_' .$stash->get(['filter',0,'name',0])));$stash->set(['extra_settings',0,$stash->get('ts_name'),0],{'default'=>1,'type'=>'binary' });$stash->set(['extra_texts',0,'Filters',0,$stash->get('ts_name'),0],{'label'=>('Custom Filter: ' .$stash->get(['filter',0,'name',0])),'help'=>('Enables Custom Filter: ' .$stash->get(['filter',0,'name',0]))});;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= $context->process('_gentweakpage.tmpl',{'tweakmodule'=>'Mail','tweakcfg'=>{'display_label'=>1,'use_popupbox'=>1,'extra_settings'=>$stash->get('extra_settings'),'extra_texts'=>$stash->get('extra_texts')},'conf'=>$stash->get(['data',0,'eximopts',0]),'nocontainers'=>0 });$output .= '
+            <div id="newdlg">
+            <div class="hd">Exim ACL Flowchart</div>
+            <div class="bd">This is a Panel that was marked up in the document.</div>
+            </div>
+
+            <div style="margin: 0 auto;">
+                <input class="btn-secondary" type="button" name="viz" value="Visualize ACLs" style="margin:0;" onClick="vizacls(); return false;">
+                <input type="submit" class="btn-primary" value="Save">
+            </div>
+</form>
+<br />
+<br />
+<!--
+
+';$output .= do {my$output='';$output .= '<blockquote>
+    The Advanced Configuration Editor will allow you to modify the default configuration of Exim.
+    Configuration changes made within this editor will be conserved across Exim updates and reinstallation.
+    Changes to the default configuration can significantly impact Exim\'s performance and may prevent it from
+    operating altogether. Use this editor with caution.
+    <br />
+    <br />
+    <i>Note: Directly editing the Exim configuration file (usually located at /etc/exim.conf) will only work
+    temporarily as an update to Exim will result in the changes being overwritten.</i>
+    <br />
+    <br />
+</blockquote>
+<blockquote>
+    <div><b>To begin modifying the Exim configuration choose the Advanced Editor below.</b></div>
+</blockquote>
+
+<br />
+
+<div>
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/advanced_exim_editor" method="GET">
+        <input type="submit" class="btn-primary" value="Advanced Editor">
+    </form>
+</div>
+<br />
+';$context->include('_brick.tmpl',{'bricktitle'=>'Advanced Editor','content',$output })};$output .= '<br />
+-->
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','inside_frame_or_tab_or_popup'=>$stash->get('in_tab'),'skipheader'=>$stash->get('in_tab'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['css/tweaksettings_optimized.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/assets/skins/sam/tabview.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['css/_gentweakpage.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/js/exim_tabs_optimized.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/js/popupbox.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/js/statusbox.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['js/yahoo_form_optimized.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/tabview-min.js' ]])],'extrastyle'=>'
+/* Tab Style */
+#pageContainer {
+    margin: 0;
+    padding: 0;
+}
+
+#contentContainer{
+    max-width: inherit !important;
+}
+
+/* End Tab Style */
+
+.confeditbox {
+    overflow: hidden;
+}
+
+.brickliststart li {
+    list-style: none;
+}
+
+.brickcontainer {
+    width: 100%;
+}
+
+#rbl_table {
+    width: 100%;
+}
+
+#rbl_table th,
+#rbl_table td {
+    text-align: center;
+}
+
+tr.delete_rbl td {
+    font-style: italic;
+    color: graytext;
+}
+
+.CONFIG_autocompleter {
+    width: 280px;
+}
+
+.CONFIG_autocompleter input {
+    width: 256px;
+}
+
+td.controls,
+th.controls {
+    width: 245px !important;
+}
+
+.yui-skin-sam .yui-ac-input {
+    position: static;
+    width: 20em;
+    vertical-align: middle;
+}
+
+.yui-skin-sam .yui-ac-container {
+    width: 20em;
+    left: 0px;
+}
+
+.yui-ac .yui-button {
+    vertical-align: middle;
+}
+
+.yui-ac .yui-button button {
+    background: url(/yui-gen/autocomplete/assets/img/ac-arrow-rt.png) center center no-repeat
+}
+
+.yui-ac .open .yui-button button {
+    background: url(/yui-gen/autocomplete/assets/img/ac-arrow-dn.png) center center no-repeat
+}
+
+html[dir="rtl"] .sortable .cell,
+html[dir="rtl"] .fixedtable .cell,
+html[dir="rtl"] .datatable .cell {
+    border-left: 1px solid #ccc;
+}
+
+html[dir="rtl"] .yui-panel .container-close {
+    left: 4px;
+    right: auto;
+}
+
+.button-group button:hover {
+    border-width: 1px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

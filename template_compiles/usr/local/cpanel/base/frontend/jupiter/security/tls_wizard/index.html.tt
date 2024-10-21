@@ -1,0 +1,78 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/tls_wizard/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Geo',$context->plugin('Geo'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('spinner_url','/images/report-spinner.gif');$stash->set('spinner_url',$stash->get(['MagicRevision',[$stash->get('spinner_url')]]));$stash->set('countries',[]);$stash->set('locales_obj',$stash->get(['locale',0,'get_locales_obj',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['Geo',0,'COUNTRY_CODES',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ccode'}=$_tt_value;$output .= $stash->get(['countries',0,'push',[[$stash->get(['ccode',0,'upper',0]),$stash->get(['locales_obj',0,'get_territory_from_code',[$stash->get('ccode')]])]]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+';$output .= do {my$output='';$output .= '
+<section id="txtPageDescription" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['You can use this interface to purchase and install [output,abbr,SSL,Secure Sockets Layer] certificates for your account.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['For more information on this interface, read the [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/ssltlswizard','_blank','lnkssltlswizardDocumentation' ]]);$output .= '
+</section>
+
+';if (!($stash->get(['CPANEL',0,'feature',['sslinstall' ]])&& $stash->get(['CPANEL',0,'feature',['tls_wizard' ]])&& $stash->get(['CPANEL',0,'feature',['market' ]]))){$output .= '    <div id="notAvailableError" class="alert alert-danger">
+        <span id="notAvailableErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+        <div id="notAvailableErrorMsg" class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is not available to your account.' ]]);$output .= '        </div>
+    </div>
+'}else {$output .= '    ';$stash->set('pending_certificates',$stash->get(['execute_or_die',['Market','get_pending_ssl_certificates',{'api.filter'=>1,'api.filter_type'=>'ne','api.filter_term'=>'inactive','api.filter_column'=>'status' }],'data',0]));$stash->set('products_api',$stash->get(['execute_or_die',['Market','get_all_products',{'api.filter'=>1,'api.filter_type_0'=>'eq','api.filter_term_0'=>'ssl_certificate','api.filter_column_0'=>'product_group','api.filter_type_1'=>'eq','api.filter_term_1'=>'1','api.filter_column_1'=>'enabled','api.sort'=>1,'api.sort_column_0'=>'recommended','api.sort_method_0'=>'numeric','api.sort_reverse_0'=>'1','api.sort_column_1'=>'x_price_per_domain','api.sort_method_1'=>'numeric' }]]));$stash->set('products',$stash->get(['products_api',0,'data',0]));$output .= '
+
+    ';if ($stash->get(['products_api',0,'messages',0,'size',0])){$output .= '        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['products_api',0,'messages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '                    <p>';$output .= $stash->get(['msg',0,'html',0]);$output .= '</p>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </div>
+        </div>
+    '}$output .= '
+    ';if ($stash->get(['products',0,'size',0])){$output .= '
+
+        ';$stash->set('domains',$stash->get(['execute',['WebVhosts','list_ssl_capable_domains' ],'data',0]));if ($stash->get(['domains',0,'size',0])){$output .= '
+
+            <div ng-controller="BaseController" class="ng-cloak" ng-cloak id="app_tlsWizard">
+
+                <div class="loading" ng-show="loading">
+                    <div class="callout callout-info">
+                        <span class="fas fa-spinner fa-lg fa-spin"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                    </div>
+                </div>
+
+                <div ng-class="{\'view-disabled\':loading}" class="animate-view" ng-view></div>
+                <cp-alert-list alert-group="\'tlsWizard\'"></cp-alert-list>
+                <div growl></div>
+            </div>
+
+            <script type="text/javascript">
+                CPANEL.namespace("CPANEL");
+                CPANEL.PAGE = {};
+                CPANEL.PAGE.countries = ';$output .= $stash->get(['countries',0,'json',0]);$output .= ';
+                CPANEL.PAGE.guessed_country_code = ';$output .= $stash->get(['Geo',0,'guess_country_code',0,'json',0]);$output .= ';
+                CPANEL.PAGE.products = ';$output .= $stash->get(['products',0,'json',0]);$output .= ';
+                CPANEL.PAGE.domains = ';$output .= $stash->get(['domains',0,'json',0]);$output .= ';
+                CPANEL.PAGE.pending_certificates = ';$output .= $stash->get(['pending_certificates',0,'json',0]);$output .= ';
+            </script>
+
+            ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+        '}else {$output .= '
+
+            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <div class="alert-message">
+                    <p><strong>Info:</strong></p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['This account does not have access to any domains that can be used with this interface.' ]]);$output .= '</p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['For more information regarding this interface, read the [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/ssltlswizard','_blank','lnkssltlswizardDocumentation' ]]);$output .= '</p>
+                </div>
+            </div>
+
+        '}$output .= '
+
+    '}else {$output .= '
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <div class="alert-message">
+                <p><strong>Info:</strong></p>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['There are no [asis,SSL/TLS] products available at this time.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['[asis,SSL/TLS] providers can be enabled by the server administrator.' ]]);$output .= '</p>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['For more information regarding this interface, read the [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/ssltlswizard','_blank','lnkssltlswizardDocumentation' ]]);$output .= '</p>
+            </div>
+        </div>
+    '}$output .= '
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'tls_wizard','use_master_bootstrap'=>0,'page_stylesheets'=>['security/tls_wizard/index.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

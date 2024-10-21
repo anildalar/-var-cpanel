@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/zone_editor/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('PAGE_BASE','/scripts7/zone_editor/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('zones_per_page',$stash->get(['NVData',0,'get',['zones_per_page' ]]));$stash->set('domains_per_page',$stash->get(['NVData',0,'get',['domains_per_page' ]]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_simple_feature',1);$stash->set('has_adv_feature',1);$stash->set('has_dnssec_feature',$stash->get(['data',0,'dnssec_is_available',0]));$stash->set('is_alias_available',$stash->get(['data',0,'is_alias_available',0,'alias',0]));$stash->set('has_mx_feature',1);$stash->set('has_whmOnly_feature',1);$stash->set('base_domains_result',$stash->get(['data',0,'dnslist',0]));$stash->set('RECORD_TYPES',{'A'=>{'featureNeeded'=>['simple','advanced' ],'template'=>'recordTemplates/a.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>1 },'AAAA'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/aaaa.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>2 },'ALIAS'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/alias.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>3 },'AFSDB'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/afsdb.ptt','viewTemplate'=>'viewRecordTemplates/afsdb.ptt','priority'=>4 },'CAA'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/caa.ptt','viewTemplate'=>'viewRecordTemplates/caa.ptt','priority'=>5 },'CNAME'=>{'featureNeeded'=>['simple','advanced' ],'template'=>'recordTemplates/cname.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>6 },'DMARC'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/dmarc.ptt','priority'=>7 },'DNAME'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/dname.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>8 },'DS'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/ds.ptt','viewTemplate'=>'viewRecordTemplates/ds.ptt','priority'=>9 },'HINFO'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/hinfo.ptt','viewTemplate'=>'viewRecordTemplates/hinfo.ptt','priority'=>10 },'LOC'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/loc.ptt','viewTemplate'=>'viewRecordTemplates/loc.ptt','priority'=>11 },'MX'=>{'featureNeeded'=>['mx' ],'template'=>'recordTemplates/mx.ptt','viewTemplate'=>'viewRecordTemplates/mx.ptt','priority'=>12 },'NS'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/ns.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>13 },'NAPTR'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/naptr.ptt','viewTemplate'=>'viewRecordTemplates/naptr.ptt','priority'=>14 },'PTR'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/ptr.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>15 },'RP'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/rp.ptt','viewTemplate'=>'viewRecordTemplates/rp.ptt','priority'=>16 },'SOA'=>{'featureNeeded'=>['whmOnly' ],'template'=>'recordTemplates/soa.ptt','viewTemplate'=>'viewRecordTemplates/soa.ptt','priority'=>17 },'SRV'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/srv.ptt','viewTemplate'=>'viewRecordTemplates/srv.ptt','priority'=>18 },'TXT'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/txt.ptt','viewTemplate'=>'viewRecordTemplates/txt.phtml','priority'=>19 }});$stash->set('VIEW_TEMPLATES',['views/domain_selection.ptt','views/manage.ptt','views/copy_zone_file.ptt','views/dnssec.ptt','views/dnssec_generate.ptt','views/dnssec_ds_records.ptt','views/dnssec_import.ptt','views/dnssec_export.ptt','views/dnssec_dnskey.ptt','views/a_record_form.html','views/cname_record_form.html','views/mx_record_form.html','viewRecordTemplates/afsdb.ptt','viewRecordTemplates/caa.ptt','viewRecordTemplates/ds.ptt','viewRecordTemplates/hinfo.ptt','viewRecordTemplates/mx.ptt','viewRecordTemplates/naptr.ptt','viewRecordTemplates/rp.ptt','viewRecordTemplates/soa.ptt','viewRecordTemplates/srv.ptt','viewRecordTemplates/loc.ptt','viewRecordTemplates/default.ptt','viewRecordTemplates/txt.phtml' ]);$output .= do {my$output='';$output .= '
+        <div class="body-content">
+            <p id="descDns" class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['DNS converts domain names into computer-readable IP addresses. Use this feature to manage DNS zones. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/whmdocsDNSZoneManager','_blank','lnkZoneEditorDocumentation' ]]);$output .= '
+            </p>
+            <!-- NOTE: leave the alert-group in single quotes -->
+            <cp-alert-list alert-group="\'zoneEditor\'"></cp-alert-list>
+            <div id="viewContent"
+                class="ng-cloak section"
+                ng-view
+                ng-cloak></div>
+        </div>
+        <script type="text/javascript">
+            var PAGE = PAGE || {};
+            PAGE.MAIN_TITLE = ';$output .= $stash->get(['PAGE_NAME',0,'json',0]);$output .= ';
+            PAGE.has_simple_feature = ';$output .= $stash->get('has_simple_feature')? 'true' : 'false';$output .= ';
+            PAGE.has_adv_feature = ';$output .= $stash->get('has_adv_feature')? 'true' : 'false';$output .= ';
+            PAGE.has_dnssec_feature = ';$output .= $stash->get('has_dnssec_feature')? 'true' : 'false';$output .= ';
+            PAGE.is_alias_available = ';$output .= $stash->get('is_alias_available')? 'true' : 'false';$output .= ';
+            PAGE.has_mx_feature = ';$output .= $stash->get('has_mx_feature')? 'true' : 'false';$output .= ';
+            PAGE.has_whmOnly_feature = ';$output .= $stash->get('has_whmOnly_feature')? 'true' : 'false';$output .= ';
+            PAGE.domains = ';$output .= $stash->get(['base_domains_result',0,'json',0]);$output .= ';
+            PAGE.zones_per_page = ';$output .= $stash->get('zones_per_page')|| 'null';$output .= ';
+            PAGE.domains_per_page = ';$output .= $stash->get('domains_per_page')|| 'null';$output .= ';
+            PAGE.isRTL = document.getElementsByTagName("HTML")[0].getAttribute("dir") === "rtl";
+            PAGE.RECORD_TYPES = ';$output .= $stash->get(['RECORD_TYPES',0,'json',0]);$output .= ';
+            PAGE.serverHostname = \'';$output .= $stash->get(['data',0,'serverHostname',0]);$output .= '\';
+            PAGE.showEmailRoutingLink = ';$output .= $stash->get(['data',0,'show_email_routing_link',0])? 'true' : 'false';$output .= ';
+        </script>
+
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['RECORD_TYPES',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'record_type_key'}=$_tt_value;$output .= '
+        ';$stash->set('record_template',$stash->get(['RECORD_TYPES',0,$stash->get('record_type_key'),0,'template',0]));$output .= '
+        <script id="';$output .= $stash->get('record_template');$output .= '" type="text/ng-template">
+            ';$output .= $context->process(('sharedjs/zone_editor/' .$stash->get('record_template')));$output .= '
+        </script>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('VIEW_TEMPLATES');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'view_template'}=$_tt_value;$output .= '
+        <script id="';$output .= $stash->get('view_template');$output .= '" type="text/ng-template">
+            ';$output .= $context->process(('sharedjs/zone_editor/' .$stash->get('view_template')));$output .= '
+        </script>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        <script id="views/dnssec_sidebar_help.html.tt" type="text/ng-template">
+            ';$output .= $context->process('zone_editor/views/dnssec_sidebar_help.tmpl');$output .= '
+        </script>
+
+        ';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/zone_editor/index.css' ]])],'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'whm_zone_manager','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

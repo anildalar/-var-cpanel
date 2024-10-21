@@ -1,0 +1,61 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Services',$context->plugin('Services'));$stash->set('ServerRoles',$context->plugin('ServerRoles'));$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('under_quota',$stash->get(['execute',['Quota','get_quota_info' ],'data',0,'under_quota_overall',0]));$stash->set('can_backup_db',$stash->get(['CPANEL',0,'feature',['mysql' ]])&& $stash->get(['Services',0,'is_service_provided',['mysql' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+        <div class="section">
+            <div id="backup-nav" class="row">
+                <div class="col-xs-12">
+                    <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                    <ol>
+                        <li id="tabBackupRestore" class="one"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></li>
+                        <li id="tabFullPartial" class="two"><span>';$output .= $stash->get(['locale',0,'maketext',['Full or Partial Backup' ]]);$output .= '</span></li>
+                        <li id="tabDownload" class="three"><span>';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</span></li>
+                    </ol>
+                </div>
+            </div>
+
+            <div id="br-wrap" class="row">
+                <div id="br-content-main" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <h4 id="hdrBackup">';$output .= $stash->get(['locale',0,'maketext',['Back Up' ]]);$output .= '</h4>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to download a compressed copy of all or part of your website.' ]]);$output .= '</p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['The system will include the following items in the backup file:' ]]);$output .= '</p>
+                    <ul>
+                        ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['FileStorage' ]])){$output .= '                            <li>';$output .= $stash->get(['locale',0,'maketext',['The home directory.' ]]);$output .= '</li>
+                        '}$output .= '                        ';if ($stash->get('can_backup_db')){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Databases.' ]]);$output .= '</li>'}$output .= '
+                        ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['MailReceive' ]])){$output .= '                            ';if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Email forwarder configurations.' ]]);$output .= '</li>'}$output .= '
+                            ';if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Email filter configurations.' ]]);$output .= '</li>'}$output .= '
+                        '}$output .= '                    </ul>
+                    <p><a href="wizard-backup.html" id="wizard-backup" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Back Up' ]]);$output .= '</a></p>
+                </div>
+
+                <div id="br-content-sec" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <h4 id="hdrRestore">';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '</h4>
+                    ';if (!$stash->get('under_quota')){$output .= '
+                        <div class="alert alert-warning" id="overdiskquota" role="alert">
+                            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                            <span class="alert-message">
+                                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                                <span class="alert-body">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Restore is disabled because you are currently exceeding your disk quota.' ]]);$output .= '
+                                </span>
+                            </span>
+                        </div>
+                    '}$output .= '
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to upload an existing partial backup file in order to restore parts of your website.' ]]);$output .= '</p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['The system will restore the following items if they exist in the backup file:' ]]);$output .= '</p>
+                    <ul>
+                        ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['FileStorage' ]])){$output .= '                            <li>';$output .= $stash->get(['locale',0,'maketext',['The home directory.' ]]);$output .= '</li>
+                        '}$output .= '                        ';if ($stash->get('can_backup_db')){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Databases.' ]]);$output .= '</li>'}$output .= '
+                        ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['MailReceive' ]])){$output .= '                            ';if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Email forwarder configurations.' ]]);$output .= '</li>'}$output .= '
+                            ';if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$output .= '<li>';$output .= $stash->get(['locale',0,'maketext',['Email filter configurations.' ]]);$output .= '</li>'}$output .= '
+                        '}$output .= '                    </ul>
+                    <p><a ';if ($stash->get('under_quota')){$output .= 'href="wizard-restore.html"'}else {$output .= 'disabled'}$output .= ' id="wizard-restore" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '</a></p>
+                </div>
+            </div>
+        </div>
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_stylesheets'=>['css2-min/backup.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

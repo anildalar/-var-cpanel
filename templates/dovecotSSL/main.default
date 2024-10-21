@@ -1,0 +1,101 @@
+##
+## SSL settings
+##
+
+# SSL/TLS support: yes, no, required. <doc/wiki/SSL.txt>
+[%- IF ssl.defined %]
+ssl = [% ssl %]
+[%- ELSE %]
+#ssl = yes
+[%- END %]
+
+# PEM encoded X.509 SSL/TLS certificate and private key. They're opened before
+# dropping root privileges, so keep the key file unreadable by anyone but
+# root. Included doc/mkcert.sh can be used to easily generate self-signed
+# certificate, just make sure to update the domains in dovecot-openssl.cnf
+[%- IF ssl_cert_file.defined %]
+ssl_cert = <[% ssl_cert_file %]
+[%- ELSE %]
+#ssl_cert = </etc/dovecot/ssl/dovecot.crt
+[%- END %]
+
+[%- IF ssl_key_file.defined %]
+ssl_key = <[% ssl_key_file %]
+[%- ELSE %]
+#ssl_key = </etc/dovecot/ssl/dovecot.key
+[%- END %]
+
+# If key file is password protected, give the password here. Alternatively
+# give it when starting dovecot with -p parameter.
+[%- IF ssl_key_password.defined %]
+ssl_key_password = [% ssl_key_password %]
+[%- ELSE %]
+#ssl_key_password =
+[%- END %]
+
+# PEM encoded trusted certificate authority. Set this only if you intend to use
+# ssl_verify_client_cert=yes. The file should contain the CA certificate(s)
+# followed by the matching CRL(s). (e.g. ssl_ca = </etc/ssl/certs/ca.pem)
+[%- IF ssl_ca_file.defined %]
+ssl_ca = <[% ssl_ca_file %]
+[%- ELSE %]
+#ssl_ca =
+[%- END %]
+
+# Request client to send a certificate. If you also want to require it, set
+# auth_ssl_require_client_cert=yes in auth section.
+[%- IF ssl_verify_client_cert.defined %]
+ssl_verify_client_cert = [% ssl_verify_client_cert %]
+[%- ELSE %]
+#ssl_verify_client_cert = no
+[%- END %]
+
+# Which field from certificate to use for username. commonName and
+# x500UniqueIdentifier are the usual choices. You'll also need to set
+# auth_ssl_username_from_cert=yes.
+[%- IF ssl_cert_username_field.defined %]
+ssl_cert_username_field = [% ssl_cert_username_field %]
+[%- ELSE %]
+#ssl_cert_username_field = commonName
+[%- END %]
+
+# Minimum SSL protocol version to use. Potentially recognized values are SSLv3,
+# TLSv1, TLSv1.1, and TLSv1.2, depending on the OpenSSL version used.
+[%- IF ssl_min_protocol.defined %]
+ssl_min_protocol = [% ssl_min_protocol %]
+[%- ELSE %]
+#ssl_min_protocol = TLSv1
+[%- END %]
+
+# SSL ciphers to use, the default is:
+#ssl_cipher_list = ALL:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
+# To disable non-EC DH, use:
+#ssl_cipher_list = ALL:!DH:!kRSA:!SRP:!kDHd:!DSS:!aNULL:!eNULL:!EXPORT:!DES:!3DES:!MD5:!PSK:!RC4:!ADH:!LOW@STRENGTH
+[%- IF ssl_cipher_list.defined %]
+ssl_cipher_list = [% ssl_cipher_list %]
+[%- ELSE %]
+#ssl_cipher_list = ALL:!LOW:!SSLv2
+[%- END %]
+
+# Colon separated list of elliptic curves to use. Empty value (the default)
+# means use the defaults from the SSL library. P-521:P-384:P-256 would be an
+# example of a valid value.
+#ssl_curve_list =
+
+# Prefer the server's order of ciphers over client's.
+#ssl_prefer_server_ciphers = no
+
+# SSL crypto device to use, for valid values run "openssl engine"
+#ssl_crypto_device =
+
+# SSL extra options. Currently supported options are:
+#   compression - Enable compression.
+#   no_ticket - Disable SSL session tickets.
+#ssl_options =
+
+# Show protocol level SSL errors.
+[%- IF verbose_ssl.defined %]
+verbose_ssl = [% verbose_ssl %]
+[%- ELSE %]
+#verbose_ssl = no
+[%- END %]

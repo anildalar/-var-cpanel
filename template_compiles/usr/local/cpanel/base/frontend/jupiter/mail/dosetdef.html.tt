@@ -1,0 +1,29 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/dosetdef.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['Email','setdefaultaddress' ]]);$stash->set('api2_result_Email_setdefaultaddress',$stash->get(['Api2',0,'exec',['Email','setdefaultaddress',{'failmsgs'=>$stash->get(['FORM',0,'item',['failmsgs' ]]),'email'=>$stash->get(['FORM',0,'item',['email' ]]),'domain'=>$stash->get(['FORM',0,'item',['domain' ]]),'pipefwd'=>$stash->get(['FORM',0,'item',['pipefwd' ]]),'fwdemail'=>$stash->get(['FORM',0,'item',['fwdemail' ]]),'fwdopt'=>$stash->get(['FORM',0,'item',['fwdopt' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','setdefaultaddress' ]]);if (!$stash->get(['CPANEL',0,'CPERROR',0,'email',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_Email_setdefaultaddress');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] will forward all unrouted email for “[_1]” to “[_2]”.',$stash->get(['hashref',0,'domain',0,'html',0]),$stash->get(['hashref',0,'dest',0,'html',0])]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= $stash->get(['CPANEL',0,'CPERROR',0,'email',0,'html',0])}$output .= '
+
+';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['pipefwd_needs_fixup' ]]))){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['The program you have chosen to pipe to ([_1]) has the following problems:','<span class="fas fa-home"></span>' .'/' .$stash->get(['FORM',0,'item',['pipefwd' ]])]]);$output .= '
+'}$output .= '
+';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['pipefwd_needs_hashbang' ]]))){$output .= '
+    <blockquote>
+    ';$output .= $stash->get(['locale',0,'maketext',['There is no “[output,url,_1,Hashbang,target,_blank]” at the top of the script.','http://en.wikipedia.org/wiki/Hashbang' ]]);$output .= '
+    </blockquote>
+'}$output .= '
+';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['pipefwd_needs_plusx' ]]))){$output .= '
+    <blockquote>
+    ';$output .= $stash->get(['locale',0,'maketext',['Script needs to be executable.' ]]);$output .= '
+    </blockquote>
+'}$output .= '
+';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['pipefwd_needs_fixup' ]]))){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['To correct this, please click [output,url,_1,Fixup Piped Program,_2].','fixpipeprog.html?prog=' .$stash->get(['FORM',0,'item',['pipefwd' ]]),{'id'=>'btnFixupPipedProgram','class'=>'btn btn-primary' }]]);$output .= '
+'}$output .= '
+
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'def.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'default_address','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

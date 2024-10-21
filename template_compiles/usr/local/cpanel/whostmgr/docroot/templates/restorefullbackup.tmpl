@@ -1,0 +1,142 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/restorefullbackup.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<style>
+    .cjt-combobox-expander {
+        cursor: pointer;
+    }
+</style>
+
+<div id="content">
+    <div id="infoField">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature will restore full backups, cPanel backups, and cPanel move files and save them in one of the following formats:' ]]);$output .= '
+            <ul>
+                ';$output .= '
+                <li>cpmove-{USER}</li>
+                <li>cpmove-{USER}.tar</li>
+                <li>cpmove-{USER}.tar.gz</li>
+                <li>{USER}.tar</li>
+                <li>{USER}.tar.gz</li>
+                <li>backup-{MM.DD.YYYY}_{HH-MM-SS}_{USER}.tar</li>
+                <li>backup-{MM.DD.YYYY}_{HH-MM-SS}_{USER}.tar.gz</li>
+            </ul>
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['The files must be in one of the following directories on the server: [list_or,_1]',['/home','/home2','/home3','/root','/usr','/usr/home','/web' ]]]);$output .= '
+            </p>
+            <p>
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['You must upload the file to one of the above directories before you can use this feature.' ]]);$output .= '</strong>
+            </p>
+        </p>
+    </div>
+    ';$output .= $context->include('_pending_transfers.tmpl');$output .= '
+    <form class="col-sm-6" role="form" id="restoreForm" action="../scripts5/quickrestore" method="post" enctype="multipart/form-data">
+            ';$stash->set('restricted_by_default',1);$output .= '
+            ';$output .= $context->process('_restricted_restore_option.tmpl');$output .= '
+            <fieldset>
+                <legend>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '
+                </legend>
+                <div class="form-group">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Transfer Method:' ]]);$output .= '</label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="restoreWithUsername" name="restoreOption" checked="checked">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Restore with Username' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="restoreWithFile" name="restoreOption">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Restore with File' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+                <div id="userInputWrapper">
+                    <div class="form-group">
+                        <label for="user">';$output .= $stash->get(['locale',0,'maketext',['Username for the account that you wish to restore:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="comboBoxWrapper">
+                                    <input type="text" name="user" id="user" class="form-control">
+                                    <a id="userexpander"></a>
+                                </div>
+                            </div>
+                            <div id="user_error" class="col-sm-6">
+                            </div>
+                        </div>
+                        <div class="help-block" id="filepathDisplay">
+                        </div>
+                    </div>
+                </div>
+                <div id="fileInputWrapper">
+                    <div class="form-group">
+                        <label for="user">';$output .= $stash->get(['locale',0,'maketext',['File to restore with:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="file" name="restorePackage" id="restorePackage" disabled="disabled"/>
+                            </div>
+                            <div id="restorePackage_error" class="col-sm-6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['When you update the A records to migrate from the original server’s address to the destination’s server address, do you wish to:' ]]);$output .= '</label>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="xferpoint" value="all" name="replaceip" checked="checked">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Replace all instances of the original server’s IP address with the new IP address, such as in custom A records (default).' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" id="auth_root" value="basic" name="replaceip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Only replace basic cPanel-provided A records in zone files.' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input  type="checkbox"
+                                name="force_overwrite"
+                                id="force_overwrite"
+                                value="1"/>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Overwrite the existing user.' ]]);$output .= '
+                    </label>
+                </div>
+                ';if ($stash->get(['data',0,'available_ip_count',0])){$output .= '
+                <div class="checkbox">
+                    <label>
+                        <input  type="checkbox"
+                                name="ip"
+                                id="ip"
+                                value="1"/>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Assign a Dedicated IP Address' ]]);$output .= '
+                    </label>
+                </div>
+                '}else {$output .= '
+                <div class="checkbox">
+                    <label class="disabled">
+                        <input  type="checkbox"
+                                name="ip"
+                                id="ip"
+                                disabled="disabled"
+                                value="0"/>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Assign a Dedicated IP Address' ]]);$output .= '
+                    </label>
+                    <span class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['A dedicated [asis,IP] address is not available because the system does not have any free [asis,IP] addresses.' ]]);$output .= '
+                    </span>
+                </div>
+                '}$output .= '
+                <input type="hidden" id="filepath" name="filepath"/>
+            </fieldset>
+        <button type="submit" title="Restore" id="restoreButton" class="btn btn-primary">
+            ';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '
+        </button>
+    </form>
+</div>
+<script text="text/javascript">
+    CPANEL.namespace("CPANEL.PAGE");
+</script>
+';$output .= $context->include('_transfer_api_info.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'stylesheets'=>['/css/whm_dynamic_notices.css','/css2/newform.css' ],'scripts'=>['/yui/datasource/datasource-min.js','/yui/autocomplete/autocomplete-min.js','/cjt/combobox-min.js' ],'theme'=>'bootstrap','app_key'=>'restore_a_full_backup_cpmove_file','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,73 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/docroot.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('is_rtl',$stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl');$output .= '
+<div id="docrootEditor">
+<div class="ng-hide" ng-show="docroot.loading">
+    <div class="alert alert-info">
+        <div class="alert-message">
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+    </div>
+</div>
+<form class="layout-medium ng-hide" ng-show="!docroot.loading">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Website Configuration for “[_1]”','{{docroot.addonDomain}}' ]]);$output .= '</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="checkbox-row">
+                        <div class="checkbox">
+                            <label>
+                                <input id="moveDocrootCheckbox" type="checkbox" ng-model="docroot.moveIt">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy contents of document root directory' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="checkbox">
+                            <label>
+                                <input id="moveVhostIncludesCheckbox" type="checkbox" ng-model="docroot.moveVhostIncludes">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy custom [asis,VirtualHost] include files' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="checkbox-row">
+                        <div class="alert-icon alert-icon__absolute">
+                            <i class="fas fa-exclamation-triangle ng-hide"
+                                ng-show="!docroot.sslCertInstalled"
+                                uib-tooltip="{{docroot.noSSLCertTooltip}}"
+                                ';if ($stash->get('is_rtl')){$output .= '
+                                tooltip-placement="left"
+                                '}else {$output .= '
+                                tooltip-placement="right"
+                                '}$output .= '
+                                tooltip-append-to-body="true">
+                            </i>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input id="moveSSLCertCheckbox" type="checkbox"
+                                    ng-model="docroot.copySSLCert"
+                                    ng-disabled="!docroot.sslCertInstalled">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Copy the installed [asis,SSL] certificate' ]]);$output .= '</span>
+                             </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group action-group">
+                <button type="button"
+                    id="docrootSave"
+                    ng-click="docroot.save()"
+                    class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Save Selections' ]]);$output .= '</button>
+                <button type="button"
+                    id="docrootCancel"
+                    ng-click="docroot.cancel()"
+                    class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+            </div>
+        </div>
+    </div>
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

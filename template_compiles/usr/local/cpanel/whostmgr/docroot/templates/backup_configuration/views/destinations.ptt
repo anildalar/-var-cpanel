@@ -1,0 +1,171 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/destinations.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="section-body">
+    <div class="row" id="additional_destinations_label">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Additional Destinations' ]]);$output .= '</h3>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Destination Type]' ]]);$output .= '</p>
+        </div>
+    </div>
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <select id="set_destination_type" ng-model="destinationState.destinationSelected">
+                <option value="Local">';$output .= $stash->get(['locale',0,'maketext',['Additional Local Directory' ]]);$output .= '</option>
+                <option value="AmazonS3">';$output .= $stash->get(['locale',0,'maketext',['[asis,Amazon S3™]' ]]);$output .= '</option>
+                <option value="Backblaze">';$output .= $stash->get(['locale',0,'maketext',['[asis,Backblaze B2]' ]]);$output .= '</option>
+                <option value="Custom">';$output .= $stash->get(['locale',0,'maketext',['Custom' ]]);$output .= '</option>
+                <option value="FTP">';$output .= $stash->get(['locale',0,'maketext',['[asis,FTP]' ]]);$output .= '</option>
+                <option value="GoogleDrive">';$output .= $stash->get(['locale',0,'maketext',['[asis,Google Drive™]' ]]);$output .= '</option>
+                <option value="Rsync">';$output .= $stash->get(['locale',0,'maketext',['[asis,Rsync]' ]]);$output .= '</option>
+                <option value="S3Compatible">';$output .= $stash->get(['locale',0,'maketext',['S3 Compatible' ]]);$output .= '</option>
+                <option value="SFTP">';$output .= $stash->get(['locale',0,'maketext',['[asis,SFTP]' ]]);$output .= '</option>
+                <option value="WebDAV">';$output .= $stash->get(['locale',0,'maketext',['[asis,WebDAV]' ]]);$output .= '</option>
+            </select>
+            <button type="button" class="btn btn-default" id="create_new_dest" ng-click="createNewDestination(destinationState.destinationSelected)" ng-disabled="isValidationRunning()">';$output .= $stash->get(['locale',0,'maketext',['Create New Destination' ]]);$output .= '</button>
+            <button type="button" class="btn btn-link ng-hide" ng-show="destinationState.editMode === true || destinationState.newMode === true" id="cancel_destination_top" ng-click="cancelDestination(true)" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination">';$output .= $stash->get(['locale',0,'maketext',['Return to Destinations List' ]]);$output .= '</button>
+        </div>
+    </div>
+
+    <div class="row" ng-if="formData.backuptype === \'incremental\'">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div id="incremental_warning" class="alert alert-warning">
+                <span class="glyphicon glyphicon-warning-sign"></span>
+                <p class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['When you select incremental backups, the system will [output,strong,not] change or alter the state of your existing non-incremental backup destinations.' ]]);$output .= '</p>
+                <p class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['You can [output,strong,only] use the [asis,Rsync] transport with incremental backups.' ]]);$output .= '</p>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="altValidateAllButton">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <span width="100%">
+                <button type="button"
+                    button-class="btn-default btn-sm"
+                    id="alt_validate_all"
+                    cp-action="validateAllDestinations()"
+                    ng-disabled="destinationState.destinationList.length === 0 || isValidationRunning()"><i class="fas fa-tasks"></i> ';$output .= $stash->get(['locale',0,'maketext',['Validate All Destinations' ]]);$output .= '</button>
+            </span>
+        </div>
+    </div>
+    <table class="table table-striped responsive-table" ng-hide="destinationState.editMode === true || destinationState.newMode === true || destinationState.savingDestination">
+        <thead>
+            <tr>
+                <th>
+                    <span
+                        toggle-sort
+                        id="sortDestinationName"
+                        sort-meta="meta"
+                        sort-field="name,type"
+                        onsort="updateTable"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span
+                        toggle-sort
+                        id="sortTransportType"
+                        sort-meta="meta"
+                        sort-field="type,name"
+                        onsort="updateTable"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Transport' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Transport' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span
+                        toggle-sort
+                        id="sortSystemBackup"
+                        sort-meta="meta"
+                        sort-field="upload_system_backup"
+                        onsort="updateTable"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['System Backup' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['System Backup' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span
+                        id="sortSystemIncremental"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Destination [asis,ID]' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Destination [asis,ID]' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span
+                        toggle-sort
+                        id="sortStatus"
+                        sort-meta="meta"
+                        sort-field="disabled,name,type"
+                        onsort="updateTable"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="tooltipHeader">
+                    <i class="fas fa-info-circle fa-lg validationIcon ng-hide"
+                        aria-hidden="true"
+                        uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Click an icon to view detailed validation message.' ]]);$output .= '"
+                        tooltip-placement="auto top"
+                        ng-show="destinationState.showValidationIconHint"></i>
+                </th>
+                <th>
+                    <span
+                        id="transportActions"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</span>
+                </th>
+                <th class="button-right">
+                    <span width="100%">
+                        <button type="button"
+                            button-class="btn-default btn-sm"
+                            id="validate_all"
+                            cp-action="validateAllDestinations()"
+                            ng-disabled="destinationState.destinationList.length === 0 || isValidationRunning()"><i class="fas fa-tasks"></i> ';$output .= $stash->get(['locale',0,'maketext',['Validate All Destinations' ]]);$output .= '</button>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="destinationListMsg" ng-if="!destinationState.destinationListLoaded || destinationState.destinationList.length === 0">
+                <td colspan="8" class="destinationMsg">
+                    <i class="fas fa-spinner" ng-hide="destinationState.destinationList.length === 0"></i>
+                    <span ng-hide="destinationState.destinationListLoaded" id="destinationLoadingMsg">';$output .= $stash->get(['locale',0,'maketext',['Loading destinations …' ]]);$output .= '</span>
+                    <span ng-hide="!destinationState.destinationListLoaded" id="noDestinationsMsg">';$output .= $stash->get(['locale',0,'maketext',['No destinations found.' ]]);$output .= "</span>\n                </td>\n            </tr>\n            <tr class=\"destination\"\n                id=\"destination_info_{{destination.id}}\"\n                ng-repeat=\"destination in filteredDestinationList | orderBy: 'destination.name' track by \$index\"\n                ng-show=\"destinationState.destinationListLoaded && destinationState.destinationList.length > 0\">\n                <td data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Destination' ]]);$output .= '">{{destination.name}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Transport' ]]);$output .= '">{{ formattedTransportType(destination.type) }}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['System Backup' ]]);$output .= '">{{destination.upload_system_backup ? "Enabled" : "Disabled"}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Destination [asis,ID]' ]]);$output .= '">{{destination.id}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '">{{destination.disabled ? "Disabled" : "Enabled"}}</td>
+                <td class="validationResult" data-title="';$output .= $stash->get(['locale',0,'maketext',['Validation Result' ]]);$output .= '">
+                    <span class="fas fa-check fa-fw fa-lg text-success validationIcon ng-hide" ng-show="validateAllSuccessFor(destination.id)" ng-click="showValidationMessageFor(destination.id)"></span>
+                    <span class="fas fa-times fa-fw fa-lg text-danger validationIcon ng-hide" ng-show="validateAllFailureFor(destination.id)" ng-click="showValidationMessageFor(destination.id)"></span>
+                </td>
+                <td colspan="2" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= "\">\n                    <div id=\"actionsContainer\">\n                        <div class=\"actionsContainerRow\" class=\"ng-hide\" ng-show=\"showDeleteConfirmation && index === \$index && !isValidationInProgressFor(destination)\">\n                            <div class=\"actionsContainerCell\">\n                                <button class=\"btn btn-danger\" ng-click=\"deleteDestination(destination.id)\">";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</button>
+                                <button class="btn btn-link" ng-click="setupDeleteConfirmation()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                            </div>
+                        </div>
+                        <div class="actionsContainerRow ng-hide" ng-show="isValidationInProgressFor(destination)">
+                            <div id="actionsValMessage" class="actionsContainerCell destinationMsg validatingMsg">
+                                <span class="inlineValidationMessage" id="destinationValidatingMsg{{destination.id}}"><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Validating …' ]]);$output .= "</span>\n                            </div>\n                        </div>\n                        <div class=\"actionsContainerRow\" ng-hide=\"isValidationInProgressFor(destination) || showDeleteConfirmation && index === \$index\">\n                            <div class=\"actionsContainerCell\">\n                                <button\n                                    type=\"button\"\n                                    class=\"destination\"\n                                    button-class=\"btn-link\"\n                                    id=\"edit_destination_{{destination.id}}\"\n                                    cp-action=\"getDestination(destination.id, destination.type, \$index)\"\n                                    ng-disabled=\"isValidationRunning()\">\n                                    <span class=\"glyphicon glyphicon-pencil\"></span>\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "\n                                </button>\n                                <button\n                                    class=\"destination btn btn-link\"\n                                    ng-click=\"setupDeleteConfirmation(destination.name, destination.id, \$index)\"\n                                    id=\"delete_destination_{{destination.id}}\"\n                                    ng-disabled=\"isValidationRunning()\">\n                                    <span class=\"glyphicon glyphicon-trash\"></span>\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                                </button>
+                                <button
+                                    class="destination btn btn-link"
+                                    cp-action="validateDestination(destination.id, destination.name)"
+                                    id="validate_destination_{{destination.id}}"
+                                    ng-disabled="destinationState.validatingAllDestinations || isValidationInProgressFor(destination.id)">
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Validate' ]]);$output .= '
+                                </button>
+                                <button
+                                    class="destination btn btn-link"
+                                    id="toggle_destination_{{destination.id}}"
+                                    cp-action="toggleStatus(destination)"
+                                    ng-disabled="isValidationRunning()">
+                                    <span ng-if="!destination.disabled" class="glyphicon glyphicon-ban-circle"></span>
+                                    <span ng-if="destination.disabled" class="glyphicon glyphicon-ok-circle"></span>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['[_1]','{{destination.disabled ? "Enable" : "Disable"}}' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row" id="edit_destination_template" ng-if="destinationState.destinationMode">
+        <div class="col-xs-12">
+            <ng-include src="templatePath"></ng-include>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

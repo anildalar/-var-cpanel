@@ -1,0 +1,110 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/csvimport-step2.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('Api2',$context->plugin('Api2'));$stash->set('Uapi',$context->plugin('Uapi'));if ($stash->get(['FORM',0,'item',['csvimportid' ]])){$stash->set(['CPANEL',0,'CPVAR',0,'csvimportid',0],$stash->get(['FORM',0,'item',['csvimportid' ]]))}else {$stash->set('api2_result_CSVImport_uploadimport',$stash->get(['Api2',0,'exec',['CSVImport','uploadimport',{}]]));$stash->set('api2_result_CSVImport_processdata',$stash->get(['Api2',0,'exec',['CSVImport','processdata',{'otherdelimiter'=>$stash->get(['RAW_FORM',0,'other_delimiter',0]),'csvimportid'=>$stash->get(['CPANEL',0,'CPVAR',0,'csvimportid',0,'html',0]),'colheader'=>$stash->get(['RAW_FORM',0,'colheader',0]),'delimiter'=>$stash->get(['RAW_FORM',0,'delimiter',0])}]]))}$stash->set('api2_result_CSVImport_loaddata',$stash->get(['Api2',0,'exec',['CSVImport','loaddata',{'csvimportid'=>$stash->get(['CPANEL',0,'CPVAR',0,'csvimportid',0,'html',0])}]]));$stash->set('csv_columnchoices',$stash->get(['Api2',0,'exec',['CSVImport','columnchoices',{'type'=>($stash->get(['RAW_FORM',0,'item',['importtype' ]]))}]]));$stash->set('import_type_data',$stash->get(['Api2',0,'exec',['CSVImport','data',{'type'=>($stash->get(['RAW_FORM',0,'item',['importtype' ]]))}]]));$stash->set('list_mail_domains_response',$stash->get(['execute',['Email','list_mail_domains',{}]]));$stash->set('return_link','csvimport.html?importtype=' .$stash->get(['RAW_FORM',0,'item',['importtype' ],'uri',0]).'&csvimportid=' .$stash->get(['RAW_FORM',0,'item',['csvimportid' ],'uri',0]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['list_mail_domains_response',0,'status',0])){$output .= '
+        ';if (($stash->get(['FORM',0,'item',['importtype' ]])eq 'fwd')){$output .= '
+            <h2 id="hdrImportFwds">';$output .= $stash->get(['locale',0,'maketext',['Import Forwarders' ]]);$output .= '</h2>
+        '}$output .= '
+
+        ';if (($stash->get(['FORM',0,'item',['importtype' ]])eq 'email')){$output .= '
+            <h2 id="hdrImportAddrs">';$output .= $stash->get(['locale',0,'maketext',['Import E-mail Accounts' ]]);$output .= '</h2>
+        '}$output .= '
+
+        <div class="section">
+            <form action="csvimport-step3.html" method="get">
+                <input id="hidImportType" type="hidden" name="importtype" value="';$output .= $stash->get(['FORM',0,'item',['importtype' ]]);$output .= '" />
+                <input id="hidImportId" type="hidden" name="csvimportid" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'item',['csvimportid' ],'html',0]);$output .= '" />
+
+                <h2 id="step1header" style="display:none;">';$output .= $stash->get(['locale',0,'maketext',['Step 1' ]]);$output .= '</h2>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['Choose the header from the dropdown in the table that corresponds to each column.' ]]);$output .= '</p>
+
+                <div>
+                    <table id="ssimport" class="nonsortable table table-striped" >
+                        <tr>
+                            ';if ($stash->get(['csv_columnchoices',0,'size',0])){$output .= '
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('csv_columnchoices');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                <th>
+                                    <select class="form-control" onchange="checkcols(this);" name="header';$output .= $stash->get(['hashref',0,'num',0,'html',0]);$output .= '">
+                                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['hashref',0,'item',['options' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'deep_hashref'}=$_tt_value;$output .= '
+                                            <option value="';$output .= $stash->get(['deep_hashref',0,'colshortname',0,'html',0]);$output .= '" ';$output .= $stash->get(['deep_hashref',0,'colselected',0,'html',0]);$output .= '>
+                                                ';$output .= $stash->get(['deep_hashref',0,'colname',0,'html',0]);$output .= '
+                                            </option>
+                                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                    </select>
+                                </th>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            '}else {$output .= '
+                                <th>';$output .= $stash->get(['locale',0,'maketext',['No data could be extracted.' ]]);$output .= '</th>
+                            '}$output .= '
+                        </tr>
+                        ';if ($stash->get(['import_type_data',0,'size',0])){$output .= '
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('import_type_data');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                                <tr id="row';$output .= $stash->get(['hashref',0,'num',0,'html',0]);$output .= '">
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['hashref',0,'item',['row' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'deep_hashref'}=$_tt_value;$output .= '
+                                        <td>';$output .= $stash->get(['deep_hashref',0,'value',0,'html',0]);$output .= '</td>
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </tr>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        '}$output .= '
+                    </table>
+                </div>
+
+                <div id="step2" style="display:none;">
+                    <h2>';$output .= $stash->get(['locale',0,'maketext',['Step 2' ]]);$output .= '</h2>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Select the domain for the users in the list. [output,strong,NOTE]: You will see an appended list if the column contains a list of usernames instead of email addresses.' ]]);$output .= '</p>
+
+                    <div class="form-group">
+                        <label id="lblDomainSel" for="domainSel">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <select id="domainSel" name="domain" class="form-control">
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_mail_domains_response',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '
+                                        <option value="';$output .= $stash->get(['domain',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['domain',0,'domain',0,'html',0]);$output .= '</option>
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    ';if ($stash->get(['csv_columnchoices',0,'size',0])){$output .= '
+                        <input id="btnNext"
+                            type="submit"
+                            class="btn btn-primary"
+                            value="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '" />
+                    '}else {$output .= '
+                        <input id="btnNext"
+                            type="submit"
+                            class="btn btn-primary"
+                            disabled
+                            value="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '" />
+                    '}$output .= '
+                </div>
+            </form>
+        </div>
+    '}else {$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['list_mail_domains_response',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'err'}=$_tt_value;$output .= '
+                        ';$output .= $stash->get(['err',0,'html',0]);$output .= '
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </span>
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'address_importer','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var importDataPresent = ';$output .= $stash->get(['csv_columnchoices',0,'size',0]);$output .= ";\n    var emailcol = 0;\n    var domainlist = {};\n    var domainlistLoaded = 0;\n    YAHOO.util.Event.onAvailable('ssimport', checktbl);\n\n\n    function loadDomainList() {\n        var selEl=document.getElementById('domainSel');\n        for(var i=0;i<selEl.options.length;i++) {\n            domainlist[selEl.options[i].value]=1;\n        }\n        domainlistLoaded = 1;\n    }\n\n    function checktbl() {\n        if (importDataPresent) {\n            var tableEl = document.getElementById('ssimport');\n            var columnCells = tableEl.rows[0].cells;\n\n            for(var i=0;i<columnCells.length;i++) {\n                var selectEls=columnCells[i].getElementsByTagName('select');\n                checkcols(selectEls[0]);\n            }\n        }\n    }\n    function checkcols(selectboxEl) {\n\n        var headerTH = selectboxEl.parentNode;\n        var headerTBL = selectboxEl.parentNode;\n        var columnNum = headerTH.cellIndex;\n\n        if (selectboxEl.selectedIndex == -1) {\n            if (columnNum == emailcol) { hideStep2(); }\n            return;\n        }\n        var selectVal = selectboxEl.options[selectboxEl.selectedIndex].value;\n\n        if (! domainlistLoaded) {loadDomainList();}\n\n        while(headerTBL && headerTBL.tagName != \"TBODY\") {\n            headerTBL=headerTBL.parentNode;\n        }\n        for(var i=1;i<headerTBL.rows.length;i++) {\n            var tblData = headerTBL.rows[i].cells[columnNum].innerHTML;\n            if (! tblData.match(/\\\@/)) {\n                    emailcol = columnNum;\n                    showStep2();\n                    return;\n            } else {\n                var emailParts = tblData.split('\@');\n                if (!domainlist[emailParts[1]]) {\n                    showStep2();\n                    return;\n                }\n            }\n        }\n        hideStep2();\n\n    }\n    function hideStep2() {\n        document.getElementById('step2').style.display='none';\n        document.getElementById('step1header').style.display='none';\n    }\n\n\n    function showStep2() {\n        document.getElementById('step2').style.display='';\n        document.getElementById('step1header').style.display='';\n    }\n\n</script>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

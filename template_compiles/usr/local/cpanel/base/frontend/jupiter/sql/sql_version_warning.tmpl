@@ -1,0 +1,9 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/sql_version_warning.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Mysql',$context->plugin('Mysql'));$stash->set('mysql_version',$stash->get(['Mysql',0,'mysqlversion',0]));$output .= '
+
+';if ($stash->get(['Mysql',0,'show_update_warning',0])){$output .= '
+    <div id="mysqlVersionError" class="alert alert-danger">
+        <span id="mysqlErrorImg" class="glyphicon glyphicon-exclamation-sign"></span>
+        <span id="mysqlErrorMsg">';$output .= $stash->get(['locale',0,'maketext',['This server is running an unsupported database version ([_1]). Ask your system administrator to upgrade it to improve security and features.',$stash->get('mysql_version')]]);$output .= '</span>
+    </div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

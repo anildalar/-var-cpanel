@@ -1,0 +1,34 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/_assets/webmaillogininclude.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('webmail_host','https://' .$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0]).':2096');$output .= '
+
+<p id="descPageDescription" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Webmail allows you to access your email from any computer with an Internet connection and a web browser. Please make sure to log out when checking your email on public computers so that other people cannot read your email.' ]]);$output .= '
+</p>
+
+<p id="descLinkToWebmail">
+    ';$output .= $stash->get(['locale',0,'maketext',['You can check the webmail for any account by logging into [output,url,_1,id,_2] with the full username (user@domain.com) and password for the email account or by clicking on the icon below.',$stash->get('webmail_host'),'lnkWebmailURL' ]]);$output .= '
+</p>
+
+<div align="center" class="section">
+    ';if ($stash->get(['CPANEL',0,'ENV',0,'SERVER_PORT',0])eq '2082'){$output .= '
+        <a id="lnkUnsecureWebmailLogin" href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'html',0]);$output .= '/xferwebmail/" target="_blank">
+            <span id="imgWebmailIcon" class="fa-stack fa-lg">
+              <i class="fas fa-envelope fa-stack-2x"></i>
+            </span>
+            <br />';$output .= $stash->get(['locale',0,'maketext',['Go to Webmail Login' ]]);$output .= '
+        </a>
+        <br />
+    '}else {$output .= '
+        <a id="lnkSecureWebmailLogin" href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'item',['cp_security_token' ],'html',0]);$output .= '/xferwebmail/" target="_blank">
+            <span id="imgWebmailIcon" class="fa-stack fa-lg">
+              <i class="fas fa-envelope fa-stack-2x"></i>
+            </span>
+            <br />';$output .= $stash->get(['locale',0,'maketext',['Go to Secure Webmail Login' ]]);$output .= '
+        </a>
+        <br />
+    '}$output .= '
+</div>
+
+<p id="descHowToConfigureMail">
+    ';$output .= $stash->get(['locale',0,'maketext',['To check your mail through a desktop application, you will need to configure the application. Your mail server is most likely “mail.[_1]” (e.g. mail.example.com). You will need to use the full username (user@domain.com) and password when configuring your account from an email client. It is a good idea to check “My Server Requires Authentication” as most mail servers require this option.',$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0])]]);$output .= '
+</p>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

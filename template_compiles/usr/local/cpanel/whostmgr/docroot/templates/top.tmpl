@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/top.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('CPMath',$context->plugin('CPMath'));$stash->set('CPList',$context->plugin('CPList'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '<div style="margin-bottom: 20px">
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/managepid">
+<input type="hidden" name="action" value="killuser" />
+<label>Kill all processes by user:
+<select name="user">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'users',0,'unique',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '<option value="';$output .= $stash->get('user');$output .= '">';$output .= $stash->get('user');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</select>
+</label>
+<input type="submit" value="Kill user\'s processes" class="btn-primary" />
+</form>
+</div>
+'}$output .= '<div>
+<table class="sortable" id="toptbl">
+<tr>
+            <th>Pid</th>
+            <th class="sorttable_alpha">Owner</th>
+            <th>Priority</th>
+            <th>CPU %</th>
+            <th>Memory %</th>
+            <th>Command</th>
+</tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'procdata',0,'cpsort',[{'field'=>'cpu','num'=>1,'desc'=>1 },{'field'=>'mem','num'=>1,'desc'=>1 },{'field'=>'pid','num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'procdata'}=$_tt_value;$stash->set('mem_length',$stash->get(['procdata',0,'mem',0])> 100 ? 400 : $stash->get(['CPMath',0,'int',[$stash->get(['procdata',0,'mem',0])* 2 ]]));$stash->set('cpu_length',$stash->get(['procdata',0,'cpu',0])> 100 ? 400 : $stash->get(['CPMath',0,'int',[$stash->get(['procdata',0,'cpu',0])* 2 ]]));$output .= '<tr class="';$output .= $stash->get(['loop',0,'index',0])% 2 ? 'tdshade1' : 'tdshade2';$output .= '">
+    <td class="pid" sorttable_customkey="';$output .= $stash->get(['procdata',0,'pid',0]);$output .= '">';$output .= $stash->get(['procdata',0,'pid',0]);if (!$stash->get(['data',0,'dnsonly',0])){$output .= '&nbsp;(<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/managepid?pid=';$output .= $stash->get(['procdata',0,'pid',0]);$output .= '&action=trace">Trace</a>)&nbsp;(<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/managepid?pid=';$output .= $stash->get(['procdata',0,'pid',0]);$output .= '&action=kill">Kill</a>)'}$output .= '</td>
+    <td class="user">';$output .= $stash->get(['procdata',0,'user',0]);$output .= '</td>
+    <td class="nice">';$output .= $stash->get(['procdata',0,'nice',0]);$output .= '</td>
+    <td class="cpu" sorttable_customkey="';$output .= $stash->get(['procdata',0,'cpu',0]);$output .= '">';if ($stash->get('cpu_length')){$output .= '<div style="width: ';$output .= $stash->get('cpu_length');$output .= 'px; background: url(';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= ') repeat-x;">&nbsp;</div>&nbsp;'}$output .= $stash->get(['procdata',0,'cpu',0]);$output .= '</td>
+    <td class="mem" sorttable_customkey="';$output .= $stash->get(['procdata',0,'mem',0]);$output .= '">';if ($stash->get('mem_length')){$output .= '<div style="width: ';$output .= $stash->get('mem_length');$output .= 'px; background: url(';$output .= $stash->get(['Whostmgr',0,'getbggif',0]);$output .= ') repeat-x;">&nbsp;</div>&nbsp;'}$output .= $stash->get(['procdata',0,'mem',0]);$output .= '</td>
+    <td class="command">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['procdata',0,'command',0]);&$_tt_filter($output)};$output .= '</td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'process_manager','header'=>$stash->get(['locale',0,'maketext',['Process Manager' ]]),'breadcrumburl'=>'/scripts2/top','scripts'=>['/js/sorttable.js' ],'extrastyle'=>'
+#toptbl td {
+    padding: 3px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,64 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/userrights_include.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if (!$stash->get(['CPANEL',0,'feature',['mysql' ]])){$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                    ';$output .= $stash->get(['locale',0,'maketext',['You do not have the feature “[_1]”.','mysql' ]]);$output .= '
+                </span>
+            </div>
+        </div>
+'}else {$output .= '
+
+';if (!$stash->get(['full_username',0,'size',0])){$stash->set('full_username',$stash->get(['RAW_FORM',0,'user',0]))}if (!$stash->get(['full_dbname',0,'size',0])){$stash->set('full_dbname',$stash->get(['RAW_FORM',0,'db',0]))}$stash->set('Api2',$context->plugin('Api2'));$stash->set('userprivs_list',$stash->get(['execute',['Mysql','get_privileges_on_database',{'user'=>$stash->get('full_username'),'database'=>$stash->get('full_dbname')}]]));$stash->set('userprivs',$stash->get(['userprivs_list',0,'data',0,'size',0])? $stash->get(['array_to_hash',[$stash->get(['userprivs_list',0,'data',0])]]): {});$stash->set('all_privs',$stash->get(['userprivs',0,'exists',['ALL PRIVILEGES' ]]));$stash->set('privs',$stash->get(['Api2',0,'exec',['MysqlFE','getmysqlprivileges' ]]));$stash->set('errors',[]);$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['userprivs_list',0,'errors',0])]]));if ($stash->get(['CPANEL',0,'CPERROR',0,'mysqlfe',0])){$output .= $stash->get(['errors',0,'push',[$stash->get(['CPANEL',0,'CPERROR',0,'mysqlfe',0])]])}if ($stash->get(['errors',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['errors',0,'unique',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+            </span>
+            </div>
+        </div>
+
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}else {$output .= '
+
+<table class="nonsortable table table-striped" id="privs_table">
+    <thead>
+        <tr>
+            <th colspan="2" class="info-heading">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="ALL" id="ALL" value="ALL" ';$output .= $stash->get('all_privs')? 'checked="checked"' : '';$output .= ' />
+                        ';$output .= $stash->get(['locale',0,'maketext',['ALL PRIVILEGES' ]]);$output .= '
+                    </label>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('privs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cur_priv'}=$_tt_value;$output .= '            ';$stash->set('priv_no_spaces',$stash->get(['cur_priv',0,'replace',[' ','' ]]));$output .= '            ';$stash->set('tdclass',($stash->get(['loop',0,'index',0])% 4 < 2)? 'info-odd' : 'info-even');$output .= '            ';if (!($stash->get(['loop',0,'index',0])% 2)){$output .= '                <tr>
+            '}$output .= '                    <td class="';$output .= $stash->get('tdclass');$output .= '">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                    id="chk';$output .= $stash->get('priv_no_spaces');$output .= '"
+                                    name="privileges" ';$output .= ($stash->get('all_privs')|| $stash->get(['userprivs',0,'exists',[$stash->get('cur_priv')]]))? 'checked="checked"' : '';$output .= '
+                                    value="';$output .= $stash->get('cur_priv');$output .= '"
+                                    class="user_right" />
+                                ';$output .= $stash->get('cur_priv');$output .= '
+                            </label>
+                        </div>
+                    </td>
+            ';if (($stash->get(['loop',0,'index',0])% 2)){$output .= '                </tr>
+            '}$output .= '        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        ';if ($stash->get(['privs',0,'size',0])% 2){$output .= '            <td>&nbsp;</td>
+        '}$output .= '    </tbody>
+</table>
+<div class="form-group">
+    <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Make Changes' ]]);$output .= '" class="btn btn-primary" id="submit" />
+    <button type="reset" value="';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '" class="btn btn-secondary">';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '</button>
+</div>
+'}$output .= "\n\n<script type=\"text/javascript\">\nvar USER_RIGHTS;\n\n/**\n * [checkallprivs description]\n * \@return {[type]} [description]\n */\nvar checkallprivs = function() {\n    var all_checked = DOM.get(\"ALL\").checked;\n    USER_RIGHTS.forEach( function(i) {\n        i.checked = all_checked;\n    } );\n};\n\n/**\n * [checkprivs description]\n * \@return {[type]} [description]\n */\nvar checkprivs = function() {\n    DOM.get(\"ALL\").checked = USER_RIGHTS.every( function(i) {\n        return i.checked;\n    } );\n};\n\n/**\n * [init_user_rights description]\n * \@return {[type]} [description]\n */\nvar init_user_rights = function() {\n    EVENT.on(\"ALL\", \"click\", checkallprivs);\n    USER_RIGHTS = DOM.getElementsByClassName(\"user_right\", \"input\", \"privs_table\")\n    EVENT.on(USER_RIGHTS, \"click\", checkprivs);\n};\n\nEVENT.onDOMReady(init_user_rights);\n</script>\n\n"}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

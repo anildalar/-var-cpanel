@@ -1,0 +1,78 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/autossl/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts12/autossl/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$stash->set('REQUIRED_FEATURES',['autossl' ]);$output .= '
+
+<div id="content"
+    ng-controller="BaseController as base"
+    class="ng-cloak"
+    ng-cloak>
+
+    <p>';$output .= $stash->get(['locale',0,'maketext',['The [asis,AutoSSL] feature provides free [asis,SSL] certificates for your users’ domains. The system will periodically inspect users’ installed certificates and replace those that are about to expire or that are insufficient to provide a baseline level of security.' ]]);$output .= '</p>
+
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Users who do not have the [list_and_quoted,_1] [numerate,_2,feature,features] will not receive the free certificates.',$stash->get('REQUIRED_FEATURES'),$stash->get(['REQUIRED_FEATURES',0,'size',0])]]);$output .= '</p>
+
+    <callout callout-type="information" ng-show="!!get_saved_provider_module_name()">
+        <p>
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Current Provider:' ]]);$output .= '</strong>
+            {{ getCurrentProviderDisplayName() }}
+        </p>
+        <p ng-show="!!getSavedProviderAccountID()">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Provider Account ID:' ]]);$output .= '</strong>
+            {{ getSavedProviderAccountID() }}
+        </p>
+        <p ng-if="next_check_time_string()" ng-bind="next_check_time_string()"></p>
+        <p ng-if="!next_check_time_string()">
+            &nbsp;  <!-- Placeholder so that the UI doesn’t jerk
+                         when next_check_time_string() has information. -->
+        </p>
+        <button id="run_for_all_btn"
+            type="button"
+            spinner-id="spinnerDelete_runall"
+            cp-action="start_autossl_for_all_users()"
+        >';$output .= $stash->get(['locale',0,'maketext',['Run [asis,AutoSSL] For All Users' ]]);$output .= '</button>
+    </callout>
+
+    <callout callout-type="warning" callout-heading="Warning" ng-show="current_provider_module === \'cPanel\'">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['We have deprecated the [asis,Sectigo] [asis,AutoSSL] provider. It will no longer function at a future date.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,AutoSSL] will be unable to provision new free [asis,SSL] certificates once the [asis,Sectigo] [asis,AutoSSL] provider no longer functions.' ]]);$output .= '
+        </p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,cPanel Deprecation Plan documentation,target,_blank].','https://go.cpanel.net/deprecation' ]]);$output .= '</p>
+    </callout>
+
+    <callout callout-type="warning" callout-heading="Warning"  ng-show="current_provider_module === \'LetsEncrypt\' && !getSavedProviderAccountID()">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['The system lacks a saved account ID for this provider.' ]]);$output .= '</p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Please recreate your current registration.' ]]);$output .= '</p>
+    </callout>
+
+    <uib-tabset active="currentTab">
+        <uib-tab ng-repeat="(key,tab) in activeTabs" ng-click="go(tab.path)" ng-hide="tab.is_hidden()">
+            <uib-tab-heading>
+                <span ng-if="loading && currentTab === key"><i class="fas fa-spinner fa-spin"></i></span>
+                {{ tab.label }}
+            </uib-tab-heading>
+        </uib-tab>
+    </uib-tabset>
+
+    <div ng-class="{\'view-disabled\': loading}" class="animate-view" ng-view></div>
+
+    <div growl></div>
+
+    <script type="text/ng-template" id="directives/starRating.phtml">
+    ';$output .= $context->insert('autossl/directives/starRating.phtml');$output .= '
+    </script>
+
+</div>
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.provider_info = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'provider_info',0])]]);$output .= ';
+    PAGE.logs_catalog = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'logs_catalog',0])]]);$output .= ';
+    PAGE.users = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'users',0])]]);$output .= ';
+    PAGE.metadata = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'metadata',0])]]);$output .= ';
+    PAGE.constants = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'constants',0])]]);$output .= ';
+    PAGE.currentAccountID = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'current_account_id',0])]]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'manage_autossl','breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/autossl/index.min.css' ]])],'theme'=>'bootstrap','content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

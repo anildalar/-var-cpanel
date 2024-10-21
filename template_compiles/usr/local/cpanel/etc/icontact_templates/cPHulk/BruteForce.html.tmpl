@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/cPHulk/BruteForce.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/blacklist_whitelist_links.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Brute Force attempt against “[_1]”.',$stash->get(['NOTICE',0,'user',0])]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['A device at the “[_1]” [output,abbr,IP,Internet Protocol] address has made a large number of invalid login attempts against the account “[_2]”.',$stash->get(['NOTICE',0,'ip_address',0]),$stash->get(['NOTICE',0,'user',0])]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This brute force attempt has exceeded the maximum number of failed login attempts that the system allows.' ]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For security purposes, the system has temporarily blocked this [output,abbr,IP,Internet Protocol] address in order to prevent further attempts.' ]]);$output .= '
+</p>
+
+<table>
+    <tbody>
+        <tr>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'report',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '
+                <tr>
+                    <th align="right">
+                        ';$output .= $stash->get(['item',0,'name',0]);$output .= ':
+                    </th>
+                    <td align="left">
+                        ';$output .= $stash->get(['item',0,'value',0]);$output .= '
+                    </td>
+                </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            <th align="right">
+                Number of authentication failures:
+            </th>
+            <td align="left">
+                ';$output .= $stash->get(['NOTICE',0,'current_failures',0]);$output .= '
+            </td>
+        </tr>
+        <tr>
+            <th align="right">
+                Maximum number allowed:
+            </th>
+            <td align="left">
+                ';$output .= $stash->get(['NOTICE',0,'max_allowed_failures',0]);$output .= '
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<p>
+    ';$output .= $stash->get(['blacklist_whitelist_table',[{'blacklist_ips'=>$stash->get(['NOTICE',0,'blacklist_ips',0]),'whitelist_ips'=>$stash->get(['NOTICE',0,'whitelist_ips',0])}]]);$output .= '
+</p>
+
+<p>
+';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If the system blocked this user in error, you can whitelist this [output,abbr,IP,Internet Protocol] address in [asis,WHM]’s [_1] interface at: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'locale',0,'maketext',['cPHulk Brute Force Protection' ]]),$stash->get(['CPANEL',0,'assemble_whm_url',['scripts7/cphulk/config' ]]),'_blank' ]]);$output .= '
+</p>
+
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

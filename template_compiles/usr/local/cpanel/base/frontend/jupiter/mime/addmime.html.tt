@@ -1,0 +1,28 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/addmime.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('add_mime',$stash->get(['execute',['Mime','add_mime',{'type'=>$stash->get(['RAW_FORM',['mimet' ]]),'extension'=>$stash->get(['RAW_FORM',['ext' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['add_mime',0,'status',0])){$output .= '
+    <div id="mimeTypeAddSuccess" class="alert alert-success">
+        <span id="mimeTypeAddSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+        <div id="mimeTypeAddMsg" class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,MIME,Multipurpose Internet Mail Extensions] Type Added' ]]);$output .= '</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['You assigned the [output,acronym,MIME,Multipurpose Internet Mail Extensions] type “[output,inline,_1,class,status]” to the following extension(s): [output,inline,_2,class,status]',$stash->get(['FORM',0,'mimet',0]),$stash->get(['FORM',0,'ext',0])]]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <div id="mimeTypeAddError" class="alert alert-danger">
+        <span id="mimeTypeAddErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+          <span id="mimeTypeAddErrorMsg" class="alert-message">
+              ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['add_mime',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('q');&$_tt_filter($output)};$output .= '
+              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '          </span>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'mime.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'mime_types','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

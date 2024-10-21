@@ -1,0 +1,155 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/statmanager/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('domain_config',$stash->get(['execute',['StatsManager','get_configuration',{}]]));if ($stash->get(['domain_config',0,'status',0])){$stash->set('locked',$stash->get(['domain_config',0,'metadata',0,'locked',0]));$stash->set('global_config',$stash->get(['domain_config',0,'metadata',0,'analyzers',0]));$stash->set('analyzer_names',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('global_config');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'analyzer'}=$_tt_value;if ($stash->get('locked')|| (!$stash->get('locked')&& $stash->get(['analyzer',0,'available_for_user',0]))){$output .= $stash->get(['analyzer_names',0,'push',[$stash->get(['analyzer',0,'name',0])]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p id="descMetricsEditor" class="description">
+    ';if ($stash->get('locked')){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['This interface shows what stats programs you will use when viewing site statistics.' ]]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to choose which stats programs you will use when viewing site statistics.' ]]);$output .= '
+    '}$output .= '
+    </p>
+    ';if (!$stash->get(['domain_config',0,'status',0])){$output .= '
+    <div class="alert alert-danger" role="alert" id="api-error">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            <span class="alert-body">
+                ';$output .= $stash->get(['domain_config',0,'errors',0,'join',[' ' ],'html',0]);$output .= '
+            </span>
+        </div>
+    </div>
+    '}else {$output .= '
+    ';if ($stash->get('locked')){$output .= '
+    <div class="alert alert-info" role="alert" id="lockedInfo">
+        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Information:' ]]);$output .= '</strong>
+            <span class="alert-body">
+            ';$output .= $stash->get(['locale',0,'maketext',['The system administrator manages the stats programs.' ]]);$output .= '
+            </span>
+        </div>
+    </div>
+    '}$output .= '
+
+    <div class="section">
+        ';if (!$stash->get('locked')){$output .= '
+        <form id="the_form">
+        '}$output .= '
+        <table class="table table-striped form-inline" id="statsmgr">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</th>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('global_config');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'analyzer'}=$_tt_value;if ($stash->get('locked')|| (!$stash->get('locked')&& $stash->get(['analyzer',0,'available_for_user',0]))){$output .= '
+                    <th class="text-center">
+                        ';if (!$stash->get('locked')){$output .= '
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"
+                                       class="check-all"
+                                       id="';$output .= 'check-all-' .$stash->get(['analyzer',0,'name',0,'html',0]);$output .= '" >
+                                <strong>';$output .= $stash->get(['analyzer',0,'name',0,'ucfirst',0,'html',0]);$output .= '</strong>
+                            </label>
+                        </div>
+                        '}else {$output .= '
+                        <strong>';$output .= $stash->get(['analyzer',0,'name',0,'ucfirst',0,'html',0]);$output .= '</strong>
+                        '}$output .= '
+                    </th>
+                        '}$output .= '
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </tr>
+            </thead>
+            <tbody>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['domain_config',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'config'}=$_tt_value;$output .= '
+                <tr>
+                    <td>
+                    ';$output .= $stash->get(['config',0,'domain',0,'html',0,'breakOn',['[.]' ]]);$output .= '
+                    </td>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['config',0,'analyzers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'analyzer'}=$_tt_value;$output .= '
+                    <td align="center">
+                        ';if ($stash->get('locked')){$output .= '
+                        <span>';if ($stash->get(['analyzer',0,'enabled',0])){$output .= $stash->get(['locale',0,'maketext',['On' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Off' ]])}$output .= '                        </span>
+                        '}else {$output .= '
+                        <div class="checkbox">
+                            <input type="checkbox"
+                                   id="';$output .= 'check-' .$stash->get(['config',0,'domain',0,'html',0]).'-' .$stash->get(['analyzer',0,'name',0,'html',0]);$output .= '"
+                                   class="check-one ';$output .= 'check-' .$stash->get(['analyzer',0,'name',0,'html',0]);$output .= '"
+                                   name="';$output .= $stash->get(['config',0,'domain',0,'html',0]).'--' .$stash->get(['analyzer',0,'name',0,'html',0]);$output .= '"';if ($stash->get(['analyzer',0,'enabled',0])){$output .= ' checked="checked"'}$output .= '>
+                        </div>
+                        '}$output .= '
+                    </td>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </tbody>
+        </table>
+        ';if (!$stash->get('locked')){$output .= '
+        <div class="row">
+            <div class="col-xs-12 col-sm-1">
+                <button id="save" type="submit" class="btn btn-primary">
+                    <i id="save-spinner" class="fas fa-spinner fa-1x fa-spin" style="display:none"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                </button>
+            </div>
+            <div class="col-xs-12 col-sm-11">
+                <div id="response" style="display: none">
+                </div>
+            </div>
+        </div>
+        </form>
+        '}$output .= '
+    </div>
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'page_scripts'=>['libraries/handlebars/handlebars.js','libraries/jquery/current/jquery.js','statmanager/index.js' ],'app_key'=>'metrics_editor','content',$output })};$output .= '
+';$output .= '
+
+';$output .= '
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<style type=\"text/css\">\n\@media (max-width: 767px) {\n    #response {\n        margin-top: 10px;\n    }\n}\n</style>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    ';$stash->set('polyfills',[$stash->get(['theme_magic_url',['libraries/promise/bluebird.core.min.js' ]]),$stash->get(['theme_magic_url',['libraries/fetch/fetch.umd.min.js' ]])]);$output .= '
+
+    if (!PAGE) {
+        PAGE = {};
+    }
+
+    PAGE.saveSuccess    = ';$output .= $stash->get(['locale',0,'makevar',['The configuration was successfully saved.' ],'json',0]);$output .= ';
+    PAGE.saveFailed     = ';$output .= $stash->get(['locale',0,'makevar',['Failed to save the configuration.' ],'json',0]);$output .= ';
+    PAGE.networkFailed  = ';$output .= $stash->get(['locale',0,'makevar',['Failed to save the configuration due to network errors.' ],'json',0]);$output .= ';
+
+    PAGE.analyzerNames   = ';$output .= $stash->get(['analyzer_names',0,'json',0]);$output .= ';
+    PAGE.session         = ';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'json',0]);$output .= ';
+    PAGE.polyfills       = ';$output .= $stash->get(['polyfills',0,'json',0]);$output .= ';
+</script>
+
+<script type="text/x-handlebars-template" id="success-template">
+    <div id="{{id}}" class="alert alert-success" role="alert">
+        <button id="{{id}}-close" type="button"
+            class="close" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Success:' ]]);$output .= '</strong>
+            <span class="alert-body"><span id="{{id}}-message">{{message}}</span></span>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="error-template">
+    <div id="{{id}}" class="alert alert-danger" role="alert">
+        <button id="{{id}}-close" type="button"
+            class="close" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">
+            <span aria-hidden="true">&times;</span>
+        </button>
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            <span class="alert-body"><span id="{{id}}-message">{{message}}</span></span>
+        </div>
+    </div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

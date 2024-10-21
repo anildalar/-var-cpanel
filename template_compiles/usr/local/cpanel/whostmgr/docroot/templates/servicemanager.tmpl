@@ -1,0 +1,255 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/servicemanager.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPSort',$context->plugin('CPSort'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('cycle',$context->plugin('Cycle',['tdshade1','tdshade2' ]));$output .= '
+
+<script type="text/javascript">
+<!--
+
+function toggle_monitoring_available( control_checkbox ) {
+    var inputs = document.getElementsByTagName( \'input\' );
+    var enable_monitoring = false;
+    if ( control_checkbox.checked ) {
+        enable_monitoring = true;
+    }
+    var chkservd_checkbox = null;
+    var tailwatchd_checkbox = null;
+    for ( var i = 0; i < inputs.length; ++i ) {
+        if ( \'Cpanel::TailWatch::ChkServd\' == inputs[i].value ) {
+            chkservd_checkbox = inputs[i];
+        }
+        if ( \'tailwatchd\' == inputs[i].name ) {
+            tailwatchd_checkbox = inputs[i];
+        }
+    }
+    if ( !tailwatchd_checkbox.checked && !chkservd_checkbox.checked ) {
+        return;
+    }
+    if ( !enable_monitoring && !confirm( "';$output .= $stash->get(['locale',0,'maketext',['This action will disable [asis,chkservd] and will disable monitoring for any monitored services. Is that what you want to do?' ]]);$output .= "\" ) ) {\n        control_checkbox.checked = true;\n        return;\n    }\n    var pattern = /monitor\$/;\n    for ( var i = 0; i < inputs.length; ++i ) {\n        if ( pattern.test( inputs[i].name ) ) {\n            inputs[i].checked &= enable_monitoring;\n        }\n    }\n}\n\nfunction enable_chkservd_if_necessary( control_checkbox ) {\n    var inputs = document.getElementsByTagName( 'input' );\n    var chkservd_checkbox = null;\n    var tailwatchd_checkbox = null;\n    for ( var i = 0; i < inputs.length; ++i ) {\n        if ( 'Cpanel::TailWatch::ChkServd' == inputs[i].value ) {\n            chkservd_checkbox = inputs[i];\n        }\n        if ( 'tailwatchd' == inputs[i].name ) {\n            tailwatchd_checkbox = inputs[i];\n        }\n    }\n    if ( tailwatchd_checkbox.checked\n         && chkservd_checkbox.checked\n         || null == chkservd_checkbox\n         || null == tailwatchd_checkbox ) {\n        return;\n    }\n    if ( control_checkbox.checked && confirm( \"";$output .= $stash->get(['locale',0,'maketext',['This action will enable [asis,chkservd]. Is that what you want to do?' ]]);$output .= '" ) ) {
+        tailwatchd_checkbox.checked = true;
+        chkservd_checkbox.checked = true;
+    }
+    else {
+        control_checkbox.checked = false;
+    }
+}
+
+var service_groups = ';$output .= $stash->get(['services',0,'json',0]);$output .= ';
+
+function disable_others_in_group( self_checkbox, group ) {
+    if ( !self_checkbox.checked ) {
+        return;
+    }
+
+    var group_members = service_groups.filter( function(s) { return s.group === group } );
+    var inputs = document.getElementsByTagName( \'input\' );
+    for ( var i = 0; i < inputs.length; ++i ) {
+        if ( inputs[i].name == self_checkbox.name ) {
+            continue;
+        }
+        for ( var j=0; j<group_members.length; j++ ) {
+            if ( group_members[j] == inputs[i].name ) {
+                inputs[i].checked = false;
+            }
+        }
+    }
+}
+
+
+function show_disable_warnings (element) {
+    if ((element.name == "named") && (element.getAttribute("data-altname") == "powerdns")) {
+        var div = document.getElementById(\'dnssec_alert_container\');
+        if (div) {div.style.display=element.checked ? \'none\' : \'block\';}
+    }
+}
+
+
+-->
+</script>
+<style type="text/css">
+td {
+    padding: 10px;
+}
+</style>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/dosrvmng">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('services');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'s'}=$_tt_value;if (!$stash->get(['s',0,'suboptions',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('checked_state','checked');if ($stash->get(['s',0,'disabled',0])eq 0){$stash->set('checked_state','')}$stash->set('enabled_onclick','');if ($stash->get(['s',0,'name',0])eq 'tailwatchd'){$stash->set('enabled_onclick','onclick="toggle_monitoring_available( this )"')}$output .= '<br />
+<table
+
+ id="brick1"
+ class="datatable"
+ border="0"
+ width="98%">
+    <tr>
+        <th align="left">
+            <input
+             type="checkbox"
+             name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '"
+             value="1"
+             ';$output .= $stash->get('checked_state');$output .= '
+             ';$output .= $stash->get('enabled_onclick');$output .= ' />
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '
+            <input type="hidden"
+             name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= 'monitor"
+             value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'monitored',0]);&$_tt_filter($output)};$output .= '" />
+        </th>
+    </tr>
+    <tr>
+        <td align="left" class="cell">
+            <table cellspacing="0" width="100%">
+                <tr class="tdshade2">
+                    <td width="50px"> <b>';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</b></td>
+                    <td width="50px"> &nbsp;</td>
+                    <td>
+                        <b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'subopt_heading',0]);&$_tt_filter($output)};$output .= '</b>
+                    </td>
+                </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['s',0,'suboptions',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'suboption'}=$_tt_value;$stash->set('sub_disabled_state','');$stash->set('sub_checked_state','checked');if (!$stash->get(['suboption',0,'managed',0])){$stash->set('sub_disabled_state','disabled="disabled"')}if ($stash->get(['suboption',0,'disabled',0])){$stash->set('sub_checked_state','')}$stash->set('sub_onclick','');if ($stash->get(['suboption',0,'name',0])eq 'ChkServd'){$stash->set('sub_onclick','onclick="toggle_monitoring_available( this )"')}$output .= '
+                <tr class="';$output .= $stash->get('cycle');$output .= '">
+                    <td>
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '-subopt"
+                         value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suboption',0,'value',0]);&$_tt_filter($output)};$output .= '"
+                         ';$output .= $stash->get('sub_checked_state');$output .= '
+                         ';$output .= $stash->get('sub_disabled_state');$output .= '
+                         ';$output .= $stash->get('sub_onclick');$output .= ' />
+                         ';if (!$stash->get(['suboption',0,'managed',0])&&!$stash->get('sub_disabled_state')){$output .= '
+                           <input
+                           type="hidden"
+                           name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '-subopt"
+                           value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suboption',0,'value',0]);&$_tt_filter($output)};$output .= '"
+                           />
+                         '}$output .= '
+                    </td>
+                    <td>&nbsp;</td>
+                    <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suboption',0,'name',0]);&$_tt_filter($output)};$output .= '                        <blockquote>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['suboption',0,'description',0]);&$_tt_filter($output)};$output .= '</blockquote>
+                    </td>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </table>
+        </td>
+    </tr>
+</table>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+<br />
+<table
+
+ id="brick1"
+ class="datatable"
+ border="0"
+ width="98%">
+    <tr><th align="left">';$output .= $stash->get(['locale',0,'maketext',['Deselect a service to disable it.' ]]);$output .= '</th></tr>
+    <tr>
+        <td align="left" class="cell">
+            <table cellspacing="0" width="100%">
+                <tr class="tdshade2">
+                    <td width="50px"> <b>';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</b></td>
+                    <td width="50px"> <b>';$output .= $stash->get(['locale',0,'maketext',['Monitor[comment,to observe]' ]]);$output .= '</b></td>
+                    <td><b>';$output .= $stash->get(['locale',0,'maketext',['Service Information' ]]);$output .= '</b></td>
+                </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['services',0,'cpsort',['group','name' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'s'}=$_tt_value;if ($stash->get(['s',0,'suboptions',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('monitored_state','');if ($stash->get(['s',0,'monitored',0])eq 1 &&!$stash->get(['s',0,'always_unmonitored',0])){$stash->set('monitored_state','checked')}$stash->set('checked_state','checked');if ($stash->get(['s',0,'disabled',0])eq 0 &&!$stash->get(['s',0,'always_enabled',0])|| $stash->get(['s',0,'always_disabled',0])){$stash->set('checked_state','')}$stash->set('disabled_state','');$stash->set('tooltip',$stash->get(['locale',0,'maketext',['Service “[_1]” may be disabled.',$stash->get(['s',0,'name',0,'html',0])]]));if ($stash->get(['s',0,'always_enabled',0])){$stash->set('disabled_state','disabled');$stash->set('tooltip',$stash->get(['locale',0,'maketext',['Normal operation requires “[_1]” and it cannot be disabled.',$stash->get(['s',0,'name',0,'html',0])]]))}elsif ($stash->get(['s',0,'always_disabled',0])){$stash->set('disabled_state','disabled');$stash->set('tooltip',$stash->get(['locale',0,'maketext',['This service is enabled and disabled elsewhere.' ]]))}$output .= '
+                <tr class="';$output .= $stash->get('cycle');$output .= '">
+                    <td>
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '"
+                         value="1"
+                         title="';$output .= $stash->get('tooltip');$output .= '"
+                         data-altname="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'altname',0]);&$_tt_filter($output)};$output .= '"
+                         ';$output .= $stash->get('checked_state');$output .= '
+                         ';$output .= $stash->get('disabled_state');$output .= '
+                         onclick="show_disable_warnings(this);  disable_others_in_group( this, ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'group',0,'json',0]);&$_tt_filter($output)};$output .= ' );" />
+                    </td>
+                    <td>
+                        ';if ($stash->get(['s',0,'monitored',0])eq -1){$output .= '
+                        &nbsp;
+                        <input
+                         type="hidden"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= 'monitor"
+                         value="-1" />
+                        '}elsif ($stash->get(['s',0,'always_unmonitored',0])eq 1){$output .= '
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= 'monitor"
+                         value="0"
+                         disabled
+                        '}else {$output .= '
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= 'monitor"
+                         value="1"
+                         ';$output .= $stash->get('monitored_state');$output .= '
+                         onclick="if (this.checked) this.form[\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '\'].checked = true; enable_chkservd_if_necessary( this )" />
+                        '}$output .= '
+                    </td>
+                    <td>
+                        <b>';$output .= $stash->get(['s',0,'display_name',0]);$output .= '</b>
+                        <blockquote>';$stash->set('desc_key',$stash->get(['s',0,'exists',['description_' .$stash->get(['s',0,'altname',0])]])? 'description_' .$stash->get(['s',0,'altname',0]): 'description');$output .= $stash->get(['s',0,$stash->get('desc_key'),0]);if ($stash->get(['s',0,'setting',0])){$output .= '
+                            <input
+                             value="';$output .= $stash->get(['s',0,'setting',0,'value',0]);$output .= '"
+                             name="';$output .= $stash->get(['s',0,'setting',0,'name',0]);$output .= '"
+                             type="text"
+                             size="';$output .= $stash->get(['s',0,'setting',0,'size',0])|| 5;$output .= '" /><br />
+                            <i>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'note',0]);&$_tt_filter($output)};$output .= '</i>'}$output .= '                        </blockquote>
+
+                        ';if ($stash->get(['s',0,$stash->get('desc_key'),0])eq 'PowerDNS'){$output .= '
+                        <div id="dnssec_alert_container" style="display: ';$output .= $stash->get(['s',0,'disabled',0])? 'none' : 'block';$output .= '">
+                            <div id="dnssec-alert" class="alert alert-warning" role="alert">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <div class="alert-message">
+                                    <p class="alert-body">
+                                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['If the service for [asis,PowerDNS] is disabled, this server will no longer be able to create new or manage existing [asis,DNSSEC] records in a DNS cluster.' ]]);$output .= '
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        '}$output .= '
+                    </td>
+                </tr>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </table>
+        </td>
+    </tr>
+</table>
+';if ($stash->get(['extraservices',0,'size',0])){$output .= '<br />
+<table
+
+ id="brick1"
+ width="98%"
+ class="datatable"
+ border="0">
+    <tr><th align="left">';$output .= $stash->get(['locale',0,'maketext',['Additional Services' ]]);$output .= '</th></tr>
+    <tr>
+        <td align="left" class="cell">
+            <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/dosrvmng">
+            <table cellspacing="0" width="100%">
+                <tr class="tdshade2">
+                    <td width="50px"> <b>';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '</b></td>
+                    <td width="50px"> <b>';$output .= $stash->get(['locale',0,'maketext',['Monitor[comment,to observe]' ]]);$output .= '</b></td>
+                    <td><b>';$output .= $stash->get(['locale',0,'maketext',['Service Information' ]]);$output .= '</b></td>
+                </tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('extraservices');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'s'}=$_tt_value;$stash->set('monitored_state','');if ($stash->get(['s',0,'monitored',0])eq 1){$stash->set('monitored_state','checked')}$stash->set('checked_state','checked');if ($stash->get(['s',0,'disabled',0])eq 0){$stash->set('checked_state','')}$output .= '
+                <tr class="';$output .= $stash->get('cycle');$output .= '">
+                    <td>
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '"
+                         value="1"
+                         ';$output .= $stash->get('checked_state');$output .= ' />
+                    </td>
+                    <td>
+                        <input
+                         type="checkbox"
+                         name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= 'monitor"
+                         value="1"
+                         ';$output .= $stash->get('monitored_state');$output .= '
+                         onclick="enable_chkservd_if_necessary( this )" />
+                    </td>
+                    <td><b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['s',0,'name',0]);&$_tt_filter($output)};$output .= '</b></td>
+                </tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </table>
+        </td>
+    </tr>
+</table>'}$output .= '
+<br/>
+<div>
+    <input type="submit" class="btn-primary" value="Save">
+</div>
+</form>
+<br />
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

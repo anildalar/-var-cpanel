@@ -1,0 +1,47 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/archive_default.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('DataURI',$context->plugin('DataURI'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('spinner_url','/images/report-spinner.gif');if ($stash->get(['CPANEL',0,'ua_is_ie',0])&& $stash->get(['CPANEL',0,'ua_is_ie',0])< 8){$stash->set('spinner_url',$stash->get(['MagicRevision',[$stash->get('spinner_url')]]));$output .= ('<img src=\'' .$stash->get('spinner_url').'\' style=\'display:none\'>')}else {$stash->set('spinner_url',$stash->get(['DataURI',0,'datauri',[$stash->get('spinner_url'),'image/gif' ]]))}$stash->set('nvdata',$stash->get(['NVData',0,'get_page_nvdata',0]));$stash->set('archive_type_titles',{'incoming'=>$stash->get(['locale',0,'maketext',['Incoming Email Messages' ]]),'outgoing'=>$stash->get(['locale',0,'maketext',['Outgoing Email Messages' ]]),'mailman'=>$stash->get(['locale',0,'maketext',['Outgoing Mailing List Email Messages' ]])});$stash->set('show_default_configurator',$stash->get(['nvdata',0,'show_default_configurator',0])ne 0);$output .= '    <script>CPANEL.nvdata.initial = ';$output .= $stash->get(['nvdata',0,'json',0])|| 'undefined';$output .= '</script>
+
+    <h2 id="hdrDefaultMailArchivingConfiguration">
+        ';$output .= $stash->get(['locale',0,'maketext',['Default Archive Configuration' ]]);$output .= '
+    </h2>
+    <span style="display:none;" id="spinner_GLOBAL">
+        <img src="';$output .= $stash->get('spinner_url');$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Wait …' ]]);$output .= '"/>
+    </span>
+
+    <div id="default_config_container">
+        <div id="descTheDefaultMailArchive" class="header-text">
+            ';$output .= $stash->get(['locale',0,'maketext',['Used by new domains created on this account via the web interfaces or the domain APIs.' ]]);$output .= '
+        </div>
+
+        <div id="archive_status_bar_GLOBAL" class="cjt_status_bar" style="display:none;"></div>
+        <div id="default_config">
+';$stash->set('all_domains',$stash->get(['Api2',0,'exec',['Email','listmaildomains',{}]]));$output .= '            <script type="text/javascript">
+            var all_archive_domains = [];
+            ';if ($stash->get(['all_domains',0,'size',0])){$output .= '                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('all_domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain_element'}=$_tt_value;$output .= '                    all_archive_domains.push(';$output .= $stash->get(['domain_element',0,'domain',0,'json',0]);$output .= ');
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            </script>
+
+';$stash->set('default_config',$stash->get(['Api2',0,'exec',['Email','get_archiving_default_configuration',{}]]));$stash->set('archive_types_list',$stash->get(['Api2',0,'exec',['Email','get_archiving_types',{}]]));if ($stash->get(['archive_types_list',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('archive_types_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'archive_type'}=$_tt_value;$stash->set('archive_types',$stash->get('archive_type'));$output .= '        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['archive_types',0,'pairs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'archive_type'}=$_tt_value;$stash->set('current_config',{});if ($stash->get(['default_config',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('default_config');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR3: while (!$_tt_error){$stash->{'config'}=$_tt_value;if ($stash->get(['config',0,'direction',0])eq $stash->get(['archive_type',0,'key',0])){$stash->set('current_config',$stash->get('config'))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$stash->set('archive_type_key',$stash->get(['archive_type',0,'key',0]));$stash->set('archive_type_name',$stash->get(['archive_type',0,'value',0]));$stash->set('archive_type_title',$stash->get(['archive_type_titles',0,$stash->get('archive_type_key'),0]));$stash->set('archive_type_enabled',$stash->get(['current_config',0,'enabled',0]));$stash->set('archive_type_retention',$stash->get(['current_config',0,'retention_period',0]));$stash->set('archive_type_dom_key','archive_' .$stash->get(['archive_type',0,'key',0]));$stash->set('archive_type_dom_key_retain_days','archive_' .$stash->get(['archive_type',0,'key',0]).'_retain_days');$stash->set('added_progress',0);$output .= '
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox" id="archive_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('archive_type_key');&$_tt_filter($output)};$output .= '_GLOBAL" name="archive_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('archive_type_key');&$_tt_filter($output)};$output .= '_GLOBAL" ';if ($stash->get('archive_type_enabled')){$output .= 'checked="checked"'}$output .= ' value="1" title="';$output .= $stash->get('archive_type_title');$output .= '">
+                    ';$output .= $stash->get('archive_type_title');$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';$stash->set('retention_control_enabled',$stash->get('archive_type_enabled'));$output .= '                        ';$stash->set('retention_control_key','archive_' .$stash->get('archive_type_key').'_retain_days_GLOBAL');$output .= '                        ';$stash->set('retention_control_value',$stash->get('archive_type_retention'));$output .= '                        ';$output .= $context->process('mail/retention_control.html.tt');$output .= '
+                        ';if ($stash->get('added_progress')eq 0){$output .= '
+                        ';$stash->set('added_progress',1);$output .= '
+                        <div id="archive_progress_bar_GLOBAL"></div>
+                        <div id="archive_progress_bar_message_GLOBAL"></div>
+                        '}$output .= '
+                    </div>
+                </div>
+            </div>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        <div class="controls">
+            <button class="btn btn-primary" id="save_and_apply_default_config" title="';$output .= $stash->get(['locale',0,'maketext',['Apply the default mail archiving configuration to all the domains on my account.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Apply to All My Domains' ]]);$output .= '</button>
+        </div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '    ';$output .= $stash->get(['locale',0,'maketext',['Unable to retrieve the data from the server!' ]]);$output .= '
+'}$output .= '        </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

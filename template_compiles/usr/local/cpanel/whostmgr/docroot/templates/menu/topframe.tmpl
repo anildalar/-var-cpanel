@@ -1,0 +1,157 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/menu/topframe.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('whm_variables',$stash->get(['Whostmgr',0,'template_vars',0]));$stash->set('whm_env',$stash->get(['Whostmgr',0,'env',0]));$stash->set('shorthostname',$stash->get(['Whostmgr',0,'shorthostname',0]));$stash->set('has_root_privileges',$stash->get(['Whostmgr',0,'hasroot',0]));$stash->set('show_reboot_banner',$stash->get(['Whostmgr',0,'check_flag',['CPCONF=show_reboot_banner' ]]));$stash->set('cp_security_token',$stash->get('cp_security_token')|| '');$output .= '
+    <div id="topFrameWrapper" class="topFrameWrapper">
+        <div class="informationWrapper">
+            <div class="infoContainer">
+                <ul class="serverInfo">
+                    <li>
+                        <span id="lblServerInfo"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Server Information' ]]);$output .= '">
+                            ';$output .= $stash->get(['whm_variables',0,'BASEOS',0]);$output .= ' ';$output .= $stash->get(['whm_variables',0,'profile',0])eq 'STANDARD' ? '' : $stash->get(['whm_variables',0,'profile',0]);$output .= ' ';$output .= $stash->get(['whm_variables',0,'envtype',0])eq 'standard' ? '' : $stash->get(['whm_variables',0,'envtype',0]);$output .= ' [';$output .= $stash->get('shorthostname');$output .= ']
+                        </span>
+                    </li>
+                    <li dir="ltr">
+                        ';if ($stash->get('has_root_privileges')){$output .= '
+                        <a id="lnkWHMVersion"
+                            href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/upcpform"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel amp() WHM] Version' ]]);$output .= '">
+                            v';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= '
+                            ';if ($stash->get(['whm_variables',0,'test_build',0])){$output .= '
+                                [TEST BUILD]
+                            '}$output .= '
+                        </a>
+                        '}else {$output .= '
+                        <span id="lblWHMVersion"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel amp() WHM] Version' ]]);$output .= '">
+                            v';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= '
+                        </span>
+                        '}$output .= '
+                    </li>
+                    <li class="lastChild">
+                        <a id="loadlive"
+                            class="hidden"
+                            ';if (!$stash->get(['Whostmgr',0,'dnsonly',0])&& $stash->get('has_root_privileges')){$output .= 'href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/top"'}$output .= '
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Your server’s one-minute, five-minute, and 15-minute load averages.' ]]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Load Averages:' ]]);$output .= '
+                            <span id="lavg_one"></span>
+                            <span id="lavg_five"></span>
+                            <span id="lavg_fifteen"></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="navigationContainer">
+            <div class="navigation">
+                <ul class="navigationLinks">
+                    <li>
+                        <a id="lnkWHMLogo"
+                            href="';$output .= $stash->get('cp_security_token');$output .= '/"
+                            title="';$output .= $stash->get(['locale',0,'maketext_plain_context',['[output,acronym,WHM,Web Host Manager]' ]]);$output .= '">
+                            <img class="logo"
+                                src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['logo.svg' ]]);$output .= '"
+                                alt="';$output .= $stash->get(['locale',0,'maketext_plain_context',['[output,acronym,WHM,Web Host Manager]' ]]);$output .= '" />
+                        </a>
+                    </li>
+                    ';if ($stash->get(['Whostmgr',0,'dnsonly',0])){$output .= '                    <li id="lblDnsONLY" class="productTypeBreadcrumb">DNSOnly®</li>
+                    '}$output .= '                    <li>
+                        <a id="lnkNews" class="navLink"
+                            href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/news.cgi"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['News' ]]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'maketext',['News' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkChangeLog" class="navLink"
+                            href="';$output .= $stash->get('cp_security_token');$output .= '/cgi/changelog.cgi?version=';$output .= $stash->get(['vars',0,'cpanel_version',0])|| '';$output .= '"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Change Log' ]]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Change Log' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkLogout" class="navLink"
+                            href="/logout/?locale=';$output .= $stash->get(['locale',0,'get_language_tag',0]);$output .= '"
+                            target="_top"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Log Out' ]]);$output .= '">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Log Out' ]]);$output .= '</span><span> (';$output .= $stash->get(['whm_variables',0,'remote_user',0]);$output .= ')</span>
+                        </a>
+                    </li>
+                </ul>
+                <div id="topFrameWarningsContainer">
+                    <div id="topFrameWarnings">
+                        ';if (!$stash->get(['Whostmgr',0,'dnsonly',0])&& $stash->get('has_root_privileges')&&!$stash->get(['whm_variables',0,'needs_reboot',0,'quota',0])){$output .= '
+                        <!-- Make me permanently disabled when we get the XHR rolling, it will toggle instead -->
+                        <div id="quotaDisabledWarning" class="updateblock quota_sensitive" style="display:none;">
+                            <span class="warnings">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Filesystem quotas are currently disabled.' ]]);$output .= '
+                                <a id="lnkUpdateBlocker"
+                                    href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/dialog?dialog=quotas"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Click to enable quotas.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Click to enable.' ]]);$output .= '
+                                </a>
+                            </span>
+                        </div>
+                        '}$output .= '
+                        ';if (!$stash->get(['Whostmgr',0,'dnsonly',0])&& $stash->get('has_root_privileges')&&!$stash->get(['whm_variables',0,'quota_broken',0])){$output .= '
+                        <!-- Make me permanently disabled when we get the XHR rolling, it will toggle instead -->
+                        <div id="quotaBrokenWarning" class="updateblock quota_sensitive" style="display:none;">
+                            <span class="warnings">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Filesystem quotas are currently broken.' ]]);$output .= '
+                                <a id="lnkBrokenQuota"
+                                    href="https://go.cpanel.net/fixquotas"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Click for more information.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Click for more information.' ]]);$output .= '
+                                </a>
+                            </span>
+                        </div>
+                        '}$output .= '
+                        ';$stash->set('update_blocked_result',$stash->get(['whm_variables',0,'update_blocked',0]));$output .= '
+                        ';if ($stash->get('update_blocked_result')){$output .= '                        <div id="reviewUpdateBlockerInfo" class="updateblock">
+                            <span class="warnings">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The last attempt to update [asis,cPanel amp() WHM] was blocked.' ]]);$output .= '
+                                <a id="lnkUpdateBlocker"
+                                    href="';$output .= $stash->get('cp_security_token');$output .= '/scripts7/review_upcp_blockers"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '
+                                </a>
+                            </span>
+                        </div>
+                        '}else {$output .= '                        <div id="getUpdateAvailability" class="updateblock hidden">
+                            <span class="warnings">
+                                <span id="lblUpdateNewestVersion">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Version “[_1]” is available.','[PLACEHOLDER_VALUE_UPDATE_VERSION]' ]]);$output .= '
+                                </span>
+                                <a id="lnkUpdateNow"
+                                    href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/upcpform"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Update Now' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Update Now' ]]);$output .= '
+                                </a>
+                            </span>
+                        </div>
+                        '}$output .= '                        ';if ($stash->get('has_root_privileges')&& $stash->get('show_reboot_banner')){$output .= '                            ';$stash->set('needs_reboot_result',$stash->get(['whm_variables',0,'needs_reboot',0]));$output .= '                            ';if ($stash->get('needs_reboot_result')){$output .= '
+                                <div class="updateblock">
+                                    <span class="warnings">';$stash->set('reboot_reasons',[]);if ($stash->get(['needs_reboot_result',0,'quota',0])){$output .= $stash->get(['reboot_reasons',0,'push',[$stash->get(['locale',0,'maketext',['[comment,part of a list; prefixed with “You must reboot the server to”]enable quotas' ]])]])}if ($stash->get(['needs_reboot_result',0,'kernel',0])){$output .= $stash->get(['reboot_reasons',0,'push',[$stash->get(['locale',0,'maketext',['[comment,part of a list; prefixed with “You must reboot the server to”]apply kernel updates' ]])]])}if ($stash->get(['needs_reboot_result',0,'updates',0])){$output .= $stash->get(['reboot_reasons',0,'push',[$stash->get(['locale',0,'maketext',['[comment,part of a list; prefixed with “You must reboot the server to”]apply software updates' ]])]])}if ($stash->get(['needs_reboot_result',0,'needs_cloudlinux',0])){$output .= $stash->get(['reboot_reasons',0,'push',[$stash->get(['locale',0,'maketext',['[comment,part of a list; prefixed with “You must reboot the server to”]use CloudLinux features.' ]])]])}$stash->set('reboot_text',$stash->get(['reboot_reasons',0,'size',0])> 1 ? $stash->get(['locale',0,'maketext',['You must reboot the server to [list_and,_1].[comment,a list of 2 or 3 word actions]',$stash->get('reboot_reasons')]]): $stash->get(['reboot_reasons',0,'size',0])eq 1 ? $stash->get(['locale',0,'maketext',['You must reboot the server to [_1].',$stash->get(['reboot_reasons',0,0,0])]]): $stash->get(['locale',0,'maketext',['You must reboot the server.' ]]));$output .= '                                        <a id="lnkRebootRequired"
+                                            href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/graceful_reboot_landing?suggest=1"
+                                            title="';$output .= $stash->get('reboot_text');$output .= '">
+                                            ';$output .= $stash->get('reboot_text');$output .= '
+                                        </a>
+                                    </span>
+                                </div>
+                            '}$output .= '                        '}$output .= '                        ';$stash->set('mysql_eol_warning',$stash->get(['whm_variables',0,'mysql_version_approaching_eol',0]));$output .= '
+                        ';if ($stash->get('mysql_eol_warning')){$output .= '                        <div class="updateblock">
+                            <span class="warnings">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[_1][comment,a software name] [_2][comment,a software version] will reach [asis,EOL] soon.',$stash->get(['mysql_eol_warning',0,'display_name',0]),$stash->get(['mysql_eol_warning',0,'version',0])]]);$output .= '                                <a id="lnkUpdateMysql"
+                                    href="';$output .= $stash->get('cp_security_token').'/scripts/mysqlupgrade';$output .= '"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Upgrade Now' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Upgrade Now' ]]);$output .= '
+                                </a>
+                            </span>
+                        </div>
+                        '}$output .= '                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    window.serverNeedsReboot = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['whm_variables',0,'needs_reboot',0])]]);$output .= ';
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

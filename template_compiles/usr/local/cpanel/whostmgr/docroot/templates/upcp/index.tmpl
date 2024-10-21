@@ -1,0 +1,51 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/upcp/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<div ng-controller="UpgradeController" ng-cloak class="layout-medium">
+    <div class="row">
+        <div class="col-xs-12">
+            <!-- If ALL updates are disabled, danger callout is displayed & manual upgrade section is hidden -->
+            <div ng-if="allUpdatesDisabled">
+                <callout callout-type="danger" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Cannot Upgrade' ]]);$output .= '">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Updates are currently [output,strong,disabled].' ]]);$output .= '</p>
+                    <button id="enable-updates-button" type="button" spinner-id="enable-updates-spinner" cp-action="enableAutomaticUpdates()">
+                        <i class="fas fa-history fa-flip-horizontal" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enable Automatic Updates' ]]);$output .= '
+                    </button>
+                </callout>
+            </div>
+            <!-- If only AUTOMATIC updates are disabled, warning callout is displayed above upgrade section -->
+            <div ng-if="!allUpdatesDisabled && !autoUpdatesEnabled">
+                <callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Automatic updates are disabled for this server. We strongly recommend enabling automatic updates.' ]]);$output .= '</p>
+                    <button id="enable-updates-button" type="button" spinner-id="enable-updates-spinner" cp-action="enableAutomaticUpdates()">
+                        <i class="fas fa-history fa-flip-horizontal" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enable Automatic Updates' ]]);$output .= '
+                    </button>
+                </callout>
+            </div>
+            <div ng-if="!allUpdatesDisabled">
+                <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/upcp2" name="mainform">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['You will be upgrading to the latest [output,strong,_1] build.',$stash->get(['data',0,'treename',0,'html',0])]]);$output .= ' </p>
+                    <div class="form-group">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="force" value="1">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Force a reinstall even if the system is up to date.' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Click to Upgrade' ]]);$output .= '">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<cp-alert-list></cp-alert-list>
+<script>
+    var PAGE = PAGE || {};
+    PAGE.all_updates_disabled = ';$output .= $stash->get(['data',0,'update_type',0,'lower',0])eq 'never' ? 'true' : 'false';$output .= ';
+    PAGE.auto_updates_enabled = ';$output .= $stash->get(['data',0,'update_type',0,'lower',0])eq 'daily' ? 'true' : 'false';$output .= ';
+</script>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'upgrade_to_latest_version','header'=>$stash->get(['locale',0,'maketext',['Upgrade to Latest Version' ]]),'breadcrumburl'=>'/scripts2/upcpform','theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

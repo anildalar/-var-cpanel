@@ -1,0 +1,20 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/monitoring-campaigns/company7-first/banner.tmpl','modtime'=>'1728950400',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- Allow mixpanel tracking if user consent is given. -->
+';$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('NVDATA_STORE','campaign-banner');$stash->set('has_analytics',$stash->get(['template_exists',['/var/cpanel/customizations/whm/includes/cp_analytics_whm.html.tt' ]]));$stash->set('server_analytics_setting',$stash->get(['CPANEL',0,'analytics_ui_includes_are_enabled',0]));$stash->set('user_consent_analytics_setting',$stash->get(['NVData',0,'get',['analytics',$stash->get('undef'),0,'whm' ]])eq 'on');$stash->set('banner_analytics','');if ($stash->get('has_analytics')&& $stash->get('server_analytics_setting')&& $stash->get('user_consent_analytics_setting')){$stash->set('banner_analytics','banner-analytics')}$stash->set('campaign_data',$stash->get(['NVData',0,'get',[$stash->get('campaign_id').'_survey',$stash->get('NVDATA_STORE'),0,'whm' ]]));$output .= '
+
+<campaign-banner-360
+    title="';$output .= $stash->get(['locale',0,'maketext',['Coming soon to WHM: Advanced Server Monitoring' ]]);$output .= '"
+    description="';$output .= $stash->get(['locale',0,'maketext',['This feature will allow you to monitor your server’s performance at a glance.' ]]);$output .= '"
+    campaign-id=';$output .= $stash->get(['campaign_id',0,'json',0]);$output .= '
+    image-url="';$output .= $stash->get('image_url');$output .= '"
+    learn-more-link="https://go.cpanel.net/360monitoring-WHMBanner"
+    learn-more-text="';$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= '"
+    ';$output .= $stash->get('campaign_data')? 'survey-dismissed' : '';$output .= '
+    survey-title="';$output .= $stash->get(['locale',0,'maketext',['Does this announcement provide value for you?' ]]);$output .= '"
+    survey-yes="';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '"
+    survey-no="';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '"
+    show-again-in="';$output .= $stash->get('show_again_in');$output .= '"
+    cp-security-token="';$output .= $stash->get('cp_security_token');$output .= '"
+    dismissible
+    ';$output .= $stash->get('banner_analytics');$output .= '
+></campaign-banner-360>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

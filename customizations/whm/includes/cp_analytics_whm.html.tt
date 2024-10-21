@@ -1,0 +1,884 @@
+[%
+USE Whostmgr;
+USE NVData;
+
+SET is_sandbox = Whostmgr.is_sandbox();
+SET server_info = Whostmgr.get_server_info();
+SET main_server_ip = "";
+IF server_info;
+    main_server_ip = server_info.mainserverip;
+END;
+
+SET is_root_user               = CPANEL.authuser == 'root';
+
+# Initialize consent privacy variables to empty. This will help later in the code
+# to decide whether the values came from NVData or not.
+SET analytics_for_current_user = "";
+SET personhood_for_current_user = "";
+
+SET analytics_NVData = NVData.get('analytics', undef, 0, 'whm');
+SET personhood_NVData = NVData.get('personhood', undef, 0, 'whm');
+
+SET slideout_dismissed_nvdata_key = "slideoutDismissed";
+SET slideout_dismissed_NVData = NVData.get(slideout_dismissed_nvdata_key, undef, 0, 'whm');
+
+SET analytics_for_current_user = analytics_NVData IF analytics_NVData;
+SET personhood_for_current_user = personhood_NVData IF personhood_NVData;
+SET is_slideout_dismissed_for_current_user = 0;
+SET is_slideout_dismissed_for_current_user = slideout_dismissed_NVData IF slideout_dismissed_NVData;
+
+
+# This default value is prefixed with TT_ to differentiate it from the 'UNKNOWN'
+# value that can be returned by the Verify plugin.
+DEFAULT current_license_kind = 'TT_UNKNOWN';
+TRY;
+    # The Verify plugin may not be available on all servers depending on the
+    # status of backports and the USE statement will throw an exception.
+    USE Verify;
+    SET is_trial_license = Verify.is_trial();
+CATCH;
+    # Verify is not available, fall back to the Old Way
+    SET is_trial_license = Whostmgr.has_license_flag('trial');
+    SET current_license_kind = 'TT_VERIFY_PLUGIN_MISSING';
+END;
+
+IF is_trial_license && is_root_user;
+    # If we are using a trial license and this is the root user, we want the
+    # analytics property to be opt-out instead of opt-in. To do this we
+    # interpret no value set as `on` for this condition only.
+    IF analytics_for_current_user == '';
+        analytics_for_current_user = 'on';
+    END;
+END;
+
+DEFAULT license_updated = 0;
+TRY;
+    IF Verify && is_root_user && analytics_for_current_user == 'on';
+        SET current_license_kind = Verify.lookup_license_kind(Verify.current_license_status) || 'TT_VERIFY_PLUGIN_NO_RESULT';
+        IF Verify.has_license_changed;
+            SET license_updated = 1;
+
+            # we have finally handled the event so clear the event flag
+            Verify.clear_license_changed_event();
+        END;
+    END;
+CATCH;
+    SET current_license_kind = 'TT_VERIFY_PLUGIN_EXCEPTION';
+END;
+
+DEFAULT sample_rate = 50;          # 50% sampling
+DEFAULT ga_uid = 'UA-117050492-1'; # PRODUCTION ANALYTICS ACCOUNT
+IF is_sandbox;
+    SET sample_rate = 100;         # 100% sampling
+    SET ga_uid = 'UA-117050492-2'; # DEVELOPER ANALYTICS ACCOUNT
+END;
+IF is_trial_license;
+    SET sample_rate = 100;         # 100% sampling
+END;
+
+SET base_path = '/var/cpanel/customizations/whm/includes';
+
+# For expired product license, the user is directed to /usr/local/cpanel/base/unprotected/lisc/licenseerror_whm.tmpl
+# which shows remedies for expired license. This page is not suitable to the UI components of the optin/optout, but
+# we do want to register GA events on this page if the user has already enabled GA reporting or if the user is root
+# and is on a trial license.
+DEFAULT license_expired_page = 0;
+
+# NOTE: Check if analytics are disabled server side in WHM.
+    SET is_analytics_enabled_server_side = 0;
+    IF CPANEL.analytics_ui_includes_are_enabled() &&
+       CPANEL.ENV.DNT.substr(0, 1) != '1';
+        is_analytics_enabled_server_side = 1;
+    END;
+%]
+<!-- Analytics consent gathering slideout stuff -->
+[% IF is_analytics_enabled_server_side && template_exists( "${base_path}/slideout.js" ) && !license_expired_page -%]
+
+<svg class="symbol" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="analytics-icon-arrow">
+        <path d="M496 384H64V80c0-8.84-7.16-16-16-16H16C7.16 64 0 71.16 0 80v336c0 17.67 14.33 32 32 32h464c8.84 0 16-7.16 16-16v-32c0-8.84-7.16-16-16-16zM464 96H345.94c-21.38 0-32.09 25.85-16.97 40.97l32.4 32.4L288 242.75l-73.37-73.37c-12.5-12.5-32.76-12.5-45.25 0l-68.69 68.69c-6.25 6.25-6.25 16.38 0 22.63l22.62 22.62c6.25 6.25 16.38 6.25 22.63 0L192 237.25l73.37 73.37c12.5 12.5 32.76 12.5 45.25 0l96-96 32.4 32.4c15.12 15.12 40.97 4.41 40.97-16.97V112c.01-8.84-7.15-16-15.99-16z"></path>
+    </symbol>
+</svg>
+<!--
+DEV NOTE: Do not change the id of the below container. It is accessed in the web component <cp-load-mixpanel-js /> web component
+to check the existence of this popup.
+-->
+<div id="analyticsContainer">
+<a id="analytics-tab" data-testid="analyticsTabButton-whm_consent_privacy_slideout" class="btn btn-link hide initial-state"
+    aria-haspopup="true"
+    aria-owns="analytics-slideout-container"
+    aria-expanded="false"
+    tabindex="0"
+    href="javascript:void(0);">
+    <div class="analytics-icon-container" aria-hidden="true">
+        <div class="analytics-icon">
+            <svg class="analytics-icon-arrow" viewBox="0 0 512 512">
+                <use xlink:href="#analytics-icon-arrow" />
+            </svg>
+        </div>
+    </div>
+    <div class="analytics-tab-text">
+        [% locale.maketext("Analytics") %]
+    </div>
+</a>
+
+<div id="analytics-slideout-container" class="initial-state hide">
+    <div id="analytics-content-container">
+        <a id="analytics-close-button" data-testid="analyticsCloseButton-whm_consent_privacy_slideout" href="javascript:void(0);"
+            title="[% locale.maketext("Close") %]"
+            aria-label="[% locale.maketext("close") %]">
+            <i class="fas fa-times fa-2x" aria-hidden="true"></i>
+        </a>
+
+        <div id="analytics-content">
+            <div class="content-analytics-icon" aria-hidden="true">
+                <svg class="analytics-icon-arrow" viewBox="0 0 512 512">
+                    <use xlink:href="#analytics-icon-arrow" />
+                </svg>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 cp-webmail-consent-privacy-modal__content-title">
+                    <h1>[% locale.maketext("Consent and Privacy[comment,title]") %]</h1>
+                </div>
+                <div class="co-xs-12 sub-text cp-consent-privacy__description">
+                    <p>
+                        [% locale.maketext(
+                            "WebPros International, LLC d.b.a cPanel is asking for your consent to participate in user activity tracking using third-party software for the purpose of understanding the performance of Webpros products. Information will be used pursuant to the [output,url,_1,cPanel & WHM Privacy Policy,title,cPanel & WHM Privacy Policy,data-test-id,_2,target,_3,class,_4,id,_5] and may be shared internally within the Webpros group. You can update your preferences at any time from the analytics slideout.","https://go.cpanel.net/privacy","docLink-whm_consent_cp-privacy-policy","privacy-policy","external-link","docLink-whm_consent_cp-privacy-policy"
+                        ) %]
+                    </p>
+                </div>
+                <div class="col-xs-12 cp-consent-privacy__input-container">
+                    <label>
+                        [% locale.maketext(
+                            "Select which account type best describes how you will use this product."
+                        ) %]
+                    </label>
+                    <select
+                        name="personhood_setting"
+                        id="personhood-setting"
+                        data-testid="ddlPersonhoodSetting-whm_consent_privacy_slideout"
+                        class="form-control form-input-select"
+                    >
+                        <option value="individual">
+                            [% locale.maketext("This account is for an individual.") %]
+                        </option>
+                        <option value="business">[% locale.maketext("This account is for a business.") %]</option>
+                    </select>
+                </div>
+                <div class="col-xs-12 cp-consent-privacy__input-container">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="checkbox">
+                                <label>
+                                    <input
+                                        type="checkbox"
+                                        name="consent_setting"
+                                        id="consent-setting"
+                                        data-testid="chkConsent-whm_consent_privacy_slideout"
+                                        class="form-input-checkbox"
+                                    ></input>
+                                    [% locale.maketext(
+                                        "By checking this box, you agree that we may collect your usage statistics. [output,url,_1, Learn more here.,title,cPanel Analytics Documentation,class,_2,target,_3,id,_4,data-test-id,_5]", "https://go.cpanel.net/analytics", "external-link", "analytics", "docLink-whm_consent_cp-analytics", "docLink-whm_consent_cp-analytics"
+                                    ) %]
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <button
+                        id="btnSave"
+                        data-testid="btnSave-whm_consent_privacy_slideout"
+                        type="button"
+                        class="btn btn-primary"
+                        data-bs-toggle="button"
+                    >
+                        [% locale.maketext("Save") %]
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+[% INSERT "${base_path}/slideout.js" %]
+</script>
+
+<script>
+    (function() {
+        window.CPANEL = window.CPANEL || {};
+        window.CPANEL.analyticsSlideoutHiddenPaths = window.CPANEL.analyticsSlideoutHiddenPaths || [];
+        window.CPANEL.analyticsSlideoutHiddenPaths.push(
+            /\/initial_setup_wizard1(\/|$)/,
+            /\/wp-toolkit(\/|$)/
+        );
+
+        // Abort when viewing certain pages
+        if(shouldHideForPath(location.pathname)) {
+            return;
+        }
+
+        /**
+        * Determines whether the slideout/tab should be hidden for a given path.
+        * @param {string} path   The path to check.
+        * @returns {boolean}
+        */
+        function shouldHideForPath(path) {
+            return window.CPANEL.analyticsSlideoutHiddenPaths.some(function(regex) {
+                return regex.test(path);
+            });
+        }
+
+        /**
+        * Public methods from analyticsConsentData
+        * @typedef {Object} analyticsConsentReturn
+        * @property {function} updateView - update analytics consent view with value.
+        * @property {function} approve - saves users approval for providing their data.
+        * @property {function} deny - saves users denial for providing their data.
+        * @property {function} saveConsent - API call to save users preference.
+        */
+
+        /**
+         * Code related to saving and displaying analytics consent
+         * @return analyticsConsentReturn
+         */
+        var analyticsConsentData = (function() {
+            // cpanel security token
+            var cpsession = window.location.pathname.split("/")[1];
+
+            // partial url to save nvdata for WHM
+            var whmAPICallPrefix = "/json-api/nvset?api.version=1";
+
+            var closeButton = document.getElementById("analytics-close-button");
+            var slideoutDismissedNvDataKey = "[% slideout_dismissed_nvdata_key %]";
+
+            // analytics specific variable
+            var consentSetting = document.getElementById("consent-setting");
+            var personhoodSetting = document.getElementById("personhood-setting");
+            var currentConsentSetting = false; // Should only ever be true or false. Default to 'false';
+            var currentPersonhoodSetting = 'individual'; // Should only be "individual", or "business". Default to "individual".
+
+            /**
+             * Updates analytics consent view with data
+             * @param settings {string} current analytics consent preference
+             */
+            function updateView(consentValue, personhoodValue) {
+                currentConsentSetting = consentValue || false;
+                currentPersonhoodSetting = personhoodValue || "individual";
+                personhoodSetting.value = currentPersonhoodSetting;
+                consentSetting.checked = currentConsentSetting;
+            }
+
+            /**
+             * Parse API response
+             * @param result {Object} API result
+             */
+            function parseAPIStatus(result) {
+                return result && result.metadata.result == 1;
+            }
+
+            /**
+             * Saves users settings to nvdata
+             * @param {bool} consent
+             * @param {string} personhoodValue
+             */
+            function saveConsent (consent, personhoodValue) {
+                var request = new XMLHttpRequest();
+                var consentValue = consent ? "on" : "off";
+                request.open("GET", "/" + cpsession + whmAPICallPrefix + "&key=analytics&value=" + consentValue + "&key=personhood&value=" + personhoodValue);
+                request.onload = function () {
+                    if (request.status >= 200 && request.status < 400) {
+                        var result;
+                        try {
+                            result = JSON.parse(request.responseText);
+                        } catch (e) {
+                        }
+
+                        var results = parseAPIStatus(result);
+                        if (results) {
+                            updateView(consent, personhoodValue);
+
+                            if(!consent){
+                                optOutOfAnalytics();
+                                return;
+                            }
+
+                            // Mixpanel init.
+                            var mixpanelConfig = "";
+                            [% IF analyticsConfig %]
+                            mixpanelConfig = [% analyticsConfig.json() %];
+                            [% END %]
+                            if(consent && mixpanelConfig){
+                                // Enable analytics without having to reload the page.
+                                enableAnalyticsForFirstTime(mixpanelConfig);
+                            }
+                        }
+                    }
+                };
+                request.onloadend = function () {
+                    slideout.closeSlideOut();
+                };
+                request.send();
+            }
+
+            function saveSlideoutDismiss() {
+                var request = new XMLHttpRequest();
+                request.open("GET", "/" + cpsession + whmAPICallPrefix + "&key=" + slideoutDismissedNvDataKey + "&value=1");
+                request.send();
+            }
+
+            function resetSettings(){
+                updateView(currentConsentSetting, currentPersonhoodSetting);
+            }
+
+            return {
+                updateView: updateView,
+                saveConsent: saveConsent,
+                resetSettings: resetSettings,
+                saveSlideoutDismiss: saveSlideoutDismiss,
+            };
+        })();
+
+        var mainContainer = document.getElementById("analytics-slideout-container");
+        var tab = document.getElementById("analytics-tab");
+        var closeButton = document.getElementById("analytics-close-button");
+
+        var consentSetting = document.getElementById("consent-setting");
+        var personhoodSetting = document.getElementById("personhood-setting");
+        var btnSaveEl = document.getElementById("btnSave");
+
+        // Init current consent privacy settings to null. This helps to decide if we have to show slideout on page load
+        // if these values aren't coming from nvdata.
+        var currentConsentSetting = null;
+        var currentPersonhoodSetting = null;
+        var slideoutDismissed = false;
+
+        // currentConsentSetting should be set only if analytics_for_current_user has some value.
+        [% IF analytics_for_current_user == "on" %]
+            currentConsentSetting = true;
+        [% ELSIF analytics_for_current_user == "off" %]
+            currentConsentSetting = false;
+        [% END %]
+
+        // currentPersonhoodSetting should be set only if personhood_for_current_user has some value.
+        [% IF personhood_for_current_user != "" %]
+            currentPersonhoodSetting = [% personhood_for_current_user.json() %];
+        [% END %]
+
+        slideoutDismissed = [% is_slideout_dismissed_for_current_user ? 'true' : 'false' %];
+
+        analyticsConsentData.updateView(currentConsentSetting, currentPersonhoodSetting);
+
+        var slideout = slideoutFactory(
+            {
+                id: "analytics",
+                mainContainer: mainContainer,
+                tab: tab,
+                closeButton: closeButton,
+                sessionStorageKey : "analyticsSessionId",
+                onClose: onClose
+            }
+        );
+
+        btnSaveEl.addEventListener("click", handleSaveConsentPrivacySettings);
+
+        /**
+         * Handles Save button click event.
+         */
+        function handleSaveConsentPrivacySettings() {
+            analyticsConsentData.saveConsent(consentSetting.checked, personhoodSetting.value);
+        }
+
+        /**
+        * Denies data consent when user closes analytics slide out
+        * without explicitly making a choice to allow or deny data collection
+        */
+        function onClose() {
+            analyticsConsentData.saveSlideoutDismiss();
+            analyticsConsentData.resetSettings();
+        }
+
+        setTimeout(function() {
+            // We should automatically open the slideout ONLY if settings don't exist and the slideout is NOT dismissed.
+            if((currentConsentSetting === null || currentPersonhoodSetting === null) && !slideoutDismissed){
+                slideout.openSlideOut();
+            }
+        }, 2000);
+
+    })();
+</script>
+
+<style>
+    #analytics-close-button .fa-times{
+        color: #ffffff;
+    }
+
+    #analytics-content p,
+    #analytics-content h1,
+    #analytics-content a,
+    #analytics-content label,
+    #analytics-tab {
+        font-family: "Open Sans",Arial,sans-serif;
+        color: #ffffff;
+        font-size: 14px;
+    }
+
+    svg.symbol{
+        display: none;
+    }
+
+    .analytics-icon {
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    .analytics-icon-arrow {
+        fill: white;
+    }
+
+    .content-analytics-icon{
+        position: relative;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+    }
+
+    #analytics-slideout-container {
+        position: fixed;
+
+        bottom: 0;
+        left: 0;
+        right: 0;
+        overflow: hidden;
+        background: rgba(43, 60, 72, 0);
+        transition: background 500ms, visibility 0s 500ms;
+        will-change: background;
+        visibility: hidden;
+        z-index: 2147483630; /* leaving it 8 less than max for future */
+
+        line-height: 20px;
+    }
+
+    #analytics-slideout-container.hide{
+        display: none;
+    }
+
+    #analytics-slideout-container.initial-state #analytics-content-container {
+        transition: transform 0s;
+    }
+
+    #analytics-slideout-container.active {
+        background: rgba(43, 60, 72, .5);
+        visibility: visible;
+        transition: background 1s 400ms, visibility 0s 0s;
+        overflow-y: auto;
+    }
+
+    #analytics-content-container {
+        min-height: 100%;
+        width: 100%;
+        max-width: 400px;
+        background: #2a3b49;
+        position: absolute;
+        transition: transform 350ms ease-in;
+        will-change: transform;
+    }
+
+    #analytics-content a {
+        color: white;
+        text-decoration: underline;
+    }
+
+     #analytics-content a:hover,
+     #analytics-content a:active,
+     #analytics-content a:focus {
+        color: white;
+        text-decoration: none;
+    }
+    #analytics-slideout-container.active #analytics-content-container {
+        transform: translateX(0);
+        transition: transform 650ms ease-in-out 400ms;
+    }
+
+    html[dir="ltr"] #analytics-content-container {
+        right: 0;
+        transform: translateX(100%);
+    }
+
+    html[dir="rtl"] #analytics-content-container {
+        left: 0;
+        transform: translateX(-100%);
+    }
+
+    #analytics-tab.hide{
+        display: none;
+    }
+
+    #analytics-tab {
+        box-sizing: border-box !important; /* Some older pages use content-box */
+        position: fixed;
+
+        width: 110px;
+        height: 30px;
+        background: #2a3b49;
+        padding: 0 4px; /* Container is 30x30. Icon is 22x22. 30px - 22px = 8px. 8px / 2 sides = 4px */
+        border: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        cursor: pointer;
+        z-index: 999;
+
+        will-change: transform;
+        text-transform: none;
+    }
+
+    #analytics-tab.initial-state {
+        transition: transform 0s;
+    }
+
+    #analytics-tab.tab-hidden,
+    #analytics-tab.tab-hidden:hover,
+    #analytics-tab.tab-hidden:active,
+    #analytics-tab.tab-hidden:focus {
+        transition: transform 300ms cubic-bezier(0.6, -0.28, 0.74, 0.05);
+    }
+
+    html[dir="ltr"] #analytics-tab {
+        transform: translateX(80px); /* 30px showing */
+        right: 0;
+        padding-right: 15px; /* Extra 10px of padding offscreen for the transition */
+        border-radius: 5px 0 0 5px;
+    }
+
+    html[dir="rtl"] #analytics-tab {
+        transform: translateX(-80px); /* 30px showing */
+        left: 0;
+        padding-left: 15px; /* Extra 10px of padding offscreen for the transition */
+        border-radius: 0 5px 5px 0;
+    }
+
+    html[dir="ltr"] #analytics-tab.initial-state {
+        transform: translateX(110px);
+    }
+
+    html[dir="rtl"] #analytics-tab.initial-state {
+        transform: translateX(-110px);
+    }
+
+    html[dir="ltr"] #analytics-tab.tab-hidden,
+    html[dir="ltr"] #analytics-tab.tab-hidden:hover,
+    html[dir="ltr"] #analytics-tab.tab-hidden:active,
+    html[dir="ltr"] #analytics-tab.tab-hidden:focus {
+        transform: translateX(110px);
+    }
+
+    html[dir="rtl"] #analytics-tab.tab-hidden,
+    html[dir="rtl"] #analytics-tab.tab-hidden:hover,
+    html[dir="rtl"] #analytics-tab.tab-hidden:active,
+    html[dir="rtl"] #analytics-tab.tab-hidden:focus {
+        transform: translateX(-110px);
+    }
+
+    #analytics-tab.tab-collapsed {
+        transition: transform 800ms 300ms;
+    }
+
+    html[dir="ltr"] #analytics-tab.tab-expanded {
+        animation:
+            tab-slide-in-ltr 2000ms cubic-bezier(1,-0.06,.9,0), /* slow in, fast out */
+            tab-bounce-ltr 600ms cubic-bezier(.22,.61,.36,1) 2000ms;
+    }
+
+    html[dir="rtl"] #analytics-tab.tab-expanded {
+        animation:
+            tab-slide-in-rtl 2000ms cubic-bezier(1,-0.06,.9,0), /* slow in, fast out */
+            tab-bounce-rtl 600ms cubic-bezier(.22,.61,.36,1) 2000ms;
+    }
+
+    #analytics-tab:hover,
+    #analytics-tab:active,
+    #analytics-tab:focus {
+        text-decoration: none;
+        transition: transform 800ms cubic-bezier(.77,0,.18,1) /* cubic ff */
+    }
+
+    html[dir="ltr"] #analytics-tab.tab-expanded,
+    html[dir="ltr"] #analytics-tab:hover,
+    html[dir="ltr"] #analytics-tab:active,
+    html[dir="ltr"] #analytics-tab:focus {
+        transform: translateX(10px); /* 10px padding is offscreen for the transition */
+    }
+
+    html[dir="rtl"] #analytics-tab.tab-expanded,
+    html[dir="rtl"] #analytics-tab:hover,
+    html[dir="rtl"] #analytics-tab:active,
+    html[dir="rtl"] #analytics-tab:focus {
+        transform: translateX(-10px); /* 10px padding is offscreen for the transition */
+    }
+
+    #analytics-tab .analytics-icon-container {
+        height: 22px;
+        width: 22px;
+    }
+
+    #analytics-tab .analytics-tab-text {
+        color: #ffffff;
+    }
+
+    @keyframes tab-slide-in-ltr {
+        0% { transform: translateX(110px); }
+        100% { transform: translateX(10px); }
+    }
+
+    @keyframes tab-slide-in-rtl {
+        0% { transform: translateX(-110px); }
+        100% { transform: translateX(-10px); }
+    }
+
+    @keyframes tab-bounce-ltr {
+        /*
+         * The fully expanded state leaves 10px hidden as a
+         * buffer for animation, so we oscillate around 10px.
+         */
+        0% { transform: translateX(10px); }
+        20% { transform: translateX(6px); }   /* 10 - 4 */
+        40% { transform: translateX(13px); }  /* 10 + 3 */
+        60% { transform: translateX(8px); }   /* 10 - 2 */
+        80% { transform: translateX(12px); }  /* 10 + 2 */
+        100% { transform: translateX(10px); }
+    }
+
+    @keyframes tab-bounce-rtl {
+        /*
+         * The fully expanded state leaves 10px hidden as a
+         * buffer for animation, so we oscillate around 10px.
+         */
+        0% { transform: translateX(-10px); }
+        20% { transform: translateX(-6px); }   /* 10 - 4 */
+        40% { transform: translateX(-13px); }  /* 10 + 3 */
+        60% { transform: translateX(-8px); }   /* 10 - 2 */
+        80% { transform: translateX(-12px); }  /* 10 + 2 */
+        100% { transform: translateX(-10px); }
+    }
+
+    #analytics-close-button {
+        position: absolute;
+        top: 10px;
+        cursor: pointer;
+        color: #ffffff;
+        opacity: 0.7;
+    }
+
+    #analytics-close-button:focus,
+    #analytics-close-button:active,
+    #analytics-close-button:hover{
+        opacity: 1;
+    }
+
+    html[dir="ltr"] #analytics-close-button {
+        right: 10px;
+    }
+
+    html[dir="rtl"] #analytics-close-button {
+        left: 10px;
+    }
+
+    #analytics-content{
+        color: #ffffff;
+        margin: 80px 20px 20px 20px;
+        text-align: justify;
+    }
+
+    #analytics-content h1{
+        margin-top: 40px;
+        font-size: 20px;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    #analytics-content .sub-text p {
+        margin-top: 20px !important;
+    }
+
+    #analytics-content .analytics-link {
+        background-color: #ffffff;
+        color: #293a4a;
+        margin: 20px 0 0 0;
+        padding: 10px;
+        border-radius: 2px;
+        opacity: 0.9
+    }
+
+    #analytics-content .analytics-link:hover,
+    #analytics-content .analytics-link:focus,
+    #analytics-content .analytics-link:active{
+        background-color: #ffffff;
+        opacity: 1;
+        text-decoration: none;
+        color: #293a4a; /* Added to reduce chances of cpanel styles overriding the color */
+    }
+
+    /**
+     * Beautiful WHM overrides to mimic relevant boostrap styles
+     */
+    #analytics-content .btn {
+        border: 1px solid transparent;
+    }
+
+    #analytics-content .sub-text p {
+        margin-bottom: 10px;
+    }
+
+    #analytics-content label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: inline-block;
+    }
+
+    #analytics-content input[type=radio] {
+        margin: 4px 0 0;
+    }
+
+    /**
+     * At low heights, we'll hide the icon, increase max-width a little,
+     * squeeze out some of the vertical margins, and vertically align center.
+     */
+    @media (max-height: 600px) {
+        .content-analytics-icon {
+            display: none;
+        }
+
+        #analytics-content-container {
+            max-width: 450px;
+            display: flex;
+            align-items: center;
+        }
+
+        #analytics-content {
+            margin-top: 20px;
+        }
+
+        #analytics-content h1 {
+            margin-top: 0;
+        }
+    }
+
+    /**
+     * At low heights, we'll go full width while still contsraining the
+     * text block's width.
+     */
+    @media (max-width: 500px) {
+        #analytics-content-container {
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+    }
+
+    /**
+     * For extremely narrow landscape devices, margins are tightened up
+     * even more.
+     */
+    @media (min-width: 768px) and (max-height: 359px) {
+        #analytics-content {
+            margin-top: 15px;
+        }
+
+        #analytics-content .sub-text p {
+            margin-top: 10px;
+            margin-bottom: 0;
+        }
+    }
+
+    .cp-webmail-consent-privacy-modal__content-title h1{
+        line-height:1.2;
+        text-align:center;
+        margin-bottom:var(--cp-spacer-3);
+    }
+
+    .cp-consent-privacy__input-container {
+        margin-bottom:var(--cp-spacer-2);
+    }
+
+    .cp-consent-privacy__description {
+        margin-bottom:var(--cp-spacer-5);
+        padding:0 var(--cp-spacer-3);
+    }
+
+    .external-link::after {
+        // stylelint-disable-next-line font-family-no-missing-generic-family-keyword
+        font-family: remixicon;
+
+        // NOTE: Renders a space followed by the external-link icon. A space character
+        // is used rather than margin or padding so that the space will scale properly
+        // across font sizes and link underlines will have no gaps.
+        content: " \ecaf";
+    }
+
+</style>
+[% END # Consent Flyout shown if analytics enabled on server-side. -%]
+<!-- END: Analytics consent gathering slideout stuff -->
+
+<script type="text/javascript" src="[% MagicRevision('/libraries/ui-analytics/mixpanelSetup.js') %]"></script>
+
+[% IF analytics_for_current_user == 'on' %]
+<script async src="https://www.googletagmanager.com/gtag/js?id=[%ga_uid%]"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    (function(){
+        var path = window.location.pathname;
+        if (path) {
+            var wholepath = path.split('/');
+            var custompath = wholepath.slice(2);
+            path = '/' + custompath.join('/');
+        }
+        var thelocation = window.location.protocol + "//" + window.location.host + path;
+        var masterContainer = document.getElementById("masterContainer");
+        var app_key = "";
+        if(masterContainer != null) {
+           app_key = masterContainer.getAttribute("data-app-key") || '';
+        }
+        gtag('config', '[% ga_uid %]', {
+            'page_path': path,
+            'page_title': 'WHM-' + (app_key || path),
+            'page_location': thelocation,
+            'anonymize_ip': true,
+            'sample_rate': [% sample_rate %],
+            'custom_map': {
+                // for the cp_analytics event
+                'dimension1': 'cp-company-id',
+                'dimension2': 'cp-product-version',
+                'dimension3': 'cp-product-interface',
+                'dimension4': 'cp-product-theme-style',
+                'dimension5': 'cp-os',
+
+                // for the cp_analytics and cp_license_change events
+                'dimension10': 'cp-current-license-kind',
+            }
+        });
+
+        [% IF license_updated %]
+        gtag('event', 'cp_license_change', {
+            'cp-current-license-kind': [% current_license_kind.json() %]
+        });
+        [% END %]
+
+        gtag('event', 'cp_analytics', {
+            'cp-company-id': '[% get_company_id() %]',
+            'cp-product-version': '[% Whostmgr.WHM_VERSION %]',
+            'cp-product-interface': 'WHM',
+            'cp-product-theme-style': 'N/A', // WHM doesn't have a theme or style
+            'cp-os': '[% Whostmgr.template_vars.BASEOS %]',
+            'cp-current-license-kind': [% current_license_kind.json() %]
+        });
+    })();
+</script>
+[% END %]

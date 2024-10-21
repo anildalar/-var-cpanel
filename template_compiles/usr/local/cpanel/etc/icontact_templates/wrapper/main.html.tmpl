@@ -1,0 +1,92 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/wrapper/main.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$stash->set('header_txt_color',$stash->get('dark_gray'),1);$stash->set('content_bg_color',$stash->get('white'),1);$stash->set('footer_txt_color',$stash->get('med_dark_gray'),1);$stash->set('logo_path','include/cpanel-logo-tiny.png',1);$stash->set('copyright_string',$stash->get(['CPANEL',0,'locale',0,'maketext',['Copyright©[output,nbsp][current_year] cPanel, L.L.C.' ]]),1);$output .= '
+
+<body style="background:';$output .= $stash->get('light_gray');$output .= '">
+    <div style="margin:0;padding:0;background:';$output .= $stash->get('light_gray');$output .= '">
+        <table cellpadding="10" cellspacing="0" border="0" width="100%" style="width:0 auto;">
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <table cellpadding="0" cellspacing="0" border="0" width="';$output .= $stash->get('total_width');$output .= '" style="border:0;width:0 auto;max-width:';$output .= $stash->get('total_width');$output .= 'px;">
+                            <tbody>
+                                <tr>
+                                    ';$output .= '
+                                    <td width="';$output .= $stash->get('total_width');$output .= '" height="25" style="font-family:';$output .= $stash->get('font_family');$output .= ';font-size:16px;color:';$output .= $stash->get('header_txt_color');$output .= '">
+                                        ';if ($stash->get(['NOTICE',0,'email_reason',0])){$output .= '
+                                            ';$output .= '
+                                            ';$output .= $stash->get(['NOTICE',0,'email_reason',0]);$output .= '
+                                        '}$output .= '
+                                    </td>
+                                    ';$output .= '
+                                </tr>
+                                <tr>
+                                    ';$output .= '
+                                    <td style="padding: 15px 0 20px 0; background-color: ';$output .= $stash->get('content_bg_color');$output .= '; border: 2px solid ';$output .= $stash->get('medium_gray');$output .= '; border-bottom: 2px solid ';$output .= $stash->get('cpanel_orange');$output .= ';">
+                                        <table width="';$output .= $stash->get('total_width');$output .= '" border="0" cellpadding="0" cellspacing="0" style="background:';$output .= $stash->get('content_bg_color');$output .= ';font-family:';$output .= $stash->get('font_family');$output .= ';">
+                                            <tbody>
+                                                <tr>
+                                                    <td width="';$output .= $stash->get('left_padding');$output .= '">
+                                                    </td>
+                                                    <td width="';$output .= $stash->get('content_width');$output .= '">
+                                                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>
+                                                                        ';$output .= $stash->get('content');$output .= '
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        ';$output .= $context->process('include/origin_info.html.tmpl');$output .= '                                                                        ';if ($stash->get(['NOTICE',0,'notification_cannot_be_disabled',0])){$output .= '
+                                                                           <!-- -->
+                                                                        '}elsif ($stash->get(['NOTICE',0,'notification_targets_user_account',0])){$output .= '
+                                                                         <p>
+                                                                           ';if ($stash->get(['NOTICE',0,'subaccount',0,'length',0])){$output .= '
+                                                                               ';$output .= '
+                                                                           '}elsif ($stash->get(['NOTICE',0,'user',0,'match',['@' ]])&& $stash->get(['NOTICE',0,'team_account',0,'length',0])){$output .= '
+                                                                               ';$output .= '
+                                                                           '}elsif ($stash->get(['NOTICE',0,'user',0,'match',['@' ]])){$output .= '
+                                                                             ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can disable the “[_1]” type of notification through the [asis,cPanel Webmail] interface: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'module_description',0]),$stash->get(['CPANEL',0,'webmail_contact_info_url',[$stash->get(['NOTICE',0,'username',0])]]),'_blank' ]]);$output .= '
+                                                                           '}else {$output .= '
+                                                                             ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can disable the “[_1]” type of notification through the [asis,cPanel] interface: [output,url,_2,_2,target,_3]',$stash->get(['CPANEL',0,'module_description',0]),$stash->get(['CPANEL',0,'cpanel_contact_info_url',[$stash->get(['NOTICE',0,'username',0])]]),'_blank' ]]);$output .= '
+                                                                           '}$output .= '
+                                                                         </p>
+                                                                        '}else {$output .= '
+                                                                          <p>
+                                                                          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['“[_1]” notifications are currently configured to have an importance of “[_2]”.',$stash->get(['CPANEL',0,'module_description',0]),$stash->get(['CPANEL',0,'module_event_importance_description',0])]]);$output .= '
+                                                                          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You can change the importance or disable this type of notification in [asis,WHM]’s Contact Manager at: [output,url,_1,_1,target,_2]',$stash->get(['CPANEL',0,'assemble_whm_url',['scripts2/editcontact?event=' .$stash->get(['CPANEL',0,'notification_system_name',0])]]),'_blank' ]]);$output .= '
+                                                                          </p>
+                                                                        '}$output .= '
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Do not reply to this automated message.' ]]);$output .= '
+</p>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                                    </td>
+                                                    <td width="';$output .= $stash->get('right_padding');$output .= '">
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                    ';$output .= '
+                                </tr>
+                                <tr>
+                                    <td align="center" style="padding-top: 10px;">
+                                    ';$output .= '
+                                        <img src="cid:';$output .= $stash->get(['CPANEL',0,'add_html_related',[{'path'=>$stash->get('logo_path')}]]);$output .= '" height="25" width="25" style="border:0;line-height:100%;border:0" alt="cP">
+                                        <p style="font-family:';$output .= $stash->get('font_family');$output .= ';font-size:12px;color:';$output .= $stash->get('footer_txt_color');$output .= '; padding: 0; margin: 0;">';$output .= $stash->get('copyright_string');$output .= '<p>
+                                    ';$output .= '
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

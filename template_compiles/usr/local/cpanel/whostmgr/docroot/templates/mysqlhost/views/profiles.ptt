@@ -1,0 +1,173 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlhost/views/profiles.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12 ezAccessButtons">
+        <a href="profiles/new"
+            id="topAddProfileBtn"
+            ng-disabled="lastActivation.in_progress"
+            class="btn btn-primary">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add Profile' ]]);$output .= '</span>
+                <span class="glyphicon glyphicon-plus"></span>'}else {$output .= '                <span class="glyphicon glyphicon-plus"></span>
+                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add Profile' ]]);$output .= '</span>'}$output .= '        </a>
+        <a href="profiles/newlocalhost"
+            id="topAddLocalhostProfileBtn"
+            ng-disabled="lastActivation.in_progress"
+            ng-hide="hasLocalhostProfile() || loadingProfiles"
+            class="btn btn-primary">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add [asis,Localhost] Profile' ]]);$output .= '</span>
+                <span class="glyphicon glyphicon-plus"></span>'}else {$output .= '                <span class="glyphicon glyphicon-plus"></span>
+                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add [asis,Localhost] Profile' ]]);$output .= '</span>'}$output .= '        </a>
+    </div>
+</div>
+    <table class="table table-condensed responsive-table">
+        <thead>
+            <tr>
+                <th></th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Profile' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Host' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Port' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                <th></th>
+                <th id="actionsHeader">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                <th class="gearColumn">
+                    <span id="gearMenu" class="dropdown" uib-dropdown>
+                        <a href class="dropdown-toggle"
+                            ng-disabled="lastActivation.in_progress"
+                            uib-dropdown-toggle>
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                            <li>
+                                <a href ng-click="goToAddProfile()">';$output .= $stash->get(['locale',0,'maketext',['Add Profile' ]]);$output .= '</a>
+                            </li>
+                            <li ng-hide="hasLocalhostProfile()">
+                                <a href ng-click="goToAddLocalhostProfile()">';$output .= $stash->get(['locale',0,'maketext',['Add [asis,Localhost] Profile' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-click="forceLoadProfiles()">';$output .= $stash->get(['locale',0,'maketext',['Reload Profiles' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                    </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="loadingProfilesNotice" class="info empty-row ng-hide" ng-show="loadingProfiles">
+                <td colspan="9">
+                    <i id="loadingProfilesSpinner" class="fas fa-spinner fa-spin"></i>
+                    <span id="loadingProfilesMessage">';$output .= $stash->get(['locale',0,'maketext',['Loading database profiles …' ]]);$output .= '</span>
+                </td>
+            </tr>
+            <tr id="noProfilesNotice" class="info empty-row ng-hide" ng-show="profileListIsEmpty()">
+                <td colspan="9">
+                    <span id="noProfilesMessage">';$output .= $stash->get(['locale',0,'maketext',['No database profiles exist.' ]]);$output .= "</span>\n                </td>\n            </tr>\n            <tr class=\"profileDataRow\" ng-repeat-start=\"(name, profile) in profiles\" ng-class=\"{'odd': \$index % 2 == 0}\">\n                <td class=\"activateStepsControl onTop\">\n                    <a href class=\"btn btn-link ng-hide\" ng-click=\"lastActivation.expanded = !lastActivation.expanded\" ng-show=\"lastActivation.profile == name\">\n                        <span class=\"fas fa-caret-down\"\n                            ng-class=\"{'fa-rotate-270': !lastActivation.expanded}\"\n                            uib-tooltip=\"";$output .= $stash->get(['locale',0,'maketext',['Show or hide last activation details.' ]]);$output .= '"
+                            tooltip-enable="lastActivation.profile == name"';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                            tooltip-placement="left"'}else {$output .= '                            tooltip-placement="right"'}$output .= '>
+                        </span>
+                    </a>
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Name' ],'html',0]);$output .= '">{{profile.name}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Host' ],'html',0]);$output .= '">{{profile.host}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Port' ],'html',0]);$output .= '">{{profile.port}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Account' ],'html',0]);$output .= '">{{profile.account}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Type' ],'html',0]);$output .= '">{{profile.comment}}</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Status' ],'html',0]);$output .= '" class="profileStatus">
+                    <div class="statusIconContainer"
+                        ng-show="profile.active"
+                        uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Currently active profile.' ]]);$output .= '"
+                        tooltip-enable="profile.active">
+                        <svg class="statusIcon" viewBox="0 0 64 64">
+                            <circle cx="32.065" cy="31.834" r="30.3" fill="#39B54A"/>
+                            <path fill="#FFFFFF" d="M47.114 21.903 L30.841 56.771 C30.6 57.224 30.118 57.525 29.575 57.525 C29.454 57.525 29.304 57.495 29.153 57.464 C28.49 57.253 28.098 56.62 28.249 55.987 L34.186 31.637 L21.951 34.68 C21.83 34.711 21.71 34.711 21.589 34.711 C21.257 34.711 20.896 34.59 20.655 34.379 C20.293 34.078 20.173 33.625 20.263 33.203 L26.32 8.341 C26.471 7.768 27.013 7.377 27.646 7.377 L37.531 7.377 C38.284 7.377 38.886 7.95 38.886 8.643 C38.886 8.824 38.825 9.005 38.736 9.185L33.582 23.138 L45.517 20.184 C45.637 20.154 45.758 20.124 45.879 20.124 C46.27 20.124 46.632 20.305 46.902 20.576 C47.235 20.938 47.325 21.451 47.114 21.903Z" style="fill:white;fill-rule:nonzero;"/>
+                        </svg>
+                    </div>
+                </td>
+                <td class="action-buttons" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ],'html',0]);$output .= "\">\n                    <button type=\"button\"\n                        id=\"validateProfile{{\$index}}\"\n                        ng-disabled=\"lastActivation.in_progress\"\n                        cp-action=\"validateProfile(profile.name)\"\n                        button-class=\"btn-link\">\n                        <span class=\"far fa-check-square\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Validate' ]]);$output .= "\n                    </button>\n                    <button type=\"button\"\n                        id=\"activateProfile{{\$index}}\"\n                        cp-action=\"confirmActivateProfile(profile)\"\n                        auto-disable=\"false\"\n                        button-class=\"btn-link\"\n                        ng-disabled=\"lastActivation.in_progress\">\n                        <span class=\"fas fa-plug\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Activate' ]]);$output .= "\n                    </button>\n                    <a class=\"btn btn-link altEditProfile\" id=\"altEditProfile{{\$index}}\"\n                        href=\"profiles/profile-{{ profile.name }}\"\n                        ng-disabled=\"lastActivation.in_progress\"\n                        uib-tooltip=\"";$output .= $stash->get(['locale',0,'maketext',['Edit the profile: [_1]','{{ profile.name }}' ]]);$output .= '"
+                        class="btn btn-link">
+                        <span class=\'glyphicon glyphicon-pencil\'></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "\n                    </a>\n                    <button type=\"button\"\n                        id=\"deleteProfile{{\$index}}\"\n                        cp-action=\"confirmDeleteProfile(profile.name)\"\n                        button-class=\"btn-link\"\n                        ng-disabled=\"disableProfileOperations(profile.name)\">\n                        <span class=\"glyphicon glyphicon-trash\"></span>\n                        ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                    </button>
+                </td>
+                <td class="gearColumn" data-title="';$output .= $stash->get(['locale',0,'maketext',['Edit' ],'html',0]);$output .= "\">\n                    <a id=\"editProfile{{\$index}}\"\n                        href=\"profiles/profile-{{ profile.name }}\"\n                        ng-disabled=\"lastActivation.in_progress\"\n                        uib-tooltip=\"";$output .= $stash->get(['locale',0,'maketext',['Edit the profile: [_1]','{{ profile.name }}' ]]);$output .= '"
+                        class="btn btn-link">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                            <span class="glyphicon glyphicon-chevron-left"></span>'}else {$output .= '                            <span class="glyphicon glyphicon-chevron-right"></span>'}$output .= '                    </a>
+                </td>
+                <td class="activateStepsControl onBottom ng-hide" ng-show="lastActivation.profile == name">
+                    <div class="text-with-tri-tab">
+                        <div class="text-with-tri-row">
+                            <div class="text-with-tri">
+                                <a href ng-click="lastActivation.expanded = !lastActivation.expanded">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Last Activation Details' ]]);$output .= '
+                                    <span class="fas fa-caret-down"
+                                        ng-class="{\'fa-rotate-270\': !lastActivation.expanded}">
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="text-with-tri">&nbsp;</div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-repeat-end class="callout callout-info steps-callout-row-bottom ng-hide" ng-show="(lastActivation.expanded || lastActivation.in_progress) && name == lastActivation.profile">
+                <td class="callout callout-info steps-callout-bottom" colspan="9">
+                    <h4>Activation Steps</h4>
+                    <ol>
+                        <li ng-repeat="step in lastActivation.steps">
+                            {{step.name}} <i class="fa"
+                                                uib-tooltip="{{ message(step.status) }}"
+                                                tooltip-enable="lastActivation.profile == name"
+                                                ng-class="{\'fa-check status-success\': step.status == \'DONE\', \'fa-times status-danger\': step.status == \'FAILED\', \'fa-heartbeat status-info\': step.status == \'INPROGRESS\', \'fa-step-forward status-info\': step.status == \'SKIPPED\'}"></i>
+                        </li>
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+<div class="row">
+    <div class="col-xs-12 ezAccessButtons">
+        <a href="profiles/new"
+            id="bottomAddProfileBtn"
+            ng-disabled="lastActivation.in_progress"
+            class="btn btn-primary">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add Profile' ]]);$output .= '</span>
+                <span class="glyphicon glyphicon-plus"></span>'}else {$output .= '                <span class="glyphicon glyphicon-plus"></span>
+                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add Profile' ]]);$output .= '</span>'}$output .= '        </a>
+        <a href="profiles/newlocalhost"
+            id="bottomAddLocalhostProfileBtn"
+            ng-disabled="lastActivation.in_progress"
+            ng-hide="hasLocalhostProfile() || loadingProfiles"
+            class="btn btn-primary">';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add [asis,Localhost] Profile' ]]);$output .= '</span>
+                <span class="glyphicon glyphicon-plus"></span>'}else {$output .= '                <span class="glyphicon glyphicon-plus"></span>
+                <span class="iconButtonLabel">';$output .= $stash->get(['locale',0,'maketext',['Add [asis,Localhost] Profile' ]]);$output .= '</span>'}$output .= '        </a>
+    </div>
+</div>
+<script type="text/ng-template" id="confirmprofiledeletion.html">
+    <div class="modal-header">
+        <h4>
+        <span class="glyphicon glyphicon-check"></span>
+        <span class="confirmMessage">';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Do you want to permanently delete the database profile, “[_1]”?','{{ currentProfileName }}' ]]);$output .= "\n    </div>\n    <div class=\"modal-footer\">\n        <button type=\"button\"\n            id=\"modalContinueBtn\"\n            class=\"btn btn-primary btn-sm\"\n            ng-click=\"\$close(currentProfileName);\">";$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= "</button>\n        <button type=\"button\"\n            id=\"modalCancelBtn\"\n            class=\"btn btn-link btn-sm\"\n            ng-click=\"\$dismiss();\">";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirmprofileactivation.html">
+    <div class="modal-header">
+        <h4>
+        <span class="glyphicon glyphicon-check"></span>
+        <span class="confirmMessage">';$output .= $stash->get(['locale',0,'maketext',['Confirm Activation' ]]);$output .= '</span></h4>
+    </div>
+    <div class="modal-body">
+        <div class="alert alert-warning" ng-if="is_not_supported">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['This profile uses a database version that [asis,cPanel] [output,amp] [asis,WHM] does [output,strong,not] support. After activation, update the database version to ensure that you receive the latest features and security fixes.' ]]);$output .= '
+            </div>
+        </div>
+
+        <div class="alert alert-info">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['This operation will reconfigure [asis,cPanel amp() WHM] to use a different database profile. The system will copy all [asis,USAGE] grants to the new profile, but it will not copy any other grants, and it will not copy any databases.' ]]);$output .= '            </div>
+        </div>
+
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Do you want to activate the database profile, “[_1]”?','{{ currentProfileName }}' ]]);$output .= "</p>\n    </div>\n    <div class=\"modal-footer\">\n        <button type=\"button\"\n            id=\"modalContinueBtn\"\n            class=\"btn btn-primary btn-sm\"\n            ng-click=\"\$close(currentProfileName);\">";$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= "</button>\n        <button type=\"button\"\n            id=\"modalCancelBtn\"\n            class=\"btn btn-link btn-sm\"\n            ng-click=\"\$dismiss();\">";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

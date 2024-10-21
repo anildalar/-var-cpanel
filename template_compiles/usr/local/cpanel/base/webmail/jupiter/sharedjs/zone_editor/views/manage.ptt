@@ -1,0 +1,410 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/sharedjs/zone_editor/views/manage.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h2 class="view-title">';$output .= $stash->get(['locale',0,'maketext',['Zone Records for “[_1]”','{{ manage.domain }}' ]]);$output .= '</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-8">
+        <div id="notAllowedWarningManage" class="alert alert-danger ng-hide" ng-show="manage.loading_error">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,DNS] Zone Failed To Load:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <pre class="loading-error-pre" ng-bind-html="manage.loading_error_message"></pre>
+                    <button href ng-click="manage.confirm_reset_zone()" class="btn btn-primary btn-sm"><span class=\'fas fa-undo\' aria-hidden="true"></span> ';$output .= $stash->get(['locale',0,'maketext',['Reset the [asis,DNS] Zone' ]]);$output .= '</button>
+                    <a href="index.html#/list" class="btn btn-link"><i class="fas fa-arrow-left" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['Return to [asis,DNS] Zone List' ]]);$output .= '</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="tableShowHideContainerManage" ng-hide="manage.loading_error">
+    <div id="paginationControls" class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-9">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <search id="filterList" ng-model="manage.meta.filterValue"
+                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filter by name' ]]);$output .= '" autofocus ng-change="manage.searchList()">
+                    </search>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <quick-filters title="';$output .= $stash->get(['locale',0,'maketext',['Filter:' ]]);$output .= '" active="manage.meta.quickFilterValue"
+                        on-filter-change="manage.getFilteredResults()">
+                        <quick-filter-item id="show_all_records" value="">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '
+                        </quick-filter-item>
+                        <quick-filter-item ng-repeat="type in manage.types" value="{{type}}"
+                            id="show__{{type}}_records">{{type}}</quick-filter-item>
+                    </quick-filters>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3">
+            <div id="paginator" class="pagination-container pull-right hidden-xs hidden-sm">
+                <uib-pagination id="topPager" ng-change="manage.selectPage()" ng-model="manage.meta.pageNumber"
+                    max-size="manage.meta.maxPages" items-per-page="manage.meta.pageSize"
+                    total-items="manage.meta.totalItems" direction-links="true" boundary-links="true" rotate="false"
+                    first-text="<<" last-text=">>" previous-text="<" next-text=">">
+                </uib-pagination>
+                <p class="text-small text-right flip"> {{manage.paginationMessage()}} </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row action-bar">
+        <div class="col-xs-12">
+            <div class="hidden-xs hidden-sm pull-left flip">
+                <div class="btn-group" id="actionButtonDropdown" ng-if="manage.isActionBtnVisible()" uib-dropdown>
+                    <button type="button" id="action_btn_list" class="btn btn-default btn-sm add-record-btn"
+                        ng-disabled="manage.is_loading" uib-dropdown-toggle>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                        <span class="caret"></span>
+                        <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Click for more options.' ]]);$output .= '</span>
+                    </button>
+                    <ul uib-dropdown-menu class="dropdown-menu dropdown-menu-left text-right flip" role="menu">
+                        <li role="menuitem" ng-if="manage.Features.whmOnly">
+                            <a id="exportZoneLink" ng-if="manage.Features.whmOnly"
+                                href="manage/copyzone/?domain={{manage.domain}}">
+                                ';$output .= $stash->get(['locale',0,'maketext',['View Raw [asis,DNS] Zone File' ]]);$output .= '
+                            </a>
+                        </li>
+                        <li role="separator" ng-if="manage.Features.whmOnly && manage.Features.advanced"
+                            class="divider"></li>
+                        <li role="menuitem" ng-if="manage.Features.advanced">
+                            <button id="resetZoneBtn" class="actionBtn" ng-class="{disabled: manage.isFormEditing()}"
+                                ng-click="manage.confirm_reset_zone()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Reset [asis,DNS] Zone' ]]);$output .= '
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <a href="{{manage.emailRoutingConfigLink()}}" target="_blank" class="btn-sm hidden-xs hidden-sm"
+                    id="emailRoutingConfigLink"
+                    ng-if="manage.showEmailRoutingLink && !manage.isHostnameZone">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Email Routing Configuration' ]]);$output .= '
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                </a>
+            </div>
+            <div class="pull-right flip">
+                <button type="submit" id="saveAllRecordsBtn" form="manage.add_zr_form"
+                    ng-disabled="!manage.isFormEditing()" class="btn btn-primary btn-sm"
+                    cp-action="manage.saveRecords()">
+                    <span class="fas fa-save"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Save All Records' ]]);$output .= '
+                </button>
+                <div class="btn-group" uib-dropdown>
+                    <button type="button" id="search_add_record_btn" class="btn btn-default btn-sm add-record-btn"
+                        ng-disabled="!manage.recordTypes.length || manage.is_loading"
+                        ng-click="manage.createNewRecord()">
+                        <span class="fas fa-plus"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Add Record' ]]);$output .= '</button>
+                    <button type="button" id="search_add_record_dropdown_btn"
+                        class="btn btn-default btn-sm dropdown-toggle"
+                        ng-disabled="!manage.recordTypes.length || manage.is_loading" uib-dropdown-toggle>
+                        <span class="caret"></span>
+                        <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Click for more options.' ]]);$output .= '</span></button>
+                    <ul uib-dropdown-menu class="dropdown-menu dropdown-menu-right text-left flip" role="menu"
+                        ng-if="manage.recordTypes.length">
+                        <li ng-repeat="recordType in manage.recordTypes | filter:manage.filterAddRecordDisplay">
+                            <a id="search_add_{{recordType.type | lowercase}}_record_btn" href
+                                ng-click="manage.createNewRecord(recordType.type)">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Add “[_1]” Record','{{recordType.type}}' ]]);$output .= '
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="btn-group" uib-dropdown auto-close="outsideClick">
+                    <button id="gearMenu" aria-label="additional actions menu" type="button"
+                        class="btn btn-default btn-sm" uib-dropdown-toggle ng-disabled="manage.is_loading">
+                        <i class="fas fa-cog" aria-hidden="true"></i> <span class="caret"></span>
+                    </button>
+                    <ul uib-dropdown-menu class="dropdown-menu-right" role="menu" aria-labelledby="gearMenu">
+                        <li role="menuitem">
+                            <div class="text-small text-uppercase">';$output .= $stash->get(['locale',0,'maketext',['Entries Per Page' ]]);$output .= '</div>
+                            <page-size-button id="pageSize" allowed-sizes="manage.meta.pageSizes"
+                                total-items="manage.meta.totalItems" ng-model="manage.meta.pageSize" show-all="false"
+                                ng-change="manage.selectPageSize()">
+                            </page-size-button>
+                        </li>
+                        <li role="separator" class="divider"></li>
+                        <li role="menuitem" ng-class="{disabled: manage.adding_records()}">
+                            <a id="refreshList" href ng-click="manage.refresh()"><i class="fas fa-sync-alt" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['Refresh List' ]]);$output .= '</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tableContainer" class="manage-view">
+        <form name="manage.add_zr_form" class="ng-pristine" novalidate action="javascript:void(0)">
+            <table id="table" class="table table-striped responsive-table">
+                <thead>
+                    <tr>
+                        <th id="nameHeader">
+                            <span toggle-sort id="sortByName" onsort="manage.sortList" sort-meta="manage.meta"
+                                sort-field="name">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                            </span>
+                        </th>
+                        <th id="ttlHeader">
+                            <span toggle-sort id="sortByTTL" onsort="manage.sortList" sort-meta="manage.meta"
+                                sort-field="ttl">
+                                TTL
+                            </span>
+                        </th>
+                        <th id="typeHeader">
+                            <span toggle-sort id="sortByType" onsort="manage.sortList" sort-meta="manage.meta"
+                                sort-field="record_type">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '
+                            </span>
+                        </th>
+                        <th id="recordHeader">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Record' ]]);$output .= '
+                        </th>
+                        <th id="actionsHeader">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="loadingNotice" class="info empty-row ng-hide" ng-show="manage.is_loading">
+                        <td colspan="5" id="loadingMessage">
+                            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                        </td>
+                    </tr>
+                    <tr id="emptyListNotice" class="info empty-row ng-hide"
+                        ng-show="manage.filteredList.length == 0 && !manage.is_loading">
+                        <td colspan="5" id="emptyMessage">';$output .= $stash->get(['locale',0,'maketext',['No records found.' ]]);$output .= "</td>\n                    </tr>\n\n                    <tr id=\"zone_rec_row_{{zone_rec._id}}\" class=\"recordTableRow\"\n                        ng-repeat=\"zone_rec in manage.filteredList track by zone_rec._id\" ng-hide=\"manage.is_loading\"\n                        ng-class=\"{'inline-form': zone_rec.editing, 'info': zone_rec.editing, 'warning': zone_rec.alias_unsupported}\"\n                        ng-keypress=\"manage.handleRowKeypress(\$event, zone_rec)\"\n                    >\n\n                        <td ng-if=\"!zone_rec.editing\" data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '"
+                            id="zone_rec_name_{{zone_rec._id}}" class="potentially-really-long-text">
+                            <span>{{ zone_rec.name }}</span>
+                        </td>
+                        <td ng-if="zone_rec.editing" id="nameInlineEditor_{{zone_rec._id}}">
+                            <div class="record_elements">
+                                <div class="record_element">
+                                    <div class="record_subelement"
+                                        ng-class="{ \'has-error\': manage.field_has_error(manage.add_zr_form, \'recordName_{{zone_rec._id}}\') }">
+                                        <label for="recordName_{{zone_rec._id}}" class="table-form-label">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                                        </label>
+                                        <input type="text"
+                                            ng-disabled="zone_rec.record_type === \'SOA\' || zone_rec.is_dmarc"
+                                            class="form-control" ng-model="zone_rec.name" id="recordName_{{zone_rec._id}}"
+                                            name="recordName_{{zone_rec._id}}" required zone-name="{{zone_rec.record_type}}" convert_to_full_record_name
+                                            domain="manage.domain"
+                                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Valid zone name' ]]);$output .= '">
+                                    </div>
+                                </div>
+                                <div class="record_element">
+                                    <div class="record_subelement">
+                                        <ul validation-container field-name="recordName_{{zone_rec._id}}">
+                                            <li validation-item field-name="recordName_{{zone_rec._id}}"
+                                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td ng-if="!zone_rec.editing" data-title="TTL"
+                            id="zone_rec_ttl_{{zone_rec._id}}">
+                            <span>{{ zone_rec.ttl }}</span>
+                        </td>
+                        <td ng-if="zone_rec.editing" id="ttlInlineEditor_{{zone_rec._id}}">
+                            <div class="record_elements ttl">
+                                <div class="record_element">
+                                    <div class="record_subelement"
+                                        ng-class="{ \'has-error\': manage.field_has_error(manage.add_zr_form, \'recordTTL_{{zone_rec._id}}\') }">
+                                        <label for="recordTTL_{{zone_rec._id}}" class="table-form-label">
+                                            TTL
+                                        </label>
+                                        <input type="text" class="form-control" ng-model="zone_rec.ttl" required
+                                            positive-integer num-less-than="2147483647" maxlength="10"
+                                            id="recordTTL_{{zone_rec._id}}" name="recordTTL_{{zone_rec._id}}"
+                                            ng-disabled="!manage.Features.advanced"
+                                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Time in seconds' ]]);$output .= '">
+                                    </div>
+                                </div>
+                                <div class="record_element">
+                                    <div class="record_subelement">
+                                        <ul validation-container field-name="recordTTL_{{zone_rec._id}}">
+                                            <li validation-item field-name="recordTTL_{{zone_rec._id}}"
+                                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td ng-if="!zone_rec.editing" data-title="';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '"
+                            id="zone_rec_type_{{zone_rec._id}}">
+                            <span>{{ zone_rec.record_type }}</span>
+                            <span ng-if="zone_rec.alias_unsupported" class="label label-warning"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['[asis,ALIAS] support is not enabled.' ]]);$output .= '">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unsupported' ]]);$output .= '
+                            </span>
+                        </td>
+                        <td ng-if="zone_rec.editing">
+                            <label for="recordType_{{zone_rec._id}}" class="table-form-label">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '
+                            </label>
+                            <select
+                                id="recordType_{{zone_rec._id}}"
+                                name="recordType_{{zone_rec._id}}" class="form-control"
+                                ng-model="zone_rec.record_type"
+                                ng-change="manage.updateRecordTemplate(zone_rec)"
+                                ng-disabled="zone_rec.typeEditingLocked">
+                                <option ng-if="zone_rec.record_type === \'SOA\'">SOA</option>
+                                <option
+                                    ng-selected="zone_rec.record_type === recordType.type"
+                                    ng-repeat="recordType in manage.recordTypes | filter: manage.filterRowRecordsDisplay"
+                                    value="{{recordType.type}}">
+                                    {{recordType.type}}
+                                </option>
+                            </select>
+                        </td>
+
+                        <td ng-if="!zone_rec.editing" data-title="';$output .= $stash->get(['locale',0,'maketext',['Record' ]]);$output .= '"
+                            class="zone-record-col potentially-really-long-text" id="zone_rec_record_{{zone_rec._id}}">
+                            <ng-include src="zone_rec.viewTemplate"></ng-include>
+                        </td>
+                        <td ng-if="zone_rec.editing" id="recordInlineEditor_{{zone_rec._id}}" class="recordInlineEditor">
+                            <div class="record_elements">
+                                <ng-include src="zone_rec.editTemplate"></ng-include>
+                            </div>
+                        </td>
+
+                        <td ng-if="!zone_rec.editing" class="action-buttons"
+                            data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                            <button type="button"
+                                id="edit_btn_for_{{ zone_rec.record_type | qaSafeID }}_{{ zone_rec.name | qaSafeID }}_{{zone_rec._id}}"
+                                class="btn btn-outline-primary btn-sm" ng-click="manage.edit_record(zone_rec)"
+                                ng-disabled="!zone_rec.isEditable">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                            </button>
+                            <button type="button"
+                                id="delete_btn_for_{{ zone_rec.record_type | qaSafeID }}_{{ zone_rec.name | qaSafeID }}_{{zone_rec._id}}"
+                                class="btn btn-outline-danger btn-sm" ng-click="manage.confirm_delete_record(zone_rec)"
+                                ng-disabled="manage.isEditingRecords()"
+                                ng-if="zone_rec.record_type !== \'SOA\'">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </button>
+                        </td>
+
+                        <td ng-if="zone_rec.editing" class="record_manipulation_buttons">
+                            <button
+                                id="inline_add_record_button_{{zone_rec._id}}"
+                                class="btn btn-primary btn-sm"
+                                type="submit"
+                                data-form-valid-state="{{manage.getAddFormState()}}"
+                                cp-action="manage.saveRecords(zone_rec)">';$output .= $stash->get(['locale',0,'maketext',['Save Record' ]]);$output .= '
+                            </button>
+                            <button
+                                id="inline_cancel_button_{{zone_rec._id}}"
+                                class="btn btn-link btn-sm" type="button"
+                                ng-disabled="manage.save_in_progress"
+                                ng-click="manage.cancelRecordEdit(zone_rec, zone_rec._id)">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-6">
+            <div class="pull-left flip">
+                <a href="{{manage.emailRoutingConfigLink()}}" target="_blank" class="btn-sm"
+                    id="emailRoutingConfigLinkMobile">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Email Routing Configuration' ]]);$output .= '
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                </a>
+                <div id="buttonDropdownMobile" class="btn-group" uib-dropdown>
+                    <button type="button" id="action_btn_list_mobile" class="btn btn-default btn-sm add-record-btn"
+                        ng-disabled="manage.is_loading" uib-dropdown-toggle>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                        <span class="caret"></span>
+                        <span class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Click for more options.' ]]);$output .= '</span>
+                    </button>
+                    <ul uib-dropdown-menu class="dropdown-menu dropdown-menu-left text-right flip" role="menu">
+                        <li role="menuitem">
+                        <li role="menuitem" ng-if="manage.Features.whmOnly">
+                            <button id="exportZoneBtnMobile" class="actionBtn" ng-if="manage.Features.whmOnly"
+                                ng-click="manage.viewRawZone()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['View Raw [asis,DNS] Zone File' ]]);$output .= '
+                            </button>
+                        </li>
+                        <li role="separator" ng-if="manage.Features.whmOnly && manage.Features.advanced"
+                            class="divider">
+                        </li>
+                        <li role="menuitem" ng-if="manage.Features.advanced">
+                            <button id="resetZoneBtnMobile" class="actionBtn"
+                                ng-class="{disabled: manage.isFormEditing()}" ng-click="manage.confirm_reset_zone()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Reset [asis,DNS] Zone' ]]);$output .= '
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-xs-6 col-sm-6">
+            <div id="paginatorBottom" class="pagination-container">
+                <p class="text-small text-right flip">{{manage.paginationMessage()}}</p>
+                <uib-pagination id="bottomPager" ng-change="manage.selectPage()" ng-model="manage.meta.pageNumber"
+                    max-size="manage.meta.maxPages" items-per-page="manage.meta.pageSize"
+                    total-items="manage.meta.totalItems" direction-links="true" boundary-links="true" rotate="false"
+                    first-text="<<" last-text=">>" previous-text="<" next-text=">">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="confirm_delete.html">
+    <div class="modal-header">
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Confirm Deletion' ]]);$output .= '</h4>
+    </div>
+    <div class="modal-body">
+        ';$output .= $stash->get(['locale',0,'maketext',['Are you certain that you want to delete this record?' ]]);$output .= '
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+            id="modalContinueBtn"
+            cp-action="ctrl.confirm()"
+            button-class="btn btn-primary btn-sm">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button type="button"
+            id="modalCancelBtn"
+            class="btn btn-link btn-sm"
+            ng-click="ctrl.cancel()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+<script type="text/ng-template" id="confirm_reset_zone.html">
+    <div class="modal-header">
+        <h4>';$output .= $stash->get(['locale',0,'maketext',['Reset Zone' ]]);$output .= '</h4>
+    </div>
+    <div class="modal-body">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Resetting your zone file will erase any modifications you have made to your zone records. The system will attempt to preserve [asis,TXT] records. However, we recommend that you take note of any records you want to save.' ]]);$output .= '</p>
+        <p class="last-paragraph">';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to erase all entries and revert to the default state?' ]]);$output .= '</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button"
+            id="modalContinueBtn"
+            cp-action="ctrl.confirm()"
+            button-class="btn btn-primary btn-sm">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        <button type="button"
+            id="modalCancelBtn"
+            class="btn btn-link btn-sm"
+            ng-click="ctrl.cancel()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

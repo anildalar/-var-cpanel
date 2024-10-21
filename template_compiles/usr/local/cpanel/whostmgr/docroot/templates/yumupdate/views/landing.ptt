@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/yumupdate/views/landing.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['This action will update all packages with the latest version.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If you proceed with this update, the system may require the removal of unnecessary packages associated with the update or that conflict with your request.' ]]);$output .= '</p>
+        <div ng-show="!running && !finished" class="checkbox">
+            <label for="kernel">
+                ';$output .= $stash->get(['locale',0,'maketext',['Include kernel packages[comment,no punctuation due to usage]' ]]);$output .= '
+                <input type="checkbox" name="kernel" id="kernel" ng-model="kernel" value="">
+            </label>
+        </div>
+        <button class="btn btn-lg btn-primary" id="updateButton" ng-click="update()" ng-show="!running && !finished" ng-disabled="finished">';$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '</button>
+        <p ng-show="running"><span spinner id="runningSpinner" class="addSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Running system update …' ]]);$output .= '"></span> ';$output .= $stash->get(['locale',0,'maketext',['Running system update …' ]]);$output .= '</p>
+        <p class="alert alert-success" ng-show="finished && !errorDetected">';$output .= $stash->get(['locale',0,'maketext',['System update has run successfully.' ]]);$output .= '</p>
+        <p class="alert alert-danger" ng-show="finished && errorDetected">';$output .= $stash->get(['locale',0,'maketext',['System update produced errors, please check the log.' ]]);$output .= '</p>
+        <pre class="log" id="log" ng-show="running || finished">
+<span ng-bind-html="realTimeLogDisplay"></span>
+<a id="bottom"></a>
+        </pre>
+        <p class="alert alert-success" id="resultText_success" ng-show="finished && !errorDetected">';$output .= $stash->get(['locale',0,'maketext',['System update has run successfully.' ]]);$output .= '</p>
+        <p class="alert alert-danger" id="resultText_fail" ng-show="finished && errorDetected">';$output .= $stash->get(['locale',0,'maketext',['System update produced errors, please check the log.' ]]);$output .= '</p>
+        <button ng-click="finished=false" id="doneButton" class="btn btn-primary" ng-show="finished">';$output .= $stash->get(['locale',0,'maketext',['Done' ]]);$output .= '</button>
+        <button class="btn btn-link" id="downloadLogButton" ng-show="finished" ng-click="saveLog()"><span class="glyphicon glyphicon-save"></span> ';$output .= $stash->get(['locale',0,'maketext',['Download Log' ]]);$output .= '</button>
+    </div>
+</div>
+<script type="text/ng-template" id="updateModalContent.tmpl">
+<div class="modal-header">
+    <h3 class="modal-title" id="updateModalLabel">';$output .= $stash->get(['locale',0,'maketext',['Confirm Your Action' ]]);$output .= '</h3>
+</div>
+<div class="modal-body">
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Run system update?' ]]);$output .= '</h3>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Confirm that you wish for the system to update all packages.' ]]);$output .= '</p>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-link" ng-click="closeModal()">';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</button>
+    <button class="btn btn-primary" ng-click="runIt()">';$output .= $stash->get(['locale',0,'maketext',['Yes, run system update.' ]]);$output .= '</button>
+</div>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

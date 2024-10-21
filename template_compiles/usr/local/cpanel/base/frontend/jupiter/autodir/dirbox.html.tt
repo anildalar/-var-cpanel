@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/autodir/dirbox.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- start autodir/dirbox.tmpl -->
+<style type="text/css">
+#dirmod {position:relative;padding:0em;display:inline;}
+#dirautocomplete {position:relative;margin:0;width:100%;}/* set width of widget here*/
+#dirinput {position:absolute;width:100%;height:1.6em;}
+#dircontainer .yui-ac-content {position:absolute;width:100%;border:1px solid #404040;background:#fff;overflow:hidden;z-index:9050;}
+#dircontainer .yui-ac-shadow {position:absolute;margin:.3em;width:100%;background:#a0a0a0;z-index:9049;}
+#dircontainer ul {margin: 2px; padding:1px 0;width:100%;}
+#dircontainer li {padding:0 5px;cursor:default;white-space:nowrap;}
+#dircontainer li.yui-ac-highlight {background:#ff0;}
+</style>
+<script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui/datasource/datasource.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui/autocomplete/autocomplete.js' ]]);$output .= "\"></script>\n<script type=\"text/javascript\">\nvar dirCompleter = function() {\n    var oDir;\n    var oAutoComp;\n    var PUBLICHTML_REGEX = /^\\/?public_html\\//;\n\n    return {\n        init: function() {\n            oDir = new YAHOO.widget.DS_XHR(CPANEL.security_token + \"/frontend/";$output .= $stash->get(['CPANEL',0,'CPDATA',0,'RS',0]);$output .= '/autodir/autocomplete.xml",
+            ["file","name"]);
+            oDir.responseType = YAHOO.widget.DS_XHR.TYPE_XML;
+            oDir.maxCacheEntries = 256;
+
+            // Instantiate AutoComplete
+            oAutoComp = new YAHOO.widget.AutoComplete(\'';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoinput',0]);$output .= '\',\'dircontainer\', oDir);
+            oAutoComp.doBeforeExpandContainer = function(oTextbox, oContainer, sQuery, aResults) {
+                var pos = YAHOO.util.Dom.getXY(oTextbox);
+                pos[1] += YAHOO.util.Dom.get(oTextbox).offsetHeight;
+                YAHOO.util.Dom.setXY(oContainer,pos);
+                return true;
+            };
+
+            ';if ($stash->get('restrict_autodir_to_docroot')){$output .= '
+            oDir.doBeforeCallback = function( oRequest , oFullResponse , oParsedResponse , oCallback ) {
+                if (oParsedResponse) {
+                    for (var i = 0, data = oParsedResponse.results, len = data.length; i < len; i++) {
+                        data[i].name = data[i].name.replace(PUBLICHTML_REGEX, "");
+                    }
+                }
+                return oParsedResponse;
+            };
+            '}$output .= '
+
+            oAutoComp.generateRequest = function(sQuery) {
+                ';if ($stash->get('restrict_autodir_to_docroot')){$output .= '
+                return "?path=public_html%2F" + sQuery + "&dirsonly=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autodirsonly',0]);$output .= '&skipreserved=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoskipreserved',0]);$output .= '";
+                '}else {$output .= '
+                return "?path=" + sQuery + "&dirsonly=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autodirsonly',0]);$output .= '&skipreserved=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoskipreserved',0]);$output .= '";
+                '}$output .= '
+            };
+        }
+    };
+}();
+
+YAHOO.util.Event.onDOMReady(dirCompleter.init);
+</script>
+<div class="row">
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    ';if ($stash->get(['input_group_addon_text',0,'defined',0])){$output .= '
+        <div class="input-group">
+            <span class="input-group-addon">';$output .= $stash->get('input_group_addon_text');$output .= '</span>
+    '}$output .= '
+    <input type="text" class="form-control" size="30" name="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoinput',0,'html',0]);$output .= '" id="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoinput',0,'html',0]);$output .= '" onchange="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autofunc',0]);$output .= '(this)" />
+    ';if ($stash->get(['input_group_addon_text',0,'defined',0])){$output .= '
+        </div>
+    '}$output .= '
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div id="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoinput',0,'html',0]);$output .= '_error" ';$output .= $stash->get(['show_error_inline',0,'defined',0])? 'class="show_inline"' : '';$output .= '></div>
+    </div>
+</div>
+<div id="dircontainer"></div>
+<!-- end autodir/dirbox.tmpl -->
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

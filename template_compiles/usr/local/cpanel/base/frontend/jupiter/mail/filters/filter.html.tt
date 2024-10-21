@@ -1,0 +1,184 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/filter.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));$output .= '
+';$stash->set('ServerRoles',$context->plugin('ServerRoles'));$stash->set('LinkedNode',$context->plugin('LinkedNode'));$stash->set('get_filter',$stash->get(['execute',['Email','get_filter',{'account'=>$stash->get(['FORM',0,'account',0]),'filtername'=>$stash->get(['FORM',0,'filtername',0])}]]));$output .= '
+';$stash->set('account_name',$stash->get(['execute',['Email','account_name',{'display'=>1,'account'=>$stash->get(['FORM',0,'account',0])}]]));$output .= '
+
+';$stash->set('filter_option',sub {my$output='';my (%_tt_args,$_tt_params);@_tt_args{'pval','val','text' }=splice(@_,0,3);$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= '<option value="';$output .= $stash->get('val');$output .= '"';$output .= $stash->get('val')eq $stash->get('pval')&& ' selected';$output .= '>';$output .= $stash->get('text');$output .= '</option>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+';$stash->set('filter_option_legacy',sub {my$output='';my (%_tt_args,$_tt_params);@_tt_args{'pval','val','lval','text' }=splice(@_,0,4);$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= '<option value="';$output .= $stash->get('val');$output .= '"';$output .= ($stash->get('val')eq $stash->get('pval')|| $stash->get('pval')eq $stash->get('lval'))&& ' selected';$output .= '>';$output .= $stash->get('text');$output .= '</option>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+';$stash->set('lexicon',{'Browse'=>$stash->get(['locale',0,'lextext',['Browse' ]])});$output .= '
+
+<h2 id="header">
+';if ($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail'){$output .= '
+    ';if ($stash->get(['RAW_FORM',['filtername' ]])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Edit a Filter' ]]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Create a New Filter' ]]);$output .= '
+    '}$output .= '
+'}else {$output .= '
+    ';if ($stash->get(['RAW_FORM',['filtername' ]])&& $stash->get(['RAW_FORM',['account' ]])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Edit a Filter for “[_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '
+    '}elsif ($stash->get(['RAW_FORM',['filtername' ]])&&!$stash->get(['RAW_FORM',['account' ]])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Edit a Filter for All Mail on Your Account.' ]]);$output .= '
+    '}elsif (!$stash->get(['RAW_FORM',['filtername' ]])&& $stash->get(['RAW_FORM',['account' ]])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Create a New Filter for “[_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '
+    '}elsif (!$stash->get(['RAW_FORM',['filtername' ]])&&!$stash->get(['RAW_FORM',['account' ]])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Create a New Filter for All Mail on Your Account.' ]]);$output .= '
+    '}$output .= '
+'}$output .= '
+</h2>
+
+<p id="descEditCreate" class="description">
+';if ($stash->get(['RAW_FORM',['filtername' ]])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Please edit the filter below.' ]]);$output .= '
+'}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Please create a filter below.' ]]);$output .= '
+'}$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['You can add multiple rules to match subjects, addresses, or other parts of the message. You can then add multiple actions to take on a message such as to deliver the message to a different address and then discard it.' ]]);$output .= '
+</p>
+
+<div id="cjt_pagenotice_container"></div>
+
+<div class="section">
+<form name="filterform" id="filterform" action="javascript:void(0)" onsubmit="save(this)">
+<input id="hidAccount" name="account" type="hidden" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '">
+<input id="hidOldFilterName" name="oldfiltername" type="hidden" value="';$output .= $stash->get(['get_filter',0,'data',0,'filtername',0,'html',0]);$output .= '">
+';$output .= '
+
+<div class="form-group">
+    <label id="lblFilterName" for="filtername">
+        ';$output .= $stash->get(['locale',0,'maketext',['Filter Name' ]]);$output .= '
+    </label>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            ';if (!$stash->get(['RAW_FORM',['filtername' ]])){$output .= '
+            <input id="filtername" type="text" class="form-control" name="filtername">
+            '}else {$output .= '
+            <input id="filtername" type="text" class="form-control" name="filtername" value="';$output .= $stash->get(['get_filter',0,'data',0,'filtername',0,'html',0]);$output .= '">
+            '}$output .= '
+            <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The filter name must be unique. If you give the filter the same name as another filter, the previous filter will be overwritten.' ]]);$output .= '</span>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="filtername_error"></div>
+    </div>
+</div>
+
+<strong id="hdrRules">';$output .= $stash->get(['locale',0,'maketext',['Rules' ]]);$output .= '</strong>
+<table cellspacing="0" id="ruletbl" border="0" width="100%" >
+<tbody>
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['get_filter',0,'data',0,'rules',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+<tr id="rule';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="filter-row">
+<td valign="middle" class="acltd filter-col" width="20"><img onclick="moveup(this); this.src=\'icon_arrow_up_disabled.gif\';" id="';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '-moveup" src="icon_arrow_up_disabled.gif" onmouseover="this.src=\'icon_arrow_up.gif\';" onmouseout="this.src=\'icon_arrow_up_disabled.gif\';" class="moveact"><br /><img onclick="movedown(this); this.src=\'icon_arrow_down_disabled.gif\';" id="';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '-movedown" src="icon_arrow_down_disabled.gif"  onmouseover="this.src=\'icon_arrow_down.gif\';" onmouseout="this.src=\'icon_arrow_down_disabled.gif\';" class="moveact"></td>
+<td class="filter-col">
+<div style="float: left; display:inline; width: 510px;">
+<select name="part';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" onchange="handlepart(this)" style="width:250px;" autocomplete="off" autofill="off">
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$header_from:',$stash->get(['locale',0,'maketext',['From' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$header_subject:',$stash->get(['locale',0,'maketext',['Subject' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$header_to:',$stash->get(['locale',0,'maketext',['To' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option_legacy',[$stash->get(['q',0,'part',0]),'foranyaddress $h_to:,$h_cc:','foranyaddress $h_to:,$h_cc:,$h_bcc:',$stash->get(['locale',0,'maketext',['Any Recipient' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$reply_address:',$stash->get(['locale',0,'maketext',['Reply' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$message_body',$stash->get(['locale',0,'maketext',['Body' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$message_headers',$stash->get(['locale',0,'maketext',['Any Header' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'not delivered',$stash->get(['locale',0,'maketext',['Has Not Been Previously Delivered' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'error_message',$stash->get(['locale',0,'maketext',['Is an Error Message' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$h_List-Id:',$stash->get(['locale',0,'maketext',['List ID' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$h_X-Spam-Status:',$stash->get(['locale',0,'maketext',['Spam Status' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$h_X-Spam-Bar:',$stash->get(['locale',0,'maketext',['Spam Bar' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'part',0]),'$h_X-Spam-Score:',$stash->get(['locale',0,'maketext',['Spam Score' ]])]]);$output .= '
+</select>
+<select name="match';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" style="width:250px;" autocomplete="off" autofill="off">
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'contains',$stash->get(['locale',0,'maketext',['[comment]contains[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'matches',$stash->get(['locale',0,'maketext',['[comment]matches [output,abbr,regex,regular expression][comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'does not contain',$stash->get(['locale',0,'maketext',['[comment]does not contain[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'is',$stash->get(['locale',0,'maketext',['[comment]equals[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'begins',$stash->get(['locale',0,'maketext',['[comment]begins with[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'ends',$stash->get(['locale',0,'maketext',['[comment]ends with[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'does not begin',$stash->get(['locale',0,'maketext',['[comment]does not begin[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'does not end',$stash->get(['locale',0,'maketext',['[comment]does not end with[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'does not match',$stash->get(['locale',0,'maketext',['[comment]does not match[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'is above',$stash->get(['locale',0,'maketext',['[comment]is above (numbers only)[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'is not above',$stash->get(['locale',0,'maketext',['[comment]is not above (numbers only)[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'is below',$stash->get(['locale',0,'maketext',['[comment]is below (numbers only)[comment,comparison option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'match',0]),'is not below',$stash->get(['locale',0,'maketext',['[comment]is not below (numbers only)[comment,comparison option]' ]])]]);$output .= '
+</select>
+<input type="text" class="form-control" name="val';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" size="60" style="width:498px" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'val',0]);&$_tt_filter($output)};$output .= '">
+</div>
+<div style="float: right; display:inline; padding-top: 11px; ">
+<input type="button" value="-" name="ruleremove';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="btn btn-default" disabled="disabled" onclick="removerule(this);">
+<input type="button" value="+" name="ruleadd';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="btn btn-default" onclick="addrule(this);">
+</div>
+
+<div style="float: right; display:inline; padding-top: 11px; padding-left: 3px; padding-right: 10px;">
+<select name="opt';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" style="display:none;" class="form-control" autocomplete="off" autofill="off">
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'opt',0]),'or',$stash->get(['locale',0,'maketext',['[comment]or[comment,boolean option]' ]])]]);$output .= '
+';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'opt',0]),'and',$stash->get(['locale',0,'maketext',['[comment]and[comment,boolean option]' ]])]]);$output .= '
+</select>
+</div>
+</td>
+</tr>
+
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+
+</tbody>
+</table>
+<script type="text/javascript">
+    window.onload = function() { checkaddrembuttons(\'rule\'); };
+</script>
+<br />
+
+<b id="hdrActions">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</b>
+
+<table cellspacing="0" id="actiontbl" border="0" width="100%" >
+<tbody>
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['get_filter',0,'data',0,'actions',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+<tr id="action';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="filter-row">
+<td class="filter-col">
+    <div class="pull-left">
+        <div class="form-group">
+            <select name="action';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" id="action_menu';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="action-menu" onchange="handleaction(this);" style="width:220px;" autocomplete="off" autofill="off">
+            ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'save &quot;/dev/null&quot;',$stash->get(['locale',0,'maketext',['Discard Message' ]])]]);$output .= '
+            ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'deliver',$stash->get(['locale',0,'maketext',['Redirect to Email' ]])]]);$output .= '
+            ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'fail',$stash->get(['locale',0,'maketext',['Fail With Message' ]])]]);$output .= '
+            ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'finish',$stash->get(['locale',0,'maketext',['Stop Processing Rules' ]])]]);$output .= '
+            ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'save',$stash->get(['locale',0,'maketext',['Deliver to Folder' ]])]]);$output .= '
+            ';if (!$stash->get(['LinkedNode',0,'has_linkages',0])&& $stash->get(['ServerRoles',0,'is_role_enabled',['FileStorage' ]])){$output .= '                ';$output .= $stash->get(['filter_option',[$stash->get(['q',0,'action',0]),'pipe',$stash->get(['locale',0,'maketext',['Pipe to a Program' ]])]]);$output .= '
+            '}$output .= '            </select>
+        </div>
+        <div class="form-group form-inline">
+            <input id="dest';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" type="text" class="form-control" name="dest';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" size="38" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'dest',0]);&$_tt_filter($output)};$output .= '" style="display: none;" style="width:309px;">
+            <input id="changedest';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" type="button" onclick="handlebrowser(this);" name="changedest';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="btn btn-default" style="display: none;" value="';$output .= $stash->get(['locale',0,'maketext',['Browse' ]]);$output .= '">
+            <div id="treeviewCont';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" style=\'display:none;\' class="tree-view-container">
+                <div id="treeview';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="tree-view"></div>
+            </div>
+        </div>
+    </div>
+    <div class="pull-right">
+        <input type="button" value="-" name="actionremove';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="btn btn-default" disabled="disabled" onclick="removeaction(this);">
+        <input type="button" value="+" name="actionadd';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= '" class="btn btn-default" onclick="addaction(this);">
+    </div>
+</td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+</tbody>
+</table>
+
+
+<div class="form-group">
+
+';if ($stash->get(['RAW_FORM',['filtername' ]])){$output .= '
+    <input type="submit" id="activate-button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+'}else {$output .= '
+    <input type="submit" id="activate-button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '" />
+'}$output .= '
+
+</div>
+</form>
+<script>
+YAHOO.lang.augmentObject( CPANEL.Locale.prototype.LEXICON, ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+</script>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,18 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/security/reset.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_link','index.html?account=' .$stash->get(['FORM',0,'account',0,'uri',0]));$stash->set('source_ip_check_account',$stash->get(['Api2',0,'exec',['SourceIPCheck','getaccount',{'account'=>$stash->get(['FORM',0,'account',0])}],0,0]));$stash->set('source_ip_check_reset_sec_questions',$stash->get(['Api2',0,'exec',['SourceIPCheck','resetsecquestions',{'account'=>$stash->get(['FORM',0,'account',0])}],0,0]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <h2> ';$output .= $stash->get(['locale',0,'maketext',['Confirm Security Questions and Answers for “[output,inline,_1,class,status]”',$stash->get(['source_ip_check_account',0,'account',0])]]);$output .= '</h2>
+
+    ';$output .= $stash->get(['source_ip_check_reset_sec_questions',0,'status',0,'html',0]);$output .= '
+
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'sourceipcheck',0])){$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Unable to reset security questions.' ]]);$output .= '
+    '}else {$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Security questions have been reset. The user will be asked to re-enter new security questions at next login.' ]]);$output .= '
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

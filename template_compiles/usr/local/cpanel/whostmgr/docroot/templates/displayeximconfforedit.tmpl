@@ -1,0 +1,345 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/displayeximconfforedit.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<div id="container"></div>
+
+<div id="bottom"></div>
+
+<script>
+var tabView = new YAHOO.widget.TabView();
+var active_submit = {};
+var submit_timeout;
+var last_submit_tabid;
+var hasnotifytab;
+var loadingliEl;
+
+function load_tab_content(tabindex) {
+    var taburiinfo = taburis[tabindex];
+    if (!taburiinfo) { return; }
+    var tabiframeid = taburiinfo[0];
+    var tabiframeuri = taburiinfo[1];
+    var hasbeenloaded = taburiinfo[2];
+    var thisIframeEl = document.getElementById(tabiframeid);
+
+    var matchuri = tabiframeuri.split(\'/\');
+    matchuri = matchuri[matchuri.length-1];
+    matchuri = matchuri.split(\'?\');
+    matchuri = matchuri[0];
+
+    if (!hasbeenloaded) {
+        set_iframe_url( thisIframeEl, tabiframeuri );
+        taburis[tabindex][2] = 1; //hasbeenloaded
+    }
+}
+
+function notify_submit_complete(tabid) {
+    clearTimeout(submit_timeout);
+
+    if ( tabid == "advanced" || tabid == "reset" || tabid == "basic" || tabid == "install") { //install is a pseudo tab for config restores
+       reload_tab(\'basic\', {}, 1); //changes in advanced can change basic
+       reload_tab(\'advanced\', {}, 1); //changes in basic can change advanced
+       update_exim_configuration_check_tab();
+       reset_tabs();
+    }
+
+    if (tabid =="install" || !active_submit[tabid]) {
+        return;
+    }
+
+    active_submit[tabid]=0;
+    reset_tabs();
+}
+
+function reset_tabs() {
+    var tabs = tabView.get(\'tabs\');
+    for(var i=0;i<actiontabindex;i++) {
+        tabs[i].set(\'disabled\',false);
+    }
+    tabs[actiontabindex].set(\'disabled\',true);
+    tabs[actiontabindex].removeClass(\'selected\');
+    tabs[actiontabindex].setStyle(\'display\',\'none\');
+}
+
+function set_action_tab_to_loading() {
+    var thisIframeEl = document.getElementById(\'tabaction\');
+    set_iframe_url( thisIframeEl, CPANEL.icons.ajax_src );
+
+}
+
+function update_exim_configuration_check_tab (skip_tab_switch) {
+        if ( hasnotifytab ) {
+            var tabs = tabView.get(\'tabs\');
+            var notifytabindex = tabs.length-1;
+            tabs[notifytabindex].setStyle(\'display\',\'none\');
+        }
+
+        YAHOO.util.Connect.asyncRequest(\'GET\', \'';$output .= $stash->get('cp_security_token');$output .= '/json-api/exim_configuration_check\', {
+                    \'success\': function(o) {
+                        var config_check_results = YAHOO.lang.JSON.parse( o.responseText );
+                        if (!config_check_results[\'status\']) {
+                            if (!hasnotifytab) {
+                                tabView.addTab( new YAHOO.widget.Tab({
+                                        label: config_check_results[\'statusmsg\'],
+                                        cacheData: true,
+                                        content: "<div style=\'margin: 5px;\'>" + config_check_results[\'message\'] + "</div>"
+                                    }));
+                                }
+                            var tabs = tabView.get(\'tabs\');
+                            var notifytabindex = tabs.length-1;
+                            tabs[notifytabindex].setStyle(\'display\',\'\');
+                            YAHOO.util.Dom.addClass( (tabs[notifytabindex].getElementsByTagName(\'a\'))[0], "warningtab" );
+                            YAHOO.util.Dom.addClass( (tabs[notifytabindex].getElementsByTagName(\'em\'))[0], "warningtab" );
+                            if ( !skip_tab_switch) { tabView.selectTab(notifytabindex); }
+                            hasnotifytab = 1;
+                        }
+                    }
+                }, \'\');
+}
+
+
+function notify_submit(tabid,message) {
+    clearTimeout(submit_timeout);
+
+    active_submit[tabid]=1;
+    var tabs = tabView.get(\'tabs\');
+    var actionTab = tabs[actiontabindex];
+
+    var labelEl = tabs[actiontabindex].get(\'labelEl\');
+    labelEl.innerHTML=(message ? message : "In Progress...") + " <img border=\'0\' align=\'absmiddle\' src=\'" + CPANEL.icons.ajax_src + "\'>";
+    actionTab.setStyle(\'display\',\'\');
+    actionTab.set(\'disabled\',false);
+    tabView.selectTab(actiontabindex);
+    var tabs = tabView.get(\'tabs\');
+    for(var i=0;i<actiontabindex;i++) {
+        tabs[i].set(\'disabled\',true);
+    }
+    last_submit_tabid = tabid;
+    submit_timeout = setTimeout(function() {
+                alert("Operation timed out");
+                notify_submit_complete(tabid);
+            }, 35000);
+
+}
+
+function notify_service_restart(tabid,timeout) {
+    clearTimeout(submit_timeout);
+    submit_timeout = setTimeout(function() {
+                alert("Service restart operation timed out");
+                notify_submit_complete(last_submit_tabid);
+            }, timeout * 1000);
+
+}
+
+function safe_reload_tab(tabid,thisEl) {
+    for(var i in active_submit) {
+        if(active_submit[i]) {
+            alert("This tab cannot be reloaded until the operation is complete");
+            return false;
+        }
+    }
+    reload_tab(taburis[tabid][0], {}, 1);
+}
+
+function add_reload_to_tab(tab, tabid, display) {
+    var labelEl = tab.get(\'labelEl\');
+    if (!labelEl.innerHTML.match(/_reload/)) {
+        var spanEl = document.createElement(\'span\');
+        spanEl.id=\'tab_\' + String(tabid) + \'_reload\';
+        spanEl.innerHTML += "<a onClick=\'safe_reload_tab(" + tabid + ",this); return false;\' style=\'border:0;\' href=\'#\'><img style=\'height: 16px; width:16px; border:0;\' width=\'16\' height=\'16\' border=\'0\' id=\'reload_image_" + String(tabid) + "\' align=\'absmiddle\' src=\'/images/reload.png\'></a>";
+        labelEl.appendChild(spanEl);
+    }
+}
+
+(function() {
+    var Dom = YAHOO.util.Dom,
+        Event = YAHOO.util.Event;
+
+    Event.onDOMReady(function() {
+        tabView.on(\'beforeActiveIndexChange\', function(e) {
+                    if (e.newValue != actiontabindex) {
+                        load_tab_content(e.newValue);
+                        set_action_tab_to_loading();
+                    }
+
+                    var tabs = tabView.get(\'tabs\');
+
+                    var imageIds = [];
+                    for(var i=0;i<actiontabindex;i++) {
+                        add_reload_to_tab(tabs[i],i, \'none\');
+                        var imgId = YAHOO.util.Dom.get(\'reload_image_\' + String(i));
+                        if (imgId) {
+                            imageIds.push(imgId);
+                        }
+                        try {
+                         document.getElementById( taburis[i][0] ).contentDocument.body.scrollLeft  = 0;
+                        } catch (e) {
+
+                        }
+
+                    }
+                    for( var i=0;i<imageIds.length;i++) {
+                        if (i != e.newValue) {
+                            imageIds[i].style.display=\'none\';
+                        }
+                    }
+                    for( var i=0;i<imageIds.length;i++) {
+                        if (i == e.newValue) {
+                            imageIds[i].style.display=\'\';
+                        }
+                    }
+
+                });
+
+
+        var basicTab = new YAHOO.widget.Tab({
+            label: \'Basic Editor\',
+            active: true,
+            cacheData: true,
+            content: \'<iframe frameborder="0" border="0" name="basic" id="basic" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'"></iframe>\'
+        });
+        tabView.addTab(basicTab);
+        add_reload_to_tab(basicTab, 0, \'\');
+
+        /* XXX: If any of the following labels get translated, then the labels in
+         * etc/icontact_templates/Check/includes/EximConfig.UpdateSteps.html.tmpl
+         * should also be updated.
+         */
+        tabView.addTab( new YAHOO.widget.Tab({
+            label: \'Advanced Editor\',
+            cacheData: true,
+            content: \'<iframe frameborder="0" border="0" name="advanced" id="advanced" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'"></iframe>\'
+        }));
+
+        tabView.addTab( new YAHOO.widget.Tab({
+            label: \'Backup\',
+            cacheData: true,
+            content: \'<iframe frameborder="0" border="0" name="backup" id="backup-exim-config" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'"></iframe>\'
+        }));
+
+        tabView.addTab( new YAHOO.widget.Tab({
+            label: \'Restore\',
+            cacheData: true,
+            content: \'<iframe frameborder="0" border="0" name="restore" id="restore" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'"></iframe>\'
+        }));
+
+        tabView.addTab( new YAHOO.widget.Tab({
+            label: \'Reset\',
+            cacheData: true,
+            content: \'<iframe frameborder="0" border="0" name="reset" id="reset" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'"></iframe>\'
+        }));
+
+        var actionTab = new YAHOO.widget.Tab({
+            label: \'Actions\',
+            disabled: true,
+            cacheData: false,
+            content: \'<iframe frameborder="0" border="0" class="tabiframe" src="\' + CPANEL.icons.ajax_src + \'" name="tabaction" id="tabaction"></iframe>\'
+        });
+
+        actionTab.addClass(\'floatright\');
+        actionTab.setStyle(\'display\',\'none\');
+        tabView.addTab( actionTab );
+
+
+        tabView.appendTo(\'container\');
+
+        update_exim_configuration_check_tab();
+
+        window.setTimeout( function () { reload_tab(\'basic\') }, 100 ); // give the loading 100ms to render first
+    });
+})();
+</script>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'exim_configuration_manager','warn_linked_nodes'=>1,'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['css/tweaksettings_optimized.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/assets/skins/sam/tabview.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/js/exim_tabs_optimized.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/tabview-min.js' ]])],'extrastyle'=>'
+.confeditbox {
+    overflow: hidden;
+}
+
+.brickliststart li {
+    list-style: none;
+}
+
+.floatright {
+    float: right;
+}
+
+#rbl_table {
+    width: 100%;
+}
+
+#rbl_table th,
+#rbl_table td {
+    text-align: center;
+}
+
+tr.delete_rbl td {
+    font-style: italic;
+    color: graytext;
+}
+
+.CONFIG_autocompleter {
+    width: 280px;
+}
+
+.CONFIG_autocompleter input {
+    width: 256px;
+}
+
+.yui-skin-sam .yui-navset .yui-content,
+.yui-skin-sam .yui-navset .yui-navset-top .yui-content {
+    padding: 0;
+    background-color: #fff;
+}
+
+.yui-skin-sam .yui-ac-input {
+    position: static;
+    width: 20em;
+    vertical-align: middle;
+}
+
+.yui-skin-sam .yui-ac-container {
+    width: 20em;
+    left: 0px;
+}
+
+.yui-ac .yui-button {
+    vertical-align: middle;
+}
+
+.yui-ac .yui-button button {
+    background: url(/yui-gen/autocomplete/assets/img/ac-arrow-rt.png) center center no-repeat
+}
+
+.yui-ac .open .yui-button button {
+    background: url(/yui-gen/autocomplete/assets/img/ac-arrow-dn.png) center center no-repeat
+}
+
+.tabiframe {
+    min-height: 500px;
+    height: 50vh;
+    width: 100%;
+    border: 0;
+}
+
+.yui-content {
+    padding: 0px;
+    margin: -10px 0 0;
+}
+
+.yui-nav {
+    margin: 10px 0px;
+}
+
+*, ::before, ::after {
+    box-sizing: content-box;
+}
+
+.selected .warningtab a em,
+.selected .warningtab em {
+    background-color: #FFFC57;
+    color: #000;
+}
+
+.warningtab em,
+.warningtab a em {
+    background-color: #FFFEC2;
+    color: #000;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

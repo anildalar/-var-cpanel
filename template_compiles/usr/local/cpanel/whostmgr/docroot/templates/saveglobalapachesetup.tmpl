@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/saveglobalapachesetup.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'save_rc',0])){$output .= '
+<br />
+<p class="values">The following settings have been saved:
+<ul>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'saved',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;if ($stash->get(['ref',[$stash->get(['pair',0,'value',0])]])eq 'HASH'){$stash->set('value',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['pair',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'thispair'}=$_tt_value;if ($stash->get(['thispair',0,'value',0])){$output .= $stash->get(['value',0,'push',[$stash->get(['thispair',0,'key',0])]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('value',$stash->get(['value',0,'join',[', ' ]]))}elsif ($stash->get(['ref',[$stash->get(['pair',0,'value',0])]])eq 'ARRAY'){$stash->set('value',$stash->get(['pair',0,'value',0,'join',[', ' ]]))}else {$stash->set('value',$stash->get(['pair',0,'defined',['value' ]])? $stash->get(['pair',0,'value',0]): $stash->get(['ts_conf',0,$stash->get(['pair',0,'key',0]),0,'can_undef',0]))}$output .= '<li><b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'key',0]);&$_tt_filter($output)};$output .= '</b>: ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('value');&$_tt_filter($output)};$output .= '</li>
+ ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</ul>
+</p>
+<br />
+';if ($stash->get(['data',0,'rejects',0,'keys',0,'size',0])){$output .= '<p class="values">The following settings are invalid and were rejected:
+<ul>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'rejects',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '    <li><b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'key',0]);&$_tt_filter($output)};$output .= '</b>: ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['pair',0,'value',0]);&$_tt_filter($output)};$output .= '</li>
+
+    ';if ($stash->get(['data',0,'reject_reasons',0,'defined',[$stash->get(['pair',0,'key',0])]])){$output .= '        <ul><li>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'reject_reasons',0,$stash->get(['pair',0,'key',0]),0]);&$_tt_filter($output)};$output .= '</li></ul>
+    '}$output .= '    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</ul>
+</p>
+'}$output .= '<br />
+<p class="alert alert-info">For your changes to take effect, the Apache configuration must be rebuilt and Apache restarted.</p>
+<div>
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/rebuildhttpdconf">
+<input type="hidden" name="force" value="1" />
+<input class="btn btn-primary" type="submit" value="Rebuild Configuration and Restart Apache" />
+</form>
+</div>
+
+'}else {$output .= '
+<br />
+<p class="description">There was a problem saving your settings. Please check the error log (/usr/local/cpanel/logs/error_log) for more details.</p>
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','extrastyle'=>'
+.values {
+    margin-left: 20px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

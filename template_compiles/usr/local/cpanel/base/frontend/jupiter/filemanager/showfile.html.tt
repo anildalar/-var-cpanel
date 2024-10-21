@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/showfile.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<html>
+    <head>
+        <title>';$output .= $stash->get(['FORM',0,'file',0,'remove',[('' .'
+')],'remove',[('' .'
+')]]);$output .= ' - ';$output .= $stash->get(['locale',0,'maketext',['cPanel File Manager v3' ]]);$output .= '</title>
+        ';$output .= $context->include('filemanager/files_head.html.tt');$output .= '
+        <style> body { background: #fff; margin: 0 ; } </style>
+    </head>
+    <body>
+        <div style="margin: 0; padding: 0; float:right;" align="right">
+            <a href="javascript:top.window.close()" id="close">
+                <img src="close.jpg" border="0">
+            </a>
+        </div>
+        ';$output .= $stash->get(['Api2',0,'pre_exec',['Fileman','viewfile' ]]);$stash->set('api2_result_Fileman_viewfile',$stash->get(['Api2',0,'exec',['Fileman','viewfile',{'no_expvar'=>'1','file'=>$stash->get(['FORM',0,'item',['file' ]]),'dir'=>$stash->get(['FORM',0,'item',['dir' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['Fileman','viewfile' ]]);$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'CPERROR',0,'fileman',0])){$output .= '
+            <div id="viewfile_error">
+                ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'fileman',0,'html',0]);$output .= '
+            </div>
+        '}else {$output .= '
+            ';if ($stash->get(['api2_result_Fileman_viewfile',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_Fileman_viewfile');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <div id="file_info" style="padding: 0; margin: 0; border: 2px solid #ccc; background: #333333; color: #FFFFFF;font-weight:bold;">
+                        <h1>
+                            <img src="../mimeicons/';$output .= $stash->get(['hashref',0,'mimename',0]);$output .= '.png" align="absmiddle" alt="';$output .= $stash->get(['hashref',0,'mimetype',0]);$output .= '">
+                            <span>';$output .= $stash->get(['hashref',0,'file',0]);$output .= ' </span>
+                            <span style="font-size:14px;">( ';$output .= $stash->get(['hashref',0,'fileinfo',0]);$output .= ' )<span>
+                        </h1>
+                    </div>
+                    ';$output .= $stash->get(['hashref',0,'formatting_before',0]);$output .= $stash->get(['hashref',0,'contents',0]);$output .= $stash->get(['hashref',0,'formatting_after',0]);$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+        '}$output .= '
+    </body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,59 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/support/authorizesupport_popup/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('stylesheets',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/authorizesupport_popup/index.min.css' ]])]);$stash->set('scripts',[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/support/authorizesupport_popup/index.min.js' ]])]);$output .= do {my$output='';$output .= '
+
+<div class="whm-logo">
+    ';$output .= $stash->get(['Whostmgr',0,'find_file_and_insert',['/images/whm-logo.svg' ]]);$output .= '
+</div>
+<h1>';$output .= $stash->get(['locale',0,'maketext',['Support Access Request' ]]);$output .= '</h1>
+<hr>
+
+<!-- Initial view -->
+<form id="grant-access-form">
+    <div class="intro-text">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] Support is requesting temporary access to your server to better assist you with ticket number “[_1]”.',$stash->get(['data',0,'ticket_id',0])]]);$output .= '</p>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['You can revoke this access at any time with [asis,WHM]’s [asis,Grant cPanel Support Access] interface.' ]]);$output .= '</p>
+    </div>
+    <button type="submit" class="btn btn-primary" id="grant-access-button">
+        ';$output .= $stash->get(['locale',0,'maketext',['Grant Access' ]]);$output .= '
+    </button>
+</form>
+
+<!-- Progress view -->
+<div id="progress-view" style="display: none;">
+    <div id="grant-progress" class="progress-container">
+        <span class="progress-icon">
+            <span icon-state="default" class="fas fa-2x text-muted fa-check"></span>
+            <span icon-state="run"     class="fas fa-2x text-primary fa-spinner fa-spin"></span>
+            <span icon-state="done"    class="fas fa-2x text-success fa-check"></span>
+            <span icon-state="error"   class="fas fa-2x text-danger fa-times"></span>
+            <span icon-state="unknown" class="fas fa-2x text-info fa-question"></span>
+        </span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Authorizing [asis,cPanel] support to access this server …' ]]);$output .= '</span>
+    </div>
+    <div id="ssh-test-progress" class="progress-container">
+        <span class="progress-icon">
+            <span icon-state="default" class="fas fa-2x text-muted fa-check"></span>
+            <span icon-state="run"     class="fas fa-2x text-primary fa-spinner fa-spin"></span>
+            <span icon-state="done"    class="fas fa-2x text-success fa-check"></span>
+            <span icon-state="error"   class="fas fa-2x text-danger fa-times"></span>
+            <span icon-state="unknown" class="fas fa-2x text-info fa-question"></span>
+        </span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Starting [asis,SSH] connection testing …' ]]);$output .= '</span>
+    </div>
+    <div id="redirect-progress" class="progress-container">
+        <span class="progress-icon">
+            <span icon-state="default" class="fas fa-2x text-muted fa-check"></span>
+            <span icon-state="run"     class="fas fa-2x text-primary fa-spinner fa-spin"></span>
+            <span icon-state="done"    class="fas fa-2x text-success fa-check"></span>
+            <span icon-state="error"   class="fas fa-2x text-danger fa-times"></span>
+            <span icon-state="unknown" class="fas fa-2x text-info fa-question"></span>
+        </span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Transferring you to the [asis,cPanel Customer Portal] …' ]]);$output .= '</span>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['data',0,'json',0]);$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'skipbreadcrumb'=>1,'skipsupport'=>1,'skipheader'=>1,'hide_header'=>1,'hide_navigation'=>1,'hide_license_warnings'=>1,'scripts'=>$stash->get('scripts'),'stylesheets'=>$stash->get('stylesheets'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

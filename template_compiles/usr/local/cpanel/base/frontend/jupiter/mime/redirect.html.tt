@@ -1,0 +1,229 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/redirect.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';if ($stash->get(['FORM',0,'itemsperpage',0])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]))}if (!$stash->get(['FORM',0,'itemsperpage',0])||!$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],10)}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['A redirect allows you to make one domain redirect to another domain, either for a website or a specific web page. For example, create a redirect so that [output,strong,www.example.com] automatically redirects users to [output,strong,www.example.net]. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/Redirects','_blank','lnkRedirectsDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Add Redirect' ]]);$output .= '</h2>
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['A permanent redirect will notify the visitor’s browser to update any bookmarks that are linked to the page that is being redirected. Temporary redirects will not update the visitor’s bookmarks.' ]]);$output .= '
+        </p>
+
+        <form id="mainform" name="mainform" action="addredirect.html">
+            <div class="form-group">
+                <label for="ddlType">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="ddlType" name="type" class="form-control">
+                            <option value="permanent">';$output .= $stash->get(['locale',0,'maketext',['Permanent (301)' ]]);$output .= '</option>
+                            <option value="temp">';$output .= $stash->get(['locale',0,'maketext',['Temporary (302)' ]]);$output .= '</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="ddlDomains">
+                    https?://<span id="wwwtxt">(www.)?</span>
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="ddlDomains" name="domain" onchange="EnableDisableRadio();" class="form-control">
+                            <option selected value=".*">';$output .= $stash->get(['locale',0,'maketext',['** All Public Domains **' ]]);$output .= '</option>
+                            ';$stash->set('mail_domains',$stash->get(['execute',['Email','list_mail_domains' ]]));$output .= '                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_domains',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                                <option value="';$output .= $stash->get(['q',0,'domain',0]);$output .= '">';$output .= $stash->get(['q',0,'domain',0]);$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="urlpath">
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="input-group">
+                            <span class="input-group-addon">/</span>
+                            <input name="path" type="text" class="form-control" size="20" id="urlpath" />
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="url">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Redirects to' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="url" name="url" type="text" class="form-control" size="45" />
+                    </div>
+                    <div id="url_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    ';$output .= $stash->get(['locale',0,'maketext',['www. redirection:' ]]);$output .= '
+                </label>
+                <noscript>
+                    <style type="text/css">
+                        #radios{display:none;}
+                    </style>
+                    <div class="radio">
+                        <label>
+                        <input value="2" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'www.\';" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Only redirect with www.' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input value="0" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'(www.)?\';" checked="checked" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Redirect with or without www.' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input value="1" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'\';" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Do Not Redirect www.' ]]);$output .= '
+                        </label>
+                    </div>
+                </noscript>
+                <div id="radios">
+                    <div class="radio">
+                        <label>
+                        <input id="rbtnWithWWW" value="2" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'www.\';" disabled="disabled" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Only redirect with www.' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input id="rbtnOptionalWWW" value="0" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'(www.)?\';" checked="checked" disabled="disabled" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Redirect with or without www.' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                        <input id="rbtnWithoutWWW" value="1" type="radio" name="rdwww" onclick="document.getElementById(\'wwwtxt\').innerHTML=\'\';" disabled="disabled" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Do Not Redirect www.' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                    <input value="1" type="checkbox" name="wildcard" id="wildcard">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Wild Card Redirect' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="submit-button" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '">
+            </div>
+        </form>
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Note:' ]]);$output .= '</strong>
+        <ul>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Checking the [output,strong,Wild Card Redirect] Box will redirect all files within a directory to the same filename in the redirected directory.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['You cannot use a Wild Card Redirect to redirect your main domain to a different directory on your site.' ]]);$output .= '</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Current Redirects' ]]);$output .= '</h2>
+        <div class="search-panel">
+            <form method="get">
+                <div class="row">
+                    <div class="col-xs-10 col-sm-4">
+                        <input id="txtSearch" type="text" class="form-control" size="15" name="searchregex" value="';$output .= $stash->get(['FORM',0,'searchregex',0]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '">
+                    </div>
+                    <div class="col-xs-2 col-sm-8">
+                        <input id="btnSearchGo" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table class="sortable table table-striped responsive-table" id="redirecttbl">
+            <thead>
+                <tr>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Regular Expression' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Redirect [asis,URL]' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['[asis,HTTP] Status Code' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Match www.' ]]);$output .= '</th>
+                     <th>';$output .= $stash->get(['locale',0,'maketext',['Wildcard' ]]);$output .= '</th>
+                     <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+
+            ';$stash->set('redirects',$stash->get(['execute',['Mime','list_redirects',{'regex'=>$stash->get(['RAW_FORM',['searchregex' ]]),'api.paginate_start'=>$stash->get(['FORM',0,'api2_paginate_start',0]),'api.paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])}]]));$output .= '
+
+            ';if (!$stash->get(['redirects',0,'status',0])|| $stash->get(['redirects',0,'data',0,'size',0])eq 0){$output .= '
+            <tr class="info empty-row">
+                <td colspan="7">';$output .= $stash->get(['locale',0,'maketext',['There are no redirects configured for your account.' ]]);$output .= '</td>
+            </tr>
+            '}else {$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['redirects',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '" class="long-column">';$output .= $stash->get(['q',0,'displaydomain',0,'html',0,'replace',['\.','<wbr>.' ]]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '" class="long-column">
+                    ';if (!$stash->get(['q',0,'kind',0,'lower',0,'match',['redirectmatch' ]])){$output .= '
+                        <a href="http://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'urldomain',0]);&$_tt_filter($output)};$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'source',0]);&$_tt_filter($output)};$output .= '" target="_blank">
+                            ';$output .= $stash->get(['q',0,'displaysourceurl',0,'html',0,'replace',['\.','<wbr>.' ]]);$output .= '
+                        </a>
+                    '}$output .= '
+                    </td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '" class="long-column">
+                    ';if ($stash->get(['q',0,'kind',0,'lower',0,'match',['redirectmatch' ]])){$output .= '
+                        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'source',0]);&$_tt_filter($output)};$output .= '
+                    '}$output .= '
+                    </td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Redirect [asis,URL]' ]]);$output .= '" class="long-column">';$output .= $stash->get(['q',0,'destination',0,'html',0,'replace',['\.','<wbr>.' ]]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,HTTP] Status Code' ]]);$output .= '" class="long-column">';$output .= $stash->get(['q',0,'statuscode',0,'html',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '">';$output .= $stash->get(['q',0,'type',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Match www.' ]]);$output .= '">';if (($stash->get(['q',0,'matchwww',0]))){$output .= '<span class="glyphicon glyphicon-ok"></span>'}else {$output .= '&nbsp;'}$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Wildcard' ]]);$output .= '">';if (($stash->get(['q',0,'wildcard',0]))){$output .= '<span class="glyphicon glyphicon-ok"></span>'}else {$output .= '&nbsp;'}$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <a class="btn btn-link" href="delredirectconfirm.html?domain=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'domain',0]);&$_tt_filter($output)};$output .= '&path=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'source',0]);&$_tt_filter($output)};$output .= '&docroot=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'docroot',0]);&$_tt_filter($output)};$output .= '&args=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'arguments',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            '}$output .= '
+        </table>
+        ';$output .= $context->process('_assets/paginate.html.tt',{'uapi_result'=>$stash->get('redirects')});$output .= '
+   </div>
+</div>
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'app_key'=>'redirects','content',$output })};$output .= '
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n    function EnableDisableRadio() {\n        if(document.mainform.domain.selectedIndex >= 1) {\n            document.mainform.rdwww[0].disabled = false;\n            document.mainform.rdwww[1].disabled = false;\n            document.mainform.rdwww[2].disabled = false;\n        } else {\n            document.mainform.rdwww[0].disabled = true;\n            document.mainform.rdwww[1].disabled = true;\n            document.mainform.rdwww[2].disabled = true;\n        }\n        return true;\n    }\n\n    var check_url = function () {\n        url_value = document.getElementById('url').value;\n\n        // original validation check ( must have no leading white space, must contain leading [no white space]:// )\n        if ( /^\\S+[:][/][/]/.test(url_value) ) return true;\n        return false;\n    }\n\n    var init = function() {\n        // URL validation (must have a value and begin with a protocol identifier)\n        var validation = new CPANEL.validate.validator(\"";$output .= $stash->get(['locale',0,'maketext',['Redirects' ]]);$output .= '");
+        validation.add(\'url\', \'min_length(%input%, 1)\', \'';$output .= $stash->get(['locale',0,'maketext',['The “[_1]” field cannot be left blank.',$stash->get(['locale',0,'maketext',['Redirects to' ]])]]);$output .= '\');
+        validation.add(\'url\', check_url, \'';$output .= $stash->get(['locale',0,'maketext',['Redirect must begin with a protocol, e.g., http://' ]]);$output .= '\');
+
+        validation.attach();
+
+        CPANEL.validate.attach_to_form("submit-button", validation);
+
+    };
+
+    YAHOO.util.Event.onDOMReady(init);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<style type=\"text/css\">\n.search-panel {\n    margin-bottom: 20px;\n}\n\n.long-column {\n    max-width: 350px;\n    word-wrap: break-word;\n}\n\n\@media (min-width: 500px) and (max-width: 600px) {\n    .long-column {\n        max-width: 475px;\n    }\n}\n\n\@media (min-width: 601px) and (max-width: 767px) {\n    .long-column {\n        max-width: 80px;\n    }\n}\n\n\@media (min-width: 768px) and (max-width: 991px) {\n    .long-column {\n        max-width: 120px;\n    }\n}\n\n\@media (min-width: 992px) and (max-width: 1199px) {\n    .long-column {\n        max-width: 195px;\n    }\n}\n\n\@media (min-width: 1200px) {\n    .long-column {\n        max-width: 265px;\n    }\n}\n</style>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

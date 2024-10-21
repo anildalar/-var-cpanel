@@ -1,0 +1,414 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['ExpVar',0,'expand',['$haspostgres' ]])){$output .= '
+
+';$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/topmysql.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['FORM',0,'item',['itemsperpage' ]])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'item',['itemsperpage' ]]))}if ((!($stash->get(['FORM',0,'item',['itemsperpage' ]]))||!($stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$stash->set('dbprefix',$stash->get(['ExpVar',0,'expand',['$dbprefix' ]]));$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('database_max_length',63 - $stash->get(['dbownerprefix',0,'length',0]));$stash->set('user_max_length',63 - $stash->get(['dbownerprefix',0,'length',0]));$output .= $stash->get(['Api2',0,'pre_exec',['Postgres','listdbs' ]]);$stash->set('databases',$stash->get(['Api2',0,'exec',['Postgres','listdbs',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]]),'api2_paginate'=>'1','regex'=>($stash->get(['RAW_FORM',0,'item',['searchregex' ]])),'api2_paginate_start'=>($stash->get(['FORM',0,'item',['api2_paginate_start' ]]))}]]));$output .= $stash->get(['Api2',0,'post_exec',['Postgres','listdbs' ]]);$output .= $stash->get(['Api2',0,'pre_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('required_strength_resp',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'postgres' }]]));$output .= $stash->get(['Api2',0,'post_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('required_strength',$stash->get(['required_strength_resp',0,0,0,'strength',0]));$output .= $stash->get(['Api2',0,'pre_exec',['Postgres','listusers' ]]);$stash->set('users',$stash->get(['Api2',0,'exec',['Postgres','listusers',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Postgres','listusers' ]]);$output .= $context->process('_assets/resource_usage_macro.html.tt');$stash->set('errors',[]);$stash->set('users',{});$stash->set('full_database_list',{});$output .= '
+
+';if ($stash->get(['ExpVar',0,'expand',['$pgrunning' ]])){$output .= '
+    ';$stash->set('full_database_list',$stash->get(['execute',['Postgresql','list_databases',{'api.columns_0'=>'database' }]]));$stash->set('users',$stash->get(['execute',['Postgresql','list_users' ]]));if (!$stash->get(['full_database_list',0,'status',0])){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['full_database_list',0,'errors',0])]]))}if (!$stash->get(['users',0,'status',0])){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['users_list',0,'errors',0])]]))}$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+'}else {$output .= '
+';$stash->set('js_code','');$output .= '
+'}$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+
+<div class="body-content">
+    <p id="descIntro" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['PostgreSQL Databases allow you to store a large amount of information in an easy to access manner. The databases themselves are not easily read by humans. PostgreSQL databases are required by many web applications including some bulletin boards, content management systems, and others. To use a database, you’ll need to create it. Only PostgreSQL Users (different than mail or other users) that have privileges to access a database can read from or write to that database.' ]]);$output .= '
+    </p>
+    <a id="postgresDatabaseJumplocation"></a>
+    <p class="jump">
+        <img src="../images/arrow-down.gif" alt="jump-down" class="jump-down" />
+        <a id="lnkJumpToUsers" href="#postgresUserJumplocation">';$output .= $stash->get(['locale',0,'maketext',['Jump to PostgreSQL Users' ]]);$output .= '</a>
+    </p>
+
+    <a name="psqldbs" id="psqldbs"></a>
+
+    ';if (!$stash->get(['ExpVar',0,'expand',['$pgrunning' ]])){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['The PostgreSQL server is currently offline.' ]]);$output .= '
+        </div>
+    '}else {$output .= '
+
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'item',['postgres' ]])){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'item',['postgres' ],'html',0]);$output .= '
+        </div>
+    '}$output .= '
+
+    ';if ($stash->get(['errors',0,'size',0])){$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('errors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+
+
+        <div class="section">
+            <h2 id="hdrCreateNew">';$output .= $stash->get(['locale',0,'maketext',['Create New Database' ]]);$output .= '</h2>
+
+        ';$stash->set('resource_usage_key','postgresqldatabases');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');if (!$stash->get('resource_usage_limits')||!$stash->get(['resource_usage_limits',0,'is_maxed',0])){$output .= '
+
+
+            <form method="post" action="addbs.html" name="mainform" id="mainform">
+                <div class="form-group">
+                    <label for="dbname">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Database Name' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            ';if ($stash->get('dbownerprefix')){$output .= '
+                            <div class="input-group">
+                                <span id="dbnameUserPrefix" class="input-group-addon">';$output .= $stash->get('dbownerprefix');$output .= '</span>
+                                <input type="text" class="form-control" name="db" id="dbname" maxlength="';$output .= $stash->get('database_max_length');$output .= '" />
+                            </div>
+                            '}else {$output .= '
+                            <input type="text" class="form-control" name="db" id="dbname" maxlength="';$output .= $stash->get('database_max_length');$output .= '" />
+                            '}$output .= '
+                        </div>
+                        <div id="dbname_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="submit_dbname" value="';$output .= $stash->get(['locale',0,'maketext',['Create Database' ]]);$output .= '" class="btn btn-primary" />
+                </div>
+            </form>
+
+          '}$output .= '
+        </div>
+
+    <div class="section">
+        <h2 id="hdrCurrentDbs">';$output .= $stash->get(['locale',0,'maketext',['Current Databases' ]]);$output .= '</h2>
+        <div class="search-panel">
+            <form method="get">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <input id="txtSearchRegex" type="text" class="form-control" size="15" name="searchregex" value="';$output .= $stash->get(['FORM',0,'item',['searchregex' ]]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"/>
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="submit" id="submit-search" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                            <input type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]);$output .= '" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <table id="sqltbl" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Privileged Users' ]]);$output .= '</th>
+                    <th class="sorttable_nosort" scope="col" colspan="2">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['databases',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('databases');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'database'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>';$output .= $stash->get(['database',0,'db',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['database',0,'sizemeg',0,'html',0]);$output .= ' MB</td>
+                        <td>
+                            <table class="sql">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['database',0,'item',['userlist' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'allowed_users'}=$_tt_value;$output .= '
+                                <tr>
+                                    <td class="nobrd">
+                                        <a href="deluserfromdbconfirm.html?user=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['allowed_users',0,'user',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&amp;db=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['allowed_users',0,'db',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '">
+                                            ';$output .= $stash->get(['allowed_users',0,'user',0,'html',0]);$output .= '
+                                            <span class="glyphicon glyphicon-trash"></span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </table>
+                        </td>
+                        <td class="actions">
+                            <a class="btn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Rename this database.' ]]);$output .= '" href="javascript:void(0)" onclick=\'SQLUI.show_rename_form("db",this,';$output .= $stash->get(['database',0,'db',0,'json',0,'html',0]);$output .= ')\'>
+                                <span class="glyphicon glyphicon-pencil"></span> ';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '
+                            </a>
+                            <a class="btn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Delete this database.' ]]);$output .= '" href="deldbconfirm.html?db=';$output .= $stash->get(['database',0,'db',0,'uri',0]);$output .= '">
+                                <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </a>
+                        </td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td colspan="4" class="errors">
+                    ';if ($stash->get(['FORM',0,'item',['searchregex' ]])){$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['No databases found.' ]]);$output .= '
+                    '}else {$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no databases associated with your account.' ]]);$output .= '
+                    '}$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+
+        ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+    </div><!-- end section -->
+    <a id="postgresUserJumplocation"></a>
+    <p class="jump">
+        <img src="../images/arrow-up.gif" alt="jump-up" class="jump-up" />
+        <a href="#postgresDatabaseJumplocation">';$output .= $stash->get(['locale',0,'maketext',['Jump to PostgreSQL Databases' ]]);$output .= '</a>
+    </p>
+    <h2 id="hdrUsers">';$output .= $stash->get(['locale',0,'maketext',['PostgreSQL Users' ]]);$output .= '</h2>
+    <div class="section">
+        <h2 id="hdrUsersAdd">
+            ';$output .= $stash->get(['locale',0,'maketext',['Add New User' ]]);$output .= '
+        </h2>
+        <form method="post" action="addusers.html" name="userform" id="userform">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+            <input type="hidden" name="db" value="';$output .= $stash->get(['FORM',0,'item',['db' ]]);$output .= '" />
+            <div class="form-group">
+                <label for="user">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('dbownerprefix')){$output .= '
+                            <div id="userPrefix" class="input-group">
+                                <span class="input-group-addon">
+                                    ';$output .= $stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]);$output .= '
+                                </span>
+                                <input type="text" class="form-control" size="15" name="user" id="user" />
+                            </div>
+                        '}else {$output .= '
+                            <input type="text" class="form-control" size="15" name="user" id="user" />
+                        '}$output .= '
+                    </div>
+                    <div id="user_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input size="15" type="password" autocomplete=\'off\' name="pass" id="password" class="form-control"/>
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' size="15" name="pass2" id="password2" class="form-control"/>
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                    <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" id="create_strong_password"
+                                class="btn btn-default"
+                                value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '"
+                                tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create User' ]]);$output .= '"
+                       class="btn btn-primary"
+                       id="submit_new_user" />
+            </div>
+        </form>
+    </div>
+
+    ';if ($stash->get(['users',0,'data',0,'size',0])> 0 && $stash->get(['full_database_list',0,'data',0,'size',0])> 0){$output .= '
+        <div class="section">
+            <h2 id="hdrUsersAddToDb">';$output .= $stash->get(['locale',0,'maketext',['Add User To Database' ]]);$output .= '</h2>
+            <form method="post" action="addusertodb.html">
+                <div class="form-group">
+                    <label for="list_users">
+                        ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= ':
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="user" class="form-control" id="list_users">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['users',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$stash->set('safe_user',$stash->get(['user',0,'html',0]));$output .= '
+                                <option value="';$output .= $stash->get('safe_user');$output .= '">';$output .= $stash->get('safe_user');$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="list_dbs">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= ':
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <select name="db" class="form-control" id="list_dbs">
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['full_database_list',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'database'}=$_tt_value;$stash->set('safe_database',$stash->get(['database',0,'database',0,'html',0]));$output .= '
+                                    <option value="';$output .= $stash->get('safe_database');$output .= '">';$output .= $stash->get('safe_database');$output .= '</option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" id="assign" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" />
+                </div>
+            </form>
+        </div>
+    '}$output .= '
+
+
+    <div class="section">
+        <div id="sync_grants_notices_id"></div>
+        <h2 id="current_users_id">';$output .= $stash->get(['locale',0,'maketext',['Current Users' ]]);$output .= '</h2>
+
+        <div id="sync_grants_action">
+            <button class="btn btn-default" id="run-button">
+                <span id="spinner"><img src="';$output .= $stash->get(['theme_magic_url',['/images/report-spinner.gif' ]]);$output .= '" height="16" width="16" alt="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '" /></span>
+                <span id="spinner-text">';$output .= $stash->get(['locale',0,'maketext',['Synchronize Grants' ]]);$output .= '</span>
+            </button>
+            <span class="glyphicon glyphicon-info-sign" id="syncgrants-info"
+                onclick="CPANEL.ajax.toggleToolTip(this,LOCALE.maketext(\'Synchronize Grants\'));"
+                title="';$output .= $stash->get(['locale',0,'maketext',['This version of PostgreSQL is ANSI SQL-92 compliant and does not support recursive grants, wild-card grants or future grants.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If you use phpPgAdmin, or manually create new tables, and you want multiple PostgreSQL Users to be able to access your PostgreSQL Tables you will need to synchronize the grants after adding tables to your PostgreSQL Database(s).' ]]);$output .= '"></span>
+        </div>
+    </div>
+
+    <table class="sortable table table-striped">
+        <thead>
+              <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Users' ]]);$output .= '</th>
+                <th class="sorttable_nosort">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                </th>
+              </tr>
+        </thead>
+        <tbody>
+        ';if ($stash->get(['users',0,'data',0,'size',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['users',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '
+            <tr class="row-';$output .= $stash->get(['loop',0,'index',0])% 2 eq 0 ? 'even' : 'odd';$output .= '">
+                <td>';$output .= $stash->get(['user',0,'html',0]);$output .= '</td>
+                <td>
+                    <a class="btn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Give this user a new password.' ]]);$output .= '" href="changepasswd.html?user=';$output .= $stash->get(['user',0,'uri',0]);$output .= '">
+                        <span class="fas fa-key"></span>';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                    </a>
+                    <a class="btn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Rename this user.' ]]);$output .= '" href="javascript:void(0)" onclick=\'SQLUI.show_rename_form("user",this,';$output .= $stash->get(['user',0,'json',0]);$output .= ')\'>
+                        <span class="glyphicon glyphicon-pencil"></span>';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '
+                    </a>
+                    <a class="btn btn-link" title="';$output .= $stash->get(['locale',0,'maketext',['Delete this user.' ]]);$output .= '" href="deluserconfirm.html?user=';$output .= $stash->get(['user',0,'uri',0]);$output .= '">
+                        <span class="glyphicon glyphicon-trash"></span>';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                    </a>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+        </tbody>
+    </table>
+</div>
+
+';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+
+';$output .= $context->process('sqlui.tmpl',{'db_engine'=>'postgresql','rename_url'=>'changepasswd.html' });$output .= '
+<style type="text/css">
+    .rename-dialog {
+        width: 500px;
+    }
+
+    .action-link {
+        white-space: normal;
+        display: inline-block;
+        margin: 0 5px;
+        text-align: center;
+    }
+
+    td.actions {
+        white-space: nowrap;
+    }
+</style>
+
+'}$output .= '
+
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_databases','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'page_stylesheets'=>['css2-min/psql/index.css' ],'page_scripts'=>['libraries/jquery/current/jquery.js','js2-min/psql/index.js' ],'content',$output })};$output .= '
+
+'}else {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/topmysql.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+';$output .= $stash->get(['locale',0,'maketext',['Postgres is not installed on this server.' ]]);$output .= '</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_databases','include_cjt'=>1,'page_stylesheets'=>['css2-min/psql/index.css' ],'content',$output })};$output .= '
+'}$output .= '
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+        var REQUIRED_PASSWORD_STRENGTH = ';$output .= $stash->get(['required_strength',0,'json',0]);$output .= ' || 5;
+        var max_length = ';$output .= $stash->get(['user_max_length',0,'json',0]);$output .= ';
+        var db_max_length = ';$output .= $stash->get(['database_max_length',0,'json',0]);$output .= ';
+
+        ';if (!($stash->get(['CPANEL',0,'CPVAR',0,'item',['statsbar_postgresqldatabases_maxed' ]]))){$output .= '
+        /**
+         * Initialize the validation for the database form
+         */
+        var init_newdb_validation = function() {
+            var dbname_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['New Database' ]]);$output .= '");
+
+            dbname_validator.add_thrower( "dbname", function(el) {
+                return CPANEL.sql.verify_postgresql_database_name(el.value)
+            } );
+
+            dbname_validator.attach();
+
+            CPANEL.validate.attach_to_form("submit_dbname", dbname_validator);
+        };
+        '}$output .= '
+
+        /**
+         * Initialize the user validation.
+         */
+        var init_user_validation = function() {
+            var user_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '");
+            user_validator.add("user", "sql_alphanumeric", "';$output .= $stash->get(['locale',0,'maketext',['Username must be alphanumeric characters.' ]]);$output .= "\");\n            user_validator.add(\"user\", function () {\n                   var user = document.getElementById('user').value;\n                   return (!(/^\\d/.test(user)));\n                }, \"";$output .= $stash->get(['locale',0,'maketext',['Entry cannot begin with a number.' ]]);$output .= "\");\n            user_validator.add(\"user\", function () {\n                   var user = document.getElementById('user').value;\n                   return (!(/\\_\$/.test(user)));\n                }, \"";$output .= $stash->get(['locale',0,'maketext',['Entry cannot end with a trailing underscore.' ]]);$output .= '");
+
+            user_validator.add("user", "max_length(%input%, " + max_length + ")", LOCALE.maketext(\'Username cannot be longer than [quant,_1,character,characters].\', max_length) );
+            user_validator.attach();
+
+            var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+            password_validators.push(user_validator);
+            CPANEL.validate.attach_to_form("submit_new_user", password_validators);
+        };
+
+        ';if (!($stash->get(['CPANEL',0,'CPVAR',0,'item',['statsbar_postgresqldatabases_maxed' ]]))){$output .= '
+        YAHOO.util.Event.onDOMReady(init_newdb_validation);
+        '}$output .= '
+        YAHOO.util.Event.onDOMReady(init_user_validation);
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

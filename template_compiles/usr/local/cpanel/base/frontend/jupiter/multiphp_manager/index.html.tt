@@ -1,0 +1,32 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/multiphp_manager/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('EasyApache',$context->plugin('EasyApache'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('system_php_data',$stash->get(['Uapi',0,'exec',['LangPHP','php_get_system_default_version',{}]]));$stash->set('php_versions_data',$stash->get(['Uapi',0,'exec',['LangPHP','php_get_installed_versions',{}]]));$stash->set('vhosts_data',$stash->get(['Uapi',0,'exec',['LangPHP','php_get_vhost_versions',{'api.sort_column'=>'vhost','api.paginate_start'=>1,'api.paginate_size'=>10,'api.normalize'=>1 }]]));$stash->set('ea_version',$stash->get(['EasyApache',0,'get_ea_version',0]));$output .= '
+
+
+';$output .= do {my$output='';if ($stash->get('ea_version')>= 4){$output .= '<div class="body-content">
+    <div ng-controller="applicationController">
+        <!-- NOTE: leave the alert-group in single quotes -->
+        <cp-alert-list alert-group="\'multiphpManager\'"></cp-alert-list>
+
+        <div id="viewContent"
+             class="ng-cloak"
+             ng-view
+             ng-cloak></div>
+    </div>
+ </div>
+
+<script type="text/javascript">
+    PAGE.versionListData = ';$output .= $stash->get(['php_versions_data',0,'json',0]);$output .= ';
+    PAGE.vhostListData = ';$output .= $stash->get(['vhosts_data',0,'json',0]);$output .= ';
+    PAGE.systemPHPData = ';$output .= $stash->get(['system_php_data',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+'}else {$output .= '<div class="body-content">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['This application only works with [asis,EasyApache4]. Contact your administrator to upgrade to [asis,EasyApache4].' ]]);$output .= '
+        </div>
+    </div>
+</div>
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'multiphp_manager','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>['multiphp_manager/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

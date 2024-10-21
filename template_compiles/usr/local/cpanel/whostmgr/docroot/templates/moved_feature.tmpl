@@ -1,0 +1,16 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/moved_feature.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$stash->set('newFeatureName',$stash->get(['data',0,'newFeature',0]));$stash->set('redirectDelay',15);$stash->set('redirectTarget',$stash->get(['data',0,'redirectTarget',0]));$output .= '
+<meta http-equiv="refresh" content="';$output .= $stash->get('redirectDelay');$output .= ';';$output .= $stash->get('redirectTarget');$output .= '" />
+
+<div class="alert alert-info">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="alert-message">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature and its functionality have been merged with “[output,strong,_1].” We will remove this page in a future version.',$stash->get('newFeatureName')]]);$output .= '
+        </p>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['If you are not redirected in [_1] seconds, please [output,url,_2,click this link]',$stash->get('redirectDelay'),$stash->get('redirectTarget')]]);$output .= '
+        </p>
+    </div>
+</div>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

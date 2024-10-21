@@ -1,0 +1,143 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/hulkd/directives/countryCodesTable.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <quick-filters title="';$output .= $stash->get(['locale',0,'maketext',['Filter:' ]]);$output .= '" active="meta.quickFilterValue" on-filter-change="quickFilterUpdated()">
+              <quick-filter-item value="all">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</quick-filter-item>
+              <quick-filter-item value="{{ COUNTRY_CONSTANTS.WHITELISTED }}">';$output .= $stash->get(['locale',0,'maketext',['Whitelisted' ]]);$output .= '</quick-filter-item>
+              <quick-filter-item value="{{ COUNTRY_CONSTANTS.BLACKLISTED }}">';$output .= $stash->get(['locale',0,'maketext',['Blacklisted' ]]);$output .= '</quick-filter-item>
+              <quick-filter-item value="{{ COUNTRY_CONSTANTS.UNLISTED }}">';$output .= $stash->get(['locale',0,'maketext',['Not Specified' ]]);$output .= '</quick-filter-item>
+            </quick-filters>
+        </div>
+    </div>
+
+    <table id="countries_table" class="table table-striped" ng-class="{\'table-overlay\':countriesUpdating}">
+        <thead>
+            <tr>
+                <th class="mass_edit_checkbox">
+                    <input type="checkbox"
+                        id="countries_select_all_checkbox"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Click to select all countries.' ]]);$output .= '"
+                        ng-checked="allSelected()"
+                        ng-click="toggleSelectAll()">
+                </th>
+                <th class="name_column">
+                    <span toggle-sort id="sortName" onsort="sortList" sort-meta="meta" sort-field="name">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Country Name' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="status_header">';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+                <th class="gear_column">
+                    <span class="dropdown" uib-dropdown>
+                    <a href class="dropdown-toggle" uib-dropdown-toggle >
+                      <span class="fas fa-cog fa-lg"></span>
+                    </a>
+                    <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                        <li>
+                            <a href
+                                class="dropdown-toggle"
+                                ng-class="{disabled: allSelected()}"
+                                ng-click="selectAll();">';$output .= $stash->get(['locale',0,'maketext',['Select All' ]]);$output .= '</a>
+                        </li>
+                        <li>
+                            <a href
+                                class="dropdown-toggle"
+                                ng-class="{disabled:selectedItems.length === 0}"
+                                ng-click="deselectAll();">';$output .= $stash->get(['locale',0,'maketext',['Clear Selection' ]]);$output .= '</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href
+                                class="dropdown-toggle"
+                                ng-class="{disabled:countriesUpdating || selectedItems.length === 0}"
+                                ng-click="whitelistCountries(selectedItems);">';$output .= $stash->get(['locale',0,'maketext',['Whitelist Selected Countries' ]]);$output .= '</a>
+                        </li>
+                        <li>
+                            <a href
+                                class="dropdown-toggle"
+                                ng-class="{disabled:countriesUpdating || selectedItems.length === 0}"
+                                ng-click="confirm_country_blacklisting();">';$output .= $stash->get(['locale',0,'maketext',['Blacklist Selected Countries' ]]);$output .= '</a>
+                        </li>
+                        <li>
+                            <a href
+                                class="dropdown-toggle"
+                                ng-class="{disabled:countriesUpdating || selectedItems.length === 0}"
+                                ng-click="unlistCountries(selectedItems);">';$output .= $stash->get(['locale',0,'maketext',['Set Selected to “Not Specified”' ]]);$output .= '</a>
+                        </li>
+                    </ul>
+                  </span>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="info empty-row" ng-if="loading || items.length === 0" >
+                <td colspan="4">
+                    <i ng-show="loading" class="fas fa-spinner fa-spin"></i>
+                    <span ng-show="loading">';$output .= $stash->get(['locale',0,'maketext',['Loading countries data …' ]]);$output .= '</span>
+                    <span ng-show="!loading && items.length === 0" >';$output .= $stash->get(['locale',0,'maketext',['The countries list is empty.' ]]);$output .= '</span>
+                </td>
+            </tr>
+            <tr ng-repeat="item in filteredList" class="no-animate" 
+                ng-class="{success:item.status === COUNTRY_CONSTANTS.WHITELISTED,danger:item.status === COUNTRY_CONSTANTS.BLACKLISTED}">
+                <td class="mass_edit_checkbox">
+                    <input type="checkbox"
+                        id="{{ :: item.code}}_checked"
+                        class="countries_select_item"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Click to select “[_1]”.','{{ :: item.name}}' ]]);$output .= '"
+                        ng-checked="exists(item.code, selectedItems)"
+                        ng-click="toggleSelect(item.code, selectedItems)">
+                </td>
+                <td class="name_column">{{ :: item.name}} ({{ :: item.code}})</td>
+                <td>
+                    <div class="radio">
+                        <label for="item{{ :: item.code}}_statusWhitelisted">
+                            <input
+                                type="radio"
+                                name="item{{ :: item.code}}_status"
+                                id="item{{ :: item.code}}_statusWhitelisted"
+                                ng-model="item.status"
+                                value="{{ :: COUNTRY_CONSTANTS.WHITELISTED }}"
+                                ng-disabled="countriesUpdating"
+                                ng-change="countriesUpdated()" >
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Whitelisted' ]]);$output .= '</span>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label for="item{{ :: item.code}}_statusNone">
+                            <input
+                                type="radio"
+                                name="item{{ :: item.code}}_status"
+                                id="item{{ :: item.code}}_statusNone"
+                                ng-model="item.status"
+                                value="{{ :: COUNTRY_CONSTANTS.UNLISTED }}"
+                                ng-disabled="countriesUpdating"
+                                ng-change="countriesUpdated()"  >
+                            <span><em>';$output .= $stash->get(['locale',0,'maketext',['Not Specified' ]]);$output .= '</em></span>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label for="item{{ :: item.code}}_statusBlacklisted">
+                            <input
+                                type="radio"
+                                name="item{{ :: item.code}}_status"
+                                id="item{{ :: item.code}}_statusBlacklisted"
+                                ng-model="item.status"
+                                value="{{ :: COUNTRY_CONSTANTS.BLACKLISTED }}"
+                                ng-disabled="countriesUpdating"
+                                ng-change="countriesUpdated()"  >
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Blacklisted' ]]);$output .= '</span>
+                        </label>
+                    </div>
+                </td>
+                <td class="gear_column"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

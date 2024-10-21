@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/view_apache_vhost_tls.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$stash->set('pem_height',15);$stash->set('parse_height',15);$output .= '
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Website [asis,SSL]/[asis,TLS] Resources' ]]);$output .= '</h2>
+<div>
+    <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Website: [_1]',$stash->get(['data',0,'vhost',0,'html',0])]]);$output .= '</span>
+</div>
+<div>
+    <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['User: [_1]',$stash->get(['data',0,'user',0,'html',0])]]);$output .= '</span>
+</div>
+
+';if ($stash->get(['data',0,'certificates',0])){$output .= '    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'certificates',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cert'}=$_tt_value;$output .= '        <div class="cert-label">
+            ';if ($stash->get(['data',0,'certificates',0,'size',0])> 1){$output .= '
+                <label for="cert';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Certificate #[numf,_1]',1 + $stash->get(['loop',0,'index',0])]]);$output .= ':</label>
+            '}else {$output .= '                <label for="cert';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Certificate' ]]);$output .= ':</label>
+            '}$output .= '        </div>
+        <div class="cert-parse">
+            <textarea id="cert';$output .= $stash->get(['loop',0,'index',0]);$output .= '" readonly rows="';$output .= $stash->get('pem_height');$output .= '" cols="';$output .= 1 + $stash->get(['data',0,'max_line_length_cr',[$stash->get(['cert',0,'pem',0])]]);$output .= '">';$output .= $stash->get(['cert',0,'pem',0,'html',0]);$output .= '</textarea>
+            <textarea readonly rows="';$output .= $stash->get('parse_height');$output .= '" cols="';$output .= 1 + $stash->get(['data',0,'max_line_length_cr',[$stash->get(['cert',0,'openssl_parse',0])]]);$output .= '">';$output .= $stash->get(['cert',0,'openssl_parse',0,'html',0]);$output .= '</textarea>
+        </div>
+
+        ';if ($stash->get(['loop',0,'index',0])eq 0){$output .= '            <div class="key-label">
+                <label for="key">';$output .= $stash->get(['locale',0,'maketext',['Key' ]]);$output .= ':</label>
+            </div>
+            <div class="key-parse">
+                <textarea id="key" readonly rows="';$output .= $stash->get('pem_height');$output .= '" cols="';$output .= 1 + $stash->get(['data',0,'max_line_length_cr',[$stash->get(['data',0,'key',0])]]);$output .= '">';$output .= $stash->get(['data',0,'key',0,'html',0]);$output .= '</textarea>
+                <textarea readonly rows="';$output .= $stash->get('parse_height');$output .= '" cols="';$output .= 1 + $stash->get(['data',0,'max_line_length_cr',[$stash->get(['data',0,'key_parse',0])]]);$output .= '">';$output .= $stash->get(['data',0,'key_parse',0,'html',0]);$output .= '</textarea>
+            </div>
+        '}$output .= '    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '    <h5>';$output .= $stash->get(['locale',0,'maketext',['No [asis,SSL]/[asis,TLS] resources exist on this system for a website named “[_1]”.',$stash->get(['data',0,'vhost',0,'html',0])]]);$output .= '</h5>
+'}$output .= '
+<div class="return-link">
+<b>[</b> <a href="sslmanager">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a><b> ]</b>
+</div>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts2/sslmanager','extrastyle'=>'
+textarea {
+    font-family: monospace;
+}
+
+.key-label,
+.cert-label {
+    margin-top: 20px;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

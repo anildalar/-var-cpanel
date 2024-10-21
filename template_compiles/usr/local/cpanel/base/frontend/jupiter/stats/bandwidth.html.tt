@@ -1,0 +1,231 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/bandwidth.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$stash->set('CPDate',$context->plugin('CPDate'));$stash->set('CPMath',$context->plugin('CPMath'));$output .= $context->process('_assets/resource_usage_macro.html.tt');$stash->set('timezone',$stash->get(['CPANEL',0,'cookies',0,'timezone',0]));$stash->set('now',$stash->get(['CPANEL',0,'now',0]));$stash->set('ONE_DAY_AGO',$stash->get(['CPDate',0,'add_local_interval',[$stash->get('now'),-1,'day',$stash->get('timezone')]]));$stash->set('ONE_DAY_AGO',$stash->get('ONE_DAY_AGO')- $stash->get('ONE_DAY_AGO')% (5 * 60));$stash->set('ONE_WEEK_AGO',$stash->get(['CPDate',0,'local_startof',[$stash->get(['CPDate',0,'add_local_interval',[$stash->get('now'),-7,'day',$stash->get('timezone')]]),'hour',$stash->get('timezone')]]));$stash->set('ONE_YEAR_AGO',$stash->get(['CPDate',0,'add_local_interval',[$stash->get('now'),-1,'year',$stash->get('timezone')]]));$stash->set('last_tick',$stash->get(['CPDate',0,'local_startof',[$stash->get('now'),'day',$stash->get('timezone')]]));$stash->set('WEEK_TICKS',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[0..6 ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'i'}=$_tt_value;$output .= $stash->get(['WEEK_TICKS',0,'unshift',[$stash->get('last_tick')* 1000 ]]);$stash->set('last_tick',$stash->get(['CPDate',0,'add_local_interval',[$stash->get('last_tick'),-1,'day',$stash->get('timezone')]]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('errors',[]);$stash->set('PROTOCOLS',$stash->get(['execute_or_die',['Bandwidth','get_enabled_protocols' ],'data',0]));$stash->set('daily_data',$stash->get(['execute',['Bandwidth','query',{'timezone'=>$stash->get('timezone'),'grouping'=>'protocol|year_month_day_hour_minute','start'=>$stash->get('ONE_DAY_AGO'),'interval'=>'5min' }]]));if ($stash->get(['daily_data',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['daily_data',0,'errors',0])]]))}$stash->set('weekly_data',$stash->get(['execute',['Bandwidth','query',{'timezone'=>$stash->get('timezone'),'grouping'=>'protocol|year_month_day_hour','start'=>$stash->get('ONE_WEEK_AGO'),'interval'=>'hourly' }]]));if ($stash->get(['weekly_data',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['weekly_data',0,'errors',0])]]))}$stash->set('yearly_data',$stash->get(['execute',['Bandwidth','query',{'timezone'=>$stash->get('timezone'),'grouping'=>'protocol|year_month_day','start'=>$stash->get('ONE_YEAR_AGO'),'interval'=>'daily' }]]));if ($stash->get(['yearly_data',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['yearly_data',0,'errors',0])]]))}if ($stash->get(['CPANEL',0,'CPDATA',0,'BWLIMIT',0])> 0){$output .= $stash->get(['Api2',0,'pre_exec',['Stats','getthismonthsbwusage' ]]);$stash->set('get_bandwidth',$stash->get(['Api2',0,'exec',['Stats','getthismonthsbwusage' ]]));$output .= $stash->get(['Api2',0,'post_exec',['Stats','getthismonthsbwusage' ]]);$stash->set('bandwidth',$stash->get(['get_bandwidth',0,0,0,'bw',0]));$stash->set('bandwidth_percent',$stash->get(['CPMath',0,'ceil',[($stash->get('bandwidth')/ $stash->get(['CPANEL',0,'CPDATA',0,'BWLIMIT',0]))* 100 ]]));$stash->set('bar_percent',$stash->get('bandwidth_percent'));if ($stash->get('bar_percent')> 100){$stash->set('bar_percent',100)}$stash->set('bandwidth_formatted',$stash->get(['locale',0,'format_bytes',[$stash->get('bandwidth')]]));$stash->set('bandwidth_limit_formatted',$stash->get(['locale',0,'format_bytes',[$stash->get(['CPANEL',0,'CPDATA',0,'BWLIMIT',0])]]));if ($stash->get('bandwidth_percent')>= 80){$stash->set('bandwidth_class','danger');if ($stash->get('bandwidth_percent')>= 100){$stash->set('bandwidth_message',$stash->get(['locale',0,'maketext',['Your websites’ users have consumed all your monthly bandwidth. Your websites may be inaccessible until the start of the next month.' ]]))}else {$stash->set('bandwidth_message',$stash->get(['locale',0,'maketext',['Your websites’ users have consumed [_1] of your monthly bandwidth. When you run out of bandwidth, your websites may be inaccessible until the start of the next month.',$stash->get('bandwidth_formatted')]]))}}elsif ($stash->get('bandwidth_percent')>= 60){$stash->set('bandwidth_class','warning');$stash->set('bandwidth_message',$stash->get(['locale',0,'maketext',['Your websites’ users have consumed [_1] of your monthly bandwidth.',$stash->get('bandwidth_formatted')]]))}else {$stash->set('bandwidth_class','success');$stash->set('bandwidth_message',$stash->get(['locale',0,'maketext',['Your websites’ users have consumed [_1] of your monthly bandwidth.',$stash->get('bandwidth_formatted')]]))}}$stash->set('bandwidth_data',$stash->get(['execute',['Stats','get_bandwidth',{'timezone'=>$stash->get('timezone')}]]));if ($stash->get(['bandwidth_data',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['bandwidth_data',0,'errors',0])]]))}$stash->set('errors',$stash->get(['errors',0,'unique',0]));$output .= $context->process('_bandwidth_graph_include.tmpl');$output .= '
+<div class="body-content">
+    <span id="bandwidthInformationMsg">';$stash->set('resource_usage_key','bandwidthusage');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');$output .= '    </span>
+    <p id="descBandwidth" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['This function allows you to see the bandwidth usage for your site. It shows the current month’s bandwidth usage, as well as your total bandwidth usage. This includes all HTTP (web) and POP (mail) bandwidth usage. This may also include FTP bandwidth usage if your system administrator enabled FTP bandwidth logging.' ]]);$output .= '
+    </p>
+    <p class="description">';$output .= $stash->get('your_timezone_is');$output .= '</p>
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('errors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                        ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    ';if ($stash->get(['CPANEL',0,'CPDATA',0,'BWLIMIT',0])> 0){$output .= '
+        <div class="section bandwidth-section">
+            <table>
+               <tr>
+                    <td>
+                        <fieldset>
+                            <legend>
+                                <strong id="bandwidth-meter-label">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Monthly Bandwidth Transfer' ]]);$output .= '
+                                </strong>
+                            </legend>
+                            <div>
+                                <span id="bandwidth-used"
+                                      aria-label="';$output .= $stash->get(['locale',0,'maketext',['Bandwidth Used' ]]);$output .= '">
+                                      ';$output .= $stash->get('bandwidth_formatted');$output .= '
+                                    </span>
+                                /
+                                <span id="bandwidth-limit"
+                                      aria-label="';$output .= $stash->get(['locale',0,'maketext',['Bandwidth Allowed Per Month' ]]);$output .= '">
+                                    ';$output .= $stash->get('bandwidth_limit_formatted');$output .= '
+                                </span>
+                                (<span id="bandwidth-used-percent"
+                                    aria-label="';$output .= $stash->get(['locale',0,'maketext',['Percent Bandwidth Used' ]]);$output .= '">
+                                    ';$output .= $stash->get('bandwidth_percent');$output .= '%
+                                </span>)
+                            </div>
+                            <div>
+                                <div class="progress ';$output .= $stash->get('bandwidth_class');$output .= '"
+                                     role="slider"
+                                     aria-readonly="true"
+                                     aria-labelledby="bandwidth-meter-label"
+                                     aria-valuemin="0"
+                                     aria-valuemax="';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'BWLIMIT',0]);$output .= '"
+                                     aria-valuenow="';$output .= $stash->get('bandwidth');$output .= '"
+                                     aria-valuetext="';$output .= $stash->get('bandwidth_message');$output .= '">
+                                    <div id="progressbar_bandwidth" class="progress-bar" style="width:';$output .= $stash->get('bar_percent');$output .= '%">
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    '}$output .= '
+
+    <div class="section">
+        <table id="bw_graphs">
+            <tr>
+                <td>
+                    <fieldset>
+                        <legend>';$output .= $stash->get(['locale',0,'maketext',['Past [quant,_1,hour,hours]',24 ]]);$output .= '</legend>
+                        <div id="daily_container_d3" class="bw-time-graph"></div>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <legend>';$output .= $stash->get(['locale',0,'maketext',['Past week' ]]);$output .= '</legend>
+                        <div id="weekly_container_d3" class="bw-time-graph"></div>
+                    </fieldset>
+                    <br>
+                    <fieldset>
+                        <legend>';$output .= $stash->get(['locale',0,'maketext',['Past year' ]]);$output .= '</legend>
+                        <div id="yearly_container_d3" class="bw-time-graph"></div>
+                    </fieldset>
+                    <br>
+                </td>
+            </tr>
+        </table>
+        <br />
+        ';if ($stash->get(['bandwidth_data',0,'status',0])){$stash->set('old_tz',$stash->get(['CPANEL',0,'ENV',0,'TZ',0]));$stash->set(['CPANEL',0,'ENV',0,'TZ',0],$stash->get('timezone'));$stash->set('year_month_order',$stash->get(['CPDate',0,'ymd_order',0,'replace',['d','' ]]));$stash->set('months_localized',$stash->get(['CPDate',0,'month_stand_alone_wide',0]));$stash->set('months',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['bandwidth_data',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$stash->set('start',$stash->get(['item',0,'month_start',0]));if (!$stash->get(['months',0,$stash->get('start'),0])){$stash->set('start_parts',$stash->get(['CPDate',0,'localtime_parts',[$stash->get('start')]]));$stash->set('month_num',$stash->get(['start_parts',0,4,0]));$stash->set('month_localized',$stash->get(['months_localized',0,$stash->get('month_num'),0]));$stash->set('month_start',$context->plugin('date',[{'time'=>$stash->get('start')}]));$stash->set('year',$stash->get(['start_parts',0,5,0])+ 1900);if ($stash->get('year_month_order')eq 'ym'){$stash->set('heading',$stash->get('year').' ' .$stash->get('month_localized'))}else {$stash->set('heading',$stash->get('month_localized').' ' .$stash->get('year'))}$stash->set(['months',0,$stash->get('start'),0],{'heading'=>$stash->get('heading'),'month_short'=>$stash->get(['month_start',0,'format',[{'format'=>'%b','locale'=>'en_US' }]]),'year'=>$stash->get('year'),'total'=>0,'pie'=>'','pie_index'=>1,'items'=>[]})}$output .= $stash->get(['months',0,$stash->get('start'),0,'items',0,'push',[$stash->get('item')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['months',0,'keys',0,'nsort',0,'reverse',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '
+            <h3>';$output .= $stash->get(['months',0,$stash->get('item'),0,'heading',0]);$output .= '</h3>
+            <div class="row" >
+                <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['months',0,$stash->get('item'),0,'items',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'listing'}=$_tt_value;$stash->set(['months',0,$stash->get('item'),0,'total',0],$stash->get(['months',0,$stash->get('item'),0,'total',0])+ $stash->get(['listing',0,'bytes',0]));$stash->set('domain_html',$stash->get(['listing',0,'domain',0,'html',0]));$stash->set('domain_uri',$stash->get(['listing',0,'domain',0,'uri',0]));$stash->set('id',$stash->get(['months',0,$stash->get('item'),0,'month_short',0]).'-' .$stash->get(['months',0,$stash->get('item'),0,'year',0]));$stash->set(['months',0,$stash->get('item'),0,'pie_chart',0],$stash->get(['months',0,$stash->get('item'),0,'pie_chart',0]).'&amp;' .$stash->get(['months',0,$stash->get('item'),0,'pie_index',0,'uri',0]).'=' .$stash->get(['listing',0,'bytes',0,'uri',0]));$stash->set(['months',0,$stash->get('item'),0,'pie_index',0],$stash->get(['months',0,$stash->get('item'),0,'pie_index',0])+ 1);$stash->set('item_color_url',$stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).'/backend/piegraph.cgi?color=' .$stash->get(['loop',0,'index',0,'uri',0]));$stash->set('query_specific_domain_yn',($stash->get(['listing',0,'protocol',0])eq 'http'));$stash->set('nav_details_url',$context->plugin('url',['detailsubbw.html',{'mon'=>$stash->get(['months',0,$stash->get('item'),0,'month_short',0]),'year'=>$stash->get(['months',0,$stash->get('item'),0,'year',0]),'domain'=>$stash->get('query_specific_domain_yn')? $stash->get(['listing',0,'domain',0]): '','target'=>$stash->get(['CPANEL',0,'authuser',0]),'protocol'=>$stash->get(['listing',0,'protocol',0])}]));$output .= '
+                    <div class="row" >
+                        <div class="col-xs-9 text-left">
+                            <img src="';$output .= $stash->get('item_color_url');$output .= '">
+                            <a href="';$output .= $stash->get('nav_details_url');$output .= '" id="lnk-details-';$output .= $stash->get(['id',0,'slugify',0]).'-' .$stash->get(['listing',0,'protocol',0,'slugify',0]);$output .= '">
+                                ';$output .= $stash->get(['listing',0,'protocol',0,'upper',0,'html',0]);$output .= '
+                                ';if ($stash->get(['listing',0,'protocol',0])eq 'http'){$output .= '- ';$output .= $stash->get('domain_html');$output .= ' '}$output .= '
+                            </a>
+                        </div>
+                        <div class="col-xs-3 text-right">
+                            <span id="total-';$output .= $stash->get(['id',0,'slugify',0]).'-' .$stash->get(['listing',0,'protocol',0,'slugify',0]);$output .= '">
+                                ';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['listing',0,'bytes',0])],'html',0]);$output .= '
+                            </span>
+                        </div>
+                    </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+                    ';$stash->set('nav_total_url',$context->plugin('url',['detailbw.html',{'mon'=>$stash->get(['months',0,$stash->get('item'),0,'month_short',0]),'year'=>$stash->get(['months',0,$stash->get('item'),0,'year',0]),'target'=>$stash->get(['CPANEL',0,'authuser',0])}]));$stash->set('pie_url',$context->plugin('url',[$stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).'/backend/piegraph.cgi',{'action'=>'pie' }]));$stash->set('pie_url',$stash->get('pie_url').$stash->get(['months',0,$stash->get('item'),0,'pie_chart',0]));$output .= '
+                    <div class="row" >
+                        <div class="col-xs-9 text-left">
+                            <div style="width: 22px;float:left;">&nbsp;</div>
+                            <b>
+                                <a href="';$output .= $stash->get('nav_total_url');$output .= '" id="total-bandwidth-usage-details-';$output .= $stash->get(['id',0,'slugify',0]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Total - All Services' ]]);$output .= '
+                                </a>
+                            </b>
+                        </div>
+                        <div class="col-xs-3 text-right">
+                            <span id="total-bandwidth-usage-';$output .= $stash->get(['id',0,'slugify',0]);$output .= '">
+                            ';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['months',0,$stash->get('item'),0,'total',0])],'html',0]);$output .= '
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+                    <a href="';$output .= $stash->get('nav_total_url');$output .= '" id="lnk-pie-';$output .= $stash->get(['id',0,'slugify',0]);$output .= '">
+                        <img src="';$output .= $stash->get('pie_url');$output .= '" border="0">
+                    </a>
+                </div>
+            </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+            ';$stash->set(['CPANEL',0,'ENV',0,'TZ',0],$stash->get('old_tz'));$output .= '        '}$output .= '
+
+    </div>
+</div>
+
+<script>
+if (!PAGE) {
+    PAGE = {};
+}
+
+PAGE.WEEK_TICKS = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('WEEK_TICKS')]]);$output .= '.map( function(t) {
+    return new Date(t);
+} );
+PAGE.PROTOCOLS = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('PROTOCOLS')]]);$output .= ';
+PAGE.WEEKDAYS = ';$output .= $stash->get(['CPDate',0,'day_stand_alone_abbreviated',0,'json',0]);$output .= ';
+PAGE.MONTHS = ';$output .= $stash->get(['CPDate',0,'month_stand_alone_abbreviated',0,'json',0]);$output .= ';
+PAGE.DAILY_DATA = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['daily_data',0,'data',0])]]);$output .= ';
+PAGE.WEEKLY_DATA = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['weekly_data',0,'data',0])]]);$output .= ';
+PAGE.YEARLY_DATA = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['yearly_data',0,'data',0])]]);$output .= ';
+PAGE.ONE_DAY_AGO = ';$output .= ($stash->get('ONE_DAY_AGO').'000');$output .= ';
+PAGE.ONE_WEEK_AGO = ';$output .= ($stash->get('ONE_WEEK_AGO').'000');$output .= ';
+PAGE.ONE_YEAR_AGO = ';$output .= ($stash->get('ONE_YEAR_AGO').'000');$output .= ';
+
+// LOCALE’s CLDR isn’t loading correctly on page load.
+wait_for_CLDR_to_load( function() {
+    var did_sth = Bandwidth_Graph.draw_protocols_time_graph( {
+        time_format: function(t) {
+            return LOCALE.local_datetime(t, "time_format_short")
+        },
+        protocols_order: PAGE.PROTOCOLS,
+        container_path: "#daily_container_d3",
+        min_date: PAGE.ONE_DAY_AGO,
+        resolution: "5min",
+        api_protocol_data: PAGE.DAILY_DATA
+    } );
+
+    if (did_sth) {
+        Bandwidth_Graph.draw_protocols_time_graph_key({
+          protocols_order: PAGE.PROTOCOLS,
+          container_path: "#daily_container_d3"
+        });
+    }
+
+    PAGE.WEEKDAYS.unshift( PAGE.WEEKDAYS.pop() );
+
+    did_sth = Bandwidth_Graph.draw_protocols_time_graph( {
+        time_format: function(t) {
+            return PAGE.WEEKDAYS[ t.getDay() ] + " (" + LOCALE.numf(t.getDate()) + ")"
+        },
+        time_ticks: PAGE.WEEK_TICKS,
+        protocols_order: PAGE.PROTOCOLS,
+        container_path: "#weekly_container_d3",
+        min_date: PAGE.ONE_WEEK_AGO,
+        resolution: "hourly",
+        api_protocol_data: PAGE.WEEKLY_DATA,
+    } );
+
+    if (did_sth) {
+        Bandwidth_Graph.draw_protocols_time_graph_key({
+          protocols_order: PAGE.PROTOCOLS,
+          container_path: "#weekly_container_d3"
+        });
+    }
+
+    did_sth = Bandwidth_Graph.draw_protocols_time_graph( {
+        time_format: function(t) {
+            return PAGE.MONTHS[t.getMonth()]
+        },
+        protocols_order: PAGE.PROTOCOLS,
+        container_path: "#yearly_container_d3",
+        min_date: PAGE.ONE_YEAR_AGO,
+        resolution: "daily",
+        api_protocol_data: PAGE.YEARLY_DATA,
+    } );
+
+    if (did_sth) {
+        Bandwidth_Graph.draw_protocols_time_graph_key({
+          protocols_order: PAGE.PROTOCOLS,
+          container_path: "#yearly_container_d3"
+        });
+    }
+} );
+
+CPTimezone.show_cookie_timezone_mismatch_nodes();
+</script>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'bandwidth','embed_stylesheets'=>['stats/bandwidth.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,63 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/_select_packages.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row search-row">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+        <div class="input-group">
+            <input name="find" id="package_filter"
+                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                        class="form-control filter-list-input"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= '"
+                        autocomplete="off"
+                        ng-model="main.pkgsFilter"
+                        ng-change="main.pkgTable.currentPage=1; main.updatePackages();"
+                        ng-debounce/>
+            <div id="searchAction" class="input-group-btn search-list search">
+                <button type="button" class="btn btn-default" ng-click="main.pkgsFilter = \'\'; main.updatePackages()">
+                    <span class="glyphicon" ng-class="{ \'glyphicon-search\': !main.pkgsFilter, \'glyphicon-remove\': main.pkgsFilter }" ></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-7 col-md-7 col-sm-5 col-xs-5 col-xs-offset-1">
+        <div class="form-inline pull-right">
+            <page-size
+                id="DEFAULT-page-packagesperpage"
+                total-items="main.filteredPackages.length"
+                allowed-sizes="main.getPossiblePageSizes()"
+                show-all="true"
+                class="form-group page-size-controller"
+                ng-model="main.pkgTable.pageSize">
+            </page-size>
+            <div id="packagesPager"
+                uib-pagination
+                ng-if="main.filteredPackages.length > main.pkgTable.pageSize"
+                ng-change="selectPage(page)"
+                ng-model="main.pkgTable.currentPage"
+                items-per-page="main.pkgTable.pageSize"
+                total-items="main.filteredPackages.length"
+                max-size="4"
+                boundary-links="true"
+                previous-text="<" next-text=">" first-text="<<" last-text=">>"
+                class="pagination-small">
+            </div>
+        </div>
+    </div>
+    <div class=\'col-xs-5 search-labels-container\'>
+        <p class="label label-primary">
+            {{ main.packageFilterMessage() }}
+        </p>
+        <p class="label label-success">
+            {{ main.packageSelectedMessage() }}
+        </p>
+    </div>
+</div>
+<table id="pkgtbl" role="table" class="table table-striped">
+    <thead>
+        <tr>
+            <th nonsortable="true"></th>
+            <th ng-click="main.toggleSort(main.pkgTable, \'name\');  main.updateViewablePackages()" ng-class="main.selectedHeaderClass(main.pkgTable, \'name\')">
+                <a href="">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Package Name' ]]);$output .= '
+                </a>
+            </th>
+            <th ng-click="main.toggleSort(main.pkgTable, \'pkgfeaturesdisplay\');  main.updateViewablePackages()" ng-class="main.selectedHeaderClass(main.pkgTable, \'pkgfeaturesdisplay\')">
+                <a href="">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Feature List' ]]);$output .= "\n                </a>\n            </th>\n        </tr>\n    </thead>\n    <tbody>\n    <tr ng-show=\"main.PAGE.pkgwarning\"\n        class=\"control-row\">\n        <td colspan=\"3\" ng-bind=\"main.PAGE.pkgwarning\"></td>\n    </tr>\n\n    <tr ng-repeat-start=\"pkg in main.viewablePackages track by \$index\"\n        ng-if=\"\$first\"\n        ng-show=\"main.PAGE.items.packages\"\n        class=\"control-row\">\n        <td colspan=\"3\">\n            <input type=\"checkbox\"\n                id=\"select_all_packages\"\n                ng-model=\"pkg_checkbox_control\"\n                ng-click=\"main.toggleCheckAll(main.filteredPackages, 'selected', pkg_checkbox_control); main.updateSelectedPackages()\">\n        </td>\n    </tr>\n    <tr ng-repeat-end ng-class=\"{success: pkg.selected}\">\n        <td><input  bool-to-int type=\"checkbox\" id=\"package-name-{{pkg.name}}\" ng-model=\"pkg.selected\" ng-change=\"main.updateSelectedPackages()\"></td>\n        <td ng-bind=\"pkg.name\" ng-class=\"selectedColClass(main.pkgTable, 'name')\"></td>\n        <td ng-bind=\"pkg.pkgfeaturesdisplay\" ng-class=\"selectedColClass(main.pkgTable, 'pkgfeaturesdisplay')\"></td>\n    </tr>\n    </tbody>\n</table>"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

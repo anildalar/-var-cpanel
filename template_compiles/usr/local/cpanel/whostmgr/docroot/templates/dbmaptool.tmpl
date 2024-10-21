@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dbmaptool.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'description_text',0])){$output .= '<div class="topdescriptionbox">
+<p class=\'description\'>';$output .= $stash->get(['data',0,'description_text',0]);$output .= '</p>
+</div>
+'}$output .= '
+<div>
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/dodbmaptool" method="post">
+  <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'user',0]);&$_tt_filter($output)};$output .= '" />
+
+  <table width="60%" border="0">
+    <tr>
+      <td align="right">
+        <b>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] User:' ]]);$output .= '</b>
+      </td>
+      <td>
+        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'user',0]);&$_tt_filter($output)};$output .= '
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <b>';$output .= $stash->get(['locale',0,'maketext',['Database type:' ]]);$output .= '</b>
+      </td>
+      <td style="width:200px;">
+      ';if ($stash->get(['data',0,'pg_status',0])){$output .= '
+        <label><input type="radio" name="db" value="mysql" checked="checked"  style="margin-left:0" />MySQL/MariaDB</label>
+        &nbsp;
+        <label><input type="radio" name="db" value="pg" /> PostgreSQL</label>
+      '}else {$output .= '
+        MySQL/MariaDB <input type="hidden" name="db" value="mysql">
+      '}$output .= '
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <label for="dbusers"><b>';$output .= $stash->get(['locale',0,'maketext',['Database users:' ]]);$output .= '</b> </label>
+      </td>
+      <td>
+        <input id="dbusers" type="input" name="dbusers" />
+      </td>
+      <td>
+        <em>';$output .= $stash->get(['locale',0,'maketext',['Comma-separated list of database users, e.g. “user1, user2, user3”' ]]);$output .= '</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="right">
+        <label for="dbnames"><b>';$output .= $stash->get(['locale',0,'maketext',['Database names:' ]]);$output .= '</b> </label>
+      </td>
+      <td>
+        <input id="dbnames" type="input" name="dbnames" />
+      </td>
+      <td>
+        <em>';$output .= $stash->get(['locale',0,'maketext',['Comma-separated list of database names, e.g. “db1, db2, db3”' ]]);$output .= '</em>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <input type="submit" id="submit" name="submit" class="btn-primary" />
+      </td>
+    </tr>
+  </table>
+</form>
+</div>
+
+
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'database_map_tool','breadcrumburl'=>'/scripts/dbmaptool','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,199 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/security/tls_wizard/views/pending_certificates.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="list-container" >
+    <div ng-if="show_introduction_block()">
+        ';$output .= $context->process('security/tls_wizard/views/introduction.ptt');$output .= '
+    </div>
+
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Pending certificates' ]]);$output .= '</h3>
+    <div class="row global-actions-row">
+        <div class="col-md-12">
+            <button
+                class="btn btn-default btn-primary"
+                ng-click="reset_and_create()"
+                ng-hide="get_cart_items().length == 0"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Purchase new certificates for your domains.' ]]);$output .= '">
+                <span class=\'glyphicon glyphicon-plus\'></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Purchase New Certificates' ]]);$output .= '
+            </button>
+
+            <button id="btnConfirmDelete"
+                type="button"
+                class="btn btn-default btn-primary"
+                spinner-id="spinnerDelete"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Check for updates regarding your pending certificates.' ]]);$output .= '"
+                cp-action="check_pending_queue()">
+                    <span class=\'glyphicon glyphicon-play\'></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Check Pending Certificates' ]]);$output .= '
+            </button>
+        </div>
+    </div>
+    <div class="panel-group" id="pending_certificates_accordion">
+        <div class="row" ng-repeat="pcert in pending_certificates | orderBy:\'-order_item_id\' as filtered_result track by pcert.order_item_id" >
+            <div class="col-xs-12" ng-show="pcert.canceling">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <span class="fas fa-spin fa-lg fa-spinner"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Canceling the “[_1]” certificate …','{{ get_cert_title(pcert) }}' ]]);$output .= "\n                    </div>\n                </div>\n            </div>\n            <div class=\"col-xs-12\" ng-hide=\"pcert.canceling\">\n                <div class=\"panel panel-default\">\n                    <div class=\"panel-heading\" ng-click=\"toggle_cert_collapse(pcert)\">\n                        <div class=\"row\">\n                            <div class=\"col-md-9\">\n                                <div class=\"panel-title pending-cert-title\" ng-bind=\"get_cert_title(pcert)\"></div>\n                                <div ng-if=\"product = get_product_by_id(pcert.provider, pcert.product_id)\">\n                                    <span class=\"label label-info pending-cert-product-label xs-full-width-label\">\n                                        <img ng-if=\"product.icon\" ng-src=\"data:{{ product.icon_mime_type }};base64,{{ product.icon }}\" width=\"12\" height=\"12\" />\n                                        <span ng-if=\"!product.icon\"  class='fas fa-lock fa-sm' ></span>\n                                        {{ product.display_name }}\n                                    </span>\n                                </div>\n\n                                <span class=\"label label-info xs-full-width-label\" ng-bind-html=\"get_cert_status(pcert)\"></span>\n\n                                <a ng-if=\"product && product.x_warn_after && (get_time() > pcert.created_time + product.x_warn_after)\" class=\"label label-warning\" target=\"{{pcert.support_uri_is_http ? '_blank' : '_self'}}\" ng-href=\"{{pcert.support_uri}}\" ng-click=\"\$event.stopPropagation()\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['This order is taking longer than expected.' ]]);$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Click here to get help with this order.' ]]);$output .= "\n                                </a>\n                            </div>\n                            <div class=\"col-md-3 text-right active_controls\">\n                                <a href=\"javascript:void(0)\" class=\"btn btn-success btn-xs btn-complete-purchase\" ng-class=\"{'in':!pcert.confirming_cancel}\" ng-click=\"\$event.stopPropagation(); continue_purchase(pcert);\" ng-if=\"pcert.status == 'unconfirmed' && expanded_cert != pcert.order_item_id\">\n                                    <span class='fas fa-external-link-alt fa-sm'></span>\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Complete Purchase' ]]);$output .= '
+                                </a>
+
+                                <a href="javascript:void(0)" ng-if="expanded_cert != pcert.order_item_id" class="btn btn-link"><span class=\'fas fa-eye fa-lg\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Show Details' ]]);$output .= '</a>
+                                <a href="javascript:void(0)" ng-if="expanded_cert == pcert.order_item_id" class="btn btn-link"><span class=\'fas fa-eye-slash fa-lg\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Hide Details' ]]);$output .= '</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-collapse" ng-class="{\'collapse\':expanded_cert != pcert.order_item_id}">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <table class="table">
+                                        <thead>
+                                            <th>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Domains:' ]]);$output .= '
+                                                <span class="label label-info pull-right" ng-if="pcert.statusDetails && pcert.statusDetails.loading">
+                                                    <span class="fas fa-spinner fa-lg fa-spin"></span>
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Loading Details …' ]]);$output .= '
+                                                </span>
+                                                <a ng-if="pcert.hasDomainDetails && !pcert.showDomainDetails" ng-click="pcert.showDomainDetails = true" class="btn btn-link pull-right show-hide-domain-details">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Show Order Details' ]]);$output .= ' <span class=\'glyphicon glyphicon-chevron-down\'></span>
+                                                </a>
+                                                <a ng-if="pcert.hasDomainDetails && pcert.showDomainDetails" ng-click="pcert.showDomainDetails = false" class="btn btn-link pull-right show-hide-domain-details" >
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Hide Order Details' ]]);$output .= ' <span class=\'glyphicon glyphicon-chevron-up\'></span>
+                                                </a>
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="domain in get_displayed_domains(pcert)" >
+                                                <td>
+                                                    <div>
+                                                        <div class="domain-contaner" style="max-width:100%">
+                                                           <div class="cutoff_with_ellipses" ng-bind="domain.domain" title="{{domain.domain}}" ></div>
+                                                        </div>
+                                                    </div>
+                                                    <div ng-if="pcert.showDomainDetails && domain.orderDetails" class="animate-if">
+                                                       <span class="info-block">
+                                                            <span ng-bind-html="domain.orderDetails.domainDetailDescription"></span>
+                                                       </span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <uib-pagination id="{{pcert.order_item_id}}_paginateItems"
+                                        class="pagination-sm pending-cert-pagination"
+                                        total-items="pcert.domains.length"
+                                        ng-model="pcert.display_meta.current_page"
+                                        ng-if="pcert.domains.length > pcert.display_meta.items_per_page"
+                                        max-size="0"
+                                        boundary-links="true"
+                                        rotate="false"
+                                        previous-text="<"
+                                        next-text=">"
+                                        first-text="<<"
+                                        last-text=">>"
+                                        items-per-page="pcert.display_meta.items_per_page">
+                                    </uib-pagination>
+                                </div>
+                                <div class="col-md-8">
+                                    <table class="table cert-information-table">
+                                        <thead>
+                                            <th colspan="3">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Certificate Order Information:' ]]);$output .= '
+                                                <span class="label label-info" ng-if="pcert.statusDetails && pcert.statusDetails.loading">
+                                                    <span class="fas fa-spinner fa-lg fa-spin"></span>
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Loading Details …' ]]);$output .= '
+                                                </span>
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-if="pcert.order_id">
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Order [asis,ID]:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="pcert.order_id"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Order Item [asis,ID]:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="pcert.order_item_id"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Provider:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="get_product_by_id(pcert.provider, pcert.product_id).provider_display_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Product:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="get_product_by_id(pcert.provider, pcert.product_id).display_name"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Request Date:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="cjt1_LOCALE.local_datetime(pcert.created_time,\'datetime_format_full\')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Last Poll Date:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind="cjt1_LOCALE.local_datetime(pcert.last_poll_time,\'datetime_format_full\')"></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="pending-cert-info-label">';$output .= $stash->get(['locale',0,'maketext',['Status:' ]]);$output .= '</td>
+                                                <td colspan=2 ng-bind-html="get_cert_status(pcert)"></td>
+                                            </tr>
+                                            <tr ng-repeat="detail in pcert.statusDetails.details" ng-class="::detail.rowStatusClass">
+                                                <td style="padding-left:24px;">
+                                                    <div ng-bind-html="::detail.label"></div>
+                                                </td>
+                                                <td colspan="{{ detail.actionURL ? 1 : 2 }}">
+                                                    <span ng-bind-html="::detail.status"></span>
+                                                </td>
+                                                <td ng-if="detail.actionURL" style="text-align:right">
+                                                    <a class="btn btn-link detail-action-link" href="{{ :: detail.actionURL }}" target="_blank">
+                                                        {{ :: detail.actionLabel }}
+                                                        <i ng-if="detail.actionIcon" ng-class="detail.actionIcon"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="collapse cancel-cert-block" ng-class="{\'in\':!pcert.confirming_cancel}">
+                                        <button class="btn btn-primary" type="button" ng-click="continue_purchase(pcert)" ng-if="pcert.status == \'unconfirmed\'">
+                                            <span class=\'fas fa-external-link-alt fa-sm\'></span>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Complete Purchase' ]]);$output .= '
+                                        </button>
+                                        <button class="btn btn-danger" type="button" ng-click="pcert.confirming_cancel = true">
+                                            <span class=\'fas fa-times fa-lg\'></span>
+
+                                            <span ng-if="pcert.status == \'unconfirmed\' || get_product_by_id(pcert.provider, pcert.product_id).x_payment_trigger == \'issuance\'">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Cancel Order' ]]);$output .= '
+                                            </span>
+                                            <span ng-if="pcert.status != \'unconfirmed\' && get_product_by_id(pcert.provider, pcert.product_id).x_payment_trigger == \'checkout\'">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Forget Order' ]]);$output .= '
+                                            </span>
+
+                                        </button>
+                                        <a class="btn btn-warning" ng-href="{{pcert.support_uri}}">
+                                            <span class=\'far fa-life-ring fa-sm\'></span>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Get Help With This Order' ]]);$output .= '
+                                        </a>
+                                    </div>
+                                    <div class="collapse cancel-cert-block" ng-class="{\'in\':pcert.confirming_cancel}">
+                                        <div ng-if="pcert.status != \'unconfirmed\'" ng-switch="get_product_by_id(pcert.provider, pcert.product_id).x_payment_trigger">
+                                            <div ng-switch-when="issuance">
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['To cancel this certificate order, the system deletes the [output,abbr,DCV,Domain Control Validation] file necessary to complete the order process. While the order is being canceled, “[_1]” may keep a hold for the order amount on your credit card.','{{ get_product_by_id(pcert.provider, pcert.product_id).provider_display_name }}' ]]);$output .= '</p>
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['Prior to cancellation, the system will check to see if the certificate has already been issued. If the certificate is available, the system will install it. If at that point you want to receive a refund for this certificate, [output,url,_1,request that refund directly].','{{pcert.support_uri}}' ]]);$output .= '</p>
+                                            </div>
+                                            <div ng-switch-when="checkout">
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['“[_1]” has already collected payment for this certificate. To receive a refund you must [output,url,_2,request a refund directly]. Once you remove this certificate from this system’s queue, you will no longer see its information here.','{{ get_product_by_id(pcert.provider, pcert.product_id).provider_display_name }}','{{pcert.support_uri}}' ]]);$output .= '</p>
+                                            </div>
+                                        </div>
+
+                                        <p ng-if="pcert.status == \'unconfirmed\' || get_product_by_id(pcert.provider, pcert.product_id).x_payment_trigger == \'issuance\'">';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to cancel this certificate order?' ]]);$output .= '</p>
+                                        <p ng-if="pcert.status != \'unconfirmed\' && get_product_by_id(pcert.provider, pcert.product_id).x_payment_trigger == \'checkout\'">';$output .= $stash->get(['locale',0,'maketext',['Are you sure that you want to remove this certificate from this system’s queue?' ]]);$output .= '</p>
+
+                                        <button class="btn btn-success" type="button" ng-click="pcert.confirming_cancel = false; pcert.canceling = true; cancel_purchase(pcert)">';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '</button>
+                                        <button class="btn btn-danger" type="button" ng-click="pcert.confirming_cancel = false">';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

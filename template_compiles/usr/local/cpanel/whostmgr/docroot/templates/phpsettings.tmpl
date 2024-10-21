@@ -1,0 +1,104 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/phpsettings.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<div style="margin-left:20px">
+
+<p class="intro">';$output .= $stash->get(['locale',0,'maketext',['You may edit your PHP configuration in Basic Mode or in Advanced Mode.' ]]);$output .= '</p>
+<label><input type="radio" name="which_advanced" onclick="change_edit(false,current_php)" value="basic" ';$output .= $stash->get(['data',0,'advanced',0])? '' : 'checked="checked"';$output .= ' />
+';$output .= $stash->get(['locale',0,'maketext',['Basic Mode' ]]);$output .= '</label>
+&nbsp;&nbsp;
+<label><input type="radio" name="which_advanced" onclick="change_edit(true,current_php)" value="advanced" ';$output .= $stash->get(['data',0,'advanced',0])? 'checked="checked"' : '';$output .= ' />
+';$output .= $stash->get(['locale',0,'maketext',['Advanced Mode' ]]);$output .= '</label>
+<br />
+
+';if ($stash->get(['data',0,'phps',0,'alternate',0,'version',0])){$output .= '<p class="intro">';$output .= $stash->get(['locale',0,'maketext',['This system has multiple PHP installs. Select which one to edit below.' ]]);$output .= '</p>
+<label><input type="radio" name="which_php" onclick="change_edit(current_advanced,\'default\')" value="default" ';$output .= $stash->get(['data',0,'checked',0])ne 'alternate' ? 'checked="checked"' : '';$output .= ' />
+';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['Default PHP ([_1])',$stash->get(['data',0,'phps',0,'default',0,'path',0])]]);&$_tt_filter($output)};$output .= '</label>
+&nbsp;&nbsp;
+<label><input type="radio" name="which_php" onclick="change_edit(current_advanced,\'alternate\')" value="alternate" ';$output .= $stash->get(['data',0,'checked',0])eq 'alternate' ? 'checked="checked"' : '';$output .= ' />
+';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['Alternate PHP ([_1])',$stash->get(['data',0,'phps',0,'alternate',0,'path',0])]]);&$_tt_filter($output)};$output .= '</label>
+<br />
+'}$output .= '
+<div id="the_form" style="margin-top:25px">';$output .= $stash->get(['data',0,'editor_html',0]);$output .= '</div>
+
+<script type="text/javascript">
+function change_edit(advanced,which_php) {
+    if ( advanced !== current_advanced || current_php !== which_php ) {
+        show_loading(';$output .= $stash->get(['locale',0,'maketext',['Loading …' ],'json',0]);$output .= ');
+        var callback = {
+            success: function(o) {
+                DOM.get(\'the_form\').innerHTML = o.responseText;
+                transform_inputs();
+                current_php=which_php;
+                current_advanced=advanced;
+                clear_ui_status();
+            },
+            failure: function(o) {
+                alert(\'AJAX error\');
+                if ( console ) console.log(o);
+                clear_ui_status();
+            }
+        };
+        var url = "?form_only=1&php="+which_php;
+        if (advanced) url += "&advanced=1";
+        YAHOO.util.Connect.asyncRequest( "GET", url, callback, null );
+    }
+}
+
+var current_php = ';$output .= $stash->get(['data',0,'checked_php',0,'json',0]);$output .= ';
+var current_advanced = ';$output .= $stash->get(['data',0,'advanced',0])? 'true' : 'false';$output .= ';
+
+function enablecontainedobj(objConEl) {
+    var spanEls = objConEl.childNodes;
+    var spancount = -1;
+    for(var i=0;i<spanEls.length;i++) {
+        if (spanEls[i].tagName=="SPAN") {
+            spancount++;
+        }
+        if (spancount == 0) {
+            spanEls[i].style.display = \'\';
+        } else if (spancount == 1) {
+            spanEls[i].style.display=\'none\';
+            break;
+        }
+    }
+    var inputEls = objConEl.getElementsByTagName(\'input\');
+    for(var i=0;i<inputEls.length;i++) {
+        inputEls[i].disabled = false;
+    }
+}
+
+function disable_save_button() {
+    var buttonEl = YAHOO.util.Dom.get(\'savebutton\');
+    buttonEl.disabled=true;
+    YAHOO.util.Dom.get(\'savebutton_status\').innerHTML = CPANEL.icons.ajax;
+    buttonEl.style.display=\'none\';
+    buttonEl.value=\'Validating Configuration...\';
+}
+function enable_save_button() {
+    progressive_validation_in_progress=0;
+    restart_progressive_validation=0;
+
+    var buttonEl = YAHOO.util.Dom.get(\'savebutton\');
+    buttonEl.value=\'Save\';
+    YAHOO.util.Dom.get(\'savebutton_status\').innerHTML = \'\';
+    buttonEl.style.display=\'\';
+    buttonEl.disabled=false;
+}
+function delayed_submit() {
+    disable_save_button();
+    window.setTimeout(function() {
+        document.forms.phpsettingsform.submit();
+    }, 500);
+    return false;
+
+}
+
+
+YAHOO.util.Event.addListener(window, "load", enable_save_button, false);
+
+</script>
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','scripts'=>['/js/statusbox.js','/js/input_transform_3.js' ],'extrastyle'=>'
+#waitpanel .bd {
+    text-align: center;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

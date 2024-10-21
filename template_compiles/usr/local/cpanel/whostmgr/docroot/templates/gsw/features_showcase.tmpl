@@ -1,0 +1,433 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/gsw/features_showcase.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->include('gsw/header.tmpl');$output .= '
+';$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/yui/cookie/cookie-min.js' ]]);$output .= '"></script>
+<div id="content">
+    <div class="showcaseFeatures">
+        <form id="showcaseFeaturesForm" action="feature_showcase_do" method="POST">
+            <h1 id="newFeaturesTitle">';$output .= $stash->get(['locale',0,'maketext',['Feature Showcase' ]]);$output .= '</h1>
+            <div class="whatsNew">
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['The system added new features during this [asis,cPanel amp() WHM] upgrade. You can enable some of these features directly in this interface.' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Select “[_1]” next to the features that you wish to use and, then click “[_2]” at the bottom of the interface.',$stash->get(['locale',0,'maketext',['Enable' ]]),$stash->get(['locale',0,'maketext',['Save Settings' ]])]]);$output .= '
+                </p>
+            </div>
+
+            ';if ($stash->get(['data',0,'feature_collection',0,0,0,'size',0])){$output .= '            <div id="spotlightFeatures" class="releaseTypeContainer">
+                <div class="spotlightFeatureContainer">
+                    <div class="recommendedFeatureTitle spotlightFeatureTitle">
+                        <h2>';$output .= $stash->get(['locale',0,'maketext',['Feature Spotlight' ]]);$output .= '</h2>
+                    </div>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_collection',0,0,0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '                        <div id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" class="feature spotlight';if (!$stash->get(['loop',0,'next',0,'spotlight_feature',0])){$output .= ' last'}$output .= '">
+                            <fieldset>
+                                <div class="titleContainer">
+                                    <h3>';$output .= $stash->get(['feature',0,'name',0]);$output .= '</h3>
+                                    ';if ($stash->get(['feature',0,'helpurl',0])){$output .= '                                    <div class="featureUrl">
+                                        <a href="';$output .= $stash->get(['feature',0,'helpurl',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['More Information' ]]);$output .= '</a>
+                                    </div>
+                                    '}$output .= '                                </div>
+                                ';if ($stash->get(['feature',0,'forced',0])|| $stash->get(['feature',0,'readonly',0])){$output .= '
+                                <div class="featureBlurbNoFields">
+                                '}else {$output .= '
+                                <div class="featureBlurb">
+                                '}$output .= '
+                                    <p>';$output .= $stash->get(['feature',0,'blurb_html',0]);$output .= '</p>
+                                </div>
+
+                                ';if (!$stash->get(['feature',0,'forced',0])&&!$stash->get(['feature',0,'readonly',0])){$output .= '
+                                <div class="fields">
+                                    <div class="inputContainer">
+                                        <label class="fancyRadio checked enable" title="';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+                                            <!-- pre-select \'Enabled\' for recommended features -->
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_enable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="enabled" checked="checked"/>
+                                            <span class="fancyText">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</span>
+                                        </label>
+                                        <label class="unchecked" title="';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '">
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_disable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="disabled" />
+                                            <span class="noThanksText">';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                '}$output .= '
+                            </fieldset>
+                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+            </div>
+            '}$output .= '            ';if ($stash->get(['data',0,'feature_collection',0,1,0,'size',0])){$output .= '            <div id="newRecommended" class="releaseTypeContainer">
+                <div class="recommendedFeatureContainer">
+                    <div class="recommendedFeatureTitle">
+                        <h2>';$output .= $stash->get(['locale',0,'maketext',['Recommended [numerate,_1,Feature,Features]',$stash->get(['data',0,'feature_collection',0,1,0,'size',0])]]);$output .= '</h2>
+                    </div>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_collection',0,1,0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '                        <div id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" class="feature recommended ';if (!$stash->get(['loop',0,'next',0,'recommended',0])){$output .= 'last'}$output .= '">
+                            <fieldset>
+                                <div class="titleContainer">
+                                    <h3>';$output .= $stash->get(['feature',0,'name',0]);$output .= '</h3>
+                                    ';if ($stash->get(['feature',0,'helpurl',0])){$output .= '                                    <div class="featureUrl">
+                                        <a href="';$output .= $stash->get(['feature',0,'helpurl',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['More Information' ]]);$output .= '</a>
+                                    </div>
+                                    '}$output .= '                                </div>
+                                ';if ($stash->get(['feature',0,'forced',0])|| $stash->get(['feature',0,'readonly',0])){$output .= '
+                                <div class="featureBlurbNoFields">
+                                '}else {$output .= '
+                                <div class="featureBlurb">
+                                '}$output .= '
+                                    <p>';$output .= $stash->get(['feature',0,'blurb_html',0]);$output .= '</p>
+                                </div>
+                                ';if (!$stash->get(['feature',0,'forced',0])&&!$stash->get(['feature',0,'readonly',0])){$output .= '
+                                <div class="fields">
+                                    <div class="inputContainer">
+                                        <label class="fancyRadio checked enable" title="';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+                                            <!-- pre-select \'Enabled\' for recommended features -->
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_enable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="enabled" checked="checked"/>
+                                            <span class="fancyText">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</span>
+                                        </label>
+                                        <label class="unchecked" title="';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '">
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_disable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="disabled" />
+                                            <span class="noThanksText">';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                '}$output .= '
+                            </fieldset>
+                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+            </div>
+            '}$output .= '            ';if ($stash->get(['data',0,'feature_collection',0,2,0,'size',0])){$output .= '                <h2>';$output .= $stash->get(['locale',0,'maketext',['New [numerate,_1,Feature,Features]',$stash->get(['data',0,'feature_collection',0,2,0,'size',0])]]);$output .= '</h2>
+                <div id="newGeneral" class="releaseTypeContainer">
+                    <div class="generalFeatureContainer">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_collection',0,2,0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '                            <div id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" class="feature general ';if (!$stash->get(['data',0,'feature_collection',0,0,0,'size',0])){$output .= 'generalOnly'}$output .= '">
+                                <fieldset>
+                                    <div class="titleContainer">
+                                        <h3>';$output .= $stash->get(['feature',0,'name',0]);$output .= '</h3>
+                                        ';if ($stash->get(['feature',0,'helpurl',0])){$output .= '                                        <div class="featureUrl">
+                                            <a href="';$output .= $stash->get(['feature',0,'helpurl',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['More Information' ]]);$output .= '</a>
+                                        </div>
+                                        '}$output .= '                                    </div>
+                                    ';if ($stash->get(['feature',0,'forced',0])|| $stash->get(['feature',0,'readonly',0])){$output .= '
+                                    <div class="featureBlurbNoFields">
+                                    '}else {$output .= '
+                                    <div class="featureBlurb">
+                                    '}$output .= '
+                                        <p>';$output .= $stash->get(['feature',0,'blurb_html',0]);$output .= '</p>
+                                    </div>
+                                    ';if (!$stash->get(['feature',0,'forced',0])&&!$stash->get(['feature',0,'readonly',0])){$output .= '
+                                    <div class="fields">
+                                        <div class="inputContainer">
+                                            <label class="';if ($stash->get(['feature',0,'defaultvalue',0])){$output .= 'checked'}else {$output .= 'unchecked'}$output .= ' enable" title="';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+                                                <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_enable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="enabled" ';if ($stash->get(['feature',0,'defaultvalue',0])){$output .= ' checked="checked"'}$output .= '/>
+                                                <span class="radioText">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</span>
+                                            </label>
+                                            <label class="';if (!$stash->get(['feature',0,'defaultvalue',0])){$output .= 'checked'}else {$output .= 'unchecked'}$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '">
+                                                <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_disable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="disabled" ';if (!$stash->get(['feature',0,'defaultvalue',0])){$output .= ' checked="checked"'}$output .= '>
+                                                <span class="noThanksText">';$output .= $stash->get(['locale',0,'maketext',['No, thank you' ]]);$output .= '</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    '}$output .= '
+                                </fieldset>
+                            </div>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                    </div>
+                </div>
+            '}$output .= '            ';if ($stash->get(['data',0,'feature_collection',0,3,0,'size',0])){$output .= '                <h2 id="additionalFeaturesTitle">';$output .= $stash->get(['locale',0,'maketext',['Previously Configured [numerate,_1,Feature,Features]',$stash->get(['data',0,'feature_collection',0,3,0,'size',0])]]);$output .= '</h2>
+                <div id="modified" class="releaseTypeContainer">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_collection',0,3,0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'feature'}=$_tt_value;$output .= '                        <div id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" class="feature ';if ($stash->get(['feature',0,'recommended',0])){$output .= ' recommended '}elsif ($stash->get(['feature',0,'spotlight_feature',0])){$output .= ' spotlight '}else {$output .= ' general '}$output .= '">
+                            <fieldset>
+                                <div class="titleContainer">
+                                    <h3>';$output .= $stash->get(['feature',0,'name',0]);$output .= '</h3>
+                                    ';if ($stash->get(['feature',0,'helpurl',0])){$output .= '                                    <div class="featureUrl">
+                                        <a href="';$output .= $stash->get(['feature',0,'helpurl',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['More Information' ]]);$output .= '</a>
+                                    </div>
+                                    '}$output .= '                                </div>
+                                ';if ($stash->get(['feature',0,'forced',0])|| $stash->get(['feature',0,'readonly',0])){$output .= '
+                                    <div class="featureBlurbNoFields">
+                                    '}else {$output .= '
+                                    <div class="featureBlurb">
+                                    '}$output .= '
+                                    <p>';$output .= $stash->get(['feature',0,'blurb',0]);$output .= '</p>
+                                </div>
+                                ';if (!$stash->get(['feature',0,'forced',0])&&!$stash->get(['feature',0,'readonly',0])){$output .= '
+                                <div class="fields">
+                                    <div class="inputContainer">
+                                        <label class="';if ($stash->get(['feature',0,'defaultvalue',0])){$output .= 'checked'}else {$output .= 'unchecked'}$output .= ' enable" title="';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_enable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="enabled" ';if ($stash->get(['feature',0,'defaultvalue',0])){$output .= ' checked="checked"'}$output .= '/>
+                                            <span class="radioText">';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '</span>
+                                            <span class="currentState hide">(';$output .= $stash->get(['locale',0,'maketext',['current state' ]]);$output .= ')</span>
+                                        </label>
+                                        <label class="';if (!$stash->get(['feature',0,'defaultvalue',0])){$output .= 'checked'}else {$output .= 'unchecked'}$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Disable' ]]);$output .= '">
+                                            <input id="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '_disable" type="radio" name="';$output .= $stash->get(['feature',0,'driver',0]);$output .= '" value="disabled" ';if (!$stash->get(['feature',0,'defaultvalue',0])){$output .= ' checked="checked"'}$output .= '/>
+                                            <span class="radioText">';$output .= $stash->get(['locale',0,'maketext',['Disable' ]]);$output .= '</span>
+                                            <span class="currentState hide">(';$output .= $stash->get(['locale',0,'maketext',['current state' ]]);$output .= ')</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                '}$output .= '
+                            </fieldset>
+                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+            '}$output .= '            <div id="controls" class="featureControls">
+                <input type="hidden" name="continue"/>
+                <a id="cancel" class="cancel" href="javascript:void(0);" title="';$output .= $stash->get(['locale',0,'maketext',['Exit to WHM' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Exit to WHM' ]]);$output .= '</a>
+                <button type="submit" id="submitShowcaseFeatures" name="submitShowcase" title="';$output .= $stash->get(['locale',0,'maketext',['Save Settings' ]]);$output .= '" class="btn-primary" >';$output .= $stash->get(['locale',0,'maketext',['Save Settings' ]]);$output .= '</button>
+            </div>
+        </form>
+    </div><!-- End main -->
+    <div id="confirmationModal" class="modalPopup" style="visibility: hidden;">
+        <div class="hd">
+            <h1>';$output .= $stash->get(['locale',0,'maketext',['Updated Features Summary' ]]);$output .= '</h1>
+        </div>
+        <div class="bd">
+            <div class="confirmationLoader">&nbsp;</div>
+            <ul id="featureStates" class="summaryList"></ul>
+        </div>
+        <div class="ft">
+            <p><i>';$output .= $stash->get(['locale',0,'maketext',['This window will close automatically.' ]]);$output .= '</i></p>
+        </div>
+    </div>
+    <div id="exitModal" class="modalPopup" style="visibility: hidden;">
+        <div class="hd">
+            <h1>';$output .= $stash->get(['locale',0,'maketext',['No Features Were Updated' ]]);$output .= '</h1>
+            <a id="exitModalClose" class="close" href="javascript:void(0);" title="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</a>
+        </div>
+        <div class="bd">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The Feature Showcase will appear again at the next WHM login.' ]]);$output .= '</p>
+        </div>
+        <div class="ft">
+            <p><i>';$output .= $stash->get(['locale',0,'maketext',['This window will close automatically.' ]]);$output .= '</i></p>
+        </div>
+    </div>
+</div><!-- End content -->
+
+<script type="text/javascript">
+    var featureForm = DOM.get(\'showcaseFeaturesForm\');
+    var inputs = featureForm.getElementsByTagName(\'input\');
+
+    //Stripe the features
+    var featureContainers = [\'spotlightFeatures\', \'newRecommended\', \'newGeneral\', \'modified\'];//id\'s
+    var stripeFeatures = function() {
+        for (var i = 0; i < featureContainers.length; i++) {
+            var features = YAHOO.util.Selector.query(\'.feature\', featureContainers[i])
+            for (var k = 1, len = features.length; k < len; k+=2) {
+                DOM.addClass(features[k], \'even\');
+            }
+        }
+        return true;
+    }
+    stripeFeatures();
+
+    //We want to keep the expected state of our radio buttons
+    //Some browsers will keep the changed radio button state on refresh
+    DOM.batch(inputs, function() {
+        if (this.type == \'radio\' && this.getAttribute(\'checked\') == \'checked\' ) {
+            this.checked = true;
+            var parentLabel = DOM.getAncestorByTagName(this, \'label\');
+            if(parentLabel){
+                var currStateElArray = DOM.getChildrenBy(
+                                        parentLabel,
+                                        function(el){
+                                            return DOM.hasClass(el, \'currentState\');
+                                        });
+                if(currStateElArray && currStateElArray.length>0){
+                    var currStateEl = currStateElArray[0];
+                    DOM.setStyle(currStateEl, \'display\', \'inline-block\');
+                }
+            }
+        }
+    });
+
+    //Label state toggles for radio buttons
+    function toggleLabelState() {
+        var inputParent = this.parentNode;
+        if (DOM.hasClass(inputParent, \'unchecked\')) {
+            DOM.replaceClass(inputParent, \'unchecked\', \'checked\');
+            var sibling = (DOM.getPreviousSibling(inputParent) != null )
+                    ? DOM.getPreviousSibling(inputParent)
+                    : DOM.getNextSibling(inputParent);
+
+            DOM.replaceClass(sibling, \'checked\', \'unchecked\');
+
+            if (DOM.hasClass(sibling, \'fancyRadio\')) {
+                //make sure that the other action is unchecked
+                this.checked = true;
+                DOM.getFirstChild(sibling).checked = false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    //get the current feature state
+    //takes a node object
+    var getFeatureState = function(feature) {
+        var checkedInput = DOM.getElementsByClassName(\'checked\', \'label\', feature);
+        if(checkedInput !== null && checkedInput.length !== 0) {
+            if (DOM.hasClass(checkedInput, \'enable\')[0]) {
+                return "Enabled";
+            } else {
+                return "Disabled";
+            }
+        }
+        return null;
+    }
+
+    //Build the list of features and their states from form values.
+    var buildConfirmationData = function() {
+        var featureList = DOM.get(\'featureStates\');
+        var features = YAHOO.util.Selector.query(\'.feature.general, .feature.recommended, .feature.spotlight\');
+
+        DOM.batch(features, function() {
+            var featureTitle = YAHOO.util.Selector.query(\'.titleContainer h3\', this, true).innerHTML;
+
+            var li = document.createElement(\'li\');
+            var span = document.createElement(\'span\');
+            DOM.addClass(span, \'status\');
+
+            var title = document.createElement(\'span\');
+            title.innerHTML = featureTitle;
+            var state = document.createElement(\'span\');
+            if(getFeatureState(this) !== null) {
+                if (getFeatureState(this) === "Enabled") {
+                    DOM.addClass(span, \'enabled\');
+                    state.innerHTML = "';$output .= $stash->get(['locale',0,'maketext',['Saved' ]]);$output .= '";
+                } else {
+                    DOM.addClass(span, \'disabled\');
+                    state.innerHTML = "';$output .= $stash->get(['locale',0,'maketext',['Saved' ]]);$output .= '";
+                }
+            } else {
+                // Assuming its a forced feature
+                DOM.addClass(span, \'enabled\');
+                state.innerHTML = "';$output .= $stash->get(['locale',0,'maketext',['Saved' ]]);$output .= '";
+            }
+
+            span.appendChild(state);
+
+            li.appendChild(title);
+            li.appendChild(span);
+            featureList.appendChild(li);
+        });
+
+        //Stripe the list items.
+        var listChildren = DOM.getChildren(featureList);
+        for (var i = 0; i < listChildren.length; i++) {
+            if (i % 2) {
+                DOM.addClass(listChildren[i], \'even\');
+            }
+        }
+    }
+
+    // Send mixpanel tracking data
+    const sendMixpanelEvents = () => {
+        const form = document.getElementById(\'showcaseFeaturesForm\');
+
+        // disable hidden inputs to not interfere with actual features
+        const hiddenInputs = form.querySelectorAll(\'input[type="hidden"]\');
+        hiddenInputs?.forEach(input => input.disabled = true);
+
+        // get the form data
+        const formData = new FormData(form);
+
+        // send mixpanel events
+        for (let [name, value] of formData?.entries()) {
+            const driverName = getFeatureDriverName(name);
+
+            if (!driverName) return;
+
+            window["mixpanel"]?.track("WHM-FeatureShowcase-submit", {
+                "driver-name": driverName,
+                "option-name": name,
+                "option-value": value,
+            });
+        }
+
+        // re-enable hidden inputs to cleanup
+        hiddenInputs?.forEach(input => input.disabled = false);
+    }
+
+    // find the feature driver name to pass to the mixpanel event
+    const getFeatureDriverName = (inputName) => {
+        let element = document.getElementsByName(inputName)[0];
+
+        while (element && element !== document.body) { // traverse up until you hit the document body
+            if (element.tagName === "DIV" && element.classList.contains("feature")) {
+                return element.id; // found the ".feature" div
+            }
+            element = element.parentElement;
+        }
+        return null;
+    }
+
+    //Confirmation modal
+    var confirmation = new YAHOO.widget.Panel("confirmationModal", {
+        fixedcenter: true,
+        close: false,
+        draggable: false,
+        modal: true,
+        width: \'600px\',
+        visible: false
+    });
+    confirmation.render();
+
+    var showConfirmationModal = function(e) {
+        EVENT.preventDefault(e);
+        buildConfirmationData();
+        sendMixpanelEvents();
+        confirmation.show();
+        window.setTimeout(function(){
+            featureForm[\'continue\'].value = "';$output .= $stash->get(['locale',0,'maketext',['Save Settings' ]]);$output .= '";
+            featureForm.submit();
+        }, 3000, true);
+    }
+
+    //Confirmation modal
+    var exitModalPopup = new YAHOO.widget.Panel("exitModal", {
+        fixedcenter: true,
+        close: false,
+        draggable: false,
+        modal: true,
+        width: \'600px\',
+        visible: false
+    });
+    exitModalPopup.render();
+    var showExitModal = function(e) {
+        EVENT.preventDefault(e);
+        exitModalPopup.show();
+        setFeatureShowcaseCookie();
+        window.setTimeout(function(){
+            exitToWHM();
+        }, 3000, true);
+    }
+
+
+    //Load event listeners
+    EVENT.on(inputs, \'click\', toggleLabelState);
+    EVENT.on(featureForm, \'submit\', showConfirmationModal);
+    EVENT.on(\'cancel\', \'click\', showExitModal);
+    EVENT.on(\'exitModalClose\', \'click\',
+    function(e) {
+        EVENT.preventDefault(e);
+        exitToWHM(e);
+    });
+
+    /**
+    * isSet: This variable allows to set FeatureShowcase Cookie only once. We need this since
+    * \'setFeatureShowcaseCookie\' method is triggered by timeout handler in \'showExitModal\' and close link click
+    * handler
+    */
+    var isSet=0;
+    var exitToWHM = function(e){
+        if(!isSet){
+            setFeatureShowcaseCookie();
+            window.location = "';$output .= $stash->get('cp_security_token');$output .= '/?gswdone=1";
+            isSet=1;
+        }
+    }
+
+    function setFeatureShowcaseCookie(){
+        YAHOO.util.Cookie.set("whostmgr_feature_showcase_';$output .= $stash->get(['data',0,'loggedin_user',0]);$output .= '", "';$output .= $stash->get(['data',0,'whmversion',0]);$output .= '", {
+            path:"/"
+        });
+    }
+</script>
+
+';$output .= $context->include('gsw/gsw_step_end.tmpl');$output .= '
+';$output .= $context->include('gsw/footer.tmpl');$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

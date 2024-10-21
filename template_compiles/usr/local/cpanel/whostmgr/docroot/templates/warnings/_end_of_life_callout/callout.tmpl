@@ -1,0 +1,117 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/warnings/_end_of_life_callout/callout.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('NVData',$context->plugin('NVData'));$stash->set('Resource',$context->plugin('Resource'));$stash->set('eol_nvdata_key','eol_callout:' .$stash->get('eol_callout_name'));$stash->set('callout_last_displayed_key',$stash->get('eol_nvdata_key').':last_displayed');$stash->set('callout_last_displayed',$stash->get(['NVData',0,'get',[$stash->get('callout_last_displayed_key')]]));$stash->set('is_survey_visited_key',$stash->get('eol_nvdata_key').':is_survey_visited');$stash->set('is_survey_visited',$stash->get(['NVData',0,'get',[$stash->get('is_survey_visited_key')]]));$stash->set('load_modal',$stash->get('eol_survey_link')&& $stash->get('is_survey_visited')ne 'true');$stash->set('eol_stylesheet_url',$stash->get(['calculate_mode_css_url',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/warnings/_end_of_life_callout/callout.css' ]]),!$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])]]));$output .= '
+';if ($stash->get('load_modal')){$output .= '
+    ';$stash->set('jquery_url',$stash->get(['calculate_mode_js_url',[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.js' ]]),!$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])]]));$stash->set('bootstrap_js_url',$stash->get(['calculate_mode_js_url',[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/bootstrap/optimized/js/bootstrap.js' ]]),!$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])]]));$output .= '
+'}$output .= '
+
+<link rel="stylesheet" type="text/css" href="';$output .= $stash->get('eol_stylesheet_url');$output .= '" />
+
+<section id="eolCallout" class="eol-callout text-center hide">
+    <img src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['images/cp-whm-hose.svg' ]]);$output .= '" aria-hidden="true">
+    <p class="eol-callout-title">';$output .= $stash->get(['locale',0,'maketext',['Uh oh! We noticed a problem with your server.' ]]);$output .= '</p>
+    <p class="eol-callout-content">
+        <span>';$output .= $stash->get(['locale',0,'maketext',['You appear to be running [output,strong,_1], which has reached end of life.',$stash->get('eol_software_name')]]);$output .= '</span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Upgrade now to prevent security and compatibility problems.' ]]);$output .= '</span>
+    </p>
+    <div>
+        <a class="btn btn-default eol-callout-btn" href="';$output .= $stash->get('eol_read_more_link');$output .= '" target="';$output .= $stash->get('eol_read_more_target');$output .= '">
+            <i class="fas fa-external-link-alt" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['Read More' ]]);$output .= '
+        </a>
+        <a class="btn btn-primary eol-callout-btn" href="';$output .= $stash->get('eol_upgrade_link');$output .= '">
+            ';$output .= $stash->get(['locale',0,'maketext',['Upgrade Now' ]]);$output .= ' <i class="fas fa-arrow-end" aria-hidden="true"></i>
+        </a>
+    </div>
+    <div>
+        <span id="calloutCollapseLink" class="eol-callout-dismiss-link">
+            ';$output .= $stash->get(['locale',0,'maketext',['Not Right Now' ]]);$output .= '
+        </span>
+    </div>
+</section>
+<!-- Callout collapses into banner when user clicks calloutCollapseLink -->
+<section id="eolBanner" class="hide">
+    <div class="eol-banner">
+        <img id="testimg" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['images/cp-whm-hose.svg' ]]);$output .= '" aria-hidden="true">
+        <div class="eol-banner-content">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['We are concerned that this server is using [output,strong,_1], which reached end of life on [datetime,_2].',$stash->get('eol_software_name'),$stash->get('eol_date')]]);$output .= '</p>
+            <div class="eol-banner-actions text-right flip">
+                ';if ($stash->get('eol_survey_link')){$output .= '
+                <a class="btn btn-default eol-callout-btn eol-survey-link" href="';$output .= $stash->get('eol_survey_link');$output .= '" target="cp-eolsurvey">
+                    <i class="fas fa-external-link-alt" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['[_1] Survey',$stash->get('eol_software_name')]]);$output .= '
+                </a>
+                '}$output .= '
+                <a class="btn btn-primary eol-callout-btn" href="';$output .= $stash->get('eol_upgrade_link');$output .= '">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Upgrade Now' ]]);$output .= ' <i class="fas fa-arrow-end" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Modal for user survey. Shown when user clicks calloutCollapseLink, ONLY if survey has never been visited. -->
+';if ($stash->get('load_modal')){$output .= '
+<div class="eol-modal close-eol-modal" id="eolSurveyModal" tabindex="-1" role="dialog" aria-labelledby="eolModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <p class="modal-title" id="eolModalLabel">';$output .= $stash->get(['locale',0,'maketext',['Make Your Voice Heard' ]]);$output .= '</p>
+      </div>
+      <div class="modal-body text-center">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['We are concerned that this server is using [output,strong,_1], which reached end of life on [datetime,_2].',$stash->get('eol_software_name'),$stash->get('eol_date')]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Will you complete a 1-minute survey to help us better serve you?' ]]);$output .= '</p>
+      </div>
+      <div class="eol-modal-footer text-center">
+        <button type="button" class="btn btn-default eol-callout-btn" data-dismiss="modal">
+            ';$output .= $stash->get(['locale',0,'maketext',['Not Right Now' ]]);$output .= '
+        </button>
+        <a id="eolModalPrimaryBtn" class="btn btn-primary eol-callout-btn eol-survey-link" href="';$output .= $stash->get('eol_survey_link');$output .= '" target="cp-eolsurvey" tabindex="0">
+            <i class="fas fa-external-link-alt" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['[_1] Survey',$stash->get('eol_software_name')]]);$output .= '
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="';$output .= $stash->get('jquery_url');$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get('bootstrap_js_url');$output .= '"></script>
+'}$output .= "\n\n<script type=\"text/javascript\">\n    (function() {\n        \"use strict\";\n        var largeCallout = document.getElementById(\"eolCallout\");\n        var banner = document.getElementById(\"eolBanner\");\n        var modal;\n\n        // If jQuery and Bootstrap are loaded, attempt to initialize survey modal\n        if(typeof jQuery === \"function\" && typeof \$().modal === \"function\") {\n            modal = \$(\"#eolSurveyModal\").modal({show: false});\n        }\n\n        /**\n        * Collapses large EOL callout, records event time to NVData\n        *\n        * \@method collapseEOLCallout\n        */\n        function collapseEOLCallout() {\n            hideElement(largeCallout);\n            showElement(banner);\n\n            var isSurveyVisited = \"";$output .= $stash->get('is_survey_visited');$output .= '";
+            if (isSurveyVisited !== "true" && modal) {
+                modal.modal(\'show\');
+            }
+
+            // Save collapse time, so we do not display large callout again for this user for the next 2 weeks
+            var today = (new Date()).toISOString();
+            setnvdata("';$output .= $stash->get('callout_last_displayed_key');$output .= "\", today);\n        }\n\n        /**\n        * Sets nvdata\n        *\n        * \@method setnvdata\n        * \@param {string} key - the nvdata key\n        * \@param {string} value - the value for the nvdata key\n        */\n        function setnvdata(key, value) {\n            var data = {\n                \"api.version\": 1,\n                \"personalization\": {},\n            };\n            data[\"personalization\"][key] = value;\n\n            fetch(PAGE.token + \"/json-api/personalization_set\", {\n                method: \"POST\",\n                headers: {\n                    \"Content-Type\": \"application/json\",\n                },\n                body: JSON.stringify(data),\n            });\n        }\n\n        /**\n        * Applies appropriate bootstrap classes to show a DOM element\n        *\n        * \@method showElement\n        * \@param {HTMLElement} element\n        */\n        function showElement(element) {\n            if(!element || !element.classList) {\n                throw new Error(\"showElement expects an HTMLElement as parameter but received:\", element);\n            }\n            element.classList.remove(\"hide\");\n            element.classList.add(\"show\");\n        }\n\n        /**\n        * Applies appropriate bootstrap classes to hide a DOM element\n        *\n        * \@method hideElement\n        * \@param {HTMLElement} element\n        */\n        function hideElement(element) {\n            if(!element || !element.classList) {\n                throw new Error(\"showElement expects an HTMLElement as parameter but received:\", element);\n            }\n            element.classList.remove(\"show\");\n            element.classList.add(\"hide\");\n        }\n\n        /**\n        * initialization\n        *\n        * \@method init\n        */\n        function init() {\n            var lastCalloutDate = \"";$output .= $stash->get('callout_last_displayed');$output .= '";
+            // Display either large callout or small banner based on time since last callout
+            if (!lastCalloutDate) {
+                showElement(largeCallout);
+            } else {
+                var timeElapsed = Math.abs(new Date() - new Date(lastCalloutDate));
+                var msDisplayInterval = 1210000000; // 2 weeks
+                // If lastCalloutDate is invalid, fall back to large callout
+                if(isNaN(timeElapsed) || timeElapsed > msDisplayInterval) {
+                    showElement(largeCallout);
+                } else {
+                    showElement(banner);
+                }
+            }
+
+            var calloutCollapseLink = document.getElementById("calloutCollapseLink");
+            if (calloutCollapseLink) {
+                calloutCollapseLink.addEventListener("click", collapseEOLCallout);
+            }
+
+            var surveyLinks = document.querySelectorAll(".eol-survey-link");
+            var recordEOLSurveyClick = function() {
+                setnvdata("';$output .= $stash->get('is_survey_visited_key');$output .= '", "true");
+                if (modal) {
+                    modal.modal(\'hide\');
+                }
+            }
+            if (surveyLinks) {
+                surveyLinks.forEach(link => {
+                    link.addEventListener("click", recordEOLSurveyClick);
+                });
+            }
+        }
+
+        init();
+    }());
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,393 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ftp/accounts.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Api2',$context->plugin('Api2'));$output .= $stash->get(['Api2',0,'pre_exec',['Email','listmaildomains' ]]);$stash->set('domains_response',$stash->get(['Api2',0,'exec',['Email','listmaildomains',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listmaildomains' ]]);$output .= $context->process('_assets/resource_usage_macro.html.tt');$output .= '
+
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+
+
+<div class="body-content">
+    <p class="description" id="descFtpAccounts">
+        ';$output .= $stash->get(['locale',0,'maketext',['Add and configure FTP Accounts to get your website on the internet fast.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['You can use an FTP client to manage your website’s files.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/FtpAccounts','_blank','lnkFtpAccountsDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Add FTP Account' ]]);$output .= '</h2>
+        <script type="text/javascript">
+        var FTP_ACCOUNTS_MAXED = false;
+        </script>
+
+        ';$stash->set('resource_usage_key','ftpaccounts');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');if ($stash->get('resource_usage_limits')&& $stash->get(['resource_usage_limits',0,'is_maxed',0])){$stash->set('accounts_maxed',1);$output .= '
+              <script type="text/javascript">
+              FTP_ACCOUNTS_MAXED = true;
+              </script>
+              <style type="text/css">
+              .highlight {display:none;}
+              </style>
+
+        '}$output .= '
+        <div id="new_ftp_account_input_div"
+            ';if ($stash->get('accounts_maxed')){$output .= '
+                hidden
+            '}$output .= '>
+            <div class="form-group">
+                <label for="login">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control" name="login" id="login" onchange="updatedir()" />
+                            ';if ($stash->get(['domains_response',0,'size',0])eq 1){$output .= "\n                            <span id=\"spanAddEmailAccountDomains\" class=\"input-group-addon\">\n                                \@";$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);$output .= '                                <input id="domain" name="domain" type="hidden" value="';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);$output .= '" />
+                            </span>
+                            <span id="domain_error" style="display:none"></span>
+                            '}else {$output .= "\n                            <span id=\"atSign\" class=\"input-group-addon\">\n                                \@\n                            </span>\n                            "}$output .= '
+                        </div>
+                    </div>
+                    <div id="login_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            ';if ($stash->get(['domains_response',0,'size',0])> 1){$output .= '
+            <div class="form-group">
+                <label id="lblDomain" for="domain">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="domain" class="form-control" onchange="updatedir()">
+                            ';if ($stash->get(['domains_response',0,'size',0])){$output .= '
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_response');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain_record'}=$_tt_value;$output .= '
+                                    <option value="';$output .= $stash->get(['domain_record',0,'domain',0,'html',0]);$output .= '">
+                                        ';$output .= $stash->get(['domain_record',0,'domain',0,'html',0]);$output .= '
+                                    </option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            '}$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="domain_error" style="display:none"></div>
+                    </div>
+                </div>
+            </div>
+            '}$output .= '
+            <div class="form-group">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+                <label for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" name="password" id="password" class="form-control"/>
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' name="password2" id="password2" class="form-control"/>
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                    <label for="password_strength">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                        <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                    ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div id="password_strength" class="password_strength"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                        </div>
+                    </div>
+            </div>
+            <div class="form-group">
+                ';$stash->set(['CPANEL',0,'CPVAR',0,'autoinput',0],'homedir');$output .= '
+                ';$stash->set(['CPANEL',0,'CPVAR',0,'autodirsonly',0],1);$output .= '
+                ';$stash->set(['CPANEL',0,'CPVAR',0,'autofunc',0],'dirComplete');$output .= '
+                <label for="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'autoinput',0]);$output .= '">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '
+                </label>
+                <script type="text/javascript">
+                    function dirComplete(inputObj) {modeddir=1;}
+                </script>
+                ';$output .= $context->process('autodir/dirbox.html.tt',{'input_group_addon_text'=>$stash->get(['ExpVar',0,'expand',['$homedir' ]]).'/' });$output .= '
+            </div>
+            <div id="add_new_quota_row" class="form-group">
+                <label for="quota">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="form-inline">
+                            <input type="radio" name="quota" value="250" id="quota_number" onclick="toggle_add_account_quota()" />
+                            <input type="text" class="form-control" id="quota_value" size="7" maxlength="9" value="2000" onclick="toggle_add_account_quota(true)" />
+                            <span>MB</span>
+                        </div>
+                    </div>
+                    <div id="quota_value_error" class="col-sm-6 col-md-9">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6 col-md-9">
+                        <label class="form-inline">
+                            <input type="radio" name="quota" value="unlimited" id="quota_unlimited" checked="checked" onclick="toggle_add_account_quota()" />
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '</span>
+                        </label>
+                    </div>
+                    <div id="quota_unlimited_error" class="col-sm-6 col-md-9">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" id="ftp_create_submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create FTP Account' ]]);$output .= '" />
+                <div id="add_ftp_status"></div>
+            </div>
+            <div style="height: 5px"></div>
+            <div id="add_ftp_status_bar" class="cjt_status_bar"></div>
+        </div><!-- end highlight -->
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['FTP Accounts' ]]);$output .= '</h2>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-8">
+                            <input id="search_input" type="text" class="form-control" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '" value="" />
+                        </div>
+                        <div class="col-xs-6 col-sm-4">
+                            <input type="submit" id="search_button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" onclick="search_accounts()" />
+                            <input type="button" id="clear_search" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Clear' ]]);$output .= '" style="display: none" onclick="clear_search()" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-4 hidden-xs">
+                <div class="pagination-container">
+                    <div class="page-size">
+                        <label for="items_per_page" class="title">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '</label>
+                        <select id="items_per_page" class="form-control" onchange="change_items_per_page()">
+                            <option value="10">10</option>
+                            <option value="25">25</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <table class="nonsortable table responsive-table" id="tblFtpAccounts">
+            <thead>
+                <tr id="pure_table_header">
+                    <th class="col1">
+                        <a id="pure_sort_serverlogin" class="sort-link"
+                            onclick="toggle_sort(\'serverlogin\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '</span>
+                            <input type="hidden" id="pure_sort_direction_serverlogin" value="asc" />
+                            <span id="pure_sort_direction_serverlogin_img"></span>
+                        </a>
+                    </th>
+                    <th class="col2">
+                        <a id="pure_sort_dir" class="sort-link"
+                            onclick="toggle_sort(\'dir\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</span>
+                            <input type="hidden" id="pure_sort_direction_dir" value="asc" />
+                            <span id="pure_sort_direction_dir_img"></span>
+                        </a>
+                    </th>
+                    <th class="col3">
+                        <a id="pure_sort_diskused" class="sort-link"
+                            onclick="toggle_sort(\'diskused\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Usage' ]]);$output .= '</span>
+                            <input type="hidden" id="pure_sort_direction_diskused" value="asc" />
+                            <span id="pure_sort_direction_diskused_img"></span>
+                        </a>
+                        <span>/</span>
+                        <a id="pure_sort_diskquota" class="sort-link"
+                            onclick="toggle_sort(\'diskquota\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= '</span>
+                            <input type="hidden" id="pure_sort_direction_diskquota" value="asc" />
+                            <span id="pure_sort_direction_diskquota_img"></span>
+                        </a>
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+                <tr style="display: none" id="pro_table_header">
+                    <th class="pro_col1">
+                        <a id="pro_sort_serverlogin" class="sort-link"
+                            onclick="toggle_sort(\'serverlogin\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '</span>
+                            <input type="hidden" id="pro_sort_direction_serverlogin" value="asc" />
+                            <span id="pro_sort_direction_serverlogin_img"></span>
+                        </a>
+                    </th>
+                    <th class="pro_col2" >
+                        <a id="pro_sort_dir" class="sort-link"
+                            onclick="toggle_sort(\'dir\')"
+                            href="javascript:void(0)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</span>
+                            <input type="hidden" id="pro_sort_direction_dir" value="asc" />
+                            <span id="pro_sort_direction_dir_img"></span>
+                        </a>
+                    </th>
+                    <th >
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="accounts_div"></tbody>
+        </table>
+        <div id="pagination"></div>
+    </div>
+
+    <div class="section">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['Special FTP Accounts' ]]);$output .= '
+        </h2>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Special FTP Accounts are linked to administrative aspects of your hosting account and cannot be deleted. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/FtpSpecial','_blank','lnkFtpSpecialDocumentation' ]]);$output .= '
+        </p>
+
+        <table class="nonsortable table responsive-table" id="tblSpecialFtpAccounts">
+            <thead>
+                <tr id="pure_special_table_header">
+                    <th class="special_col1">';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                    <th class="special_col2">';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '</th>
+                    <th class="special_col3">';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</th>
+                    <th class="special_col4">';$output .= $stash->get(['locale',0,'maketext',['Usage' ]]);$output .= ' / ';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+                <tr style="display: none" id="pro_special_table_header">
+                    <th class="pro_special_col1">';$output .= $stash->get(['locale',0,'maketext',['Type' ]]);$output .= '</th>
+                    <th class="pro_special_col2">';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '</th>
+                    <th class="pro_special_col3">';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody id="special_accounts_div"></tbody>
+        </table>
+
+        <input type="hidden" id="list_of_anonymous_account_ids" value="" />
+
+        <div style="display: none">
+            <div id="special_log_description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Log access accounts allow you to download your website’s raw access logs.' ]]);$output .= '
+            </div>
+            <div id="special_anon_description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Anonymous FTP lets users connect to your site without logging in. Anonymous FTP access is controlled through Setup Anonymous FTP Access in the FTP Manager. The existence of an anonymous FTP account does not mean that anonymous access is enabled.' ]]);$output .= '
+            </div>
+            <div id="special_main_description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Your main account gives FTP access to all files in your web hosting account.' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+
+    ';$output .= $context->include('ftp/change_password.html.tt');$output .= '
+    ';$output .= $context->include('ftp/change_quota.html.tt');$output .= '
+    ';$output .= $context->include('ftp/delete_account.html.tt');$output .= '
+    ';$output .= $context->include('ftp/configure_client.html.tt');$output .= '
+
+    ';$output .= '
+    <span style="position: absolute; left: -5000; top: -5000" id="get_path_width"></span>
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'ftp_accounts','feature'=>'ftpaccts','page_js'=>$stash->get('js_code'),'include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_scripts'=>$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])? ['libraries/handlebars/handlebars.js','js2/ftp/list_ftp.js' ]: ['libraries/handlebars/handlebars.min.js','js2-min/ftp/list_ftp.js' ],'page_stylesheets'=>['css2-min/ftp.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+
+    var CPANEL_USER = ';$output .= $stash->get(['CPANEL',0,'user',0,'json',0]);$output .= ';
+    var SFTP_PORT = ';$output .= $stash->get(['execute',['SSH','get_port' ],'data',0,'port',0]);$output .= ';
+    var FTP_SERVER = \'ftp.';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);$output .= '\';
+    var FTP_PORT = ';$output .= $stash->get(['execute',['Ftp','get_port' ],'data',0,'port',0]);$output .= ';
+    var DNS = \'';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]);$output .= '\';
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'ftp' }],'data',0,'strength',0]);$output .= '\') || 0;
+    var HOME_DIR = \'';$output .= $stash->get(['ExpVar',0,'expand',['$homedir' ]]);$output .= '\';
+
+    var public_html_only = ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'publichtmlsubsonly',0])? 'true' : 'false';$output .= ';
+
+    var updatedir = function() {
+        suggest_homedir(public_html_only);
+    }
+
+    ';if ($stash->get(['ExpVar',0,'expand',['$hasdedicatedip' ]])){$output .= '    var DEDICATED_IP = true;
+    '}else {$output .= '    var DEDICATED_IP = false;
+    '}$output .= '    var SERVER_TYPE = \'';$output .= $stash->get(['execute',['Ftp','server_name' ],'data',0]);$output .= '\';
+    (SERVER_TYPE.search(/pro/i) == -1) ? SERVER_TYPE = "PURE" : SERVER_TYPE = "PRO"; // pro has no quotas
+
+    var LANG = {
+        ftp_login : "';$output .= $stash->get(['locale',0,'maketext',['FTP Login' ]]);$output .= '",
+        ftp_domain : "';$output .= $stash->get(['locale',0,'maketext',['[asis,FTP] Domain' ]]);$output .= '",
+        directory_path : "';$output .= $stash->get(['locale',0,'maketext',['Directory Path' ]]);$output .= '",
+        validation_directory_paths : ';$output .= $stash->get(['locale',0,'maketext',['Directory paths cannot contain the following characters: [output,chr,92] ? % * : | [output,quot] [output,gt] [output,lt]' ],'json',0]);$output .= ',
+        quota : "';$output .= $stash->get(['locale',0,'maketext',['Quota' ]]);$output .= '",
+        email_quota_number : "';$output .= $stash->get(['locale',0,'maketext',['Quota must be a positive integer.' ]]);$output .= '",
+        no_accounts_found : "';$output .= $stash->get(['locale',0,'maketext',['No accounts found.' ]]);$output .= '",
+        unlimited : "';$output .= $stash->get(['locale',0,'maketext',['unlimited' ]]);$output .= '",
+        change_br_password : "';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '",
+        change_br_quota : "';$output .= $stash->get(['locale',0,'maketext',['Change Quota' ]]);$output .= '",
+        Delete : "';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '",
+        configure_ftp_client : "';$output .= $stash->get(['locale',0,'maketext',['Configure FTP Client' ]]);$output .= '",
+        paginate_prev : "';$output .= $stash->get(['locale',0,'maketext',['Prev' ]]);$output .= '",
+        paginate_next : "';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '",
+        not_applicable : \'';$output .= do {my$output='';my$_tt_filter=$context->filter('json')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['[output,acronym,N/A,Not Applicable]' ]]);&$_tt_filter($output)};$output .= '\',
+        Password : "';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '",
+        Password_again : "';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '",
+        Strength : "';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '",
+        Password_Generator : "';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '",
+        Change_Password : "';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '",
+        FTP_Quota : "';$output .= $stash->get(['locale',0,'maketext',['FTP Quota' ]]);$output .= '",
+        Unlimited : "';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '",
+        Change_Quota : "';$output .= $stash->get(['locale',0,'maketext',['Change Quota' ]]);$output .= '",
+        Delete_account : "';$output .= $stash->get(['locale',0,'maketext',['Delete Account' ]]);$output .= '",
+        Delete_Account : "';$output .= $stash->get(['locale',0,'maketext',['Delete Account' ]]);$output .= '",
+        Delete_Account_and_Files : "';$output .= $stash->get(['locale',0,'maketext',['Delete Account and Files' ]]);$output .= '",
+        Manual_Settings : "';$output .= $stash->get(['locale',0,'maketext',['Manual Settings' ]]);$output .= '",
+        FTP_Username : "';$output .= $stash->get(['locale',0,'maketext',['FTP username' ]]);$output .= '",
+        FTP_Server : "';$output .= $stash->get(['locale',0,'maketext',['FTP server' ]]);$output .= '",
+        FTP_Server_Port : "';$output .= $stash->get(['locale',0,'maketext',['FTP [output,amp] explicit FTPS port' ]]);$output .= '",
+        SFTP_Server_Port : "';$output .= $stash->get(['locale',0,'maketext',['SFTP port' ]]);$output .= '",
+        Configuration_Files : "';$output .= $stash->get(['locale',0,'maketext',['Configuration Files' ]]);$output .= '",
+        for_Windows : "';$output .= $stash->get(['locale',0,'maketext',['For [asis,Windows]' ]]);$output .= '",
+        for_Mac : "';$output .= $stash->get(['locale',0,'maketext',['For [asis,Mac]' ]]);$output .= '",
+        Instructions_new_window : "';$output .= $stash->get(['locale',0,'maketext',['Instructions (new window)' ]]);$output .= '",
+        FTP_Configuration_File : "';$output .= $stash->get(['locale',0,'maketext',['FTP Configuration File' ]]);$output .= '",
+        SFTP_Configuration_File : "';$output .= $stash->get(['locale',0,'maketext',['SFTP Configuration File' ]]);$output .= '",
+        quota_positive_integer : "';$output .= $stash->get(['locale',0,'maketext',['Quota must be a positive integer.' ]]);$output .= '",
+        Account_Created : "';$output .= $stash->get(['locale',0,'maketext',['Account Created' ]]);$output .= '",
+        creating_account : "';$output .= $stash->get(['locale',0,'maketext',['Creating Account …' ]]);$output .= '",
+        Changed_Password : "';$output .= $stash->get(['locale',0,'maketext',['Changed Password' ]]);$output .= '",
+        changing_password : "';$output .= $stash->get(['locale',0,'maketext',['Changing Password …' ]]);$output .= '",
+        Changed_Quota : "';$output .= $stash->get(['locale',0,'maketext',['Changed Quota' ]]);$output .= '",
+        changing_quota : "';$output .= $stash->get(['locale',0,'maketext',['Changing Quota …' ]]);$output .= '",
+        deleting_account : "';$output .= $stash->get(['locale',0,'maketext',['Deleting Account …' ]]);$output .= '",
+        deleting_account_and_files : "';$output .= $stash->get(['locale',0,'maketext',['Deleting Account and Files …' ]]);$output .= '",
+        Search_Accounts : "';$output .= $stash->get(['locale',0,'maketext',['Search Accounts' ]]);$output .= '",
+        anon_quotas_share : "';$output .= $stash->get(['locale',0,'maketext',['Note: all anonymous FTP accounts share the same quota.' ]]);$output .= '"
+    };
+
+    </script>
+    '}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

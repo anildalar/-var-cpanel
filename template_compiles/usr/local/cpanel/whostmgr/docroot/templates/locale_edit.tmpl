@@ -1,0 +1,95 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/locale_edit.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPHash',$context->plugin('CPHash'));$output .= do {my$output='';$output .= '<style type="text/css">
+table#lexicon_table td {
+    border: 0px solid black;
+}
+span.custom_value {
+    background-color: #FFFFCC;
+}
+
+.human_translation {
+    background-color: #F78E1E;
+}
+
+.machine_translation {
+    background-color: #FFFFCC;
+}
+
+.pending_translation {
+    background-color: #FFFFCC;
+}
+
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+var CHARSET = \'';$output .= $stash->get(['data',0,'tag_encoding',0]);$output .= '\';
+var THEME = \'';$output .= $stash->get(['data',0,'theme',0]);$output .= '\';
+var LOCALE_TAG = \'';$output .= $stash->get(['data',0,'tag',0]);$output .= "';\n\nvar edit = function(id) {\n    var div_region = YAHOO.util.Region.getRegion(YAHOO.util.Dom.get(\"lexicon_value\" + id));\n    if (div_region.height <= 1) div_region.height = 20;\n    div_region.height += 2; // add some padding for comfort\n\n    YAHOO.util.Dom.setStyle(\"lexicon_value\" + id, \"display\", \"none\");\n    YAHOO.util.Dom.setStyle(\"edit_textarea\" + id, \"height\", div_region.height + \"px\");\n    YAHOO.util.Dom.setStyle(\"edit_lexicon_value\" + id, \"display\", \"\");\n\n    YAHOO.util.Dom.setStyle(\"edit_revert_buttons\" + id, \"display\", \"none\");\n    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n\n    YAHOO.util.Dom.get(\"edit_textarea\" + id).value = CPANEL.util.get_text_content(\"lexicon_value\" + id);\n};\n\nvar cancel = function(id) {\n    YAHOO.util.Dom.setStyle(\"edit_revert_buttons\" + id, \"display\", \"block\");\n    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"none\");\n\n    YAHOO.util.Dom.setStyle(\"lexicon_value\" + id, \"display\", \"block\");\n    YAHOO.util.Dom.setStyle(\"edit_lexicon_value\" + id, \"display\", \"none\");\n    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = \"\";\n};\n\nvar save = function(id) {\n    var new_value = YAHOO.util.Dom.get(\"edit_textarea\" + id).value;\n\n    var callback = {\n        success : function(o) {\n            try {\n                var data = YAHOO.lang.JSON.parse(o.responseText);\n                if (data.status == 1) {\n                    CPANEL.util.set_text_content(\"lexicon_value\" + id, new_value);\n                    YAHOO.util.Dom.setStyle(\"lexicon_value\" + id, \"display\", \"block\");\n                    YAHOO.util.Dom.setStyle(\"edit_lexicon_value\" + id, \"display\", \"none\");\n\n                    YAHOO.util.Dom.setStyle(\"edit_revert_buttons\" + id, \"display\", \"block\");\n                    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"none\");\n                    YAHOO.util.Dom.get(\"edit_success\" + id).innerHTML = CPANEL.icons.success + \" Saved\";\n                    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = \"\";\n                    YAHOO.util.Dom.get(\"value_type\" + id).innerHTML = '<span class=\"custom_value\">Custom Value</span>';\n                    YAHOO.util.Dom.setStyle(\"revert_to_default_button\" + id, \"display\", \"\");\n\n                    setTimeout(function() {\n                        CPANEL.animate.fade_out(\"edit_success\"+id).onComplete.subscribe( function() {\n                            YAHOO.util.Dom.setStyle( this.getEl(), \"display\", \"\");\n                            this.getEl().innerHTML = \"\";\n                        } );\n                    }, 5000);\n                }\n                else {\n                    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n                    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" \" + data.text;\n                }\n            }\n            catch(e) {\n                YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n                YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" JSON Error! Refresh the page and try again.\";\n            }\n        },\n\n        error : function(o) {\n            YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n            YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" AJAX Error!  Refresh the page and try again.\";\n        }\n    };\n\n    var orig_key = CPANEL.util.get_text_content(\"key_value\"+id);\n    var url = CPANEL.security_token + \"/cgi/ajax_maketext_syntax_util.pl?key=\" + encodeURIComponent(new_value); // ## no extract maketext\n    url += '&charset=' + encodeURIComponent(CHARSET);\n    url += '&save=1';\n    url += '&orig_key=' + encodeURIComponent(orig_key);\n    url += '&theme=' + encodeURIComponent(THEME);\n    url += '&locale_tag=' + encodeURIComponent(LOCALE_TAG);\n    YAHOO.util.Connect.asyncRequest('GET', url, callback, '');\n\n    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"none\");\n    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.ajax + \" saving...\";\n};\n\nvar revert_to_default = function(id) {\n    var callback = {\n        success : function(o) {\n            try {\n                var data = YAHOO.lang.JSON.parse(o.responseText);\n                if (data.status == 1) {\n                    YAHOO.util.Dom.get(\"edit_textarea\" + id).innerHTML = \"\";\n                    YAHOO.util.Dom.get(\"edit_textarea\" + id).value = \"\";\n                    CPANEL.util.set_text_content(\"lexicon_value\" + id, data.text);\n                    YAHOO.util.Dom.setStyle(\"revert_to_default_button\" + id, \"display\", \"none\");\n                    YAHOO.util.Dom.setStyle(\"edit_revert_buttons\" + id, \"display\", \"block\");\n                    YAHOO.util.Dom.get(\"edit_success\" + id).innerHTML = CPANEL.icons.success + \" Saved\";\n                    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = \"\";\n                    YAHOO.util.Dom.get(\"value_type\" + id).innerHTML = \"Value\";\n\n                    setTimeout(function() {\n                        \$(\"#\" + \"edit_success\" + id).fadeOut(\"normal\", function() {\n                            YAHOO.util.Dom.setStyle(\"edit_success\" + id, \"display\", \"\");\n                            YAHOO.util.Dom.get(\"edit_success\" + id).innerHTML = \"\";\n                        });\n                    }, 5000);\n                }\n                else {\n                    YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n                    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" \" + data.text;\n                }\n            }\n            catch(e) {\n                YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n                YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" JSON Error! Refresh the page and try again.\";\n            }\n        },\n\n        error : function(o) {\n            YAHOO.util.Dom.setStyle(\"edit_input\" + id, \"display\", \"\");\n            YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.error + \" AJAX Error!  Refresh the page and try again.\";\n        }\n    };\n\n    var url = CPANEL.security_token + \"/cgi/ajax_locale_delete_local_key.pl?key=\" + encodeURIComponent(CPANEL.util.get_text_content(\"key_value\"+id));\n    url += '&theme=' + encodeURIComponent(THEME);\n    url += '&locale=' + encodeURIComponent(LOCALE_TAG);\n    YAHOO.util.Connect.asyncRequest('GET', url, callback, '');\n\n    YAHOO.util.Dom.setStyle(\"edit_revert_buttons\" + id, \"display\", \"none\");\n    YAHOO.util.Dom.get(\"edit_status\" + id).innerHTML = CPANEL.icons.ajax + \" reverting...\";\n};\n//]]>\n</script>\n\n";if ($stash->get(['data',0,'tag',0])&& $stash->get(['data',0,'theme',0])){$output .= '
+   <h3>Editing the “';$output .= $stash->get(['data',0,'tag',0]);$output .= '” locale in “';$output .= $stash->get(['data',0,'theme',0]);$output .= '”.</h3>
+   <p>Local edits will be saved to <code>';$output .= $stash->get(['data',0,'local_file',0]);$output .= '</code></p>
+   <p>The compiled database file is at <code>';$output .= $stash->get(['data',0,'cdb_file',0]);$output .= '</code></p>
+
+    ';if ($stash->get(['data',0,'theme',0])ne '/'){$output .= '
+        <p>Note: If you have <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_editor=?locale=';$output .= $stash->get(['data',0,'tag',0]);$output .= '&theme=%2F">edited a key for \'';$output .= $stash->get(['data',0,'tag',0]);$output .= '\' in the root data</a> but not for the \'';$output .= $stash->get(['data',0,'theme',0]);$output .= '\' theme it will not show up as a "Custom Value" here unless you have also edited it for this theme.</p>
+    '}$output .= '
+
+    <table cellpadding="3" cellspacing="0" style="width: 800px">
+        <tr>
+            <td><hr /></td>
+        </tr>
+    </table>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'en_hash',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '
+';$stash->set('key',$stash->get(['pair',0,'key',0]));if ($stash->get('key')ne '__FORENSIC' && $stash->get('key')ne 'charset'){$output .= '        <table cellpadding="3" cellspacing="0" style="width: 800px">
+            <tr>
+                <td align="right" valign="top" style="width: 150px">Key:</td>
+                <td style="width: 650px"><span id="key_value';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= $stash->get('key');$output .= '</span></td>
+            </tr>
+            <tr>
+                <td align="right" valign="top">English Value:</td>
+                <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['CPHash',0,'vmethod',['item',$stash->get(['data',0,'en_hash',0]),$stash->get('key')]]);&$_tt_filter($output)};$output .= '</td>
+            </tr>
+            <tr>
+                <td align="right" valign="top"><span id="value_type';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= $stash->get(['CPHash',0,'vmethod',['exists',$stash->get(['data',0,'local_hash',0]),$stash->get('key')]])? '<span class="custom_value">Custom Value</span>' : 'Value';$output .= '</span>:</td>
+                <td>
+                    <div id="lexicon_value';$output .= $stash->get(['loop',0,'index',0]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['CPHash',0,'vmethod',['item',$stash->get(['data',0,'cdb_hash',0]),$stash->get('key')]]);&$_tt_filter($output)};$output .= '</div>
+                    <div id="edit_lexicon_value';$output .= $stash->get(['loop',0,'index',0]);$output .= '" style="display: none"><textarea id="edit_textarea';$output .= $stash->get(['loop',0,'index',0]);$output .= '" rows="" cols="" style="width: 100%"></textarea></div>
+                </td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>
+                    <div id="edit_revert_buttons';$output .= $stash->get(['loop',0,'index',0]);$output .= '"><input type="button" value="Edit" onclick="edit(';$output .= $stash->get(['loop',0,'index',0]);$output .= ')" /> <input type="button" id="revert_to_default_button';$output .= $stash->get(['loop',0,'index',0]);$output .= '" onclick="revert_to_default(';$output .= $stash->get(['loop',0,'index',0]);$output .= ')" value="Revert to Default Value" ';if ($stash->get(['CPHash',0,'vmethod',['exists',$stash->get(['data',0,'local_hash',0]),$stash->get('key')]])eq $stash->get('FALSE')){$output .= 'style="display: none"'}$output .= ' /> <span id="edit_success';$output .= $stash->get(['loop',0,'index',0]);$output .= '"></span></div>
+                    <div id="edit_input';$output .= $stash->get(['loop',0,'index',0]);$output .= '" style="display: none"><span class="action_link" onclick="cancel(';$output .= $stash->get(['loop',0,'index',0]);$output .= ')">cancel</span> or <input type="button" value="Save Changes" onclick="save(';$output .= $stash->get(['loop',0,'index',0]);$output .= ')" /></div>
+                    <div id="edit_status';$output .= $stash->get(['loop',0,'index',0]);$output .= '"></div>
+                </td>
+            </tr>
+';if ($stash->get(['data',0,'in_translation_vetting_mode',0])&& $stash->get(['data',0,'tag',0])ne 'en'){$output .= '
+<tr>
+   <td align="right" valign="top">Translation Vetting:</td>
+   <td valign="top">
+     <ul>';$stash->set('location',$stash->get(['data',0,'get_location_of_key',[$stash->get(['data',0,'tag',0]),$stash->get('key')]]));$stash->set('is_legacy',$stash->get(['data',0,'phrase_is_legacy_key',[$stash->get('key')]]));$stash->set('queue_hr',$stash->get(['data',0,'get_queue_values',[$stash->get(['data',0,'tag',0]),$stash->get('key')]]));if ($stash->get('queue_hr')){$output .= '           ';if (!$stash->get(['queue_hr',0,'size',0])){$output .= '<li class="pending_translation">This phrase is pending new human translation.</li>'}$output .= '
+           ';if ($stash->get(['queue_hr',0,'human',0])){$output .= '<li class="human_translation">Pending Human ';if ($stash->get('location')eq 'lexicon'){$output .= 'Re-'}$output .= 'translation: <b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['queue_hr',0,'human',0]);&$_tt_filter($output)};$output .= '</b></li>'}$output .= '
+           ';if ($stash->get(['queue_hr',0,'machine',0])){$output .= '<li class="machine_translation">Pending Machine ';if ($stash->get('location')eq 'lexicon'){$output .= 'Re-'}$output .= 'translation: <b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['queue_hr',0,'machine',0]);&$_tt_filter($output)};$output .= '</b></li>'}}$output .= '       <li>Location: <b>';$output .= $stash->get('location')eq 'custom' && $stash->get('is_legacy')? 'lexicon' : $stash->get('location');$output .= '</b></li>
+       <li>Is Legacy? <b>';$output .= $stash->get('is_legacy')? 'Yes' : 'No';$output .= '</b></li>
+     </ul>
+     <span style="font-size: x-small;font-style: italic">When editing the value you can include a brief note about the new translation by using a bracket notation comment tag with a special “tag” identifying it as a translation fix note:
+     <br/>
+     &nbsp; &nbsp; &nbsp; <code>&#091;comment,translation fix: YOUR NOTE GOES HERE&#093;</code>
+     </span>
+   </td>
+</tr>
+'}$output .= '
+            <tr>
+                <td colspan="2"><hr /></td>
+            </tr>
+        </table>
+        '}$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}else {$output .= '
+   ';if (!$stash->get(['data',0,'tag',0])){$output .= '<p class="error">Invalid locale.</p>'}$output .= '
+   ';if (!$stash->get(['data',0,'theme',0])){$output .= '<p class="error">Invalid theme.</p>'}$output .= '
+'}$output .= '
+
+<p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_edit_options">Back</a></p>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

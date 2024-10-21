@@ -1,0 +1,97 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/err/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('HTMLOptions',$context->plugin('HTMLOptions'));$stash->set('domain_response',$stash->get(['execute',['Email','list_mail_domains',{}]]));$output .= '
+
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['domain_response',0,'status',0])eq 0){$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['file_info',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                        ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}else {$output .= '
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['An error page informs a visitor when there is a problem accessing your site. Each type of problem has its own code. For example, a visitor who enters a nonexistent URL will see a 404 error, while an unauthorized user trying to access a restricted area of your site will see a 401 error.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Basic error pages are automatically provided by the web server (Apache). However, if you prefer, you can create a custom error page for any valid HTTP status code beginning in 4 or 5.' ]]);$output .= '
+    </p>
+    <div class="section">
+        <h2 id="hdrSelectDomain">
+            ';$output .= $stash->get(['locale',0,'maketext',['Step 1 - Select Domain to Manage Error Pages' ]]);$output .= '
+        </h2>
+        <div id="ep-select-domain">
+            <div class="form-group">
+                <label id=\'managing\' for="domain">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Managing' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="domain" id=\'domain\' onchange="show_pages(this)" class="form-control">
+                            ';$stash->set('domains',$stash->get(['domain_response',0,'data',0]));$output .= $stash->get(['HTMLOptions',0,'options_as_html',[$stash->get('domains'),{'value'=>'domain','text'=>'domain','selected'=>$stash->get(['RAW_FORM',0,'domain',0])}]]);$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="step2_block" class="section">
+        <h2 id="hdrEditFor">
+            ';$output .= $stash->get(['locale',0,'maketext',['Step 2 - Edit Error Pages for:' ]]);$output .= '
+            <span id="working_domain"></span>
+        </h2>
+        <div class="section">
+            <ul class="nav nav-tabs">
+                <li class="active ">
+                    <a href="#tab1" data-toggle="tab">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit Common Error Codes' ]]);$output .= '
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab2" data-toggle="tab">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Show All HTTP Error Status Codes' ]]);$output .= '
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                ';$output .= $context->include('error_code_include.html.tt');$output .= '
+            </div>
+        </div>
+    </div>
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'error_pages','page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'page_scripts'=>['libraries/jquery/current/jquery.js','libraries/bootstrap/optimized/js/bootstrap.js' ],'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    function show_pages(x) {
+        var show_div = document.getElementById(\'step2_block\');
+        var s_value = x.options[x.selectedIndex].value;
+        var skip_value = ';$output .= $stash->get(['RAW_FORM',0,'domain',0,'json',0])|| 'null';$output .= ' ;
+        if (skip_value == \'\') {
+            skip_value = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0,'json',0])|| 'null';$output .= " ;\n        }\n        if (s_value != skip_value) {\n            window.location = \"index.html?domain=\" + s_value;\n            return false;\n        }\n\n        document.getElementById('working_domain').innerHTML = s_value;\n\n        var a_s = show_div.getElementsByTagName('a');\n\n        for (i = 0; i <= a_s.length; i++) {\n            try {\n                a_s[i].href = a_s[i].href.replace(/(domain\\=[\\w\\.-]*)/, 'domain=' + s_value); //TODO This also needs to change the directory.  Then we can drop Redirect.\n            } catch (e) {}\n        }\n\n        show_div.style.display = 'none';\n        setTimeout(function() {\n            show_div.style.display = 'block'\n        }, 100);\n    }\n\n    show_pages(document.getElementById('domain'));\n</script>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    .errorpagelist li{
+        margin:5px 0;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

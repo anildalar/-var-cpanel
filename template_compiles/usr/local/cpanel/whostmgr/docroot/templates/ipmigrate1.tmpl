@@ -1,0 +1,100 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/ipmigrate1.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<p>This wizard will help you migrate to a new set of IP addresses.  It will update your server’s configuration files, but it will not bind the new IP addresses. You will need to do this <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/addipform">here</a> or with another utility before proceeding.</p>
+<br />
+
+';if ($stash->get(['data',0,'natmode',0])){$output .= '
+<div id="natWarning" class="notice-warning">
+    <div class="notice-content">';$output .= $stash->get(['locale',0,'maketext',['NAT mode enabled! Please enter the local IP and not the corresponding public IP.' ]]);$output .= '</div>
+</div>
+<br /><br />
+'}$output .= '
+<div id="container" style="display:table;width:100%">
+    <div id="ipform" style="display:table-cell;">
+        Enter the new IPs one per line:
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/ipmigrate2" method="POST">
+            <textarea name="ips" cols="20" rows="20">';$output .= $stash->get('migration_ips');$output .= '</textarea>
+            <br />
+            <br />
+            <input type="submit" class="btn-primary" value="Continue">
+        </form>
+    </div>
+    <div id="reftable" style="display:table-cell;">
+        Quick CIDR Refrence Table
+        <table class="tableborder1">
+            <tr>
+                <td>CIDR Notation</td><td>Number of Hosts</td>
+            </tr>
+            <tr>
+                <td>/24</td><td>256</td>
+            </tr>
+            <tr>
+                <td>/25</td><td>128</td>
+            </tr>
+            <tr>
+                <td>/26</td><td>64</td>
+            </tr>
+            <tr>
+                <td>/27</td><td>32</td>
+            </tr>
+            <tr>
+                <td>/28</td><td>16</td>
+            </tr>
+            <tr>
+                <td>/29</td><td>8</td>
+            </tr>
+            <tr>
+                <td>/30</td><td>4</td>
+            </tr>
+            <tr>
+                <td>/31</td><td>2</td>
+            </tr>
+            <tr>
+                <td>/32</td><td>1</td>
+            </tr>
+        </table>
+    </div>
+</div>
+    <br />
+    Notes: When adding multiple IP addresses, you must use Class C CIDR format or 192.168.0.1-254 format.
+    <br />
+    Valid examples: <i>192.168.4.128/25</i>, <i>192.168.3.5-10</i>, <i>192.168.99.55-230</i>
+
+';$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'ip_migration_wizard','stylesheets'=>['/cjt/css/wrapped-select.css' ],'extrastyle'=>'
+
+/* XXX this is pasta from addipform.tmpl */
+
+.notice-warning {
+    max-width: 700px;
+    min-height: 30px;
+    margin-left: 30px;
+    color: white;
+    border: 1px solid #DA961F;
+    font-size: 13px;
+    font-weight: bold;
+    min-height: 30px;
+    position: relative;
+    background-color:#F6C167;
+    background: -moz-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#F6C167), color-stop(100%,#F3B03B)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* IE10+ */
+    background: linear-gradient(top,  #F6C167 0%, #F3B03B 100%); /* W3C */
+    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#F6C167",endColorstr="#F3B03B",GradientType=0);
+    -webkit-border-radius:4px;
+    -moz-border-radius:4px;
+    border-radius:4px;
+    -webkit-background-clip:padding-box;
+    -moz-background-clip:padding;
+    background-clip:padding-box;
+    text-shadow: 1px 1px #000000;
+}
+
+.notice-content {
+    background-image: url(/images/notice-warning.png);
+    background-position: 9px center;
+    background-repeat: no-repeat;
+    padding: 9px 30px 9px 45px;
+}
+
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

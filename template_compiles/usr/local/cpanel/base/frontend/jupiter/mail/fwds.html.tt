@@ -1,0 +1,145 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/fwds.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['FORM',0,'item',['itemsperpage' ]])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'item',['itemsperpage' ]]))}if ((!($stash->get(['FORM',0,'item',['itemsperpage' ]]))||!($stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$stash->set('api2_result_StatsBar_stat',[]);$stash->set('api2_result_Email_listforwards',[]);$stash->set('api2_result_Email_listdomainforwards',[]);if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$stash->set('api2_result_StatsBar_stat',$stash->get(['Api2',0,'exec',['StatsBar','stat',{'warnings'=>'1','infinitylang'=>'true','warninglevel'=>'80','display'=>'forwarders' }]]));$stash->set('api2_result_Email_listforwards',$stash->get(['Api2',0,'exec',['Email','listforwards',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]),'domain'=>($stash->get(['RAW_FORM',0,'domain',0])),'api2_paginate'=>'1','regex'=>($stash->get(['RAW_FORM',0,'item',['searchregex' ]])),'api2_paginate_start'=>($stash->get(['FORM',0,'item',['api2_paginate_start' ]]))}]]))}if ($stash->get(['CPANEL',0,'feature',['emaildomainfwd' ]])){$stash->set('api2_result_Email_listdomainforwards',$stash->get(['Api2',0,'exec',['Email','listdomainforwards',{'domain'=>$stash->get(['RAW_FORM',0,'domain',0])}]]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){$output .= '
+        ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+            ';$output .= $context->include('managelist.html.tt');$output .= '
+        '}$output .= '
+        <div class="section">
+            <h2 id="hdrForwarder">';$output .= $stash->get(['locale',0,'maketext',['Create an Email Account Forwarder' ]]);$output .= '</h2>
+            <a class="btn btn-primary" id="btn_AddForwarder" href="addfwd.html">';$output .= $stash->get(['locale',0,'maketext',['Add Forwarder' ]]);$output .= '</a>
+
+            ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+                ';if ($stash->get(['CPANEL',0,'feature',['emaildomainfwd' ]])){$output .= '
+                    <a class="btn btn-primary" id="btn_AddDomainForwarder" href="adddfwd.html">';$output .= $stash->get(['locale',0,'maketext',['Add Domain Forwarder' ]]);$output .= '</a>
+                '}$output .= '
+            '}$output .= '
+        </div>
+
+        <div class="section">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Email Account Forwarders' ]]);$output .= '</h2>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_StatsBar_stat');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                <p class="caution">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: You currently use [numf,_1] out of [numf,_2]',$stash->get(['hashref',0,'count',0]),$stash->get(['hashref',0,'max',0])]]);$output .= '
+                </p>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            <p class="description" id="txt_forwarders-description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Send a copy of any incoming email from one address to another. For example, forward [output,strong,joe@example.com] to [output,strong,joseph@example.com] so that you only have one inbox to check. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/Forwarders','_blank','lnkForwardersDocumentation' ]]);$output .= '
+            </p>
+
+            <div id="search-panel_forwarders">
+                <form method="get" action="">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-8 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" id="input_forwarderSearchRegex" name="searchregex" value="';$output .= $stash->get(['FORM',0,'searchregex',0]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '" />
+                            </div>
+                            <div class="col-xs-4">
+                                <input type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]);$output .= '" />
+                                <input type="submit" id="btn_submitForwarderSearch" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+              <table id="mailtbl" class="sortable truncate-table table table-striped responsive-table">
+                <colgroup>
+                    <col width="35%" />
+                    <col width="35%" />
+                    <col width="30%" />
+                </colgroup>
+                <tr>
+                    <th id="tblHead_EmailAddress">';$output .= $stash->get(['locale',0,'maketext',['Email Address' ]]);$output .= '</th>
+                    <th id="tblHead_ForwardTo">';$output .= $stash->get(['locale',0,'maketext',['Forward To' ]]);$output .= '</th>
+                    <th id="tblHead_ForwarderFunctions" class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+                ';if ($stash->get(['api2_result_Email_listforwards',0,'size',0])){$output .= '
+                   ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_Email_listforwards');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <tr>
+                        <td class="truncate nobrd-left" data-title="';$output .= $stash->get(['locale',0,'maketext',['Email Address' ]]);$output .= '">
+                            ';$output .= $stash->get(['hashref',0,'item',['dest' ],'html',0]);$output .= '
+                        </td>
+                        <td class="truncate" data-title="';$output .= $stash->get(['locale',0,'maketext',['Forward To' ]]);$output .= '">
+                            ';$output .= $stash->get(['hashref',0,'item',['forward' ],'html',0]);$output .= '
+                        </td>
+                        <td class="nobrd" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                            <a class="btn btn-link" href="showroute.html?fwd=1&amp;domain=';$output .= $stash->get(['FORM',0,'domain',0]);$output .= '&amp;email=';$output .= $stash->get(['hashref',0,'item',['uri_dest' ]]);$output .= '">
+                            <span class="glyphicon glyphicon-search"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Trace' ]]);$output .= '
+                            </a>
+                            <a class="btn btn-link" href="dodelfwdconfirm.html?domain=';$output .= $stash->get(['FORM',0,'item',['domain' ]]);$output .= '&amp;email=';$output .= $stash->get(['hashref',0,'item',['uri_dest' ]]);$output .= '&amp;emaildest=';$output .= $stash->get(['hashref',0,'item',['uri_forward' ]]);$output .= '">
+                                <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </a>
+                        </td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr>
+                        <td colspan="3" class="info empty-row">
+                            ';$output .= $stash->get(['locale',0,'maketext',['There are no forwarders configured for the current domain.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+              </table>
+            ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+
+        </div>
+    '}$output .= '<!-- end cpanelfeature forwarders -->
+
+    ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';if ($stash->get(['CPANEL',0,'feature',['emaildomainfwd' ]])){$output .= '
+        <div class="section">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Forward All Email for a Domain' ]]);$output .= '</h2>
+            <p class="description" id=\'forwarders-domain-forward-description-text\'>
+                ';$output .= $stash->get(['locale',0,'maketext',['In addition to forwarding individual mail accounts, you can forward all email from one domain to another.' ]]);$output .= '
+            </p>
+
+            <table id="dfwdmailtbl" class="sortable table table-striped responsive-table">
+                <thead>
+                <tr>
+                    <th class="cell-end">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</th>
+                    <th class="cell">';$output .= $stash->get(['locale',0,'maketext',['Forward To' ]]);$output .= '</th>
+                    <th class="cell-end sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</th>
+                </tr>
+                </thead>
+                <tbody>
+                ';if ($stash->get(['api2_result_Email_listdomainforwards',0,'size',0])){$output .= '
+                   ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_Email_listdomainforwards');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <tr>
+                        <td class="nobrd-left truncate" data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'dest',0,'html',0]);$output .= '</td>
+                        <td class="truncate" data-title="';$output .= $stash->get(['locale',0,'maketext',['Forward To' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'forward',0,'html',0]);$output .= '</td>
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '">
+                            <a class="btn btn-link" href="dodeldfwdconfirm.html?domain=';$output .= $stash->get(['hashref',0,'dest',0]);$output .= '&amp;redirectdomain=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'forward',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '"><span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</a>
+                        </td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr>
+                        <td colspan="3" class="info empty-row">
+                            ';$output .= $stash->get(['locale',0,'maketext',['There are no Domain Forwarders setup for this domain.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+                </tbody>
+            </table>
+        </div>
+        '}$output .= '<!-- end cpanelfeature emaildomainfwd -->
+    '}$output .= '
+
+
+
+    ';if (!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'app_key'=>'forwarders','content',$output })};$output .= '
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

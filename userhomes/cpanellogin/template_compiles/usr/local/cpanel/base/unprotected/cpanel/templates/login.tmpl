@@ -1,0 +1,230 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/login.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('DataURI',$context->plugin('DataURI'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('Wbr',$context->plugin('Wbr'));$stash->set('disp_apps',{'whostmgrd'=>'WHM','webmaild'=>'Webmail','cpaneld'=>'cPanel' });$stash->set('disp_app',$stash->get(['disp_apps',0,'item',[$stash->get('app_name')]])|| 'cPanel');$stash->set('app_images',{'whostmgrd'=>'whm-logo_white.svg','webmaild'=>'webmail-logo.svg','cpaneld'=>'cpanel-logo.svg' });$stash->set('app_image',$stash->get(['app_images',0,$stash->get('app_name'),0])|| $stash->get(['app_images',0,'cpaneld',0]));$stash->set('app_image',$stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/' .$stash->get('app_image')]])]]));$stash->set('shownotice',$stash->get('logout')|| $stash->get('msg_code'));$stash->set('shownotice',$stash->get('msg_code')eq 'link_account' ? 0 : $stash->get('shownotice'));$stash->set('shownotice',$stash->get('msg_code')eq 'max_users_exceeded' ? 0 : $stash->get('shownotice'));$stash->set('notice_message',$stash->get('msg_code')? ($stash->get(['login_messages',0,$stash->get('msg_code'),0])|| $stash->get(['locale',0,'maketext',['An authorization error occurred. Please try again.' ]])): $stash->get(['locale',0,'maketext',['You have logged out.' ]]));$stash->set('show_IE_banner',$stash->get('app_name')eq 'whostmgrd' ? '' : 'display: none');if (!$stash->get('contact_info')||!$stash->get(['contact_info',0,'url',0])||!$stash->get(['contact_info',0,'name',0])){$stash->set('contact_info',{'name'=>$stash->get(['locale',0,'maketext',['Who is my hosting provider?' ]]),'url'=>'https://go.cpanel.net/WhoIsMyHostingProvider' })}$stash->set('more_locales_symbol','…');$stash->set('all_display_locales',$stash->get('display_locales'));$output .= $context->process('templates/external_auth_header.tmpl');$stash->set('login_classes',[]);if ($stash->get('reset_pass')){$output .= $stash->get(['login_classes',0,'push',['has-pw-reset' ]])}if (!($stash->get('external_auth_modules'))){$output .= $stash->get(['login_classes',0,'push',['no-external-auth-modules' ]])}$stash->set('notice_style_',$stash->get('logout')? 'success-notice' : $stash->get('notice_style')? $stash->get('notice_style'): 'error-notice');$output .= '
+';$stash->set('ceil',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'n' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= do {my$output='';my$_tt_filter=$context->filter('format',['%d' ])|| $context->throw($context->error);$output .= $stash->get('n')+ ($stash->get('n')- ($stash->get('n')% ($stash->get('n')+ 1))> 0 ? 1 : 0);&$_tt_filter($output)}};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+<!-- Do not remove msg_code as it is needed for automated testing - msg_code:[';$output .= $stash->get('msg_code');$output .= ']  -->
+<div id="login-wrapper" class="group ';$output .= $stash->get(['login_classes',0,'join',[' ' ]]);$output .= '">
+    <div class="wrapper">
+    <div id="notify">
+        <noscript>
+            <div class="error-notice">
+                <img src="';$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/notice-error.png' ]])]]);$output .= '" alt="Error" align="left"/>
+                ';$output .= $stash->get(['locale',0,'maketext',['JavaScript is disabled in your browser.' ]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['For [_1] to function properly, you must enable JavaScript.',$stash->get('disp_app')]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['If you do not enable JavaScript, certain features in [_1] will not function correctly.',$stash->get('disp_app')]]);$output .= '
+            </div>
+            </noscript>
+        ';if ($stash->get('msg_code')eq 'link_account'){$output .= '
+        <div id="link-account">
+            <div class="content-wrapper">
+                ';if ($stash->get(['user_info_payload',0,'picture',0])){$output .= '
+                  ';if ($stash->get(['user_info_payload',0,'picture',0,'match',['https://' ]])){$output .= '
+                    <img class=\'link-account-avatar\' src="';$output .= $stash->get(['user_info_payload',0,'picture',0,'html',0]);$output .= '" referrerpolicy="no-referrer">
+                  '}else {$output .= '
+                    <img class=\'link-account-avatar\' src="data:image/*;base64,';$output .= $stash->get(['user_info_payload',0,'picture',0,'html',0]);$output .= '">
+                  '}$output .= '
+                '}$output .= '
+                ';if ($stash->get('existing_link_count')){$output .= '
+                  ';$output .= $stash->get(['locale',0,'maketext',['Your account “[_1]” is already associated with an existing “[_2]” account. Please log in to connect a new account.',$stash->get('preferred_username'),$stash->get('disp_app')]]);$output .= '
+                '}else {$output .= '
+                  ';$output .= $stash->get(['locale',0,'maketext',['Your account “[_1]” is not associated with an existing “[_2]” account. Please log in to connect the account.',$stash->get('preferred_username'),$stash->get('disp_app')]]);$output .= '
+                '}$output .= '
+            </div>
+        </div>
+        '}$output .= '
+        ';if ($stash->get('msg_code')eq 'max_users_exceeded'){$output .= '
+        <div id=\'login-status\' class="';$output .= $stash->get('notice_style_');$output .= '">
+            <div class="content-wrapper">
+                <div id="login-detail">
+                    <div id="login-status-icon-container"><span class=\'login-status-icon\'></span></div>
+                    <div id="login-status-message">
+                        <p><strong>';$output .= $stash->get(['locale',0,'maketext',['Maximum Users Exceeded.' ]]);$output .= '</strong></p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['The number of users on the server exceeds the maximum number of allowed users for your host server.' ]]);$output .= '</p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['For more information, contact your hosting provider: “[output,url,_1,_2,target,_blank]”',$stash->get(['contact_info',0,'url',0]),$stash->get(['contact_info',0,'name',0])]]);$output .= '</p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['If you have already updated your license, please wait a few minutes. Then try logging in again.' ]]);$output .= '</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+        <div id=\'login-status\' class="';$output .= $stash->get('notice_style_');$output .= '" style="visibility: ';$output .= $stash->get('shownotice')? 'visible' : 'hidden';$output .= '">
+            <div class="content-wrapper">
+                <div id="login-detail">
+                    <div id="login-status-icon-container"><span class=\'login-status-icon\'></span></div>
+                    <div id="login-status-message">';$output .= $stash->get('notice_message');$output .= '</div>
+                </div>
+            </div>
+        </div>
+        <div id="IE-warning" class="warn-notice IE-warning-hide" style="';$output .= $stash->get('show_IE_banner');$output .= '">
+            <div class="content-wrapper">
+                <div id="IE-warning-detail">
+                    <div id="IE-warning-icon-container"><span class="IE-warning-icon"></span></div>
+                    <div id="IE-warning-message">';$output .= $stash->get(['locale',0,'maketext',['The system has detected that you are using [asis,Internet Explorer] 11. [asis,cPanel] [output,amp] [asis,WHM] no longer supports [asis,Internet Explorer] 11. For more information, read the [output,url,_1,cPanel Blog,title,cPanel Blog,target,_2].','https://go.cpanel.net/ie11deprecation','_blank' ]]);$output .= '</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:none">
+        <div id="locale-container" style="visibility:hidden">
+            <div id="locale-inner-container">
+                <div id="locale-header">
+                    <div class="locale-head">';$output .= $stash->get(['locale',0,'maketext',['Please select a locale:' ]]);$output .= '</div>
+                    <div class="close"><a href="javascript:void(0)" onclick="toggle_locales(false)">X ';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</a></div>
+                </div>
+                <div id="locale-map">
+                    <div class="scroller clear">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('all_display_locales');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cur_loc'}=$_tt_value;$output .= '
+                            <div class="locale-cell"><a href="?locale=';$output .= $stash->get(['cur_loc',0,'tag',0]);$output .= '">';$output .= $stash->get(['cur_loc',0,'name',0]);$output .= '</a></div>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="content-container">
+        <div id="login-container">
+
+            <div id="login-sub-container">
+                    <div id="login-sub-header">
+                        ';if ($stash->get('script_uri')eq '/cpsess0/scripts7/authorizesupport'){$output .= '
+                        <img class="small-logo" src="';$output .= $stash->get('app_image');$output .= '" alt="logo" />
+                        &mdash;
+                        ';$output .= $stash->get(['locale',0,'maketext',['To grant [asis,cPanel] Support access to your server, log in to [asis,WHM] and click the “[_1]” button.',$stash->get(['locale',0,'maketext',['Grant Access' ]])]]);$output .= '
+                        </p>
+                        '}else {$output .= '
+                        <img class="main-logo" src="';$output .= $stash->get('app_image');$output .= '" alt="logo" />
+                        '}$output .= '
+                    </div>
+                    <div id="login-sub"
+                        ';if ($stash->get('linked_users')&& $stash->get(['linked_users',0,'size',0])){$output .= '                            style="display:none"
+                        '}$output .= '                        >
+                        <div id="clickthrough_form" style="visibility:hidden">
+                            <form action="javascript:void(0)">
+                                <div class="notices"></div>
+                                <button type="submit" class="clickthrough-cont-btn">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+                            </form>
+                        </div>
+                        <div id="forms">
+';$output .= '                            <form novalidate id="login_form" action="/login/" method="post" style="visibility:';$output .= $stash->get(['linked_users',0,'size',0])? 'hidden' : '';$output .= '">
+                                <div class="input-req-login"><label for="user">';if ($stash->get('app_name')eq 'webmaild'){$output .= $stash->get(['locale',0,'maketext',['Email Address' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Username' ]])}$output .= '</label></div>
+                                <div class="input-field-login icon username-container">
+                                    <input name="user" id="user" autofocus="autofocus" value="';$output .= $stash->get(['user',0,'html',0]);$output .= '" placeholder="';if ($stash->get('app_name')eq 'webmaild'){$output .= $stash->get(['locale',0,'maketext',['Enter your email address.' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Enter your username.' ]])}$output .= '" class="std_textbox" type="text" ';$output .= $stash->get('allow_login_autocomplete')? '' : 'autocomplete="off"';$output .= ' tabindex="1" required>
+                                </div>
+                                <div class="input-req-login login-password-field-label"><label for="pass">';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '</label></div>
+                                <div class="input-field-login icon password-container">
+                                    <input name="pass" id="pass" placeholder="';if ($stash->get('app_name')eq 'webmaild'){$output .= $stash->get(['locale',0,'maketext',['Enter your email password.' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Enter your account password.' ]])}$output .= '" class="std_textbox" type="password" tabindex="2" ';$output .= $stash->get('allow_login_autocomplete')? '' : 'autocomplete="off"';$output .= ' required>
+                                </div>
+                                <div class="controls">
+                                    <div class="login-btn">
+                                        <button name="login" type="submit" id="login_submit" tabindex="3">';$output .= $stash->get(['locale',0,'maketext',['Log in' ]]);$output .= '</button>
+                                    </div>
+
+                                    ';if ($stash->get('reset_pass')){$stash->set('reset_url','/resetpass?start=1');if (!$stash->get('https')){$stash->set('ApplicationUrl',$context->plugin('ApplicationUrl'));$stash->set('secure_url',$stash->get(['ApplicationUrl',0,'get_secure_url',[{'host'=>$stash->get('SERVER_NAME'),'port'=>$stash->get('SERVER_PORT'),'proxysubdomains'=>$stash->get(['cpconf',0,'proxysubdomains',0])}]]));$stash->set('reset_url',$stash->get('secure_url').$stash->get('reset_url'))}$output .= '                                        <div class="reset-pw">
+                                            <a href="';$output .= $stash->get('reset_url');$output .= '" id="reset_password">';$output .= $stash->get(['locale',0,'maketext',['Reset Password' ]]);$output .= '
+                                            </a>
+                                        </div>
+                                    '}$output .= '                                </div>
+                                <div class="clear" id="push"></div>
+                            </form>
+                        <!--CLOSE forms -->
+                        </div>
+                    <!--CLOSE login-sub -->
+                    </div>
+                    ';$output .= $context->process('templates/external_auth.tmpl');$output .= '
+                    ';if ($stash->get(['linked_users',0,'size',0])){$output .= '                        <div id="select_users_option_block" style="display:none">
+                            <div class="or-separator" >
+                                <span class="or-separator-label">';$output .= $stash->get(['locale',0,'maketext',['OR[comment,this is a decoration separator, shortest form is best]' ]]);$output .= '</span>
+                                <span class="or-separator-secondary-label">';$output .= $stash->get(['locale',0,'maketext',['Log in via' ]]);$output .= '</span>
+                            </div>
+                            <div class="controls external-auth-items">
+                                <div class="btn">
+                                    <button type="button" class="external-auth-select" style="background-color:#';$output .= $stash->get(['auth_mod',0,'color',0]);$output .= ';text-color:#';$output .= $stash->get(['auth_mod',0,'textcolor',0]);$output .= '" onclick="show_select_user()">
+                                        <span class="external-auth-btn-label">';$output .= $stash->get(['locale',0,'maketext',['Select user from list of linked accounts' ]]);$output .= '</span>
+                                    </button>
+                                  </div>
+                            </div>
+                        </div>
+                    '}$output .= '                <!--CLOSE wrapper -->
+                </div>
+            <!--CLOSE login-sub-container -->
+            </div>
+        <!--CLOSE login-container -->
+        </div>
+        ';$output .= '
+        ';if ($stash->get(['linked_users',0,'size',0])){$output .= '            ';$output .= '
+            ';$stash->set('max_width',$stash->get(['linked_users',0,'size',0])< 6 ? ($stash->get(['linked_users',0,'size',0])+ 1)* 100 : 600);$output .= '
+            <form id="select_user_form" novalidate>
+                <div>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('linked_users');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '                    <div class="button-wrapper">
+                        <button name="openid_user_selection" type="submit" id="login_submit" tabindex="3" value="';$output .= $stash->get(['user',0,'username',0]);$output .= '" title="';$output .= $stash->get(['user',0,'username',0]);$output .= '">
+                            <div class="image-wrapper">
+                                <img src="https://gravatar.com/avatar/';$output .= $stash->get(['user',0,'md5_hex',0]);$output .= '?d=retro"
+                                    onerror="if (this.src != \'';$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/default-avatar.png' ]])]]);$output .= '\') this.src = \'';$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/default-avatar.png' ]])]]);$output .= '\';"
+                                    referrerpolicy="no-referrer"></img>
+                            </div>
+                            <div class="text-wrapper">
+                                <div class="text-content">
+                                    ';$output .= $stash->get(['Wbr',0,'wbr_on_at_symbol',[$stash->get(['user',0,'username',0])]]);$output .= '
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                    <div class="button-wrapper" >
+                        <button name="openid_user_selection" type="button" id="login_submit" tabindex="3" onclick="show_login()">
+                            <div class="image-wrapper">
+                                <img src="https://gravatar.com/avatar/default_no_image?d=mm"
+                                    onerror="if (this.src != \'';$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/default-avatar.png' ]])]]);$output .= '\') this.src = \'';$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/default-avatar.png' ]])]]);$output .= '\';"
+                                    referrerpolicy="no-referrer"></img>
+                            </div>
+                            <div class="text-wrapper">
+                                <div class="link-extra-account">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Link Another Account' ]]);$output .= '
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                <div class="clear" id="push"></div>
+            </form>
+        '}$output .= '        <div id="locale-footer">
+            <div class="locale-container">
+                <noscript>
+                    <form method="get" action=".">
+                        <select name="locale">
+                            <option value="">';$output .= $stash->get(['locale',0,'maketext',['Change locale' ]]);$output .= '</option>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('all_display_locales');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {LOOP: while (!$_tt_error){$stash->{'cur_loc'}=$_tt_value;$output .= ('<option value=\'' .$stash->get(['cur_loc',0,'tag',0]).'\'>' .$stash->get(['cur_loc',0,'name',0]).'</option>');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                        <button style="margin-left: 10px" type="submit">';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '</button>
+                    </form>
+                    <style type="text/css">#mobilelocalemenu, #locales_list {display:none}</style>
+                </noscript>
+                <ul id="locales_list">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('all_display_locales');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cur_loc'}=$_tt_value;$output .= '
+                        ';if ($stash->get(['loop',0,'index',0])> 7){last FOR1}$output .= '
+                        <li><a href="/?locale=';$output .= $stash->get(['cur_loc',0,'tag',0]);$output .= '">';$output .= $stash->get(['cur_loc',0,'name',0,'replace',[' ','&nbsp;' ]]);$output .= '</a></li>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+					';if ($stash->get(['all_display_locales',0,'size',0])> 7){$output .= '
+                        <li><a href="javascript:void(0)" id="morelocale" onclick="toggle_locales(true)" title="';$output .= $stash->get(['locale',0,'maketext',['More locales' ]]);$output .= '">';$output .= $stash->get('more_locales_symbol');$output .= '</a></li>
+                    '}$output .= '
+                </ul>
+                <div id="mobilelocalemenu">';$output .= $stash->get(['locale',0,'maketext',['Select a locale:' ]]);$output .= '
+                    <a href="javascript:void(0)" onclick="toggle_locales(true)" title="';$output .= $stash->get(['locale',0,'maketext',['Change locale' ]]);$output .= '">';$output .= $stash->get(['locale',0,'get_language_tag_name',0]);$output .= '</a>
+                </div>
+            </div>
+        </div>
+    </div>
+<!--Close login-wrapper -->
+</div>
+<script>
+    var MESSAGES = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('login_messages')]]);$output .= ';
+
+    window.IS_LOGOUT = ';$output .= $stash->get('logout')? 'true' : 'false';$output .= ';
+
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=['login.js','submit_post.js','jstz.min.js','cptimezone_optimized.js' ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'file'}=$_tt_value;$stash->set('js_url',$stash->get(['get_theme_url',[('js-min/' .$stash->get('file'))]])|| $stash->get(['get_theme_url',[('js/' .$stash->get('file'))]]));if ($stash->get('js_url')){$stash->set('js_url',$stash->get(['js_url',0,'replace',['^/','' ]]));$output .= ('
+//' .$stash->get('file').'
+');$output .= $context->insert(('' .$stash->get('js_url')))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('linked_users')&& $stash->get(['linked_users',0,'size',0])){$output .= '
+    var rows = ';$output .= $stash->get(['ceil',[$stash->get(['linked_users',0,'size',0])/ 6 ]]);$output .= ';
+'}$output .= "\n\nCPTimezone.reset_timezone();\n</script>\n\n<style>\n    \@media (min-width: 481px) {\n        #select_user_form {\n            width: ";$output .= $stash->get('max_width');$output .= 'px;
+        }
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

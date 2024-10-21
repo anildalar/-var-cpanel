@@ -1,0 +1,192 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/greylist/views/trustedHosts.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-xs-12">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Trusted Hosts' ]]);$output .= '</h3>
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] will never defer emails from entries on the Trusted Hosts list.' ]]);$output .= '
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-5">
+        <div class="row batch-subform" id="trustedHostsBatchSubform">
+            <div class="col-md-12">
+                <form class="layout-medium" novalidate ng-submit="addToTrustedHosts()" ng-hide="ip_being_edited">
+                    <div class="form-group">
+                        <label id="lblTrustedHostBatchAdd" for="batchAdd">
+                            ';$output .= $stash->get(['locale',0,'maketext',['New Trusted Hosts' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign"
+                            role="tooltip"
+                            tabindex="0"
+                            aria-describedby="lblTrustedHostBatchAdd"
+                            uib-tooltip-html="ipAddressExampleText"
+                            tooltip-trigger="keyup click"
+                            tooltip-placement="top"></span>
+                        <textarea id="batchAdd"
+                            class="form-control"
+                            rows="10"
+                            ng-model="newTrustedHosts"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter one or more [asis,IP] addresses or ranges, one entry per line.' ]]);$output .= '"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="newTrustedHostComment">';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '</label>
+                        <textarea ng-model="newTrustedHostComment" id="newTrustedHostComment" rows="3" maxlength="255" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter comment (255 characters maximum).' ]]);$output .= '" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-loading add_button">
+                            <span ng-show="addingBatchToTrustedHosts" class="glyphicon glyphicon-refresh fa-spin"></span>
+                            <span ng-hide="addingBatchToTrustedHosts" class="btn-label">';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '</span>
+                        </button>
+                    </div>
+                </form>
+                <form class="layout-medium" novalidate id="trustedHostsCommentEditor" ng-show="ip_being_edited" ng-submit="updateTrustedHostComment()">
+                    <div class="form-group">
+                        <label for="currentTrustedHost">';$output .= $stash->get(['locale',0,'maketext',['Host [asis,IP] Address' ]]);$output .= '</label>
+                        <input id="currentTrustedHost" type="text" ng-model="current_ip" class="form-control" disabled>
+                    </div>
+                    <div class="form-group">
+                        <label for="currentTrustedHostComment">';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '</label>
+                        <textarea ng-model="current_comment" id="currentTrustedHostComment" rows="3" maxlength="255" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter comment (255 characters maximum).' ]]);$output .= '" class="form-control"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-loading add_button">
+                            <span ng-show="updating_comment" class="glyphicon glyphicon-refresh fa-spin"></span>
+                            <span ng-hide="updating_comment" class="btn-label">';$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '</span>
+                        </button>
+                        <button type="button" ng-hide="updating_comment" class="btn btn-link" ng-click="cancelTrustedHostEditing()">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-7">
+        <div class="row search-page-container">
+            <div class="col-xs-12 col-sm-offset-6 col-sm-6 col-md-offset-5 col-md-7 col-lg-offset-6 col-lg-6">
+                <div class="pagination-container">
+                    <page-size id="topPageSize"
+                        allowed-sizes="meta.pageSizes"
+                        total-items="meta.totalRows"
+                        ng-model="meta.pageSize"
+                        show-all="true"
+                        ng-change="changePageSize()">
+                    </page-size>
+                    <uib-pagination id="topPager"
+                        ng-change="fetchPage(page)"
+                        ng-model="meta.pageNumber"
+                        max-size="meta.maxPages"
+                        items-per-page="meta.pageSize"
+                        total-items="meta.totalRows"
+                        direction-links="true"
+                        boundary-links="true"
+                        rotate="false"
+                        first-text="<<"
+                        last-text=">>"
+                        previous-text="<"
+                        next-text=">"
+                        class="pagination-small">
+                    </uib-pagination>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.pageNumberStart }}','{{ meta.pageNumberEnd }}','{{ meta.totalRows }}' ]]);$output .= '</p>
+            </div>
+        </div>
+        <table id="trustedHostsTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="mass_edit_checkbox">
+                        <input type="checkbox"
+                            id="selectAllCheckbox"
+                            name="selectAllCheckbox"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to select all IP addresses.' ]]);$output .= '"
+                            ng-disabled="!trustedHosts.length || ip_being_edited"
+                            ng-model="selectAllCheckbox"
+                            ng-click="toggleSelection(selectAllCheckbox)">
+                    </th>
+                    <th class="ip_column">
+                        <span toggle-sort id="sortIp" onsort="sortList" sort-meta="meta" sort-field="hostIp">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Host [asis,IP] Address' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="comment_column">
+                        <span toggle-sort id="sortComments" onsort="sortList" sort-meta="meta" sort-field="comment">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '
+                        </span>
+                    </th>
+                    <th class="actions_header">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                    <th class="gear_column">
+                        <span class="dropdown" uib-dropdown>
+                        <a href class="dropdown-toggle" uib-dropdown-toggle ng-class="{disabled: ip_being_edited}">
+                          <span class="fas fa-cog fa-lg"></span>
+                        </a>
+                        <ul class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= ' dropdown-menu-right'}$output .= ' gear_menu" uib-dropdown-menu>
+                            <li ng-class="{disabled: !trustedHosts.length || ip_being_edited}">
+                                <a href ng-click="selectAll();">';$output .= $stash->get(['locale',0,'maketext',['Select All' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !trustedHosts.length || ip_being_edited || !itemsAreChecked()}">
+                                <a href ng-click="deselectAll();">';$output .= $stash->get(['locale',0,'maketext',['Clear Selection' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{disabled: !trustedHosts.length || ip_being_edited  || !itemsAreChecked()}">
+                                <a href ng-click="confirmDeletion();">';$output .= $stash->get(['locale',0,'maketext',['Delete Selected' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !trustedHosts.length || ip_being_edited}">
+                                <a href ng-click="confirmDeleteAll();">';$output .= $stash->get(['locale',0,'maketext',['Delete All' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li ng-class="{disabled: netblockTrusted || ip_being_edited}">
+                                <a href ng-click="trustMyServerNetblock();">';$output .= $stash->get(['locale',0,'maketext',['Add Neighboring [asis,IP] Addresses' ]]);$output .= '</a>
+                            </li>
+                            <li ng-class="{disabled: !netblockTrusted || ip_being_edited}">
+                                <a href ng-click="untrustMyServerNetblock();">';$output .= $stash->get(['locale',0,'maketext',['Remove Neighboring [asis,IP] Addresses' ]]);$output .= '</a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href ng-click="forceLoadTrustedHosts();">';$output .= $stash->get(['locale',0,'maketext',['Reload Trusted Hosts from Server' ]]);$output .= '</a>
+                            </li>
+                        </ul>
+                      </span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="trustedHost in meta.filteredList">
+                    <td class="mass_edit_checkbox">
+                        <input type="checkbox"
+                            id="{{trustedHost.ip}}_checked"
+                            class="selectItem"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to select “[_1]”.','{{trustedHost.host_ip}}' ]]);$output .= '"
+                            data-ip="{{trustedHost.host_ip}}"
+                            ng-disabled="trustedHostsBeingEdited"
+                            ng-click="checkSelection()">
+                    </td>
+                    <td class="ip_column" ng-bind-html="trustedHost.host_ip | ipWrap "></td>
+                    <td class="comment_column wordbreak">
+                        {{trustedHost.comment}}
+                    </td>
+                    <td>
+                        <button class="btn btn-link" ng-click="editTrustedHost(trustedHost)" ng-disabled="trustedHostsBeingEdited" ng-attr-title="{{editTooltip(trustedHost.host_ip)}}">
+                        <span class="glyphicon glyphicon-pencil"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                        </button>
+                        <button class="btn btn-link" ng-click="confirmDeletion(trustedHost)" ng-disabled="trustedHostsBeingEdited" ng-attr-title="{{deleteTooltip(trustedHost.host_ip)}}">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </button>
+                    </td>
+                    <td class="gear_column"></td>
+                </tr>
+                <tr id="emptyListNotice" class="info empty-row" ng-show="isListEmpty()" ng-switch="list_loading">
+                    <td colspan="5" id="loadingMessage" ng-switch-when="true">
+                        <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Loading Trusted Hosts list.' ]]);$output .= '
+                    </td>
+                    <td colspan="5" id="emptyMessage" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The Trusted Hosts list is empty.' ]]);$output .= '</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

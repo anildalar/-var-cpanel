@@ -1,0 +1,25 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/list.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get('has_categories')){if ($stash->get(['settings',0,'cpaddons_notify_users',0])ne 'always' && $stash->get(['settings',0,'cpaddons_notify_users',0])ne 'never'){if ($stash->get(['notifications',0,'enabled',0])){$stash->set('disable_url',$stash->get(['environment',0,'script_name',0]).'?action=notify&on=0');$output .= '<p id="user-level-notifications-on">
+    ';$output .= $stash->get(['locale',0,'maketext',['Your account is configured to receive notifications when updates for your installs are available.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Click [output,url,_1,here] to turn it off.',$stash->get(['disable_url',0,'url',0])]]);$output .= '
+</p>'}else {$stash->set('enable_url',$stash->get(['environment',0,'script_name',0]).'?action=notify&on=1');$output .= '<p id="user-level-notifications-off">
+    ';$output .= $stash->get(['locale',0,'maketext',['Your account is [output,strong,not] configured to receive notifications when updates for your installs are available.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Click [output,url,_1,here] to turn it on.',$stash->get(['enable_url',0,'url',0])]]);$output .= '
+</p>'}}else {if ($stash->get(['settings',0,'cpaddons_notify_users',0])eq 'always'){$output .= '<p id="global-notifications-on">
+    ';$output .= $stash->get(['locale',0,'maketext',['Your administrator or hosting provider has globally enabled update notifications.' ]]);$output .= '
+</p>'}else {$output .= '<p id="global-notifications-off">
+    ';$output .= $stash->get(['locale',0,'maketext',['Your server administrator or hosting provider has globally disabled update notifications for all accounts.' ]]);$output .= '
+</p>'}}}$output .= '
+';if ($stash->get('error')){$output .= '
+    ';$output .= do {my$output='';my$_tt_filter=$context->filter('html_para')|| $context->throw($context->error);$output .= $stash->get(['error',0,'message',0]);&$_tt_filter($output)};$output .= '
+'}$output .= '
+
+';$output .= $context->process('addoncgi/views/notices.tt');$output .= '
+
+';if (!$stash->get('has_categories')){$output .= '
+<p id="no-cpaddons-available">
+    ';$output .= $stash->get(['locale',0,'maketext',['Contact your host to install the Site Software packages.' ]]);$output .= '
+</p>
+'}$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

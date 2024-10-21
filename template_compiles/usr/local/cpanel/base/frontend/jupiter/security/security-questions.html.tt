@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/security-questions.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Please select from the following security questions and provide answers you can remember. You will be asked your chosen security questions in the event you need to recover your password or if you are logging in from a different IP.' ]]);$output .= '
+    </p>
+
+    ';if ($stash->get(['FORM',0,'item',['reset' ]])){$output .= '
+    <div class="section">
+        ';$output .= $stash->get(['Api2',0,'pre_exec',['SourceIPCheck','resetsecquestions' ]]);$stash->set('api2_result_SourceIPCheck_resetsecquestions',$stash->get(['Api2',0,'exec',['SourceIPCheck','resetsecquestions',{'account'=>$stash->get(['FORM',0,'item',['account' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['SourceIPCheck','resetsecquestions' ]]);if ($stash->get(['api2_result_SourceIPCheck_resetsecquestions',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_SourceIPCheck_resetsecquestions');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= $stash->get(['hashref',0,'status',0,'html',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'CPERROR',0,'item',['sourceipcheck' ]])){$output .= '
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Unable to reset security questions.' ]]);$output .= '
+                </div>
+            </div>
+        '}else {$output .= '
+            <div class="alert alert-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Security questions have been reset. You will be asked to re-enter new security questions at next login.' ]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+    </div>
+    '}$output .= '
+
+    <div class="section">
+        <a onclick="return confirm(\'';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want to reset the security questions?' ]]);$output .= '\')" href="?account=';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '&reset=1" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Reset Questions and Answers' ]]);$output .= '</a>
+    </div>
+
+    <div class="section">
+        ';$output .= $context->include('security/security-questions_include.html.tt');$output .= '
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html?account=' .$stash->get(['FORM',0,'item',['account' ]]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'security_policy','page_scripts'=>['js/validate_optimized.js' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,29 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/reslist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= $context->process('_pkg_hover.tmpl');$output .= '
+<table cellpadding="5" cellspacing="0" width="100%">
+<tr class="tblheader"><th  >Reseller</th><th align="left">User</th><th align="left">Domain</th><th align="left">Package</th></tr>
+
+';$output .= '
+';$stash->set('sorted_resellers',[$stash->get(['data',0,'root_data',0])]);$stash->set('sorted_resellers',$stash->get(['sorted_resellers',0,'merge',[$stash->get(['data',0,'resellers',0])]]));$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sorted_resellers');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'resellerdata'}=$_tt_value;$output .= '
+<tr class=\'tblheader\'>
+    <td style=\'font-weight: bold; text-decoration: underline;\'>';$output .= $stash->get(['resellerdata',0,'name',0]);$output .= '</td>
+    <td></td>
+    <td></td>
+    <td></td>
+</tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['resellerdata',0,'accounts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$output .= '
+<tr class=\'';$output .= ($stash->get(['loop',0,'index',0])% 2)? 'tdshade1' : 'tdshade2';$output .= '\'>
+    <td></td>
+    <td>';$output .= $stash->get(['userdata',0,'name',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['userdata',0,'domain',0]);$output .= '</td>
+';$stash->set('js_plan',$stash->get(['userdata',0,'plan',0])|| 'undefined');$output .= '    <td><span style="cursor: crosshair; cursor: help;" onmouseover="hover_pkg(this, ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['js_plan',0,'json',0]);&$_tt_filter($output)};$output .= ');" onmouseout="dehover_pkg(this, ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['js_plan',0,'json',0]);&$_tt_filter($output)};$output .= ');">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'plan',0])|| $stash->get(['locale',0,'maketext',['undefined' ]]);&$_tt_filter($output)};$output .= '</span></td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '<tr class=\'tblheader\'>
+    <td><em>';$output .= $stash->get(['locale',0,'maketext',['[quant,_1,Account,Accounts]',$stash->get(['resellerdata',0,'count',0])]]);$output .= '</em></td>
+    <td colspan="3"></td>
+</tr>
+<tr>
+    <td colspan="4"></td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'show_reseller_accounts','scripts'=>['/js/sorttable.js' ],'stylesheets'=>['/yui/container/assets/container.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

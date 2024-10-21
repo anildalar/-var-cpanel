@@ -1,0 +1,173 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/upload-ajax.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('CacheBuster',$context->plugin('CacheBuster'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('locale_attributes',$stash->get(['execute',['Locale','get_attributes',{'attributes'=>'locale,encoding,direction' }],'data',0]));$stash->set('file_upload_remaining_size',0);$stash->set('getdiskinfo',$stash->get(['Api2',0,'exec',['Fileman','getdiskinfo',{}]]));if ($stash->get(['getdiskinfo',0,'size',0])){$stash->set('file_upload_remaining_size',$stash->get(['getdiskinfo',0,0,0,'file_upload_remain_humansize',0]));$stash->set('max_upload_bytes',$stash->get(['getdiskinfo',0,0,0,'file_upload_max_bytes',0]));$stash->set('start_max_upload',$stash->get(['getdiskinfo',0,0,0,'file_upload_remain',0]))}$stash->set('user_has_quota',($stash->get('start_max_upload')ne '∞'));$stash->set('random_data','');$stash->set('getranddata',$stash->get(['Api2',0,'exec',['Rand','getranddata',{}]]));if ($stash->get(['getranddata',0,'size',0])){$stash->set('random_data',$stash->get(['getranddata',0,0,0,'random',0]))}$stash->set('return_link','./index.html?dir=' .$stash->get(['FORM',0,'item',['dir' ],'uri',0]));$output .= '
+<!doctype html>
+<html lang="';$output .= $stash->get(['locale_attributes',0,'locale',0]);$output .= '" dir="';$output .= $stash->get(['locale_attributes',0,'direction',0]);$output .= '">
+    <head>
+        <title>';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] File Manager v3 - File Upload' ]]);$output .= '</title>
+        <meta charset="';$output .= $stash->get(['locale_attributes',0,'encoding',0]);$output .= '" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=1">
+
+        <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['/yui/container/assets/container.css' ]]);$output .= '" />
+
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap/optimized/css/bootstrap.min.css' ]]);$output .= '" />
+        ';if ($stash->get(['locale_attributes',0,'direction',0])eq 'rtl'){$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]]);$output .= '" />
+        '}$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/ui-fonts/open_sans/optimized/open_sans.min.css' ]]);$output .= '" />
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/fontawesome/css/all.min.css' ]]);$output .= '" />
+
+        <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['filemanager/css/tree_styles2_optimized.css' ]]);$output .= '" />
+        <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['filemanager/css/upload_optimized.css' ]]);$output .= '" />
+    </head>
+    <body class="yui-skin-sam" id="leftmain">
+        <div id="topbar" class="clear navbar navbar-inverse navbar-cpanel">
+            <span id="branding" class="navbar-brand">
+                <a id="lnkHeaderHome" href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= 'index.html">
+                    <img id="imgLogo"
+                        src="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= 'assets/brand/logo_small.svg"
+                        alt="cPanel"
+                        class="navbar-brand-logo" />
+                </a>
+                <span class="brand-name">
+                ';$output .= $stash->get(['locale',0,'maketext',['File Upload' ]]);$output .= '
+                </span>
+            </span>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    ';if ($stash->get('user_has_quota')&& $stash->get('start_max_upload')<= 0){$output .= '                        <div class="callout callout-danger">
+                            <div>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Your account has reached its disk usage quota. Because of this, you cannot upload files.' ]]);$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete some files, or contact your hosting provider to request an increase to your account’s quota.' ]]);$output .= '
+                            </div>
+                        </div>
+                    '}else {$output .= '                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Select the file you want to upload to “[_1]”.',$stash->get(['FORM',0,'dir',0])]]);$output .= '</h3>
+                        <div class="callout callout-info">
+                            <div>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Maximum file size allowed for upload:' ]]);$output .= '
+                            <span class="status" id="file_upload_remain">';$output .= $stash->get('file_upload_remaining_size');$output .= '</span>
+                            </div>
+                        </div>
+
+                        <div class="doc_container">
+                            <div id="customSettingsContainer">
+                                <div class="checkbox">
+                                    <label>
+                                        <input id="overwrite_checkbox" type="checkbox" name="overwrite" value="1" />
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Overwrite existing files' ]]);$output .= '
+                                    </label>
+                                </div>
+                            </div>
+                            <div id="upload_drop_zone" class="file-drop-zone">
+                                <div id="uploader_text_area">
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['Drop files here to start uploading' ]]);$output .= '</p>
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['or' ]]);$output .= '</p>
+                                </div>
+                                <div id="uploader_button_area">
+                                    <button type="button" id="uploader_button" class="btn btn-primary" onclick="uploadService.triggerFileSelection()">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Select File' ]]);$output .= '
+                                    </button>
+                                    <input type="file" id="uploader_file_input" name="uploader_file_input" onchange="uploadService.uploadfile(this)" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="uploaderContainer" id="uploaders"></div>
+
+                        <div id="promptContainer"></div>
+                    '}$output .= '
+                    <div class="return-link">
+                        ';if ($stash->get(['locale_attributes',0,'direction',0])eq 'rtl'){$output .= '
+                            <a id="lnkReturn" href="';$output .= $stash->get('return_link');$output .= '" target="file_manager;" onclick="return uploadService.goBackHandler()">
+                                <span class="glyphicon glyphicon-circle-arrow-right"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Go Back to “[_1]”',$stash->get(['FORM',0,'dir',0])]]);$output .= '
+                            </a>
+                        '}else {$output .= '
+                            <a id="lnkReturn" href="';$output .= $stash->get('return_link');$output .= '" target="file_manager;" onclick="return uploadService.goBackHandler()">
+                                <span class="glyphicon glyphicon-circle-arrow-left"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Go Back to “[_1]”',$stash->get(['FORM',0,'dir',0])]]);$output .= '
+                            </a>
+                        '}$output .= '
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/plain" id="uploaderhtml_template">
+        <div class="uploadtable">
+            <div id="uploadform{thisid_html}" class="upload-hidden-form">
+                <iframe id="ut{thisid_html}" name="ut{thisid_html}" src="javascript:void(0)" style="width:0px;height:0px;border:0"></iframe>
+                <form name="uform{thisid_html}" id="frm{thisid_html}" class="upload-form" action="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'html',0]);$output .= '/json-api/cpanel" onsubmit="return false;" method="post" enctype="multipart/form-data" target="ut{thisid_html}">
+                    <input type="hidden" name="cpanel_jsonapi_module" value="Fileman" />
+                    <input type="hidden" name="cpanel_jsonapi_func" value="uploadfiles" />
+                    <input type="hidden" name="cpanel_jsonapi_apiversion" value="2" />
+                    <input type="hidden" name="getdiskinfo" value="1" />
+                    <input type="hidden" name="permissions" value="0644" />
+                    <input type="hidden" name="cpanel-trackupload" value="" />
+                    <input type="hidden" name="dir" value="';$output .= $stash->get(['FORM',0,'dir',0]);$output .= '" />
+                    <input type="hidden" name="overwrite" value="0" />
+                </form>
+            </div>
+            <div id="uploaderprogress{thisid_html}"></div>
+        </div>
+        </script>
+        <script type="text/plain" id="dnd_uploaderhtml_template">
+        <div class="uploadtable">
+            <div id="uploadform{thisid_html}" class="upload-hidden-form">
+                <form name="uform{thisid_html}" id="frm{thisid_html}" class="upload-form" enctype="multipart/form-data" target="ut{thisid_html}">
+                    <input type="hidden" name="get_disk_info" value="1" />
+                    <input type="hidden" name="dir" value="';$output .= $stash->get(['FORM',0,'dir',0]);$output .= '" />
+                </form>
+            </div>
+            <div id="uploaderprogress{thisid_html}"></div>
+        </div>
+        </script>
+        <script type="text/plain" id="upload_progress_template">
+            <label for="uploaderstatus{thisid_html}">{fileName}</label>
+            <div id="uploaderstatus{thisid_html}" class="progress">
+                <div id="progress{thisid_html}"
+                    class="progress-bar"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    style="min-width: 2em;">0%</div>
+                </div>
+            </div>
+            <div class="help-block upload-stats" id="uploaderstats{thisid_html}"></div>
+        </script>
+
+        <script type="text/plain" id="already_exists_template">
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['The following files already exist on the server in the directory “[_1]”:','{dir_html}' ]]);$output .= '
+            </p>
+            <div class="file-list" id="filelist">{filelist_html}</div>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Do you want to continue your upload and overwrite these files?' ]]);$output .= '</p>
+        </script>
+
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/jquery/current/jquery.min.js' ]]);$output .= '"></script>
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+        <script type="text/javascript" src="';$output .= $stash->get(['CPANEL',0,'get_cjt_url',0]);$output .= '"></script>
+
+        <script type="text/javascript">
+            var PAGE = {
+                uploadkey: \'';$output .= $stash->get(['random_data',0,'html',0]);$output .= '\',
+                dir: ';$output .= $stash->get(['RAW_FORM',0,'dir',0,'json',0])|| 'null';$output .= ',
+
+                maxUploadBytes: ';$output .= $stash->get('max_upload_bytes')|| 0;$output .= ',
+                startUploadFree: ';$output .= $stash->get('user_has_quota')&& $stash->get('start_max_upload')|| 0;$output .= ',
+                userHasQuota: ';$output .= $stash->get('user_has_quota')? 1 : 0;$output .= ',
+            };
+
+            // must be here to give control back to the new version of jquery we are including.
+            // cpanel-all-min.js uses an old version of jquery.
+            jQuery.noConflict();
+        </script>
+
+        ';if (!$stash->get('user_has_quota')|| $stash->get('start_max_upload')> 0){$output .= '            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/filemanager_upload_optimized.js' ]]);$output .= '"></script>
+        '}$output .= '
+    </body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

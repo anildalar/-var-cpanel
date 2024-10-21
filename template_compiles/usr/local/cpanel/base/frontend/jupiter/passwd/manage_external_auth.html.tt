@@ -1,0 +1,57 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/passwd/manage_external_auth.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "<style>\n    .external-auth-icon {\n        display: inline-block;\n        height: 35px;\n        width: 35px;\n        margin: 3px 10px 3px 0;\n        vertical-align: middle;\n        background-repeat: no-repeat;\n        background-position: center center;\n        background-size: 75% 75%;\n        border: 1px solid #FFF;\n    }\n\n    html[dir=\"rtl\"] .external-auth-icon {\n        margin: 3px 0 3px 10px;\n    }\n\n    .table .provider-username {\n        padding-left: 55px;\n    }\n\n    html[dir=\"rtl\"] .table .provider-username {\n        padding-right: 55px;\n    }\n\n    \@media (max-width: 667px) {\n        .external-auth-icon {\n            height: 25px;\n            width: 25px;\n        }\n\n        .table .provider-username {\n            padding-left: 47px;\n        }\n\n        html[dir=\"rtl\"] .table .provider-username {\n            padding-right: 47px;\n        }\n    }\n</style>\n<div class=\"callout callout-info\">\n    <p>";$output .= $stash->get(['locale',0,'maketext',['You can link your account to credentials at an external authentication provider. This reduces the number of passwords that you need to remember.' ]]);$output .= '</p>
+</div>
+<div class="description" ng-controller="ExternalAuthController as ExternalAuth" ng-cloak>
+    <div class="list-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Service' ]]);$output .= '
+                    </th>
+                    <th class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat-start="module in ExternalAuth.PAGE.external_auth_modules">
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Service' ]]);$output .= '">
+                        <i
+                            class="external-auth-icon"
+                            ng-style="{
+                                \'background-color\':\'#\'+module.color,
+                                \'background-image\': \'url(data:{{module.icon_type}};base64,{{module.icon}})\'
+                            }"
+                        >
+                        </i>
+                        <span ng-bind="module.display_name"></span>
+                    </td>
+                    <td data-title="">
+                        <a class="external-auth-link" href="{{module.link}}?action=link&goto_app=Password_Change" >
+                        <button type="button" class="btn btn-primary">
+                            <span class=\'glyphicon glyphicon-plus\'></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Link Account' ]]);$output .= '
+                        </button>
+                        </a>
+                    </td>
+                </tr>
+                <tr class="fade-out" ng-repeat-end ng-repeat="provider in ( ExternalAuth.PAGE.configured_providers | filter: { \'provider_id\' : module.provider_id } )">
+                    <td data-title="{{ locale.maketext(\'Account\') }}" ng-bind="provider.preferred_username" class="provider-username"></td>
+                    <td data-title="">
+                        <button type="button"
+                            button-class="btn-danger"
+                            cp-action="ExternalAuth.remove_link(provider, module.display_name)"
+                            id="remove_{{provider.subject_unique_identifier}}">
+                            <span class=\'glyphicon glyphicon-trash\'></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Unlink Account' ]]);$output .= '
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- NOTE: leave the alert-group in single quotes -->
+<cp-alert-list alert-group="\'passwdExternalAuth\'"></cp-alert-list>
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

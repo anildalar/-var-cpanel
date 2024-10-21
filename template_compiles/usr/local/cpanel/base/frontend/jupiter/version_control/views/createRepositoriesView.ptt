@@ -1,0 +1,282 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/version_control/views/createRepositoriesView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<ol class="breadcrumb">
+    <li>
+        <a href="javascript:void(0);" ng-click="repository.backToListView()">
+            ';$output .= $stash->get(['locale',0,'maketext',['List Repositories' ]]);$output .= '
+        </a>
+    </li>
+    <li class="active">
+        ';$output .= $stash->get(['locale',0,'maketext',['Create Repository' ]]);$output .= '
+    </li>
+</ol>
+
+<div class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to create new repositories or clone existing remote repositories.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['To add an existing repository to the list of [asis,cPanel]-managed repositories, select that repository path when you create the repository.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['The system will automatically add and configure the repository.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['In order to clone private repositories, advanced users should preconfigure access.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/PrivateRepositories','gitVersionControlPrivateRepo','lnkGitVersionDocs' ]]);$output .= '
+</div>
+
+<form class="layout-medium" name="repository.createRepoForm"
+    ng-if="!repository.displaySuccessSummary">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+                <div class="form-group">
+                    <h4 class="section-heading">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Create Repository' ]]);$output .= '
+                    </h4>
+                    <!--Creation Method Section-->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <label id="cloneRepositoryLabel" for="toggleCloneRepository">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Clone a Repository' ]]);$output .= '
+                                </label>
+                                <toggle-switch id="toggleCloneRepository"
+                                   no-spinner="true"
+                                   no-label="1"
+                                   aria-label="Enabled"
+                                   on-toggle="repository.toggleStatus()"
+                                   ng-model="repository.formData.clone">
+                                </toggle-switch>
+                                <span class="info-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable this toggle if you want to clone a remote repository, or disable this toggle to create a new repository.' ]]);$output .= '
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Clone URL-->
+                    <div class="form-group" ng-if="repository.formData.clone">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <toggle-label-info
+                                     for="repoCloneURL"
+                                     label-text="';$output .= $stash->get(['locale',0,'maketext',['Clone URL' ]]);$output .= '"
+                                     show-info-block="true">
+                                     ';$output .= $stash->get(['locale',0,'maketext',['Enter the clone URL for the remote repository.' ]]);$output .= '
+                                     ';$output .= $stash->get(['locale',0,'maketext',['All clone URLs must begin with the [asis,http://], [asis,https://], [asis,ssh://], or [asis,git://] protocols or begin with a username and domain.' ]]);$output .= '
+                                </toggle-label-info>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input
+                                    name="repoCloneURL"
+                                    id="repoCloneURL"
+                                    type="text"
+                                    class="form-control"
+                                    ng-disabled="!repository.formData.clone"
+                                    ng-model="repository.formData.cloneURL"
+                                    ng-model-options="{
+                                        updateOn: \'default change blur\',
+                                        debounce: { \'default\': 250, \'change\': 0, \'blur\': 0 },
+                                    }"
+                                    ng-change="repository.checkKnownHosts()"
+                                    ng-required="repository.formData.clone"
+                                    valid-clone-url
+                                    ng-blur="repository.autoFillPathAndName()"
+                                    auto-focus/>
+                                <span class="help-block"></span>
+                            </div>
+                            <div class="col-xs-12">
+                                <ul validation-container field-name="repoCloneURL" role="alert">
+                                    <li validation-item field-name="repoCloneURL" validation-name="required">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a valid clone [output,acronym,URL,Uniform Resource Locator].' ]]);$output .= '
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Deployment Path Section-->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12">
+                                <toggle-label-info
+                                    id="repoPathFieldLabel"
+                                     for="repoPathField"
+                                     label-text="';$output .= $stash->get(['locale',0,'maketext',['Repository Path' ]]);$output .= '"
+                                     show-info-block="true">
+                                     ';$output .= $stash->get(['locale',0,'maketext',['Enter the desired path for the repository’s directory.' ]]);$output .= '
+                                     ';$output .= $stash->get(['locale',0,'maketext',['If you enter a path that does not exist, the system will create the directory when it creates or clones the repository.' ]]);$output .= '
+                                </toggle-label-info>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="repoPathFieldSegment" class="col-xs-12">
+                                <div class="input-group">
+                                    <span class="input-group-addon truncate">
+                                        <span ng-bind-html="repository.homeDirPath"
+                                            uib-tooltip="{{repository.homeDirPath}}"
+                                            class="home-dir-text">
+                                        </span>
+                                        <span class="sr-only">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Enter a valid directory path, relative to your home directory.' ]]);$output .= "\n                                        </span>\n                                    </span>\n                                    <input\n                                        id=\"repoPathField\"\n                                        name=\"repoPathField\"\n                                        type=\"text\"\n                                        class=\"form-control\"\n                                        ng-model=\"repository.formData.repoPath\"\n                                        uib-typeahead=\"directory for directory in repository.completeDirectory(\$viewValue)\"\n                                        typeahead-template-url=\"repositoryPathSuggester.html\"\n                                        autocomplete=\"off\"\n                                        required\n                                        valid-path\n                                        ng-trim=\"false\"\n                                        ng-pattern=\"repository.pathExcludeList\">\n                                </div>\n                                <span class=\"help-block\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['The path cannot contain the [join, and ,_2] directory references, whitespace, or the following characters: [join, ,_1]',['\\','*','|','"','\'','<','>','&','@','`','$','{','}','[',']','(',')',';','?',':','=','%','#' ],['“./”','“../”' ]]]);$output .= '
+                                </span>
+                            </div>
+                            <div class="col-xs-12">
+                                <ul validation-container field-name="repoPathField" role="alert">
+                                    <li validation-item field-name="repoPathField" validation-name="required">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a valid repository path.' ]]);$output .= '
+                                    </li>
+                                    <li validation-item field-name="repoPathField" validation-name="pattern">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] specify a valid path.' ]]);$output .= '
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--Name Section-->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <toggle-label-info
+                                     for="repoNameInput"
+                                     label-text="';$output .= $stash->get(['locale',0,'maketext',['Repository Name' ]]);$output .= '"
+                                     show-info-block="true">
+                                     ';$output .= $stash->get(['locale',0,'maketext',['This name does [output,em,not] impact functionality, and instead functions [output,em,only] as a display name.' ]]);$output .= "\n                                </toggle-label-info>\n                            </div>\n                        </div>\n                        <div class=\"row\">\n                            <div class=\"col-xs-12\">\n                                <input\n                                    name=\"repoNameInput\"\n                                    id=\"repoNameInput\"\n                                    type=\"text\"\n                                    class=\"form-control\"\n                                    ng-model=\"repository.formData.repoName\"\n                                    ng-pattern=\"/^[^<>]+\$/\"\n                                    required>\n                                    <span class=\"help-block\">";$output .= $stash->get(['locale',0,'maketext',['The repository name may [output,strong,not] include the “[output,chr,60]” and “[output,chr,62]” characters.' ]]);$output .= '</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <ul validation-container field-name="repoNameInput" role="alert">
+                                    <li validation-item field-name="repoNameInput" validation-name="required">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a valid repository name.' ]]);$output .= '
+                                    </li>
+                                    <li validation-item field-name="repoNameInput" validation-name="pattern">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['The repository name may [output,strong,not] include the “[output,chr,60]” and “[output,chr,62]” characters.' ]]);$output .= '
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <hr/>
+                    <!--Page Action Section-->
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="checkbox create-another">
+                                    <label>
+                                        <input type="checkbox"
+                                            name="createAnother"
+                                            ng-model="repository.formData.createAnother">
+                                        <span>';$output .= $stash->get(['locale',0,'maketext',['Create Another' ]]);$output .= "</span>\n                                    </label>\n                               </div>\n                                <div class=\"action-buttons\">\n                                    <button id=\"btnSaveRepo\"\n                                        type=\"button\"\n                                        spinner-id=\"spinnerCreateRepoSave\"\n                                        cp-action=\"repository.createRepository()\"\n                                        ng-disabled=\"!repository.createRepoForm.\$valid\"\n                                        uib-tooltip=\"";$output .= $stash->get(['locale',0,'maketext',['Create Repository' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                                    </button>
+                                    <button id="btnCancelCreateRepo"
+                                        type="button"
+                                        class="btn btn-link"
+                                        ng-click="repository.backToListView()"
+                                        uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Return to the repository list.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Return to Repository List' ]]);$output .= '
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="col-xs-12 col-sm-4">
+            ';if ($stash->get('ssh')){$output .= '
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Related Links' ]]);$output .= '</h3>
+                </div>
+                <div class="list-group">
+                  <a href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).'telnet/index.html';$output .= '"
+                     class="list-group-item list-group-item-action"
+                     uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Manage your SSH keys.' ]]);$output .= '"
+                     target="SSHAccess">
+                     <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                     ';$output .= $stash->get(['locale',0,'maketext',['SSH Access' ]]);$output .= '
+                  </a>
+                </div>
+            </div>
+            '}$output .= '
+        </div>
+    </div>
+</form>
+
+<div ng-if="repository.displaySuccessSummary">
+    <h2>
+        ';$output .= $stash->get(['locale',0,'maketext',['Run these commands on your local computer.' ]]);$output .= '
+    </h2>
+    <section class="summary-sections">
+        <h4 class="section-title">';$output .= $stash->get(['locale',0,'maketext',['For an existing project …' ]]);$output .= '</h4>
+        <div class="steps">
+            <span class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step 1:' ]]);$output .= '</span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Navigate to your repository’s directory:' ]]);$output .= '</span>
+<code class="commands wordbreak">
+cd /path/to/your/repo
+</code>
+        </div>
+        <div class="steps">
+            <span class="step-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Step 2:' ]]);$output .= '
+            </span>
+            <span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Configure your local repository to push to the [asis,cPanel]-hosted repository:' ]]);$output .= '
+            </span>
+<code ng-if="!repository.summary.readOnly" class="commands wordbreak">
+git remote add origin {{repository.summary.remoteURL}}
+git push -u origin master
+</code>
+
+<code ng-if="repository.summary.readOnly" class="commands wordbreak">
+git remote add origin {{repository.summary.remoteURL}}
+</code>
+        </div>
+    </section>
+    <hr/>
+    <section class="summary-sections">
+        <h4 class="section-title">';$output .= $stash->get(['locale',0,'maketext',['To start a new project …' ]]);$output .= '</h4>
+        <div class="steps">
+            <span class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step 1:' ]]);$output .= '</span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Clone the [asis,cPanel]-hosted repository to your local computer and navigate to its directory:' ]]);$output .= '</span>
+<code ng-if="!repository.summary.readOnly" class="commands wordbreak">
+git clone {{repository.summary.remoteURL}}
+cd {{repository.summary.directoryName}}
+</code>
+<code ng-if="repository.summary.readOnly" class="commands wordbreak">
+git clone {{repository.summary.remoteURL}}
+cd {{repository.summary.directoryName}}
+</code>
+        </div>
+        <div class="steps">
+            <span class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step 2:' ]]);$output .= '</span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Create a README file:' ]]);$output .= '</span>
+<code ng-if="!repository.summary.readOnly" class="commands wordbreak">
+echo "# README" >> README.md
+</code>
+<code ng-if="repository.summary.readOnly" class="commands wordbreak">
+echo "# README" >> README.md
+</code>
+        </div>
+        <div class="steps">
+            <span class="step-title">';$output .= $stash->get(['locale',0,'maketext',['Step 3:' ]]);$output .= '</span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Commit the README file to the project:' ]]);$output .= '</span>
+<code ng-if="!repository.summary.readOnly" class="commands wordbreak">
+git add README.md
+git commit -m "Initial Commit"
+git push -u origin master
+</code>
+<code ng-if="repository.summary.readOnly" class="commands wordbreak">
+git add README.md
+git commit -m "Initial Commit"
+</code>
+        </div>
+   </section>
+    <hr/>
+     <button id="btnBackToList"
+        type="button"
+        class="btn btn-link"
+        ng-click="repository.backToListView()"
+        uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['Return to the repository list.' ]]);$output .= '">
+        ';$output .= $stash->get(['locale',0,'maketext',['Return to Repository List' ]]);$output .= '
+    </button>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,58 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/resetpass_confirmation.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="reset-forms">
+    <script type="text/javascript">
+    function toggle(id) {
+        var el = document.getElementById(id);
+        if (el) {
+            if (el.style.display === "none") {
+                el.style.display = "";
+            } else {
+                el.style.display = "none";
+            }
+        }
+    }
+    </script>
+    <form id="reset_form" novalidate action="resetpass" method="post">
+        <!--prevent submit on Enter if login button is disabled-->
+        <input style="display:none" />
+
+        <input type="hidden" name="user" value="';$output .= $stash->get(['user',0,'html',0]);$output .= '" />
+        <input type="hidden" name="action" value="seccode" />
+        <input type="hidden" name="debug" value="';$output .= $stash->get(['CPANEL',0,'is_debug_mode_enabled',0])? '1' : '';$output .= '">
+
+        <div class="input-req-login">
+            <label for="confirmation">';$output .= $stash->get(['locale',0,'maketext',['Security Code' ]]);$output .= '</label>
+        </div>
+        <div class="input-field-login no-icon">
+            <input name="confirm" type="text" class="std_textbox" id="confirmation" maxlength="16" required autocomplete="off" autofocus>
+        </div>
+        <div class="pnlResend">
+            <a id="btnResend"
+               class="lnkResend"
+               href="?user=';$output .= $stash->get(['user',0,'html',0]);$output .= '&action=resend">
+                ';$output .= $stash->get(['locale',0,'maketext',['Send Security Code Again' ]]);$output .= '
+            </a>
+            <a onclick="toggle(\'msgResendMore\')" class="btnMore"
+                  title="';$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= '">
+                (?)
+            </a>
+            <span id="msgResendMore" style="display:none">
+                ';$output .= $stash->get(['locale',0,'maketext',['If you have not received the email that contains the security code, check your contact email account’s spam. Some email providers may identify the password-reset email as spam. If necessary, you can request the server send another email.' ]]);$output .= ' <a id="btnCloseMore" class="btnMore" onclick="toggle(\'msgResendMore\')">';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</a>
+            </span>
+        </div>
+        <div id="reset-note" class="reset-input-note">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Please keep this browser window open.]' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['You must enter the code in the same browser from which you initiated the password reset request.' ]]);$output .= '</p>
+        </div>
+        <div class="controls">
+            <div id="confirm-submit-btn" class="login-btn">
+                <button type="submit" id="confirm-submit">';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '</button>
+            </div>
+            <div class="reset-pw">
+                <a href="/">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+            </div>
+        </div>
+        <div class="clear"></div>
+    </form>
+    <span id="resetpass-seccode">';$output .= '</span>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

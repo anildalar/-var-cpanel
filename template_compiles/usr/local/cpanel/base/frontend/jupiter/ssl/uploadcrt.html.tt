@@ -1,0 +1,31 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/uploadcrt.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('crt',$stash->get(['RAW_FORM',['crt' ]]));if (!$stash->get('crt')){$stash->set('crt',$stash->get(['CPANEL',0,'read_uploaded_file',['crtfile' ]]))}if ($stash->get('crt')){$stash->set('upload_cert',$stash->get(['execute',['SSL','upload_cert',{'crt'=>$stash->get('crt'),'friendly_name'=>$stash->get(['RAW_FORM',['friendly_name' ]])}]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if (!$stash->get('upload_cert')){$output .= '
+        <div id="nocertError" class="alert alert-danger">
+            <span id="nocertErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="nocertErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Please provide a certificate.' ]]);$output .= '
+            </div>
+        </div>
+    '}elsif ($stash->get(['upload_cert',0,'status',0])){$output .= '
+        <div id="uploadSuccess" class="alert alert-success">
+            <span id="uploadSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="uploadSuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The certificate for the domain “[_1]” has been saved.',$stash->get(['upload_cert',0,'data',0,0,0,'subject.commonName',0,'html',0])]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div id="uploadError" class="alert alert-danger">
+            <span id="uploadErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="uploadErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['ERROR: [_1]',$stash->get(['upload_cert',0,'errors_as_string',0,'html',0])]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'crts.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

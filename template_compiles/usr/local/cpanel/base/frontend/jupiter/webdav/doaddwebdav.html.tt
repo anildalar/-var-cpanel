@@ -1,0 +1,86 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/webdav/doaddwebdav.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('addwebdisk',$stash->get(['Api2',0,'exec',['WebDisk','addwebdisk',{'enabledigest'=>$stash->get(['FORM',0,'enabledigest',0]),'domain'=>$stash->get(['FORM',0,'domain',0]),'password'=>$stash->get(['FORM',0,'password',0]),'user'=>$stash->get(['FORM',0,'user',0]),'perms'=>$stash->get(['FORM',0,'perms',0]),'homedir'=>$stash->get(['FORM',0,'homedir',0])}]]));if ($stash->get(['addwebdisk',0,'size',0])){$stash->set('add_disk_res',$stash->get(['addwebdisk',0,0,0,'login',0]))}$stash->set('is_valid',($stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0])eq '' && $stash->get('add_disk_res')ne ''));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <div id="message"></div>
+
+    ';if (!$stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0])){$output .= '
+        <script type="text/plain" id="success_message">
+            ';$output .= $stash->get(['locale',0,'maketext',['You successfully created the “[_1]” Web Disk account.',$stash->get(['FORM',0,'user',0]).'@' .$stash->get(['FORM',0,'domain',0])]]);$output .= '
+            <div>
+                <ul>
+                    {list}
+                </ul>
+            </div>
+        </script>
+        <script type="text/plain" id="success_message_readonly">
+            <li>
+                ';$output .= $stash->get(['locale',0,'maketext',['Read-Only access to: [_1]',$stash->get(['FORM',0,'homedir',0])]]);$output .= '
+            </li>
+        </script>
+        <script type="text/plain" id="success_message_readwrite">
+            <li>
+                ';$output .= $stash->get(['locale',0,'maketext',['Read-Write access to: [_1]',$stash->get(['FORM',0,'homedir',0])]]);$output .= '
+            </li>
+        </script>
+        <script type="text/plain" id="success_message_digeston">
+            <li>
+                ';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication is enabled.' ]]);$output .= '
+            </li>
+        </script>
+        <script type="text/plain" id="success_message_digestoff">
+            <li>
+                ';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication is disabled.' ]]);$output .= '
+            </li>
+        </script>
+    '}$output .= '
+
+    <div id=\'webdav_security_notices\'></div>
+
+    <div id="access_web_disk" style="display: none;">
+        <div>
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['To view configuration details for your Web Disk Account, click [output,strong,“_1”] below.',$stash->get(['locale',0,'maketext',['Configure Client Access' ]])]]);$output .= '
+            </p>
+            ';if ($stash->get(['CPANEL',0,'ENV',0,'HTTP_PROXIED',0])){$output .= '
+                ';$output .= $stash->get(['Api1',0,'pre_exec',['ProxyUtils','proxyaddress' ]]);$output .= $stash->get(['Api1',0,'exec',['ProxyUtils','proxyaddress',['webdisk' ]]]);$output .= $stash->get(['Api1',0,'post_exec',['ProxyUtils','proxyaddress' ]]);$output .= '
+                <a title="';$output .= $stash->get(['locale',0,'maketext',['Click to view configuration details for your operating system or device.' ]]);$output .= '" href="webdavaccessdownload.html?domain=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'new_proxy_domain',0,'html',0]);$output .= '&amp;sslport=';$output .= $stash->get(['ExpVar',0,'expand',['$sslhttpdport' ]]);$output .= '&amp;mainport=';$output .= $stash->get(['ExpVar',0,'expand',['$mainhttpdport' ]]);$output .= '&amp;hasdigest=';$output .= $stash->get(['FORM',0,'enabledigest',0]);$output .= '&amp;user=';$output .= $stash->get(['FORM',0,'user',0]).'@' .$stash->get(['FORM',0,'domain',0]);$output .= '" class="btn btn-primary" id="accessWebDisk">';$output .= $stash->get(['locale',0,'maketext',['Configure Client Access' ]]);$output .= '</a>
+            '}else {$output .= '
+                <a title="';$output .= $stash->get(['locale',0,'maketext',['Click to view configuration details for your operating system or device.' ]]);$output .= '" href="webdavaccessdownload.html?domain=';$output .= $stash->get(['FORM',0,'domain',0]);$output .= '&amp;sslport=2078&amp;mainport=2077&amp;hasdigest=';$output .= $stash->get(['FORM',0,'enabledigest',0]);$output .= '&amp;user=';$output .= $stash->get(['FORM',0,'user',0]).'@' .$stash->get(['FORM',0,'domain',0]);$output .= '" class="btn btn-primary" id="btnAccessWebDisk">';$output .= $stash->get(['locale',0,'maketext',['Configure Client Access' ]]);$output .= '</a>
+            '}$output .= '
+        </div>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'accounts_webdav.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+
+<script type="text/plain" id="failed_message">
+    ';$output .= $stash->get(['locale',0,'maketext',['There was a problem creating your Web Disk.' ]]);$output .= '
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0,'html',0]);$output .= '
+    '}$output .= '
+</script>
+
+<script type="text/html" id="security_notice">
+    <p id="descSecurityNotice1">';$output .= $stash->get(['locale',0,'maketext',['When creating a Web Disk inside of the [output,strong,public_html] directory or any other public directory, the files uploaded to that directory are publicly accessible. If you want to keep your files private, you should use a directory that is not contained within any public directory or password protect the directory.' ]]);$output .= '</p>
+    <p id="descSecurityNotice2">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: To password protect directories that are inside public_html, go to the [output,url,_1,Directory Privacy] area.','../htaccess/dohtaccess.html?dir=' .$stash->get(['CPANEL',0,'homedir',0]).'/' .$stash->get(['FORM',0,'homedir',0])]]);$output .= '</p>
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'web_disk','feature'=>'webdisk','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n/**\n* Initializes the fpage\n* \@method initializePage */\nfunction initializePage() {\n    var hasError = ";$output .= ($stash->get('is_valid'))? 'false' : 'true';$output .= ';
+    var text = "";
+    var perms = ';$output .= $stash->get(['RAW_FORM',0,'perms',0,'json',0])|| 'null';$output .= ';
+    var hasDigest = ';$output .= ($stash->get(['RAW_FORM',0,'enabledigest',0])eq '')? 'false' : 'true';$output .= ";\n\n    if(hasError) {\n        text = DOM.get(\"failed_message\").text;\n    }\n    else {\n        text = DOM.get(\"success_message\").text;\n        var list = \"\";\n        if(perms !== null && perms == 'rw') {\n            list += DOM.get(\"success_message_readwrite\").text;\n        }\n        else {\n            list += DOM.get(\"success_message_readonly\").text;\n        }\n        if(hasDigest) {\n            list += DOM.get(\"success_message_digeston\").text;\n        }\n        else {\n            list += DOM.get(\"success_message_digestoff\").text;\n        }\n        text = text.replace('{list}', list);\n\n        // show the info notice if we do not have an error\n        YAHOO.util.Dom.setStyle('access_web_disk','display','');\n        var info = new CPANEL.widgets.Page_Notice( {\n            level: \"info\",\n            content: DOM.get(\"security_notice\").text,\n            container: 'webdav_security_notices'\n        } );\n\n    }\n    var notice = new CPANEL.widgets.Page_Notice( {\n        level: hasError ? \"error\" : \"success\",\n        content: text,\n        container: 'message'\n    } );\n}\n\n/**\n * Shows the current element.\n * \@method show\n * \@param {String|HTMLElement} el element to show\n * \@param {String} display_type optional, alternative display type if the default is not desired */\nvar show = function(el, display_type) {\n    display_type = display_type || '';\n    DOM.setStyle(el, 'display', display_type);\n}\n\n/**\n* Hides the current element.\n* \@method hide\n* \@param {String|HTMLElement} el element to hide */\nvar hide = function(el) {\n    DOM.setStyle(el, 'display', 'none');\n}\n\n// Initialize the page\nYAHOO.util.Event.onDOMReady(function(){ initializePage(); });\n</script>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    #access_web_disk, #webdav_security_notices {
+        margin-top:15px;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/getssldata.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$stash->set('ssltypes',{'crt'=>$stash->get(['locale',0,'maketext',['Certificate' ]]),'csr'=>$stash->get(['locale',0,'maketext',['[output,acronym,CSR,Certificate Signing Request]' ]]),'key'=>$stash->get(['locale',0,'maketext',['Key' ]])});$output .= '
+
+';$stash->set('storagetypes',{'installed'=>$stash->get(['locale',0,'maketext',['[asis,Apache]’s Installed SSL Resource' ]]),'user'=>$stash->get(['locale',0,'maketext',['User Account SSL Resource' ]])});$output .= '
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Resource Information' ]]);$output .= '</h2>
+';if ($stash->get(['data',0,'friendly_name',0])){$output .= '
+<div>
+    <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Friendly Name: [_1]',$stash->get(['data',0,'friendly_name',0,'html',0])]]);$output .= '</span>
+</div>
+'}$output .= '
+<div>
+    <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['ID: [_1]',$stash->get(['data',0,'id',0,'html',0])]]);$output .= '</span>
+</div>
+<div>
+    ';$stash->set('storage',$stash->get(['data',0,'storage',0]));$output .= '
+    ';$stash->set('storagetext',$stash->get(['storagetypes',0,$stash->get('storage'),0]));$output .= '
+    ';$stash->set('storagetext',$stash->get(['storagetext',0,'html',0]));$output .= '
+    <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Resource Type: [_1]',$stash->get('storagetext')]]);$output .= '</span>
+</div>
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Raw Text' ]]);$output .= '</h2>
+<textarea cols="80" rows="';$output .= $stash->get(['data',0,'text',0,'split',['\\n' ],'size',0]);$output .= '" readonly>
+';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'text',0]);&$_tt_filter($output)};$output .= '</textarea>
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Detailed Information' ]]);$output .= '</h2>
+<textarea cols="80" rows="';$output .= $stash->get(['data',0,'parse',0,'split',['\\n' ],'size',0]);$output .= '" readonly>
+';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'parse',0]);&$_tt_filter($output)};$output .= '</textarea>
+
+';if ($stash->get(['data',0,'related',0])&& $stash->get(['data',0,'related',0,'keys',0])&& $stash->get(['data',0,'related',0,'keys',0,'size',0])){$output .= '
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Related Items' ]]);$output .= '</h2>
+    <ul class="bulleted">
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'related',0,'pairs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'relatedobj'}=$_tt_value;$output .= '
+        ';$stash->set('itemtype',$stash->get(['relatedobj',0,'key',0]));$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['relatedobj',0,'value',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '
+            ';if ($stash->get(['item',0,'friendly_name',0])){$output .= '
+                <li><a href="?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['item',0,'id',0]);&$_tt_filter($output)};$output .= '&storage=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'storage',0]);&$_tt_filter($output)};$output .= '&type=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('itemtype');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[_1] ([output,strong,_2])[comment,do not use this phrase, it will be fixed in an upcoming case]',$stash->get(['ssltypes',0,$stash->get('itemtype'),0]),$stash->get(['item',0,'friendly_name',0,'html',0])]]);$output .= '</a></li>
+            '}else {$output .= '
+                <li><a href="?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['item',0,'id',0]);&$_tt_filter($output)};$output .= '&storage=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'storage',0]);&$_tt_filter($output)};$output .= '&type=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('itemtype');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[_1] ([output,strong,_2])[comment,do not use this phrase, it will be fixed in an upcoming case]',$stash->get(['ssltypes',0,$stash->get('itemtype'),0]),$stash->get(['item',0,'id',0])]]);$output .= '</a></li>
+            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </ul>
+
+'}$output .= '
+
+
+
+<div class="return-link">
+<b>[</b> <a href="sslmanager">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a><b> ]</b>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts2/sslmanager','extrastyle'=>'
+textarea {
+    font-family: monospace;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

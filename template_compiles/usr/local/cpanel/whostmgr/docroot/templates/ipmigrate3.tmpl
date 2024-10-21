@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/ipmigrate3.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['data',0,'status',0])){$output .= '
+<blockquote>This next step will modify your servers’ configuration files.  Once this step has been started, it cannot be
+reversed.  You will not be able to change the IP of
+any account using the IP change function while the IP migration is in progress.
+The entire process takes about 48 hours since DNS changes must propagate before the system can return to normal.</blockquote>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/ipmigrate4">
+<input type="submit" class="btn-primary" value="Continue">
+</form>
+<br />
+
+<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/ipmigratemap">Click here to download an IP translation matrix</a>
+'}else {$output .= '
+<p class="error">Unable to create migration map.</p>
+'}$output .= '
+
+';if ($stash->get(['data',0,'errors',0])){$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'err'}=$_tt_value;$output .= '
+<p class="error">';$output .= $stash->get('err');$output .= '</p>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,71 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/user_manager/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('Email',$context->plugin('Email'));$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['user_manager' ]]));$stash->set('users',$stash->get(['Uapi',0,'exec',['UserManager','list_users',{'api.sort_column'=>'full_username','api.normalize'=>1 }]])|| []);$stash->set('ftp_daemon_info',$stash->get(['execute_or_die',['Ftp','get_ftp_daemon_info',{}],'data',0]));$output .= $stash->get(['Api2',0,'pre_exec',['DomainLookup','getdocroots' ]]);$stash->set('domains_and_docroots',$stash->get(['Api2',0,'exec',['DomainLookup','getdocroots',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['DomainLookup','getdocroots' ]]);$stash->set('docrootByDomain',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_and_docroots');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$stash->set('domain',$stash->get(['item',0,'domain',0]));$stash->set('remove_pattern','^' .$stash->get(['CPANEL',0,'homedir',0]).'/');$stash->set('relative_docroot',$stash->get(['item',0,'docroot',0,'remove',[$stash->get('remove_pattern')]]));if ($stash->get(['relative_docroot',0,'length',0])eq $stash->get(['item',0,'docroot',0,'length',0])- $stash->get(['CPANEL',0,'homedir',0,'length',0])- 1){$stash->set(['docrootByDomain',0,$stash->get('domain'),0],$stash->get('relative_docroot'))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('minimum_password_strength',$stash->get(['Uapi',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'virtual' }],'data',0,'strength',0]));if (!$stash->get(['minimum_password_strength',0,'defined',0])){$stash->set('minimum_password_strength',0)}$stash->set('ssl_info',$stash->get(['Uapi',0,'exec',['SSL','get_cn_name',{'domain'=>$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]),'service'=>'dav' }],'data',0]));$stash->set('cpanel_quota_info',$stash->get(['Uapi',0,'exec',['Quota','get_quota_info',{}],'data',0]));$stash->set('is_email_running',$stash->get(['ExpVar',0,'expand',['$hasexim' ]])? 1 : 0);$stash->set('is_webdav_running',$stash->get(['ExpVar',0,'expand',['$hascpdavd' ]])? 1 : 0);$stash->set('is_invite_sub_enabled',$stash->get(['ExpVar',0,'expand',['$is_invite_sub_enabled' ]])? 1 : 0);$stash->set('has_max_emailacct_quota',$stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])&& $stash->get(['CPANEL',0,'CPDATA',0,'MAX_EMAILACCT_QUOTA',0])ne 'unlimited');$stash->set('default_email_quota',$stash->get(['Email',0,'get_user_default_email_quota',0,'html',0]));$stash->set('max_email_quota',$stash->get(['execute',['Email','get_max_email_quota_mib' ],'data',0]));$stash->set('service_defaults',{'email'=>{'default_quota'=>$stash->get('default_email_quota'),'default_quota_unit'=>'MB','select_unlimited'=>$stash->get(['CPANEL',0,'CPCONF',0,'email_account_quota_default_selected',0])eq 'unlimited' ? 1 : 0,'default_value'=>$stash->get(['CPANEL',0,'CPCONF',0,'email_account_quota_default_selected',0])eq 'unlimited' ? ($stash->get('has_max_emailacct_quota')? $stash->get('max_email_quota'): 0): $stash->get('default_email_quota'),'max_quota'=>$stash->get('max_email_quota'),'unlimitedValue'=>$stash->get('has_max_emailacct_quota')? $stash->get('max_email_quota'): 0,'unlimitedLabel'=>$stash->get('has_max_emailacct_quota')? $stash->get(['locale',0,'maketext',['Maximum ([format_bytes,_1])',$stash->get('max_email_quota')* 1048576 ]]): $stash->get(['locale',0,'maketext',['Unlimited' ]])},'ftp'=>{'default_quota'=>100,'default_quota_unit'=>'MB','select_unlimited'=>1,'default_value'=>0,'max_quota'=>0 },'webdisk'=>{'default_quota'=>0,'select_unlimited'=>0,'default_value'=>0,'max_quota'=>0 }});$output .= '
+
+';$output .= do {my$output='';$output .= '
+';if ($stash->get('has_feature')){$output .= '
+    <div class="body-content">
+        <div ng-controller="applicationController" id="top">
+            <div id="viewContent"
+                 class="ng-cloak"
+                 ng-view
+                 ng-cloak>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/ng-template" id="pathSuggester.html">
+        <a>
+            <span ng-bind-html="match.label | encodeHtml | uibTypeaheadHighlight:query"></span>
+        </a>
+    </script>
+
+    <script id="directives/issueList.phtml" type="text/ng-template">
+    ';$output .= $context->insert('user_manager/directives/issueList.phtml');$output .= '
+    </script>
+
+    <script id="user_manager/views/listRowsView.ptt" type="text/ng-template">
+    ';$output .= $context->process('user_manager/views/listRowsView.ptt');$output .= '
+    </script>
+
+
+    <script id="user_manager/views/addEditView.ptt" type="text/ng-template">
+    ';$output .= $context->process('user_manager/views/addEditView.ptt');$output .= '
+    </script>
+
+    <script id="user_manager/views/editView.ptt" type="text/ng-template">
+    ';$output .= $context->process('user_manager/views/editView.ptt');$output .= '
+    </script>
+
+    <script type="text/javascript">
+        PAGE.userList = ';$output .= $stash->get(['users',0,'json',0]);$output .= ';
+        PAGE.hasFeature = ';$output .= $stash->get('has_feature')? 'true' : 'false';$output .= ';
+        PAGE.serviceDefaults = ';$output .= $stash->get(['service_defaults',0,'json',0]);$output .= ';
+        PAGE.isEmailRunning = ';$output .= $stash->get('is_email_running')? 'true' : 'false';$output .= ';
+        PAGE.ftpDaemonInfo = ';$output .= $stash->get(['ftp_daemon_info',0,'json',0]);$output .= ';
+        PAGE.isWebdavRunning = ';$output .= $stash->get('is_webdav_running')? 'true' : 'false';$output .= ';
+        PAGE.isInviteSubEnabled = ';$output .= $stash->get('is_invite_sub_enabled')? 'true' : 'false';$output .= ';
+        PAGE.features = {
+            email:   ';$output .= $stash->get(['CPANEL',0,'feature',['popaccts' ]])? 'true' : 'false';$output .= ',
+            ftp:     ';$output .= $stash->get(['CPANEL',0,'feature',['ftpaccts' ]])? 'true' : 'false';$output .= ',
+            webdisk: ';$output .= $stash->get(['CPANEL',0,'feature',['webdisk' ]])? 'true' : 'false';$output .= ',
+        };
+        PAGE.sslInfo = ';$output .= $stash->get(['ssl_info',0,'json',0]);$output .= ';
+        PAGE.quotaInfo = ';$output .= $stash->get(['cpanel_quota_info',0,'json',0]);$output .= ';
+        PAGE.docrootByDomain = ';$output .= $stash->get(['docrootByDomain',0,'json',0]);$output .= ';
+        PAGE.primaryDomain = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'json',0]);$output .= ';
+        PAGE.minimumPasswordStrength = ';$output .= $stash->get(['minimum_password_strength',0,'json',0]);$output .= ';
+    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+'}else {$output .= '
+    <div class="alert alert-danger" role="alert">
+    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">Error:</strong>
+            <span class="alert-body">
+                ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature. You must have the User Manager feature enabled for your account to use this interface.' ]]);$output .= '
+            </span>
+        </div>
+    </div>
+
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'user_manager','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'embed_stylesheets'=>['user_manager/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

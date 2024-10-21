@@ -1,0 +1,320 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/file_and_directory_restoration/views/backup_restore.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['data',0,'status_code',0])> 0){$output .= '
+
+<div class="alert alert-info">
+    ';$output .= $stash->get(['locale',0,'maketext',['The system disabled the [output,em,File and Directory Restoration] feature.' ]]);$output .= '<br>
+    ';$output .= $stash->get(['data',0,'status_msg',0]);$output .= '
+    <br>
+    ';$output .= $stash->get(['locale',0,'maketext',['For information on how to manage this setting to enable this feature, read the [output,url,_1,How to Manage Metadata Settings,target,_2] documentation.','https://go.cpanel.net/MetadataSettings','_blank' ]]);$output .= '
+</div>
+
+'}else {$output .= '
+
+<!-- Documentation before selecting a user -->
+<p ng-show="!inCpanel">';$output .= $stash->get(['locale',0,'maketext',['Select an account to access the backups for the files and directories that you wish to restore.' ]]);$output .= '</p>
+
+
+<!-- Notification of initially loading backups data -->
+<div cp-loading-panel class="initial-loading-panel" ng-show="!initialDataLoaded || loadingData">
+';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+</div>
+
+<!-- List of users in WHM account -->
+<user-domain-list domains="accounts" ng-if="initialDataLoaded && !inCpanel && !loadingData" ng-model="account" hide-account-summary="1">
+    <div class="col-xs-12">
+        <button class= "btn btn-primary" ng-disabled="accounts.length === 0 || !account" cp-action="getUserHomeDir(account)">';$output .= $stash->get(['locale',0,'maketext',['View Backups' ]]);$output .= '</button>
+    </div>
+</user-domain-list>
+
+<div ng-if="inCpanel">
+    <p class="description" id="whmFileAndDirRestoreDescription">';$output .= $stash->get(['locale',0,'maketext',['Use this interface to restore individual file and directory files from backups.' ]]);$output .= '</p>
+    <div class="returnToAcctListBtnContainer">
+        <button
+            id="returnToAcctListBtnTop"
+            type="button"
+            class="additionalNavBtns"
+            button-class="btn-link"
+            cp-action="getAccounts()">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>';$output .= $stash->get(['locale',0,'maketext',['Return to account list' ]]);$output .= '
+        </button>
+    </div>
+    <uib-accordion 
+        id="fileAndDirPanel"  
+        class="col-md-12 col-lg-5">
+        <uib-accordion-group
+            is-disabled="actions.loadingUI"
+            is-open="dirContentsPanelOpen"
+            panel-class="{{getDirContentsPanelClass(dirContentsPanelOpen)}}">
+            <uib-accordion-heading id="directoryContentsPanelHeader">';$output .= $stash->get(['locale',0,'maketext',['Files and Directories' ]]);$output .= '</uib-accordion-heading>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Enter a path or browse files and directories to restore backups.' ]]);$output .= '</p>
+            <div class="radio" id="pathOptionContainer">
+                <label for="enterPathOption">
+                    <input 
+                        type="radio" 
+                        name="navigateMethod"
+                        ng-disabled="actions.loadingUI"
+                        id="enterPathOption" 
+                        ng-model="navigateMethod"
+                        value="input"
+                        ng-change="clearBackupList()" />
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Enter a path].' ]]);$output .= '
+                </label>
+                <i class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="findByPathInfo"></i>
+            </div>
+
+            <div class="radio" id="browseOptionContainer">
+                <label for="browseOption">
+                    <input
+                        type="radio"
+                        name="navigateMethod"
+                        id="browseOption"
+                        ng-model="navigateMethod"
+                        ng-disabled="actions.loadingUI"
+                        value="browse"
+                        ng-change="clearBackupList()" />
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Browse files and directories].' ]]);$output .= '
+                </label>
+            </div>
+            <hr />
+            <form name="searchByPathForm" id="searchByPathForm">
+                <div id="pathInputContainer" class="input-group" ng-show="navigateMethod === \'input\'">
+                    <span id="userHomeDirDisplay" class="input-group-addon">{{userHomeDirDisplay}}</span>
+                    <input
+                        id="pathInput"
+                        class="form-control"
+                        type="text"
+                        name="pathInput"
+                        placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter a valid path.' ]]);$output .= '"
+                        ng-change="checkForEmptyInput(pathInput)"
+                        ng-model="pathInput"
+                        ng-trim="false" />
+                </div>
+
+                <div id="pathInputButtons" ng-show="navigateMethod === \'input\'">
+                    <button
+                        id="pathInputButton"
+                        type="submit"
+                        button-class="btn-primary"
+                        ng-disabled="isPathInputEmpty"
+                        cp-action="findByPathInput(pathInput)">';$output .= $stash->get(['locale',0,'maketext',['Show Backups' ]]);$output .= '
+                    </button>
+                    <button
+                        id="clearBackupListBtn"
+                        type="button"
+                        class="btn btn-link"
+                        ng-click="clearBackupList()"
+                        ng-disabled="!isBackupSelected && !getBackupsError">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Clear Backups' ]]);$output .= '
+                    </button>
+                </div>
+            </form>
+            <div id="navigationContainer">
+                <div id="goToPageContainer" class="page-size" ng-show="navigateMethod === \'browse\'">
+                    <div class="pagination-container" id="paginationContainer" ng-show="navigateMethod === \'browse\'">
+                        <page-size
+                            id="pageSize"
+                            allowed-sizes="directoryContentsMeta.pageSizes"
+                            total-items="directoryContentsMeta.totalItems"
+                            ng-model="directoryContentsMeta.pageSize"
+                            show-all="false"
+                            ng-change="setDirectoryContentsPage(true, account)">
+                        </page-size>
+                        <uib-pagination
+                            id="paginateItems"
+                            total-items="directoryContentsMeta.totalItems"
+                            ng-model="directoryContentsMeta.pageNumber"
+                            max-size="0"
+                            boundary-links="true"
+                            rotate="true"
+                            previous-text="<"
+                            next-text=">"
+                            first-text="<<"
+                            last-text=">>"
+                            items-per-page="directoryContentsMeta.pageSize"
+                            ng-change="setDirectoryContentsPage()">
+                        </uib-pagination>
+                    </div>
+                    <div class="form-group">
+                        <label for="goToPage" class="title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Go to Page:' ]]);$output .= '
+                        </label>
+                        <select
+                            id="pageNumberSelector"
+                            class="form-control"
+                            name="goToPage"
+                            ng-model="directoryContentsMeta.pageNumber"
+                            ng-options="number for number in goToPages track by number"
+                            ng-change="setDirectoryContentsPage()"
+                            ng-disabled="emptyDirectory">
+                            {{directoryContentsMeta.pageNumber}}
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div id="breadcrumbContainer">
+                <ol class="breadcrumb" ng-show="navigateMethod === \'browse\'">
+                    <li>
+                        <button
+                            class="btn btn-link"
+                            ng-click="goToDirectory(homeDir)">
+                            <span>';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= "</span>\n                        </button>\n                    </li>\n                    <li ng-repeat=\"content in breadCrumb track by \$index\">\n                        <button\n                            class=\"btn btn-link\"\n                            ng-click=\"navigateBreadcrumb(content)\">\n                            <span>{{content}}</span>\n                        </button>\n                    </li>\n                </ol>\n            </div>\n\n            <table class=\"table table-condensed responsive-table\" id=\"directoryContentsTable\" ng-show=\"navigateMethod === 'browse'\">\n                <thead>\n                    <tr>\n                        <th>\n                            <span\n                                toggle-sort\n                                id=\"contentNameCol\"\n                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '"
+                                sort-meta="directoryContentsMeta"
+                                sort-field="name"
+                                onsort="sortDirectoryContentsTable">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                            </span>
+                        </th>
+                        <th>
+                            {{directoryContentsPaginationMessage}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="directoryContentsLoadingMsg" ng-show="actions.loadingData || actions.loadingUI || emptyDirectory">
+                        <td colspan="2">
+                            <i class="fas fa-spin fa-spinner" ng-show="actions.loadingData || actions.loadingUI"></i>
+                            <span ng-show="actions.loadingData || actions.loadingUI">';$output .= $stash->get(['locale',0,'maketext',['Loading directory contents …' ]]);$output .= '</span>
+                            <span ng-show="emptyDirectory && !actions.loadingData && !actions.loadingUI" id="noContentsMsg">';$output .= $stash->get(['locale',0,'maketext',['Empty directory.' ]]);$output .= "</span>\n                        </td>\n                    </tr>\n                    <tr ng-repeat=\"content in directoryContents track by \$index\" class=\"directoryContentsTableRow\" ng-hide=\"actions.loadingData || actions.loadingUI\" ng-class=\"{'selectedBackup': content.backupPath === selectedContent}\">\n                        <td data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '">
+                            <span class="directoryContentsIcon" ng-show="content.type === \'dir\'"><i class="fa fa-folder"></i></span>
+                            <span class="directoryContentsIcon" ng-show="content.type === \'file\'"><i class="far fa-file"></i></span>
+                            <span class="directoryContentsIcon" ng-show="content.type === \'symlink\'"><i class="fa fa-link"></i></span>
+                            <span data-title="';$output .= $stash->get(['locale',0,'maketext',['[_1]','{{content.name}}' ]]);$output .= "\" ng-if=\"content.type !== 'dir'\">{{content.name}}</span>\n                            <button\n                                ng-if=\"content.type === 'dir'\"\n                                class=\"btn btn-link directoryLink\"\n                                ng-click=\"goToDirectory(content.backupPath)\"\n                                id=\"dirNameBtn_{{content.name}}\">\n                                <span>{{content.name}}</span>\n                            </button>\n                        </td>\n                        <td>\n                            <button\n                                id=\"goToBackupListBtn\"\n                                type=\"button\"\n                                button-class=\"btn-link\"\n                                spinner-id=\"{{content.backupPath}}_{{\$index}}\"\n                                cp-action=\"listBackups(content.backupPath, content.exists)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Show Backups' ]]);$output .= '
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <uib-accordion 
+        id="backupsPanel"
+        class="col-md-12 col-lg-7">
+        <uib-accordion-group
+            is-disabled="actions.loadingUI"
+            is-open="backupsPanelOpen"
+            panel-class="{{getBackupsPanelClass(backupsPanelOpen)}}">
+            <uib-accordion-heading id="backupsPanelHeader" ng-click="toggleBackupsPanel()">';$output .= $stash->get(['locale',0,'maketext',['Backups' ]]);$output .= '</uib-accordion-heading>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Click [output,em,Restore] to restore an item from its backup.' ]]);$output .= '</p>
+            <div id="selectedItemInfoContainer">
+                <h4 class="selectedItemInfo">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Name]:' ]]);$output .= '</h4>
+                <p class="selectedItemInfo">{{selectedContent}}</p>
+                <hr /> 
+            </div>
+            <div ng-hide="isBackupSelected || getBackupsError" class="callout callout-info">
+                ';$output .= $stash->get(['locale',0,'maketext',['Click [output,em,Show Backups] to list backups in this section.' ]]);$output .= '
+            </div>
+
+            <div ng-hide="!getBackupsError" class="callout callout-warning">
+                {{getBackupsError}}
+            </div>
+
+            <div>
+                <div ng-show="isBackupSelected" id="itemExistsCheck" class="backupNavigation">
+                    <h4 class="contentExistsInfo">';$output .= $stash->get(['locale',0,'maketext',['On local disk: [_1]','{{doesContentExist ? "Yes" : "No"}}' ]]);$output .= '</h4>
+                    <i class="fas fa-question-circle contentExistsInfo" tooltip-placement="top" uib-tooltip-html="doesContentExistInfo"></i>
+                </div>
+
+                <div ng-show="isBackupSelected" class="backupNavigation pagination-container pull-right">
+                    <page-size
+                        id="pageSize"
+                        allowed-sizes="backupsMeta.pageSizes"
+                        total-items="backupsMeta.totalItems"
+                        ng-model="backupsMeta.pageSize"
+                        show-all="false"
+                        ng-change="sortBackupsTable()">
+                    </page-size>
+                    <uib-pagination
+                        id="paginateItems"
+                        total-items="backupsMeta.totalItems"
+                        ng-model="backupsMeta.pageNumber"
+                        max-size="0"
+                        boundary-links="true"
+                        rotate="true"
+                        previous-text="<"
+                        next-text=">"
+                        first-text="<<"
+                        last-text=">>"
+                        items-per-page="backupsMeta.pageSize"
+                        ng-change="sortBackupsTable()">
+                    </uib-pagination>
+                    <div id="paginationMessage">
+                        <div class="page-stats pull-right">
+                            {{backupsPaginationMessage}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <table ng-show="isBackupSelected" id="backupsTable" class="table table-condensed responsive-table">
+                <thead>
+                    <tr>
+                        <th><span
+                                toggle-sort
+                                id="backupsDateCol"
+                                sort-meta="backupsMeta"
+                                onsort="sortBackupsTable"
+                                sort-field="backupDate"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Backup Date' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Backup Date' ]]);$output .= '</span></th>
+                        <th><span
+                                toggle-sort
+                                id="backupsTypeCol"
+                                sort-meta="backupsMeta"
+                                onsort="sortBackupsTable"
+                                sort-field="backupType"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Backup Type' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Backup Type' ]]);$output .= '</span></th>
+                        <th ng-if="!isContentTypeDirectory"><span
+                                toggle-sort
+                                id="modifiedTimeCol"
+                                sort-meta="backupsMeta"
+                                onsort="sortBackupsTable"
+                                sort-field="lastModifiedTime"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Last Modified Time' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Last Modified Time' ]]);$output .= '</span></th>
+                        <th ng-if="!isContentTypeDirectory"><span
+                                toggle-sort
+                                id="sizeCol"
+                                sort-meta="backupsMeta"
+                                onsort="sortBackupsTable"
+                                sort-field="fileSize"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= "</span></th>\n                        <th></th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr ng-repeat-start=\"backup in backupList track by \$index\">\n                        <td>{{backup.backupDate}}</td>\n                        <td>{{backup.backupType}}</td>\n                        <td ng-show=\"!isContentTypeDirectory\">{{backup.mtime}}</td>\n                        <td ng-show=\"!isContentTypeDirectory\">{{backup.fileSize | convertedSize}}</td>\n                        <td>\n                            <button\n                                id=\"restoreConfirmationBtn\"\n                                class=\"btn-link\"\n                                ng-click=\"toggleRestoreConfirmation(backup)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '        
+                            </button>
+                        </td>
+                    </tr>
+                    <tr ng-show="isConfirmingRestoration && backup.backupDate === confirmSelected" class="confirmationRow" ng-repeat-end>
+                        <td ng-if="doesContentExist" colspan="{{isContentTypeDirectory ? 1 : 3}}">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Restore Confirmation:] Overwrite and restore?' ]]);$output .= '</td>
+                        <td ng-if="!doesContentExist" colspan="{{isContentTypeDirectory ? 1 : 3}}">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Restore Confirmation:] Add to local disk and restore?' ]]);$output .= "</td>\n                        <td>\n                            <button\n                                id=\"restoreBackupBtn\"\n                                class=\"btn btn-primary\"\n                                cp-action=\"restoreSelectedBackup(backup)\"\n                                spinner-id=\"{{backup.backupDate}}_{{\$index}}\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '
+                            </button>
+                        </td>
+                        <td>
+                            <button
+                                id="cancelRestorationBtn"
+                                class="btn btn-link"
+                                ng-click="toggleRestoreConfirmation()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '        
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>  
+        </uib-accordion-group>
+    </uib-accordion>
+    <div class="returnToAcctListBtnContainer col-md-12 col-lg-12">
+        <button
+            id="returnToAcctListBtnBottom"
+            type="button"
+            button-class="btn-link"
+            class="additionalNavBtns"
+            cp-action="getAccounts()">
+            <i class="fas fa-arrow-left" aria-hidden="true"></i>';$output .= $stash->get(['locale',0,'maketext',['Return to account list' ]]);$output .= '
+        </button>
+    </div>
+    <button 
+        id="scrollToBackupListBtn"
+        type="button"
+        class="btn btn-link pull-right additionalNavBtns"
+        ng-click="scrollToBackupList()">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>';$output .= $stash->get(['locale',0,'maketext',['Back To Top' ]]);$output .= '
+    </button>
+</div>
+
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

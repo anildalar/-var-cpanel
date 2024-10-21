@@ -1,0 +1,29 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mail_blocked_domains/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts12/mail_blocked_domains/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+
+<div id="content"
+    ng-controller="BaseController as base"
+    class="ng-cloak"
+    ng-cloak>
+
+    <p>';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to manage a list of domains that may not send mail to your server. The system will reject any messages that it receives whose “[output,class,_1,code]” address matches one of this list’s domains.','From' ]]);$output .= '</p>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['You can reject all subdomains of a given domain by prefixing the name with an asterisk ([output,class,_1,code]). For example, “[output,class,_2,code]” will cause this server to reject all messages sent from any subdomain of “[output,class,_3,code]”.','*','*.example.com','example.com' ]]);$output .= '</p>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['This interface accepts [output,acronym,IDN,Internationalized Domain Name]s.' ]]);$output .= "</p>\n\n    <cp-alert-list></cp-alert-list>\n\n    <form class=\"layout-medium\" id=\"save_domains_form\" name=\"saveDomainsForm\" spellcheck=\"false\">\n        <div class=\"row\">\n            <div class=\"col-xs-8\">\n                <div class=\"form-group\" ng-class=\"{'has-error':saveDomainsForm.\$invalid}\">\n                    <toggle-label-info\n                        for=\"blockedDomainsList\"\n                        label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Blocked Domains:' ]]);$output .= '"
+                        label-id="lblUserName"
+                        info-icon-id="iconUserNameInfo"
+                        info-block-id="infoBlkUserName"
+                        show-info-block="true">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enter domains on separate lines. The order of the list is not important.' ]]);$output .= "                    </toggle-label-info>\n                    <textarea\n                        id=\"blockedDomainsList\"\n                        rows=\"10\"\n                        class=\"domains-list form-control\"\n                        name=\"domainsArea\"\n                        domain-list\n                        ng-model=\"state.domainsText\"\n                        ng-disabled=\"inProgress\"\n                    ></textarea>\n                    <ul validation-container field-name=\"domainsArea\"></ul>\n                </div>\n                <div class=\"form-group\">\n                    <label>\n                        <input\n                            type=\"checkbox\"\n                            ng-model=\"state.viewPunycodeYN\"\n                            ng-click=\"updateViewPunycode()\"\n                            ng-disabled=\"!saveDomainsForm.\$valid\"\n                        >\n                        ";$output .= $stash->get(['locale',0,'maketext',['Show domains as [asis,ASCII] (relevant for [output,acronym,IDN,Internationalized Domain Name]s)' ]]);$output .= "\n                    </label>\n                </div>\n                <div class=\"form-group\">\n                    <button\n                        type=\"submit\"\n                        class=\"btn btn-primary\"\n                        cp-action=\"submit()\"\n                        ng-disabled=\"!saveDomainsForm.\$valid || saveDomainsForm.\$pristine || !domainsAreChanged()\"\n                    >";$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    var PAGE = PAGE || {};
+    PAGE.initial_blocked_domains = ';$output .= $stash->get(['blocked_domains',0,'json',0]);$output .= ';
+    PAGE.initial_view_punycode = false;
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'mail_blocked_domains','breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/mail_blocked_domains/index.min.css' ]])],'warn_linked_nodes'=>1,'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

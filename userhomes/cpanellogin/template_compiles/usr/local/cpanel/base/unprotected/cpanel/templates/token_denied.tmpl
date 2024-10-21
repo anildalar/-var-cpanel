@@ -1,0 +1,74 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/token_denied.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';$output .= $context->process('templates/external_auth_header.tmpl');$output .= '
+
+    <!-- Do not remove msg_code as it is needed for automated testing - msg_code:[invalid_token]  -->
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Invalid Security Token' ]]);$output .= '</h3>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['The requested [output,acronym,URL,Uniform Resource Locator] does not contain your session’s correct security token.' ]]);$output .= '</p>
+    <p>';$output .= $stash->get(['locale',0,'maketext',['You may have reached this error by copying and pasting a URL from a different cPanel, WHM, or Webmail session into your browser’s address bar. To resolve this situation, please take one of the following steps:' ]]);$output .= '</p>
+    <ul class="options">
+        <li>';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Go back one page,_2,_3] and reload the URL, making sure that the [output,class,/cpsess … /,_4] section of the URL remains the same.','javascript:history.back()','class','page-link','code' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['Re-enter your account’s password below. This will assign your session a new security token. This new token will prevent you from using other pages of this application that may be open in other tabs.' ]]);$output .= '</li>
+    </ul>
+    <div id="token-forms">
+        <div class="pagevars">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Request information' ]]);$output .= '</h3>
+            <p>
+                ';$stash->set('dest_html',$stash->get(['goto_uri',0,'html',0]));$output .= '                ';$output .= $stash->get(['locale',0,'maketext',['Requested page: [_1]',$stash->get('dest_html')]]);$output .= '
+            </p>
+            ';if ($stash->get(['form_ref',0,'keys',0,'size',0])){$output .= '                <table class="formtbl" cellspacing="6">
+                    <tr>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Parameter name' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Parameter value' ]]);$output .= '</th>
+                    </tr>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('form_ref');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '                    <tr><td>';$output .= $stash->get(['pair',0,'key',0,'html',0]);$output .= '</td><td>';$output .= $stash->get(['pair',0,'value',0,'html',0]);$output .= '</td></tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </table>
+            '}$output .= '        </div>
+
+        <div id="login-container">
+          <div id="login-sub-container">
+            <form id="badtokenloginform" action="/login" method="POST">
+                <input type="hidden" id="url_fragment_input" name="url_fragment" value="" />
+                <input type="hidden" name="user" value="';$output .= $stash->get(['user',0,'html',0]);$output .= '" />
+                <input type="hidden" name="token_denied" value="1" />
+                <input type="hidden" name="parameterized_form" value="';$output .= $stash->get(['parameterized_form',0,'html',0]);$output .= '" />
+                <input type="hidden" name="theme" value="';$output .= $stash->get(['theme',0,'html',0]);$output .= '" />
+                <p>';$output .= $stash->get(['locale',0,'maketext',['Username: [_1]',$stash->get('user')],'html',0]);$output .= '</p>
+                <div class="control_container">
+                    <div class="group">
+                    <div class="controls">
+                        <div class="input-field-login icon password-container">
+                            <input name="pass" id="pass" placeholder="';if ($stash->get('app_name')eq 'webmaild'){$output .= $stash->get(['locale',0,'maketext',['Enter your email password.' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Enter your account password.' ]])}$output .= '" class="std_textbox" type="password" autofocus required>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="group">
+                    <div class="controls">
+                        <div class="login-btn" id="proceed_btn_container">
+                            <button type="submit" id="token-submit">';$output .= $stash->get(['locale',0,'maketext',['Proceed with the Current Request' ]]);$output .= '</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </form>
+
+            ';$output .= $context->process('templates/external_auth.tmpl');$output .= '
+
+            <form id="badtokenlogoutform"  action="/logout" target="_top">
+                <div class="control_container">
+                    <div class="controls">
+                        <div class="login-btn" id="logout_btn_container">
+                            <button type="submit" id="logout-btn">';$output .= $stash->get(['locale',0,'maketext',['Log Out' ]]);$output .= '</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+    <script>
+        try { document.getElementById("pass").focus(); } catch(e) {}
+	document.getElementById("url_fragment_input").value = location.hash;
+    </script>
+';$context->include('templates/_error_wrapper',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

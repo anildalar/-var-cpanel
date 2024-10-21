@@ -1,0 +1,15 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/Check/LocalConfTemplate.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/zebra_table.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['The system updated the “[_1]” service configuration on “[_2]”.',$stash->get(['NOTICE',0,'service',0]),$stash->get(['NOTICE',0,'host_server',0])]]));$stash->set('err_table_title',$stash->get(['CPANEL',0,'locale',0,'maketext',['Local Configuration Template Errors' ]]));$stash->set('template_block_title',$stash->get(['CPANEL',0,'locale',0,'maketext',['Local Template Location' ]]));if ($stash->get(['NOTICE',0,'template',0,'search',['broken' ]])|| $stash->get(['NOTICE',0,'template',0,'search',['invalid' ]])){$stash->set('template_block_title',$stash->get(['CPANEL',0,'locale',0,'maketext',['The local configuration has been moved to a temporary file.' ]]))}$output .= '
+
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system detected a local configuration template during the [_1] service’s update.',$stash->get(['NOTICE',0,'service',0,'html',0])]]);$output .= '</p>
+<p>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Check the local configuration template’s custom changes to confirm that they still work with the updated [_1] service.',$stash->get(['NOTICE',0,'service',0])]]);$output .= '</p>
+';if ($stash->get(['NOTICE',0,'errors',0,'size',0])){$output .= '
+<p style="padding:10px;">
+';$output .= $stash->get(['zebra_table',[{'titles'=>$stash->get('err_table_title'),'items'=>$stash->get(['NOTICE',0,'errors',0])}]]);$output .= '
+</p>
+'}$output .= '
+<p style="padding:10px;">
+';$output .= $stash->get(['zebra_table',[{'items'=>$stash->get(['NOTICE',0,'template',0]),'titles'=>$stash->get('template_block_title')}]]);$output .= '
+</p>
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

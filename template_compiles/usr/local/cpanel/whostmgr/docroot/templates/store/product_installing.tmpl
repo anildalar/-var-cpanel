@@ -1,0 +1,103 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/store/product_installing.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="whats-happening">
+    <script>
+        var skip_redirect = ';$output .= $stash->get(['data',0,'skip_redirect',0])? 'true' : 'false';$output .= ';
+
+        function redirect(delay) {
+            setTimeout(function() {
+                window.location.replace(';$output .= $stash->get(['data',0,'redirect',0,'json',0]);$output .= ');
+            }, delay * 1000);
+        }
+
+        function showInstalled(additional) {
+            document.getElementById("installing").style.display = "none";
+            document.getElementById("installed").style.display = "block";
+            if (additional && additional.length > 0) {
+                document.getElementById("additional-detail").style.display = "block";
+                document.getElementById("additional-detail-text").innerHTML = additional;
+            }
+            else if ( !skip_redirect ) {
+                document.getElementById("redirect-note").style.display = "block";
+                redirect(5);
+            }
+        }
+
+        function showNotInstalled(error) {
+            document.getElementById("installing").style.display = "none";
+            var element = document.getElementById("not-installed");
+            var errorDetail = document.getElementById("error-detail-text");
+            if (error) {
+                var div = document.createElement("div");
+                var text = document.createTextNode("The following error was returned: " + error);
+                div.appendChild(text);
+                errorDetail.appendChild(div);
+            }
+            element.style.display = "block";
+        }
+
+        function showSuccessAddendum() {
+            document.getElementById("positionedSuccessAddendum").innerHTML = document.getElementById("addendum").innerHTML;
+            document.getElementById("addendum").style.display = "none";
+        }
+
+        function showFailureAddendum() {
+            document.getElementById("positionedFailureAddendum").innerHTML = document.getElementById("addendum").innerHTML;
+            document.getElementById("addendum").style.display = "none";
+        }
+    </script>
+    <div id="installing" class="callout callout-info">
+        <div class="callout-heading">
+            <i class="fas fa-sync fa-spin text-info" aria-hidden="true"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Installation in Progress' ]]);$output .= '
+        </div>
+        ';if ($stash->get(['data',0,'install_duration_warning',0])){$output .= '
+          ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is installing. The installation may take up to [_2] minutes.',$stash->get(['data',0,'product_name',0]),$stash->get(['data',0,'install_duration_warning',0])]]);$output .= '
+        '}else {$output .= '
+          ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is installing. The installation may take a few minutes.',$stash->get(['data',0,'product_name',0])]]);$output .= '
+        '}$output .= '
+        ';if ($stash->get(['data',0,'background_install',0])){$output .= '
+          ';$output .= $stash->get(['locale',0,'maketext',['You can navigate away from this interface and the installation will continue.' ]]);$output .= '
+        '}else {$output .= '
+          ';$output .= $stash->get(['locale',0,'maketext',['The system will redirect you when the installation is complete.' ]]);$output .= '
+        '}$output .= '
+    </div>
+    <div id="installed" style="display:none" class="callout callout-success finished">
+        <div class="callout-heading">
+            <i class="fas fa-check text-success" aria-hidden="true"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Success' ]]);$output .= '
+        </div>
+        ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is installed.',$stash->get(['data',0,'product_name',0])]]);$output .= '
+        <span id="redirect-note" style="display:none">
+            <br>
+            ';$output .= $stash->get(['locale',0,'maketext',['The system will redirect you.' ]]);$output .= '
+        </span>
+
+        <span id="positionedSuccessAddendum">&nbsp;</span>
+
+        <span id="additional-detail" style="display:none">
+            <br>
+            ';$output .= $stash->get(['locale',0,'maketext',['Additional detail:' ]]);$output .= ' <span id="additional-detail-text">&nbsp;</span>
+            <br><br>
+        </span>
+
+        <div>
+            <a id="success-return-to-origin" href="';$output .= $stash->get(['data',0,'redirect',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Go back' ]]);$output .= '</a>
+        </div>
+    </div>
+    <div id="not-installed" style="display:none" class="callout callout-danger finished">
+        <div class="callout-heading">
+            <i class="fas fa-times text-danger" aria-hidden="true"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Error' ]]);$output .= '
+        </div>
+        ';$output .= $stash->get(['locale',0,'maketext',['You have a license for “[_1]”, but the “[_1]” installation failed.',$stash->get(['data',0,'product_name',0])]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more details, review the following error log: [_1]',$stash->get(['data',0,'log_path',0])]]);$output .= '
+        <br>
+        <span id="error-detail-text">&nbsp;</span>
+        <br>
+        <span id="positionedFailureAddendum">&nbsp;</span>
+
+        <div>
+            <a id="error-return-to-origin" href="';$output .= $stash->get(['data',0,'redirect',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Go back' ]]);$output .= '</a>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

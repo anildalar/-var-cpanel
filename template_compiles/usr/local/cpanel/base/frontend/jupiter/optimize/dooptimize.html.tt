@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/optimize/dooptimize.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api1',0,'pre_exec',['OptimizeWS','optimizews' ]]);$stash->set('opt',$stash->get(['Api1',0,'exec',['OptimizeWS','optimizews',[$stash->get(['RAW_FORM',0,'deflate',0]),$stash->get(['RAW_FORM',0,'item',['deflate-mime-list' ]])]]]));$output .= $stash->get(['Api1',0,'post_exec',['OptimizeWS','optimizews' ]]);$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'CPERROR',0,'optimizews',0])){$output .= '
+        <div class="alert alert-success">
+            <span class="glyphicon glyphicon-ok-sign"></span>
+            <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['Website optimization preferences updated.' ]]);$output .= '
+	        ';if (($stash->get(['FORM',0,'deflate',0])eq 'disabled')){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Content compression is now disabled.' ]]);$output .= '<br/>
+	        '}else {$output .= '
+	            ';$output .= $stash->get(['locale',0,'maketext',['Content compression is now enabled.' ]]);$output .= '<br/>
+	        '}$output .= '
+                ';if (!($stash->get(['FORM',0,'deflate',0])eq 'disabled')){$output .= '
+                    ';if (($stash->get(['FORM',0,'deflate',0])eq 'all')){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Content compression is now enabled for [output,class,all,status] content.' ]]);$output .= '
+                    '}elsif (($stash->get(['FORM',0,'deflate',0])eq 'list')){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Content compression is now enabled for the following [output,acronym,MIME,Multipurpose Internet Mail Extensions] types: “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['deflate-mime-list' ]])]]);$output .= '
+                    '}$output .= '
+                '}$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['An error was encountered while attempting to apply the specified options.' ]]);$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'optimizews',0,'html',0]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'optimize_website','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

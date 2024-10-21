@@ -1,0 +1,511 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/multiphp_manager/views/phpManagerConfig.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- CloudLinux promotion block -->
+<cloud-linux-banner id-prefix="phpVersion"
+    ng-if="!editPoolOptionsMode"
+    cl-data = clData
+    banner-text="clBannerText">
+</cloud-linux-banner>
+
+<p id="gettingPackages" ng-show="actions.loadingFPMInfo || actions.initialDataLoading" class="alert alert-info" ng-cloak>
+    <span id="spinner_getting_packages" class="fas fa-spinner fa-spin" title="';$output .= $stash->get(['locale',0,'maketext',['Gathering [asis,PHP-FPM] packages information …' ]]);$output .= '"></span>
+    ';$output .= $stash->get(['locale',0,'maketext',['Gathering [asis,PHP-FPM] packages information …' ]]);$output .= '
+</p>
+
+<div ng-if="litespeedRunning" class="callout callout-warning">';$output .= $stash->get(['locale',0,'maketext',['The system detected a [asis,LiteSpeed Web Server] installation. As a result, the system disabled all [asis,PHP-FPM] settings.' ]]);$output .= '</div>
+<div class="row callout callout-danger" ng-show="php.noPHPVersionsError">{{php.noPHPVersionsError}}</div>
+
+<div class="row callout callout-warning text-warning" ng-show="!litespeedRunning && !actions.loadingFPMInfo && fpm.missingPackages.length">
+    <div class="col-xs-12">
+        <p>
+            <span ng-show="php.installedVersion.length">';$output .= $stash->get(['locale',0,'maketext',['PHP-FPM is available for accounts using PHP [output,strong,_1].','{{ php.installedVersion }}' ]]);$output .= '</span>
+            ';$output .= $stash->get(['locale',0,'maketext',['To use PHP-FPM on accounts using PHP “[output,strong,_1]” you [output,strong,must] install PHP-FPM for those PHP versions. To do so, perform the following steps below:','{{ fpm.missingPackagesDisplay }}' ]]);$output .= '
+        </p>
+        <ol>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Click [output,class,Install,actionWords] to open EasyApache 4 in a new window.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Install the following packages:' ]]);$output .= "\n                <ul>\n                    <li ng-repeat=\"package in fpm.missingPackages track by \$index\">{{ package }}</li>\n                </ul>\n            </li>\n            <li>";$output .= $stash->get(['locale',0,'maketext',['After you install the desired packages, return to the previous window and click [output,class,Refresh,actionWords]. The system will display your updated PHP-FPM packages.' ]]);$output .= '</li>
+        </ol>
+        <a id="ea4Link" href="{{ fpm.ea4ReviewLink }}" class="btn btn-primary" target="_blank" ng-disabled="ea4Went" ng-click="fpm.ea4Went = true">
+            <span class="fas fa-lg fa-external-link-alt"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '
+        </a>
+        <button id="btnRefreshFPM" class="btn btn-default" title="';$output .= $stash->get(['locale',0,'maketext',['Check updated state of [asis,PHP-FPM] packages.' ]]);$output .= '" cp-action="getFPMInfo()">
+            <span class="fas fa-lg fa-sync"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '
+        </button>
+    </div>
+</div>
+
+<div class="row callout callout-warning" ng-show="!actions.loadingFPMInfo && fpm.flag">
+    <div class="col-xs-12">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Your system contains an old [asis,PHP-FPM] configuration. To update your PHP-FPM configuration, read our [output,url,_1,Configure or Disable PHP-FPM with User Pools for EasyApache 4,target,_blank] documentation.','https://go.cpanel.net/ConfigureorDisablePHP-FPMwithUserPoolforEasyApache4' ]]);$output .= '</p>
+        <button class="btn btn-primary" cp-action="setFPMFlag()">';$output .= $stash->get(['locale',0,'maketext',['Acknowledge' ]]);$output .= '</button>
+    </div>
+</div>
+
+<!-- TABLE SECTION -->
+<div id="accountContainer" ng-if="!editPoolOptionsMode" class="list-container">
+    <form novalidate>
+        <div class="row">
+            <div class="col-xs-12" ng-cloak>
+                <cp-alert-list></cp-alert-list>
+            </div>
+        </div>
+
+        <section id="systemPhpSection" class="ng-hide" ng-show="!actions.loadingFPMInfo" ng-class="php.eolWarningClass(\'systemDefault\')">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="section-header">
+                                <h3>';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP] Version' ]]);$output .= '</h3>
+                                <span ng-show="php.systemDefault.showEolMsg" class="label label-warning">EOL warning</span>
+                            <div>
+                        </div>
+                    </div>
+                    <div class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Set the system default [asis,PHP] version.' ]]);$output .= '
+                        <p>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Any domain that is set to the [output,em,inherit] value indicates that it does not have its own [asis,PHP] version explicitly set. Read more about [output,url,_1,inherit,target,_blank].','https://go.cpanel.net/inherit' ]]);$output .= '
+                        </p>
+                    </div>
+                    <div class="form-inline indent-form row">
+                        <!-- View I - Display System PHP version -->
+                        <div id="displaySection"
+                            class="form-group col-xs-12"
+                            ng-hide="php.systemEditView">
+                            <div class="systemPhpValue">
+                                <span class="ng-hide" ng-show="!php.systemDefault.version">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system “[_1]” version is unavailable.','PHP' ]]);$output .= '
+                                </span>
+                                <span ng-hide="!php.systemDefault.version">
+                                    {{php.systemDefault.displayVersion}}
+                                </span>
+                                <button id="btnEditSystemPhp"
+                                        class="btn btn-link"
+                                        type="button"
+                                        id="btnCancelEdit"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Cancel system [asis,PHP] edit[comment,action text]' ]]);$output .= '"
+                                        ng-disabled="php.noVersions"
+                                        ng-click="editSystemPHP(true)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                        <!-- View II - Edit System PHP version -->
+                    <div class="row"
+                        ng-show="php.systemEditView">
+                        <div id="editSection"
+                            class="form-group col-xs-12">
+                            <select id="selectSystemPhp"
+                                class="form-control phpSelect"
+                                ng-disabled="actions.settingSystemPHP"
+                                ng-options="version.displayVersion for version in php.versions track by version.version"
+                                ng-model="php.systemDefault.selected">
+                            </select>
+                            <button id="btnSystemPhpApply"
+                                    type="button"
+                                    class="btn btn-primary"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP] version for the system.' ]]);$output .= '"
+                                    cp-action="applySystemPHP()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= '
+                            </button>
+                            <button id="btnSystemPhpCancel"
+                                    class="btn btn-link"
+                                    type="button"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Cancel system [asis,PHP] edit[comment,action text]' ]]);$output .= '"
+                                    ng-click="editSystemPHP(false)"
+                                    ng-disabled="actions.settingSystemPHP">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                            </button>
+                        </div>
+                        <div class="col-xs-12">
+                            <div class="alert alert-warning alert-top-spacing"
+                                ng-show="impactedDomains.show || actions.fetchingImpactedDomains">
+                                <p ng-show="actions.fetchingImpactedDomains"
+                                    class="processing">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Retrieving impacted domains …' ]]);$output .= "                                </p>\n                                <div id=\"systemImpactedDomains\">\n                                    <div ng-bind-html=\"impactedDomains.text\"></div>\n                                    <ul id=\"domainList\"\n                                        class=\"list-unstyled row\">\n                                        <li ng-repeat=\"domain in impactedDomains.domains|limitTo:20 track by \$index\"\n                                            class=\"col-xs-6 col-sm-4 domain-list-item\">\n                                            {{ domain }}\n                                        </li>\n                                    </ul>\n                                    <div class=\"text-dir\">\n                                        <a id=\"lnkShowMoreSystemImpactedDomains\"\n                                            href=\"javascript:void(0)\"\n                                            style=\"padding-left: 5px;\"\n                                            ng-show=\"impactedDomains.showMore\"\n                                            ng-click=\"showAllImpactedDomains(system)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['[comment,link text]Show all impacted domains[comment,link text]' ]]);$output .= '                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="systemEolWarning" class="panel panel-warning system-eol-warning" ng-show="php.systemDefault.showEolMsg">
+                        <div class="panel-body alert-warning" ng-bind-html="php.systemDefault.eolWarningMsg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="systemFPMSection" class="ng-hide" ng-show="!actions.loadingFPMInfo">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="section-header">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP-FPM]' ]]);$output .= '</h3>
+                    </div>
+                    <div class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Turn on/off [asis,PHP-FPM] for all accounts.' ]]);$output .= '
+                    </div>
+                    <div class="alert alert-warning" ng-show="!php.systemDefault.hasFPMInstalled">
+                        <span class="glyphicon glyphicon-warning-sign"></span>
+                        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,cannot] convert all accounts to [asis,PHP-FPM]. You do [output,strong,not] have the [asis,PHP-FPM] package for your system’s default [asis,PHP] version installed.' ]]);$output .= '</div>
+                    </div>
+                    <div class="callout callout-warning" ng-show="fpm.showMemoryWarning">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Your server [output,strong,may] run out of memory if you enable PHP-FPM on all domains and accounts. Make certain that your server possesses enough memory to continue, or you [output,strong,may] experience severe data loss.' ]]);$output .= '
+                        {{ requiredMemory() }}
+                    </div>
+                    <div class="alert alert-success" id="conversionStartedMessage" ng-show="fpm.fpmConversionStarted">
+                        <span class="glyphicon glyphicon-ok-sign"></span>
+                        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM] Conversion has started. Please visit [output,url,_1,this link,target,_blank,id,viewConversionLink] to view the conversion log.','conversion?buildId={{ fpm.convertBuildId }}' ]]);$output .= '</div>
+                    </div>
+                    <div class="form-inline indent-form row">
+                        <div class="form-group col-xs-12">
+                            <div class="systemPhpValue">
+                                ';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP-FPM] Status:' ]]);$output .= '
+                                <span class="text-success" ng-show="fpm.systemStatus && php.systemDefault.hasFPMInstalled">';$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= '</span>
+                                <span class="text-danger" ng-show="!fpm.systemStatus || !php.systemDefault.hasFPMInstalled">';$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= '</span>
+                                <button id="btnSwitchFPM"
+                                        class="btn btn-primary"
+                                        type="button"
+                                        ng-disabled="!php.systemDefault.hasFPMInstalled || litespeedRunning"
+                                        cp-action="switchSystemFPM()">
+                                    <span ng-show="!fpm.systemStatus || !php.systemDefault.hasFPMInstalled">';$output .= $stash->get(['locale',0,'maketext',['Turn On' ]]);$output .= '</span>
+                                    <span ng-show="fpm.systemStatus && php.systemDefault.hasFPMInstalled">';$output .= $stash->get(['locale',0,'maketext',['Turn Off' ]]);$output .= '</span>
+                                </button>
+                                <span class="ng-hide" ng-show="fpm.systemStatus && php.systemDefault.hasFPMInstalled && !actions.fpmConversionRunningOnLoad">
+                                    <button id="btnConvertFPM" button-class="btn-primary" type="button" ng-disabled="actions.fpmConversionRunning || litespeedRunning" cp-action="convertAllAccountsToFPM()">';$output .= $stash->get(['locale',0,'maketext',['Convert All Accounts to [asis,PHP-FPM]' ]]);$output .= '</button>
+                                </span>
+                                <span class="text-info process-running-msg ng-hide" ng-show="actions.fpmConversionRunning && actions.fpmConversionRunningOnLoad">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['A [asis,PHP-FPM] conversion job is currently running …' ]]);$output .= '
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fpmStatusPerDomain" class="ng-hide" ng-show="!actions.loadingFPMInfo">
+            <div class="section-header">
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Set [asis,PHP] Version per Domain' ]]);$output .= '</h3>
+            </div>
+            <div class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Select the domains that you wish to change from the table, then apply a [asis,PHP] version from the list.' ]]);$output .= '
+            </div>
+            <div class="row" id="noPhpFoundMessage" ng-if="php.noVersions">
+                <div class="col-xs-12">
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        <div class="alert-message">
+                        ';$output .= $stash->get(['locale',0,'maketext',['No versions of [asis,PHP] are installed. Use [output,url,_1,EasyApache] to install [asis,PHP].',$stash->get('cp_security_token').'/scripts7/EasyApache4' ]]);$output .= '
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="!php.noVersions">
+                <div class="row">
+                    <div class="col-xs-12 col-md-8">
+                        <div id="perDomainEolWarning" class="panel-body alert-warning" ng-show="php.showEolMsg" ng-bind-html="php.eolWarningMsg"></div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="row domain-container">
+                            <div class="col-xs-12 text-right">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <i ng-if="isAnyDomainFPM()" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="fpm.fpmWarning" tooltip-append-to-body="true"></i>
+                                        <label for="phpVersion">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '</label>
+                                        <select id="selectPhpVersion"
+                                            class="form-control phpSelect"
+                                            ng-options="version.displayVersion for version in php.versionsInherit track by version.version"
+                                            ng-model="php.perDomain.selected">
+                                        </select>
+                                        <button id="btnDomainPhpApply"
+                                            type="button"
+                                            class="btn btn-primary"
+                                            ng-disabled="areRowsSelected() || (isAnyDomainFPM() && php.perDomain.selected.version === \'inherit\')"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP] version to selected domains.' ]]);$output .= '"
+                                            cp-action="applyPHPToMultipleAccounts()">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row domain-container ng-hide" ng-show="!actions.loadingFPMInfo">
+                            <div class="col-xs-12 text-right">
+                                <div class="form-inline">
+                                    <div class="form-group">
+                                        <i ng-if="fpm.fcgiMissing" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM] option is disabled because you are missing [asis,fcgi] package. Please refer to the notification above.' ]]);$output .= '" tooltip-append-to-body="true"></i>
+                                        <i ng-if="!fpm.fcgiMissing && isAnyDomainInherited()" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="php.inheritWarning" tooltip-append-to-body="true"></i>
+                                        <i ng-if="!fpm.fcgiMissing && !isAnyDomainInherited() && isAnyDomainIncompatible()" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="php.incompatibleWarning" tooltip-append-to-body="true"></i>
+                                        <label for="phpVersion">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM]' ]]);$output .= '</label>
+                                        <select class="form-control phpSelect" id="selectPhpFpm" ng-model="fpm.domainSelection" convert-to-number ng-disabled="isAnyDomainInherited() || isAnyDomainIncompatible() || fpm.fcgiMissing">
+                                            <option id="fpmOnOption" value="1">';$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= '</option>
+                                            <option id="fpmOffOption" value="0">';$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= '</option>
+                                        </select>
+                                        <button id="btnDomainFpmApply"
+                                            type="button"
+                                            class="btn btn-primary"
+                                            ng-disabled="areRowsSelected() || fpm.fcgiMissing || isAnyDomainInherited() || isAnyDomainIncompatible() || litespeedRunning"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP-FPM] setting to selected domains.' ]]);$output .= '"
+                                            cp-action="setMultipleDomainFPM()">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row search-page-container ng-hide" ng-show="!actions.loadingFPMInfo">
+                    <div class="col-xs-6">
+                        <!-- Search -->
+                        <search ng-model="meta.searchText" ng-change="searchByDomainOrAccount()" debounce="500"></search>
+                    </div>
+
+                    <div class="col-xs-6">
+                        <div class="pagination-container">
+                            <!-- Pagination -->
+                            <page-size id="pageSize" allowed-sizes="meta.pageSizes" total-items="meta.totalItems"
+                                ng-model="meta.pageSize" show-all="false" ng-change="updateTable()">
+                            </page-size>
+                            <uib-pagination
+                                id="paginateItems"
+                                total-items="meta.totalItems"
+                                ng-model="meta.pageNumber"
+                                max-size="meta.maxPages" boundary-links="true" rotate="false"
+                                previous-text="<" next-text=">" first-text="<<" last-text=">>"
+                                items-per-page="meta.pageSize" ng-change="updateTable()">
+                            </uib-pagination>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="page-stats selected-stats">
+                            <span class="title">Selected</span>
+                            <span id="selectedCounter" class="badge badge-info">
+                                {{php.totalSelectedDomains}}
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="page-stats item-stats">
+                            {{php.paginationMessage}}
+                        </div>
+                    </div>
+                </div>
+                <div class="row" class="ng-hide" ng-show="!actions.loadingFPMInfo">
+                    <div class="col-xs-12">
+                        <table id="accountList" class="table table-striped responsive-table">
+                            <thead>
+                                <tr>
+                                    <th class="checkColumn">
+                                        <div class="btn-group checkbox-group" uib-dropdown is-open="checkdropdown.isopen">
+                                            <span class="btn check-box">
+                                                <input type="checkbox" id="selectAll"
+                                                    title="';$output .= $stash->get(['locale',0,'maketext',['Select all domains on this page.' ]]);$output .= '"
+                                                    ng-change="handleEntireListSelection()"
+                                                    ng-model="php.allRowsSelected"
+                                                    ng-disabled="actions.loadingAccountList">
+                                            </span>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <toggle-sort id="sortDomain"
+                                            onsort="updateTable()"
+                                            sort-meta="meta"
+                                            sort-field="vhost">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                                        </toggle-sort>
+                                    </th>
+                                    <th>
+                                        <toggle-sort id="sortAccount"
+                                            onsort="updateTable()"
+                                            sort-meta="meta"
+                                            sort-field="account">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '
+                                        </toggle-sort>
+                                    </th>
+                                    <th>
+                                        <toggle-sort id="sortAccount"
+                                            onsort="updateTable()"
+                                            sort-meta="meta"
+                                            sort-field="account_owner">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Account Owner' ]]);$output .= '
+                                        </toggle-sort>
+                                    </th>
+                                    <th>
+                                        <toggle-sort id="sortVersion"
+                                            onsort="updateTable()"
+                                            sort-meta="meta"
+                                            sort-field="version">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '
+                                        </toggle-sort>
+                                    </th>
+                                    <th>
+                                        <toggle-sort id="sortFpm"
+                                            onsort="updateTable()"
+                                            sort-meta="meta"
+                                            sort-field="php_fpm">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM]' ]]);$output .= '
+                                        </toggle-sort>
+
+                                        <i ng-if="fpm.fcgiMissing" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM] option is disabled because you are missing [asis,fcgi] package. Please refer to the notification above.' ]]);$output .= "\" tooltip-append-to-body=\"true\"></i>\n                                    </th>\n                                </tr>\n                            </thead>\n                            <tbody>\n                                <tr id=\"acctRow_{{ vhostInfo.vhost }}\"\n                                    ng-repeat-start=\"vhostInfo in php.accountList track by \$index | orderBy: 'account'\"\n                                    ng-class=\"rowClass(vhostInfo)\">\n                                    <td class=\"checkColumn\">\n                                        <input\n                                            type=\"checkbox\"\n                                            id=\"rowSelector_{{ vhostInfo.vhost }}\"\n                                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Select this domain.' ]]);$output .= '"
+                                            ng-model="vhostInfo.selected"
+                                            ng-change="handleSingleListSelection(vhostInfo)"
+                                            ng-disabled="processInProgress()">
+                                        </input>
+                                    </td>
+                                    <td id="vhost_{{ vhostInfo.vhost }}"
+                                        data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                                        {{ vhostInfo.vhost }}
+                                        <span ng-if="vhostInfo.is_suspended" class="help-info">
+                                            (';$output .= $stash->get(['locale',0,'maketext',['Suspended' ]]);$output .= ')
+                                        </span>
+                                    </td>
+                                    <td id="account_{{ vhostInfo.vhost }}"
+                                        data-title="';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '">
+                                        {{ vhostInfo.account }}
+                                    </td>
+                                    <td id="account_owner_{{ vhostInfo.vhost }}"
+                                        data-title="';$output .= $stash->get(['locale',0,'maketext',['Account Owner' ]]);$output .= '">
+                                        {{ vhostInfo.account_owner }}
+                                    </td>
+                                    <td id="php_{{ vhostInfo.vhost }}"
+                                        data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '">
+                                        <div id="php_version_controls_{{ vhostInfo.vhost }}" ng-hide="phpConversionInProgressFor(vhostInfo.vhost)">
+                                            <select
+                                                id="selectDomainPHP_{{ vhostInfo.vhost }}"
+                                                class="form-control phpSelect"
+                                                ng-options="version.version as version.displayVersion for version in ::php.versionsInherit"
+                                                ng-model="vhostInfo.version"
+                                                ng-change="applyPHPToSingleAccount(vhostInfo)"
+                                                ng-disabled="processInProgress()">
+                                            </select>
+                                            <i ng-show="vhostInfo.php_fpm" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="fpm.fpmWarning" tooltip-append-to-body="true"></i>
+                                            <button id="php_inherit_{{ vhostInfo.vhost }}"
+                                                ng-show="vhostInfo.inherited"
+                                                class="btn btn-xs btn-default"
+                                                ng-click="vhostInfo.showInheritInfo = !vhostInfo.showInheritInfo">
+                                                <i class="fas fa-info-circle"></i>
+                                                {{vhostInfo.display_php_version}}
+                                            </button>
+                                            <button
+                                                id="php_deprecated_{{vhostInfo.vhost}}"
+                                                class="btn btn-xs btn-default"
+                                                ng-show="vhostInfo.isUnavailableVersion"
+                                                ng-click="vhostInfo.showUnavailableInfo = !vhostInfo.showUnavailableInfo">
+                                                <i class="fas fa-info-circle"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Version Unavailable' ]]);$output .= '
+                                            </button>
+                                        </div>
+                                        <div class="ng-hide" ng-show="phpConversionInProgressFor(vhostInfo.vhost)">
+                                            <div id="phpUpdatingMessage{{vhostInfo.vhost}}" class="updatingPHPMsg">
+                                                <span class="inlineUpdatingMessage" id="phpUpdatingMsg_{{vhostInfo.vhost}}"><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Updating [asis,PHP] Version …' ]]);$output .= '</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td id="php_fpm_{{ vhostInfo.vhost }}"
+                                        data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM]' ]]);$output .= '">
+                                        <toggle-switch
+                                            class="domain_toggle"
+                                            id="php_fpm_pool_button_{{ vhostInfo.vhost }}"
+                                            enabled-label="';$output .= $stash->get(['locale',0,'maketext',['On' ]]);$output .= '"
+                                            disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Off' ]]);$output .= '"
+                                            ng-disabled="vhostInfo.isUnavailableVersion || vhostInfo.inherited || ( isDomainVersionIncompatible(vhostInfo.version) && !vhostInfo.php_fpm ) || fpm.fcgiMissing || processInProgress() || litespeedRunning"
+                                            no-spinner="false"
+                                            ng-model="vhostInfo.php_fpm"
+                                            label-position="left"
+                                            on-toggle="setSingleDomainFPM(vhostInfo)">
+                                        </toggle-switch>
+                                        <i ng-if="isDomainVersionIncompatible(vhostInfo.version)" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="php.incompatibleWarning" tooltip-append-to-body="true"></i>
+                                        <i ng-if="vhostInfo.inherited" class="fas fa-question-circle" tooltip-placement="top" uib-tooltip-html="php.inheritWarning" tooltip-append-to-body="true"></i>
+                                        <span ng-if="vhostInfo.php_fpm">
+                                            <button
+                                                type="button"
+                                                ng-show="!fpm.fcgiMissing"
+                                                class="btn btn-xs btn-link"
+                                                ng-click="setPoolOptionsDisplayValues(vhostInfo)"
+                                                id="php_fpm_pool_button_{{ vhostInfo.vhost }}"
+                                                ng-disabled="processInProgress() || litespeedRunning"
+                                                ng-if="!isDomainVersionIncompatible(vhostInfo.version)">
+                                                <i class="far fa-edit" aria-hidden="true"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Edit [asis,PHP-FPM]' ]]);$output .= '
+                                            </button>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr colspan="6" class="ng-hide"><!-- Table striping hack! Do not delete. --></tr>
+                                <tr id="impactedDomainsRow_{{ vhostInfo.vhost }}"
+                                    ng-show="vhostInfo.impactedDomains.show"
+                                    class="warning empty-row dismissable">
+                                    <td id="inheritInfo_{{ vhostInfo.vhost }}" colspan="6">
+                                        <button id="linkHideImpactedDomains_{{ vhostInfo.vhost }}"
+                                            type="button"
+                                            class="close"
+                                            ng-click="vhostInfo.impactedDomains.show=false"
+                                            aria-hidden="true"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Hide impacted domains.' ]]);$output .= "\">\n                                            <i class=\"fas fa-times\"></i>\n                                        </button>\n                                        <div ng-bind-html=\"vhostInfo.impactedDomains.text\"></div>\n                                        <ul id=\"domainList\" class=\"list-unstyled row\">\n                                            <li ng-repeat=\"domain in vhostInfo.impactedDomains.domains|limitTo:20 track by \$index\"\n                                                class=\"col-xs-6 col-sm-4 domain-list-item\">\n                                                {{ domain }}\n                                            </li>\n                                        </ul>\n                                        <div class=\"text-dir\">\n                                            <a href=\"javascript:void(0)\"\n                                                style=\"padding-left: 5px;\"\n                                                ng-show=\"vhostInfo.impactedDomains.showMore\"\n                                                ng-click=\"showAllImpactedDomains(vhostInfo)\">\n                                                ";$output .= $stash->get(['locale',0,'maketext',['[comment,link text]Show all impacted domains[comment,link text]' ]]);$output .= '                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="alertRow_{{ vhostInfo.vhost }}"
+                                    ng-show="vhostInfo.showInheritInfo"
+                                    class="info empty-row">
+                                    <td id="inheritInfo_{{ vhostInfo.vhost }}" colspan="6">
+                                        <button id="linkHideInheritInfo_{{ vhostInfo.vhost }}"
+                                            type="button"
+                                            class="close"
+                                            ng-click="vhostInfo.showInheritInfo=false"
+                                            aria-hidden="true"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Hide inherit information.' ]]);$output .= '">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <div ng-bind-html="vhostInfo.inheritedInfo"></div>
+                                    </td>
+                                </tr>
+                                <tr id="deprecated_alertRow_{{ vhostInfo.vhost }}"
+                                    ng-repeat-end
+                                    ng-show="vhostInfo.showUnavailableInfo"
+                                    class="info empty-row">
+                                    <td id="deprecatedInfo_{{ vhostInfo.vhost }}" colspan="6">
+                                        <button id="linkHideDeprecatedInfo_{{ vhostInfo.vhost }}"
+                                            type="button"
+                                            class="close"
+                                            ng-click="vhostInfo.showUnavailableInfo=false"
+                                            aria-hidden="true"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Hide unavailable information.' ]]);$output .= '">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <div ng-bind-html="vhostInfo.isUnavailableVersionMessage"></div>
+                                    </td>
+                                </tr>
+                                <tr id="listEmpty" class="info empty-row ng-hide" ng-show="php.accountList.length === 0 && !actions.loadingAccountList">
+                                    <td colspan="6">';$output .= $stash->get(['locale',0,'maketext',['The account list is empty.' ]]);$output .= '</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>
+
+<div ng-if="editPoolOptionsMode" id="poolOptionsFormContainer">
+    <div ng-controller="poolOptionsController">
+        <div id="poolOptionsForm.ptt" ng-include="\'poolOptionsForm.ptt\'"></div>
+    </div>
+</div>
+
+<script ng-if="editPoolOptionsMode" type="text/ng-template" id="poolOptionsForm.ptt">
+    ';$output .= $context->process('multiphp_manager/poolOptionsForm.ptt');$output .= '
+</script>
+
+<!-- View Profile Modal box -->
+<script type="text/ng-template" id="impactedDomainsPopup.ptt">
+    ';$output .= $context->process('multiphp_manager/views/impactedDomainsPopup.ptt');$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

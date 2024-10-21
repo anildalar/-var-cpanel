@@ -1,0 +1,18 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/doaddaforns.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if (!$stash->get('end')){$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Configure Address Records for nameserver “[_1]”.',$stash->get(['data',0,'nameserver',0])]]),'statusapp'=>'Configuring Address Records for nameserver','status'=>'Configuring Address Records for nameserver','inside_frame_or_tab_or_popup'=>1,'theme'=>'yui' })}else {$output .= '
+';if ($stash->get(['data',0,'status',0])){$output .= '
+';$output .= $context->process('_setstatusdone.tmpl');$output .= '<div class="okmsg" id="added">
+<p>The following IP addresses have been assigned to the ';$output .= $stash->get(['data',0,'nameserver',0,'html',0]);$output .= ' nameserver:</p>
+<pre>
+    ';$output .= $stash->get(['data',0,'nsipv4',0,'html',0]);$output .= '
+    ';if ($stash->get(['data',0,'nsipv6',0])){$output .= '
+    ';$output .= $stash->get(['data',0,'nsipv6',0,'html',0]);$output .= '
+    '}$output .= '
+</pre>
+</div>
+'}else {$output .= '
+';$output .= $context->process('_setstatuserror.tmpl');$output .= '<div class="errormsg" id="notAdded">
+';$output .= $stash->get(['data',0,'statusmsg',0,'html',0]);$output .= '
+</div>
+'}$output .= '
+
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui','inside_frame_or_tab_or_popup'=>1 })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

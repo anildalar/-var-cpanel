@@ -1,0 +1,79 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/archive_list.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('DataURI',$context->plugin('DataURI'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('spinner_url','/images/report-spinner.gif');if ($stash->get(['CPANEL',0,'ua_is_ie',0])&& $stash->get(['CPANEL',0,'ua_is_ie',0])< 8){$stash->set('spinner_url',$stash->get(['MagicRevision',[$stash->get('spinner_url')]]));$output .= ('<img src=\'' .$stash->get('spinner_url').'\' style=\'display:none\'>')}else {$stash->set('spinner_url',$stash->get(['DataURI',0,'datauri',[$stash->get('spinner_url'),'image/gif' ]]))}$stash->set('archive_type_titles',{'incoming'=>$stash->get(['locale',0,'maketext',['Incoming Email Messages' ]]),'outgoing'=>$stash->get(['locale',0,'maketext',['Outgoing Email Messages' ]]),'mailman'=>$stash->get(['locale',0,'maketext',['Outgoing Mailing List Email Messages' ]])});$output .= '
+
+';$output .= $context->process('_assets/_ajaxapp.html.tt');$output .= '
+<script type="text/javascript">
+var archive_domains = [];
+var archive_types = {};
+';$stash->set('form_regex',$stash->get(['CPANEL',0,'get_raw_form',['searchregex' ]]));$stash->set('api_response',$stash->get(['Api2',0,'exec',['Email','get_archiving_types',{}]]));if ($stash->get(['api_response',0,'size',0])){$output .= '    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api_response');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'archive_type'}=$_tt_value;$output .= '        ';$stash->set('archive_types',$stash->get('archive_type'));$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['archive_type',0,'pairs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'pair'}=$_tt_value;$output .= '            archive_types[';$output .= $stash->get(['pair',0,'key',0,'json',0]);$output .= ']=';$output .= $stash->get(['pair',0,'value',0,'json',0]);$output .= ';
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+
+</script>
+
+';$stash->set('api_response',$stash->get(['Api2',0,'exec',['Email','get_archiving_configuration',{'regex'=>$stash->get('form_regex'),'no_expvar'=>1,'api2_paginate'=>1,'api2_paginate_start'=>$stash->get(['CPANEL',0,'FORM',0,'api2_paginate_start',0]),'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]),'api2_sort'=>1,'api2_sort_column'=>$stash->get(['CPANEL',0,'FORM',0,'api2_sort_column',0])|| 'domain','api2_sort_reverse'=>$stash->get(['CPANEL',0,'FORM',0,'api2_sort_reverse',0])eq '1' }]]));$output .= '
+';if ($stash->get(['api_response',0,'size',0])){$output .= '    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api_response');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'dom'}=$_tt_value;$output .= '            ';$stash->set('oddeven',$stash->get(['loop',0,'index',0])% 2 ? 'odd' : 'even');$stash->set('archive_active',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('archive_types');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'archive_type'}=$_tt_value;$stash->set('archive_key','archive_' .$stash->get(['archive_type',0,'key',0]));if ($stash->get(['dom',0,$stash->get('archive_key'),0])){$stash->set('archive_active',1);last FOR2};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            <tr class="row-';$output .= $stash->get('oddeven');$output .= '">
+                <td class="col1" truncate="50">
+                     ';$output .= $stash->get(['dom',0,'domain',0,'html',0,'breakOn',['\.' ]]);$output .= '
+                </td>
+                <td class="col2">
+                    <div style="visibility:hidden" id="spinner_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '">
+                        <img src="';$output .= $stash->get('spinner_url');$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Wait …' ]]);$output .= '"/>
+                    </div>
+                </td>
+                <td id="lblDiskUsage" class="diskusagecol">
+                        ';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['dom',0,'diskused',0])]]);$output .= '
+                </td>
+                <td class="col3" nowrap="nowrap">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['archive_types',0,'pairs',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'archive_type'}=$_tt_value;$output .= '                        ';$stash->set('archive_type_key',$stash->get(['archive_type',0,'key',0]));$output .= '                        ';$stash->set('archive_type_name',$stash->get(['archive_type',0,'value',0]));$output .= '                        ';$stash->set('archive_type_title',$stash->get(['archive_type_titles',0,$stash->get('archive_type_key'),0]));$output .= '                        ';$stash->set('archive_type_dom_key','archive_' .$stash->get(['archive_type',0,'key',0]));$output .= '                        ';$stash->set('archive_type_dom_key_retain_days','archive_' .$stash->get(['archive_type',0,'key',0]).'_retain_days');$output .= '                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="archive_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('archive_type_key');&$_tt_filter($output)};$output .= '_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '" name="archive_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('archive_type_key');&$_tt_filter($output)};$output .= '_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '" ';if ($stash->get(['dom',0,$stash->get('archive_type_dom_key'),0])){$output .= 'checked="checked"'}$output .= ' value="1" title="';$output .= $stash->get('archive_type_title');$output .= '">
+                                ';$output .= $stash->get('archive_type_title');$output .= '
+                            </label>
+                            ';$stash->set('retention_control_enabled',$stash->get(['dom',0,$stash->get('archive_type_dom_key'),0]));$output .= '                            ';$stash->set('retention_control_key','archive_' .$stash->get('archive_type_key').'_retain_days_' .$stash->get(['dom',0,'domain',0]));$output .= '                            ';$stash->set('retention_control_value',$stash->get(['dom',0,$stash->get('archive_type_dom_key_retain_days'),0]));$output .= '                            ';$output .= $context->process('mail/retention_control.html.tt');$output .= '                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </td>
+                <td class="col4">
+                    <div id="archive_controls_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '"';if (!$stash->get('archive_active')){$output .= ' style="display:none;"'}$output .= '>
+                        <div class="action-container">
+                            <div class="access_option imap_access">
+                                ';$stash->set('archive_account','_archive@' .$stash->get(['dom',0,'domain',0]));$output .= '
+                                <a id="archive_controls_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '_access_imap"
+                                    href="clientconf.html?acct=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('archive_account');&$_tt_filter($output)};$output .= '&archiving=1"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Instructions on how to access this archive using your mail client.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['IMAP Access' ]]);$output .= '
+                                </a>
+                            </div>
+                            <div class="access_option download_access">
+                                <a id="archive_controls_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '_download_archive"
+                                    href="javascript:void(0)"
+                                    onClick="archive_download(\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '\',this); return false;"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Download this email archive to your computer.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Download Archive' ]]);$output .= '
+                                </a>
+                            </div>
+                            <div class="access_option download_access">
+                                <a id="archive_controls_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '_access_webmail"
+                                    href="';$output .= $stash->get('cp_security_token');$output .= "/xferwebmail/?user=_archive\@";$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '"
+                                    target="webmail"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['View this email archive using Webmail.' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Access Webmail' ]]);$output .= '
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                    <script type="text/javascript">archive_domains.push(\'';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '\');</script>
+                </td>
+            </tr>
+            <tr id="archive_status_bar_row_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '" style="display:none">
+                <td class="statusbartd" colspan="5">
+                    <div id="archive_status_bar_';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '" class="archive_status_bar cjt_status_bar"></div>
+                </td>
+            </tr>
+
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '        ';$stash->set('err',$stash->get('form_regex')? $stash->get(['locale',0,'maketext',['No configured domains match the search term “[_1]”.',$stash->get('form_regex')]]): $stash->get(['locale',0,'maketext',['No domains configured.' ]]));$output .= '                <tr>
+                    <td colspan="5" class="errors">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('err');&$_tt_filter($output)};$output .= '</td>
+                </tr>
+'}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

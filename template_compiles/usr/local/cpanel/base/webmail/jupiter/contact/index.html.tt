@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/contact/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('scripts',['js2/contact/index.js' ]);if ($stash->get(['CPANEL',0,'appname',0])eq 'webmail'){$output .= $stash->get(['scripts',0,'push',['libraries/angularjs/1.4.4/angular.js' ]])}$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+<script>
+if (!PAGE) PAGE = {};
+PAGE.username = ';$output .= $stash->get(['CPANEL',0,'authuser',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+
+<div>
+    <p id="descContactInformation" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Use this interface to set your account’s contact information and preferences.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','//go.cpanel.net/cpaneldocsContactInformation','_blank','lnkContactInfoDocumentation' ]]);$output .= '
+    </p>
+</div>
+
+';if (($stash->get(['CPANEL',0,'feature',['updatenotificationprefs' ]])|| $stash->get(['CPANEL',0,'feature',['updatecontact' ]]))&&!$stash->get(['ExpVar',0,'expand',['$isarchiveuser' ]])){$output .= '
+    ';if ($stash->get(['CPANEL',0,'appname',0])ne 'webmail' || $stash->get(['CPANEL',0,'authuser',0])eq $stash->get(['CPANEL',0,'user',0])){$output .= '
+        ';$output .= $stash->get(['Api1',0,'exec',['include',['contact_validator.html.tt' ]]]);$output .= '
+    '}$output .= '
+    <div class="body-content">
+        <div id="cjt_pagenotice_container"></div>
+        <form id="mainform" name="mainform"
+            autocomplete="off"
+            onsubmit="savemailform(this)"
+            action="javascript:void(0)"
+        >
+            <fieldset>
+            ';$output .= $stash->get(['Api1',0,'exec',['include',['indexincludeform.html.tt' ]]]);$output .= '
+            </fieldset>
+        </form>
+    </div><!-- end body-content -->
+'}else {$output .= '
+    <div class="body-content">
+        ';$output .= $stash->get(['Api1',0,'exec',['include',['../refresh.html.tt' ]]]);$output .= '
+    </div><!-- end body-content -->
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'contact_information','page_stylesheets'=>['css2-min/contact/index.css' ],'page_scripts'=>$stash->get('scripts'),'content',$output })};$output .= '
+';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

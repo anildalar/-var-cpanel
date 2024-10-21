@@ -1,0 +1,74 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/server_profile/views/confirmProfileView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div ng-cloak>
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Review Changes' ]]);$output .= '</h3>
+
+    <h4>{{ selected.name }}</h4>
+
+    <div cp-loading-panel id="determiningAvailableOptions" ng-show="loading">
+         ';$output .= $stash->get(['locale',0,'maketext',['Preparing selected changes for review …' ]]);$output .= '
+    </div>
+
+    <div ng-if="!loading">
+
+        <div class="panel panel-success">
+            <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['This configuration change enables the following roles:' ]]);$output .= '</div>
+            <div class="panel-body">
+                <div ng-repeat="role in newEnabled | orderBy:\'name\'">
+                    {{role.name}}
+                </div>
+                <div ng-if="newEnabled.length === 0">
+                    ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-warning">
+            <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['This configuration change disables the following roles:' ]]);$output .= '</div>
+            <div class="panel-body">
+                <div ng-repeat="role in newDisabled | orderBy:\'name\'">
+                    {{role.name}}
+                </div>
+                <div ng-if="newDisabled.length === 0">
+                    ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['This configuration change does not affect the following roles:' ]]);$output .= '</div>
+            <div class="panel-body">
+                <div ng-repeat="role in unchanged | orderBy:\'name\'">
+                    {{role.name}}
+                </div>
+                <div ng-if="unchanged.length === 0">
+                    ';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="newEnabled.length === 0 && newDisabled.length === 0" >
+            <div class="col-sm-6">
+                <div class="alert alert-danger">
+                    ';$output .= $stash->get(['locale',0,'maketext',['There are no roles to enable or disable.' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <button ng-if="loaded"
+                ng-disabled="newEnabled.length === 0 && newDisabled.length === 0"
+                class="btn btn-primary"
+                cp-action="continue(selected)">
+                ';$output .= $stash->get(['locale',0,'maketext',['Set Profile' ]]);$output .= '
+            </button>
+            <button ng-if="loaded"
+                class="btn btn-link"
+                ng-disabled="settingProfile"
+                cp-action="cancel()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+            </button>
+        </div>
+
+    </div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

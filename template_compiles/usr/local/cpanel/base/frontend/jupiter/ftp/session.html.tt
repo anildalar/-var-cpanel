@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ftp/session.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Monitor visitors that are logged into your site through FTP. Terminate FTP connections to prevent file access by unwarranted users. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/FtpConnections','_blank','lnkFtpConnectionsDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Current Connections' ]]);$output .= '</h2>
+        <p class="description note">';$output .= $stash->get(['locale',0,'maketext',['You may need to reload your page to view current connections.' ]]);$output .= '</p>
+        <form>
+            <div class="form-group">
+                <input id="btnReload" type="button" value="';$output .= $stash->get(['locale',0,'maketext',['Reload' ]]);$output .= '" onclick="window.location.reload()" class="btn btn-primary">
+            </div>
+        </form>
+        <table id="ftptbl" class="sortable table table-striped responsive-table">
+            <thead>
+              <tr>
+                <th id="sessionUser" width="15%">';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '</th>
+                <th id="sessionUserFrom" width="20%">';$output .= $stash->get(['locale',0,'maketext',['Logged in From' ]]);$output .= '</th>
+                <th id="sessionLoginTime" width="20%">';$output .= $stash->get(['locale',0,'maketext',['Login Time' ]]);$output .= '</th>
+                <th id="sessionStatus" width="15%">';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+                <th id="sessionProcessID" width="20%">';$output .= $stash->get(['locale',0,'maketext',['Process ID' ]]);$output .= '</th>
+                <th id="sessionActions" width="10%" nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+              </tr>
+            </thead>
+          <tbody>
+            ';$stash->set('sessions',$stash->get(['execute',['Ftp','list_sessions' ]]));$output .= '            ';if ($stash->get(['sessions',0,'data',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['sessions',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '
+                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'user',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Logged in From' ]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'host',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Login Time' ]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'login',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'status',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Process ID' ]]);$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['q',0,'pid',0]);&$_tt_filter($output)};$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <a href="dologoutftpconfirm.html?login=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'pid',0]);&$_tt_filter($output)};$output .= '&user=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'user',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Disconnect' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td id="noActiveSessionsTxt" class="empty-row info" colspan="6">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no active FTP connections for your account.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+    </div>
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'ftp_connections','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

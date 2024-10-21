@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/webdav/del.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('del_webdisk',$stash->get(['Api2',0,'exec',['WebDisk','delwebdisk',{'login'=>$stash->get(['FORM',0,'login',0])}]]));if ($stash->get(['del_webdisk',0,'size',0])){$stash->set('webdisk_login',$stash->get(['del_webdisk',0,0,0,'login',0]))}$stash->set('is_valid',($stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0])eq '' && $stash->get('webdisk_login')ne ''));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <div id="message"></div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'accounts_webdav.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+<script type="text/plain" id="success_message">
+    ';$output .= $stash->get(['locale',0,'maketext',['The Web Disk account “[_1]” has been deleted.',$stash->get(['FORM',0,'login',0])]]);$output .= '
+</script>
+
+<script type="text/plain" id="failed_message">
+    ';$output .= $stash->get(['locale',0,'maketext',['There was a problem deleting the Web Disk account “[_1]”.',$stash->get(['FORM',0,'login',0])]]);$output .= '
+    ';if ($stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0])){$output .= '
+    <ul>
+        <li>
+            ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'webdisk',0,'html',0]);$output .= '
+        </li>
+    </ul>
+    '}$output .= '
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'web_disk','feature'=>'webdisk','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n/**\n* Initializes the page\n* \@method initializePage */\nvar initializePage = function() {\n    var hasError = ";$output .= $stash->get('is_valid')? 'false' : 'true';$output .= ';
+    var text = "";
+    if(hasError) {
+        text = DOM.get("failed_message").text;
+    }
+    else {
+        text = DOM.get("success_message").text;
+    }
+
+    new CPANEL.widgets.Page_Notice( {
+        level: hasError ? "error" : "success",
+        content: text,
+        container: \'message\'
+    } );
+}
+
+// Initialize the page
+YAHOO.util.Event.onDOMReady(function(){ initializePage(); });
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

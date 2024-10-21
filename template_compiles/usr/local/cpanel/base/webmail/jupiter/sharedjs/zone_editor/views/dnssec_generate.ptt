@@ -1,0 +1,191 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/sharedjs/zone_editor/views/dnssec_generate.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<cp-alert type="danger" id="notAllowedWarning" ng-show="dnssec.loading_error">{{ dnssec.loading_error_message }}</cp-alert>
+<section id="dns_sec_generate_container" ng-hide="dnssec.loading_error">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <form name="dnssec.generateForm" novalidate>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="widget-title pull-left flip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Create [asis,DNSSEC] keys' ]]);$output .= '
+                        </h2>
+                        <div class="pull-right flip">
+                            <button type="button"
+                                class="btn btn-default btn-xs"
+                                id="lnkshowHideHelp"
+                                ng-click="dnssec.toggleHelp()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                                <i class="far fa-question-circle form-info-sign"></i>
+                            </button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label for="lblDomain">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                                    </label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span id="lblDomain" class="wordbreak">
+                                        {{dnssec.domain}}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="setup"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Key Setup' ]]);$output .= '"
+                                        label-id="lblSetup"
+                                        info-icon-id="icoSetup"
+                                        info-block-id="txtSetup"
+                                        show-info-block="{{dnssec.settings.showAllHelp}}"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['How the system creates the security key.' ]]);$output .= "\n                                    </toggle-label-info>\n                                </div>\n                            </div>\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\">\n                                    <div class=\"radio\">\n                                        <label>\n                                            <input type=\"radio\"\n                                                name=\"setup\"\n                                                id=\"classicSetup\"\n                                                ng-model=\"dnssec.details.setup\"\n                                                ng-click=\"dnssec.onSetupSelect(\$event)\"\n                                                value=\"classic\">\n                                            <span>";$output .= $stash->get(['locale',0,'maketext',['Classic' ]]);$output .= '</span>
+                                        </label>
+                                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Creates a [asis,ZSK] (Zone Signing Key) and a [asis,KSK] (Key Signing Key) keypair.' ]]);$output .= "</span>\n                                    </div>\n                                    <div class=\"radio\">\n                                        <label>\n                                            <input type=\"radio\"\n                                                name=\"setup\"\n                                                id=\"simpleSetup\"\n                                                ng-model=\"dnssec.details.setup\"\n                                                ng-click=\"dnssec.onSetupSelect(\$event)\"\n                                                value=\"simple\">\n                                            <span>";$output .= $stash->get(['locale',0,'maketext',['Simple' ]]);$output .= '</span>
+                                        </label>
+                                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Creates a [asis,CSK] (Combined Signing Key) which will be used as both the [asis,ZSK] and [asis,KSK].' ]]);$output .= '</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="algorithm"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Algorithm' ]]);$output .= '"
+                                        label-id="lblAlgorithm"
+                                        info-icon-id="icoAlgorithm"
+                                        info-block-id="txtAlgorithm"
+                                        show-info-block="{{dnssec.settings.showAllHelp}}"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['The algorithm that the system will use to create the security key.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="algorithm"
+                                                id="algorithm8"
+                                                ng-model="dnssec.details.algorithm"
+                                                ng-disabled="!dnssec.isClassicSetup()"
+                                                value="8">
+                                            <span>RSA/SHA-256 (Algorithm 8)</span>
+                                            <span class="label label-default">';$output .= $stash->get(['locale',0,'maketext',['Most Commonly Supported' ]]);$output .= '</span>
+                                        </label>
+                                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Most domain registrars support this algorithm.' ]]);$output .= '</span>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="algorithm"
+                                                id="algorithm10"
+                                                ng-model="dnssec.details.algorithm"
+                                                ng-disabled="!dnssec.isClassicSetup()"
+                                                value="10">
+                                            <span>RSA/SHA-512 (Algorithm 10)</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="algorithm"
+                                                id="algorithm13"
+                                                ng-model="dnssec.details.algorithm"
+                                                value="13">
+                                            <span>ECDSA Curve P-256 with SHA-256 (Algorithm 13)</span>
+                                            <span class="label label-default">';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '</span>
+                                        </label>
+                                        <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['We recommend that you use this algorithm if your domain registrar supports it.' ]]);$output .= '</span>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="algorithm"
+                                                id="algorithm14"
+                                                ng-model="dnssec.details.algorithm"
+                                                value="14">
+                                            <span>ECDSA Curve P-384 with SHA-384 (Algorithm 14)</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="status"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '"
+                                        label-id="lblStatus"
+                                        info-icon-id="icoStatus"
+                                        info-block-id="txtStatus"
+                                        show-info-block="{{dnssec.settings.showAllHelp}}"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Select whether to activate the newly-created key.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="status"
+                                                id="activateit"
+                                                ng-model="dnssec.details.active"
+                                                ng-value="true"
+                                                value="true">
+                                            <span>';$output .= $stash->get(['locale',0,'maketext',['Active' ]]);$output .= '</span>
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio"
+                                                name="status"
+                                                id="donotactivateit"
+                                                ng-model="dnssec.details.active"
+                                                ng-value="false"
+                                                value="false">
+                                            <span>';$output .= $stash->get(['locale',0,'maketext',['Not Active' ]]);$output .= '</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <button id="btnGenerateKey"
+                                type="submit"
+                                spinner-id="spinnerGenerateKey"
+                                cp-action="dnssec.generate(dnssec.details)">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                        </button>
+                        <button id="btnCancel"
+                            type="button"
+                            class="btn btn-link pull-right flip"
+                            ng-click="dnssec.backToListView()"
+                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Go back to the list of keys.' ]]);$output .= '">
+                            <i class="fas" ng-class="{ \'fa-arrow-left\': !dnssec.isRTL, \'fa-arrow-right\': dnssec.isRTL }" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <ng-include src="\'views/dnssec_sidebar_help.html.tt\'"></ng-include>
+    </div>
+</section>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

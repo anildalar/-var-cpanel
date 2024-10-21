@@ -1,0 +1,72 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/feature/views/editFeatureListView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<section class="description">
+    <p id="descEditFeatureList">
+    ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to enable and disable features and cPAddons in each user’s [asis,cPanel]. For more information, read the [output,url,_1,documentation,id,_2,target,_3].','https://go.cpanel.net/featmgr','lnkFeatureManagerDocumentation','featuremanagerdoc' ]]);$output .= '
+    </p>
+    <p id="descDefaultFeatureList" ng-if="featureListName === \'default\'">';$output .= $stash->get(['locale',0,'maketext',['Default' ]]);$output .= ' — ';$output .= $stash->get(['locale',0,'maketext',['The system grants [asis,cPanel] users access to these features by default. If you disable a feature from this list, the system will disable it in every user’s [asis,cPanel] that uses that list.' ]]);$output .= '</p>
+    <p id="descDisabledFeatureList" ng-if="featureListName === \'disabled\'">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= ' — ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] users cannot access these features, and other lists cannot grant access to them.' ]]);$output .= '</p>
+    <p id="descMailOnlyFeatureList" ng-if="featureListName === \'Mail Only\'">';$output .= $stash->get(['locale',0,'maketext',['Mail Only' ]]);$output .= ' — ';$output .= $stash->get(['locale',0,'maketext',['For [asis,cPanel] users that can only access mail-related features, such as Email Archiving or SpamAssassin.' ]]);$output .= '</p>
+</section>
+
+<form id="formFeatureList" name="formFeatureList" novalidate>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <div class="checkbox">
+            <label>
+                <input  type="checkbox"
+                        id="inputSelectAll"
+                        ng-click="toggleAllFeatures()"
+                        ng-checked="allFeaturesChecked()" />
+                <span ng-bind="featureListHeading"></span>
+            </label>
+        </div>
+    </div>
+    <div class="panel-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <search ng-model="search.label" id="featureSearch" autofocus="1"></search>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <ul class="list-unstyled" >
+                        <li class="checkbox-list-item" ng-repeat="feature in featureList | filter: search">
+                            <div class="checkbox">
+                                <label>
+                                    <input  type="checkbox"
+                                            id="chk_{{feature.name}}"
+                                            name="{{feature.name}}"
+                                            ng-model="feature.value"
+                                            ng-disabled="feature.disabled">
+                                    <span ng-bind="feature.label"></span>
+                                    <span class="label label-danger" ng-if="feature.disabled">';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '</span>
+                                    <span class="label label-default" ng-if="feature.legacy">';$output .= $stash->get(['locale',0,'maketext',['Legacy' ]]);$output .= '</span>
+                                    <span class="label label-info" ng-if="feature.plugin">';$output .= $stash->get(['locale',0,'maketext',['Plugin' ]]);$output .= '</span>
+                                </label>
+                           </div>
+                       </li>
+                   </ul>
+                </div>
+            </div>
+        </div>
+        <span spinner id="featureListSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+    </div>
+</div>
+<div class="form-group">
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <button id="btnSaveFeatureList"
+                cp-action="save(featureList)">
+            ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+        </button>
+        <button id="btnCancelEditFeatureList"
+                class="btn btn-secondary"
+                ng-click="loadView(\'featureList\')">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+    </div>
+</div>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

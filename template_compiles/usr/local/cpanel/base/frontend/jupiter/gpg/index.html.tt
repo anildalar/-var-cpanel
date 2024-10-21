@@ -1,0 +1,407 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/gpg/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('required_strength_resp',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'gpg' }]]));if ($stash->get(['required_strength_resp',0,'status',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,'data',0,'strength',0]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '
+<div class="body-content">
+    <p id="descEncryption" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['GnuPG is a publicly available encryption scheme that uses the “public key” approach. With GnuPG, messages are encrypted using a “public key” however, they can only be decrypted by a “private key”, which is retained by the intended recipient of the message.' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2 id="hdrCreateNewKey">';$output .= $stash->get(['locale',0,'maketext',['Create a New Key' ]]);$output .= '</h2>
+
+
+        <form name="addkeyform" action="javascript:void(0)" id="addkeyform" method="post" onsubmit="save(this)">
+            <div class="form-group">
+                <label id="lblYourName" for="name">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Name' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="name" type="text" class="form-control" name="name"  />
+                    </div>
+                    <div id="name_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblYourEmail" for="email">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Email' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="email" type="text" class="form-control" name="email" />
+                    </div>
+                    <div id="email_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblComment" for="comment">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Comment or Nickname:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="comment" type="text" class="form-control" name="comment"  />
+                    </div>
+                    <div id="comment_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKeyPassword" for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="password" type="password" name="password"  class="form-control" />
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblPasswordAgain" for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Confirm Password:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="password2" type="password" name="password2"  class="form-control" />
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblStrength">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Strength[comment,strength of a password]' ]]);$output .= '
+                    <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblExpireDate" for="expire">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Expiration Date:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="radio form-inline">
+                            <label>
+                                <input id="select_expire" type="radio" name="choose_expire" checked>
+                            </label>
+                            <span>
+                                <input id="expire_num" name="expire_num"
+                                    type="text"
+                                    class="form-control"
+                                    size="11"
+                                    maxlength="4"
+                                    value="1" />
+                                <select id="expire_unit" name="expire_unit" class="form-control">
+                                    <option id="day_unit" value="d">';$output .= $stash->get(['locale',0,'maketext',['Days' ]]);$output .= '</option>
+                                    <option id="week_unit" value="w">';$output .= $stash->get(['locale',0,'maketext',['Weeks' ]]);$output .= '</option>
+                                    <option id="month_unit" value="m">';$output .= $stash->get(['locale',0,'maketext',['Months' ]]);$output .= '</option>
+                                    <option id="year_unit" selected value="y">';$output .= $stash->get(['locale',0,'maketext',['Years' ]]);$output .= '</option>
+                                </select>
+                            </span>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input id="select_no_expire" type="radio" name="choose_expire">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Do not expire' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                    <div id="expire_num_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKeySize" for="keysize">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Size:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="keysize" name="keysize"  class="form-control">
+                            <option value="2048">2048</option>
+                            <option value="3072">3072</option>
+                            <option value="4096">4096</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="submit" type="submit"  class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Generate Key' ]]);$output .= '" />
+            </div>
+            <div id="create_key_status_bar"></div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrImportKey" >';$output .= $stash->get(['locale',0,'maketext',['Import Key' ]]);$output .= '</h2>
+        <a id="btnImportKey" class="btn btn-primary" href="importkey.html" style="text-decoration:none;" >
+            ';$output .= $stash->get(['locale',0,'maketext',['Import Public [asis,GPG] Key' ]]);$output .= '
+        </a>
+    </div>
+
+    ';$stash->set('public_keys_call',$stash->get(['execute',['GPG','list_public_keys',{}]]));$stash->set('public_keys',[]);if ($stash->get(['public_keys_call',0,'status',0])){$stash->set('public_keys',$stash->get(['public_keys_call',0,'data',0]))}$output .= '
+
+    ';if ($stash->get(['public_keys',0,'size',0])){$output .= '
+    <div class="section">
+        <h2 id="hdrPublicKeys">';$output .= $stash->get(['locale',0,'maketext',['Public Keys' ]]);$output .= '</h2>
+        <table id="tblListGpgKeys" class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Key [asis,ID]' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Public Keys' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Key Size' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr>
+        </thead>
+        <tbody>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('public_keys');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+            <tr>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Key [asis,ID]' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Public Keys' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'user_id',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Key Size' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'bits',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '">';$output .= $stash->get(['locale',0,'datetime',[$stash->get(['hashref',0,'created',0]),'datetime_format_medium' ]]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '">';$output .= ($stash->get(['hashref',0,'expires',0]))? $stash->get(['locale',0,'datetime',[$stash->get(['hashref',0,'expires',0]),'datetime_format_medium' ]]): '';$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                    <a class="btn btn-link" href="delkey.html?key=';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete GnuPG Key' ]]);$output .= '
+                    </a>
+                    <a class="btn btn-link" href="editkey.html?key=';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                    </a>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </tbody>
+        </table>
+    </div>
+    '}$output .= '
+
+    ';$stash->set('secret_keys_call',$stash->get(['execute',['GPG','list_secret_keys',{}]]));$stash->set('secret_keys',[]);if ($stash->get(['secret_keys_call',0,'status',0])){$stash->set('secret_keys',$stash->get(['secret_keys_call',0,'data',0]))}$output .= '
+
+    ';if ($stash->get(['secret_keys',0,'size',0])){$output .= '
+    <div class="section">
+        <h2 id="hdrPrivateKeys">';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '</h2>
+        <table id="tblCretGpgKeys" class="table table-striped responsive-table">
+
+        <thead>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Key [asis,ID]' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Key Size' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr>
+        </thead>
+        <tbody>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('secret_keys');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+            <tr>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Key [asis,ID]' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Private Keys' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'user_id',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Key Size' ]]);$output .= '">';$output .= $stash->get(['hashref',0,'bits',0,'html',0]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Created' ]]);$output .= '">';$output .= $stash->get(['locale',0,'datetime',[$stash->get(['hashref',0,'created',0]),'datetime_format_medium' ]]);$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '">';$output .= ($stash->get(['hashref',0,'expires',0]))? $stash->get(['locale',0,'datetime',[$stash->get(['hashref',0,'expires',0]),'datetime_format_medium' ]]): '';$output .= '</td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                    <a class="btn btn-link" href="delkey.html?key=';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '">
+                        <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete GnuPG Key' ]]);$output .= '
+                    </a>
+                    <a class="btn btn-link" href="editpkey.html?key=';$output .= $stash->get(['hashref',0,'id',0,'html',0]);$output .= '">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                    </a>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </tbody>
+        </table>
+    </div>
+    '}$output .= '
+
+
+<script type="text/plain" id="loading_status_message">
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-refresh loading-indicator" aria-hidden="true"></span>
+        ';$output .= $stash->get(['locale',0,'maketext',['Key is being generated. This may take a few minutes.' ]]);$output .= '
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="success_status_message">
+    <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['The Key has been successfully created.' ]]);$output .= '
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="error_status_message">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['There was a problem creating the GnuPG Key.' ]]);$output .= '
+            <p>
+                {{ error_msg }}
+            </p>
+        </div>
+    </div>
+</script>
+
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'encryption','page_js'=>$stash->get('js_code'),'page_scripts'=>['libraries/handlebars/handlebars.js','libraries/moment/optimized/moment.min.js' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get('required_strength');$output .= '\') || 0;
+
+    var name_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '");
+    var email_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '");
+    var comment_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '");
+    var expire_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Expiration Date' ]]);$output .= '");
+
+    var Handlebars = window.Handlebars;
+
+    var statusBar = DOM.get(\'create_key_status_bar\'),
+        loadingMessageTemplate = Handlebars.compile(DOM.get(\'loading_status_message\').textContent),
+        successMessageTemplate = Handlebars.compile(DOM.get(\'success_status_message\').textContent),
+        errorMessageTemplate = Handlebars.compile(DOM.get(\'error_status_message\').textContent);
+
+    var expire_num = document.getElementById("expire_num");
+    var expire_unit = document.getElementById("expire_unit");
+    var expire_selected = document.getElementById("select_expire");
+    var no_expire_selected = document.getElementById("select_no_expire");
+
+    // ensure selecting other parts of the expire widget, will enable the radio button and run validation
+    expire_num.addEventListener(\'focus\', function() {
+        var expire_selected = document.getElementById("select_expire");
+        expire_selected.checked = true;
+        expire_validator.verify();
+    });
+    expire_unit.addEventListener(\'focus\', function() {
+        var expire_selected = document.getElementById("select_expire");
+        expire_selected.checked = true;
+        expire_validator.verify();
+    });
+
+    // ensure we run the validator when selecting the radio inputs
+    // would use "input" here but IE does not support triggering the input event when
+    // switching radio inputs
+    expire_selected.addEventListener(\'click\', function(e) {
+        if (e.target.checked) {
+            expire_validator.verify();
+        }
+    });
+    no_expire_selected.addEventListener(\'click\', function(e) {
+        if (e.target.checked) {
+            expire_validator.verify();
+        }
+    });
+
+    // Use moment.js to do the date math and give us an unix epoch date
+    var convert_expire_to_epoch = function() {
+        var expire_num = document.getElementById("expire_num");
+        var expire_unit = document.getElementById("expire_unit");
+        var expire_num_value = expire_num.value;
+        var expire_unit_value = expire_unit.value;
+
+        // momentjs uses M for months, so we need to handle that use case
+        if (expire_unit_value === "m") {
+            expire_unit_value = "M";
+        }
+
+        var moment_date = moment().add(expire_num_value, expire_unit_value);
+        return moment_date.unix();
+    };
+
+    function save(form) {
+
+        var apiArgs = {
+            name: form.name.value,
+            comment: form.comment.value,
+            email: form.email.value,
+            keysize: form.keysize.value,
+            passphrase: form.password.value,
+        };
+
+        var noExpireEl = document.getElementById("select_no_expire");
+        if (noExpireEl && noExpireEl.checked) {
+            apiArgs.no_expire = 1;
+        } else {
+            apiArgs.expire = convert_expire_to_epoch();
+        }
+
+        CPANEL.api( {
+            version: "3",
+            module: "GPG",
+            func:   "generate_key",
+            data: apiArgs,
+            callback: {
+                failure: function(o) {
+                    if (o.cpanel_error && o.cpanel_error.length > 0) {
+                        statusBar.innerHTML = errorMessageTemplate({ error_msg: o.cpanel_error });
+                    } else {
+                        statusBar.innerHTML = errorMessageTemplate({ error_msg: "';$output .= $stash->get(['locale',0,'maketext',['The request timed out.' ]]);$output .= '" });
+                    }
+                    DOM.get("submit").disabled = false;
+                },
+                success: function(o) {
+                    statusBar.innerHTML = successMessageTemplate();
+                    DOM.get("submit").disabled = false;
+                }
+            }
+        } );
+
+        // disable the submit button to prevent multiple requests being fired
+        DOM.get("submit").disabled = true;
+        statusBar.innerHTML = loadingMessageTemplate();
+    }
+
+    var init_page = function() {
+
+        name_validator.add("name", "min_length(%input%, 5)", "';$output .= $stash->get(['locale',0,'maketext',['Name must be at least 5 characters.' ]]);$output .= '");
+        name_validator.attach();
+
+        email_validator.add("email", "email", "';$output .= $stash->get(['locale',0,'maketext',['You must enter a valid email address.' ]]);$output .= '");
+        email_validator.attach();
+
+        comment_validator.add("comment", function() { return document.getElementById(\'comment\').value.length > 0; }, "';$output .= $stash->get(['locale',0,'maketext',['The comment field cannot be empty.' ]]);$output .= '");
+        comment_validator.attach();
+
+        expire_validator.add("expire_num", "greater_than(%input%, 0)", "';$output .= $stash->get(['locale',0,'maketext',['You must enter an integer greater than zero.' ]]);$output .= '", function() {
+            return YAHOO.util.Dom.get("select_expire").checked;
+        });
+        expire_validator.attach();
+
+        var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+
+        password_validators.push(name_validator, email_validator, comment_validator, expire_validator);
+        CPANEL.validate.attach_to_form("submit", password_validators);
+
+        YAHOO.util.Dom.get("name").focus();
+    };
+    YAHOO.util.Event.onDOMReady(init_page);
+
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

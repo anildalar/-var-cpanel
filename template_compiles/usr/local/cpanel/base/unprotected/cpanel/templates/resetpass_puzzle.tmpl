@@ -1,0 +1,35 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/resetpass_puzzle.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('application_dir','cpanel');$stash->set('file','resetpass');$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<div id="content">
+    <div id="reset-forms">
+        <form id="reset_form" name="reset_form" method="POST" action="/resetpass" ng-controller="puzzleController as puzzle">
+            <input type="hidden" name="action" value="puzzle">
+            <input ng-non-bindable type="hidden" name="user" value="';$output .= $stash->get('user');$output .= '">
+            <input type="hidden" name="answer" value="{{ puzzle.guess }}">
+            <input type="hidden" name="debug" value="';$output .= $stash->get(['CPANEL',0,'is_debug_mode_enabled',0])? '1' : '';$output .= '">
+
+            <div class="input-req-login">
+                <label for="puzzle-guess-input">';$output .= $stash->get(['locale',0,'maketext',['Contact Email Address' ]]);$output .= "</label>\n            </div>\n            <div class=\"input-field-login icon puzzle-container placeholder-container\" ng-class=\"{ 'placeholder-active' : puzzle.isFocused || reset_form['puzzle-guess-input'].\$viewValue }\">\n                <input name=\"puzzle-guess-input\"\n                       id=\"puzzle-guess-input\"\n                       type=\"email\"\n                       ng-model=\"puzzle.guess\"\n                       email=\"rfc\"\n                       class=\"std_textbox\"\n                       tabindex=\"1\"\n                       required\n                       autofocus\n                       ng-focus=\"puzzle.focus()\"\n                       ng-blur=\"puzzle.blur()\">\n                <span class=\"placeholder-help-block\" id=\"hint\" ng-click=\"puzzle.focus()\">";$output .= $stash->get(['locale',0,'maketext',['Hint: [_1]',$stash->get('puzzle')]]);$output .= '</span>
+            </div>
+
+            <ul validation-container field-name="puzzle-guess-input" ng-cloak>
+                <li validation-item field-name="puzzle-guess-input" validation-name="required" id="puzzle-guess-input-required">
+                   ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+               </li>
+            </ul>
+
+            <div class="controls">
+                <div class="login-btn">
+                    <input name="login"
+                           type="submit"
+                           id="login"
+                           value="';$output .= $stash->get(['locale',0,'maketext',['Send Security Code' ]]);$output .= "\"\n                           disabled=\"disabled\"\n                           ng-disabled=\"reset_form.\$invalid\">\n                </div>\n            </div>\n            <div class=\"controls\">\n                <div class=\"reset-pw\">\n                    <a href=\"/\" id=\"btnCancel\">";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+                </div>
+            </div>
+            <div class="clear"></div>
+        </form>
+        <span id="resetpass-puzzle">';$output .= '</span>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

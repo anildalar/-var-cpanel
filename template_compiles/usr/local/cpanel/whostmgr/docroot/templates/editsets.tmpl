@@ -1,0 +1,233 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/editsets.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('stylesheets',[$stash->get(['Whostmgr',0,'find_file_url',['css/tweaksettings_optimized.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/assets/skins/sam/tabview.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['css/_gentweakpage.css' ]])]);$stash->set('scripts',[$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/tabview.js' ]])]);$stash->set('rs_nameservers_set',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'reseller_nameservers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;if ($stash->get('ns')){$stash->set('rs_nameservers_set',1)};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};do {my$output='';my$_tt_oldv=$stash->get('view');my$_tt_view=$context->view({'blocks',{'list'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<div id="';$output .= $stash->get('nameserver_prefix');$output .= '_nameServerActions" class="nameservers actions" ';$output .= $stash->get('table_styles');$output .= ' >
+    <table style class="inline-table" border="0" class="nrmtxt">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('item');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cur_nameserver'}=$_tt_value;$output .= '        ';$stash->set('formkey',$stash->get('nameserver_prefix').($stash->get(['loop',0,'index',0])? $stash->get(['loop',0,'index',0])+ 1 : ''));$output .= '        <tr>
+            <td>Nameserver ';$output .= $stash->get(['loop',0,'index',0])+ 1;$output .= ':</td>
+            <td><input type="text" name="';$output .= $stash->get('formkey');$output .= '" id="input';$output .= $stash->get('formkey');$output .= '" value="';$output .= $stash->get('cur_nameserver')|| '';$output .= '" /></td>
+
+            ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '
+                <td><input type="button" id="button-input';$output .= $stash->get('formkey');$output .= '" class="btn-secondary" onclick="addns(this.form.';$output .= $stash->get('formkey');$output .= ');" value="Configure Address Records" /></td>
+            '}$output .= '
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </table>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'text'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $stash->get('item')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output}}});$stash->set('nameserver_table',$_tt_view);$stash->set('view',$_tt_view);$stash->set('view',$_tt_oldv);$_tt_view->seal()};$output .= do {my$output='';$output .= '
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/saveedits" id="fmain" name="fmain">
+
+';if ($stash->get(['data',0,'wwwacct',0])){$output .= $context->process('_gentweakpage.tmpl',{'tweakmodule'=>'Basic','tweakcfg'=>{'display_name'=>1,'always_show_help'=>1 },'conf'=>$stash->get(['data',0,'wwwacct',0]),'ts_conf'=>$stash->get(['data',0,'ts_conf',0]),'ts_texts'=>$stash->get(['data',0,'ts_texts',0])})}$output .= '
+<h3>Nameservers</h3>
+';$stash->set('nameservers_html',[]);$output .= '
+';if ($stash->get(['data',0,'reseller_nameservers',0])){$output .= '
+';$stash->set('inherit_root_toggles',do {my$output='';$output .= $context->process('inherit_toggles');$output});$output .= '
+';$stash->set('nameserver_prefix','reseller_NS');$stash->set('table_styles',$stash->get('rs_nameservers_set')? '' : 'style="display:none"');$output .= '
+';$output .= $stash->get(['nameservers_html',0,'push',['<p class="description">Your account’s default nameservers used when you create an account.</p>' .$stash->get('inherit_root_toggles').$stash->get(['nameserver_table',0,'print',[$stash->get(['data',0,'reseller_nameservers',0])]])]])}$output .= '
+';if ($stash->get(['data',0,'root_nameservers',0])){$output .= '
+';$stash->set('nameserver_prefix','NS');$stash->set('table_styles','');$output .= '
+';$output .= $stash->get(['nameservers_html',0,'push',['<p class="description">The root account’s default nameservers used when root creates an account.</p>' .$stash->get(['nameserver_table',0,'print',[$stash->get(['data',0,'root_nameservers',0])]])]])}$output .= '
+';$output .= $stash->get(['nameservers_html',0,'join',['<br />' ]]);$output .= '
+<br />
+<br />
+
+<div class="alert alert-warning acl-warning" id="warning-ns">
+    <div class="alert-message acl-warning-message">
+        <span class="fa fa-exclamation-triangle"></span>
+        ';$output .= $stash->get(['locale',0,'maketext',['Default nameservers of the type [asis,_1] are not compatible with [asis,_2] domain registrations.','<code>.cprapid.com</code>','<code>.com</code>' ]]);$output .= '
+        <a
+            href="https://go.cpanel.net/PrivateNameservers"
+            target="nameserversDocumentation"
+            rel="noopener noreferrer"
+            id="nameservers-warning-link"
+        >
+            ';$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= '
+            <i class="ri-external-link-line"></i>
+        </a>
+    </div>
+</div>
+<div>
+    <input type="submit" class="btn-primary" value="Save Changes" id="btnSaveChanges" />
+</div>
+<br />
+<br />
+
+</form><!-- end fmain -->
+
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/js/popupbox.js' ]]);$output .= '"></script>
+<script type="text/javascript">
+//<![CDATA[
+var addns = function(forme) {
+    var nameserver = forme.value;
+    do_quick_popupbox({
+        title:\'Configure Address Records\',
+        url:\'';$output .= $stash->get('cp_security_token');$output .= '/scripts2/addaforns\',
+        showloading:1,
+        iframe:1,
+        height: 375},\'nameserver\',nameserver);
+};
+//]]>
+
+var unconfigurable_ns_domain_re = ';$output .= $stash->get(['data',0,'unconfigurable_ns_domain_re',0,'json',0]);$output .= "; // '\\.cprapid\\.com\$' -> 'reason'\nvar suggested_nameservers = ";$output .= $stash->get(['data',0,'suggested_nameservers',0,'json',0])|| '[]';$output .= ';
+
+(function() {
+    var suggested_nameservers_are_unconfigurable = suggested_nameservers.filter(_ => !!_).some(unconfigurable);
+    var warningNS = document.getElementById(\'warning-ns\');
+    var inheritFromRoot = false;
+    var inheritFromRootYes = document.getElementById("inheritFromRootYes");
+    var showWarning = {};
+
+    function unconfigurable(value) {
+        return Object.keys(unconfigurable_ns_domain_re).some((domain_re) => value.match(new RegExp(domain_re)))
+    }
+
+    function updateWarning() {
+        var show = Object.values(showWarning).some(_ => _);
+        show ? warningNS.classList.remove(\'hidden\') : warningNS.classList.add(\'hidden\')
+    }
+
+    function registerNS(selector) {
+        var nsValues = {}
+        var nsInputs = document.querySelectorAll(selector);
+        if (!nsInputs.length) { return; }
+
+        nsInputs.forEach(function(el) {
+            nsValues[el.id] = el.value;
+            el.addEventListener(\'input\', function(event) {
+                var target = event.target;
+                nsValues[target.id] = target.value;
+                showWarning[selector] = Object.values(nsValues).some(unconfigurable)
+                showWarning[\'suggested\'] = showWarning[selector]
+                updateWarning();
+            })
+        })
+        showWarning[selector] = Object.values(nsValues).some(unconfigurable)
+    }
+
+    function _inhertiFromRootListener() {
+        inheritFromRoot = inheritFromRootYes.checked;
+        var suggested_warning;
+
+        if (showWarning[\'input[name^="NS"][type="text"]\'] == undefined) {
+            suggested_warning = suggested_nameservers_are_unconfigurable;
+        }
+
+        if (inheritFromRoot) {
+            showWarning[\'suggested\'] = suggested_warning;
+            showWarning[\'input[name^=reseller_NS]\'] = false;
+        } else {
+            registerNS(\'input[name^=reseller_NS]\');
+            showWarning[\'suggested\'] = false;
+        }
+        updateWarning();
+    }
+
+    if (inheritFromRootYes) {
+        _inhertiFromRootListener();
+
+        inheritFromRootYes.addEventListener(\'change\', _inhertiFromRootListener);
+        inheritFromRootNo.addEventListener(\'change\', _inhertiFromRootListener);
+    }
+
+    registerNS(\'input[name^="NS"][type="text"]\');
+
+    updateWarning();
+
+}())
+/*
+ * For the "Configure Address Records" buttons near the bottom.
+ */
+var _updateButtonDisablement = function(eventOrId) {
+    var id        = eventOrId instanceof InputEvent ? eventOrId.target.id : eventOrId;
+    var textNS    = document.getElementById(id);
+    var buttonNS  = document.getElementById(\'button-\' + id);
+    if (!buttonNS) { return; }
+
+    var disableReason;
+    for (domain_re in unconfigurable_ns_domain_re) {
+        if ( textNS.value.match( new RegExp(domain_re) ) ){
+            disableReason = unconfigurable_ns_domain_re[domain_re];
+        }
+    }
+
+    if (disableReason) {
+        buttonNS.disabled = true;
+        buttonNS.title    = disableReason;
+    } else {
+        buttonNS.disabled = false;
+        buttonNS.removeAttribute(\'title\');
+    }
+};
+
+var addNSTextListener = function(type, n) {
+    var name = type + ( n ? n + 1 : \'\' ); // same as \'formkey\' in TT above
+
+    var textNS = document.getElementById(\'input\' + name);
+    if (!textNS) { return; }
+    textNS.addEventListener(\'input\', _updateButtonDisablement);
+    _updateButtonDisablement(\'input\' + name);
+};
+
+var root_nameservers            = ';$output .= $stash->get(['data',0,'root_nameservers',0,'json',0])|| '[]';$output .= ';
+for (var n = 0; n < root_nameservers.length; n++) {
+    addNSTextListener(\'NS\', n);
+}
+
+';if ($stash->get(['data',0,'reseller_nameservers',0])){$output .= 'var reseller_nameservers        = ';$output .= $stash->get(['data',0,'reseller_nameservers',0,'json',0]);$output .= ';
+for (var n = 0; n < reseller_nameservers.length; n++) {
+    addNSTextListener(\'reseller_NS\', n);
+}
+'}$output .= '
+
+</script>
+
+';if ($stash->get(['data',0,'reseller_nameservers',0])){$output .= '<script type="text/javascript">
+       (function(){
+            // Gather Pieces
+            var fmain = document.getElementById("fmain");
+                nameserverActions = document.getElementById("reseller_NS_nameServerActions"),
+                inheritFromRootYes = document.getElementById("inheritFromRootYes"),
+                inheritFromRootNo = document.getElementById("inheritFromRootNo"),
+                nameserverFields = [],
+                nameserversSet = false;
+
+            for (var i = 0; i < fmain.length; i++) {
+                if(fmain.elements[i].name.match(/^reseller_NS/)){
+                    nameserverFields.push(fmain.elements[i]);
+                }
+            }
+
+            // Watch for updates
+            function _updateInheritRadio(){
+                if(inheritFromRootYes.checked){
+                    nameserverActions.style.display = "none";
+                }else{
+                    nameserverActions.style.display = "block";
+                }
+            }
+            inheritFromRootYes.addEventListener("change",_updateInheritRadio);
+            inheritFromRootNo.addEventListener("change",_updateInheritRadio);
+        })();
+</script>
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'basic_webhost_manager_setup','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'inherit_toggles'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<div>
+    <div style="margin-left:20px;margin-bottom:10px;">
+        <label for="inheritFromRootYes">
+            <input type="radio" id="inheritFromRootYes" name="inheritFromRoot" value="1" style="margin-left:-20px;" ';$output .= $stash->get('rs_nameservers_set')? '' : 'checked';$output .= ' />
+            ';$output .= $stash->get(['locale',0,'maketext',['Inherit Nameservers from [asis,root]' ]]);$output .= '
+        </label><br />
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'suggested_nameservers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;$output .= '
+            <div style="color:#737373;font-size:13px;">
+                ';if ($stash->get('ns')){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['Nameserver [_1]: “[_2]”',$stash->get(['loop',0,'index',0])+ 1,$stash->get('ns')]]);$output .= '
+                '}$output .= '
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+    <div style="margin-left:20px;margin-bottom:10px;">
+        <label for="inheritFromRootNo">
+            <input type="radio" id="inheritFromRootNo" name="inheritFromRoot" value="0"  style="margin-left:-20px;" ';$output .= $stash->get('rs_nameservers_set')? 'checked' : '';$output .= ' />
+            ';$output .= $stash->get(['locale',0,'maketext',['Explicitly Set the Nameservers' ]]);$output .= '
+        </label><br />
+        <span style="color:#737373;font-size:13px;">';$output .= $stash->get(['locale',0,'maketext',['Nameservers that you explicitly set will transfer with the user to the new servers upon migration.' ]]);$output .= '</span>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,9 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/suspendacct.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'trying_to_self',0])){$output .= 'You cannot suspend your own account.
+'}elsif (!$stash->get(['data',0,'has_access',0])){$output .= 'You do not have access to that account.
+'}elsif ($stash->get(['data',0,'locked_non_root',0])){$output .= 'That account has been locked by the root user. You cannot reactivate it.
+'}elsif (!$stash->get(['data',0,'suspend',0])&&!$stash->get(['data',0,'unsuspend',0])){$output .= 'You must click the suspend or unsuspend button.  Please go back and try again.
+'}else {$output .= '<h3 class="simpleheading">';$output .= $stash->get(['data',0,'unsuspend',0])? 'Unsuspension' : 'Suspension';$output .= ' of ';$output .= $stash->get(['data',0,'domain',0]);$output .= '</h3>
+<pre>
+';$output .= $stash->get(['data',0,'output',0]);$output .= '
+</pre>
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts2/suspendacctlist','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

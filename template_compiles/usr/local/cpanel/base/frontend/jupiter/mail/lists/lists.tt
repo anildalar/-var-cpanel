@@ -1,0 +1,89 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/lists/lists.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('HTTP',$context->plugin('HTTP'));$stash->set('domain',$stash->get(['RAW_FORM',0,'domain',0]));$stash->set('translated_access_type',{'public'=>$stash->get(['locale',0,'maketext',['public' ]]),'private'=>$stash->get(['locale',0,'maketext',['private' ]])});$output .= $context->process('_ajaxapp.tmpl');$output .= '
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Current Lists' ]]);$output .= '</h2>
+
+    <cp-alert-list></cp-alert-list>
+
+    <section class="sg-example" ng-controller="mainController as main">
+        <div class="list-container">
+            <div class="row search-page-container ng-cloak">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4" id="topSearchBox">
+                    <search id="search_box" ng-model="main.model.filterValue"></search>
+                </div>
+                <div class="col-xs-1">
+                    <span spinner
+                        id="topSpinner"
+                        class="headerSpinner"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= "\"></span>\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-7 col-lg-7\" >\n                    <div class=\"pagination-container hidden-xs hidden-sm\">\n                        <page-size\n                            id=\"DEFAULT-page-itemsperpage\"\n                            total-items=\"main.model.totalResults\"\n                            show-all=\"true\"\n                            ng-model=\"main.model.pageSize\">\n                        </page-size>\n                        <div id=\"topPager\"\n                            uib-pagination\n                            ng-if=\"main.model.pageSize > 0 && main.model.totalResults > main.model.pageSize\"\n                            ng-change=\"main.model.selectPage(page)\"\n                            ng-model=\"main.model.page\"\n                            items-per-page=\"main.model.pageSize\"\n                            total-items=\"main.model.totalResults\"\n                            max-size=\"4\"\n                            boundary-links=\"true\"\n                            previous-text=\"<\" next-text=\">\" first-text=\"<<\" last-text=\">>\"\n                            class=\"pagination-small\">\n                        </div>\n                    </div>\n                </div>\n            </div>\n            <table id=\"mailingListsTable\" class=\"table table-striped responsive-table ng-cloak\" ng-controller=\"mailingListsController as listsController\">\n                <thead>\n                    <tr>\n                        <th ng-repeat=\"column in listsController.getHeaders()\" class=\"lists-col-header lists-col-header-{{column.key}}\">\n                            <span toggle-sort\n                                id=\"toggleSort_{{column.key | qaSafeID}}\"\n                                ng-if=\"column.key != 'functions'\"\n                                onsort=\"main.model.dataSorted\"\n                                sort-meta=\"main.model.meta.sort\"\n                                sort-field=\"{{column.key}}\">{{column.name}}</span>\n                            <span ng-if=\"column.key == 'functions'\">{{column.name}}</span>\n                        </th>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr\n                        id=\"datarow_{{list.list | qaSafeID}}\"\n                        ng-if=\"listsController.getLists().length\" ng-repeat=\"list in listsController.getLists()\" class='lists-row'>\n                        <td data-title=\"{{column.name}}\" ng-repeat-start=\"column in listsController.getHeaders()\" ng-if=\"column.key == 'accesstype'\" >\n                            <span ng-controller=\"PrivacyWindowController as privacy\"><a\n                                 id=\"datarow_{{list.list | qaSafeID}}_privacy_btn\"\n                                 href=\"javascript:void(0)\" ng-click=\"privacy.open(list, \$event)\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Edit this mailing list’s privacy options.' ]]);$output .= '" ng-bind="list.getAttribute(column.key)">&nbsp;</a></span>
+                        </td>
+                        <td data-title="{{column.name}}" ng-if="column.key == \'functions\'" class=\'lists-function-cell\'>
+                            <a id="datarow_{{list.list | qaSafeID}}_delete_btn" class="btn btn-link" href="dodellist.html?email={{list.list | escape}}">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </a>
+                            <a id="datarow_{{list.list | qaSafeID}}_password_btn" class="btn btn-link" href="passwdlist.html?email={{list.list | escape}}">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                            </a>
+                            <a id="datarow_{{list.list | qaSafeID}}_manage_btn" class="btn btn-link" target="_blank" href="loginlist.html?email={{list.list | escape}}&amp;domain={{listsController.domain | escape}}&amp;return_url=';$output .= $stash->get(['HTTP',0,'get_client_url',0,'uri',0]);$output .= '">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+                            </a>
+                            <a id="datarow_{{list.list | qaSafeID}}_delegate_btn" class="btn btn-link" href="delegatelist.html?email={{list.list | escape}}">
+                                <span class="fas fa-users"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delegation' ]]);$output .= "\n                            </a>\n                        </td>\n                        <td data-title=\"{{column.name}}\" ng-if=\"column.key == 'listadmin'\">\n                            <span\n                                ng-bind-html='list.formatListAdmins({maxCols:20,maxItems:3,separator:\"<br />\"})'\n                                title='{{list.formatListAdmins({maxItems:3,separator:\"\\n\"})}}'></span>\n                        </td>\n                        <td data-title=\"{{column.name}}\" ng-if=\"column.key != 'accesstype' && column.key != 'functions' && column.key != 'listadmin'\" ng-repeat-end class=\"list-column-{{column.key}}\">\n                            <p class=\"truncate\" ng-bind=\"list.getAttribute(column.key)\" title=\"{{list.getAttribute(column.key)}}\"></p>\n                        </td>\n                    </tr >\n                    <tr ng-if=\"!listsController.getLists().length && !main.model.loading\" class=\"info empty-row\">\n                        <td colspan=\"{{listsController.getHeaders().length}}\">No results found ...</td>\n                    </tr>\n                </tbody>\n            </table>\n            <div class=\"row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md ng-cloak\">\n                <div class=\"col-xs-12 col-sm-12\">\n                    <div>\n                        <div id=\"bottomPager\"\n                            uib-pagination\n                            ng-if=\"main.model.pageSize && main.model.totalResults > main.model.pageSize\"\n                            ng-change=\"main.model.selectPage(page)\"\n                            ng-model=\"main.model.page\"\n                            items-per-page=\"main.model.pageSize\"\n                            total-items=\"main.model.totalResults\"\n                            max-size=\"4\"\n                            boundary-links=\"true\"\n                            previous-text=\"<\" next-text=\">\" first-text=\"<<\" last-text=\">>\"\n                            class=\"pagination-small\">\n                        </div>\n                        <div class=\"col-xs-2\">\n                            <spinner\n                                id=\"bottomSpinner\"\n                                class=\"headerSpinner\"\n                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></spinner>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- table -->
+
+    ';$stash->set('application_dir',$stash->get(['ExpVar',0,'expand',['$basedir' ]]).'/lists/');$stash->set('file',$stash->get(['ExpVar',0,'expand',['$basefilename' ]]));$stash->set('requirejs_url_base','/frontend/' .$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('listlists',$stash->get(['execute',['Email','list_lists',{'domain'=>$stash->get('domain'),'regex'=>$stash->get(['RAW_FORM',0,'searchregex',0]),'api.paginate_start'=>1,'api.paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])}]]));$output .= '
+
+    ';if ($stash->get('page_notice_args')){$output .= '        ';$stash->set('PAGE',{'notice'=>$stash->get('page_notice_args')});$output .= '    '}else {$output .= '        ';$stash->set('PAGE',{'lists'=>$stash->get(['listlists',0,'data',0]),'translated_access_type'=>$stash->get('translated_access_type')});$output .= '    '}$output .= '    <script>
+        CPANEL.namespace("CPANEL.PAGE");
+        CPANEL.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('PAGE')]]);$output .= ';
+        CPANEL.PAGE.initData = {
+            lists: CPANEL.PAGE.lists,
+            totalPages: ';$output .= $stash->get(['listlists',0,'metadata',0,'paginate',0,'total_pages',0,'json',0]);$output .= ',
+            totalResults: ';$output .= $stash->get(['listlists',0,'metadata',0,'paginate',0,'total_results',0,'json',0]);$output .= ',
+            resultsPerPage: ';$output .= $stash->get(['listlists',0,'metadata',0,'paginate',0,'results_per_page',0,'json',0]);$output .= '        };
+        CPANEL.PAGE.THEME_PATH = ';$output .= $stash->get(['requirejs_url_base',0,'json',0]);$output .= ';
+        CPANEL.PAGE.domain = ';$output .= $stash->get(['domain',0,'json',0]);$output .= ';
+        window.PAGE = CPANEL.PAGE;
+    </script>
+
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<script type="text/x-handlebars-template" id="change_list_privacy_template">
+    <p>';$output .= $stash->get(['locale',0,'maketext',['You can adjust this mailing list’s privacy settings below.' ]]);$output .= '</p>
+
+    <p>
+        <input type="checkbox" id="advertised_checkbox" name="advertised" value="1" {{#if advertised}}checked{{/if}}>
+        <label for="advertised_checkbox">';$output .= $stash->get(['locale',0,'maketext',['Include this list in [asis,Mailman]’s public advertisement of this server’s mailing lists.' ]]);$output .= '</label>
+    </p>
+    <p>
+        <input type="checkbox" id="archive_private_checkbox" name="archive_private" value="1" {{#if archive_private}}checked{{/if}}>
+        <label for="archive_private_checkbox">';$output .= $stash->get(['locale',0,'maketext',['Keep this list’s archives private.' ]]);$output .= '</label>
+    </p>
+    <p>
+        <input type="radio" id="subscribe_1_radio" name="subscribe_policy" value="1" {{#if subscribe_policy_is_1}}checked{{/if}}>
+        <label for="subscribe_1_radio">';$output .= $stash->get(['locale',0,'maketext',['Require only email confirmation for new subscribers.' ]]);$output .= '</label>
+        <br>
+        <input type="radio" id="subscribe_2_radio" name="subscribe_policy" value="2" {{#if subscribe_policy_is_2}}checked{{/if}}>
+        <label for="subscribe_2_radio">';$output .= $stash->get(['locale',0,'maketext',['Require only administrator approval for new subscribers.' ]]);$output .= '</label>
+        <br>
+        <input type="radio" id="subscribe_3_radio" name="subscribe_policy" value="3" {{#if subscribe_policy_is_3}}checked{{/if}}>
+        <label for="subscribe_3_radio">';$output .= $stash->get(['locale',0,'maketext',['Require both administrator approval and email confirmation for new subscribers.' ]]);$output .= '</label>
+    </p>
+
+    <p class="row-of-buttons">
+        <button type="button" class="set-private-values">';$output .= $stash->get(['locale',0,'maketext',['Use “Private” Settings' ]]);$output .= '</button>
+        <button type="reset">';$output .= $stash->get(['locale',0,'maketext',['Reset Form' ]]);$output .= '</button>
+    </p>
+
+    <p>';$output .= $stash->get(['locale',0,'maketext',['This set of privacy configurations constitutes access type: [_1]','<span class="highlighted" id="form_access_type"></span>' ]]);$output .= '</p>
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

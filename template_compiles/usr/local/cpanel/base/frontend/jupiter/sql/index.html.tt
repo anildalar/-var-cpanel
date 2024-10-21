@@ -1,0 +1,509 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Mysql',$context->plugin('Mysql'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Mysql',0,'initcache',0]);if ($stash->get(['FORM',0,'item',['itemsperpage' ]])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'item',['itemsperpage' ]]))}if ((!($stash->get(['FORM',0,'item',['itemsperpage' ]]))||!($stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ]])))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$stash->set('CpanelDB',$context->plugin('CpanelDB'));$output .= $context->process('_assets/resource_usage_macro.html.tt');if ($stash->get(['ExpVar',0,'expand',['$mysqlrunning' ]])&& $stash->get(['ExpVar',0,'expand',['$mysql_sane' ]])){$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('dbprefix',$stash->get(['ExpVar',0,'expand',['$dbprefix' ]]));$stash->set('database_max_length',64 - $stash->get(['dbownerprefix',0,'length',0])- $stash->get('dbprefix'));$stash->set('user_max_length',$stash->get(['CpanelDB',0,'MAX_MYSQL_DBUSER_LENGTH',0])- $stash->get(['dbownerprefix',0,'length',0]));$stash->set('errors',[]);$stash->set('required_strength',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'mysql' }]]));if ($stash->get(['required_strength',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['required_strength',0,'errors',0])]]))}$stash->set('mysql_server_info',$stash->get(['execute',['Mysql','get_server_information',{}]]));if ($stash->get(['mysql_server_info',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['mysql_server_info',0,'errors',0])]]))}$stash->set('databases',$stash->get(['execute',['Mysql','list_databases',{'api.paginate_size'=>$stash->get(['FORM',0,'item',['itemsperpage' ]])|| 10,'api.paginate_start'=>$stash->get(['FORM',0,'item',['api2_paginate_start' ]])|| 0,'api.filter_column'=>'*','api.filter_type'=>'matches','api.filter_term'=>$stash->get(['RAW_FORM',0,'searchregex',0])}]]));if ($stash->get(['databases',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['databases',0,'errors',0])]]))}$stash->set('all_databases',$stash->get(['execute',['Mysql','list_databases',{'api.columns_1'=>'database' }]]));if ($stash->get(['all_databases',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['all_databases',0,'errors',0])]]))}$stash->set('all_users',$stash->get(['execute',['Mysql','list_users',{}]]));if ($stash->get(['all_users',0,'status',0])eq 0){$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['all_users',0,'errors',0])]]))}}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '
+<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['mysql' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        ';if (!$stash->get(['ExpVar',0,'expand',['$mysqlrunning' ]])){$output .= '
+        <div id="mysqlOfflineWarning" class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span id="mysqlOfflineWarningMessage">';$output .= $stash->get(['locale',0,'maketext',['The database server is currently offline.' ]]);$output .= '</span>
+        </div>
+        '}$output .= '
+
+        ';if ($stash->get(['CPANEL',0,'CPERROR',0,'item',['mysql' ]])){$output .= '
+        <div id="mysqlError" class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span id="mysqlErrorMessage">';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'item',['mysql' ],'html',0]);$output .= '</span>
+        </div>
+        '}$output .= '
+
+        ';if (!$stash->get(['ExpVar',0,'expand',['$mysql_sane' ]])){$output .= '
+        <div id="mysqlSanityError" class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <span id="mysqlSanityErrorMessage">';$output .= $stash->get(['ExpVar',0,'expand',['$mysql_sane_errmsg' ]]);$output .= '</span>
+        </div>
+        '}$output .= '
+        ';if ($stash->get(['errors',0,'size',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('errors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+
+        ';if ($stash->get(['ExpVar',0,'expand',['$mysqlrunning' ]])&& $stash->get(['ExpVar',0,'expand',['$mysql_sane' ]])){$output .= '
+            ';$output .= $context->process('my_sql_content');$output .= '
+        '}$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'page_scripts'=>['libraries/jquery/current/jquery.js' ],'page_js'=>$stash->get('js_code'),'app_key'=>'mysql_databases','content',$output })};$output .= '
+';$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+    ';if ($stash->get(['mysql_server_info',0,'data',0,'version',0])){$output .= '
+        <script type="text/javascript">
+            var dbprefix = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('dbownerprefix')]]);$output .= ';
+            var SERVER_USES_PREFIXING = !!dbprefix;
+
+            var DB_MAX_LENGTH = SERVER_USES_PREFIXING ? ( 64-(dbprefix.length) ) : ( 64 );
+
+            var MYSQL_SERVER_VERSION = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['mysql_server_info',0,'data',0,'version',0])]]);$output .= ';
+
+        ';if (!$stash->get('statsbar_mysqldatabases_maxed')){$output .= '
+            /**
+            * Initialize the validation for the database form.
+            */
+            var init_newdb_validation = function() {
+                var dbname_validator = new CPANEL.validate.validator("New Database");
+
+                dbname_validator.add_thrower( "dbname", function(el) {
+                    return CPANEL.sql.verify_mysql_database_name(el.value)
+                } );
+                dbname_validator.attach();
+
+                CPANEL.validate.attach_to_form("submit_dbname", dbname_validator);
+            };
+            YAHOO.util.Event.onDOMReady(init_newdb_validation);
+        '}$output .= '
+            var REQUIRED_PASSWORD_STRENGTH = Number(';$output .= $stash->get(['required_strength',0,'data',0,'strength',0,'json',0]);$output .= ') || 0;
+            var hasPrefix = parseInt(';$output .= $stash->get(['dbprefix',0,'json',0]);$output .= ', 10) ? true: false;
+            var max_length = ';$output .= $stash->get('user_max_length');$output .= ";\n\n            /**\n             * Validate that the user name does not start with a number.\n             * Only used when database prefixing is turned off.\n             * \@return {Boolean} false the user name starts with a number, true otherwise.\n             */\n            var leadingnumeric = function() {\n                val = document.getElementById('user').value;\n                if (/^\\d/.test(val)) {\n                    return false\n                }\n                return true;\n            }\n\n            /**\n             * Initialize the user name validation\n             */\n            var init_user_validation = function() {\n                var user_validator = new CPANEL.validate.validator(\"MySQL Username\");\n                user_validator.add(\"user\", \"sql_alphanumeric\", '";$output .= $stash->get(['locale',0,'maketext',['Username must be alphanumeric characters.' ]]);$output .= '\');
+                if (!hasPrefix) {
+                   user_validator.add("user", leadingnumeric, \'';$output .= $stash->get(['locale',0,'maketext',['Username cannot begin with a number.' ]]);$output .= '\');
+                }
+                user_validator.add("user", "max_length(%input%, " + max_length + ")", LOCALE.maketext(\'Username cannot be longer than [quant,_1,character,characters].\', max_length) );
+                user_validator.attach();
+
+                var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+                password_validators.push(user_validator);
+                CPANEL.validate.attach_to_form("submit_new_user", password_validators);
+            };
+
+            YAHOO.util.Event.onDOMReady(init_user_validation);
+        </script>
+    '}$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'my_sql_content'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+
+    <p id="descMysql" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Manage large amounts of information over the web easily. Databases are necessary to run many web-based applications, such as bulletin boards, content management systems, and online shopping carts. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/MySql','_blank','lnkMySqlDocumentation' ]]);$output .= '
+    </p>
+
+    <div id="cjt_pagenotice_container"></div>
+
+    <a name="sqldbs" id="sqldbs"></a>
+    <div class="clearfix">
+        <div class="pull-right">
+            <img id="imgJumpUsers" src="../images/arrow-down.gif" alt="jump-down" class="jump-down" />
+            <a id="lnkJumpUsers"
+               href="#dbusers"
+               title="';$output .= $stash->get(['locale',0,'maketext',['Navigate to the Database Users Section.' ]]);$output .= '">
+               ';$output .= $stash->get(['locale',0,'maketext',['Jump to Database Users' ]]);$output .= '
+            </a>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrCreateDb">
+            ';$output .= $stash->get(['locale',0,'maketext',['Create New Database' ]]);$output .= '
+        </h2>
+        ';$stash->set('resource_usage_key','mysqldatabases');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');if (!$stash->get('resource_usage_limits')||!$stash->get(['resource_usage_limits',0,'is_maxed',0])){$output .= '
+        <form method="post" action="addb.html" name="mainform" id="mainform">
+            <div class="form-group">
+                <label id="lblDbName" for="dbname">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Database:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('dbownerprefix')){$output .= '
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                ';$output .= $stash->get(['dbownerprefix',0,'html',0]);$output .= '
+                            </span>
+                            <input type="text" class="form-control" name="db" id="dbname" maxlength="';$output .= $stash->get('database_max_length');$output .= '" />
+                        </div>
+                        '}else {$output .= '
+                        <input type="text" class="form-control" name="db" id="dbname"  maxlength="';$output .= $stash->get('database_max_length');$output .= '" />
+                        '}$output .= '
+                    </div>
+                    <div id="dbname_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submit_dbname" value="';$output .= $stash->get(['locale',0,'maketext',['Create Database' ]]);$output .= '" class="btn btn-primary" />
+            </div>
+        </form>
+      '}$output .= '
+    </div>
+
+';if ($stash->get(['mysql_server_info',0,'data',0,'is_remote',0])){$output .= '
+    <div class="section">
+        <h2 id="hdrRemoteHost">
+            ';$output .= $stash->get(['locale',0,'maketext',['Remote Database Host' ]]);$output .= '
+        </h2>
+        <p id="mysqlAddrInformationMsg">
+            ';$output .= $stash->get(['locale',0,'maketext',['The database server’s address is [output,strong,_1].',$stash->get(['mysql_server_info',0,'data',0,'host',0])]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['When connecting to the database server, you must specify this host.' ]]);$output .= '
+        </p>
+    </div>
+'}$output .= '
+
+';if ($stash->get(['databases',0,'list',0,'size',0])ne 0){$output .= '
+    <div class="section">
+        <h2 id="hdrModifyDb">
+            ';$output .= $stash->get(['locale',0,'maketext',['Modify Databases' ]]);$output .= '
+        </h2>
+        <form method="post" action="checkdb.html" name="checkform">
+            <div class="form-group">
+                <label id="lblCheckDb" for="checkdb">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Check Database' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="db" id="checkdb" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['all_databases',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$stash->set('database',$stash->get(['db',0,'database',0,'html',0]));$output .= '
+                                <option value="';$output .= $stash->get('database');$output .= '">
+                                    ';$output .= $stash->get('database');$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="btnCheckDb" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Check Database' ]]);$output .= '" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+        <form method="post" action="repairdb.html" name="checkform">
+            <div class="form-group">
+                <label id="lblRepairDb" for="repairdb">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Repair Database' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="db" id="repairdb" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['all_databases',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$stash->set('database',$stash->get(['db',0,'database',0,'html',0]));$output .= '
+                                <option value="';$output .= $stash->get('database');$output .= '">
+                                    ';$output .= $stash->get('database');$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="btnRepairDb" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Repair Database' ]]);$output .= '" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+'}$output .= '
+
+    <div class="section">
+        <h2 id="hdrCurrentDbs">
+            ';$output .= $stash->get(['locale',0,'maketext',['Current Databases' ]]);$output .= '
+        </h2>
+
+        <div class="search-panel">
+            <form method="get" action="">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-8 col-sm-6 col-md-6 col-lg-6">
+                            <input id="txtSearchRegex" type="text" class="form-control" size="15" name="searchregex" value="';$output .= $stash->get(['FORM',0,'item',['searchregex' ]]);$output .= '" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"/>
+                        </div>
+                        <div class="col-xs-4">
+                            <input id="btnSearchGo" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                            <input id="hidSearchItemsPerPage" type="hidden" name="itemsperpage" value="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'item',['itemsperpage' ],'html',0]);$output .= '" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <table id="sql_db_tbl" class="sortable table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Privileged Users' ]]);$output .= '</th>
+                    <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['databases',0,'data',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['databases',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db_info'}=$_tt_value;$stash->set('database',$stash->get(['db_info',0,'database',0]));$stash->set('size',$stash->get(['db_info',0,'disk_usage',0]));$output .= '
+                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= '">';$output .= $stash->get(['database',0,'html',0]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '">';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get('size')]]);$output .= '</td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Privileged Users' ]]);$output .= '">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['db_info',0,'item',['users' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'username'}=$_tt_value;$output .= '
+                        <table class="sql">
+                            <tr>
+                                <td class="nobrd">
+                                    <a id="lnk-manage-privileges-for-';$output .= $stash->get(['username',0,'html',0]);$output .= '-on-db-';$output .= $stash->get(['database',0,'html',0]);$output .= '"
+                                       title="';$output .= $stash->get(['locale',0,'maketext',['Manage Privileges' ]]);$output .= '"
+                                       href="userrights/?user=';$output .= $stash->get(['username',0,'uri',0]);$output .= '&amp;db=';$output .= $stash->get(['database',0,'uri',0]);$output .= '">
+                                        ';$output .= $stash->get(['username',0,'html',0]);$output .= '
+                                    </a>
+                                </td>
+                                <td class="nobrd">
+                                    <a id="lnk-revoke-privileges-for-';$output .= $stash->get(['username',0,'html',0]);$output .= '-on-db-';$output .= $stash->get(['database',0,'html',0]);$output .= '"
+                                       title="';$output .= $stash->get(['locale',0,'maketext',['Revoke this user’s access to this database.' ]]);$output .= '"
+                                       href="deluserfromdbconfirm.html?user=';$output .= $stash->get(['username',0,'uri',0]);$output .= '&amp;db=';$output .= $stash->get(['database',0,'uri',0]);$output .= '">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </td>
+                    <td class="actions" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <a id="lnk-rename-db-';$output .= $stash->get(['database',0,'html',0]);$output .= '"
+                           class="btn btn-link"
+                           title="';$output .= $stash->get(['locale',0,'maketext',['Rename this database.' ]]);$output .= '"
+                           href="javascript:void(0)"
+                           onclick=\'SQLUI.show_rename_form("db",this,';$output .= $stash->get(['database',0,'json',0,'html',0]);$output .= ')\'>
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '
+                        </a>
+                        <a id="lnk-delete-db-';$output .= $stash->get(['database',0,'html',0]);$output .= '"
+                           class="btn btn-link"
+                           title="';$output .= $stash->get(['locale',0,'maketext',['Delete this database.' ]]);$output .= '"
+                           href="deldbconfirm.html?db=';$output .= $stash->get(['database',0,'uri',0]);$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td id="mysqlNoDbsError" class="empty-row info" colspan="4">
+                        ';if ($stash->get(['FORM',0,'item',['searchregex' ]])){$output .= '
+                        <span id="mysqlNoDbsErrorMsg">';$output .= $stash->get(['locale',0,'maketext',['No databases found.' ]]);$output .= '</span>
+                        '}else {$output .= '
+                        <span id="mysqlNoDbsErrorMsg">';$output .= $stash->get(['locale',0,'maketext',['There are no databases associated with your account.' ]]);$output .= '</span>
+                        '}$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+
+        ';$output .= $context->include('_assets/paginate.html.tt',{'uapi_result'=>$stash->get('databases')});$output .= '
+
+    </div>
+
+    <div class="clearfix">
+        <a name="dbusers" id="dbusers"></a>
+        <div class="pull-right">
+            <img id="imgJumpDbs" src="../images/arrow-up.gif" alt="jump-up" class="jump-up" />
+            <a id="lnkJumpDbs" href="#sqldbs">
+                ';$output .= $stash->get(['locale',0,'maketext',['Jump to Databases' ]]);$output .= '
+            </a>
+        </div>
+    </div>
+    <div class="section">
+        <h2 id="hdrMysqlUsers">
+            ';$output .= $stash->get(['locale',0,'maketext',['Database Users' ]]);$output .= '
+        </h2>
+
+        <form method="post" action="adduser.html" name="userform" id="userform">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+            <div class="formbox">
+                <h2 id="hdrAddUser">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Add New User' ]]);$output .= '
+                </h2>
+                <div class="form-group">
+                    <label id="lblUsername" for="user">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            ';if ($stash->get('dbownerprefix')){$output .= '
+                            <div class="input-group">
+                                <span class="input-group-addon">
+                                    ';$output .= $stash->get(['dbownerprefix',0,'html',0]);$output .= '
+                                </span>
+                                <input type="text" class="form-control" size="';$output .= $stash->get(['CpanelDB',0,'MAX_MYSQL_DBUSER_LENGTH',0]);$output .= '" name="user" id="user" maxlength=';$output .= $stash->get('user_max_length');$output .= ' />
+                            </div>
+                            '}else {$output .= '
+                            <input type="text" class="form-control" size="';$output .= $stash->get(['CpanelDB',0,'MAX_MYSQL_DBUSER_LENGTH',0]);$output .= '" name="user" id="user" maxlength=';$output .= $stash->get('user_max_length');$output .= ' />
+                            '}$output .= '
+                        </div>
+                        <div id="user_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblPassword" for="password">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input size="15" type="password" autocomplete=\'off\' name="pass" id="password" class="form-control"/>
+                        </div>
+                        <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblPassword2" for="password2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="password" autocomplete=\'off\' size="15" name="pass2" id="password2" class="form-control"/>
+                        </div>
+                        <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblStrength">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                        <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                    </label>
+                    ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div id="password_strength" class="password_strength"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="button" id="create_strong_password"
+                                class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '"
+                                tabindex="-1" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Create User' ]]);$output .= '" class="btn btn-primary" id="submit_new_user" />
+                </div>
+            </div>
+        </form>
+    </div>
+
+    ';if ($stash->get(['all_users',0,'data',0,'size',0])> 0 && $stash->get(['databases',0,'data',0,'size',0])> 0){$output .= '
+    <div class="section">
+        <form method="post" action="userrights/" name="dbuserform" style="margin-top:25px;">
+            <h2 id="hdrAddUserToDb">';$output .= $stash->get(['locale',0,'maketext',['Add User To Database' ]]);$output .= '</h2>
+            <div class="form-group">
+                <label id="lblAddUserUser" for="add_user_users">
+                    ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="user" id="add_user_users" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['all_users',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user_info'}=$_tt_value;$stash->set('username',$stash->get(['user_info',0,'user',0,'html',0]));$output .= '
+                                <option value="';$output .= $stash->get('username');$output .= '">';$output .= $stash->get('username');$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblAddUserDb" for="add_user_dbs">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="db" id="add_user_dbs" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['all_databases',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$stash->set('database',$stash->get(['db',0,'database',0,'html',0]));$output .= '
+                                <option value="';$output .= $stash->get('database');$output .= '">
+                                    ';$output .= $stash->get('database');$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="btnAddUserToDb" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+    '}$output .= '
+
+    <div class="section">
+        <h2 id="hdrCurrentUsers">';$output .= $stash->get(['locale',0,'maketext',['Current Users' ]]);$output .= '</h2>
+        <table  class="sortable table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Users' ]]);$output .= '</th>
+                    <th class="sorttable_nosort" colspan="2">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['all_users',0,'data',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['all_users',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user_info'}=$_tt_value;$stash->set('username',$stash->get(['user_info',0,'user',0]));$output .= '
+                <tr>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Users' ]]);$output .= '">
+                        ';$output .= $stash->get(['username',0,'html',0]);$output .= '
+                    </td>
+                    <td class="actions"
+                        data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                        <a id="lnk-change-password-';$output .= $stash->get(['username',0,'html',0]);$output .= '"
+                           class="btn btn-link"
+                           title="';$output .= $stash->get(['locale',0,'maketext',['Give this user a new password.' ]]);$output .= '"
+                           href="changepasswd.html?user=';$output .= $stash->get(['username',0,'uri',0]);$output .= '">
+                            <span class="fas fa-key"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                        </a>
+                        <a id="lnk-rename-user-';$output .= $stash->get(['username',0,'html',0]);$output .= '"
+                           class="btn btn-link"
+                           title="';$output .= $stash->get(['locale',0,'maketext',['Rename this user.' ]]);$output .= '"
+                           href="javascript:void(0)"
+                           onclick=\'SQLUI.show_rename_form("user",this,';$output .= $stash->get(['username',0,'json',0]);$output .= ')\'>
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '
+                        </a>
+                        <a id="lnk-delete-user-';$output .= $stash->get(['username',0,'html',0]);$output .= '"
+                           class="btn btn-link"
+                           title="';$output .= $stash->get(['locale',0,'maketext',['Delete this user.' ]]);$output .= '"
+                           href="deluserconfirm.html?user=';$output .= $stash->get(['username',0,'uri',0]);$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td class="empty-row info" colspan="2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no users associated with your account.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+        </tbody>
+    </table>
+</div>
+
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '
+<style type="text/css">
+td.actions {
+    white-space: nowrap;
+}
+</style>
+
+';$output .= $context->process('sqlui.tmpl',{'db_engine'=>'mysql' });$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

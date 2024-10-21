@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/cpdavdconfig.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+
+<div id="content">
+    <p class="description">';if ($stash->get(['CPANEL',0,'CPCONF',0,'requiressl',0])){$output .= $stash->get(['locale',0,'maketext',['The [asis,cPanel] [asis,Web] [asis,Service] provides [asis,DAVFS], [asis,WebDisk], [asis,CalDAV], and [asis,CardDAV] services over the [asis,HTTPS] protocol.' ]])}else {$output .= $stash->get(['locale',0,'maketext',['The [asis,cPanel] [asis,Web] [asis,Service] provides [asis,DAVFS], [asis,WebDisk], [asis,CalDAV], and [asis,CardDAV] services over the [asis,HTTP] and [asis,HTTPS] protocols.' ]])}$output .= '
+    </p>
+
+    <form class="layout-medium" onsubmit="return do_validate(this.id);" action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" name="mainform" id="mainform" method="POST">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="SSLCipherList">';$output .= $stash->get(['locale',0,'maketext',['[asis,TLS/SSL] Cipher Suite' ]]);$output .= '</label>
+                    <input type="text" name="SSLCipherList" id="SSLCipherList" value="';$output .= $stash->get(['data',0,'SSLCipherList',0]);$output .= '" class="form-control" />
+                    <div class="description">';$output .= $stash->get(['locale',0,'maketext',['This complex directive uses a colon-separated “cipher-spec” string consisting of [asis,OpenSSL] cipher specifications to configure the cipher suite that the client negotiates in the [asis,SSL] handshake phase.' ]]);$output .= '</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <label for="SSLVersion" class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[asis,TLS/SSL] Protocols' ]]);$output .= '</label>
+                    <input type="text" name="SSLVersion" id="SSLVersion" value="';$output .= $stash->get(['data',0,'SSLVersion',0]);$output .= '" class="form-control" />
+                    <div class="description">';$output .= $stash->get(['locale',0,'maketext',['This complex directive uses a space-separated string consisting of protocol specifications to configure the [asis,SSL] and [asis,TLS] protocols that the client and server negotiate in the [asis,SSL/TLS] handshake phase.' ]]);$output .= "</div>\n                </div>\n            </div>\n            <div class=\"form-group\">\n                <input type=\"submit\" value=\"Save\" class=\"btn btn-primary\" />\n            </div>\n        </div>\n    </form>\n</div>\n<script type=\"text/javascript\">\nfunction register_validators() {\n    register_validator('match','ssl_chars',[document.mainform.SSLCipherList],'The TLS/SSL Cipher List must be defined using alphanumeric characters with regular expressions ! + _ \@ ~ and use a colon (:) for a separator');\n    realtime_validate_init('mainform');\n\n}\nYAHOO.util.Event.onDOMReady(register_validators);\n</script>\n";$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['[asis,cPanel] Web Disk Configuration' ]]),'app_key'=>'cpanel_web_disk_configuration','breadcrumburl'=>'/scripts2/cpdavdconfiguration','base'=>'/scripts2/cpdavdconfiguration/','include_legacy_stylesheets'=>1,'scripts'=>['/js/validate_optimized.js' ],'theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

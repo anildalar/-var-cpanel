@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/terminal/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('NVData',$context->plugin('NVData'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= '
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'ENV',0,'SHELL',0])eq '/bin/false'){$output .= '
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['This interface requires shell access to be enabled for your account.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['To activate shell access, contact your service provider.' ]]);$output .= '
+    </p>
+    '}else {$output .= '
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface provides command line access to your account on the server.' ]]);$output .= '</p>
+
+    <div id="viewContent" ng-controller="BaseController as base" class="section" ng-cloak>
+        <cp-alert-list alert-group="\'myalerts\'"></cp-alert-list>
+
+        <div ng-if="terminal_warning_accepted">
+            <cp-terminal></cp-terminal>
+        </div>
+        <div ng-if="!terminal_warning_accepted">
+            <div class="callout callout-warning">
+                <div class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '</div>
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Exercise extreme caution if you use this interface.] Misuse of command line tools can corrupt or even destroy your data.' ]]);$output .= '
+                </p>
+                <p><button class="btn btn-primary" ng-click="acceptWarning()">';$output .= $stash->get(['locale',0,'maketext',['I understand and want to proceed.' ]]);$output .= '</button></p>
+            </div>
+        </div>
+    </div>
+    '}$output .= '
+</div>
+
+<script>
+    ';$stash->set('terminal_warning_accepted',$stash->get(['NVData',0,'get',['terminal_warning_accepted' ]]));$output .= '    if (!window.PAGE) {
+        window.PAGE = {};
+    }
+
+    PAGE.terminal_warning_accepted = ';$output .= $stash->get('terminal_warning_accepted')? 'true' : 'false';$output .= ';
+</script>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'terminal','use_master_bootstrap'=>0,'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'page_stylesheets'=>['libraries/xtermjs/xterm.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

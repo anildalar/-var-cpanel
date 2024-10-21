@@ -1,0 +1,93 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/spam/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Master',$context->plugin('Master'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('feature_spam_assassin',!$stash->get(['CONF',0,'skipspamassassin',0])&& $stash->get(['CPANEL',0,'feature',['spamassassin' ]]));$stash->set('feature_spam_box',!$stash->get(['CONF',0,'skipspambox',0])&& $stash->get(['CPANEL',0,'feature',['spambox' ]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+';if ($stash->get('feature_spam_assassin')){$output .= '
+
+    <div>
+        <div class="row" ng-controller="main">
+            <div class="col-md-12">
+                <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Manage the settings for the spam filters (powered by Apache SpamAssassin™) for your email accounts. Identify unsolicited bulk email, more commonly known as spam, and send it to a separate folder (Spam Box) or automatically delete it (Auto-Delete) from your email account. For more information, read the [output,url,_1,_2] documentation.','http://spamassassin.apache.org','Apache SpamAssassin' ]]);$output .= '
+                </p>
+
+                <ol class="breadcrumb ng-cloak" ng-hide="!breadcrumbs.length">
+                    <li ng-repeat="breadcrumb in breadcrumbs" ng-class="{active:breadcrumb.active}">
+                        <a ng-if="breadcrumb.active" href="{{breadcrumb.href}}" id="{{breadcrumb.id}}">{{breadcrumb.label}}</a>
+                        <span ng-if="!breadcrumb.active">{{breadcrumb.label}}</span>
+                    </li>
+                </ol>
+
+                <cp-alert-list id="mainAlertList"></cp-alert-list>
+
+                <div id="body-content" class="body-content ng-cloak">
+
+                    <div class="loading" ng-show="loading">
+                        <callout callout-type="info">
+                            <span class="fas fa-spinner fa-lg fa-spin"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                        </callout>
+                    </div>
+
+                    <div ng-show="currentTab && !loading">
+                        <h2 ng-hide="currentTab.hideTitle" ng-bind="currentTab.title"></h2>
+                        <p ng-if="currentTab.description" class="current-tab-description" ng-bind-html="currentTab.description"></p>
+                        <div id="viewContent"
+                             class="ng-cloak  animate-view"
+                             ng-view
+                             ng-cloak>
+                        </div>
+                        <div class="section" ng-if="parentTab">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                    <a href="" ng-click="go(parentTab.id)" class="btn btn-link"><span class=\'fas fa-undo fa-lg\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Return to “[_1]”','{{ parentTab.title }}' ]]);$output .= '</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script id="directives/scoreField.phtml" type="text/ng-template">
+    ';$output .= $context->insert('mail/spam/directives/scoreField.phtml');$output .= '
+    </script>
+
+    <script id="views/spamAutoDelete.ptt" type="text/ng-template">
+    ';$output .= $context->process('mail/spam/views/spamAutoDelete.ptt');$output .= '
+    </script>
+
+    <script id="views/spamBox.ptt" type="text/ng-template">
+    ';$output .= $context->process('mail/spam/views/spamBox.ptt');$output .= '
+    </script>
+
+    <script id="views/requiredScore.ptt" type="text/ng-template">
+    ';$output .= $context->process('mail/spam/views/requiredScore.ptt');$output .= '
+    </script>
+
+    <script id="views/advancedSettings.ptt" type="text/ng-template">
+    ';$output .= $context->process('mail/spam/views/advancedSettings.ptt');$output .= '
+    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+    ';$output .= '
+
+'}else {$output .= '
+<div class="callout callout-warning">
+    ';$output .= $stash->get(['locale',0,'maketext',['This feature is not enabled.' ]]);$output .= '
+</div>
+
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'apache_spam_assassin','feature'=>'','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>['mail/spam/index.css','css/angular-chosen-spinner.css','libraries/chosen/1.5.1/chosen.min.css' ],'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+        <script type="text/javascript">
+            var PAGE = PAGE || {};
+            PAGE.feature_spam_box = ';$output .= $stash->get(['feature_spam_box',0,'json',0]);$output .= '
+            PAGE.feature_spam_assassin = ';$output .= $stash->get(['feature_spam_assassin',0,'json',0]);$output .= '
+            PAGE.user = ';$output .= $stash->get(['CPANEL',0,'authuser',0,'json',0]);$output .= '
+        </script>
+    '}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

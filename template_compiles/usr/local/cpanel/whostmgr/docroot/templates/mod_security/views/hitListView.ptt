@@ -1,0 +1,202 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mod_security/views/hitListView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+
+<div class="row">
+    <div class="col-xs-6">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Hits List' ]]);$output .= '</h2>
+    </div>
+    <div class="col-xs-6 text-right" ng-show="isInstalled">
+        <div class="navigation-controls">
+            <button id="btnTopCustomRulesList"
+                    type="button"
+                    class="btn btn-primary"
+                    ng-click="loadView(\'rulesList\', null, { clearAlerts: true })">
+                ';$output .= $stash->get(['locale',0,'maketext',['Rules List' ]]);$output .= '
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="dbException">
+    <div class="col-xs-12">
+        <cp:alert id="databaseError"
+                  type="danger">
+            ';$output .= $stash->get(['locale',0,'maketext',['The following exception has occurred: [_1]','{{dbException}}' ]]);$output .= '
+        </cp:alert>
+    </div>
+</div>
+
+<div class="row" ng-show="!dbException">
+    <div class="col-xs-12 col-sm-5">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-10">
+                    <div class="input-group filter-controls">
+                        <input  id="hitListFilter"
+                                class="form-control"
+                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['To find rules quickly use the Search feature.' ]]);$output .= "\"\n                                ng-model=\"meta.filterValue\"\n                                autocomplete=\"off\"\n                            auto-focus\n                            ng-keyup=\"triggerToggleSearch(\$event)\">\n                        <span class=\"input-group-btn\">\n                            <button id=\"btnSearch\"\n                                    type=\"button\"\n                                    class=\"btn btn-default\"\n                                    ng-click=\"toggleSearch(true)\">\n                                <span class=\"glyphicon\" ng-class=\"{ 'glyphicon-search': !activeSearch, 'glyphicon-remove': activeSearch }\"></span>\n                            </button>\n                        </span>\n                    </div>\n                </div>\n                <div class=\"col-xs-2\">\n                    <span spinner id=\"hitlistSpinner\" class=\"headerSpinner\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-7 form-inline text-left-xs text-right-sm">
+        <div class="form-group page-size-container">
+            <label for="ddlPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                <select id="ddlPageSize"
+                        class="form-control page-size-control"
+                        ng-model="meta.pageSize"
+                        ng-options="size for size in meta.pageSizes">
+                </select>
+            </label>
+        </div>
+        <uib-pagination id="topPager"
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="5"
+                    direction-links="false"
+                    boundary-links="true"
+                    first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                    last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                    previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                    next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                    class="pagination-small">
+        </uib-pagination>
+    </div>
+</div>
+
+<table class="table table-striped table-condensed" ng-show="!dbException">
+    <thead>
+        <tr cp-responsive-sort>
+            <th class="visible-xs" colspan="6">
+                <cp-responsive-sort-insert id-suffix="hits" main-label="';$output .= $stash->get(['locale',0,'maketext',['Sort by' ]]);$output .= '"></cp-responsive-sort-insert>
+            </th>
+            <th class="hidden-xs col-xs-2 hit-date">
+                <toggle-sort id="sortDate"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="timestamp">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Date' ]]);$output .= '
+                </toggle-sort>
+            </th>
+            <th class="hidden-xs col-xs-2 hit-host">
+                <toggle-sort id="sortHost"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="host">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Host' ]]);$output .= '
+                </toggle-sort>
+            </th>
+            <th class="hidden-xs col-xs-2 hit-ip">
+                <toggle-sort id="sortIP"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="ip">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Source' ]]);$output .= '
+                </toggle-sort>
+            </th>
+            <th class="hidden-xs col-xs-1 hit-severity">
+                <toggle-sort id="sortSeverity"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="meta_severity">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Severity' ]]);$output .= '
+                </toggle-sort>
+            </th>
+            <th class="hidden-xs col-xs-1 hit-response">
+                <toggle-sort id="sortResponse"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="http_status">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                </toggle-sort>
+            </th>
+            <th class="hidden-xs col-xs-4 hit-rule-id">
+                <toggle-sort id="sortRule"
+                             onsort="sortList"
+                             sort-meta="meta"
+                             sort-field="meta_id">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Rule ID' ]]);$output .= "\n                </toggle-sort>\n            </th>\n        </tr>\n    </thead>\n    <tbody>\n        <tr ng-repeat-start=\"hit in hitList\" ng-class=\"{active: \$index === selectedRow}\">\n            <td class=\"hit-date\" id=\"dateData{{\$index}}\">{{hit.timestamp}}</td>\n            <td class=\"hit-host\" id=\"hostData{{\$index}}\" ng-bind-html=\"hit.host | wrap:'[.:]'\"></td>\n            <td class=\"hit-ip\" id=\"ipData{{\$index}}\" ng-bind-html=\"hit.ip | wrap:'[.:]'\"></td>\n            <td class=\"hit-severity\" id=\"severityData{{\$index}}\">{{hit.meta_severity}}</td>\n            <td class=\"hit-response\" id=\"responseData{{\$index}}\">{{hit.http_status}}</td>\n            <td class=\"hit-rule-id\" id=\"ruleId{{\$index}}\">\n                <div class=\"row row-condensed\">\n                    <div class=\"col-xs-12 col-md-8\" ng-show=\"hit.meta_file && hit.file_exists\">\n                        <button id=\"btnRule{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn-sm btn-link text-left\"\n                                ng-click=\"loadEditRuleView(hit.meta_id, hit.meta_file)\">\n                            <span class=\"glyphicon glyphicon-pencil\"></span>\n                            <span id=\"metaID{{\$index}}\">{{hit.meta_id}}</span>: <span id=\"metaMsg{{\$index}}\" ng-bind-html=\"hit.meta_msg | wrap: '[.]':20\"></span>\n                        </button>\n                    </div>\n                    <div class=\"col-xs-12 col-md-8\" ng-hide=\"hit.meta_file && hit.file_exists\">\n                        <button id=\"btnRule{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn-sm btn-link text-left\"\n                                disabled=\"disabled\">\n                            <span class=\"glyphicon glyphicon-ban-circle\"></span>\n                            <span id=\"metaID{{\$index}}\">{{hit.meta_id}}</span>: <span id=\"metaMsg{{\$index}}\" ng-bind-html=\"hit.meta_msg | wrap: '[.]':20\"></span>\n                        </button>\n                    </div>\n                    <div class=\"col-xs-12 col-md-4\">\n                        <button id=\"btnExpandCollapse{{\$index}}\"\n                                type=\"button\"\n                                class=\"btn-sm btn-link\"\n                                ng-click=\"toggleRow(\$index)\">\n                            <span ng-show=\"\$index === selectedRow\"><span class=\"glyphicon glyphicon-chevron-up\"></span> ";$output .= $stash->get(['locale',0,'maketext',['Hide' ]]);$output .= "</span>\n                            <span ng-show=\"\$index !== selectedRow\"><span class=\"glyphicon glyphicon-chevron-down\"></span> ";$output .= $stash->get(['locale',0,'maketext',['More' ]]);$output .= "</span>\n                        </button>\n                    </div>\n                </div>\n            </td>\n        </tr>\n        <tr ng-repeat-end class=\"info\" ng-if=\"\$index === selectedRow\">\n            <td colspan=\"6\" class=\"hit-request\" id=\"requestData{{\$index}}\">\n                <div class=\"hit-request-table\">\n                    <div>\n                        <div>\n                            <label>";$output .= $stash->get(['locale',0,'maketext',['Request:' ]]);$output .= '</label>
+                        </div>
+                        <div>
+                            <span>
+                                <span>{{ hit.http_method }}</span>
+                                <span ng-bind-html="hit.path | wrap:\'[/.?=]\':20"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Action Description:' ]]);$output .= '</label>
+                        </div>
+                        <div>
+                            <span ng-bind-html="hit.action_desc | wrap:\'[/.?=]\':20"></span>
+                        </div>
+                    </div>
+                    <div>
+                        <div>
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Justification:' ]]);$output .= "</label>\n                        </div>\n                        <div>\n                            <span ng-bind-html=\"hit.justification | wrap:'[/.?=]':20\"></span>\n                        </div>\n                    </div>\n                </div>\n                <button ng-show=\"hit.reportable\"\n                        ng-attr-id=\"btnReport-{{ \$index }}\"\n                        class=\"btn btn-sm btn-default\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Report a problem or concern with this hit.' ]]);$output .= '"
+                        ng-click="loadReportView(hit)">
+                    <span class=\'fas fa-envelope\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Report this hit' ]]);$output .= '
+                </button>
+            </td>
+        </tr>
+        <tr class="info emptyrow" ng-hide="hitList.length" ng-switch="loadingPageData">
+            <td colspan="6" id="noRecords" ng-switch-when="true">';$output .= $stash->get(['locale',0,'maketext',['The system is loading your [asis,Hits List].' ]]);$output .= '</td>
+            <td colspan="6" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The [asis,Hits List] is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="row" ng-show="!dbException">
+    <div class="col-xs-12 col-sm-7 text-left-xs text-right-sm form-inline pull-right">
+        <div class="form-group page-size-container">
+            <label for="ddlBottomPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size' ]]);$output .= '
+                <select id="ddlBottomPageSize"
+                        class="form-control page-size-control"
+                        ng-model="meta.pageSize"
+                        ng-options="size for size in meta.pageSizes">
+                </select>
+            </label>
+        </div>
+        <uib-pagination id="bottomPager"
+                    ng-change="selectPage()"
+                    ng-model="meta.pageNumber"
+                    items-per-page="meta.pageSize"
+                    total-items="totalItems"
+                    max-size="5"
+                    direction-links="false"
+                    boundary-links="true"
+                    first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                    last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                    previous-text="';$output .= $stash->get(['locale',0,'maketext',['Previous' ]]);$output .= '"
+                    next-text="';$output .= $stash->get(['locale',0,'maketext',['Next' ]]);$output .= '"
+                    class="pagination-small">
+        </uib-pagination>
+    </div>
+    <div class="col-xs-12 col-sm-5 pull-left">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="navigation-controls">
+                        <button id="btnTop"
+                                type="button"
+                                class="btn btn-link"
+                                ng-click="scrollTo(\'top\')">
+                            <span class="glyphicon glyphicon-chevron-up"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Back To Top' ]]);$output .= '
+                        </button>
+                        <button id="btnBottomCustomRulesList"
+                                type="button"
+                                class="btn btn-primary"
+                                ng-click="loadView(\'rulesList\')" ng-show="isInstalled">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Rules List' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

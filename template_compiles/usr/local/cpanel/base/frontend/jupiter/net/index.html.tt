@@ -1,0 +1,66 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/net/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'feature',['nettools' ]])){$output .= '
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Network Tools allow a user to find out information about any domain, or to trace the route from the server your site is on to the computer you are accessing cPanel from. Finding out information about a domain can be useful in making sure your DNS is set up properly as you will find out information about your IP address as well as your DNS.' ]]);$output .= '
+        </p>
+        <div class="section">
+            <h2>
+                ';$output .= $stash->get(['locale',0,'maketext',['Domain Lookup' ]]);$output .= '
+            </h2>
+            <p class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['The Domain Lookup tool allows you to find out the IP address of any domain, as well as DNS information about that domain. This can be a very useful tool right after your site is set up or after DNS changes have been made to make sure your DNS is setup properly.' ]]);$output .= '
+            </p>
+            <div>
+                <form action="dnslook.html" id="dnslook" name="dnslook">
+                    <div class="form-group">
+                        <label for="dns">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enter a domain to look up:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" name="dns" id="dns">
+                            </div>
+                            <div id="dns_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input id="submit-button" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Look Up' ]]);$output .= '">
+                    </div>
+                </form>
+            </div>
+        </div>
+                <div class="section">
+                    <h2>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Trace Route' ]]);$output .= '
+                    </h2>
+                    <p class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['This function allows you to trace the route from the computer you are accessing cPanel from to the server your site is on (i.e. the number of servers and what servers your data must pass through to get to your site).' ]]);$output .= '
+                    </p>
+                    <form action="traceroute.html">
+                        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Trace' ]]);$output .= '" />
+                    </form>
+                </div>
+    '}else {$output .= '
+        ';$stash->set('refresh_include',$stash->get(['CPANEL',0,'ENV',0,'DOCUMENT_ROOT',0]).'/frontend/' .$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]).'/refresh_include.html.tt');$output .= $context->include($stash->get('refresh_include'),{'feature'=>'nettools' });$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'app_key'=>'track_dns','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    ';if ($stash->get(['CPANEL',0,'feature',['nettools' ]])){$output .= '
+        <script type="text/javascript">
+            var init = function() {
+                    var validation = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Network Tools' ]]);$output .= '");
+                    validation.add(\'dns\', \'fqdn\', \'';$output .= $stash->get(['locale',0,'maketext',['Your entry must be a domain name (e.g. example.com).' ]]);$output .= '\');
+                    validation.attach();
+                    CPANEL.validate.attach_to_form("submit-button", validation);
+                };
+
+            YAHOO.util.Event.onDOMReady(init);
+        </script>
+    '}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

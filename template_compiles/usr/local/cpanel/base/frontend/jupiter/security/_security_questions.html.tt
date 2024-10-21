@@ -1,0 +1,164 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/_security_questions.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= '
+';$stash->set('Api2',$context->plugin('Api2'));$stash->set('JSON',$context->plugin('JSON'));$output .= '
+<link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['MagicRevision',['/unprotected/yui/assets/skins/sam/autocomplete.css' ]]);$output .= '" />
+<link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['MagicRevision',['/unprotected/yui/container/assets/container.css' ]]);$output .= '" />
+
+<style type="text/css">
+html {
+    min-width: 320px;
+}
+
+.yui-skin-sam input.yui-ac-input {
+    position: static;
+    width: auto;
+}
+
+.combobox {
+    border: 1px solid #aaaaaa;
+    display: inline-block;
+}
+
+.combobox input {
+    border: 0;
+    border-right: 1px solid #aaaaaa;
+    padding: 2px;
+}
+
+.combobox a {
+    display: inline-block;
+    padding: 0 2px;
+}
+
+.combobox a:hover {
+    text-decoration: none;
+}
+
+.cjt-text-input-placeholder {
+    opacity: .5;
+    text-align: center;
+    font-style: italic;
+}
+
+#userform {
+    text-align: center; /* Center the continue button on < 480px */
+}
+
+tr.answer td {
+    padding-bottom: 20px;
+}
+
+.cjt_validation_error {
+    margin-top: 5px;
+}
+
+/* Reset a lot of the odd padding/margin/height/width rules in styles_v2 */
+
+#security-container {
+    width: auto;
+}
+
+#security-sub-container {
+    height: auto;
+    width: auto;
+    position: relative;  /* Put the container back in the document flow to push the cPanel logo down appropriately */
+    left: 0;
+}
+
+#security-sub {
+    height: auto;
+    padding-left: inherit;
+}
+
+#security-sub .login-rt {
+    padding: 0;
+}
+
+.security_policy .copyright {
+    margin-top: 30px;
+}
+
+</style>
+
+<script src="';$output .= $stash->get(['MagicRevision',['/yui-gen/data/data.js' ]]);$output .= '"></script>
+<script src="';$output .= $stash->get(['MagicRevision',['/yui/autocomplete/autocomplete.js' ]]);$output .= '"></script>
+<script src="';$output .= $stash->get(['MagicRevision',['/cjt/combobox.js' ]]);$output .= '"></script>
+
+<script>
+(function() {
+    var questions = ';$output .= $stash->get(['Api2',0,'exec',['SourceIPCheck','samplequestions' ],'json',0])|| '[]';$output .= ';
+    var selected_questions = ';$output .= $stash->get(['userquestions',0,'json',0])|| '[]';$output .= ";\n\n    var VALID = {};\n\n    /**\n     * Validate that the answer has a reasonable length\n     *\n     * \@method answerMinLengthValidator\n     * \@return {Boolean}\n     */\n    function answerMinLengthValidator() {\n        var value = this.el.value.trim();\n        return value.length >= 2;\n    };\n\n    /**\n     * Validate that the question has a reasonable length\n     *\n     * \@method questionMinLengthValidator\n     * \@return {Boolean}\n     */\n    function questionMinLengthValidator() {\n        var val = this.el.value.trim();\n        return (val.length >= 2);\n    };\n\n    /**\n     * Factory method to generate a q/a section validator function.\n     *\n     * \@method makeQuestionAnswerValidator\n     * \@param  {Validator} questionValidator\n     * \@param  {Validator} answerValidator\n     * \@return {Function}\n     */\n    function makeQuestionAnswerValidator(questionValidator, answerValidator) {\n        /**\n         * Run the the question and answer validation routines.\n         *\n         * \@method validate\n         * \@private\n         */\n        return function validate() {\n            questionValidator.verify();\n            if(questionValidator.is_valid()) {\n                var el = answerValidator.validators[0].el;\n                if (el.value !== el.defaultValue) {\n                    answerValidator.verify();\n                }\n            }\n        };\n    }\n\n    /**\n     * Factory method to make a select function for the current q & a section.\n     *\n     * \@method makeOnSelectHandler\n     * \@param  {Function} validateFn\n     * \@param  {Validator} questionValidator\n     * \@param  {HtmlInputElement} answerInputEl\n     * \@return {Function}\n     */\n    function makeOnSelectHandler(validateFn, questionValidator, answerInputEl) {\n        return function() {\n            validateFn();\n        }\n    }\n\n    /**\n     * Checked that the current question is not the same as\n     * any of the other questions. This is needed since the\n     * use can supply any question they want.\n     *\n     * \@method  questionIsUnique\n     * \@return {Boolean}\n     */\n    function questionIsUnique() {\n        var thisQuestionEl = this.el;\n        if (thisQuestionEl.value == thisQuestionEl.defaultValue) {\n            return true; // not yet initialized. ignore it for now.\n        }\n\n        var questionEls = document.querySelectorAll(\".security_question\");\n        var hasDuplicates = false;\n\n        for(var i = 0, l = questionEls.length; i < l; i++) {\n            var questionEl = questionEls[i];\n            if (questionEl.id !== thisQuestionEl.id &&           // Not the current question\n                questionEl.value !== questionEl.defaultValue) {  // Not comparing to an unset question\n                if (questionEl.value === thisQuestionEl.value) {\n                    hasDuplicates = true;\n                }\n            }\n        }\n\n        return !hasDuplicates;\n    }\n\n    /**\n     * Initialize the form\n     *\n     * \@method  init\n     * \@private\n     */\n    var init = function() {\n        // Setup the validators for\n        // the questions & answers\n        for (var i = 1; i <= 4; i++) {\n            // NOTE: There are 4 sets of questions generated.\n            // So this look divides the questions list into 4 groups\n            // of 7:\n            //   questions 0-7,\n            //   questions 8-13,\n            //   questions 14-21,\n            //   ...\n            var currentQuestions = questions.slice(7 * (i - 1), 7 + 7 * (i - 1));\n            var questionInputEl = DOM.get(\"q\" + i + \"ques\");\n            var questionExpanderEl = DOM.get(\"q\" + i + \"_expander\");\n            var answerInputEl = DOM.get(\"q\" + i + \"answer\");\n\n            // Remove the current question from the available questions\n            // so we can only have one of the n questions with that question.\n            if ( questionInputEl.value && (currentQuestions.indexOf(questionInputEl.value) === -1) ) {\n                currentQuestions.unshift(questionInputEl.value);\n            }\n\n            // Attach the dropdown part of the combo to each question\n            var cb = new CPANEL.widgets.Combobox( questionInputEl, null, currentQuestions, {\n                    expander: questionExpanderEl\n                } );\n            cb.formatResult = cb.formatEscapedResult;\n\n            // Build the question validation\n            var questionValidator = new CPANEL.validate.validator(\"";$output .= $stash->get(['locale',0,'maketext',['Question' ]]);$output .= "\" + \" \" + LOCALE.numf(i));\n            questionValidator.add(questionInputEl, \"max_length(\$input\$,128)\", \"";$output .= $stash->get(['locale',0,'maketext',['The question cannot be longer than 128 characters.' ]]);$output .= '", null, { no_width_height: 1 });
+            questionValidator.add(questionInputEl, questionMinLengthValidator, "';$output .= $stash->get(['locale',0,'maketext',['The question must be at least 2 characters long.' ]]);$output .= '", null, { no_width_height: 1 });
+            questionValidator.add(questionInputEl, questionIsUnique, "';$output .= $stash->get(['locale',0,'maketext',['The question must be unique.' ]]);$output .= '", null, { no_width_height: 1 });
+            questionValidator.attach();
+
+            // Build the answer validation
+            var answerValidator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Answer' ]]);$output .= "\" + \" \" + LOCALE.numf(i));\n            answerValidator.add(answerInputEl, \"max_length(\$input\$,128)\", \"";$output .= $stash->get(['locale',0,'maketext',['The answer cannot be longer than 128 characters.' ]]);$output .= '", null, { no_width_height: 1 });
+
+            answerValidator.add(answerInputEl, answerMinLengthValidator, "';$output .= $stash->get(['locale',0,'maketext',['The answer must be at least 2 characters long.' ]]);$output .= '", null, { no_width_height: 1 });
+
+            // Attach the section Q & A valiators to run if there is a
+            // change in the question via typing or the dropbox selection
+            var validateFn = makeQuestionAnswerValidator(questionValidator, answerValidator);
+            EVENT.on( questionInputEl, "keydown", validateFn );
+            EVENT.on( questionInputEl, "keyup", validateFn );
+            EVENT.on( questionInputEl, "blur", validateFn );
+            EVENT.on( questionInputEl, "input", validateFn );
+            cb.itemSelectEvent.subscribe( makeOnSelectHandler(validateFn, questionValidator, answerInputEl) );
+
+            if (questionInputEl.defaultValue) {
+                YAHOO.util.Dom.setAttribute(
+                    answerInputEl,
+                    "placeholder",
+                    "';$output .= $stash->get(['locale',0,'maketext',['No change' ]]);$output .= '"
+                );
+            }
+
+            VALID["q" + i] = questionValidator;
+            VALID["a" + i] = answerValidator;
+            VALID["a" + i].attach();
+        }
+
+        CPANEL.validate.attach_to_form("submit-button", VALID);
+
+        // Move the focus to the first question
+        // so keyboard users don\'t have to tab
+        // around.
+        DOM.get("q1ques").focus();
+    }
+
+    YAHOO.util.Event.onDOMReady(init);
+
+})();
+</script>
+
+<form name="userform" id="userform" action="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('action');&$_tt_filter($output)};$output .= '" method="post">
+    <input type="hidden" name="formaction" value="setquestions" />
+
+    <table>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=[1..4 ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'i'}=$_tt_value;$output .= '        <tr class="question-row">
+            <td class="label-cell">
+                <label for="q';$output .= $stash->get('i');$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Question [numf,_1]:',$stash->get('i')]]);$output .= '</label>
+            </td>
+            <td class="field-cell">
+                <div class="combobox"><input id="q';$output .= $stash->get('i');$output .= 'ques" name="q';$output .= $stash->get('i');$output .= 'ques" class="security_question" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userquestions',0,$stash->get('i'),0]);&$_tt_filter($output)};$output .= '" size="50" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Select a security question, or enter your own.' ]]);$output .= '" /><span id="q';$output .= $stash->get('i');$output .= '_expander" class="security_question_expander">▼</span>
+                </div>
+                <div id="q';$output .= $stash->get('i');$output .= 'ques_error" class="security_question_error show_inline"></div>
+            </td>
+        </tr>
+        <tr class="answer">
+            <td class="label-cell">
+                <label for="q';$output .= $stash->get('i');$output .= 'answer">';$output .= $stash->get(['locale',0,'maketext',['Answer [numf,_1]:',$stash->get('i')]]);$output .= '</label>
+            </td>
+            <td class="field-cell">
+                <input id="q';$output .= $stash->get('i');$output .= 'answer" class="security_question_answer" name="q';$output .= $stash->get('i');$output .= 'answer" size="50" />
+                <div id="q';$output .= $stash->get('i');$output .= 'answer_error" class="show_inline"></div>
+            </td>
+        </tr>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </table>
+
+    <button type="submit" id="submit-button" class="input-button" />
+        ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+    </button>
+</form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

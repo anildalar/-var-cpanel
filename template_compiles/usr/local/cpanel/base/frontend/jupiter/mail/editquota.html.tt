@@ -1,0 +1,105 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/editquota.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('CPMath',$context->plugin('CPMath'));$output .= $stash->get(['Api2',0,'pre_exec',['Email','getdiskusage' ]]);$stash->set('diskusage',$stash->get(['Api2',0,'exec',['Email','getdiskusage',{'domain'=>($stash->get(['RAW_FORM',0,'domain',0])),'user'=>($stash->get(['RAW_FORM',0,'email',0]))}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','getdiskusage' ]]);if ($stash->get(['diskusage',0,'size',0])){$stash->set('diskused',$stash->get(['diskusage',0,0,0,'diskused',0]))}$stash->set('get_pop_quota_response',$stash->get(['execute',['Email','get_pop_quota',{'email'=>$stash->get(['RAW_FORM',0,'email',0]),'domain'=>$stash->get(['RAW_FORM',0,'domain',0])}]]));if ($stash->get(['get_pop_quota_response',0,'status',0])){if ($stash->get(['get_pop_quota_response',0,'data',0])eq 'unlimited'){$stash->set('popquota',$stash->get(['locale',0,'maketext',['unlimited' ]]))}else {$stash->set('popquota',$stash->get(['CPMath',0,'int',[$stash->get(['get_pop_quota_response',0,'data',0])]]))}$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output})}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['get_pop_quota_response',0,'status',0])){$output .= '
+    <p class="description" id="descMailLimit">
+        ';$output .= $stash->get(['locale',0,'maketext',['Please enter the limit for the user’s mailbox, in megabytes.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['To set no limit (an infinite quota), simply enter “unlimited”.' ]]);$output .= '
+    </p>
+
+    <form name="quotaform" id="quotaform" method="post" action="doeditquota.html">
+        <input type="hidden" id="email" name="email" value="';$output .= $stash->get(['FORM',0,'email',0]);$output .= '" />
+        <input type="hidden" id="domain" name="domain" value="';$output .= $stash->get(['FORM',0,'domain',0]);$output .= '" />
+
+        <div class="form-group">
+            <label id="lblEmail">
+                ';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span id="email">';$output .= $stash->get(['FORM',0,'email',0,'split',['=' ],'item',[0 ]]);$output .= "\@";$output .= $stash->get(['FORM',0,'domain',0]);$output .= '</span>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblUsage" for="add_email_account">
+                ';$output .= $stash->get(['locale',0,'maketext',['Usage' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <span id="usage">';$output .= $stash->get('diskused');$output .= '</span> <acronym title="';$output .= $stash->get(['locale',0,'maketext',['Megabytes' ]]);$output .= '">MB</acronym>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label id="lblNewQuota" for="add_email_account">
+                ';$output .= $stash->get(['locale',0,'maketext',['New Quota' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="input-group">
+                        <input type="text" size="10" id="quota" value="';$output .= $stash->get('popquota');$output .= '" class="form-control" />
+                        <acronym class="input-group-addon" title="';$output .= $stash->get(['locale',0,'maketext',['Megabytes' ]]);$output .= '">MB</acronym>
+                    </div>
+                    <input type="hidden" name="quota" id="real_quota" value="250" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="quota_error"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" id="submit_quota" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" />
+        </div>
+    </form>
+    '}else {$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['get_pop_quota_response',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'err'}=$_tt_value;$output .= '
+                        ';$output .= $stash->get(['err',0,'html',0]);$output .= '
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </span>
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'email_accounts','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+(function() {
+
+    var MAX_EMAIL_QUOTA = new Number(';$output .= $stash->get(['execute',['Email','get_max_email_quota_mib' ],'data',0,'json',0]);$output .= ');
+    var QUOTA_VAL = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Quota Input' ]]);$output .= "\");\n\n    /**\n     * custom validation function for the quota input\n     * \@return {Boolean}\n     */\n    var mailbox_quota = function () {\n        var quota = DOM.get(\"quota\").value;\n\n        // add a fallback to check for the english \"unlimited\" in case they felt like\n        // typing in \"unlimited\" in english instead of their selected locale\n        if (quota === ";$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['unlimited' ]])]]);$output .= " ||\n            quota === \"unlimited\") {\n            return true;\n        }\n\n        if (CPANEL.validate.integer(quota) === true) {\n            return true;\n        }\n\n        return false;\n    };\n\n    /**\n     * Custom validation function for the mailbox quota. This function is a little weird; basically\n     * I needed a way to show the user something if they enter a number over 2 gigs, but I didn't want\n     * to show them the same error text for the other validation function.\n     * \@return {Boolean}\n     */\n    var quota_over_2gigs = function() {\n       var quota = DOM.get(\"quota\").value;\n       if (CPANEL.validate.integer(quota) == true && (parseInt(quota, 10) > parseInt(MAX_EMAIL_QUOTA, 10))) {\n          return false;\n       }\n       return true;\n    };\n\n    /**\n     * Check the quota\n     */\n    var check_quota = function() {\n        if (quota_over_2gigs() === false) {\n            DOM.get(\"quota\").value = ";$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['unlimited' ]])]]);$output .= ";\n            QUOTA_VAL.verify();\n        }\n    };\n\n    /**\n     * Set the quota value to 0 before we submit the form if it's set to unlimited in the interface\n     * \@return {[type]} [description]\n     */\n    var fill_in_quota = function() {\n        var quota_field_input = DOM.get(\"quota\").value;\n        DOM.get(\"real_quota\").value = parseInt(quota_field_input, 10);\n        // add a fallback to check for the english \"unlimited\" in case they felt like\n        // typing in \"unlimited\" in english instead of their selected locale\n        if (quota_field_input === ";$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['unlimited' ]])]]);$output .= ' ||
+            quota_field_input === "unlimited") {
+            DOM.get("real_quota").value = 0;
+        }
+    };
+
+    /**
+     * Initialize the page
+     */
+    var page_init = function() {
+       QUOTA_VAL.add("quota", quota_over_2gigs, ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['Quotas cannot exceed [format_bytes,_1].',$stash->get(['execute',['Email','get_max_email_quota' ],'data',0])]])]]);$output .= ');
+       QUOTA_VAL.add("quota", mailbox_quota, ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['locale',0,'maketext',['Quota must be a number or unlimited.' ]])]]);$output .= ');
+       QUOTA_VAL.attach();
+
+       YAHOO.util.Event.on("quota", "blur", check_quota);
+
+       CPANEL.validate.attach_to_form("submit_quota", QUOTA_VAL, fill_in_quota);
+    }
+
+    YAHOO.util.Event.onDOMReady(page_init);
+})();
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

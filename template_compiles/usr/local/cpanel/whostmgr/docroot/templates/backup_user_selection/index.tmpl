@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_user_selection/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/backup_user_selection/index.min.css' ]])]);if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= $stash->get(['stylesheet_includes',0,'unshift',[$stash->get(['Whostmgr',0,'find_file_url',['/3rdparty/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]])]])}$stash->set('PAGE_BASE','/scripts/backup_user_selection/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('PAGE_DATA',{'MAIN_TITLE'=>$stash->get('PAGE_NAME')});$output .= do {my$output='';$output .= '
+
+<div id="viewContent"
+     class="ng-cloak section"
+     ng-view
+     ng-cloak>
+</div>
+
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['PAGE_DATA',0,'json',0]);$output .= ';
+</script>
+
+<script id="views/backupUserSelectionView.ptt" type="text/ng-template">
+';$output .= $context->process('backup_user_selection/views/backupUserSelectionView.ptt');$output .= '
+</script>
+
+<script type="text/javascript">
+    PAGE.legacyBackupEnabled = ';$output .= $stash->get(['data',0,'legacy_backup_enabled',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>$stash->get('stylesheet_includes'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','app_key'=>'backup_user_selection','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

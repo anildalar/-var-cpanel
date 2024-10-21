@@ -1,0 +1,406 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/webdav/accounts_webdav.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('Uapi',$context->plugin('Uapi'));if ($stash->get(['FORM',0,'itemsperpage',0])){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]))}if ((!$stash->get(['FORM',0,'itemsperpage',0])||!$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]))){$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10')}$stash->set('mail_domains',$stash->get(['Api2',0,'exec',['Email','listmaildomains',{}]]));$stash->set('required_strength_resp',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'webdisk' }]]));if ($stash->get(['required_strength_resp',0,'size',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,0,0,'strength',0]))}$stash->set('webdav_stat',$stash->get(['Api2',0,'exec',['StatsBar','stat',{'warnings'=>'1','infinitylang'=>'true','warninglevel'=>'80','display'=>'webdavaccounts' }]]));$stash->set('webdav_check_digest',$stash->get(['Api2',0,'exec',['WebDisk','hasdigest',{}]]));if ($stash->get(['webdav_check_digest',0,'size',0])){$stash->set('webdav_hasdigest',$stash->get(['webdav_check_digest',0,0,0,'hasdigest',0]))}$stash->set('cpdavd_enabled',$stash->get(['ExpVar',0,'expand',['$hascpdavd' ]])? 1 : 0);$stash->set('api2_result_UI_paginate',$stash->get(['Api2',0,'exec',['UI','paginate',{'itemsperpage'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]),'currentpage'=>$stash->get(['CPANEL',0,'CPVAR',0,'currentpage',0]),'pages'=>$stash->get(['CPANEL',0,'CPVAR',0,'pages',0])}]]));$stash->set('api2_result_UI_paginate_list',$stash->get(['Api2',0,'exec',['UI','paginate_list',{'itemsperpage'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]),'itemlist'=>'10:25:50:100:250:500' }]]));$output .= '
+
+';if ($stash->get('cpdavd_enabled')){$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+'}$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+
+<div class="body-content">
+    <p id="descWebDisk" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Create a Web Disk account to manage, navigate, upload, and download the files on your web server.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Web Disk account directories exist relative to your account’s home directory.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['The home icon ([_1]) signifies your home directory (“[_2]”).','<span class="fas fa-home"></span>',$stash->get(['CPANEL',0,'homedir',0])]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2].','//go.cpanel.net/WebDisk','_blank' ]]);$output .= '
+    </p>
+
+    <div id="cjt_pagenotice_container"></div>
+
+    ';if (!$stash->get('cpdavd_enabled')){$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['Your server administrator must enable the [asis,cpdavd] service to use this feature.' ]]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+
+    <div style="display:none;" id="webdav_notices"></div>
+
+    <div id="mainaccount_container" class="section">
+        <h2 id="hdrMainAcct">
+            ';$output .= $stash->get(['locale',0,'maketext',['Main Web Disk Account' ]]);$output .= '
+            <span id="main_account_help" class="glyphicon glyphicon-info-sign"></span>
+        </h2>
+
+        <div class="table-responsive">
+          <table id="mainwebdavtbl" fixedtruncate="1" class="truncate-table sortable table table-striped">
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '</th>
+                <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+            </tr>
+            <tr>
+                <td class="truncate" truncate="25">';$output .= $stash->get(['CPANEL',0,'user',0]);$output .= '</td>
+                <td>
+                    <span class="fas fa-home"></span>
+                    <span>/</span>
+                </td>
+                <td>
+                    ';if (($stash->get(['CPANEL',0,'ENV',0,'HTTP_PROXIED',0]))){$output .= '
+                        ';$output .= $stash->get(['Api1',0,'pre_exec',['ProxyUtils','proxyaddress' ]]);$output .= $stash->get(['Api1',0,'exec',['ProxyUtils','proxyaddress',['webdisk' ]]]);$output .= $stash->get(['Api1',0,'post_exec',['ProxyUtils','proxyaddress' ]]);$output .= '
+                        <a onclick=\'access_web_disk(';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| 'null';$output .= ',';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'new_proxy_domain',0,'html',0,'json',0])|| 'null';$output .= ',';$output .= $stash->get(['webdav_hasdigest',0,'html',0,'json',0])|| 'null';$output .= '); return false;\'
+                            href="webdavaccessdownload.html?domain=';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'new_proxy_domain',0,'html',0]);$output .= '&amp;sslport=';$output .= $stash->get(['ExpVar',0,'expand',['$sslhttpdport' ]]);$output .= '&amp;mainport=';$output .= $stash->get(['ExpVar',0,'expand',['$mainhttpdport' ]]);$output .= '&amp;hasdigest=';$output .= $stash->get(['webdav_hasdigest',0,'html',0]);$output .= '&amp;user=';$output .= $stash->get(['CPANEL',0,'user',0,'uri',0]);$output .= '"
+                            class="btn btn-link"
+                            id="btnAccessWebDisk">
+                            <span class="fas fa-wrench"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Configure Client Access' ]]);$output .= '
+                        </a>
+                    '}else {$output .= '
+                        <a onclick=\'access_web_disk(';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| 'null';$output .= ',';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'json',0])|| 'null';$output .= ',';$output .= $stash->get(['webdav_hasdigest',0,'json',0])|| 'null';$output .= '); return false;\'
+                            href="webdavaccessdownload.html?domain=';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0]);$output .= '&amp;sslport=2078&amp;mainport=2077&amp;hasdigest=';$output .= $stash->get(['webdav_hasdigest',0,'html',0]);$output .= '&amp;user=';$output .= $stash->get(['CPANEL',0,'user',0,'uri',0]);$output .= '"
+                            class="btn btn-link"
+                            id="btnAccessWebDisk">
+                            <span class="fas fa-wrench"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Configure Client Access' ]]);$output .= '
+                        </a>
+                    '}$output .= '
+
+                    ';if (!$stash->get('webdav_hasdigest')){$output .= '
+                        <a id=\'digest_auth_system\' onclick=\'set_digest_auth_popup("system",';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| 'null';$output .= ',"enable",this); return false;\'
+                            href="#"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to enable Digest Authentication.' ]]);$output .= '"
+                            class="btn btn-link">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                        </a>
+                    '}else {$output .= '
+                        <a id=\'digest_auth_system\' onclick=\'set_digest_auth_popup("system",';$output .= $stash->get(['CPANEL',0,'user',0,'json',0])|| 'null';$output .= ',"disable",this); return false;\'
+                            href="#"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to disable Digest Authentication.' ]]);$output .= '"
+                            class="btn btn-link">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Disable Digest Authentication' ]]);$output .= '
+                        </a>
+                    '}$output .= '
+                </td>
+            </tr>
+          </table>
+        </div>
+        <div style="display: none" id="main_account_help_text">
+            ';$output .= $stash->get(['locale',0,'maketext',['The Main Web Disk Account uses the same login information as your cPanel account. This account can access all of the files in your home directory.' ]]);$output .= '
+            <br /><br />
+            ';$output .= $stash->get(['locale',0,'maketext',['You [output,em,cannot] delete this account.' ]]);$output .= '
+        </div>
+    </div>
+
+    ';if ($stash->get(['CPANEL',0,'feature',['webdisk' ]])){$output .= '        <div id="virtualaccounts_creation_container" class="section">
+            <h2 id="hdrCreate">';$output .= $stash->get(['locale',0,'maketext',['Create an Additional Web Disk Account' ]]);$output .= '</h2>
+
+            ';if ($stash->get(['webdav_stat',0,'size',0])){$output .= '
+            <p class="caution" id="warnMsg">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: You currently use [numf,_1] out of [numf,_2] accounts.',$stash->get(['webdav_stat',0,0,0,'count',0]),$stash->get(['webdav_stat',0,0,0,'max',0])]]);$output .= '
+            </p>
+            '}$output .= '
+            <form method="post" action="doaddwebdav.html" name="mainform" id="mainform">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+                <div class="form-group">
+                    <label id="lblUserName" for="user">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= "\n                    </label>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                            <div class=\"input-group\">\n                                <input id=\"user\" name=\"user\" type=\"text\" class=\"form-control\"/>\n                                <span class=\"input-group-addon\">\@</span>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" id=\"user_error\">\n                        </div>\n                    </div>\n                </div>\n                <div class=\"form-group\">\n                    <label id=\"lblDomain\" for=\"domain\">\n                        ";$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            ';if ($stash->get(['mail_domains',0,'size',0])eq 1){$output .= '
+                                ';$output .= $stash->get(['mail_domains',0,0,0,'domain',0,'html',0]);$output .= '
+                                <input type="hidden" name="domain" id="domain" value="';$output .= $stash->get(['mail_domains',0,0,0,'domain',0,'html',0]);$output .= '" />
+                            '}else {$output .= '
+                                <select name="domain" class="form-control" id="domain">
+                                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('mail_domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'domain_info'}=$_tt_value;$output .= '
+                                    <option value="';$output .= $stash->get(['domain_info',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['domain_info',0,'domain',0,'html',0]);$output .= '</option>
+                                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </select>
+                            '}$output .= '
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="domain_error">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblPassword" for="password">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input id="password" type="password" autocomplete=\'off\' name="password"  class="form-control"/>
+                        </div>
+                        <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblPassword2" for="password2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input id="password2" autocomplete=\'off\' class="form-control" type="password" name="password2"  />
+                        </div>
+                        <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label id="lblPasswordStrength">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                                <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                            </label>
+                            ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div id="password_strength" class="password_strength"></div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input id="create_strong_password" type="button"  class="btn btn-default"
+                                value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="lblDirectory" for="homedir">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '
+                        <span class="fas fa-home"></span>
+                        <span>/</span>
+                    </label>
+                    ';$stash->set(['CPANEL',0,'CPVAR',0,'autoinput',0],'homedir');$output .= '
+                    ';$stash->set(['CPANEL',0,'CPVAR',0,'autodirsonly',0],'1');$output .= '
+                    ';$stash->set(['CPANEL',0,'CPVAR',0,'autofunc',0],'dirComplete');$output .= '
+                    <script type="text/javascript">
+                    function dirComplete(inputObj) {}
+                    </script>
+                    ';$output .= $context->process('autodir/dirbox.html.tt');$output .= '
+                </div>
+                <div class="form-group" id="add-perm-row">
+                    <label id="lblPermissions">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Permissions' ]]);$output .= '
+                        <span class="glyphicon glyphicon-info-sign" id="setperms-info"></span>
+                    </label>
+                    <div class="radio">
+                        <label id="lblRdoRW">
+                            <input checked="checked" type="radio" name="perms" id="perms_rw" value="rw">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Read-Write' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label id="lblRdoRO">
+                            <input type="radio" name="perms" id="perms_ro" value="ro">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Read-Only' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" id="add-auth-row">
+                    <div class="checkbox">
+                        <label id="lblCbEnableDigest">
+                            <input type="checkbox" id="enabledigest" value="1" name="enabledigest">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                        </label>
+                        <span class="glyphicon glyphicon-info-sign" id="enabledigest-info"></span>
+                    </div>
+                </div>
+                <div class="form-group" id="add-submit-row">
+                    <input id="btnCreateWebDav" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '" />
+                </div>
+            </form>
+        </div>
+        <div style="display: none" id="permissions_help_text">
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Read-Write access level will permit all supported operations inside the directory assigned to this Web Disk account.' ]]);$output .= '
+            </p>
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Read-Only access will only permit this account to read, download, and list files inside the directory assigned to this Web Disk account.' ]]);$output .= '"
+            </p>
+        </div>
+        <div style="display: none" id="digest_auth_help_text">
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8','Windows® 10' ]]);$output .= '
+            </p>
+            <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '
+            </p>
+        </div>
+    '}$output .= '
+    <div id="virtualaccounts_list_container" class="section">
+        <h2 id="hdrAdditionalAccts">';$output .= $stash->get(['locale',0,'maketext',['Manage Additional Web Disk Accounts' ]]);$output .= '</h2>
+        <div class="search-panel">
+            <form method="get">
+                <div class="row">
+                    <div class="col-xs-4">
+                        <input type="text" class="form-control" name="searchregex" id="searchregex"
+                            value="';$output .= $stash->get(['FORM',0,'searchregex',0]);$output .= '"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '">
+                    </div>
+                    <div class="col-xs-2">
+                        <input id="search-button" type="submit" class="btn btn-primary"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to filter the Web Disk accounts by the selected criteria.' ]]);$output .= '"
+                            value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" >
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="table-responsive">
+          <table id="webdavtbl" fixedtruncate="1" class="truncate-table sortable table table-striped">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Directory' ]]);$output .= '</th>
+                    <th class="cell sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';$output .= $context->include('webdav/listwebdisks.html.tt');$output .= '
+
+          </table>
+        </div>
+
+        ';if ($stash->get(['api2_result_UI_paginate',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_UI_paginate');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= $stash->get(['hashref',0,'paginator',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}$output .= '
+
+        ';if (($stash->get(['CPANEL',0,'CPVAR',0,'pages',0])&&!($stash->get(['CPANEL',0,'CPVAR',0,'pages',0])eq '1'))){$output .= '
+        <div style="float:right">
+            <form>
+                ';$output .= $stash->get(['locale',0,'maketext',['Showing' ]]);$output .= '
+                <select name="itemsperpage" onchange="this.form.submit();" id="selItemsPerPage">
+                ';if ($stash->get(['api2_result_UI_paginate_list',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api2_result_UI_paginate_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                    <option value="';$stash->set('hashkey','item');$output .= $stash->get(['hashref',0,$stash->get('hashkey'),0]);$output .= '" ';$output .= '1' eq $stash->get(['hashref',0,'selected',0])? 'selected' : '';$output .= '>
+                        ';$stash->set('hashkey','item');$output .= $stash->get(['hashref',0,$stash->get('hashkey'),0]);$output .= '
+                    </option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}$output .= '
+                </select>
+                <noscript>
+                    <button id="my_button" onclick="" type="submit" Value="">';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '</button>
+                </noscript> ';$output .= $stash->get(['locale',0,'maketext',['Results Per Page' ]]);$output .= '
+            </form>
+        </div>
+        '}$output .= '
+    </div>
+
+
+    <div id="homedir_panel" class="yui-dialog yui-panel-container" style="display:none;">
+        <div class="hd"><span>';$output .= $stash->get(['locale',0,'maketext',['Change Home Directory' ]]);$output .= '</span></div>
+        <div class="bd">
+            <div id="message_panel-content">
+                <form>
+                    <input type="hidden" id="change_homedir_login" />
+                    <div class="form-group">
+                        <p id="change_homedir_logintxt"></p>
+                    </div>
+                    <div class="form-group" id="change_homedir_entry_block">
+                        <label id="lblNewHome" for="change_homedir_dir">
+                        ';$output .= $stash->get(['locale',0,'maketext',['New Home Directory' ]]);$output .= '
+                        <span class="fas fa-home">/</span>
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <input type="text"
+                                    class="form-control"
+                                    id="change_homedir_dir"
+                                    name="homedir"
+                                    onkeypress="return trapEnterPress(event);"
+                                    value=""
+                                    size="40" />
+                            </div>
+                            <div class="col-xs-12">
+                                <div id="change_homedir_dir_error" class="show_inline"></div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="ft"></div>
+    </div>
+
+    ';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+
+    <script id="digest_auth_notice" type="text/html">
+        ';$stash->set('user_json','\'' .$stash->get(['CPANEL',0,'user',0,'json',0,'remove',['^"' ],'remove',['"$' ],'squote',0]).'\'');$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['If you use Windows Vista®, Windows® 7, Windows® 8, or Windows® 10, you must select [output,url,_1,Enable Digest Authentication,_2] to access your Web Disk.','#',{'onClick'=>('set_digest_auth_popup(\'system\',' .$stash->get('user_json').',\'enable\',this); return false;')}]]);$output .= '
+    </script>
+
+    <script id="digest_auth_popup" type="text/html">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8','Windows® 10' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '
+        </p>
+        <div id="set_digest_auth_box">
+            <form id="enable_digest_auth_form" name="enable_digest_auth">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['In order to enable digest authentication support for “[_1]”, you must re-enter the password for this account.','{account}' ]]);$output .= '
+                </p>
+                <p id="for_virtual_only">
+                    ';$output .= $stash->get(['locale',0,'maketext',['If you do not remember the password for this account, you can change it here: [output,url,_1,Change Password].','passwd.html?digest_only=1&login={account}' ]]);$output .= '
+                </p>
+                <div class="form-group">
+                    <label for="set_digest_auth_password" id="webdav_digest_auth_pass">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input name="set_digest_auth_password" id="set_digest_auth_password" type="password" autocomplete=\'off\' size="16" value="" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <span id="enable_digest_for_account">';$output .= $stash->get(['locale',0,'maketext',['Are you sure you wish to enable digest authentication for the account “[_1]”?','{account}' ]]);$output .= '</span>
+            <span id="disable_digest_for_account">';$output .= $stash->get(['locale',0,'maketext',['Are you sure you wish to disable digest authentication for the account “[_1]”?','{account}' ]]);$output .= '</span>
+        </div>
+    </script>
+
+    <script id="perms_popup" type="text/html">
+        <div id="perms_ro_info">
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['Read-Only access will only permit this account to read, download, and list files inside the directory assigned to this Web Disk account.' ]]);$output .= '
+            </p>
+        </div>
+        <div id="perms_rw_info">
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['Read-Write access level will permit all supported operations inside the directory assigned to this Web Disk account.' ]]);$output .= '
+            </p>
+        </div>
+        <div id="perms_box">
+            <span id="perms_ro_for_account">
+            ';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want set the access permissions for the account “[_1]” to Read-Only?','{account}' ]]);$output .= '
+            </span>
+            <span id="perms_rw_for_account">
+            ';$output .= $stash->get(['locale',0,'maketext',['Are you sure you want set the access permissions for the account “[_1]” to Read-Write?','{account}' ]]);$output .= '
+            </span>
+        </div>
+    </script>
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'web_disk','feature'=>'webdisk','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'page_scripts'=>$stash->get(['CPANEL',0,'is_debug_mode_enabled',0])? ['js/statusbox.js','js2/webdav/accounts_webdav.js' ]: ['js/statusbox_optimized.js','js2-min/webdav/accounts_webdav.js' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    PAGE.REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get('required_strength');$output .= '\', 10) || 0;
+    PAGE.digest_not_set = ';$output .= ($stash->get('webdav_hasdigest')ne 1)? 'true' : 'false';$output .= ';
+    ';if (($stash->get(['CPANEL',0,'ENV',0,'HTTP_PROXIED',0]))){$output .= '
+    PAGE.mainport = ';$output .= $stash->get(['ExpVar',0,'expand',['$mainhttpdport' ],'json',0])|| 'null';$output .= ';
+    PAGE.sslport = ';$output .= $stash->get(['ExpVar',0,'expand',['$sslhttpdport' ],'json',0])|| 'null';$output .= ';
+    '}else {$output .= '
+    PAGE.mainport = "2077";
+    PAGE.sslport = "2078";
+    '}$output .= '
+    PAGE.isoverridelogin = ';$output .= $stash->get(['ExpVar',0,'expand',['$isoverridelogin' ],'json',0])|| 'null';$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,107 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/change_root_password/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts/chrootpass/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('PAGE_DATA',{'MINIMUM_PASSWORD_STRENGTH'=>$stash->get(['data',0,'minpwstrength',0])});$output .= do {my$output='';$output .= '
+
+<div ng-controller="changeRootPasswordController" class="ng-cloak" ng-cloak>
+    <form name="changeRootPasswordForm" autocomplete="off">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <toggle-label-info
+                        for="password"
+                        label-text="';$output .= $stash->get(['locale',0,'maketext',['New [asis,root] Password' ]]);$output .= '"
+                        label-id="password-label"
+                        info-icon-id="password-info-icon"
+                        info-block-id="password-info-block"
+                        show-info-block="false">
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['Change the [asis,root] password for [asis,cPanel amp() WHM].' ]]);$output .= '</p>
+                    </toggle-label-info>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <password name="password"
+                          title="';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '"
+                          autocomplete="new-password"
+                          minimum-strength="{{minimumPasswordStrength}}"
+                          placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter a Password' ]]);$output .= '"
+                          password="password"
+                          show-meter="true"
+                          show-strength="true"
+                          show-generator="true"
+                          minimum-length="5"
+                          required
+                          generate-button-tab-index="-1"
+                          toggle-view-button-tab-index="-1"
+                          generate-settings-tab-index="-1"
+                          strength-meets-template="';$output .= $stash->get(['locale',0,'lextext',['This password has a strength of [numf,_1], which meets or exceeds the system requirement of [numf,_2].' ]]);$output .= '"
+                          strength-does-not-meet-template="';$output .= $stash->get(['locale',0,'lextext',['The password has a strength of [numf,_1], but your system requires a strength of [numf,_2].' ]]);$output .= '"></password>
+                </div>
+                <div class="col-xs-12 col-sm-4 col-md-6">
+                    <ul validation-container field-name="password">
+                        <li validation-item field-name="password" validation-name="required" id="val-password-required">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a password.' ]]);$output .= '
+                        </li>
+                        <li validation-item field-name="password" validation-name="minlength" id="val-password-minlength">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a password that contains at least five characters.' ]]);$output .= '
+                        </li>
+                        <li validation-item field-name="password" validation-name="minimumPasswordStrength" id="val-password-minimum-strength">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a stronger password.' ]]);$output .= '
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="row"><!--Label-->
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <toggle-label-info
+                        for="confirm-password"
+                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Confirm Password' ]]);$output .= '"
+                        label-id=""
+                        info-icon-id=""
+                        info-block-id=""
+                        show-info-block="false">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enter your new [asis,root] password again to confirm the change.' ]]);$output .= '
+                    </toggle-label-info>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    <input
+                        id="confirm-password"
+                        name="confirm-password"
+                        type="password"
+                        autocomplete="new-password"
+                        class="form-control"
+                        required
+                        validate-equals="changeRootPasswordForm.password"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Confirm your password.' ]]);$output .= '"
+                        ng-model="confirmPassword"/>
+                </div>
+
+                <div class="col-xs-12 col-sm-4 col-md-6">
+                    <ul validation-container field-name="confirm-password">
+                        <li validation-item field-name="confirm-password" validation-name="required" id="val-confirm-password-required">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a password.' ]]);$output .= '
+                        </li>
+                        <li validation-item field-name="confirm-password" validation-name="validateEquals" id="val-confirm-password-match">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The passwords do not match.' ]]);$output .= "\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n\n\n        <div class=\"form-group\">\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-8 col-md-6\">\n                    <button\n                        id=\"btnChangeRootPassword\"\n                        type=\"submit\"\n                        spinner-id=\"spinnerChangePassword\"\n                        cp-action=\"submitChangeRootPassword()\"\n                        ng-disabled=\"!changeRootPasswordForm.\$valid\">\n                        ";$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <div growl></div>
+</div>
+
+
+
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['PAGE_DATA',0,'json',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','app_key'=>'change_root_password','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

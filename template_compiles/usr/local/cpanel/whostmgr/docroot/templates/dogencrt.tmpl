@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dogencrt.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('safe_hosts',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$stash->set('safe_host',$stash->get(['host',0,'html',0]));$output .= $stash->get(['safe_hosts',0,'push',[$stash->get('safe_host')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('safe_host',$stash->get(['locale',0,'list_and',[$stash->get('safe_hosts')]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+';if (!$stash->get(['data',0,'status',0])){$output .= '
+<div class="alert alert-danger">
+    Failed to generate the Certificate Signing Request and Private Key.
+    <p>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'message',0]);&$_tt_filter($output)};$output .= '</p>
+</div>
+'}else {$output .= '
+
+<p>
+    ';$output .= $stash->get(['locale',0,'maketext',['The system has successfully generated the [output,acronym,CSR,Certificate Signing Request] and private key for “[output,strong,_1]”. The system also generated a self-signed certificate that you can temporarily use until you receive a signed certificate from your SSL certificate vendor.',$stash->get('safe_host')]]);$output .= '
+</p>
+
+';if ($stash->get(['data',0,'email_message',0])){$output .= '
+<p ';if (!$stash->get(['data',0,'email_status',0])){$output .= 'class="alert alert-danger"'}$output .= '>
+    ';$output .= $stash->get(['data',0,'email_message',0]);$output .= '
+</p>
+'}$output .= '
+
+<form class="layout-medium">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <label for="csr" class="title">';$output .= $stash->get(['locale',0,'maketext',['Signing Request:' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <textarea rows="15" readonly="readonly" dir="ltr" id="csr" class="output-mono">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'csr',0]);&$_tt_filter($output)};$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+            ';if ($stash->get(['data',0,'cert',0])){$output .= '
+                <label for="cert" class="title">';$output .= $stash->get(['locale',0,'maketext',['Certificate:' ]]);$output .= '</label>
+            '}$output .= '
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+            ';if ($stash->get(['data',0,'cert',0])){$output .= '
+                <textarea rows="15" readonly="readonly" dir="ltr" id="cert" class="output-mono">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cert',0]);&$_tt_filter($output)};$output .= '</textarea>
+            '}$output .= '
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <label for="key" class="title">';$output .= $stash->get(['locale',0,'maketext',['Key:' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-md-8">
+                <textarea rows="15" readonly="readonly" dir="ltr" id="key" class="output-mono">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'key',0]);&$_tt_filter($output)};$output .= '</textarea>
+            </div>
+        </div>
+    </div>
+</form>
+'}$output .= '
+
+<div class="return-link">
+<b>[</b> <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/gencrthtml">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a><b> ]</b>
+</div>
+';$context->include('master_templates/master.tmpl',{'breadcrumburl'=>'/scripts2/gencrthtml','theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

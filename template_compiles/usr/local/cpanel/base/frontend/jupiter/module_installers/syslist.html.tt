@@ -1,0 +1,41 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/module_installers/syslist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('return_link','main.html?lang=' .$stash->get(['FORM',0,'lang',0,'uri',0]));$output .= $context->process('supported_langs.html.tt');$stash->set('is_supported',$stash->get(['FORM',0,'defined',['lang' ]])&& $stash->get(['supported_langs',0,'grep',['^' .$stash->get(['CPScalar',0,'quotemeta',[$stash->get(['FORM',0,'lang',0])]]).'$' ],'size',0]));if ($stash->get('is_supported')){$stash->set('lang_mods_get_key_names',$stash->get(['Api2',0,'exec',['LangMods','getkey',{'lang'=>$stash->get(['FORM',0,'lang',0]),'key'=>'names' }],0,0]));$stash->set('lang_mods_list_installed',$stash->get(['Api2',0,'exec',['LangMods','list_installed',{'sys'=>'1','lang'=>$stash->get(['FORM',0,'lang',0])}]]))}$output .= '
+
+';if (!$stash->get('is_supported')){$output .= '
+    ';$output .= $context->process('not_supported.html.tt',{'lang'=>$stash->get(['FORM',0,'lang',0])});$output .= '
+'}else {$output .= '
+
+';$output .= $context->process('installer_app_key.html.tt');$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <h2 id="hdrSystemKey">';$output .= $stash->get(['locale',0,'maketext',['System “[_1]”[comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_names',0,'key',0,'html',0])]]);$output .= '</h2>
+
+    <div class="section">
+        <h2 id="hdrInstalledKey">';$output .= $stash->get(['locale',0,'maketext',['Installed [_1][comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_names',0,'key',0,'html',0])]]);$output .= '</h2>
+
+        <table id="systbllist" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Installed' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Version' ]]);$output .= '</th>
+                    <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('lang_mods_list_installed');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+            <tr>
+                <td>';$output .= $stash->get(['hashref',0,'module',0,'html',0]);$output .= '</td>
+                <td>';$output .= $stash->get(['hashref',0,'latest',0,'html',0]);$output .= '</td>
+                <td>
+                    <a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'docurl',0]);&$_tt_filter($output)};$output .= '" id="showDocs_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" target="_blank" class="btn btn-link">
+                    <span class="fas fa-search"></span> ';$output .= $stash->get(['locale',0,'maketext',['Show Docs' ]]);$output .= '
+                    </a>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </table>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('installer_app_key'),'content',$output })}}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

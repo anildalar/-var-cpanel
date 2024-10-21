@@ -1,0 +1,236 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/pkgform.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('fields_with_help',[]);$output .= do {my$output='';$output .= '
+<div id="content">
+';if (!$stash->get('edit')){$output .= '
+    <div id="extensionDryDock">
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'extensions',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '
+        <div id="';$output .= $stash->get('package');$output .= '" class="fatBorder hidden">
+            <fieldset>
+                <div class="propertyGroup">
+                    ';$stash->set('file_to_process',$stash->get(['data',0,'extensions_path',0]).$stash->get('package').'.tt2');$output .= '
+                    ';$output .= $context->process($stash->get('file_to_process'));$output .= '
+                </div>
+            </fieldset>
+        </div>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div> <!-- end extensionDryDock -->
+'}$output .= '
+';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '<div id="resellerNotice" class="notice addEditPkgTopNotice">
+    <div class="notice-content">
+        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: If a package name is [output,strong,preceded] by a reseller’s username and an underscore, [output,strong,only] that reseller can see the package.' ]]);$output .= '
+    </div>
+</div>
+'}$output .= '
+<form name="mainform" action="javascript:void(0);" onsubmit="ajax_save(this);">
+';$output .= '
+<div class="fatBorder">
+<fieldset class="groupEditor">
+    <div class="propertyGroup">
+        <div class="propertyEditor last">
+            <div class="propertyLabel">';$output .= $stash->get(['locale',0,'maketext',['Package Name' ]]);$output .= '</div>
+            <div class="propertyValue">';if ($stash->get('edit')){$output .= '                    <input value="';$output .= $stash->get(['data',0,'name',0,'html',0]);$output .= '" disabled="disabled"  size="40" />
+                    <input type="hidden" name="name" value="';$output .= $stash->get(['data',0,'name',0,'html',0]);$output .= '" />
+                    <input type="hidden" name="_PACKAGE_EXTENSIONS" value="';$output .= $stash->get(['data',0,'PACKAGE_EXTENSIONS',0]);$output .= '" />'}else {$output .= '
+                    <input name="name" size="40" />
+                '}$output .= '            </div>
+        </div>
+    </div>
+</fieldset>
+</div>
+<div class="fatBorder">
+<fieldset class="groupEditor">
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Resources' ]]);$output .= '</h3>
+    <div class="propertyGroup">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'package_resources_order',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'resource'}=$_tt_value;$output .= '            ';if (!$stash->get(['data',0,'package_resources',0,$stash->get('resource'),0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('cur',$stash->get(['data',0,'package_resources',0,$stash->get('resource'),0]));$stash->set('cur_value',$stash->get(['cur',0,'exists',['value' ]])? $stash->get(['cur',0,'value',0]): $stash->get(['cur',0,'default',0]));$stash->set('is_unlimited',$stash->get(['cur_value',0,'match',['[.\D]' ]]));$output .= '            ';if (!$stash->get(['cur',0,'hide',0])){$output .= '
+            <div class="propertyEditor">
+                <div class="propertyLabel">
+                    ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['cur',0,'label',0])]]);$output .= '
+                    ';if ($stash->get(['cur',0,'help_text',0])){$output .= '                        ';$output .= $stash->get(['fields_with_help',0,'push',[[$stash->get('resource'),$stash->get('cur')]]]);$output .= '                        <span id="';$output .= $stash->get('resource');$output .= '__help" class="pkgform-help"><span class="far fa-question-circle help-text"></span></span>
+                    '}$output .= '                </div>
+                <div class="propertyValue">
+                    ';$stash->set('display_num',$stash->get('is_unlimited')? ($stash->get(['cur',0,'default',0,'match',['[.\D]' ]])? $stash->get(['cur',0,'limited_default',0])|| ($stash->get('resource')eq 'max_defer_fail_percentage' ? '100' : '0'): $stash->get(['cur',0,'default',0])): $stash->get('cur_value'));$output .= '                    ';if ($stash->get(['cur',0,'allowed',0])){$output .= '                        <input
+                            type="radio"
+                            id="';$output .= $stash->get('resource');$output .= '_custom_radio"
+                            name="';$output .= $stash->get('resource');$output .= '_control"
+                            ';$output .= $stash->get('is_unlimited')? '' : 'checked="checked"';$output .= '
+                            ';if ($stash->get(['cur',0,'can_unlimited',0])){$output .= 'value="custom"'}else {$output .= 'style="visibility:hidden"'}$output .= '                        />
+                    '}$output .= '                    <input
+                        class="resource-text"
+                        name="';$output .= $stash->get('resource');$output .= '"
+                        value="';$output .= $stash->get('display_num');$output .= '"
+                        type="number"
+                        size="10"
+                        min=';$output .= $stash->get(['cur',0,'min',0])|| 0;$output .= '
+                        ';$output .= $stash->get(['cur',0,'max',0])? ('max=' .$stash->get(['cur',0,'max',0])): '';$output .= '
+                        ';$output .= (($stash->get('is_unlimited')|| $stash->get(['cur',0,'can_unlimited',0])|| (!$stash->get(['cur',0,'allowed',0]))))? 'disabled="disabled"' : '';$output .= '
+                    />
+                    ';if ($stash->get(['cur',0,'allowed',0])&& ($stash->get(['cur',0,'can_unlimited',0])|| $stash->get('is_unlimited'))){$output .= '                        &nbsp;
+                        <label>
+                            <input type="radio" id="';$output .= $stash->get('resource');$output .= '_unlimited_radio" name="';$output .= $stash->get('resource');$output .= '_control" value="unlimited" ';$output .= $stash->get('is_unlimited')? 'checked="checked"' : '';$output .= ' ';$output .= $stash->get(['cur',0,'can_unlimited',0])|| $stash->get('is_unlimited')? '' : 'disabled="disabled"';$output .= ' />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '                        </label>
+                        <script>YAHOO.util.Event.onDOMReady(function () { new CPANEL.ajax.Grouped_Input_Set( document.forms.mainform, "';$output .= $stash->get('resource');$output .= '_custom_radio", "';$output .= $stash->get('resource');$output .= '_unlimited_radio")});</script>
+                    '}$output .= '                </div>
+            </div>
+            '}$output .= '        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </div>
+</fieldset>
+</div>
+
+';$stash->set('options_order',['ip' ]);if ($stash->get(['data',0,'show_shell',0])){$output .= $stash->get(['options_order',0,'push',['hasshell' ]])}if ($stash->get(['data',0,'show_cgi',0])){$output .= $stash->get(['options_order',0,'push',['cgi' ]])}$output .= $stash->get(['options_order',0,'push',['digestauth' ]]);$output .= '
+<div class="fatBorder">
+<fieldset class="groupEditor">
+    <div class="propertyGroup">
+        <h3>';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '</h3>
+        <div class="propertyEditor">
+            <div class="propertyLabel multiOptionLabel">';$output .= $stash->get(['locale',0,'maketext',['Options' ]]);$output .= '</div>
+            <div class="propertyValue">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('options_order');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$stash->set('cur',$stash->get(['data',0,'package_items',0,$stash->get('option'),0]));$stash->set('cur_value',$stash->get(['cur',0,'exists',['value' ]])? $stash->get(['cur',0,'value',0]): $stash->get(['cur',0,'default',0]));$stash->set('checked',$stash->get('cur_value')&& $stash->get('cur_value')ne 'n');$output .= '<input value="1" type="checkbox" name="';$output .= $stash->get('option');$output .= '" ';$output .= $stash->get(['cur',0,'allowed',0])? '' : 'disabled="disabled"';$output .= ' ';$output .= $stash->get('checked')? 'checked="checked"' : '';$output .= ' />';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['cur',0,'label',0])]]);if ($stash->get('checked')&&!$stash->get(['cur',0,'allowed',0])){$output .= '<input type="hidden" name="';$output .= $stash->get('option');$output .= '" value="1" />'}$output .= '<br>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </div>
+        </div>
+        ';$stash->set('cur',$stash->get(['data',0,'package_items',0,'cpmod',0]));$output .= '        <div class="propertyEditor">
+            <div class="propertyLabel">';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['cur',0,'label',0])]]);$output .= '</div>
+            <div class="propertyValue">
+                <select name="cpmod">
+                    ';$stash->set('selected_theme',($stash->get(['cur',0,'exists',['value' ]])&& ($stash->get(['data',0,'themes',0,'grep',[$stash->get(['cur',0,'regexp',0])]])> 0))? $stash->get(['cur',0,'value',0]): $stash->get(['cur',0,'default',0]));$output .= '                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cur_theme'}=$_tt_value;$output .= '                    ';$stash->set('selected_text',$stash->get('cur_theme')eq $stash->get('selected_theme')? 'selected="selected"' : '');$output .= '                            <option value="';$output .= $stash->get('cur_theme');$output .= '" ';$output .= $stash->get('selected_text');$output .= '>
+                            ';$output .= $stash->get('cur_theme');$output .= '
+                            </option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </select>
+            </div>
+        </div>
+        ';$stash->set('cur',$stash->get(['data',0,'package_items',0,'featurelist',0]));$output .= '        <div class="propertyEditor">
+            <div class="propertyLabel">
+                ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['cur',0,'label',0])]]);$output .= '
+            </div>
+            <div class="propertyValue">
+                <select name="featurelist" onchange="document.getElementById(\'editFeatureListLink\').setAttribute(\'href\',\'../scripts2/featuremanager/editFeatureList?name=\' + this.value)">
+                    ';$stash->set('selected_featurelist',($stash->get(['cur',0,'exists',['value' ]])&& ($stash->get(['data',0,'feature_list_options',0,'grep',[$stash->get(['cur',0,'regexp',0])],'size',0])> 0))? $stash->get(['cur',0,'value',0]): $stash->get(['cur',0,'default',0]));$output .= '                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'feature_list_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'fl'}=$_tt_value;$output .= '                        <option value="';$output .= $stash->get('fl');$output .= '" ';$output .= $stash->get('fl')eq $stash->get('selected_featurelist')? ' selected="selected"' : '';$output .= '>';$output .= $stash->get('fl');$output .= '</option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </select>
+                ';if ($stash->get(['Whostmgr',0,'checkacl',['add-pkg' ]])){$output .= '
+                    <a id="editFeatureListLink" href="../scripts2/featuremanager/editFeatureList?name=';$output .= $stash->get('selected_featurelist');$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['View the selected feature list.' ]]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= ' <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                '}$output .= '
+            </div>
+        </div>
+        ';$stash->set('cur',$stash->get(['data',0,'package_items',0,'language',0]));$output .= '        <div class="propertyEditor last">
+            <div class="propertyLabel">';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['cur',0,'label',0])]]);$output .= '</div>
+            <div class="propertyValue">
+                <select name="language">';$output .= '
+                  ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+                </select>
+                <span class="help-block">
+                    ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+                </span>
+            </div>
+        </div>
+    </div>
+</fieldset>
+</div>
+<div id="packageExtensions">
+    ';if ($stash->get(['data',0,'extensions',0,'keys',0,'size',0])> 0 || $stash->get(['data',0,'missing_extensions',0,'size',0])> 0){$output .= '
+        <div id="packageExtensionHeader" class="pkgExtensionHeader">';$output .= $stash->get(['locale',0,'maketext',['Package Extensions' ]]);$output .= '</div>
+    '}$output .= '
+    ';if ($stash->get('edit')){$output .= '
+        ';if ($stash->get(['data',0,'missing_extensions',0,'size',0])> 0){$output .= '
+            <div class="fatBorder" id="missingExtensionsGroup">
+                <fieldset class="groupEditor">
+                    <div id="missingPackageError" class="notice notice-error">
+                        <div class="notice-content error-notice-content">';$output .= $stash->get(['locale',0,'maketext',['You must install the following extensions before you can edit their values: [list_and,_1]',$stash->get(['data',0,'missing_extensions',0])]]);$output .= '</div>
+                    </div>
+                    <div id="missingExtensionsOption"><input type="checkbox" name="remove_missing_extensions" value="';$output .= $stash->get(['data',0,'missing_extensions',0,'join',[' ' ]]);$output .= '" id="missingExtensionsCheckbox"><label class="bolded" for="missingPackagesCheckbox">';$output .= $stash->get(['locale',0,'maketext',['Remove these extensions from the package.' ]]);$output .= '</label></div>
+                </fieldset>
+            </div>
+        '}$output .= '        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'extensions',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '
+            <div  id="';$output .= $stash->get('package');$output .= '" class="fatBorder">
+                <fieldset>
+                    <h3>';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['data',0,'extensions',0,$stash->get('package'),0])]]);$output .= '</h3>
+                    <div class="propertyGroup">
+                        ';$stash->set('file_to_process',$stash->get(['data',0,'extensions_path',0]).$stash->get('package').'.tt2');$output .= '
+                        ';$output .= $context->process($stash->get('file_to_process'));$output .= '
+                    </div>
+                </fieldset>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}else {$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'extensions',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '
+            <h3 class="pkgSelectorWrapper" id="';$output .= $stash->get('package');$output .= 'DataWrapper">
+                <input type="checkbox" name="_PACKAGE_EXTENSIONS" value="';$output .= $stash->get('package');$output .= '" id="';$output .= $stash->get('package');$output .= 'Control" class="packageOptionSelector" data-packageOptions="';$output .= $stash->get('package');$output .= '">';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['data',0,'extensions',0,$stash->get('package'),0])]]);$output .= '
+            </h3>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+    </div>
+<div class="formButtons">
+';if ($stash->get('edit')){$output .= '<input type="hidden" name="edit" value="yes" />
+<input type="submit" id="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save Changes' ]]);$output .= '" />
+<input type="reset" class="btn-secondary" value="';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '" />
+'}else {$output .= '<input type="submit" id="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" />
+'}$output .= '</div>
+</form>
+</div> <!-- end content -->
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+<script type="text/javascript">
+import(\'';$output .= $stash->get(['MagicRevision',['/js/modules/pkgform-help_optimized.js' ]]);$output .= '\').then( o => {
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('fields_with_help');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'name_cur'}=$_tt_value;$output .= '    o.cPSetupResourceHelp(
+        DOM.get(\'';$output .= ($stash->get(['name_cur',0,0,0]).'__help');$output .= '\'),
+        ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['name_cur',0,1,0,'label',0])],'json',0]);$output .= ',
+        ';$output .= $stash->get(['locale',0,'makevar',[$stash->get(['name_cur',0,1,0,'help_text',0])],'json',0]);$output .= '
+    );
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '} );
+
+function ajax_save(form) {
+    var form_data = CPANEL.dom.get_data_from_form(form, {
+        include_unchecked_checkboxes: 0
+    });
+
+';if (!$stash->get('edit')){$output .= '
+    // massage the package extensions variable (if there)
+    // to remove extraneous package name values (0)
+    // This is necessary because get_data_from_form() sets unchecked checkboxes to 0.
+
+    if (form_data._PACKAGE_EXTENSIONS && Object.prototype.toString.call(form_data._PACKAGE_EXTENSIONS) === "[object Array]") {
+        var massagedExtensions = [];
+        var candidateExtensionsLength = form_data._PACKAGE_EXTENSIONS.length;
+        for (var x = 0; x < candidateExtensionsLength; x++) {
+            if (isNaN(form_data._PACKAGE_EXTENSIONS[x]) || parseFloat(form_data._PACKAGE_EXTENSIONS[x]) !== 0) {
+                massagedExtensions.push(form_data._PACKAGE_EXTENSIONS[x]);
+            }
+        }
+        form_data._PACKAGE_EXTENSIONS = massagedExtensions;
+    }
+'}$output .= "\n    // package extension controls could be named *_control,\n    // so explicitly test for known manual controls to avoid\n    // accidentally failing to update a value for a package\n    // extension\n    var customControlMatcher = /^(quota|maxftp|maxsql|maxpop|maxlst|maxsub|bwlimit|maxpark|maxaddon|max_email_per_hour|max_defer_fail_percentage|max_emailacct_quota|max_team_users)_control\$/;\n    for (var key in form_data) {\n        var match = key.match(customControlMatcher);\n        if (match) {\n            if (form_data[key] === \"unlimited\") {\n                form_data[match[1]] = \"unlimited\";\n            }\n            delete form_data[key];\n        }\n    }\n\n    var status_template = ";$output .= $stash->get('edit')? $stash->get(['locale',0,'maketext',['Saving package “[output,class,_1,code]” ….','{pkg}' ],'json',0]): $stash->get(['locale',0,'maketext',['Creating new package “[output,class,_1,code]” …','{pkg}' ],'json',0]);$output .= ';
+
+    var before_success = function () {
+        var missingExtensionsCheckbox = YAHOO.util.Dom.get("missingExtensionsCheckbox");
+        if (missingExtensionsCheckbox) {
+
+            var isChecked = YAHOO.util.Dom.getAttribute(missingExtensionsCheckbox, "checked");
+            if (isChecked) {
+                var missingExtensionsDiv = YAHOO.util.Dom.get("missingExtensionsGroup");
+                if (missingExtensionsDiv) {
+
+                    // check to see if there are any other fatBorder divs left
+                    var extensionsContainer = YAHOO.util.Dom.get("packageExtensions");
+                    var isFatBorder = function (el) {
+                        return YAHOO.util.Dom.hasClass(el, "fatBorder");
+                    };
+
+                    var remainingExtensions = YAHOO.util.Dom.getChildrenBy(extensionsContainer, isFatBorder);
+
+                    // hide the subhead if no more extensions
+                    if (remainingExtensions.length === 1) {
+                        YAHOO.util.Dom.addClass("packageExtensionHeader", "hidden");
+                    }
+
+                    YAHOO.util.Dom.addClass(missingExtensionsDiv, "hidden");
+                    missingExtensionsDiv.parentNode.removeChild(missingExtensionsDiv);
+                }
+            }
+        }
+    };
+
+    CPANEL.api( {
+        progress_panel: {
+            status_html: status_template.replace(\'{pkg}\',form_data.name.html_encode()),
+            source_el:   "submit",
+            before_success: before_success
+        },
+        func: "';$output .= $stash->get('edit')? 'editpkg' : 'addpkg';$output .= '",
+        data: form_data
+    });
+}
+</script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'add_a_package','scripts'=>['/templates/packages/pkgform.min.js' ],'stylesheets'=>['/cjt/css/ajaxapp-min.css','/templates/common/revised_notices.min.css','/templates/packages/common.min.css','/templates/packages/pkgform.min.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

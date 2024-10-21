@@ -1,0 +1,432 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/email_accounts/views/create.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<section>
+    <p id="descEmailAccountsCreate" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Use this page to create new email addresses for any of the domains on your [asis,cPanel] account.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','https://go.cpanel.net/CreateEmailAccount','cp-create-email','lnkCreateEmailAccountsDocumentation' ]]);$output .= '
+    </p>
+</section>
+
+<cp-loading-panel id="createLoadingPanel" ng-show="emailAccount.isLoading">
+    <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+</cp-loading-panel>
+<callout ng-if="accountStats.available==0" callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning: Cannot create additional email accounts' ]]);$output .= '">
+    <p>';$output .= $stash->get(['locale',0,'maketext',['You have reached the maximum number of accounts and can’t create any more. We’re redirecting you to [output,url,_1,the list of email accounts,id,_2] …','#/list/','lnkListEmailView' ]]);$output .= '</p>
+</callout>
+<section ng-show="!emailAccount.isLoading && accountStats.available != 0">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <form name="emailAccount.frmCreateEmail" novalidate>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="widget-title pull-left flip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Create an Email Account' ]]);$output .= '
+                        </div>
+                        <div class="pull-right flip">
+                            <button type="button"
+                                class="btn btn-default btn-xs"
+                                id="lnkshowHideHelp"
+                                ng-click="emailAccount.toggleHelp()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                                <i class="far fa-question-circle form-info-sign"></i>
+                            </button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                            <!-- Domain -->
+                            <div class="form-group" ng-if="mailDomains.length > 1">
+                                <toggle-label-info
+                                    id="lblDomain"
+                                    for="ddlDomain"
+                                    label-text="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '"
+                                    show-info-block="{{showAllHelp}}"
+                                    >
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Choose the domain that you want to use. Your email address will end with this domain ([asis,username@domain.com]).' ]]);$output .= '
+                                </toggle-label-info>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                    ';if (!$stash->get(['CPANEL',0,'ua_is_mobile',0])){$output .= '
+                                        <select
+                                            id="ddlDomain"
+                                            name="ddlDomain"
+                                            class="form-control"
+                                            search_contains="true"
+                                            chosen
+                                            width="\'100%\'"
+                                            ng-class="::{ \'chosen-rtl\': emailAccount.isRTL }"
+                                            ng-model="emailAccount.details.domain"
+                                            ng-options="domain for domain in mailDomains"
+                                            auto-focus="mailDomains.length > 1">
+                                            <option value=""></option>
+                                        </select>
+                                    '}else {$output .= '
+                                        <select
+                                            id="ddlDomain"
+                                            name="ddlDomain"
+                                            class="form-control"
+                                            ng-model="emailAccount.details.domain"
+                                            ng-options="domain for domain in mailDomains"
+                                            auto-focus="mailDomains.length > 1">
+                                        </select>
+                                    '}$output .= '
+                                    <span class="help-block">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Missing a domain? Check the [output,em,Missing a domain?] section to find out how you can create one.' ]]);$output .= '
+                                    </span>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div id="ddlDomain_error"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- user name -->
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <toggle-label-info
+                                            for="txtUserName"
+                                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '"
+                                            show-info-block="{{showAllHelp}}"
+                                            >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Enter the username that you want to use. Your email address will start with this username ([asis,username@domain.com]).' ]]);$output .= '
+                                        </toggle-label-info>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="input-group">
+                                            <input id="txtUserName" name="txtUserName"
+                                                type="text"
+                                                class="form-control"
+                                                size="64"
+                                                ng-model="emailAccount.details.userName"
+                                                ng-required="true"
+                                                username="cpanel"
+                                                maxlength="64"
+                                                placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter your email address’s username here.' ]]);$output .= "\"\n                                                email-full-length=\"254\"\n                                                email-other-value=\"emailAccount.details.domain\"\n                                                auto-focus=\"mailDomains.length == 1\"\n                                                autocomplete=\"off\"\n                                                />\n                                            <span id=\"spanAddEmailAccountDomains\" class=\"input-group-addon\" title=\"\@{{ emailAccount.details.domain }}\">\n                                                <span class=\"text-truncate domain-text\">\n                                                \@{{ emailAccount.details.domain }}\n                                                <input type=\"hidden\" name=\"domain\" ng-model=\"emailAccount.details.domain\" ng-if=\"::mailDomains.length === 1\"/>\n                                                </span>\n                                            </span>\n                                        </div>\n                                        <span class=\"help-block\">\n                                            <div class=\"missing-domain-link\">\n                                                <a ng-click=\"emailAccount.scrollToMissingDomains()\">\n                                                    ";$output .= $stash->get(['locale',0,'maketext',['Missing a domain?' ]]);$output .= '
+                                                </a>
+                                            </div>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <ul validation-container field-name="txtUserName" role="alert" id="txtUserNameErrorPanel">
+                                            <li validation-item field-name="txtUserName" validation-name="required" id="valUsernameRequired">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a username.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="txtUserName" validation-name="maxlength" id="valUsernameMaxLength">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Your username cannot contain more than [numf,_1] characters.',64 ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="txtUserName" validation-name="emailFulllength" id="valUsernameFullLength">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Your email address cannot contain more than [numf,_1] characters.',254 ]]);$output .= '
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Set password or email -->
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label id="lblAddEmailPassword"
+                                        for="txtEmailPassword">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group invite-password-section" ng-if="isInviteSubEnabled">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="radio">
+                                            <label for="setPasswordNow">
+                                                <input type="radio" name="incomingRadio" id="setPasswordNow"
+                                                    ng-model="emailAccount.details.setPassword"
+                                                    ng-value="true" value="true">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Set password now.' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label for="setPasswordLater">
+                                                <input type="radio" name="incomingRadio" id="setPasswordLater"
+                                                    ng-model="emailAccount.details.setPassword"
+                                                    ng-value="false" value="false">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Send login link to alternate email address.' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- additional contact email -->
+                            <div class="form-group" ng-if="!emailAccount.details.setPassword">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <toggle-label-info
+                                            for="txtRecoveryEmail"
+                                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Alternate Email' ]]);$output .= '"
+                                            label-id="lblRecoveryEmail"
+                                            info-icon-id="icoRecoveryEmail"
+                                            info-block-id="txtRecoverEmailInfo"
+                                            show-info-block="{{showAllHelp}}"
+                                            >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['We will send notifications and password reset emails to this address.' ]]);$output .= "\n                                        </toggle-label-info>\n                                    </div>\n                                    <div class=\"col-xs-12\">\n                                        <div class=\"row\">\n                                            <div class=\"col-xs-12\">\n                                                <input id=\"txtRecoveryEmail\"\n                                                    name=\"txtRecoveryEmail\"\n                                                    required\n                                                    email=\"rfc\"\n                                                    email-not-reserved-include-sub-addresses=\"{{ emailAccount.details.userName + '\@' + emailAccount.details.domain }}\"\n                                                    class=\"form-control\"\n                                                    placeholder=\"alt.email\@another.domain.tld\"\n                                                    title=\"";$output .= $stash->get(['locale',0,'maketext',['Enter your alternate email address.' ]]);$output .= '"
+                                                    ng-model="emailAccount.details.recoveryEmail"
+                                                    auto-focus="!emailAccount.details.setPassword">
+                                                <span class="help-block">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['The system will send an email with a password reset link. This will allow the user to choose a password.' ]]);$output .= '
+                                                </span>
+                                            </div>
+                                            <div class="col-xs-12">
+                                            <ul validation-container field-name="txtRecoveryEmail" id="txtRecoveryEmailErrorPanel">
+                                                <li validation-item field-name="txtRecoveryEmail" validation-name="required" id="valTxtRecoveryEmailRequired">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Provide a valid email address where we can send the password link.' ]]);$output .= '
+                                                </li>
+                                            </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Password -->
+                            <div class="form-group" ng-if="emailAccount.details.setPassword">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- prevent password autofill -->
+                                        <input type="text" style="display:none">
+                                        <input type="password" autocomplete=\'off\' style="display:none">
+                                        <!-- prevent Firefox from displaying the "Save Password" dialog -->
+                                        <input type="password" autocomplete=\'off\' style="display:none;" value="fakepassword1">
+                                        <input type="password" autocomplete=\'off\' style="display:none;" value="fakepassword2">
+                                        <password name="txtEmailPassword"
+                                            password="emailAccount.details.password"
+                                            minimum-length="5"
+                                            minimum-strength="{{::requiredPasswordStrength}}"
+                                            show-meter="true"
+                                            show-strength="false"
+                                            show-generator="true"
+                                            generate-button-tab-index="-1"
+                                            toggle-view-button-tab-index="-1"
+                                            generate-settings-tab-index="-1"
+                                            required
+                                            auto-focus="emailAccount.details.setPassword"></password>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <ul validation-container id="txtEmailPasswordErrorPanel" field-name="txtEmailPassword">
+                                            <li validation-item field-name="txtEmailPassword" validation-name="minlength" id="val-password-minlength">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Your password must contain at least [quant,_1,character,characters].',5 ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="txtEmailPassword" validation-name="required" id="val-password-required">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a password.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="txtEmailPassword" validation-name="minimumPasswordStrength" id="val-password-minimum-strength">';$output .= $stash->get(['locale',0,'maketext',['Enter a [output,strong,stronger] password.' ]]);$output .= '                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row optional-settings-header">
+                                    <div class="col-xs-12">
+                                        <div class="pull-left flip optional-settings-text">
+                                            <strong>';$output .= $stash->get(['locale',0,'maketext',['Optional Settings' ]]);$output .= '</strong>
+                                        </div>
+                                        <div class="pull-right flip">
+                                            <button type="button"
+                                                class="btn btn-default btn-xs"
+                                                id="btnShowOptionalSettings"
+                                                ng-click="emailAccount.toggleOptionalSettingsButtonState()">
+                                                <i class="{{OptionalSettingsIconClass}}" aria-hidden="true"></i>
+                                                {{OptionalSettingsButtonText}}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="optionalSettingsDiv" class="optional-settings-content" ng-if="showOptionalSettings">
+                                <!-- Set quota -->
+                                <div class="form-group" id="storageSection">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <toggle-label-info
+                                                for="quota"
+                                                label-text="';$output .= $stash->get(['locale',0,'maketext',['Storage Space' ]]);$output .= '"
+                                                label-id="lblDiskSpace"
+                                                info-icon-id="icoDiskSpace"
+                                                info-block-id="txtDiskSpace"
+                                                show-info-block="{{showAllHelp}}">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['The amount of space that your email account can use to store emails.' ]]);$output .= '
+                                            </toggle-label-info>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 pull-left flip">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="limitOptions"
+                                                        id="limitedQuota"
+                                                        ng-model="emailAccount.details.quotaType"
+                                                        value="userdefined">
+                                                    <bytes-input
+                                                        name="quota"
+                                                        ng-model="emailAccount.details.quota"
+                                                        display-format="si"
+                                                        value-format="binary"
+                                                        value-unit="MiB"
+                                                        selected-unit="emailAccount.details.quotaUnit"
+                                                        ng-required="emailAccount.details.quotaType === \'userdefined\'"
+                                                        is-disabled="emailAccount.details.quotaType !== \'userdefined\'"
+                                                        size="11"
+                                                        bytes-input-min="1"
+                                                        bytes-input-max="{{::maxQuota}}"/>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" name="limitOptions"
+                                                        id="unlimitedQuota"
+                                                        ng-model="emailAccount.details.quotaType"
+                                                        value="unlimited">
+                                                    {{maxEmailQuotaText}}
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <ul validation-container field-name="quota" id="valQuotaErrorPanel">
+                                                <li validation-item field-name="quota" validation-name="max" id="val-quota-max-quota">
+                                                    {{maxQuotaHelpText}}
+                                                </li>
+                                                <li validation-item field-name="quota" validation-name="required" id="val-quota-required">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Enter a number.' ]]);$output .= '
+                                                </li>
+                                                <li validation-item field-name="quota" validation-name="number" id="val-quota-number">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Enter a number.' ]]);$output .= '
+                                                </li>
+                                                <li validation-item field-name="quota" validation-name="min" id="val-quota-min-quota">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Enter a number that is larger than zero.' ]]);$output .= '
+                                                </li>
+                                                <li validation-item field-name="quota" validation-name="integer" id="val-quota-positive-integer">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Enter a positive number.' ]]);$output .= '
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- sub addressing -->
+                                <div class="form-group sub-addressing-section">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <toggle-label-info
+                                                id="lblSubaddressing"
+                                                for="autoaddressing"
+                                                label-text="';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders for Plus Addressing' ]]);$output .= '"
+                                                show-info-block="{{showAllHelp}}" >
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Automatically create a folder when this email address receives a message that uses plus addressing. For example, the system would place a message addressed to “[_1]” in a new folder called “[asis,plusaddress]”.','{{ emailAccount.examplePlusAddress }}' ]]);$output .= '
+                                            </toggle-label-info>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="radio">
+                                                <label for="autoAddressingCreate">
+                                                    <input type="radio" name="autoaddressing" id="autoAddressingCreate"
+                                                        ng-model="emailAccount.details.autoCreateSubaddressFolders"
+                                                        ng-value="true" value="true">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders' ]]);$output .= '
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label for="autoAddressingInbox">
+                                                    <input type="radio" name="autoaddressing" id="autoAddressingInbox"
+                                                        ng-model="emailAccount.details.autoCreateSubaddressFolders"
+                                                        ng-value="false" value="false">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Do Not Automatically Create Folders' ]]);$output .= '
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Send email to set mail box -->
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="checkbox create-email-checkbox send-email-checkbox">
+                                            <label>
+                                                <input type="checkbox" name="send_welcome_email" id="send_welcome_email" value="1" ng-model="emailAccount.details.sendWelcomeEmail">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Send a welcome email with instructions to set up a mail client.' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="checkbox create-email-checkbox">
+                            <label>
+                                <input type="checkbox" name="stay" id="stay" ng-model="emailAccount.details.stayOnView" ng-change="emailAccount.stayOnPageChanged()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Stay on this page after I click [output,em,Create].' ]]);$output .= '
+                            </label>
+                        </div>
+                        <hr class="separator"/>
+                        <button id="btnCreateEmailAccount"
+                                type="submit"
+                                spinner-id="spinnerCreateEmail"
+                                cp-action="emailAccount.create(emailAccount.details)"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Click here to create your new email account.' ]]);$output .= '">
+                                <i class="fas fa-plus" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                        </button>
+                        <button id="btnCancelEmailAccount"
+                            type="button"
+                            class="btn btn-link pull-right flip"
+                            ng-click="emailAccount.backToListView()"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Go back to the list of email accounts.' ]]);$output .= '">
+                            <i class="fas" ng-class="{ \'fa-arrow-left\': !emailAccount.RTL, \'fa-arrow-right\': emailAccount.isRTL }" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-3">
+            <div class="margin-bottom-20" ng-class="emailAccount.statsCssClass">
+                <stats
+                    used-id="lblUsed"
+                    ng-model="accountStats.used"
+                    available-id="lblAvailable"
+                    max="accountStats.maximum"
+                    upgrade-link-id="lblUpgradeLink"
+                    upgrade-link="{{upgradeURL}}"
+                    upgrade-link-text="';$output .= $stash->get(['locale',0,'maketext',['Buy More' ]]);$output .= '"
+                    show-upgrade-link="true"
+                    upgrade-link-target="emailUpgrade"
+                    >
+                </stats>
+            </div>
+            <section class="widget" id="missingDomainSection">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Missing a domain?' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <p class="widget-item-description">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Navigate to a full list of the account’s domains.' ]]);$output .= '
+                        </p>
+                        <a href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).'domains/index.html';$output .= '"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage your account’s domains.' ]]);$output .= '"
+                            target="domain">
+                            <i class="fas fa-wrench"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Domains' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Need Help?' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <a href="https://go.cpanel.net/CreateEmailAccount"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Need help? Click here to read more about how to create and manage email addresses.' ]]);$output .= '"
+                            target="cp-create-email">
+                            <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['About This Interface' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

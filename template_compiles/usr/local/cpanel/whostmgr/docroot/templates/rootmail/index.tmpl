@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/rootmail/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$output .= '
+<div class="callout callout-info">
+    <strong>';$output .= $stash->get(['locale',0,'maketext',['Notes:' ]]);$output .= '</strong>
+    <ul>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['Usually, the system sends emails about problems on the server and normal server activity to “[asis,root].”' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['If you do not use [asis,suEXEC], the “[asis,nobody]” user receives bounce messages from email that [asis,CGI] scripts send.' ]]);$output .= '</li>
+    </ul>
+</div>
+<div ng-controller="MainController" ng-cloak class="ng-cloak">
+    <div class="panel panel-default form-group" width="65%" ng-repeat="user in users | orderBy: \'user\'" >
+        <div class="panel-heading" data-invalid="{{user.invalid}}">
+            <h3 class="panel-title" ng-bind-html="get_panel_title(user)"></h3>
+        </div>
+        <div class="panel-body">
+            <div >
+                <form novalidate >
+
+                    <label for="fwd" ng-bind="get_forward_mail_label(user)"></label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <input type="text" name="fwd" id="{{ user.user }}-mail" class="form-control mail-field" ng-class="{\'ng-invalid\':user.invalid}" ng-model="user.newforward" ng-change="user.invalid = user.newforward != user.forward && !validate_user(user)">
+                            <img src="" alt="" id="{{ user.user }}-mail_error" /> <br />
+                            <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['To forward email to one or more users on the server, or email addresses, enter them in a comma-separated list.' ]]);$output .= '</span>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <ul class="validation-container" ng-show="user.invalid">
+                                <li class="validation validation-error" ng-repeat="error in user.errors">
+                                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                    <span class="validation-message">{{ error }}</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button id="{{ user.user }}-submit"
+                        id="{{ user.user }}-spinner"
+                        ng-disabled="user.invalid"
+                        cp-action="set_user_forward(user.user, user.newforward)">{{ get_submit_label(user) }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Edit System Mail Preferences' ]]),'breadcrumburl'=>'/Server_Contacts/rootmail','theme'=>'bootstrap','app_key'=>'edit_system_mail_preferences','content',$output })};$output .= '
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.users = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'forwardto',0])]]);$output .= ';
+    PAGE.local_users = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['data',0,'local_users',0])]]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,85 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/task_queue_monitor/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts12/task_queue_monitor/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<div id="content"
+    ng-controller="BaseController as base"
+    class="ng-cloak"
+    ng-cloak>
+
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface monitors [asis,cPanel amp() WHM]’s task queue in real time.' ]]);$output .= '</p>
+
+    <div id="loadingView" class="alert alert-info ng-hide" ng-hide="queue || sched">
+        <i id="loadingSpinner" class="fas fa-spinner fa-spin" aria-hidden="true"></i>
+        ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+    </div>
+
+    <section ng-if="queue || sched">
+        <p>{{last_update_descr}}</p>
+
+        <p class="set-apart">
+        <label><input type="checkbox" ng-model="showDetails"> ';$output .= $stash->get(['locale',0,'maketext',['Show Task Details' ]]);$output .= '</label>
+        </p>
+
+        <div ng-if="queue">
+            <div ng-if="queue.processing.length">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['Processing[comment,a task is running right now]' ]]);$output .= ' ({{LOCALE.numf(queue.processing.length)}}):</h4>
+                <tasklist tasks=queue.processing>
+            </div>
+
+            <div ng-if="queue.waiting.length">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['Pending' ]]);$output .= ' ({{LOCALE.numf(queue.waiting.length)}}):</h4>
+                <tasklist tasks=queue.waiting>
+            </div>
+
+            <div ng-if="queue.deferred.length">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['Deferred' ]]);$output .= ' ({{LOCALE.numf(queue.deferred.length)}}):</h4>
+                <tasklist tasks=queue.deferred>
+            </div>
+        </div>
+
+        <div ng-if="sched && sched.length">
+            <h4>';$output .= $stash->get(['locale',0,'maketext',['Scheduled' ]]);$output .= ' ({{LOCALE.numf(sched.length)}}):</h4>
+            <tasklist tasks=sched>
+        </div>
+
+        <p ng-if="queue && sched && !queue_count && !sched.length">
+            ';$output .= $stash->get(['locale',0,'maketext',['The task queue is empty. Any updates to the queue will appear here.' ]]);$output .= '
+        </p>
+    </section>
+
+    <div ng-class="{\'view-disabled\': loading}" class="animate-view" ng-view></div>
+
+    <div growl></div>
+</div>
+
+<!--
+<style type="text/css">
+textarea {
+    font-family: monospace;
+}
+</style>
+
+<p>
+<label for="raw-queue">Queue:</label><br>
+<textarea id="raw-queue" rows=12 cols=80></textarea>
+</p>
+
+<p>
+<label for="raw-queue">Schedule:</label><br>
+<textarea id="raw-sched" rows=12 cols=80></textarea>
+</p>
+
+<script>
+var es = new EventSource("';$output .= $stash->get('cp_security_token');$output .= '/sse/Tasks");
+["queue","sched"].forEach( (watched) => {
+    es.addEventListener(watched + "-update", (e) => {
+        document.getElementById("raw-" + watched).textContent = e.data;
+    });
+});
+</script>
+-->
+<script>
+    var PAGE = PAGE || {};
+    PAGE.security_token = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('cp_security_token')]]);$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get('rtl_bootstrap'),$stash->get(['Whostmgr',0,'find_file_url',['/templates/task_queue_monitor/index.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'task_queue_monitor','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

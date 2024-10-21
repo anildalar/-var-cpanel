@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/modwheel.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('rmscript','/scripts/rmwheel');$stash->set('addscript','/scripts/addwheel');$output .= do {my$output='';$output .= '
+<div class=\'brickcontainer\'><div class=\'brickcontainer2\'>
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>('Remove a user from the ' .$stash->get(['data',0,'group',0]).' group')});$output .= '<form method="POST" action=\'';$output .= $stash->get('cp_security_token').$stash->get('rmscript');$output .= '\'>
+<input type=\'hidden\' name=\'compilers\' value=\'';$output .= $stash->get(['data',0,'compilers',0]);$output .= '\' />
+<select name=\'user\' size=\'8\'>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'group_users',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '<option value="';$output .= $stash->get('user');$output .= '" ';if ($stash->get('user')eq 'root'){$output .= ' disabled="disabled"'}$output .= '>';$output .= $stash->get('user');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+<br />
+<input type=\'submit\' class=\'btn-primary\' value=\'Remove from Group\' />
+</form>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';$output .= $context->process('_brickstart.tmpl',{'bricktitle'=>('Add a user to the ' .$stash->get(['data',0,'group',0]).' group')});$output .= '<form method="POST" action=\'';$output .= $stash->get('cp_security_token').$stash->get('addscript');$output .= '\'>
+<input type=\'hidden\' name=\'compilers\' value=\'';$output .= $stash->get(['data',0,'compilers',0]);$output .= '\' />
+<select name=\'user\' size=\'8\'>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'non_group_users',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '<option value="';$output .= $stash->get('user');$output .= '">';$output .= $stash->get('user');$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+<br />
+<input type=\'submit\' class=\'btn-primary\' value=\'Add to Group\' />
+</form>
+';$output .= $context->process('_brickend.tmpl');$output .= '<br />
+';if ($stash->get(['data',0,'compilers',0])eq 1){$output .= '<b>Note:</b> This group controls which users can use the system\'s compilers.
+'}else {$output .= '<b>Note:</b> This group controls which users can use the system\'s `su` utility.
+'}$output .= '</div></div>
+';$context->include('master_templates/master.tmpl',{'app_key'=>$stash->get(['data',0,'app_key',0]),'theme'=>'yui','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

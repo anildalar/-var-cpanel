@@ -1,0 +1,263 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/multiphp_manager/views/config.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<!-- TABLE SECTION -->
+<div id="vhostContainer" class="list-container">
+    <form class="layout-medium" novalidate>
+        <section id="systemPhpSection" class="section">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h3 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['System [asis,PHP] Version' ]]);$output .= '</h3>
+                    <div class="description">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system default [asis,PHP] version is set by the system administrator.' ]]);$output .= '
+                        <p>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Any domain that is set to the [output,em,inherit] value indicates that it does not have its own [asis,PHP] version explicitly set. Read more about [output,url,_1,inherit,target,_blank].','https://go.cpanel.net/inherit' ]]);$output .= '
+                        </p>
+                    </div>
+                    <div class="form-inline indent-form">
+                        <!-- View I - Display System PHP version -->
+                        <div id="displaySection" class="form-group" ng-hide="system.editView">
+                            <span class="systemPhpValue">
+                                <span ng-if="!systemPhp">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system “[_1]” version is unavailable.','PHP' ]]);$output .= '
+                                </span>
+                                <span ng-if="systemPhp">
+                                    <b>{{ systemPhp.displayPhpVersion }}</b>
+                                </span>
+                                <span ng-show="php.systemPhp.isEol" class="label label-warning" style="">Deprecation warning</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="section">
+            <section class="phpSection">
+                <h3 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Set [asis,PHP] Version per Domain' ]]);$output .= '</h3>
+                <div class="description">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Select the domains that you wish to change from the table, then apply a [asis,PHP] version from the list.' ]]);$output .= '
+                    </p>
+                </div>
+                <div class="row" id="noPhpFoundMessage" ng-if="phpVersionsEmpty">
+                    <div class="col-xs-12">
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                            <div class="alert-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['No versions of [asis,PHP] are installed. Contact your system administrator to install [asis,PHP].' ]]);$output .= '
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="!phpVersionsEmpty">
+                    <div class="row" ng-class="callout">
+                        <div class="col-xs-12 col-md-8">
+                            <callout id="perDomainEolWarning" callout-type="warning" role="alert" ng-if="!showRecommendedVersion && php.showEolMsg" >
+                                <span ng-bind-html="php.eolWarningMsg"></span>
+                            </callout>
+                            <callout id="customRecVersions" callout-type="info" role="alert" ng-if="showRecommendedVersion" >
+                                <span ng-bind-html="recommendedVersionMessage""></span>
+                            </callout>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="form-inline domain-container">
+                                <div class="form-group">
+                                    <label for="phpVersion">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '</label>
+                                    <select id="selectPhpVersion"
+                                            class="form-control phpSelect"
+                                            ng-disabled="restrictedPhp.showAlert"
+                                            ng-options="pkg.displayPhpVersion for pkg in phpVersions track by pkg.version"
+                                            ng-model="selectedVersion">
+                                    </select>
+                                    <button id="btnDomainPhpApply"
+                                        type="button"
+                                        ng-disabled="!vhostSelected || restrictedPhp.showAlert"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP] version to selected domains.' ]]);$output .= '"
+                                        cp-action="applyDomainPhp()"
+                                        button-class="btn-primary">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= "\n                                    </button>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-12\">\n                            <div ng-show=\"restrictedPhp.showAlert\">\n                                <p id=\"restrictedPhpAlertInfo\" ng-bind-html=\"restrictedPhp.alertInfo\"></p>\n                                <ul id=\"filteredRestrictedDomainList\" class=\"list-unstyled row\" ng-show=\"!restrictedPhp.showAllDomains\">\n                                    <li ng-repeat=\"domain in restrictedPhp.domainsSelected|limitTo:6 track by \$index\"\n                                        class=\"col-xs-6 col-sm-4 domain-list-item\">\n                                        {{ domain }}\n                                    </li>\n                                </ul>\n                                <ul id=\"allRestrictedDomainList\" class=\"list-unstyled row\" ng-show=\"restrictedPhp.showAllDomains\">\n                                    <li ng-repeat=\"domain in restrictedPhp.domainsSelected\"\n                                        class=\"col-xs-6 col-sm-4 domain-list-item\">\n                                        {{ domain }}\n                                    </li>\n                                </ul>\n                                <div>\n                                    <a id=\"btnShowMoreRestrictedDomains\"\n                                        href=\"javascript:void(0)\"\n                                        ng-show=\"!restrictedPhp.showAllDomains && restrictedPhp.showMore\"\n                                        ng-click=\"toggleRestrictedDomains()\"\n                                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Show all affected domains[comment,button label]' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show More' ]]);$output .= '                                    </a>
+                                </div>
+                                <div>
+                                    <a id="btnHideRestrictedDomains"
+                                        href="javascript:void(0)"
+                                        ng-show="restrictedPhp.showAllDomains && restrictedPhp.showMore"
+                                        ng-click="toggleRestrictedDomains()"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Hide affected domains[comment,button label]' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Hide' ]]);$output .= '                                    </a>
+                                </div>
+                                <div class="text-right">
+                                    <button id="btnAlertApply"
+                                        class="btn btn-primary"
+                                        type="button"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Apply new [asis,PHP] version to all selected domains.' ]]);$output .= '"
+                                        cp-action="performApplyDomainPhp()">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Apply' ]]);$output .= '
+                                    </button>
+                                    <button id="btnAlertCancel"
+                                        class="btn btn-default"
+                                        ng-click="hidePhpAlert()"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Cancel apply for new [asis,PHP].' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row search-page-container">
+                        <div class="col-xs-6">
+                            <!-- Search -->
+                            <search ng-model="meta.filterValue" ng-change="selectPage(1)" debounce="500"></search>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div class="pagination-container">
+                                <!-- Pagination -->
+                                <page-size id="pageSize" allowed-sizes="meta.pageSizes" total-items="meta.totalItems"
+                                    ng-model="meta.pageSize" show-all="false" ng-show="showPager" ng-change="selectPage(1)">
+                                </page-size>
+                                <uib-pagination id="paginateItems" total-items="meta.totalItems" ng-model="meta.currentPage"
+                                    max-size="meta.maxPages" boundary-links="true" rotate="false"
+                                    previous-text="<" next-text=">" first-text="<<" last-text=">>"
+                                    items-per-page="meta.pageSize" ng-show="showPager" ng-change="selectPage()">
+                                </uib-pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-8">
+                            <div class="page-stats selected-stats">
+                                <span class="title">Selected</span>
+                                <span id="selectedCounter" class="badge badge-info">
+                                    {{totalSelectedDomains}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="page-stats item-stats">
+                                <span class="title">Showing</span>
+                                {{meta.start}} - {{meta.limit}} of {{meta.totalItems}} items
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <table id="vhostList" class="table table-striped responsive-table">
+                                <thead>
+                                    <tr>
+                                        <th class="checkColumn">
+                                            <div class="btn-group checkbox-group" uib-dropdown is-open="checkdropdownOpen">
+                                                <span class="btn check-box">
+                                                    <input type="checkbox" id="selectAll"
+                                                        ng-model="allRowsSelected"
+                                                        title="';$output .= $stash->get(['locale',0,'maketext',['Select all domains on this page.' ]]);$output .= "\"\n                                                        ng-change=\"selectAllVhosts()\"\n                                                        ng-disabled=\"loadingVhostList\">\n                                                </span>\n                                                <button type=\"button\" class=\"btn btn-default dropdown-toggle\" uib-dropdown-toggle>\n                                                    <span class=\"caret\"></span>\n                                                    <span class=\"sr-only\">Checkbox Options</span>\n                                                </button>\n                                                <ul class=\"dropdown-menu\" role=\"menu\" uib-dropdown-menu>\n                                                    <li><a href=\"#\" ng-click=\"clearAllSelections(\$event)\">";$output .= $stash->get(['locale',0,'maketext',['Clear all selections[comment,action text]' ]]);$output .= '</a></li>
+                                                </ul>
+                                            </div>
+                                        </th>
+                                        <th>
+                                            <toggle-sort id="sortDomain"
+                                                onsort="selectPage(1)"
+                                                sort-meta="meta"
+                                                sort-field="vhost">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                                            </toggle-sort>
+                                        </th>
+                                        <th>
+                                            <toggle-sort id="sortVersion"
+                                                onsort="selectPage(1)"
+                                                sort-meta="meta"
+                                                sort-field="version">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '
+                                            </toggle-sort>
+                                        </th>
+                                        <th>
+                                            <toggle-sort id="sortVersion"
+                                                onsort="selectPage(1)"
+                                                sort-meta="meta"
+                                                sort-field="php_fpm">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM]' ]]);$output .= "\n                                            </toggle-sort>\n                                        </th>\n                                    </tr>\n                                </thead>\n                                <tbody ng-class=\"{ processing: loadingVhostList }\">\n                                    <tr id=\"acctRow{{\$index}}\"\n                                        ng-repeat-start=\"vhostInfo in phpVhostList track by \$index\"\n                                        ng-class=\"rowClass(vhostInfo)\">\n                                        <td class=\"checkColumn\">\n                                            <input type=\"checkbox\" id=\"rowSelector_{{ vhostInfo.vhost }}\"\n                                                title=\"";$output .= $stash->get(['locale',0,'maketext',['Select this domain.' ]]);$output .= '"
+                                                ng-model="vhostInfo.rowSelected"
+                                                ng-change="selectVhost(vhostInfo)"
+                                                ng-disabled="loadingVhostList">
+                                            </input>
+                                            <i id="linkShowImpactedDomains_{{ vhostInfo.vhost }}"
+                                                href="javascript:void(0)"
+                                                class="fas fa-small fa-info-circle fa-btn"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Toggle show/hide impacted domains.' ]]);$output .= '"
+                                                ng-show="vhostInfo.impactedDomains.warn"
+                                                ng-click="vhostInfo.impactedDomains.show=!vhostInfo.impactedDomains.show"
+                                                aria-hidden="true">
+                                            </i>
+                                        </td>
+                                        <td id="vhost_{{ vhostInfo.vhost }}"
+                                            data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                                            {{ vhostInfo.vhost }}
+                                        </td>
+                                        <td id="php_{{ vhostInfo.vhost }}"
+                                            data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '">
+                                            <span>
+                                                {{ vhostInfo.displayPhpVersion }}
+                                            </span>
+                                            <button id="php_inherit_{{ vhostInfo.vhost }}"
+                                                ng-show="vhostInfo.inherited"
+                                                class="btn btn-xs btn-default"
+                                                ng-click="vhostInfo.showInheritInfo = !vhostInfo.showInheritInfo">
+                                                <i class="fas fa-info-circle"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Inherited' ]]);$output .= '
+                                            </button>
+                                        </td>
+                                        <td id="phpfpm_{{ vhostInfo.vhost }}"
+                                            data-title="';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP-FPM]' ]]);$output .= '">
+                                            <span ng-show="vhostInfo.php_fpm === 1">
+                                                <i class="fas fa-check"></i>
+                                            </span>
+                                            <span ng-show="vhostInfo.php_fpm === 0" class="ng-hide">
+                                                <i class="fas fa-ban fa-lg"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr id="impactedDomainsRow_{{ vhostInfo.vhost }}"
+                                        ng-show="vhostInfo.impactedDomains.show"
+                                        class="warning empty-row dismissable">
+                                        <td id="inheritInfo_{{ vhostInfo.vhost }}" colspan="5">
+                                            <button id="linkHideImpactedDomains_{{ vhostInfo.vhost }}"
+                                                type="button"
+                                                class="close"
+                                                ng-click="vhostInfo.impactedDomains.show=false"
+                                                aria-hidden="true"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Hide impacted domains.' ]]);$output .= "\">\n                                                <i class=\"fas fa-times\"></i>\n                                            </button>\n                                            <div ng-bind-html=\"vhostInfo.impactedDomains.text\"></div>\n                                            <ul id=\"domainList\" class=\"list-unstyled row\">\n                                                <li ng-repeat=\"domain in vhostInfo.impactedDomains.domains|limitTo:20 track by \$index\"\n                                                    class=\"col-xs-6 col-sm-4 domain-list-item\">\n                                                    {{ domain }}\n                                                </li>\n                                            </ul>\n                                            <div class=\"text-right\">\n                                                <a href=\"javascript:void(0)\"\n                                                    style=\"padding-left: 5px;\"\n                                                    ng-show=\"vhostInfo.impactedDomains.showMore\"\n                                                    ng-click=\"showAllImpactedDomains(vhostInfo)\">\n                                                    ";$output .= $stash->get(['locale',0,'maketext',['[comment,link text]Show all impacted domains[comment,link text]' ]]);$output .= '                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr id="alertRow_{{ vhostInfo.vhost }}"
+                                        ng-repeat-end
+                                        ng-show="vhostInfo.showInheritInfo"
+                                        class="info">
+                                        <td id="inheritInfo_{{ vhostInfo.vhost }}" colspan="5">
+                                            <button id="linkHideInheritInfo_{{ vhostInfo.vhost }}"
+                                                type="button"
+                                                class="close"
+                                                ng-click="vhostInfo.showInheritInfo=false"
+                                                aria-hidden="true"
+                                                title="';$output .= $stash->get(['locale',0,'maketext',['Hide inherit information.' ]]);$output .= '">
+                                                <i class="fas fa-times"></i>
+                                            </button>
+                                            <div ng-bind-html="vhostInfo.inheritedInfo"></div>
+                                        </td>
+                                    </tr>
+                                    <tr id="listEmpty" ng-hide="phpVhostList.length" class="info empty-row">
+                                        <td colspan="4">';$output .= $stash->get(['locale',0,'maketext',['The domain list is empty.' ]]);$output .= '</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </form>
+</div>
+
+<!-- View Profile Modal box -->
+<script type="text/ng-template" id="impactedDomainsPopup.ptt">
+    ';$output .= $context->process('multiphp_manager/views/impactedDomainsPopup.ptt');$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

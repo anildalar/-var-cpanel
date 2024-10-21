@@ -1,0 +1,132 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/market_provider_manager/views/editProducts.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="description" ng-cloak >
+    <div class="list-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Provider' ]]);$output .= '
+                    </th>
+                    <th class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Product Name' ]]);$output .= '
+                    </th>
+                    <th class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '
+                    </th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Price' ]]);$output .= ' <i class="icon-arrow-up"></i></th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Wildcard Price' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Commission' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="product in products | orderBy: product_orderBy_sorter" ng-if="product.display_name">
+                    <td>
+                        <a href="javascript:void(0)" ng-click="product_group_changing[product.product_group] ? null : set_recommended(product, !product.recommended)"
+                            style="display:inline-block"
+                            title="{{ get_recommended_tooltip(product) }}"
+                            ng-class="{\'disabled\': product_metadata.product_metadata[product.provider_name][product.product_id].attributes[\'recommended\'].read_only}"><span
+
+                            class="fa-2x fa-fw recommended"
+                            ng-class="{\'group_changing\': product_group_changing[product.product_group], \'fa-spin\': product.recommended_is_changing, \'far fa-star\': !product.recommended, \'fas fa-star\': product.recommended}"
+                        ></span><span
+                            class="fas fa-2x fa-fw recommended fa-star"
+                            style="visibility:hidden"
+
+                        ></span></a>
+                    </td>
+                    <td>
+                        <span ng-bind="product.provider_display_name || \'(';$output .= $stash->get(['locale',0,'maketext',['Unknown' ]]);$output .= ')\'"></span>
+                    </td>
+                    <td>
+                        <img ng-if="product.icon" ng-src="data:{{ product.icon_mime_type }};base64,{{ product.icon }}" width="40" height="40">
+                        <span ng-bind="product.display_name"></span>
+                    </td>
+                    <td data-title="">
+                        <toggle-switch
+                            id="{{product.display_name}}_toggle"
+                            ng-model="product.enabled"
+                            on-toggle="set_product(product, !product.enabled)"
+                            enabled-label ="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                            disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= "\"\n                        ></toggle-switch>\n                    </td>\n                    <td>\n                        <a href=\"javascript:void(0)\" ng-if=\"!product._price_is_read_only\" class=\"clickable\" ng-click=\"editProductPrice(product)\">\n                            \${{ format_dollars( product[product._pricing_attribute] ) }} {{product.price_unit}}\n                            <span class='glyphicon glyphicon-pencil'></span>\n                        </a>\n                        <span ng-if=\"product._price_is_read_only\">\n                            \${{ format_dollars( product[product._pricing_attribute] ) }} {{product.price_unit}}\n                        </span>\n                        <div ng-if=\"product.x_ssl_per_domain_pricing\">";$output .= $stash->get(['locale',0,'maketext',['per domain' ]]);$output .= "</div>\n                    </td>\n                    <td>\n                        <div ng-if=\"product._wildcard_pricing_attribute\">\n                            <a href=\"javascript:void(0)\" ng-if=\"!product._price_is_read_only\" class=\"clickable\" ng-click=\"editProductPrice(product, true)\">\n                                \${{ format_dollars( product[product._wildcard_pricing_attribute] ) }} {{product.price_unit}}\n                                <span class='glyphicon glyphicon-pencil'></span>\n                            </a>\n                            <span ng-if=\"product._price_is_read_only\">\n                                \${{ format_dollars( product[product._wildcard_pricing_attribute] ) }} {{product.price_unit}}\n                            </span>\n                            <div ng-if=\"product.x_ssl_per_domain_pricing\">";$output .= $stash->get(['locale',0,'maketext',['per domain' ]]);$output .= '</div>
+                        </div>
+                        <em ng-if="!product._wildcard_pricing_attribute">';$output .= $stash->get(['locale',0,'maketext',['Not Applicable' ]]);$output .= "</em>\n                    </td>\n                    <td>\n                        <span ng-if=\"provider_commission[product.provider_name]\">\n                            \${{ format_dollars( get_product_commission(product) ) || '";$output .= $stash->get(['locale',0,'maketext',['N/A' ]]);$output .= '\' }} USD
+                        </span>
+                        <span ng-if="!provider_commission[product.provider_name]">
+                            ';$output .= $stash->get(['locale',0,'maketext',['N/A' ]]);$output .= "\n                        </span>\n                    </td>\n                </tr>\n            </tbody>\n        </table>\n    </div>\n</div>\n\n<script id=\"product-price-modal\" type=\"text/template\">\n    <div class=\"product-container\"\n        ng-if=\"product\">\n        <div class=\"panel panel-default\">\n            <form class=\"simple-form\" name=\"priceForm\">\n                <fieldset ng-disabled=\"product.settingPrice\">\n                    <div class=\"panel-heading\">\n                        <h3 class=\"panel-title\" ng-bind=\"editingDescription\"></h3>\n                    </div>\n\n                    <div class=\"panel-body\">\n                        <div ng-if=\"product.providerCommissionMessage\" ng-bind=\"providerCommissionMessage\"></div>\n                        <div ng-if=\"product.price.minimumMessage\" ng-bind=\"product.price.minimumMessage\"></div>\n                        <div ng-if=\"product.price.maximumMessage\" ng-bind=\"product.price.maximumMessage\"></div>\n\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\$</span>\n                            <input id=\"newPrice\" name=\"newPrice\" required type=\"text\" class=\"form-control new-price-input-field\" ng-model=\"new_price\"\n                            num-greater-than-equal=\"{{product.price.minimum}}\"\n                            num-less-than-equal=\"{{product.price.maximum}}\"\n                            is-dollar-amount\n                            num-is-multiple-of=\"{{product.price.multipleOf}}\" >\n                            <span class=\"input-group-addon\">{{product.price.unit}}</span>\n                        </div>\n                        <ul validation-container field-name=\"newPrice\">\n                            <validation-item\n                                field-name=\"newPrice\"\n                                validation-name=\"required\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                        </ul>
+                    </div>
+                    <div class="btn-group panel-btn-group">
+                        <button type="button" class="btn btn-default col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                            ng-click="cancel_change_price()">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\n                        </button>\n                        <button cp-action=\"set_price(new_price, priceForm)\" type=\"submit\" ng-disabled=\"!priceForm.\$valid || priceForm.\$pristine\" class=\"btn btn-default btn-primary col-xs-6 col-sm-6 col-md-6 col-lg-6\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                        </button>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<style>
+    .recommended.group_changing {
+        cursor: not-allowed;
+    }
+
+    /* Every <a> should be clickable, but for some reason the <a> elements
+    on this page aren’t showing that. */
+    a.clickable {
+        cursor: pointer;
+    }
+
+    .recommended {
+        cursor: pointer;
+    }
+    .recommended:hover,
+    .recommended:focus,
+    .recommended:active {
+        text-decoration: none;
+    }
+    .recommended.fa-star {
+        color: #F6C342;
+    }
+
+    .panel-btn-group {
+        width: 100%;
+    }
+
+    .panel-btn-group .btn {
+        border-radius: 0 0 4px 4px;
+    }
+
+    .panel-btn-group>.btn:first-child {
+        border-left: 0;
+    }
+
+    .panel-btn-group>.btn:last-child {
+        margin-left: 0;
+        border-right: 0;
+        border-left: 0;
+    }
+
+    .panel-body input[type="text"] {
+        text-align: center;
+        font-size: 2em;
+        height: 2em;
+        line-height: 2em;
+    }
+
+    .panel-body .input-group-addon {
+        font-size: 2em;
+        line-height: 1.5em;
+    }
+
+    .product-container .panel {
+        margin: 0;
+        border: 0;
+    }
+
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

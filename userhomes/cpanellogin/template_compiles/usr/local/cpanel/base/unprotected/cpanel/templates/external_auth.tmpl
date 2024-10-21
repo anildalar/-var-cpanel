@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/cpanel/templates/external_auth.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('HTTP',$context->plugin('HTTP'));$stash->set('query',{'user'=>$stash->get('user'),'theme'=>$stash->get('theme'),'parameterized_form'=>$stash->get('parameterized_form')});if ($stash->get('page_to_show')eq 'token_denied'){$stash->set(['query',0,'token_denied',0],1)}if ($stash->get(['external_auth_modules',0,'size',0])> 0 && $stash->get('external_auth_modules')){$output .= '
+<div id="external-auth-container">
+    <div class="or-separator">
+        <span class="or-separator-label">';$output .= $stash->get(['locale',0,'maketext',['OR[comment,this is a decoration separator, shortest form is best]' ]]);$output .= '</span>
+        <span class="or-separator-secondary-label">';$output .= $stash->get(['locale',0,'maketext',['Log in via' ]]);$output .= '</span>
+    </div>
+    <div class="controls external-auth-items">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('external_auth_modules');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'auth_mod'}=$_tt_value;$output .= '
+          ';if ($stash->get('oidc_failed')eq $stash->get(['auth_mod',0,'provider_name',0])){if ($stash->get(['ENV_REQUEST_URI',0,'match',['^\/(?:logout|login|openid_connect_callback)\/?' ]])){$stash->set('xauth_link',$stash->get(['auth_mod',0,'link',0,'html',0]))}else {$stash->set('xauth_link',$stash->get(['ENV_REQUEST_URI',0,'html',0]))}}else {$stash->set('xauth_link',$stash->get(['auth_mod',0,'link',0,'html',0]).'?' .$stash->get(['HTTP',0,'make_query_string',[$stash->get('query')]]))}$output .= '
+          <div class="external-auth-btn">
+              <a class="external-auth-link" href="';$output .= $stash->get('xauth_link');$output .= '" title="';$output .= $stash->get(['auth_mod',0,'label',0,'html',0]);$output .= '" style="background-color:#';$output .= $stash->get(['auth_mod',0,'color',0]);$output .= ';color:#';$output .= $stash->get(['auth_mod',0,'textcolor',0]);$output .= '" referrerpolicy="origin">
+                  <i class="external-auth-icon" style="background-image:url(data:';$output .= $stash->get(['auth_mod',0,'icon_type',0]);$output .= ';base64,';$output .= $stash->get(['auth_mod',0,'icon',0]);$output .= ')"></i>
+                  ';if ($stash->get(['auth_mod',0,'label',0])eq 'Log in via ' .$stash->get(['auth_mod',0,'display_name',0])){$output .= '
+                    <span class="external-auth-btn-label">';$output .= $stash->get(['locale',0,'maketext',['Log in via [_1]',$stash->get(['auth_mod',0,'display_name',0,'html',0])]]);$output .= '</span>
+                  '}else {$output .= '
+                    <span class="external-auth-btn-label">';$output .= $stash->get(['auth_mod',0,'label',0,'html',0]);$output .= '</span>
+                  '}$output .= '
+              </a>
+          </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+</div>
+<script>
+    // Set goto_uri/app in JS so that it never gets cached server side.
+    function setExtAuthLinks() {
+        let ext_auth_links = document.querySelectorAll("a.external-auth-link");
+        ext_auth_links.forEach((elem) => {
+            elem.href = elem.href + "&goto_uri=" + window.goto_uri + "&goto_app=" + window.goto_app;
+        });
+    }
+	if (document.readyState === "complete" || document.readyState === "interactive") {
+        setTimeout(setExtAuthLinks, 1);
+    } else {
+        document.addEventListener("DOMContentLoaded", setExtAuthLinks);
+    }
+</script>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

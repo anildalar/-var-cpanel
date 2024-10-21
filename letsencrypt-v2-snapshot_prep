@@ -1,0 +1,118 @@
+#!/usr/local/cpanel/3rdparty/bin/perl
+
+# cpanel - letsencrypt-v2-snapshot_prep            Copyright 2023 cPanel, L.L.C.
+#                                                           All rights reserved.
+# copyright@cpanel.net                                         http://cpanel.net
+# This code is subject to the cPanel license. Unauthorized copying is prohibited
+package letsencrypt_v2_snapshot_prep;
+
+=encoding utf-8
+
+=head1 NAME
+
+letsencrypt-v2-snapshot_prep
+
+=head1 SYNOPSIS
+
+    letsencrypt-v2-snapshot_prep ( --pre | --post )
+
+This command will perform the necessary actions for preparing the Let's Encrypt
+plugin for image snapshots and restoring it afterwards.
+
+WARNING: This command should only be used in conjunction with the snapshot_prep
+tool in preparation for creating a virtualization template of the system.
+
+=cut
+
+use cPstrict;
+
+use parent ('Cpanel::HelpfulScript');
+
+use constant {
+    AUTOSSL_FILE => '/var/cpanel/autossl.json',
+    JSON_FILE    => '/var/cpanel/letsencrypt-v2.json',
+    PROVIDER     => 'LetsEncrypt',
+    RESTORE_FILE => '/var/cpanel/letsencrypt-v2-snapshot_prep.restore',
+};
+
+sub _OPTIONS {
+    return qw(pre post);
+}
+
+__PACKAGE__->new(@ARGV)->run() if !caller;
+
+sub run ($self) {
+
+    my $badargs = !$self->getopt('pre') && !$self->getopt('post');
+    $badargs ||= $self->getopt('pre') && $self->getopt('post');
+
+    die $self->help() if $badargs;
+
+    if ( $self->getopt('pre') ) {
+        _pre();
+    }
+    elsif ( $self->getopt('post') ) {
+        _post();
+    }
+
+    return;
+}
+
+sub _pre() {
+
+    return if !-e JSON_FILE;
+
+    require Cpanel::SSL::Auto::Loader;
+    my $ns = Cpanel::SSL::Auto::Loader::get_and_load(PROVIDER);
+
+    my %props = $ns->PROPERTIES();
+    my $tos   = $props{terms_of_service};
+
+    require Cpanel::JSON;
+    my $autossl = Cpanel::JSON::LoadFile(AUTOSSL_FILE);
+
+    if ( $autossl->{provider} eq PROVIDER ) {
+
+        my $accepted = $autossl->{provider_properties}{ PROVIDER() }{terms_of_service_accepted};
+
+        if ( length $accepted && $accepted eq $tos ) {
+            require Cpanel::FileUtils::TouchFile;
+            Cpanel::FileUtils::TouchFile::touchfile(RESTORE_FILE);
+        }
+
+    }
+
+    require Cpanel::Autodie;
+    Cpanel::Autodie::unlink_if_exists(JSON_FILE);
+
+    return;
+}
+
+sub _post() {
+
+    return if !-e RESTORE_FILE;
+
+    require Cpanel::SSL::Auto::Loader;
+    my $ns = Cpanel::SSL::Auto::Loader::get_and_load(PROVIDER);
+
+    my %props = $ns->PROPERTIES();
+    my $tos   = $props{terms_of_service};
+
+    require Whostmgr::API::1::Utils::Execute;
+    my $result = Whostmgr::API::1::Utils::Execute::execute(
+        'SSL' => 'reset_autossl_provider',
+        {
+            'provider'                    => PROVIDER,
+            'x_terms_of_service_accepted' => $tos,
+        },
+        {},
+    );
+    die $result->get_error() if $result->get_error();
+
+    require Cpanel::Autodie;
+    Cpanel::Autodie::unlink_if_exists(RESTORE_FILE);
+
+    return;
+}
+
+1;

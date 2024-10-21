@@ -1,0 +1,116 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/popups/htmledit.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<style type="text/css">
+.helpText{
+    text-align: justify;
+    padding-left: 10px;
+}
+
+.warningDiv {
+    border: 1px solid #FF4D4D;
+    margin: 3px;
+    padding: 5px;
+    background-color: #FFEAEA;
+    color: #FF0000;
+    border-color: #FF4D4D
+}
+
+.noticeDiv {
+    border: 1px solid black;
+    margin: 3px;
+    padding: 5px;
+    background-color: #FFF6CF;
+    color: #7A6A38;
+    border-color: #E6E08C
+}
+
+.section {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+</style>
+<div style="display:none;" id="htmledit">
+    <div class="hd">
+        <div class="lt"></div>
+        <span>
+            ';$output .= $stash->get(['locale',0,'maketext',['HTML Editor' ]]);$output .= '
+        </span>
+        <div class="rt"> </div>
+    </div>
+    <div class="bd">
+        <div class="filecontent" id="htmledit-filecontent">
+            <form method="post" action="dohtmledit.html">
+                <h4>';$output .= $stash->get(['locale',0,'maketext',['HTML Editor' ]]);$output .= '</h4>
+                <div class="section">
+                    <label for="htmledit-file">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['You will be editing:' ]]);$output .= '</strong>
+                        <div id="htmledit-filelist"></div>
+                    </label>
+                </div>
+                <div class="section">
+                    <select style="display:none;" name="basedir" id="htmledit-basedir"></select>
+                    <strong>';$output .= $stash->get(['locale',0,'maketext',['Please select the URL where this file will be served from:' ]]);$output .= ' </strong><br/>
+                    <select name="url" id="htmledit-urls" onchange="document.getElementById(\'htmledit-basedir\').selectedIndex =this.selectedIndex;"></select>
+                    <a href="#" onclick="document.getElementById(\'htmlUrlDesc\').style.display = (document.getElementById(\'htmlUrlDesc\').style.display === \'block\') ? \'none\' : \'block\';return false;">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Help' ]]);$output .= '
+                    </a>
+                    <br />
+                    <div style="display:none" id="htmlUrlDesc" class="helpText">
+                        ';$output .= $stash->get(['locale',0,'maketext',['This URL will be used to ensure links for the HTML page you will be editing go to the proper place.' ]]);$output .= '
+                    </div>
+                    <br />
+                    <div id="htmledit-encodings">
+                        <div class="warningDiv">
+                            ';$output .= $stash->get(['locale',0,'maketext',['External assets may fail to load in browsers that block mixed (HTTP and HTTPS) content.' ]]);$output .= '
+                        </div><br />
+                        <div class="noticeDiv">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Back up the original file before converting character sets, since this action can produce unexpected results.' ]]);$output .= '
+                        </div><br/>
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Please select the character encoding to open this file with:' ]]);$output .= '</strong><br/>
+                        <select id="htmledit-charset" name="charset"></select>
+                        <a href="#" onclick="document.getElementById(\'htmlencodeDesc\').style.display = (document.getElementById(\'htmlencodeDesc\').style.display === \'block\') ? \'none\' : \'block\';return false;">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Help' ]]);$output .= '
+                        </a>
+                        <br />
+                        <div style="display:none" id="htmlencodeDesc" class="helpText" >
+                            <br />
+                            ';$output .= $stash->get(['locale',0,'maketext',['From the drop-down menu, select the encoding with which you created the file.' ]]);$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Important]: Selecting the wrong initial encoding may corrupt the file.' ]]);$output .= '<br/>
+                            <br />
+                            ';$output .= $stash->get(['locale',0,'maketext',['If you’re not sure of the correct encoding, here are some tips:' ]]);$output .= '
+                            <ul>
+                                <li>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['If you are using a Western European language like English, Spanish, or French without any special characters, select “ISO-8859-1”.' ]]);$output .= '
+                                </li>
+                                <li>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['If you are using a non-Western language, or you have special characters that are not HTML-encoded in your file, select “utf-8”.' ]]);$output .= '
+                                </li>
+                                <li>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['You may have selected the wrong encoding if your file appears with text like this:' ]]);$output .= '
+                                    <img src="../images/encoding_lang_broken.png" align="absmiddle">
+                                    <strong>';$output .= $stash->get(['locale',0,'maketext',['If this happens, immediately abort the edit and select the correct encoding.' ]]);$output .= '
+                                    </strong> ';$output .= $stash->get(['locale',0,'maketext',['Do not save the file; this may corrupt the text permanently.' ]]);$output .= '
+                                </li>
+                            <ul>
+                        </div>
+                        <br /><br />
+                        <strong>
+                            ';$output .= $stash->get(['locale',0,'maketext',['If encodings are not important to you because you will only be working with English or other Western languages, you can disable this dialog by clicking here:' ]]);$output .= '
+                        </strong>
+                        <span class="button-group">
+                            <button style="margin-top: 15px" type="button" onclick="disableEncodings(\'htmledit\');">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Disable Encoding Check' ]]);$output .= '
+                            </button>
+                        </span>
+                        <br />
+                        <br />
+                    </div>
+                    <input type="hidden" name="dir" id="htmledit-dir" />
+                    <input type="hidden" name="file" id="htmledit-file" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="ft">
+    </div>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

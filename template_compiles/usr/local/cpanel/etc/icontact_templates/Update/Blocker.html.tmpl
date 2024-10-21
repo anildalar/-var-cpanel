@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Update/Blocker.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/icons.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['[asis,cPanel] [output,amp] [asis,WHM] version change from “[_1]” to “[_2]” is blocked',$stash->get(['NOTICE',0,'starting_version',0]),$stash->get(['NOTICE',0,'target_version',0])]]));$output .= '
+
+<table cellpadding="4" cellspacing="0" border="0" width="100%">
+    <tbody>
+        <tr>
+            <th style="width: 32px; border-bottom: 2px solid ';$output .= $stash->get('medium_gray');$output .= '; padding: 5px; background-color: ';$output .= $stash->get('light_gray');$output .= '" align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Severity' ]]);$output .= '</th>
+            <th style="border-bottom: 2px solid ';$output .= $stash->get('medium_gray');$output .= '; padding: 5px; background-color: ';$output .= $stash->get('light_gray');$output .= '" align="left">';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Message' ]]);$output .= '</th>
+        </tr>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'messages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+        <tr style="background-color:';$output .= $stash->get(['loop',0,'index',0])% 2 eq 1 ? $stash->get('light_gray'): $stash->get('white');$output .= '">
+            <td width="32" style="width: 32px;">
+              ';$output .= $stash->get(['get_icon',[{'icon'=>$stash->get(['message',0,'severity',0])}]]);$output .= '
+            </td>
+            <td>';$output .= $stash->get(['message',0,'message',0]);$output .= '</td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </tbody>
+</table>
+
+<p>
+ ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['See [output,url,_1,_1,_2] for more information.','https://go.cpanel.net/blockers',{'target'=>'_blank' }]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

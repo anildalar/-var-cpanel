@@ -1,0 +1,16 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/warnings/_mysql_version.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Mysql',$context->plugin('Mysql'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('eol_soon',$stash->get(['Mysql',0,'is_version_going_eol_soon',0]));$stash->set('eol_now',$stash->get(['Mysql',0,'is_version_eol_now',0]));$stash->set('display_banner',$stash->get(['Whostmgr',0,'hasroot',0])&& ($stash->get('eol_soon')|| $stash->get('eol_now')));$stash->set('mysql_version',$stash->get(['Mysql',0,'mysqlversion',0]));$stash->set('mysql_name',$stash->get(['Mysql',0,'mysql_display_name',0]));$stash->set('mysql_upgrade_url',$stash->get('cp_security_token').'/scripts/mysqlupgrade');$output .= '
+
+';if ($stash->get('display_banner')){$output .= '
+    <div class="callout callout-warning">
+        <div class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['Action Needed' ]]);$output .= '</div>
+        <span>
+        ';if ($stash->get('eol_soon')){$output .= '
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Your [_1] version ([_2]) will reach [output,strong,End of Life] status soon. Upgrade now to prevent security and compatibility problems.',$stash->get('mysql_name'),$stash->get('mysql_version')]]);$output .= '</p>
+        '}elsif ($stash->get('eol_now')){$output .= '
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Your [_1] version ([_2]) has reached [output,strong,End of Life] status. Upgrade now to prevent security and compatibility problems.',$stash->get('mysql_name'),$stash->get('mysql_version')]]);$output .= '</p>
+        '}$output .= '
+            <a class="btn btn-primary" href="';$output .= $stash->get('mysql_upgrade_url');$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Upgrade [_1]',$stash->get('mysql_name')]]);$output .= '</a>
+        </span>
+    </div>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

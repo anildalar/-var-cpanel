@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/search_index/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('solr_installed',$stash->get(['ExpVar',0,'expand',['$hasdovecotsolr' ]])? 1 : 0);$stash->set('cpuser',$stash->get(['ExpVar',0,'expand',['$user' ]]));$stash->set('authuser',$stash->get(['ExpVar',0,'expand',['$authuser' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+';if (!$stash->get('solr_installed')){$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['Your server administrator must enable Full-Text Search Indexing (powered by [asis,Apache Solr™]) in order for you to use this feature.' ]]);$output .= '
+            </div>
+        </div>
+'}else {$output .= '
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+    <div class=\'body-content\'>
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,abbr,IMAP,Internet Mail Access Protocol] Full-Text Search Indexing (powered by [asis,Apache Solr™]) provides fast search capabilities for [output,abbr,IMAP,Internet Mail Access Protocol] mailboxes. This significantly improves the speed and convenience of the search experience for [asis,iOS] devices, [asis,Microsoft Outlook], [asis,Roundcube], and [asis,Mozilla Thunderbird] users.' ]]);$output .= '
+        </p>
+
+        <div id="viewContent"
+                     class="ng-cloak section"
+                     ng-view
+                     ng-cloak>
+         </div>
+
+    </div>
+
+'}$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+    PAGE.emailAccount = "';$output .= $stash->get('authuser');$output .= '";
+</script>
+
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Full-Text Search Indexing (powered by [asis,Apache Solr™])' ]]),'app_key'=>'solr_search_index','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

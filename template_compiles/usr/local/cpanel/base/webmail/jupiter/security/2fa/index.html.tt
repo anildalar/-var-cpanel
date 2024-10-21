@@ -1,0 +1,33 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/security/2fa/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set('is_secpolicy_enabled',$stash->get(['ExpVar',0,'expand',['$is_twofactorauth_sec_policy_enabled' ]]));$stash->set('has_feature',$stash->get(['CPANEL',0,'feature',['twofactorauth' ]]));$stash->set('user_config_call',$stash->get(['execute',['TwoFactorAuth','get_user_configuration',{}]]));if ($stash->get(['user_config_call',0,'status',0])){$stash->set('user_config',$stash->get(['user_config_call',0,'data',0]));$stash->set('is_2fa_enabled',$stash->get(['user_config',0,'is_enabled',0]))}else {$stash->set('is_2fa_enabled',0)}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Two-factor authentication (2FA) is an improved security measure that requires two forms of identification: your password and a generated security code. When 2FA is enabled, an app on your smartphone supplies a code you must enter with your password to log in.' ]]);$output .= '
+</p>
+
+';if ($stash->get('is_secpolicy_enabled')&& $stash->get('has_feature')){$output .= '
+    ';if (!$stash->get('is_2fa_enabled')){$output .= '
+        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Two-factor authentication is not configured for your account.' ]]);$output .= '
+            </div>
+        </div>
+        <a id="setup2fa"
+            class="btn btn-primary"
+            href="setup.html">';$output .= $stash->get(['locale',0,'maketext',['Set Up Two-Factor Authentication' ]]);$output .= '</a>
+    '}else {$output .= '
+        ';$output .= $context->include('enabled_include.html.tt',{'data'=>$stash->get('user_config')});$output .= '
+    '}$output .= '
+'}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+        ';$output .= $stash->get(['locale',0,'maketext',['You do not have access to this feature. You must have the [asis,Two-factor Authentication] feature enabled for your account to use this interface.' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'two_factor_authentication','include_legacy_stylesheets'=>0,'page_stylesheets'=>['security/2fa/index.min.css' ],'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

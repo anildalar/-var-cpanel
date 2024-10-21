@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/version_control/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('Master',$context->plugin('Master'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('repos',$stash->get(['execute',['VersionControl','retrieve',{'fields'=>'name,tasks' }]]));$stash->set('file_manager_obj',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'file_manager' ]]));$stash->set('has_shell_access',$stash->get(['CPANEL',0,'ENV',0,'SHELL',0])eq '/usr/local/cpanel/bin/noshell' ? 0 : 1);$stash->set('has_filemanager_access',$stash->get(['CPANEL',0,'feature',['filemanager' ]])? 1 : 0);$stash->set('nvdata',$stash->get(['execute',['NVData','get',{'names'=>'repos_list_page_size' }]]));$stash->set('gitweb_url',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).'../../3rdparty/gitweb/gitweb.cgi?p=');$stash->set('filemanager_url',$stash->get(['file_manager_obj',0,'url',0])? $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get(['file_manager_obj',0,'url',0]).'?dir=' : '');$stash->set('ssh',$stash->get(['CPANEL',0,'feature',['ssh' ]])? 1 : 0);$stash->set('repoData',$stash->get(['repos',0,'data',0]));$stash->set('repoError',$stash->get(['repos',0,'errors',0]));$stash->set('reposListPageSize',$stash->get(['nvdata',0,'data',0,0,0,'value',0]));$stash->set('stylesheets',['version_control/index.css' ]);if (!$stash->get(['CPANEL',0,'ua_is_mobile',0])){$output .= $stash->get(['stylesheets',0,'push',['css/angular-chosen-spinner.css' ]]);$output .= $stash->get(['stylesheets',0,'push',['libraries/chosen/1.5.1/chosen.min.css' ]])}$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<!-- NOTE: leave the alert-group in single quotes -->
+<cp-alert-list alert-group="\'versionControl\'"></cp-alert-list>
+
+<div id="viewContent"
+             class="ng-cloak section"
+             ng-view
+             ng-cloak>
+ </div>
+
+<script id="views/listProjectsView.ptt" type="text/ng-template">
+';$output .= $context->process('version_control/views/listRepositoriesView.ptt');$output .= '
+</script>
+
+<script type="text/ng-template" id="repositoryPathSuggester.html">
+  <a>
+      <span ng-bind-html="match.label | encodeHtml | uibTypeaheadHighlight:query"></span>
+  </a>
+</script>
+
+<script id="views/createRepositoriesView.ptt" type="text/ng-template">
+';$output .= $context->process('version_control/views/createRepositoriesView.ptt');$output .= '
+</script>
+
+<script id="views/manageRepositoriesView.ptt" type="text/ng-template">
+';$output .= $context->process('version_control/views/manageRepositoriesView.ptt');$output .= '
+</script>
+
+<script id="views/sshKeyVerification.ptt" type="text/ng-template">
+';$output .= $context->process('version_control/views/sshKeyVerification.ptt');$output .= '
+</script>
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'version_control','feature'=>'version_control','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>$stash->get('stylesheets'),'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+        var PAGE = PAGE || {};
+        PAGE.homeDir = ';$output .= $stash->get(['CPANEL',0,'homedir',0,'json',0])|| '""';$output .= ';
+        PAGE.repos = ';$output .= $stash->get(['repoData',0,'json',0])|| '[]';$output .= ';
+        PAGE.repoErrors = ';$output .= $stash->get(['repoError',0,'json',0])|| '[]';$output .= ';
+        PAGE.fileManagerURL = ';$output .= $stash->get(['filemanager_url',0,'json',0])|| '""';$output .= ';
+        PAGE.gitwebURL = ';$output .= $stash->get(['gitweb_url',0,'json',0])|| '""';$output .= '
+        PAGE.deprefix = ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0,'json',0])|| '""';$output .= ';
+        PAGE.hasFileManagerAccess = ';$output .= $stash->get(['has_filemanager_access',0,'json',0]);$output .= ';
+        PAGE.hasShellAccess = ';$output .= $stash->get(['has_shell_access',0,'json',0]);$output .= ';
+        PAGE.reposListPageSize = ';$output .= $stash->get('reposListPageSize')? $stash->get(['reposListPageSize',0,'json',0]): 10;$output .= ';
+        PAGE.securityToken = ';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0,'json',0])|| '""';$output .= ';
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

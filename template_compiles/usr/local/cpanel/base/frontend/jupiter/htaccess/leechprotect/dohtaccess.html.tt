@@ -1,0 +1,138 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/htaccess/leechprotect/dohtaccess.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= $stash->get(['Api1',0,'pre_exec',['LeechProtect','status' ]]);$stash->set('protection_status',$stash->get(['Api1',0,'exec',['LeechProtect','status',[$stash->get(['RAW_FORM',0,'dir',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['LeechProtect','status' ]]);$stash->set('protection_disabled',$stash->get('protection_status')eq 'disabled');if (!$stash->get('protection_disabled')){$output .= $stash->get(['Api1',0,'pre_exec',['LeechProtect','setup' ]]);$stash->set('email',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'email','raw' ]]]));$stash->set('email_checkbox_state',$stash->get('email')ne 'Invalid' ? 1 : 0);$stash->set('num_hits',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'numhits','raw' ]]]));$stash->set('url',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'url','raw' ]]]));$stash->set('disabled_compromised_accounts',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'kill','raw' ]]]));$output .= $stash->get(['Api1',0,'post_exec',['LeechProtect','setup' ]])}$output .= $stash->get(['Api1',0,'pre_exec',['LeechProtect','showpasswdfile' ]]);$stash->set('show_passwd_file',$stash->get(['Api1',0,'exec',['LeechProtect','showpasswdfile',[$stash->get(['RAW_FORM',0,'dir',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['LeechProtect','showpasswdfile' ]]);$stash->set('directory',$stash->get(['RAW_FORM',0,'dir',0,'replace',['/+','/' ],'replace',['/$','' ]]));$stash->set('from_parent_node',$stash->get(['FORM',0,'is_parent',0]));$stash->set('quoted_home_directory',$stash->get(['CPANEL',0,'homedir',0,'quotemeta',0]));if ($stash->get(['directory',0,'match',[('^' .$stash->get('quoted_home_directory').'/.+')]])){$stash->set('return_dirs',$stash->get(['directory',0,'split',['/+' ]]));$stash->get(['return_dirs',0,'pop',0]);$stash->set('up_one_directory',$stash->get(['return_dirs',0,'join',['/' ]]))}$stash->set('return_url','leechprotect.html?dir=' .(!$stash->get('from_parent_node')? $stash->get(['up_one_directory',0,'uri',0]): $stash->get(['directory',0,'uri',0])|| '/').'&is_parent=' .$stash->get('from_parent_node')* 1);$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p id="descLeechProtect" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Leech Protect allows you to prevent your users from giving out or publicly posting their passwords to a restricted area of your site. This feature will redirect accounts which have been compromised to a URL of your choice (and suspend them, if you choose).' ]]);$output .= '
+    </p>
+
+    ';if (($stash->get(['CPANEL',0,'feature',['cpanelpro_leechprotect' ]]))){$output .= '
+    <p id="leechProtectDisabled">
+        <strong>
+	';if (($stash->get('protection_disabled'))){$output .= '     
+            ';$output .= $stash->get(['locale',0,'maketext',['Leech protection is currently disabled on “[_1]”.',$stash->get(['directory',0,'html',0])]]);$output .= '
+	'}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Leech protection is currently enabled on “[_1]”.',$stash->get(['directory',0,'html',0])]]);$output .= '
+	'}$output .= '
+        </strong>
+    </p>
+
+    <div class="section">
+        <h2 id="hdrSetupLeech">
+            ';$output .= $stash->get(['locale',0,'maketext',['Set up Leech Protection' ]]);$output .= '
+        </h2>
+        <form action="doleech.html" name="leechform" method="post">
+            <input type="hidden" name="dir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '">
+            <input type="hidden" name="is_parent" id="is_parent" value="';$output .= $stash->get(['FORM',0,'is_parent',0]);$output .= '">
+
+            <div class="form-group">
+                <label id="lblNumHits" for="numhits">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Number of Logins Per Username Allowed in a 2-Hour Period' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="numhits" type="text" class="form-control" name="numhits" value="';$output .= $stash->get('num_hits')ne 'Invalid' ? $stash->get(['num_hits',0,'html',0]): '';$output .= '" size="2">
+                        <span id="lblNumHitsHelper" class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Four is recommended, as setting the number lower than four can cause suspension of legitimate users who have disconnected from, then reconnected to, their ISPs. If users are reconnecting from the same network subnet, their accounts will not be disabled.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblUrlToRedirect" for="rurl">
+                    ';$output .= $stash->get(['locale',0,'maketext',['URL to Redirect Leech Users to' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="rurl" type="text" class="form-control" name="rurl" size="40" value="';$output .= $stash->get('url')ne 'Invalid' ? $stash->get(['url',0,'html',0]): '';$output .= '">
+                        <span id="lblRurlHelp" class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You must choose a URL outside of the leech-protected area, or the leech users will get an internal server error message.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="checkbox">
+                            <label id="lblChkEmail">
+                                 <input id="emailcheck" type="checkbox"  name="emailcheck" value="1" ';$output .= $stash->get('email_checkbox_state')eq 1 ? ' checked' : '';$output .= ' >
+                                 ';$output .= $stash->get(['locale',0,'maketext',['Send Email Alert To' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input id="email" type="text" class="form-control"  name="email" size="30" value="';$output .= $stash->get('email')ne 'Invalid' ? $stash->get(['email',0,'html',0]): '';$output .= '">
+                        <span id="lblEmailHelp" class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The system will send an email to this address when leech protection redirects users from the site.' ]]);$output .= ' <em id="lblEmailHelpNote">';$output .= $stash->get(['locale',0,'maketext',['[output,em,NOTE]: If you do not disable leech accounts, you may receive a large number of these emails.' ]]);$output .= '</em>
+                        </span>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="checkbox">
+                            <label>
+                                <input id="chkDisableCompAccount" type="checkbox" name="disableacct" value="1" ';$output .= $stash->get('disabled_compromised_accounts')eq 1 ? ' checked' : '';$output .= '>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Disable Compromised Accounts' ]]);$output .= '
+                            </label>
+                            <span id="lblDisableLeech" class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] will disable the passwords of users who trigger leech protection, suspending them. To reactivate their accounts, reset their passwords.' ]]);$output .= '
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"> </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="btnEnable" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Enable' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+    <div class="section">
+        <h2 id="hdrDisableProtection">
+            ';$output .= $stash->get(['locale',0,'maketext',['Disable Protection' ]]);$output .= '
+        </h2>
+        <form action="delleech.html">
+            <div class="form-group">
+                <input id="hidDirectory" type="hidden" name="dir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '">
+                <input type="hidden" name="is_parent" id="is_parent_disable" value="';$output .= $stash->get(['FORM',0,'is_parent',0]);$output .= '">
+                <input id="btnDisable" type=submit class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Disable' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+    <div class="section">
+        <h2 id="hdrManageUsers">
+            ';$output .= $stash->get(['locale',0,'maketext',['Manage Users' ]]);$output .= '
+        </h2>
+        <p id="descThirdParty">
+            ';$output .= $stash->get(['locale',0,'maketext',['If you are using third-party software to add or remove users, you should have it use the password file:' ]]);$output .= '
+            <b>';$output .= $stash->get('show_passwd_file');$output .= '</b>
+        </p>
+        <form action="../dohtaccess.html">
+            <div class="form-group">
+                <input type="hidden" name="is_parent" id="is_parent_disable" value="';$output .= $stash->get(['FORM',0,'is_parent',0]);$output .= '">
+                <input id="hidDirectoryManageUser" type="hidden" name="dir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '">
+                <input id="btnManageUser" type=submit class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Manage Users' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+<script>
+var PAGE = {
+    email: ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('email')]]);$output .= '
+};
+</script>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'leech_protection','page_scripts'=>['htaccess/leechprotect/dohtaccess.js' ],'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

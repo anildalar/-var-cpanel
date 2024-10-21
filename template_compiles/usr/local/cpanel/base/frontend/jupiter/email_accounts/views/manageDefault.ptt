@@ -1,0 +1,210 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/email_accounts/views/manageDefault.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('HTTP',$context->plugin('HTTP'));$output .= '<section>
+    <p id="descEmailAccountsManage" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Use this page to manage your email accounts.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','https://go.cpanel.net/ManageEmailAccount','cp-manage-email','lnkManageEmailAccountsDocumentation' ]]);$output .= '
+    </p>
+</section>
+
+<cp-loading-panel id="manageLoadingPanel" ng-show="emailAccount.isLoading">
+    <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+</cp-loading-panel>
+
+<section ng-show="!emailAccount.isLoading">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <form name="emailAccount.frmManageAccount">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="widget-title pull-left flip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Email Accounts' ]]);$output .= '
+                        </div>
+                        <div class="pull-right flip">
+                            <button type="button"
+                                class="btn btn-default btn-xs"
+                                id="lnkshowHideHelp"
+                                ng-click="emailAccount.toggleHelp()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                                <i class="far fa-question-circle form-info-sign"></i>
+                            </button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label id="lblEmail" for="lblEmailAccount">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Email Account' ]]);$output .= '
+                                    </label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span id="lblEmailAccount" class="wordbreak">
+                                        ';$output .= $stash->get(['CPANEL',0,'user',0]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <label class="col-xs-12" id="lblCurrentStorage">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Current Storage Usage' ]]);$output .= '
+                                </label>
+                                <div class="col-xs-12" id="currentStorage">
+                                    <span ng-bind-html="emailAccount.diskUsage"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="switchShareAddressBook"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Share the System-managed Address Book.' ]]);$output .= '"
+                                        label-id="lblSystemManagedAddressBook"
+                                        info-icon-id="icoSystemManagedAddressBook"
+                                        info-block-id="txtSystemManagedAddressBook"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every [asis,cPanel] account includes a system-managed [output,em,Shared Address Book] that serves as a user directory and allows collaboration.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                                <div class="col-xs-12">
+                                    <toggle-switch
+                                        id="switchShareAddressBook"
+                                        ng-model="emailAccount.shareAddressBook"
+                                        on-toggle="emailAccount.toggleSharedAddressBookStatus()"
+                                        enabled-label="With all email accounts"
+                                        disabled-label="Only with main account"
+                                        no-spinner="0"
+                                        no-label="0"
+                                    ></toggle-switch>
+                                    <span class="help-block">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Enable this toggle to share access to the system-managed [output,em,Shared Address Book] with all of your email accounts. If you disable it, only your default email account can use it.' ]]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="switchUTF8MailboxNames"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['[asis,UTF-8] Mailbox Names' ]]);$output .= '"
+                                        label-id="lblUTF8MailboxNames"
+                                        info-icon-id="icoUTF8MailboxNames"
+                                        info-block-id="txtUTF8MailboxNames"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['By default, mailbox names are [asis,mUTF-7] encoded. The system saves these mailboxes to the filesystem as un-encoded strings and breaks some types of email filters. Enable [asis,UTF-8] support to resolve these issues.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                                <div class="col-xs-12">
+                                    <toggle-switch
+                                        id="switchUTF8MailboxNames"
+                                        ng-model="emailAccount.UTF8Mailbox"
+                                        on-toggle="emailAccount.toggleUTF8MailboxNames()"
+                                        enabled-label="';$output .= $stash->get(['locale',0,'maketext',['[asis,UTF-8] mailbox names enabled.' ]]);$output .= '"
+                                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['[asis,UTF-8] mailbox names disabled.' ]]);$output .= '"
+                                        no-spinner="0"
+                                        no-label="0"
+                                    ></toggle-switch>
+                                    <span class="help-block">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['If enabled, the system stores any email mailbox names that the user creates on the filesystem as [asis,UTF-8] encoded.' ]]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="switchAutoFolderCreation"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders for Plus Addressing' ]]);$output .= '"
+                                        label-id="lblswitchAutoFolderCreation"
+                                        info-icon-id="icoswitchAutoFolderCreation"
+                                        info-block-id="txtswitchAutoFolderCreation"
+                                        >
+                                        ';$output .= $stash->get(['locale',0,'maketext',['By default, email addresses that use plus addressing will automatically create folders for those plus addresses.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                                <div class="col-xs-12">
+                                    <toggle-switch
+                                        id="switchAutoFolderCreation"
+                                        ng-model="emailAccount.autoCreateSubaddressFolders"
+                                        on-toggle="emailAccount.toggleAutoFolderCreation()"
+                                        enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders.' ]]);$output .= '"
+                                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Do Not Automatically Create Folders.' ]]);$output .= '"
+                                        no-spinner="0"
+                                        no-label="0"
+                                    ></toggle-switch>
+                                    <span class="help-block">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Enable this toggle to automatically create folders when this email address receives a message that uses plus addressing. For example, the system would place a message addressed to “[_1]” in a new folder called “[asis,plusaddress]”.','{{emailAccount.examplePlusAddress}}' ]]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-footer clearfix">
+                        <button id="btnCancelEmailAccount"
+                            type="button"
+                            class="btn btn-link pull-right flip"
+                            ng-click="emailAccount.backToListView()"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Go back to the list of email accounts.' ]]);$output .= '">
+                            <i class="fas" ng-class="{ \'fa-arrow-left\': !emailAccount.RTL, \'fa-arrow-right\': emailAccount.isRTL }" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-3">
+            <section class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['More Actions' ]]);$output .= '</h3>
+                <ul ng-if="emailAccount.email">
+                    <li>
+                        <a id="lnkCheckEmail"
+                            ng-if="::emailAccount.webmailEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Check email for “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/webmailform.html?user={{emailAccount.email | encodeURIComponent}}&return_request_uri=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'ENV',0,'REQUEST_URI',0]);&$_tt_filter($output)};$output .= '"
+                            target="defaultCheckEmail">
+                            <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Check Email' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkManageDiskUsage"
+                            ng-if="emailAccount.emailDiskUsageEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage storage space for “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/manage_disk_usage/?account={{ emailAccount.email | encodeURIComponent }}"
+                            target="defaultManageDiskUsage">
+                            <i class="fas fa-fw fa-eraser" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Free up Email Storage' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkManageDefaultAccount"
+                            ng-if="emailAccount.defaultAddressEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage default email account “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/def.html"
+                            target="defaultManage">
+                            <i class="fas fa-fw fa-wrench" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Default Address' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Need Help?' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <a href="https://go.cpanel.net/ManageEmailAccount"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Need help? Click here to read more about how to create and manage email addresses.' ]]);$output .= '"
+                            target="cp-manage-email">
+                            <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['About This Interface' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

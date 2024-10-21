@@ -1,0 +1,205 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/get_appconfig_application_list.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';$stash->set('null',$stash->get(['locale',0,'set_context_html',0]));$output .= '
+
+<ul class="appconfig-head">
+  <li><p class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface is used to view applications that are installed and registered with [asis,AppConfig].' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['For information on how to register applications with [asis,AppConfig], please see the documentation at [output,url,_1,_1,_2,_3].','https://go.cpanel.net/appconfig','target','_blank' ]]);$output .= '</p>
+
+    <div id="cjt_pagenotice_container"></div>
+</ul>
+
+<div id="clearit" style="clear:both;"></div>
+
+<script>
+(function() {
+    var reseller_not_enforced = new CPANEL.widgets.Page_Notice( {
+        level: "info",
+        content: ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is enabled in “[output,url,_2,_3,target,_4].”','Allow apps that have not registered with AppConfig to be run when logged in as a reseller to WHM','../scripts2/tweaksettings?find=permit_unregistered_apps_as_reseller',$stash->get(['locale',0,'maketext',['Tweak Settings' ]]),'_blank' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Applications that are running when logged in as a reseller will not be forced to register with [asis,AppConfig].' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Unregistered applications do not receive the security benefit of WHM ACL enforcement in cpsrvd.' ],'json',0]);$output .= ',
+        visible: ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'permit_unregistered_apps_as_reseller',0])? 'true' : 'false';$output .= '    } );
+
+    var root_not_enforced = new CPANEL.widgets.Page_Notice( {
+        level: "info",
+        content: ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is enabled in “[output,url,_2,_3,target,_4].”','Allow apps that have not registered with AppConfig to be run when logged in as root or a reseller with the "all" ACL in WHM','../scripts2/tweaksettings?find=permit_unregistered_apps_as_root',$stash->get(['locale',0,'maketext',['Tweak Settings' ]]),'_blank' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Applications that are running when logged in as root will not be forced to register with [asis,AppConfig].' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Unregistered applications do not receive the security benefit of WHM ACL enforcement in cpsrvd.' ],'json',0]);$output .= ',
+        visible: ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'permit_unregistered_apps_as_root',0])? 'true' : 'false';$output .= '    } );
+
+    var features_not_required = new CPANEL.widgets.Page_Notice( {
+        level: "info",
+        content: ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is enabled in “[output,url,_2,_3,target,_4].”','This setting allows cPanel and Webmail applications and addons to execute even if a feature list has not been defined','../scripts2/tweaksettings?find=permit_appconfig_entries_without_features',$stash->get(['locale',0,'maketext',['Tweak Settings' ]]),'_blank' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Applications that are registered with [asis,AppConfig] are not required to set a Features List.' ],'json',0]);$output .= ',
+        visible: ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'permit_appconfig_entries_without_features',0])? 'true' : 'false';$output .= '    } );
+
+    var acls_not_required = new CPANEL.widgets.Page_Notice( {
+        level: "info",
+        content: ';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is enabled in “[output,url,_2,_3,target,_4].”','This setting allows WHM applications and addons to execute even if an ACL list has not been defined','../scripts2/tweaksettings?find=permit_appconfig_entries_without_acls',$stash->get(['locale',0,'maketext',['Tweak Settings' ]]),'_blank' ],'json',0]);$output .= ' + \' \' +
+                 ';$output .= $stash->get(['locale',0,'maketext',['Applications that are registered with [asis,AppConfig] are not required to set an ACLs List.' ],'json',0]);$output .= ',
+        visible: ';$output .= $stash->get(['CPANEL',0,'CPCONF',0,'permit_appconfig_entries_without_acls',0])? 'true' : 'false';$output .= '    } );
+})();
+</script>
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Registered [asis,Web Host Manager] Applications' ]]);$output .= '</h2>
+<div id="whostmgr_services_container">
+    <table class="sortable" id="whostmgr_services">
+    <thead>
+      <tr>
+      <th>Name</th>
+      <th>ACLS required</th>
+      <th>System User</th>
+      <th>URL(s)</th>
+      <th>Origin</th>
+      <th>PHP Config</th>
+      <th>Display Name</th>
+      <th>Entry URL</th>
+      </tr>
+    </thead>
+    <tbody>
+    ';$stash->set('service','whostmgr');$output .= '
+      ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'application_list',0,$stash->get('service'),0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+      <tr>
+          <td>';$output .= $stash->get(['app',0,'name',0]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'acls',0,'join',['<br>' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'user',0]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'url',0,'join',['<br>' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'origin',0])|| $stash->get(['locale',0,'maketext',['internal' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'phpConfig',0]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'displayname',0]);$output .= '</td>
+          <td>';if ($stash->get(['app',0,'entryurl',0])){$output .= '<a href="';$output .= '../cgi/' .$stash->get(['app',0,'entryurl',0]);$output .= '" target="_blank">';$output .= $stash->get(['app',0,'entryurl',0]);$output .= '</a>'}$output .= '</td>
+      </tr>
+      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </tbody>
+    </table>
+</div>
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Registered [asis,cPanel] Applications' ]]);$output .= '</h2>
+<div id="cpanel_services_container">
+    <table class="sortable" id="cpanel_services">
+    <thead>
+      <tr>
+      <th>Name</th>
+      <th>Features required</th>
+      <th>System User</th>
+      <th>URL(s)</th>
+      <th>Origin</th>
+      <th>PHP Config</th>
+      </tr>
+    </thead>
+    <tbody>
+    ';$stash->set('service','cpanel');$output .= '
+      ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'application_list',0,$stash->get('service'),0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+      <tr>
+          <td>';$output .= $stash->get(['app',0,'name',0]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'features',0,'join',['<br>' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'user',0]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'url',0,'join',['<br>' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'origin',0])|| $stash->get(['locale',0,'maketext',['internal' ]]);$output .= '</td>
+          <td>';$output .= $stash->get(['app',0,'phpConfig',0]);$output .= '</td>
+      </tr>
+      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </tbody>
+    </table>
+</div>
+
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Registered [asis,Webmail] Applications' ]]);$output .= '</h2>
+<div id="webmail_services_container">
+    <table class="sortable" id="webmail_services">
+    <thead>
+      <tr>
+      <th>Name</th>
+      <th>Features required</th>
+      <th>System User</th>
+      <th>URL(s)</th>
+      <th>Origin</th>
+      <th>PHP Config</th>
+      </tr>
+    </thead>
+    <tbody>
+    ';$stash->set('service','webmail');$output .= '
+      ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'application_list',0,$stash->get('service'),0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'app'}=$_tt_value;$output .= '
+        <tr>
+            <td>';$output .= $stash->get(['app',0,'name',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['app',0,'features',0,'join',['<br>' ]]);$output .= '</td>
+            <td>';$output .= $stash->get(['app',0,'user',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['app',0,'url',0,'join',['<br>' ]]);$output .= '</td>
+            <td>';$output .= $stash->get(['app',0,'origin',0])|| $stash->get(['locale',0,'maketext',['internal' ]]);$output .= '</td>
+            <td>';$output .= $stash->get(['app',0,'phpConfig',0]);$output .= '</td>
+        </tr>
+      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </tbody>
+    </table>
+</div>
+
+<script type="text/javascript">
+YAHOO.util.Event.addListener(window, "load", function() {
+    var whostmgr_col_defs = [
+        {key:"name",label:"Name",resizeable:false,sortable:true,width:200},
+        {key:"acls",label:"ACLS required",resizeable:false,sortable:true,width:100},
+        {key:"user",label:"System User",resizeable:false,sortable:true,width:150},
+        {key:"urls",label:"URL(s)",resizeable:false,sortable:true,width:250},
+        {key:"origin",label:"Origin",resizeable:false,sortable:true,width:150},
+        {key:"phpConfig",label:"PHP Config",resizeable:false,sortable:true,width:100},
+        {key:"displayname",label:"Display Name",resizeable:false,sortable:true},
+        {key:"entryurl",label:"Entry URL",resizeable:false,sortable:true}
+    ];
+
+    var cpanel_webmail_col_defs = [
+        {key:"name",label:"Name",resizeable:false,sortable:true,width:200},
+        {key:"features",label:"Features required",resizeable:false,sortable:true,width:100},
+        {key:"user",label:"System User",resizeable:false,sortable:true,width:150},
+        {key:"urls",label:"URL(s)",resizeable:false,sortable:true,width:250},
+        {key:"origin",label:"Origin",resizeable:false,sortable:true,width:150},
+        {key:"phpConfig",label:"PHP Config",resizeable:false,sortable:true,width:100}
+    ];
+
+    /* whostmgr */
+    (function() {
+        var whostmgr_services_ds = new YAHOO.util.DataSource(YAHOO.util.Dom.get("whostmgr_services"));
+        whostmgr_services_ds.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+        whostmgr_services_ds.responseSchema = { fields:whostmgr_col_defs };
+
+        var whostmgr_services_dt = new YAHOO.widget.DataTable("whostmgr_services_container",
+                whostmgr_col_defs, whostmgr_services_ds,
+                {sortedBy:{key:"name",dir:"asc"}});
+    })();
+
+    /* cpanel */
+    (function() {
+        var cpanel_services_ds = new YAHOO.util.DataSource(YAHOO.util.Dom.get("cpanel_services"));
+        cpanel_services_ds.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+        cpanel_services_ds.responseSchema = { fields:cpanel_webmail_col_defs };
+
+        var cpanel_services_dt = new YAHOO.widget.DataTable("cpanel_services_container",
+                cpanel_webmail_col_defs, cpanel_services_ds,
+                {sortedBy:{key:"name",dir:"asc"}});
+    })();
+
+    /* webmail */
+    (function() {
+        var webmail_services_ds = new YAHOO.util.DataSource(YAHOO.util.Dom.get("webmail_services"));
+        webmail_services_ds.responseType = YAHOO.util.DataSource.TYPE_HTMLTABLE;
+        webmail_services_ds.responseSchema = { fields:cpanel_webmail_col_defs };
+
+        var webmail_services_dt = new YAHOO.widget.DataTable("webmail_services_container",
+                cpanel_webmail_col_defs, webmail_services_ds,
+                {sortedBy:{key:"name",dir:"asc"}});
+    })();
+});
+</script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'apps_managed_by_appconfig','stylesheets'=>['/yui/datatable/assets/skins/sam/datatable.css' ],'scripts'=>['/yui/datasource/datasource-min.js','/yui/datatable/datatable-min.js' ],'extrastyle'=>'
+        .description {
+            margin-left: 0;
+            margin-right: 0;
+            font-style: normal;
+        }
+        #cjt_pagenotice_container {
+            margin-left: 5px;
+            margin-right: 5px;
+        }
+        h2 {
+           font-size: 18px;
+           margin-top: 25px;
+        }','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

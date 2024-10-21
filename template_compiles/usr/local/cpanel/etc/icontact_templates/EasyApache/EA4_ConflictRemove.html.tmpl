@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/EasyApache/EA4_ConflictRemove.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$stash->set('reason',$stash->get(['CPANEL',0,'locale',0,'maketext',['The “[_1]” package conflicts with the “[_2]” package in [asis,EasyApache 4].',$stash->get(['NOTICE',0,'tried_to_keep',0]),$stash->get(['NOTICE',0,'tried_to_remove',0])]]));$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get('reason'));$output .= '
+    ';if (!$stash->get(['NOTICE',0,'failed_to_remove',0])){$output .= '
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To resolve this conflict, we removed the “[output,strong,_1]” package and kept the “[output,strong,_2]” package.',$stash->get(['NOTICE',0,'tried_to_remove',0]),$stash->get(['NOTICE',0,'tried_to_keep',0])]]);$output .= '
+    </p>
+    '}else {$output .= '
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To resolve this conflict, we attempted to remove the “[output,strong,_1]” package and keep the “[output,strong,_2]” package. However, the system encountered the following error:',$stash->get(['NOTICE',0,'tried_to_remove',0]),$stash->get(['NOTICE',0,'tried_to_keep',0])]]);$output .= '
+    </p>
+    <ul>
+        <li>
+            <strong>';$output .= $stash->get(['NOTICE',0,'failed_to_remove',0]);$output .= '</strong>
+        </li>
+    </ul>
+    <p>
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,strong,Note]: You must remove one of the packages manually to resolve this conflict.' ]]);$output .= '
+    </p>
+    '}$output .= '
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

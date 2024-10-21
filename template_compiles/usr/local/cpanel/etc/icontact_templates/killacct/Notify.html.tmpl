@@ -1,0 +1,32 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/killacct/Notify.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= do {my$output='';$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Account removed.' ]]));$output .= '
+
+<table>
+    <tbody>
+        <tr>
+            <th align="right">
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Domain' ]]);$output .= ':
+            </th>
+            <td align="left">
+                ';$output .= $stash->get(['NOTICE',0,'user_domain',0]);$output .= '
+            </td>
+        </tr>
+        <tr>
+            <th align="right">
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Username' ]]);$output .= ':
+            </th>
+            <td align="left">
+                ';$output .= $stash->get(['NOTICE',0,'user',0]);$output .= '
+            </td>
+        </tr>
+    </tbody>
+</table>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Account was owned by [_1]',$stash->get(['NOTICE',0,'account_owner',0])]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['“[_1]” removed the account.',$stash->get(['NOTICE',0,'env_remote_user',0,'html',0])]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

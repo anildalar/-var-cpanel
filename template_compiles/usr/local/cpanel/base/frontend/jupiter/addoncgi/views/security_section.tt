@@ -1,0 +1,34 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/security_section.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '    <h4>';$output .= $stash->get(['locale',0,'maketext',['Security Information' ]]);$output .= '</h4>
+    <div class="row">
+        <div class="col-xs-12 col-sm-6">
+            ';if ($stash->get(['module',0,'meta',0,'security',0])){$output .= '
+            <div class="well">';$output .= $stash->get(['module',0,'meta',0,'security',0]);$output .= '</div>
+            '}$output .= '
+
+            ';if ($stash->get(['module',0,'meta',0,'security_id',0])&& $stash->get(['module',0,'meta',0,'security_id_valid',0])){$output .= '
+            <p>
+                <a target="_blank" href="';$output .= $stash->get(['vendor',0,'securl',0]);$output .= '?id=';$output .= $stash->get(['module',0,'meta',0,'security_id',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['[_1] Security Advisory',$stash->get(['vendor',0,'name',0,'html',0])]]);$output .= '</a>
+                (';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Only] valid if [asis,MD5] sum at that link is [_1].',$stash->get(['module',0,'md5',0,'html',0])]]);$output .= ')
+            </p>
+            '}$output .= '
+
+    <!-- TODO: Restore or rework security ranking code. [LC-6609]
+        ';if ($stash->get(['module',0,'meta',0,'security_rank',0])){$output .= '
+        <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Security Ranking: ([_1] out of 10)',$stash->get(['module',0,'meta',0,'security_rank',0,'html',0])]]);$output .= '
+        ';$stash->set('secimg_url',$stash->get(['vendor',0,'secimg',0]).'/security_rank_' .$stash->get(['module',0,'meta',0,'security_rank',0]).'.gif');$output .= '
+        <img align="absmiddle" src="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('secimg_url');&$_tt_filter($output)};$output .= ' " />
+        </p>
+        '}$output .= '
+    -->
+
+    <!-- TODO: Restore or rework security ranking code. [LC-6609]
+        ';if (!$stash->get(['module',0,'meta',0,'security_rank',0])|| $stash->get(['module',0,'meta',0,'security_rank',0])< $stash->get('lowest_allowed')){$output .= '
+        <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['You cannot use this [asis,cPAddon] because it is rated below the server’s approved security ranking. Contact your hosting provider for more information.' ]]);$output .= '
+        </p>
+        '}$output .= '
+    -->
+        </div>
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

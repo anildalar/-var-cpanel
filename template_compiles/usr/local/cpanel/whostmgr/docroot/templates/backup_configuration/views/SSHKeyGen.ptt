@@ -1,0 +1,76 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/SSHKeyGen.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<ng-form name="sftp_key_form" novalidate>
+    <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Key Generation' ]]);$output .= '</h4>
+    <div class="section-body">
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="sftp_key_name">';$output .= $stash->get(['locale',0,'maketext',['Key Filename' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The filename of the key to generate.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If left blank, the key’s filename will be [asis,id_rsa] or [asis,id_dsa], based on the key type that you select below.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input ng-model=\"newSSHKey.name\" type=\"text\" name=\"name\" id=\"sftp_key_name\" class=\"form-control\" ng-pattern=\"keyNameRegEx\" />\n                </div>\n                <div class=\"col-xs-12 col-sm-6\" ng-if=\"sftp_key_form.name.\$error.pattern\">\n                    <ul class=\"validation-container\">\n                        <li class=\"validation validation-error\" ng-if=\"sftp_key_form.name.\$error.pattern\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Enter a valid filename for the key.' ]]);$output .= '
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="sftp_key_passphrase">';$output .= $stash->get(['locale',0,'maketext',['Passphrase' ]]);$output .= "</label>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-sm-6\">\n                    <input ng-model=\"newSSHKey.passphrase\" type=\"password\" autocomplete='off' name=\"passphrase\" id=\"sftp_key_passphrase\" class=\"form-control\" ng-minlength=\"5\" ng-maxlength=\"128\" />\n                </div>\n                <div class=\"col-xs-12 col-sm-6\" ng-if=\"sftp_key_form.passphrase.\$error.minlength || sftp_key_form.passphrase.\$error.maxlength\">\n                    <ul class=\"validation-container\">\n                        <li class=\"validation validation-error\" ng-if=\"sftp_key_form.passphrase.\$error.minlength || sftp_key_form.passphrase.\$error.maxlength\">\n                            <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                            <span class=\"validation-message\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Passphrase must be between 5 and 128 characters.' ]]);$output .= '
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="sftp_key_algorithm">';$output .= $stash->get(['locale',0,'maketext',['Key Type' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <select name="algorithm" id="sftp_key_algorithm" class="form-control" ng-model="newSSHKey.algorithm" ng-change="toggleKeyType(newSSHKey.algorithm)">
+                        <option ng-value="rsa2">RSA</option>
+                        <option ng-value="dsa">DSA</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <label for="sftp_key_bits">';$output .= $stash->get(['locale',0,'maketext',['Key Size' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <select name="bits" id="sftp_key_bits" class="form-control" ng-model="newSSHKey.bits" ng-disabled="destinationStateBitsSet">
+                        <option ng-value="4096">4096</option>
+                        <option ng-value="2048">2048</option>
+                        <option ng-value="1024">1024</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="key_actions" class="form-group">
+        <div class="row" ng-if="destinationState.generatingKey">
+            <div class="col-xs-12 col-sm-6">
+                <div cp-loading-panel class="loading_panel" id="validate_destination_panel">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Generating …' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <button type="button" ng-click="generateKey(newSSHKey)" title="';$output .= $stash->get(['locale',0,'maketext',['Generate Key' ]]);$output .= "\" id=\"save_key\" class=\"btn btn-primary\" ng-disabled=\"!sftp_key_form.\$valid\">\n                    ";$output .= $stash->get(['locale',0,'maketext',['Generate Key' ]]);$output .= '
+                </button>
+                <button type="button" ng-click="toggleKeyGenerationForm()" title="';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '" id="cancel_key" class="btn btn-link">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+</ng-form>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,111 @@
+Template::Document->new({METADATA=>{'modtime'=>'1669766400','name'=>'/usr/local/cpanel/base/webmail/jupiter/banners/def_banner.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('banner_id','banner_' .$stash->get(['banner',0,'key',0]));$stash->set('deps_not_met',$stash->get(['banner',0,'insufficiencies',0,'size',0])> 0);$stash->set('show_again_in',$stash->get(['banner',0,'show_again_in',0,'defined',0])? $stash->get(['banner',0,'show_again_in',0]): 0);$output .= '
+
+<!-- Inherit classes -->
+';if ($stash->get(['banner',0,'include_default_css',0])){$output .= '
+<link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['banners/banner.css' ]]);$output .= '" >
+'}$output .= '
+';if ($stash->get(['banner',0,'css',0,'defined',0])&& $stash->get(['banner',0,'key',0,'defined',0])){$output .= '
+<link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['banners/' .$stash->get(['banner',0,'key',0]).'/banner.css' ]]);$output .= '">
+'}$output .= '
+
+<div class="row banner" id="';$output .= $stash->get(['banner_id',0,'html',0]);$output .= '" style="display: none">
+    <div id="mainBanner" class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+        ';if ($stash->get(['banner',0,'dismissible',0])){$output .= '
+            <i class="dismiss_banner fas fa-times" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Dismiss the banner.' ]]);$output .= '"></i>
+        '}$output .= '
+        <div id="infoContainer">
+        ';if ($stash->get(['banner',0,'image',0])){$output .= '
+            <div id="bannerLogo">
+                <img id="productLogo" src="';$output .= $stash->get(['theme_magic_url',['banners/' .$stash->get(['banner',0,'key',0]).'/' .$stash->get(['banner',0,'image',0])]]);$output .= '" alt="logo" />
+            </div>
+        '}$output .= '
+            <div id="bannerText">
+                <div id="bannerTextInner">
+                    ';if ($stash->get(['banner',0,'titletext',0])){$output .= '
+                    <h1>';$output .= $stash->get(['banner',0,'titletext',0,'html',0]);$output .= '</h1>
+                    '}$output .= '
+                    <div id="infoText">
+                        <span id="detailText">';$output .= $stash->get(['banner',0,'infotext',0,'html',0]);$output .= '</span>
+                        ';if ($stash->get(['banner',0,'infoLink',0])){$output .= '
+                        <a id="infoLink" href="';$output .= $stash->get(['banner',0,'infoLink',0,'html',0]);$output .= '" target="_blank">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Learn More »' ]]);$output .= '
+                        </a>
+                        '}$output .= '
+                    </div>
+                    ';if ($stash->get(['banner',0,'purchasetext',0])){$output .= '
+                    <div id="priceText"><em>';$output .= $stash->get(['banner',0,'purchasetext',0,'html',0]);$output .= '</em></div>
+                    '}$output .= '
+                </div>
+            </div>
+            ';if ($stash->get(['banner',0,'purchaselink',0])&& $stash->get(['banner',0,'purchase_button_text',0])){$output .= '
+            <div id="bannerPurchaseAction">
+                ';if ($stash->get('deps_not_met')){$output .= '
+                <a href="#" class="dismiss_banner">
+                    <div id="dismissLink" class="btn btn-glass shadowed">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '
+                    </div>
+                </a>
+                '}else {$output .= '
+                <a href="';$output .= $stash->get('cp_security_token');$output .= '/';$output .= $stash->get(['banner',0,'purchaselink',0,'html',0]);$output .= '" target="_blank" >
+                    <div id="purchaseLink" class="btn btn-glass shadowed">
+                        ';$output .= $stash->get(['banner',0,'purchase_button_text',0,'html',0]);$output .= '
+                    </div>
+                </a>
+                '}$output .= '
+            </div>
+            '}$output .= '
+
+            <div id="responsiveText">
+                <div><em>';$output .= $stash->get(['banner',0,'purchasetext',0,'html',0]);$output .= '</em></div>
+                <a id="infoLink" href="';$output .= $stash->get(['banner',0,'infoLink',0,'html',0]);$output .= '" target="learn_more">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Learn More »' ]]);$output .= '
+                </a>
+            </div>
+            <div id="bannerCart">
+                ';if ($stash->get('deps_not_met')){$output .= '
+                <a id="cartLink" href="#" class="dismiss_banner">
+                '}else {$output .= '
+                <a id="cartLink" href="';$output .= $stash->get('cp_security_token');$output .= '/';$output .= $stash->get(['banner',0,'purchaselink',0,'html',0]);$output .= '" target="_blank">
+                '}$output .= '
+                    <i class="fas fa-shopping-cart" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+';if ($stash->get(['banner',0,'show_insufficiencies_when_detected',0])&& $stash->get('deps_not_met')){$output .= '
+<div class="callout callout-warning" id="troubleModal">
+    <h1 class="the-title">
+        <i class="fas fa-exclamation-triangle"></i>
+    </h1>
+    <div class="modal-stuff">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['banner',0,'insufficiencies',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'insufficiency'}=$_tt_value;$output .= '
+        <p>';$output .= $stash->get('insufficiency');$output .= '</p>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+        <p>
+            <strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['Contact your provider for more information.' ]]);$output .= '
+            </strong>
+        </p>
+
+        <button type="button" class="btn btn-secondary shadowed dismiss_banner">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+        <button type="button" class="btn btn-primary shadowed proceed_to_purchase">
+            ';$output .= $stash->get(['locale',0,'maketext',['Proceed' ]]);$output .= '
+        </button>
+    </div>
+</div>
+'}$output .= '
+
+<script>
+    var BANNER = {
+        id:    ';$output .= $stash->get(['banner_id',0,'json',0]);$output .= ',
+        token: ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ',
+        info:  ';$output .= $stash->get(['banner',0,'json',0]);$output .= ',
+    };
+';$stash->set('theme_banners_path','/usr/local/cpanel/base/webmail/jupiter/banners');if ($stash->get(['banner',0,'include_default_script',0])){$output .= $context->include(($stash->get('theme_banners_path').'/banner.js'))}if ($stash->get(['banner',0,'script',0,'defined',0])&& $stash->get(['banner',0,'key',0,'defined',0])){$output .= $context->include(($stash->get('theme_banners_path').'/' .$stash->get(['banner',0,'key',0]).'/' .$stash->get(['banner',0,'script',0])))}$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

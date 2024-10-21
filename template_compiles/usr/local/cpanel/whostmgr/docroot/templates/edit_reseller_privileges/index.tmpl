@@ -1,0 +1,533 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/edit_reseller_privileges/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('AccountEnhancements',$context->plugin('AccountEnhancements'));$stash->set('enhancement_limits',$stash->get(['AccountEnhancements',0,'list_enhancement_limits',[$stash->get(['data',0,'reseller',0])]]));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/edit_reseller_privileges/index.css' ]])]);if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= $stash->get(['stylesheet_includes',0,'unshift',[$stash->get(['Whostmgr',0,'find_file_url',['/styles/bootstrap_rtl_offsets.min.css' ]])]])}$stash->set('script_includes',[]);if (!$stash->get(['data',0,'error_message',0])){$stash->set('script_includes',['/js/popupbox.js','/templates/edit_reseller_privileges/index.min.js' ])}$output .= do {my$output='';$output .= '
+';$stash->set('acl_group',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '
+<div class="checkbox">
+    <label>
+        <input type="checkbox"
+            name="acl-';$output .= $stash->get(['priv',0,'name',0]);$output .= '"
+            id="privs_';$output .= $stash->get(['priv',0,'name',0]);$output .= '"
+            class="acl-checkbox"
+            ';if ($stash->get(['priv',0,'checked',0])){$output .= 'checked'}$output .= '
+            value="1">
+        <span>';$output .= $stash->get(['priv',0,'title',0,'to_string',0]);$output .= '</span>
+        <span><code>';$output .= $stash->get(['priv',0,'name',0]);$output .= '</code></span>
+    </label>
+    ';if ($stash->get(['priv',0,'description',0])&& $stash->get(['priv',0,'description_is_warning',0])&&!$stash->get(['priv',0,'warning_manage_tokens_only',0])&& $stash->get(['priv',0,'name',0])ne 'all'){$output .= '
+    <span class="fas fa-exclamation-triangle fa-lg acl-warning-icon"
+        id="acl-warning-toggle-';$output .= $stash->get(['priv',0,'name',0]);$output .= '"
+        role="button"
+        tabindex="0"
+        aria-controls="acl-warning-';$output .= $stash->get(['priv',0,'name',0]);$output .= '"
+        onclick="EditReseller.toggleHelpText(event, \'acl-warning-';$output .= $stash->get(['priv',0,'name',0]);$output .= '\');"
+        onkeypress="EditReseller.toggleHelpText(event, \'acl-warning-';$output .= $stash->get(['priv',0,'name',0]);$output .= '\');"></span>
+    '}$output .= '
+    ';if ($stash->get(['priv',0,'description',0])&&!$stash->get(['priv',0,'description_is_warning',0])){$output .= '
+    <span class="help-block">';$output .= $stash->get(['priv',0,'description',0,'to_string',0]);$output .= '</span>
+    '}$output .= '
+    ';if ($stash->get(['priv',0,'description',0])&& $stash->get(['priv',0,'description_is_warning',0])&&!$stash->get(['priv',0,'warning_manage_tokens_only',0])){$output .= '
+    <div class="alert alert-warning acl-warning ';if ($stash->get(['priv',0,'name',0])ne 'all'){$output .= 'hidden'}$output .= '"
+        id="acl-warning-';$output .= $stash->get(['priv',0,'name',0]);$output .= '">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message acl-warning-message">';$output .= $stash->get(['priv',0,'description',0,'to_string',0]);$output .= '</div>
+    </div>
+    '}$output .= '
+</div>
+
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+';$stash->set('acl_section',sub {my$_tt_params=$_[0]if ref($_[0])eq 'HASH';my$output='';my$stash=$context->localise($_tt_params);eval {$output .= '
+<li class="list-group-item">
+    <div class="checkbox">
+        <label>
+            <input type="checkbox"
+                id="acl-subcategory-';$output .= $stash->get(['group',0,'name',0]);$output .= '-checkbox"
+                class="acl-subcategory-checkbox"
+                ';if ($stash->get(['group',0,'checked',0])){$output .= 'checked'}$output .= '
+                onclick="EditReseller.toggleAll(event)">
+            <strong>';$output .= $stash->get(['group',0,'title',0,'to_string',0]);$output .= '</strong>
+        </label>
+        <span class="label label-';$output .= $stash->get(['category',0,'name',0]);$output .= ' flip pull-right">';$output .= $stash->get(['category',0,'title',0,'to_string',0]);$output .= '</span>
+        ';if ($stash->get(['group',0,'description',0])&& $stash->get(['group',0,'description_is_warning',0])){$output .= '
+        <div class="alert alert-warning acl-warning"
+            id="acl-warning-';$output .= $stash->get(['group',0,'name',0]);$output .= '">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message acl-warning-message">';$output .= $stash->get(['group',0,'description',0,'to_string',0]);$output .= '</div>
+        </div>
+        '}$output .= '
+        ';$output .= $stash->get('markup');$output .= '
+    </div>
+</li>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+<div id="content">
+
+
+';if ($stash->get(['data',0,'error_message',0])){$output .= '
+<div class="alert alert-danger">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+    <div class="alert-message">
+    ';$output .= $stash->get(['data',0,'error_message',0]);$output .= '
+    </div>
+</div>
+'}else {$output .= '
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Edit “[_1]”',$stash->get(['data',0,'reseller',0])]]);$output .= '</h2>
+<form method="POST" action="../scripts2/editressv" name="resform">
+
+';if ($stash->get(['data',0,'has_multiuser',0])){$output .= '
+<div class="section">
+    <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Account Creation Limits' ]]);$output .= '</h4>
+    <div class="section-body">
+        <div class="checkbox">
+            <label>
+                ';$output .= $stash->get(['locale',0,'maketext',['Limit the total number of accounts [_1] can create',$stash->get(['data',0,'reseller',0])]]);$output .= '
+                <input type="checkbox"
+                    onclick="EditReseller.killresnumlimitamt(this);"
+                    name="limits_number_of_accounts"
+                    id="limits_number_of_accounts"
+                    value="1"
+                    ';if ($stash->get(['data',0,'limits_number_of_accounts_checked',0])){$output .= ' checked '}$output .= '>
+            </label>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label for="resnumlimitamt">';$output .= $stash->get(['locale',0,'maketext',['Number of accounts' ]]);$output .= '</label>
+                        <input type="text"
+                            class="form-control"
+                            name="resnumlimitamt"
+                            id="resnumlimitamt"
+                            value="';$output .= $stash->get(['data',0,'limits_number_of_accounts_allowed',0]);$output .= '"
+                            onchange="EditReseller.checkresnumlimit(this);">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"
+                    name="limits_resources"
+                    id="limits_resources"
+                    ';if ($stash->get(['data',0,'limits_resources_checked',0])){$output .= 'checked'}$output .= '
+                    value="1"
+                    onclick="EditReseller.handleLimitResources()">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Limit accounts that [_1] can create by Resource Usage.',$stash->get(['data',0,'reseller',0])]]);$output .= '
+            </label>
+            <div id="usagelim" class="hidden">
+                <div class="alert alert-warning acl-warning">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <div class="alert-message acl-warning-message">';$output .= $stash->get(['locale',0,'maketext',['By checking this option, you will not be able to select [output,strong,Create Packages with Unlimited Disk Usage] or [output,strong,Create Packages with Unlimited Bandwidth].' ]]);$output .= '</div>
+                </div>
+                <div class="form-group">
+                    <label for="rslimit-disk">';$output .= $stash->get(['locale',0,'maketext',['Maximum Allowed Disk Space' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-group">
+                                <input type="text"
+                                    name="rslimit-disk"
+                                    id="rslimit-disk"
+                                    class="form-control"
+                                    value="';$output .= $stash->get(['data',0,'resource_limits_disk',0]);$output .= '"
+                                    maxlength="30">
+                                <span class="input-group-addon">MB</span>
+                            </div>
+                            <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You cannot enter “unlimited” as a value. To only limit one option, enter a very large number in the other option’s text box.' ]]);$output .= '</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"
+                                        name="rsolimit-disk"
+                                        id="rsolimit-disk"
+                                        value="1"
+                                        ';if ($stash->get(['data',0,'resource_limits_overselling_disk_checked',0])){$output .= 'checked'}$output .= '>
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Allow overselling' ]]);$output .= '</span>
+                                </label>
+                                <span class="fas fa-info-circle fa-fw text-primary form-info-icon"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Toggle help text' ]]);$output .= '"
+                                    tabindex="0"
+                                    onclick="EditReseller.toggleHelpText(event, \'rsolimit-disk-help\')"
+                                    onkeypress="EditReseller.toggleHelpText(event, \'rsolimit-disk-help\')"></span>
+                            </div>
+                            <div id="rsolimit-disk-help" class="hidden">
+                                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Overselling means that the system limits the reseller via their accounts’ actual resource usage rather than their allocated resource usage. Actual resources refer to the total usage for the reseller’s accounts. Allocated resources refer to the total maximum allowed usage for the reseller’s accounts.' ]]);$output .= '</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div id="rslimit-disk_error"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rslimit-bw">';$output .= $stash->get(['locale',0,'maketext',['Maximum Allowed Bandwidth' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <div class="input-group">
+                                <input type="text"
+                                    name="rslimit-bw"
+                                    id="rslimit-bw"
+                                    class="form-control"
+                                    value="';$output .= $stash->get(['data',0,'resource_limits_bw',0]);$output .= '"
+                                    maxlength="30">
+                                <span class="input-group-addon">MB</span>
+                            </div>
+                            <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You cannot enter “unlimited” as a value. To only limit one option, enter a very large number in the other option’s text box.' ]]);$output .= '</span>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox"
+                                        name="rsolimit-bw"
+                                        value="1"
+                                        ';if ($stash->get(['data',0,'resource_limits_overselling_bw_checked',0])){$output .= 'checked'}$output .= '>
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Allow overselling' ]]);$output .= '</span>
+                                </label>
+                                <span class="fas fa-info-circle fa-fw text-primary form-info-icon"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Toggle help text' ]]);$output .= '"
+                                    tabindex="0"
+                                    onclick="EditReseller.toggleHelpText(event, \'rsolimit-bw-help\')"
+                                    onkeypress="EditReseller.toggleHelpText(event, \'rsolimit-bw-help\')"></span>
+                            </div>
+                            <div id="rsolimit-bw-help" class="hidden">
+                                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Overselling means that the system limits the reseller via their accounts’ actual resource usage rather than their allocated resource usage. Actual resources refer to the total usage for the reseller’s accounts. Allocated resources refer to the total maximum allowed usage for the reseller’s accounts.' ]]);$output .= '</span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                            <div id="rslimit-bw_error"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="checkbox">
+            <label>
+                <input type="checkbox"
+                    name="limits_preassigned_packages"
+                    id="limits_preassigned_packages"
+                    ';if ($stash->get(['data',0,'limits_preassigned_packages_checked',0])){$output .= 'checked'}$output .= '
+                    value="1"
+                    onclick="EditReseller.handleLimitsForPreassignedPackages(event)">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Specify which packages [_1] can use for account creation.',$stash->get(['data',0,'reseller',0])]]);$output .= '
+            </label>
+            <span class="fas fa-info-circle text-primary form-info-icon"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Toggle help text' ]]);$output .= '"
+                tabindex="0"
+                onclick="EditReseller.toggleHelpText(event, \'limits-packages-help\')"
+                onkeypress="EditReseller.toggleHelpText(event, \'limits-packages-help\')"></span>
+            <div id="limits-packages-help" class="hidden">
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The system automatically grants access to packages that the user creates, unless you limit account creation to pre-assigned packages below.' ]]);$output .= '</span>
+                <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The system does not automatically grant access to system-created or root-created packages, unless you specifically define them below.' ]]);$output .= '</span>
+            </div>
+
+            <div class="checkbox">
+                <label>
+                    <input type="checkbox"
+                        name="limits_number_of_packages"
+                        id="limits_number_of_packages"
+                        ';if ($stash->get(['data',0,'limits_number_of_packages_checked',0])){$output .= 'checked'}$output .= '
+                        value="1"
+                        onclick="EditReseller.handleLimitsForAccountAmounts(event)">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Limit the amount of accounts that [_1] can create per package.',$stash->get(['data',0,'reseller',0])]]);$output .= '
+                </label>
+                <span class="fas fa-info-circle fa-fw text-primary form-info-icon"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Toggle help text' ]]);$output .= '"
+                    tabindex="0"
+                    onclick="EditReseller.toggleHelpText(event, \'limits-number-of-packages-help\')"
+                    onkeypress="EditReseller.toggleHelpText(event, \'limits-number-of-packages-help\')"></span>
+                <div id="limits-number-of-packages-help" class="hidden">
+                    <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You cannot enter “unlimited” as a value. Accounts with an unlimited bandwidth quota or unlimited disk quota are not resource limit compatible.' ]]);$output .= '</span>
+                </div>
+            </div>
+
+            <div id="pkglim" class="hidden">
+                <table class="table table-striped" id="acctlimittbl">
+                    <thead>
+                    <tr>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Account Type' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Current' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Creation Allowed' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Number Allowed' ]]);$output .= '</th>
+                        <th>';$output .= $stash->get(['locale',0,'maketext',['Resource Limit Compatible' ]]);$output .= '</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'pkg_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pkg'}=$_tt_value;$output .= '
+                    <tr>
+                        <td>
+                            <span style="cursor:crosshair; cursor:help;"
+                                onmouseover="hover_pkg(this,\'';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '\');"
+                                onmouseout="dehover_pkg(this,\'';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '\');">';$output .= $stash->get(['pkg',0,'pkg',0,'html',0]);$output .= '</span>
+                        </td>
+                        <td>';$output .= $stash->get(['pkg',0,'current',0]);$output .= '</td>
+                        <td>
+                            <div class="checkbox">
+                                <input type="checkbox"
+                                    ';if ($stash->get(['pkg',0,'can_create_checked',0])){$output .= 'checked '}$output .= ' name="respkg-';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '"
+                                    value="1"
+                                    onclick="EditReseller.checkcancreate(\'';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '\');">
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text"
+                                name="acctlim-';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '"
+                                size="6"
+                                class="form-control"
+                                value="';$output .= $stash->get(['pkg',0,'number_allowed',0]);$output .= '"
+                                onchange="EditReseller.checkcancreate2(event, \'';$output .= $stash->get(['pkg',0,'pkg',0]);$output .= '\');">
+                        </td>
+                        <td>
+                            ';if ($stash->get(['pkg',0,'resource_usage_compatible',0])){$output .= '<span class="fas fa-check"></span>'}$output .= '
+                        </td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+'}$output .= '
+
+';if ($stash->get(['enhancement_limits',0,'data',0,'size',0])){$output .= '
+<div class="section">
+    <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Account Enhancement Assignment Limits' ]]);$output .= '</h4>
+    <div class="section-body">';$stash->set('assignACL','assign-root-account-enhancements');if (!$stash->get(['data',0,'enabled_acls',0,$stash->get('assignACL'),0])){$output .= '        <div class="alert alert-warning acl-warning"
+            id="acl-warning-enhancement-limits">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message acl-warning-message">';$output .= $stash->get(['locale',0,'maketext',['You must enable the [output,url,_1,html,_2] [asis,ACL] to set [asis,Account Enhancement] limits.','#privs_' .$stash->get('assignACL'),$stash->get('assignACL')]]);$output .= '</div>
+        </div>'}$output .= '        <div>
+            <table class="table table-striped" id="acctlimittbl">
+                <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Account Enhancement ID' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Assignment Limit' ]]);$output .= '</th>
+                </tr>
+                </thead>
+                <tbody>
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['enhancement_limits',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'enhancement'}=$_tt_value;$stash->set('is_unlimited',!$stash->get(['enhancement',0,'value',0,'limited',0,'html',0]));$stash->set('cur_value',$stash->get(['enhancement',0,'value',0,'limit',0,'html',0]));$stash->set('html_enhancement_id',$stash->get(['enhancement',0,'key',0,'html',0]));if ($stash->get('cur_value')eq ''){$stash->set('cur_value','0')}$output .= '
+                    <tr>
+                        <td><span>';$output .= $stash->get('html_enhancement_id');$output .= '</span></td>
+                        <td>
+                            <div class="propertyValue">
+                                <input type="radio"
+                                    id="';$output .= $stash->get('html_enhancement_id');$output .= '_limited"
+                                    name="enhancement_limited__';$output .= $stash->get('html_enhancement_id');$output .= '"
+                                    value="1"
+                                    ';if (!$stash->get('is_unlimited')){$output .= 'checked'}$output .= '>
+                                <label for="';$output .= $stash->get('html_enhancement_id');$output .= '_limited" class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Limited' ]]);$output .= '</label>
+
+                                <input type="text"
+                                    id="';$output .= $stash->get('html_enhancement_id');$output .= '_limit_amount"
+                                    name="enhancement_limit_amount__';$output .= $stash->get('html_enhancement_id');$output .= '"
+                                    onclick="checkRadio(\'';$output .= $stash->get('html_enhancement_id').'_limited';$output .= '\')"
+                                    size="6"
+                                    value="';$output .= $stash->get('cur_value');$output .= '"
+                                    data-enhancement-name="';$output .= $stash->get('html_enhancement_id');$output .= '"
+                                    class="form-control limit_amount__input"/>
+                                <label for="';$output .= $stash->get('html_enhancement_id');$output .= '_limit_amount" class="sr-only">';$output .= $stash->get(['locale',0,'maketext',['Limited Amount' ]]);$output .= '</label>
+
+                                <input type="radio"
+                                    id="';$output .= $stash->get('html_enhancement_id');$output .= '_unlimited"
+                                    name="enhancement_limited__';$output .= $stash->get('html_enhancement_id');$output .= '"
+                                    value="0"
+                                    class="unlimitedRadio"
+                                    ';if ($stash->get('is_unlimited')){$output .= 'checked'}$output .= '>
+                                <label for="';$output .= $stash->get('html_enhancement_id');$output .= '_unlimited">';$output .= $stash->get(['locale',0,'maketext',['Unlimited' ]]);$output .= '</label>
+                            </div>
+                        </td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+'}$output .= '
+
+
+<div class="section">
+    <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Feature Limits ([asis,ACL] Lists)' ]]);$output .= '</h4>
+    <div class="section-body">
+        <div id="load" class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-9">
+                    <label for="acllist">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Load an [asis,ACL] List' ]]);$output .= '
+                    </label>
+                    <select name="acllist"
+                        id="acllist"
+                        class="form-control"
+                        onchange="EditReseller.updateacls(event)">
+                        <option value="">';$output .= $stash->get(['locale',0,'maketext',['(None)' ]]);$output .= '</option>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'acl_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acl'}=$_tt_value;$output .= '
+                        <option value="';$output .= $stash->get(['acl',0,'key',0]);$output .= '">';$output .= $stash->get(['acl',0,'key',0]);$output .= '</option>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="res" value="';$output .= $stash->get(['data',0,'reseller',0]);$output .= '">
+
+        <div id="aclList" class="row">
+            <div class="col-xs-12 col-sm-9">
+                <ul class="list-group">
+            ';$stash->set('everything','');do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'ordered_categories',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cat'}=$_tt_value;$stash->set('section_html','');$stash->set('acl_cat',$stash->get(['data',0,'categories_metadata',0,$stash->get('cat'),0]));$stash->set(['acl_cat',0,'name',0],$stash->get('cat'));if (!$stash->get(['data',0,'has_multiuser',0])&& $stash->get(['acl_cat',0,'multiuser_required',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['acl_cat',0,'ordered_subcategories',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'subc'}=$_tt_value;$stash->set('subcat',$stash->get(['data',0,'subcategories_metadata',0,$stash->get('subc'),0]));$stash->set(['subcat',0,'name',0],$stash->get('subc'));$stash->set('group_html','');$stash->set('count_check',0);$stash->set('count',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['subcat',0,'ordered_acls',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR3: while (!$_tt_error){$stash->{'acl'}=$_tt_value;$stash->set('priv',$stash->get(['data',0,'acl_metadata',0,$stash->get('acl'),0]));$stash->set(['priv',0,'name',0],$stash->get('acl'));$stash->set(['priv',0,'checked',0],$stash->get(['data',0,'enabled_acls',0,$stash->get('acl'),0]));$output .= $stash->get(['data',0,'enabled_acls',0,'delete',[$stash->get(['priv',0,'name',0])]]);if (!$stash->get(['data',0,'has_multiuser',0])&& $stash->get(['priv',0,'multiuser_required',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR3}if ($stash->get(['priv',0,'checked',0])){$stash->set('count_check',$stash->get('count_check')+ 1)}$stash->set('count',$stash->get('count')+ 1);$stash->set('group_html',$stash->get('group_html').$stash->get(['acl_group',[{'priv'=>$stash->get('priv')}]]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if (!$stash->get(['data',0,'has_multiuser',0])&& $stash->get(['subcat',0,'multiuser_required',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR2}$stash->set(['subcat',0,'checked',0],($stash->get('count')eq $stash->get('count_check'))? 1 : 0);if ($stash->get('group_html')){$stash->set('section_html',$stash->get('section_html').$stash->get(['acl_section',[{'group'=>$stash->get('subcat'),'category'=>$stash->get('acl_cat'),'markup'=>$stash->get('group_html')}]]))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('section_html')){$stash->set('everything',$stash->get('everything').$stash->get('section_html'))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            ';$output .= $stash->get('everything');$output .= '
+                </ul>
+            </div>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'enabled_acls',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acl'}=$_tt_value;$stash->set('disabled_key',$stash->get(['acl',0,'key',0]));if ($stash->get(['data',0,'disabled_acls',0,'exists',[$stash->get('disabled_key')]])){$output .= '
+                       <input type="hidden" name="acl-';$output .= $stash->get('disabled_key');$output .= '" value="1" >
+            '};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+
+        <div class="save-acl-list-container">
+            <div class="radio">
+                <label>
+                    <input type="radio"
+                        name="save_as"
+                        id="save_acl_as_new"
+                        data-relates-to="save_new_acl">
+                    <span id="save_as_new_label">';$output .= $stash->get(['locale',0,'maketext',['Save selections as a new [asis,ACL] list' ]]);$output .= '</span>
+                </label>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <input type="text"
+                                name="saveacl"
+                                id="save_new_acl"
+                                class="form-control"
+                                aria-labelledby="save_as_new_label"
+                                disabled>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio"
+                        name="save_as"
+                        id="overwrite_acl_list"
+                        data-relates-to="acllistsv">
+                    <span id="save_as_existing_label">';$output .= $stash->get(['locale',0,'maketext',['Save selections as an existing [asis,ACL] list' ]]);$output .= '</span>
+                </label>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <select name="saveacl"
+                                id="acllistsv"
+                                class="form-control"
+                                aria-labelledby="save_as_existing_label"
+                                disabled>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'acl_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acl'}=$_tt_value;$output .= '
+                                <option value="';$output .= $stash->get(['acl',0,'key',0]);$output .= '">';$output .= $stash->get(['acl',0,'key',0]);$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio"
+                        name="save_as"
+                        id="acl_list_do_nothing"
+                        checked>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Do not save selections' ]]);$output .= '</span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+';if ($stash->get(['data',0,'has_multiuser',0])){$output .= '
+<div class="section">
+    <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Nameservers' ]]);$output .= '</h4>
+    <div class="section-body">
+        <p class="description">';$output .= $stash->get(['locale',0,'maketext',['Set the default nameservers that the system uses when this reseller creates an account.' ]]);$output .= '</p>
+        ';$stash->set('nameservers_set',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'nameserver_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;if ($stash->get(['ns',0,'nameserver',0])){$stash->set('nameservers_set',1);last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        <div class="form-group" data-nameserver-set="';$output .= $stash->get('nameservers_set');$output .= '">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="radio">
+                      <label for="inheritNameserversFromYes">
+                        <input type="radio" name="inheritNameserversFromRoot" id="inheritNameserversFromYes" value="1" ';$output .= $stash->get('nameservers_set')? '' : 'checked';$output .= ' onclick="EditReseller.toggleInherit(true)">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Inherit Nameservers from [asis,root]' ]]);$output .= '</span>
+                      </label>
+                      ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'nameserver_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;$output .= '
+                      <div class="help-block">
+                        ';if ($stash->get(['ns',0,'suggested_nameserver',0])ne ''){$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Nameserver [_1]: “[_2]”',$stash->get(['ns',0,'count',0]),$stash->get(['ns',0,'suggested_nameserver',0])]]);$output .= '
+                        '}$output .= '
+                      </div>
+                      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </div>
+                    <div class="radio">
+                      <label for="inheritNameserversFromNo">
+                        <input type="radio" name="inheritNameserversFromRoot" id="inheritNameserversFromNo" value="0" ';$output .= $stash->get('nameservers_set')? 'checked' : '';$output .= ' onclick="EditReseller.toggleInherit(false)">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Explicitly Set the Nameservers' ]]);$output .= '</span>
+                      </label>
+                      <span class="help-block">';$output .= $stash->get(['locale',0,'maketext',['Nameservers that you explicitly set will transfer with the user to the new servers upon migration.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="resellerNameserverList" ';$output .= $stash->get('nameservers_set')? '' : 'class="hidden"';$output .= '>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'nameserver_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ns'}=$_tt_value;$output .= '
+            <div class="form-group">
+                <label for="ns';$output .= $stash->get(['ns',0,'count',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Nameserver [_1]',$stash->get(['ns',0,'count',0])]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="text"
+                            name="ns';$output .= $stash->get(['ns',0,'count',0]);$output .= '"
+                            id="ns';$output .= $stash->get(['ns',0,'count',0]);$output .= '"
+                            class="form-control"
+                            value="';$output .= $stash->get(['ns',0,'nameserver',0])|| '';$output .= '">
+                    </div>
+                    <div class="col-xs-12 col-sm-6">
+                        <input type="button"
+                            class="btn btn-default"
+                            onclick="EditReseller.addns(this.form.ns';$output .= $stash->get(['ns',0,'count',0]);$output .= ');"
+                            value="';$output .= $stash->get(['locale',0,'maketext',['Configure Address Records' ]]);$output .= '">
+                    </div>
+                </div>
+            </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+    </div>
+</div>
+'}$output .= '
+    <div class="alert alert-warning acl-warning hidden" id="warning-ns">
+        <span class="glyphicon glyphicon-exclamation-sign"></span>
+        <div class="alert-message acl-warning-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['Default nameservers of the type [asis,_1] are not compatible with [asis,_2] domain registrations.','<code>.cprapid.com</code>','<code>.com</code>' ]]);$output .= '
+            <a
+                href="https://go.cpanel.net/PrivateNameservers"
+                target="nameserversDocumentation"
+                rel="noopener noreferrer"
+                id="nameservers-warning-link"
+            >
+                ';$output .= $stash->get(['locale',0,'maketext',['Learn More' ]]);$output .= '
+                <i class="ri-external-link-line"></i>
+            </a>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save All Settings' ]]);$output .= '" id="save_button">
+    </div>
+</div>
+
+<script>
+var PAGE = PAGE || {};
+PAGE.acl_lists = ';$output .= $stash->get(['data',0,'acl_list',0,'json',0])|| '{}';$output .= ';
+PAGE.acl_metadata = ';$output .= $stash->get(['data',0,'acl_metadata',0,'json',0])|| '{}';$output .= ';
+';if ($stash->get(['locale',0,'get_html_dir_attr',0])eq 'rtl'){$output .= '
+   PAGE.isRTL = true;
+'}else {$output .= '
+   PAGE.isRTL = false;
+'}$output .= '
+
+var suggestedNameservers = ';$output .= $stash->get(['data',0,'nameserver_list',0,'json',0])|| '[]';$output .= "\n\nfunction checkRadio(id) {\n    var radioButton = document.querySelector(`[id=\${id}]`);\n    radioButton.checked = true;\n}\n\n</script>\n\n";$output .= $context->include('_pkg_hover.tmpl');$output .= '
+
+
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Edit Reseller Nameservers and Privileges' ]]),'stylesheets'=>$stash->get('stylesheet_includes'),'scripts'=>$stash->get('script_includes'),'include_legacy_stylesheets'=>1,'theme'=>'bootstrap','app_key'=>'edit_reseller_name_servers_and_privileges','content',$output })};$output .= '
+
+<script>
+    EditReseller.initNsWarning()
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

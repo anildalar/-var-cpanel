@@ -1,0 +1,69 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/wizard1.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('dbprefix',$stash->get(['ExpVar',0,'expand',['$dbprefix' ]]));$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('max_length',64 - $stash->get(['dbownerprefix',0,'length',0])- $stash->get('dbprefix'));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p class="description" id="descMySQLWizard">
+        ';$output .= $stash->get(['locale',0,'maketext',['Databases allow you to store lots of information in an easily-accessible way. Many web applications, including some bulletin boards and content management systems, require databases. To use a database, you’ll need to create it. Only users that have privileges to access a database can read from or write to that database.' ]]);$output .= '
+    </p>
+
+    ';if ($stash->get(['CPANEL',0,'feature',['mysql' ]])){$output .= '
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Step 1: Create A Database' ]]);$output .= '</h2>
+        <form method="post" action="wizard2.html" name="mainform" id="mainform">
+            <div class="form-group">
+                <label for="db">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Database:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';if ($stash->get('dbprefix')){$output .= '
+                        <div class="input-group">
+                            <span class="input-group-addon" id="dbPrefix">';$output .= $stash->get('dbownerprefix');$output .= '</span>
+                            <input type="text" class="form-control" name="db" id="db" maxlength="';$output .= $stash->get('max_length');$output .= '" />
+                        </div>
+                        '}else {$output .= '
+                        <input type="text" class="form-control" name="db" id="db" maxlength="';$output .= $stash->get('max_length');$output .= '" />
+                        '}$output .= '
+                    </div>
+                    <div id="db_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+                <span class="help-block" id="helpBlock">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] [quant,_1,character,characters] max.',$stash->get('max_length')]]);$output .= '
+                </span>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Next Step' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+    '}else {$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                    ';$output .= $stash->get(['locale',0,'maketext',['You do not have the feature “[_1]”.','mysql' ]]);$output .= '
+                </span>
+            </div>
+        </div>
+    '}$output .= '
+
+
+</div><!-- end body-content -->
+
+';$output .= $context->process('sqlui.tmpl',{'db_engine'=>'mysql' });$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_database_wizard','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    ';if ($stash->get(['CPANEL',0,'feature',['mysql' ]])){$output .= '
+        ';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/cjt/sql.js','/cjt/sql.js' ]]));$output .= '
+        ';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+        <script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/cjt/sql.js' ]]);$output .= '"></script>
+
+        ';$stash->set('mysql_server_info',$stash->get(['execute',['Mysql','get_server_information' ]]));if (!$stash->get(['mysql_server_info',0,'status',0])){$context->throw('uapi',$stash->get(['mysql_server_info',0,'errors_as_string',0]),\$output)}$output .= '        <script type="text/javascript">
+            var max_length = ';$output .= $stash->get('max_length');$output .= ';  // mysql database names have a max length of 64 characters
+
+            var MYSQL_SERVER_VERSION = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['mysql_server_info',0,'data',0,'version',0])]]);$output .= ";\n\n            /**\n             * [init_newdb_validation description]\n             * \@return {[type]} [description]\n             */\n            var init_newdb_validation = function() {\n                var dbname_validator = new CPANEL.validate.validator(\"New Database\");\n\n                dbname_validator.add_thrower( \"db\", function(el) {\n                    return CPANEL.sql.verify_mysql_database_name(el.value)\n                } );\n\n                dbname_validator.attach();\n\n                CPANEL.validate.attach_to_form(\"submit\", dbname_validator);\n\n                YAHOO.util.Dom.get(\"db\").focus();\n            };\n            YAHOO.util.Event.onDOMReady(init_newdb_validation);\n        </script>\n    "}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

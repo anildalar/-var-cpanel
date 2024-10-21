@@ -1,0 +1,337 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/getacctlist.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('CPUsername',$context->plugin('CPUsername'));$stash->set('CpanelDB',$context->plugin('CpanelDB'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('locale_is_rtl',0);$output .= do {my$output='';$output .= $context->process('_ajaxapp.tmpl');$stash->set('MAJOR_VERSIONS_MATCH',1);if ($stash->get(['data',0,'remote',0,'major_version',0])&& $stash->get(['data',0,'remote',0,'major_version',0])ne $stash->get(['data',0,'local',0,'major_version',0])){$stash->set('MAJOR_VERSIONS_MATCH',0)}$stash->set('ROUNDCUBE_DBTYPES_MATCH',1);if ($stash->get(['data',0,'remote',0,'roundcube_dbtype',0])&& $stash->get(['data',0,'remote',0,'roundcube_dbtype',0])ne $stash->get(['data',0,'local',0,'roundcube_dbtype',0])){$stash->set('ROUNDCUBE_DBTYPES_MATCH',0)}$output .= '
+<div id="content" ng-controller="MainController as main" ng-cloak>
+    <div id="callback_block"></div>
+    <section class="callout callout-';$output .= $stash->get('MAJOR_VERSIONS_MATCH')? 'info' : 'warning';$output .= '">
+        <div class="limit-info">
+            <p>
+              ';$output .= $stash->get(['locale',0,'maketext',['Source: “[output,strong,_1]” version “[output,strong,_2]” …','{{ main.PAGE.remote.host }}','{{main.PAGE.remote.display_version}}' ]]);$output .= '
+            </p>
+            <p>
+              ';$output .= $stash->get(['locale',0,'maketext',['Target: “[output,strong,_1]” version “[output,strong,_2]” …','{{ main.PAGE.local.host }}','{{main.PAGE.local.display_version}}' ]]);$output .= '
+            </p>
+            ';if (!$stash->get('MAJOR_VERSIONS_MATCH')){$output .= '
+              <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['The source server is not running the same major version as the target server.' ]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] highly recommends that the source server runs the same major version for at least 24 hours to ensure any data conversions have completed.' ]]);$output .= '
+              </p>
+            '}$output .= '
+        </div>
+        <button class="btn btn-primary" id="reAnalyzeRemoteButton" type="button" title="Reanalyze {{main.PAGE.remote.host}}">
+            <span class="glyphicon glyphicon-download-alt"></span>
+            <span>';$output .= $stash->get(['locale',0,'maketext',['Rescan Source Server' ]]);$output .= '</span>
+        </button>
+    </section>
+
+    ';if ($stash->get(['data',0,'hostname_err',0])){$output .= '        <section id="hostnameWarning" class="callout callout-warning hostname-warning">
+            <div id="hostnameWarningHeader" class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: Hostname Lookup Error' ]]);$output .= '</div>
+
+            <div>';$output .= $stash->get(['locale',0,'maketext',['The system failed to determine if its hostname ([_1]) resolves locally.',$stash->get(['data',0,'hostname',0,'html',0])]]);$output .= '</div>
+
+            <div>';$output .= $stash->get(['data',0,'hostname_err',0,'html',0]);$output .= '</div>
+        </section>
+    '}elsif (!$stash->get(['data',0,'hostname_resolves',0])){$output .= '        <section id="hostnameWarning" class="callout callout-warning hostname-warning">
+            <div id="hostnameWarningHeader" class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: Hostname Resolution Mismatch' ]]);$output .= '</div>
+
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['The system’s hostname ([_1]) does not resolve locally. Because of this, [output,url,_2,Live Transfers,target,_blank] are disabled.',$stash->get(['data',0,'hostname',0,'html',0]),'https://go.cpanel.net/livetransfers' ]]);$output .= '
+            </div>
+            <div>
+                ';$output .= $stash->get(['locale',0,'maketext',['Run the “[output,url,_1,_2,target,_blank]” script to assign your server an automatically-resolving hostname.','https://go.cpanel.net/cprapid','/scripts/ensure_hostname_resolves' ]]);$output .= '            </div>
+        </section>
+    '}$output .= '
+    <div class="row" ng-if="!main.PAGE.local.available_ips.length">
+        <div class="col-sm-6">
+            <div class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: You have no available [asis,IP] addresses on your local machine.' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <uib-tabset class="server-configuration-tabset">
+        <uib-tab select="setAcctTabActive(true)">
+            <uib-tab-heading>
+                ';$output .= $stash->get(['locale',0,'maketext',['Accounts' ]]);$output .= '
+                <span ng-if="main.selectedAccounts.length" class="label label-info" ng-bind="main.selectedAccounts.length"></span>
+            </uib-tab-heading>
+            <div class="tab-content">
+                <section class="section-body">
+                    ';$output .= $context->process('transfer_tool/_select_accounts.tmpl');$output .= '
+                </section>
+            </div>
+        </uib-tab>
+        <uib-tab select="setAcctTabActive(false)">
+            <uib-tab-heading>
+                ';$output .= $stash->get(['locale',0,'maketext',['Packages' ]]);$output .= '
+                <span ng-if="main.selectedPackages.length" class="label label-info" ng-bind="main.selectedPackages.length"></span>
+            </uib-tab-heading>
+            <div class="tab-content">
+                <section class="section-body">
+                    ';$output .= $context->process('transfer_tool/_select_packages.tmpl');$output .= '
+                </section>
+            </div>
+        </uib-tab>
+        <uib-tab select="setAcctTabActive(false)">
+            <uib-tab-heading>
+                ';$output .= $stash->get(['locale',0,'maketext',['Service Configurations' ]]);$output .= '
+                <span ng-if="main.selectedConfigurations.length" class="label label-info" ng-bind="main.selectedConfigurations.length"></span>
+            </uib-tab-heading>
+            <div class="tab-content">
+                <section class="section-body">
+                    ';$output .= $context->process('transfer_tool/_select_configurations.tmpl');$output .= '
+                </section>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+
+
+    <div class="row" ng-if="main.SERVER_MAX_USERS && (newSelectedUserList = (main.selectedAccounts | filter:main.overwriteIsDefault) ).length > main.REMAINING_ACCOUNT_SLOTS">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{ main.licenseOverloadMessage() }}
+                    </p>
+                    <p ng-if="main.REMAINING_ACCOUNT_SLOTS > 0">{{ main.licenseOverloadCancelMessage(newSelectedUserList.length - main.REMAINING_ACCOUNT_SLOTS) }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="(overwriteableUserList = (main.selectedAccounts | existingUsers:true | filter:main.noUsernameChange | filter:main.overwriteIsDefault)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{ main.accountConflictSelectedMessage(overwriteableUserList.length) }}
+                    </p>
+                    <ul>
+                        <li ng-repeat="acct in overwriteableUserList | orderBy:\'localuser\'">{{ main.getExistingUserMessage(acct); }}</li>
+                    </ul>
+                    <p>
+                        {{ main.accountOverwiteResolveMessage(overwriteableUserList.length) }}
+                    </p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(overwriteableUserList, \'overwrite_type\', main.overwriteOptions[1]); main.updateSelectedAccounts()">
+                        {{ main.accountOverwriteConfirmMessage(overwriteableUserList.length) }}
+                    </a></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(overwriteableUserList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(overwriteableUserList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(existingUserList = (main.selectedAccounts | existingUsers:false | filter:main.overwriteIsDefault)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{ main.accountConflictSelectedMessage(existingUserList.length) }}
+                    </p>
+                    <ul>
+                        <li ng-repeat="acct in existingUserList | orderBy:\'localuser\'">{{ main.getExistingUserMessage(acct); }}</li>
+                    </ul>
+                    <p>
+                        {{ main.accountConflictResolveMessage(existingUserList.length) }}
+                    </p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(existingUserList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(existingUserList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(reservedUserList = (main.selectedAccounts | filter:main.reservedUserFilter)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{ main.accountConflictSelectedResolveMessage(reservedUserList.length) }}
+                    </p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(reservedUserList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(reservedUserList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+     <div class="row" ng-if="(duplicateUserList = (main.selectedAccounts | filter:main.duplicateUserFilter)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{
+                            main.accountConflictNameResolveMessage(duplicateUserList.length)
+                        }}
+                        <ul>
+                            <li ng-repeat="user in duplicateUserList | orderBy:\'localuser\'">{{ main.accountRenameMessage(user.remote_user, user.localuser) }}</li>
+                        </ul>
+                    </p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(duplicateUserList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(duplicateUserList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(invalidUsernamesList = (main.selectedAccounts | filter:main.invalidUsernameFilter)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]:' ]]);$output .= '
+                        {{ main.usernameValidationTitle(invalidUsernamesList.length) }}
+                        <ul>
+                            <li ng-repeat="user in invalidUsernamesList | orderBy:\'localuser\'">{{ user.localuser }}</li>
+                        </ul>
+                        {{ main.usenameValidationMessage(invalidUsernamesList.length) }}
+                    </p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(invalidUsernamesList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.usernameValidationAction(invalidUsernamesList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(invalidDomainList = (main.selectedAccounts | filter:main.invalidDomainFilter)).length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p ng-bind-html="main.existingDomainWarning(invalidDomainList.length)"></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(invalidDomainList, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(invalidDomainList.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(selectedAcctsWithNewDedicatedIp = (main.selectedAccounts | filter:main.newDedicatedIpFilter )).length > main.PAGE.local.available_ips.length">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    <p ng-bind-html="main.dedicatedIpAddrWarning(selectedAcctsWithNewDedicatedIp.length, main.PAGE.local.available_ips.length)"></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(selectedAcctsWithNewDedicatedIp, \'dedicated_ip\', 0)">
+                        {{ main.dedicatedIPDeselectAction(selectedAcctsWithNewDedicatedIp.length) }}
+                    </a></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(selectedAcctsWithNewDedicatedIp, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(selectedAcctsWithNewDedicatedIp.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(acctsWithUnselectedIp = (main.selectedAccounts | filter:{existing_dedicated_ip:1, dedicated_ip:0} )).length">
+        <div class="col-sm-12">
+            <div class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message">
+                    <p ng-bind-html="main.unusedDedicatedIpWarning(acctsWithUnselectedIp.length)"></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(acctsWithUnselectedIp, \'dedicated_ip\', 1)">
+                        {{ main.dedicatedIPReselectAction(acctsWithUnselectedIp.length) }}
+                    </a></p>
+                    <p><a href="" ng-click="main.toggleCheckAllAndReValidate(acctsWithUnselectedIp, \'selected\', 0); main.updateSelectedAccounts()">
+                        {{ main.accountConflictCancelMessage(acctsWithUnselectedIp.length) }}
+                    </a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="(resellerNoCopyList = (main.selectedAccounts | filter:main.resellerNoCopyFilter )).length">
+        <div class="col-sm-12">
+            <div class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                <div class="alert-message">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]:' ]]);$output .= '
+                        {{ main.resellerNoCopyTitle(resellerNoCopyList.length) }}
+                    </p>
+                    <ul>
+                        <li ng-repeat="user in resellerNoCopyList | orderBy:\'localuser\'">{{ user.localuser }}</li>
+                    </ul>
+                    <p ng-bind-html="main.resellerNoCopyMessage(resellerNoCopyList.length)"></p>
+                    <p>
+                        <a href="" ng-if="!main.PAGE.restricted_restore" ng-click="main.toggleCheckAllAndReValidate(resellerNoCopyList, \'copy_reseller_privs\', 1); main.updateSelectedAccounts()">
+                            {{ main.resellerNoCopyFixMessage(resellerNoCopyList.length) }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- summary -->
+    <div class="row" ng-if="(canSubmit = main.canSubmitForm([overwriteableUserList,existingUserList,reservedUserList,duplicateUserList,invalidUsernamesList,invalidDomainList],selectedAcctsWithNewDedicatedIp,newSelectedUserList))">
+        <div class="col-sm-12">
+            <div class="alert alert-info">
+                <div class="alert-message" ng-bind-html="main.submitSummaryMessage()"></div>
+            </div>
+        </div>
+    </div>
+
+    <form ng-if="showTable()" method=POST action="maincopy" name="secform" class="form">
+        <input type="hidden" name="transfer_session_id" value="{{main.PAGE.transfer_session_id}}">
+        <input type="hidden" name="transfer_accts" value="{{ main.selectedAccounts | json}}">
+        <input type="hidden" name="transfer_pkgs" value="{{ main.selectedPackages | json}}">
+        <input ng-repeat="(module_name, module) in main.PAGE.configuration_modules" type="hidden" name="{{ module_name + \'_enable\' }}" value="{{ module.selected ? 1 : 0 }}">
+        <button type="submit" class="btn btn-primary"
+                click-once
+                id="form_submit_button"
+                ng-disabled="!canSubmit" ng-bind="main.getCopyButtonLabel()">
+
+        </button>
+    </form>
+
+    <script id="directives/accountExpandPanel.ptt" type="text/ng-template">';$output .= $context->process('transfer_tool/directives/accountExpandPanel.ptt');$output .= '    </script>
+
+    <script id="overwriteWithDeleteDescription.ptt" type="text/ng-template">';$output .= $context->process('transfer_tool/overwriteWithDeleteDescription.ptt');$output .= '    </script>
+</div>
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('data')]]);$output .= ';
+    /* TODO: refactor to be stand-alone username js validation */
+    PAGE.local.reserved_username_patterns = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPUsername',0,'get_reserved_username_patterns',0])]]);$output .= ';
+    PAGE.local.reserved_usernames = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPUsername',0,'get_reserved_usernames',0])]]);$output .= ';
+    PAGE.USERNAME_UNIQUE_LENGTH = parseInt( ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CpanelDB',0,'PREFIX_LENGTH',0])]]);$output .= ', 10 );
+    PAGE.MAX_USERNAME_LENGTH = parseInt( ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPUsername',0,'get_max_username_length',0])]]);$output .= ', 10 );
+    PAGE.USERNAME_TRANSFER_REGEXP = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPUsername',0,'make_strict_regexp_str',[1 ]])]]);$output .= '
+    PAGE.USERNAME_REGEXP = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['CPUsername',0,'make_strict_regexp_str',[0 ]])]]);$output .= "\n    PAGE.UN_TRIM_REG_EXP = new RegExp(\"^\\\\s*(.{1,\" + PAGE.USERNAME_UNIQUE_LENGTH + \"}).*\$\", \"i\");\n    PAGE.transfer_session_id = ";$output .= $stash->get(['data',0,'transfer_session_id',0,'json',0]);$output .= ';
+    PAGE.configuration_modules = ';$output .= $stash->get(['data',0,'modules',0,'json',0]);$output .= ';
+    PAGE.REMAINING_ACCOUNT_SLOTS = ';$output .= $stash->get(['Whostmgr',0,'get_max_users',0])- $stash->get(['Whostmgr',0,'get_users_count',0]);$output .= ';
+    PAGE.SERVER_MAX_USERS = ';$output .= $stash->get(['Whostmgr',0,'get_max_users',0]);$output .= ';
+    PAGE.all_possible_page_sizes = [
+        10,
+        50,
+        200,
+        500,
+        1000
+    ];
+    PAGE.locale_is_rtl = ';$output .= $stash->get(['locale_is_rtl',0,'json',0]);$output .= ';
+    PAGE.liveTransfersNoticeIsDismissed = ';$output .= $stash->get(['NVData',0,'get',['live_transfers_notice_is_dismissed' ]])? 'true' : 'false';$output .= ';
+    PAGE.liveTransfersPre90NoticeIsDismissed = ';$output .= $stash->get(['NVData',0,'get',['live_transfers_pre_90_notice_is_dismissed' ]])? 'true' : 'false';$output .= ';
+    PAGE.disable_live_transfers = ';$output .= $stash->get(['data',0,'disable_live_transfers',0])? 'true' : 'false';$output .= ';
+    PAGE.restricted_restore = ';$output .= $stash->get(['data',0,'restricted_restore',0])? 'true' : 'false';$output .= ';
+</script>
+
+<!-- CPANEL-1946: The CPANEL.PAGE JSON.stringify can take a long time with a large account list.
+     We need to load angular after to ensure we avoid this race condition -->
+<!-- TODO: Once user finishes updating, make remote call to check if good then update accordingly-->
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'header',0]),'breadcrumburl'=>'/scripts5/account_copy_input','stylesheets'=>['/css/whm_dynamic_notices.css',$stash->get(['Whostmgr',0,'find_file_url',['/libraries/chosen/1.5.1/chosen.min.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/transfer_tool/getacctlist.min.css' ]])],'scripts'=>[],'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

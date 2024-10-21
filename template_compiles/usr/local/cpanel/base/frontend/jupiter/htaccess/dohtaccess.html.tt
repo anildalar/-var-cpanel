@@ -1,0 +1,245 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/htaccess/dohtaccess.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('directory',$stash->get(['RAW_FORM',0,'dir',0,'replace',['/+','/' ],'replace',['/$','' ]]));$stash->set('from_parent_node',$stash->get(['FORM',0,'is_parent',0]));$stash->set('quoted_home_directory',$stash->get(['CPANEL',0,'homedir',0,'quotemeta',0]));if ($stash->get(['directory',0,'match',[('^' .$stash->get('quoted_home_directory').'/.+')]])){$stash->set('return_dirs',$stash->get(['directory',0,'split',['/+' ]]));$stash->get(['return_dirs',0,'pop',0]);$stash->set('up_one_directory',$stash->get(['return_dirs',0,'join',['/' ]]))}$stash->set('return_url','index.html?dir=' .(!$stash->get('from_parent_node')? $stash->get(['up_one_directory',0,'uri',0]): $stash->get(['directory',0,'uri',0])|| '/').'&is_parent=' .$stash->get(['FORM',0,'is_parent',0])* 1);$stash->set('protected_config',$stash->get(['execute',['DirectoryPrivacy','is_directory_protected',{'dir'=>$stash->get('directory')}]]));$stash->set('users',$stash->get(['execute',['DirectoryPrivacy','list_users',{'dir'=>$stash->get('directory')}]]));$stash->set('required_strength_resp',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'virtual' }]]));if ($stash->get('required_strength_resp')){$stash->set('required_strength',$stash->get(['required_strength_resp',0,'data',0,'strength',0]))}$stash->set('relative_directory',$stash->get(['directory',0,'replace',[('^' .$stash->get('quoted_home_directory').'[/]?'),'' ]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <div class="section">
+        <h2 id="hdrSetPerms">
+            ';if ($stash->get('relative_directory')ne ''){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Set permissions for “[output,strong,_1]”.',$stash->get(['relative_directory',0,'html',0])]]);$output .= '
+            '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Set permissions for all directories.' ]]);$output .= '
+            '}$output .= '
+        </h2>
+
+        <h3 id="hdrSecuritySettings">
+            ';$output .= $stash->get(['locale',0,'maketext',['Security Settings' ]]);$output .= '
+        </h3>
+        <p class="description" id="descSecuritySettings">
+            ';$output .= $stash->get(['locale',0,'maketext',['When a user attempts to access the protected directory through a browser, the site will prompt them to enter a username and password. The name that you choose for the protected directory will also display.' ]]);$output .= '
+        </p>
+        ';if ($stash->get(['protected_config',0,'status',0])){$output .= '
+        <form action="changepro.html" method="get">
+            <input type="hidden" id="dir" name="dir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '" />
+            <input type="hidden" id="is_parent" name="is_parent" value="';$output .= $stash->get(['FORM',0,'is_parent',0])* 1;$output .= '" />
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="checkbox">
+                            <label id="lblProtectDir">
+                                <input type="checkbox" name="protected" ';$output .= $stash->get(['protected_config',0,'data',0,'protected',0])? 'checked' : '';$output .= ' value="1" id="protect_dir_checkbox" />
+                                ';$output .= $stash->get(['locale',0,'maketext',['Password protect this directory.' ]]);$output .= '
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblResName" for="resname">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Enter a name for the protected directory:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="resname" value="';$output .= $stash->get(['protected_config',0,'data',0,'auth_name',0,'html',0]);$output .= '" id="resname" />
+                    </div>
+                    <div id="resname_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input name="action2" type="submit" id="submit_dir_name" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+            </div>
+        </form>
+        '}else {$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-config">
+                            ';$output .= $stash->get(['protected_config',0,'errors_as_string',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+        '}$output .= '
+    </div>
+
+    ';if ($stash->get(['protected_config',0,'status',0])eq 1 && $stash->get(['protected_config',0,'data',0,'protected',0])){$output .= '
+    <div class="section">
+        <h2 id="hdrCreateUser">';$output .= $stash->get(['locale',0,'maketext',['Create User' ]]);$output .= '</h2>
+        <form method="post" name="mainform" id="mainform" action="newuser.html">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+            <input type="hidden" name="dir" id="hidDir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '" />
+            <input type="hidden" id="is_parent1" name="is_parent" value="';$output .= $stash->get(['FORM',0,'is_parent',0])* 1;$output .= '" />
+            <div class="form-group">
+                <label id="lblUsername" for="user">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="user" id="user" />
+                    </div>
+                    <div id="user_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblPassword" for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' name="pass" id="password" class="form-control"/>
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblPassword2" for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Confirm Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' name="pass2" id="password2" class="form-control" />
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblPasswordStrength">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password Strength' ]]);$output .= '
+                    <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input name="action" type="submit" id="submit_user" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+
+    ';if ($stash->get(['users',0,'status',0])&& $stash->get(['users',0,'data',0,'list',0,'size',0])> 0){$output .= '
+    <div class="section">
+        <h2 id="hdrAuthUsers">
+            ';$output .= $stash->get(['locale',0,'maketext',['Authorized Users' ]]);$output .= '
+        </h2>
+        <p class="description" id="descAuthUsers">
+            ';$output .= $stash->get(['locale',0,'maketext',['To change a user’s password, add that user above with the new password.' ]]);$output .= '
+        </p>
+        <form action="deluser.html" method="get">
+            <input type="hidden" name="dir" id="hidAuthUserDir" value="';$output .= $stash->get(['directory',0,'html',0]);$output .= '" />
+            <input type="hidden" id="is_parent2" name="is_parent" value="';$output .= $stash->get(['FORM',0,'is_parent',0])* 1;$output .= '" />
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select name="user" size="8" id="ddlUser" class="form-control">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['users',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$output .= '
+                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('user');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('user');&$_tt_filter($output)};$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input name="action" type="submit" id="btnDelete" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Delete User' ]]);$output .= '" />
+            </div>
+        </form>
+    </div>
+    '}elsif (!$stash->get(['users',0,'status',0])){$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-users">
+                        ';$output .= $stash->get(['users',0,'errors_as_string',0,'html',0]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    '}$output .= '
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get(['return_url',0,'html',0]),'return_link_text'=>$stash->get(['locale',0,'maketext',['Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'directory_privacy','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    /**
+     * Initialize the directory protection form.
+     */
+    var init_security_validation = function() {
+        var directoryValidator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Directory Name' ]]);$output .= '");
+        var protectDirectoryCheckbox = document.getElementById("protect_dir_checkbox");
+        var resnameTextbox = document.getElementById("resname");
+        if (!protectDirectoryCheckbox.checked) {
+            resnameTextbox.disabled = true;
+        }
+
+        directoryValidator.add(
+            "resname", "min_length(%input%, 1)",
+            ';$output .= $stash->get(['locale',0,'maketext',['Directory name cannot be empty.' ],'json',0]);$output .= ",\n            function() {\n               return protectDirectoryCheckbox.checked;\n            }\n        );\n        directoryValidator.add(\n            \"resname\", function(el) {\n                return !/[^\\x20-\\x7F]/.test(el.value);\n            },\n            ";$output .= $stash->get(['locale',0,'maketext',['The directory name must contain only printable [output,acronym,ASCII,American Standard Code for Information Interchange] characters.' ],'json',0]);$output .= ',
+            function() {
+               return protectDirectoryCheckbox.checked;
+            }
+        );
+        directoryValidator.attach();
+
+        CPANEL.validate.attach_to_form("submit_dir_name", directoryValidator);
+
+        ';if ($stash->get('relative_directory')ne ''){$stash->set('ascii_relative_directory',$stash->get(['relative_directory',0,'replace',['[^[:ascii:]]','_' ]]));$stash->set('default_name','Protected \'' .$stash->get('ascii_relative_directory').'\'')}else {$stash->set('default_name','Protected')}$output .= '
+        var defaultName = ';$output .= $stash->get(['default_name',0,'json',0]);$output .= ';
+        var previousCustomName = \'\';
+        protectDirectoryCheckbox.addEventListener("change", function(event) {
+            if (event.target.checked) {
+                resnameTextbox.disabled = false;
+                resnameTextbox.value = previousCustomName || defaultName;
+            } else {
+                resnameTextbox.disabled = true;
+                previousCustomName = resnameTextbox.value;
+                resnameTextbox.value = "";
+                directoryValidator.clear_messages();
+            }
+        });
+    };
+    YAHOO.util.Event.onDOMReady(init_security_validation);
+
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get('required_strength');$output .= '\', 10) || 0;
+    var SHOW_USER_SECTION = ';$output .= $stash->get(['protected_config',0,'status',0])eq 1 && $stash->get(['protected_config',0,'data',0,'protected',0])? 'true' : 'false';$output .= '
+
+    if (SHOW_USER_SECTION) {
+        var init_page = function() {
+            var user_validator = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Username' ],'json',0]);$output .= ');
+            user_validator.add("user", "min_length(%input%, 1)", ';$output .= $stash->get(['locale',0,'maketext',['Username cannot be empty.' ],'json',0]);$output .= ');
+            user_validator.add("user", "filename", ';$output .= $stash->get(['locale',0,'maketext',['Username cannot contain special characters: / [output,chr,92][output,chr,92] ? % * : | “” [output,lt] [output,gt]' ],'json',0]);$output .= ');
+            user_validator.add("user", "no_chars(%input%, \' \')", ';$output .= $stash->get(['locale',0,'maketext',['Username cannot have spaces.' ],'json',0]);$output .= ');
+            user_validator.add("user", "alphanumeric_bookends", ';$output .= $stash->get(['locale',0,'maketext',['Username must begin and end with an alphanumeric character.' ],'json',0]);$output .= ');
+            user_validator.attach();
+
+            var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+
+            password_validators.push(user_validator);
+            CPANEL.validate.attach_to_form("submit_user", password_validators);
+        };
+        YAHOO.util.Event.onDOMReady(init_page);
+    }
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

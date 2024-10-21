@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/server_profile/views/selectProfileView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div ng-cloak>
+    <h3>';$output .= $stash->get(['locale',0,'maketext',['Select Profile' ]]);$output .= '</h3>
+
+     <div class="panel panel-default">
+        <div class="panel-heading">
+            ';$output .= $stash->get(['locale',0,'maketext',['The following profiles are available for this server:' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            <div class="row" ng-repeat-start="profile in profiles.available">
+                <div class="col-xs-12 col-md-3">
+                    <div class="radio">
+                        <label class="profileLabel" ng-class="{ selected: profile === profiles.current }">
+                            <input type="radio"
+                                name="selectedProfile"
+                                ng-model="profiles.selected"
+                                ng-value="profile"/>
+                            <span>{{ profile.name }}</span>
+                            <span title="';$output .= $stash->get(['locale',0,'maketext',['Current Profile' ]]);$output .= '" class="currentProfile fas fa-xs fa-star" ng-if="profile === profiles.current"></span>
+                            <span ng-if="profile.experimental" class="label label-warning ng-scope">';$output .= $stash->get(['locale',0,'maketext',['Experimental' ]]);$output .= '</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-9 radio profileDescription">
+                    {{ profile.description }}
+                    <a class="btn-link" ng-click="info(profile)"><span class="fas fa-info-circle"></span></a>
+                </div>
+            </div>
+            <div class="row" ng-repeat-end>
+                <div ng-if="openInfo === profile"  class="col-xs-12 radio profileDescription">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div ng-if="profile.enabled_roles.length > 0">{{ profile.enabled_roles | rolesLocaleString:\'Enables [list_and,_1].\' }}</div>
+                            <div ng-if="profile.disabled_roles.length > 0">{{ profile.disabled_roles | rolesLocaleString:\'Disables [list_and,_1].\' }}</div>
+                            <div ng-if="profile.optional_roles.length > 0">{{ profile.optional_roles | rolesLocaleString:\'[list_and,_1] [numerate,_2,is,are] optional.\' }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button ng-if="loaded"
+        class="btn btn-primary"
+        ng-click="continue()">
+        ';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '
+    </button>
+    <p class="footnote">
+        <span class="currentProfile fas fa-xs fa-star"></span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Current Profile' ]]);$output .= '</span>
+    </p>
+    <p class="footnote" id="experimental-warning">
+        <span class="label label-warning ng-scope">Experimental</span>
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Experimental profiles contain previews of new functionality. We do not recommend that you use experimental profiles on production environments.' ]]);$output .= '</span>
+    </p>
+    <p></p>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

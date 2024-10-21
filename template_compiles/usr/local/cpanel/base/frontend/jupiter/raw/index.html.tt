@@ -1,0 +1,184 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/raw/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('settings',$stash->get(['execute',['LogManager','get_settings' ]]));$stash->set('downloads',$stash->get(['execute',['LogManager','list_archives',{'api.sort'=>1,'api.sort_column'=>'mtime','api.sort_reverse'=>1 }]]));$output .= '
+
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+';$stash->set('list_raw_logs',$stash->get(['Api2',0,'exec',['Stats','listrawlogs',{}]]));$output .= '
+
+<div class="body-content">
+    <p id="descIntro" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Raw Access Logs allow you to see who has visited your website without displaying graphs, charts, or other graphics. You can use the Raw Access Logs menu to download a zipped version of the server’s access log for your site. This can be very useful when you want to quickly see who has visited your site.' ]]);$output .= '
+    </p>
+    <div class="section">
+        <h2 id="hdrConfigureLogs">
+            ';$output .= $stash->get(['locale',0,'maketext',['Configure Logs' ]]);$output .= '
+        </h2>
+        ';if ($stash->get(['settings',0,'status',0])){$output .= '
+        <form id="formConfigureLogs" action="../logmanager/savesettings.html">
+            <div class="form-group">
+                ';if ($stash->get(['CPANEL',0,'CPCONF',0,'dumplogs',0])){$output .= '
+                    <input value=1 type=checkbox name=archivelogs';if ($stash->get(['settings',0,'data',0,'archive_logs',0])){$output .= ' checked'}$output .= '>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Archive log files to your home directory after the system processes statistics. The system currently processes logs every [quant,_1,hour,hours].',$stash->get(['CPANEL',0,'CPCONF',0,'cycle_hours',0,'html',0])]]);$output .= ' <br />
+                '}else {$output .= '
+                    <input value=1 type=checkbox name=archivelogs ';if ($stash->get(['settings',0,'data',0,'archive_logs',0])){$output .= ' checked'}$output .= '>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Archive logs in your home directory at the end of each month.' ]]);$output .= '<br />
+                '}$output .= '
+                <input value=1 type=checkbox name=remoldarchivedlogs ';if ($stash->get(['settings',0,'data',0,'prune_archive',0])){$output .= ' checked'}$output .= '>
+                ';$output .= $stash->get(['locale',0,'maketext',['Remove the previous month’s archived logs from your home directory at the end of each month.' ]]);$output .= '<br />
+            </div>
+            <div class="form-group">
+                <input id="btnSave" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" />
+            </div>
+        </form>
+        '}else {$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['settings',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+    </div>
+
+    <div class="section">
+        <h2 id="hdrDownload">
+            ';$output .= $stash->get(['locale',0,'maketext',['Download Current Raw Access Logs' ]]);$output .= '
+        </h2>
+        ';if ($stash->get(['CPANEL',0,'CPCONF',0,'dumplogs',0])){$output .= '
+          <div class="alert alert-warning">
+              <span class="glyphicon glyphicon-exclamation-sign"></span>
+              <div class="alert-message">
+                  ';$output .= $stash->get(['locale',0,'maketext',['Raw logs may only contain a few hours’ worth of data because they are discarded after the system processes them.' ]]);$output .= '
+                  ';$output .= $stash->get(['locale',0,'maketext',['If archiving is enabled, the system archives the raw log data before the system discards it.' ]]);$output .= '
+              </div>
+          </div>
+        '}elsif (!$stash->get(['CPANEL',0,'CPCONF',0,'keeplogs',0])){$output .= '
+          <div class="alert alert-warning">
+              <span class="glyphicon glyphicon-exclamation-sign"></span>
+              <div class="alert-message">
+                  ';$output .= $stash->get(['locale',0,'maketext',['The system empties raw logs at the beginning of each month.' ]]);$output .= '
+                  ';$output .= $stash->get(['locale',0,'maketext',['If archiving is enabled, the system archives the raw log data before the system discards it.' ]]);$output .= '
+              </div>
+          </div>
+        '}$output .= '
+        <p id="descDownload">
+            ';$output .= $stash->get(['locale',0,'maketext',['Click the domain name that corresponds to the raw access log that you want to download.' ]]);$output .= '
+        </p>
+        <table class="sortable table table-striped responsive-table" id="rtt">
+            <thead>
+                <tr>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Last Update' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Linked Domains' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                ';if ($stash->get(['list_raw_logs',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_raw_logs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'raw_logs'}=$_tt_value;$output .= '
+                        <tr>
+                            <td class="row1" data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '">
+                                <a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['raw_logs',0,'link',0]);&$_tt_filter($output)};$output .= '" >
+                                    ';$output .= $stash->get(['raw_logs',0,'domain',0,'html',0]);$output .= '
+                                </a>
+                            </td>
+                            <td class="raw1" data-title="';$output .= $stash->get(['locale',0,'maketext',['Last Update' ]]);$output .= '">
+                                ';$output .= $stash->get(['raw_logs',0,'humanupdatetime',0,'html',0]);$output .= '
+                            </td>
+                            <td class="raw1" data-title="';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '">
+                                ';$output .= $stash->get(['raw_logs',0,'humansize',0,'html',0]);$output .= '
+                            </td>
+                            <td class="row1-end" data-title="';$output .= $stash->get(['locale',0,'maketext',['Linked Domains' ]]);$output .= '">
+                                <div class="linked_domains" >
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['raw_logs',0,'linked_domains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'linked_domain'}=$_tt_value;$output .= '
+                                        <div class="linked_domain">';$output .= $stash->get(['linked_domain',0,'domain',0,'html',0]);$output .= '</div>
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </div>
+                            </td>
+                        </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}$output .= '
+            </tbody>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrArchived">
+            ';$output .= $stash->get(['locale',0,'maketext',['Archived Raw Logs' ]]);$output .= '
+        </h2>
+        <p id="descArchived">
+            ';$output .= $stash->get(['locale',0,'maketext',['Click on a log archive to download it.' ]]);$output .= '
+        </p>
+        ';if ($stash->get(['downloads',0,'status',0])){$output .= '
+            ';if ($stash->get(['downloads',0,'data',0,'size',0])){$output .= '
+            <div id="descArchivedList">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['downloads',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'download'}=$_tt_value;$stash->set('url',($stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]).'/getlogarchive/').$stash->get(['download',0,'file',0]));$stash->set('link_text',$stash->get(['download',0,'file',0,'html',0]));$output .= '
+
+                    <a id="raw-access-archive-';$output .= $stash->get(['link_text',0,'slugify',0]);$output .= '"
+                       alt="';$output .= $stash->get(['locale',0,'maketext',['Download the “[_1]” log archive.',$stash->get('link_text')]]);$output .= '"
+                       href="';$output .= $stash->get('url');$output .= '">';$output .= $stash->get('link_text');$output .= ' </a>
+
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </div>
+            '}else {$output .= '
+
+                <div class="alert alert-info" role="alert">
+                    <span class=\'glyphicon glyphicon-info-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Notice:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="info">
+                                ';$output .= $stash->get(['locale',0,'maketext',['No archived log files currently exist.' ]]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+            '}$output .= '
+        '}else {$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['downloads',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                    <div class=\'alert-message\'>
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+    </div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'raw_access','page_styles'=>$stash->get('css_code'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+    #descArchivedList a {
+        display: block;
+        margin-bottom: 10px;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

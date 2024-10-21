@@ -1,0 +1,264 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sharedjs/email_deliverability/views/manageDomain.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-11 col-md-9 retro-col-12">
+            <div class="row">
+                <!-- summary -->
+                <div class="col-sm-4 col-md-4 pull-right hidden-xs">
+                    <div class="section">
+                        <ng-include src="resourcesPanelTemplate"></ng-include>
+                    </div>
+                </div>
+                <!-- / summary -->
+
+                <!-- manage domain -->
+                <div class="col-xs-12 col-sm-8 col-md-8">
+                    <form>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <div class="widget-title">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Manage The Domain' ]]);$output .= '
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <label id="lblEmail" for="lblEmailAccount">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <span id="lblEmailAccount" class="wordbreak">
+                                                {{currentDomain.domain | htmlSafeString}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group" ng-if="currentDomain.recordsLoaded && ptrServerName != currentDomain.domain && !skipPTRLookups">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <toggle-label-info
+                                                for="MailHeloDescriptor"
+                                                label-text="';$output .= $stash->get(['locale',0,'maketext',['Mail [asis,HELO]' ]]);$output .= '"
+                                                label-id="lblMailHeloDescriptor"
+                                                info-icon-id="icoMailHeloDescriptor"
+                                                info-block-id="txtMailHeloDescriptor"
+                                                show-info-block="{{showAllHelp}}">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['The name by which the server identifies itself when sending mail from “[_1]”.','{{currentDomain.domain | htmlSafeString}}' ]]);$output .= '
+                                            </toggle-label-info>
+                                        </div>
+                                        <div class="col-xs-12">
+                                            <span id="lblHelo" class="wordbreak">
+                                                {{ ptrServerName | htmlSafeString }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <cp-loading-panel ng-if="!currentDomain.recordsLoaded" id="loadingDomainStatus">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</cp-loading-panel>
+
+                                <div ng-if="currentDomain.recordsLoaded">
+                                    ';$output .= '
+                                    <section class="form-section">
+                                        <h4 class="widget-title">
+                                            DKIM
+                                            <span record-status class="pull-right" id="dkimRecordStatus" records="[\'dkim\']" domain="currentDomain"></span>
+                                        </h4>
+
+                                        ';$output .= '
+                                        <div ng-if="errors.dkim" callout callout-type="danger">
+                                            <p>{{ errors.dkim }}</p>
+                                        </div>
+                                        ';$output .= '
+
+                                        <div ng-if="!errors.dkim && !localDKIMExists()">
+                                            <div callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '" role="alert">
+                                                <p>';$output .= $stash->get(['locale',0,'maketext',['A [asis,DKIM] key for “[_1]” does not exist on the local server.','{{ currentDomain.domain | htmlSafeString}}' ]]);$output .= '</p>
+                                                <button cp-action="ensureLocalDKIMKeyExists()" class="btn btn-sm btn-primary">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Generate Local [asis,DKIM] Key' ]]);$output .= '
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="!errors.dkim && localDKIMExists()">
+                                            ';$output .= '
+                                            <div ng-if="!isRecordValid(\'dkim\')">
+                                                ';$output .= '
+                                                <div>
+                                                    <p ng-bind-html="badConfigurationMessage(\'dkim\', currentDomain.domain)"></p>
+                                                    <p>';$output .= $stash->get(['locale',0,'maketext',['To properly configure your [output,acronym,DKIM,DomainKeys Identified Mail] key, the record [output,strong,must] use this server’s [output,acronym,DKIM,DomainKeys Identified Mail] key.' ]]);$output .= '</p>
+                                                    ';$output .= '
+                                                    <div callout callout-type="warning" ng-if="!hasNSAuthority(\'dkim\')">
+                                                        <p ng-bind-html="noAuthorityMessage(\'dkim\')"></p>
+                                                    </div>
+                                                    ';$output .= '
+                                                    <suggested-record-set id="dkimSuggestedRecordSet" splitable="true" record-type="dkim" record-zone-type="TXT" domain="currentDomain"></suggested-record-set>
+                                                    <button ng-disabled="showConfirmDKIM" ng-click="toggleShowConfirmDKIM()" class="btn btn-sm btn-primary" >
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Install the Suggested Record' ]]);$output .= '
+                                                    </button>
+                                                    ';$output .= '
+                                                    <div callout callout-type="danger" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Danger:' ]]);$output .= '" role="alert" ng-show="showConfirmDKIM">
+                                                        <p>';$output .= $stash->get(['locale',0,'maketext',['If you send email from another server, you [output,strong,must] use this server’s [output,acronym,DKIM,DomainKeys Identified Mail] key on the remote server.' ]]);$output .= '</p>
+                                                        <button cp-action="repairRecord(\'dkim\')" class="btn btn-sm btn-primary">
+                                                            ';$output .= $stash->get(['locale',0,'maketext',['Install the Suggested Record' ]]);$output .= '
+                                                        </button>
+                                                        <button ng-click="toggleShowConfirmDKIM()" class="btn btn-sm btn-secondary">
+                                                            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                                        </button>
+                                                    </div>
+                                                    ';$output .= '
+                                                </div>
+                                                ';$output .= '
+                                            </div>
+                                            ';$output .= '
+
+                                            ';$output .= '
+                                            <div ng-if="isRecordValid(\'dkim\')" >
+                                                <p ng-bind="validRecordMessage(\'dkim\', currentDomain.domain)"></p>
+                                                <suggested-record-set id="dkimSuggestedRecordSet" splitable="true" record-type="dkim" record-zone-type="TXT" domain="currentDomain"></suggested-record-set>
+                                            </div>
+                                            ';$output .= '
+                                        </div>
+
+                                    </section>
+                                    ';$output .= '
+
+                                    ';$output .= '
+                                    <section class="form-section">
+                                        <h4 class="widget-title">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['SPF' ]]);$output .= '
+                                            <span record-status class="pull-right" id="spfRecordStatus" records="[\'spf\']" domain="currentDomain"></span>
+                                        </h4>
+
+                                        ';$output .= '
+                                        <div ng-if="errors.spf" callout callout-type="danger">
+                                            <p>{{ errors.spf }}</p>
+                                        </div>
+                                        ';$output .= '
+
+                                        ';$output .= '
+                                        <div ng-if="!errors.spf && !isRecordValid(\'spf\')">
+                                            <div>
+                                                <p ng-bind-html="badConfigurationMessage(\'spf\', currentDomain.domain)"></p>
+                                                ';$output .= '
+                                                <div>
+                                                    <p>';$output .= $stash->get(['locale',0,'maketext',['To properly configure your [output,abbr,SPF,Sender Policy Framework] record, you [output,strong,must] include the following mechanisms:' ]]);$output .= ' <pre ng-bind="currentDomain.getExpectedMatch(\'spf\')"></pre></p>
+                                                    ';$output .= '
+                                                    <div callout callout-type="warning" ng-if="!hasNSAuthority(\'spf\')">
+                                                        <p ng-bind-html="noAuthorityMessage(\'spf\')"></p>
+                                                    </div>
+                                                    ';$output .= '
+                                                    <suggested-record-set id="spfSuggestedRecordSet" record-type="spf" record-zone-type="TXT" domain="currentDomain"></suggested-record-set>
+                                                    <button cp-action="repairRecord(\'spf\')" class="btn btn-sm btn-secondary">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Install the Suggested Record' ]]);$output .= '
+                                                    </button>
+                                                </div>
+                                                ';$output .= '
+                                            </div>
+                                        </div>
+                                        ';$output .= '
+
+                                        ';$output .= '
+                                        <div ng-if="isRecordValid(\'spf\')" >
+                                            <p ng-bind="validRecordMessage(\'spf\', currentDomain.domain)"></p>
+                                            <suggested-record-set id="spfSuggestedRecordSet" record-type="spf" record-zone-type="TXT" domain="currentDomain"></suggested-record-set>
+                                        </div>
+                                        ';$output .= '
+
+                                    </section>
+                                    ';$output .= '
+
+                                    ';$output .= '
+                                    <section class="form-section" ng-if="ptrServerName && !skipPTRLookups">
+                                        <h4 class="widget-title">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Reverse [asis,DNS] ([asis,PTR])' ]]);$output .= '
+                                            <span record-status class="pull-right" id="ptrRecordStatus" records="[\'ptr\']" domain="currentDomain"></span>
+                                        </h4>
+
+                                        <div callout callout-type="info" ng-if="!errors.ptr && ptrServerName != currentDomain.domain">
+                                            <p>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['The system uses an alternate [asis,HELO] of “[_1]” when sending mail from the “[_2]” domain.','{{ ptrServerName | htmlSafeString }}','{{ currentDomain.domain | htmlSafeString }}' ]]);$output .= '
+                                            </p>
+                                        </div>
+
+                                        ';$output .= '
+                                        <div ng-if="errors.ptr" callout callout-type="danger">
+                                            <p>{{ errors.ptr }}</p>
+                                        </div>
+                                        ';$output .= '
+
+                                        ';$output .= '
+                                        <div ng-if="!errors.ptr && !isRecordValid(\'ptr\')">
+
+                                            ';$output .= '
+                                            <div callout callout-type="warning">
+                                                <div ng-if="ptrStatusCode === \'IP_IS_PRIVATE\'">
+                                                    <p>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['The system sends this domain’s outgoing mail from a private [asis,IP] address, “[_1]”. Reverse [asis,DNS] does not work with private [asis,IP] addresses because [asis,DNS] does not store [asis,PTR] records for them.','{{ptrServerIP}}' ]]);$output .= '
+                                                    </p>
+
+                                                    <p>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['The server may be misconfigured.' ]]);$output .= '
+                                                        <span ng-if="isWhm">';$output .= $stash->get(['locale',0,'maketext',['Ensure that this server’s [asis,IP] configuration, including the [output,acronym,NAT,Network Address Translation] configuration, is correct.' ]]);$output .= '</span>
+                                                        <span ng-if="!isWhm">';$output .= $stash->get(['locale',0,'maketext',['For more information, contact your system administrator.' ]]);$output .= '</span>
+                                                    </p>
+                                                </div>
+
+                                                <div ng-if="ptrStatusCode !== \'IP_IS_PRIVATE\'">
+                                                    <p ng-repeat="msg in badPTRMessages" ng-bind-html="msg"></p>
+
+                                                    <ul ng-if="badPTRNames">
+                                                        <li ng-repeat="name in badPTRNames | orderBy" ng-bind="name"></li>
+                                                    </ul>
+
+                                                    <p ng-bind-html="ptrToFixMessage"></p>
+
+                                                    <suggested-record-set ng-if="ptrStatusCode !== \'PTR_MISMATCH\'" id="ptrSuggestedRecordSet" record-type="ptr" record-zone-type="PTR" domain="currentDomain"></suggested-record-set>
+                                                </div>
+
+                                            </div>
+                                            ';$output .= '
+
+                                        </div>
+                                        ';$output .= '
+
+                                        ';$output .= '
+                                        <div ng-if="isRecordValid(\'ptr\')">
+                                            <p ng-bind="validRecordMessage(\'ptr\', currentDomain.domain)"></p>
+                                            <suggested-record-set id="ptrSuggestedRecordSet" record-type="ptr" record-zone-type="PTR" domain="currentDomain"></suggested-record-set>
+                                        </div>
+                                        ';$output .= '
+
+                                    </section>
+                                    ';$output .= '
+                                </div>
+
+                            </div>
+                            <div class="panel-footer" style="text-align:right" ng-if="canReturnToLister">
+                                <a id="btnCancelUpdate"
+                                    type="button"
+                                    class="btn btn-link"
+                                    href="#/"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Return to the List of Domains.' ]]);$output .= '">
+                                    <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <!-- / manage domain -->
+
+                <!-- summary -->
+
+                <div class="col-xs-12 hidden-sm hidden-lg hidden-md">
+                    <div class="section">
+                        <ng-include src="resourcesPanelTemplate"></ng-include>
+                    </div>
+                </div>
+                <!-- / summary -->
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

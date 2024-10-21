@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/showcpuusage.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPDate',$context->plugin('CPDate'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('CPSort',$context->plugin('CPSort'));$output .= do {my$output='';$output .= '<table width="100%">
+<td align="left">
+';$stash->set('day_before',$stash->get(['CPDate',0,'nicedate',[$stash->get(['data',0,'logdate',0])- 86400 ]]));$stash->set('day_of',$stash->get(['CPDate',0,'nicedate',[$stash->get(['data',0,'logdate',0])]]));$stash->set('day_after',$stash->get(['CPDate',0,'nicedate',[$stash->get(['data',0,'logdate',0])+ 86400 ]]));$stash->set('top_processes',[]);$output .= '<a href="';$output .= $stash->get(['data',0,'script_uri',0]);$output .= '?logdate=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'logdate',0])- 86400;&$_tt_filter($output)};$output .= '">&lt;&lt;
+';$output .= $stash->get(['day_before',0,1,0]).'-' .$stash->get(['day_before',0,2,0]).'-' .$stash->get(['day_before',0,0,0]);$output .= '</a></td>
+<td >';$output .= $stash->get(['day_of',0,1,0]).'-' .$stash->get(['day_of',0,2,0]).'-' .$stash->get(['day_of',0,0,0]);$output .= '</td>
+<td align=\'right\'>
+<a href="';$output .= $stash->get(['data',0,'script_uri',0]);$output .= '?logdate=';$output .= $stash->get(['data',0,'logdate',0])+ 86400;$output .= '">';$output .= $stash->get(['day_after',0,1,0]).'-' .$stash->get(['day_after',0,2,0]).'-' .$stash->get(['day_after',0,0,0]);$output .= ' &gt;&gt;</a></td>
+</table>
+Note: These figures are averages since 0000 hours today.<br />
+Note: This script will only track CGI CPU/memory usage if the processes run as the cPanel user.<br />
+<br />
+';if ($stash->get(['data',0,'cpucount',0])> 1){$output .= 'You have ';$output .= $stash->get(['data',0,'cpucount',0]);$output .= ' CPUs; therefore, these CPU percentages are
+divided by ';$output .= $stash->get(['data',0,'cpucount',0]);$output .= ' to indicate the true percentage of all
+CPU power used.<br />
+'}$output .= '<br />
+
+<table border="1" id=cputbl class=sortable><tr><th class="sorttable_alpha">User</th><th>Domain</th><th>%&nbsp;CPU</th><th>%&nbsp;MEM</th><th>Database&nbsp;Processes</th></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'cpudata',0,'cpsort',[{'field'=>'cpu','num'=>1,'desc'=>1 },{'field'=>'mem','num'=>1,'desc'=>1 },{'field'=>'mysql','num'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'cpudata'}=$_tt_value;$output .= '<tr>
+	<td>';$output .= $stash->get(['cpudata',0,'user',0]);$output .= '</td>
+	<td>';$output .= $stash->get(['data',0,'userdomains',0,$stash->get(['cpudata',0,'user',0]),0])|| '';$output .= '</td>
+	<td>';$output .= $stash->get(['CPScalar',0,'sprintf',['%.2f',$stash->get(['cpudata',0,'cpu',0])/ $stash->get(['data',0,'cpucount',0])]]);$output .= '</td>
+	<td>';$output .= $stash->get(['cpudata',0,'mem',0,'sprintf',['%.2f' ]]);$output .= '</td>
+	<td>';$output .= $stash->get(['cpudata',0,'mysql',0,'sprintf',['%.1f' ]]);$output .= '</td>
+</tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['cpudata',0,'top',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'proc'}=$_tt_value;if ($stash->get(['proc',0,'name',0])){$output .= $stash->get(['top_processes',0,'push',[{'user'=>$stash->get(['cpudata',0,'user',0]),'cpu'=>$stash->get(['proc',0,'cpu',0]),'name'=>$stash->get(['proc',0,'name',0])}]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+<br />
+<br />
+<table border=\'1\' class=\'sortable\'>
+<caption>Top Processes</caption>
+<tr><th class="sorttable_alpha">User</th><th>Domain</th><th>%&nbsp;CPU</th><th>Process</th></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['top_processes',0,'cpsort',[{'field'=>'cpu','num'=>1,'desc'=>1 }]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'proc'}=$_tt_value;if ($stash->get(['proc',0,'cpu',0])> 0.03){$output .= '<tr>
+    <td>';$output .= $stash->get(['proc',0,'user',0]);$output .= '</td>
+    <td>';$output .= $stash->get(['data',0,'userdomains',0,$stash->get(['proc',0,'user',0]),0])|| '';$output .= '</td>
+    <td>';$output .= $stash->get(['proc',0,'cpu',0]);$output .= '</td>
+    <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['proc',0,'name',0]);&$_tt_filter($output)};$output .= '</td>
+</tr>
+'};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','scripts'=>'/js/sorttable.js','app_key'=>'daily_process_log','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

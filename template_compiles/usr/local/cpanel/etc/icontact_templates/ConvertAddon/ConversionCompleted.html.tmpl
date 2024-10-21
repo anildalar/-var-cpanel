@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/ConvertAddon/ConversionCompleted.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'is_success',0])){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Conversion of Addon Domain “[_1]” into the [asis,cPanel] account “[_2]” succeeded',$stash->get(['NOTICE',0,'addon_domain',0]),$stash->get(['NOTICE',0,'new_username',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Conversion of Addon Domain “[_1]” into the [asis,cPanel] account “[_2]” failed',$stash->get(['NOTICE',0,'addon_domain',0]),$stash->get(['NOTICE',0,'new_username',0])]]))}$output .= '
+<p>
+    ';if ($stash->get(['NOTICE',0,'is_success',0])){$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The conversion of addon domain “[_1]” into the full [asis,cPanel] account “[_2]” succeeded. Review the log for further details.',$stash->get(['NOTICE',0,'addon_domain',0]),$stash->get(['NOTICE',0,'new_username',0])]]);$output .= '
+    '}else {$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The conversion of addon domain “[_1]” into the full [asis,cPanel] account “[_2]” failed. Review the log for further details.',$stash->get(['NOTICE',0,'addon_domain',0]),$stash->get(['NOTICE',0,'new_username',0])]]);$output .= '
+    '}$output .= '
+</p>
+';if ($stash->get(['NOTICE',0,'is_success',0])){$output .= '
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['NOTE: The new [asis,cPanel] account has a randomly generated password. To log in as the user, you must reset the password.' ]]);$output .= '
+</p>
+'}$output .= '
+<p>
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_content',0]),'title'=>'---- Convert Addon Domain to Account ----' }]]);$output .= '
+</p>
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2].','https://go.cpanel.net/AddonConversion','_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

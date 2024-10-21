@@ -1,0 +1,86 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/shared/templates/sqlui.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set('CpanelDB',$context->plugin('CpanelDB'));$stash->set('PAGE',{'db_prefix'=>$stash->get(['CpanelDB',0,'dbownerprefix',0]),'db_engine'=>$stash->get('db_engine')|| $stash->get(['CPANEL',0,'CPVAR',0,'db_engine',0]),'rename_url'=>$stash->get('rename_url')|| $stash->get(['CPANEL',0,'CPVAR',0,'rename_url',0])});$output .= '
+<style type="text/css">
+.rename-dialog {
+    width: 500px;
+}
+</style>
+
+
+<script type="text/x-handlebars-template" id="sql_rename_template">
+<div class="section">
+    <div class="rename-warning-area"></div>
+    <div class="oldname-unprefixed-notice-area"></div>
+    <div class="details-error-notice"></div>
+</div>
+<div class="section">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Old name:' ]]);$output .= '
+                </label>
+                <div class="input-group">
+                    {{oldname}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="rename_newname">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New name:' ]]);$output .= '
+                </label>
+                <div id="newname_form_group">
+                ';if ($stash->get(['CpanelDB',0,'dbownerprefix',0,'length',0])){$output .= '
+                    <div class="input-group">
+                        <span class="input-group-addon" id="dbPrefix">
+                            ';$output .= $stash->get(['CpanelDB',0,'dbownerprefix',0]);$output .= '
+                        </span>
+                        <input id="rename_newname"
+                            name="newname"
+                            class="form-control"
+                            value="{{oldname_no_prefix}}" />
+                    </div>
+                '}else {$output .= '
+                    <input id="rename_newname"
+                        name="newname"
+                        class="form-control"
+                        value="{{oldname}}" />
+                '}$output .= '
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <span class="hide">
+                    <span id="rename_newname_error" class="no_panel"></span>
+                </span>
+                <div id="newname_validation_container"
+                    class="validation_errors_div hide">
+                    <ul class="validation_errors_ul">
+                        <li class="validation_errors_li">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{#if is_postgresql_name}}
+<p>';$output .= $stash->get(['locale',0,'maketext',['PostgreSQL uses a user’s name to secure the user’s password internally, so you must set the user’s password again after you rename the user.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['After you rename this user, your browser will redirect you to a screen so you can set the password.' ]]);$output .= '</p>
+{{/if}}
+</script>
+
+<script>
+window.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('PAGE')]]);$output .= ';
+</script>
+<script>
+';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= $context->insert('handlebars/handlebars.js')}else {$output .= $context->insert('handlebars/handlebars.min.js')}$output .= '
+</script>
+';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/cjt/sql.js','/cjt/sql.js' ]]));$output .= '
+';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+<script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/cjt/sql.js' ]]);$output .= '"></script>
+';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/sharedjs/sqlui.js','/sharedjs/sqlui.js' ]]));$output .= '
+';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+<script src="';$output .= $stash->get(['CPANEL',0,'get_js_url',['/sharedjs/sqlui.js' ]]);$output .= '"></script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

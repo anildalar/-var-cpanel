@@ -1,0 +1,119 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/denyip/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';if ($stash->get(['FORM',0,'itemsperpage',0])){$output .= '
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],$stash->get(['FORM',0,'itemsperpage',0]));$output .= '
+'}$output .= '
+';if ((!$stash->get(['FORM',0,'itemsperpage',0])||!$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0]))){$output .= '
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'itemsperpage',0],'10');$output .= '
+'}$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['DenyIp','listdenyips' ]]);$stash->set('deny_ip_list',$stash->get(['Api2',0,'exec',['DenyIp','listdenyips',{'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0,'html',0]),'api2_paginate'=>'1','api2_paginate_start'=>$stash->get(['RAW_FORM',['api2_paginate_start' ]])}]]));$output .= $stash->get(['Api2',0,'post_exec',['DenyIp','listdenyips' ]]);$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p class="description" id="descDenyIP">
+        ';$output .= $stash->get(['locale',0,'maketext',['This feature will allow you to block a range of IP addresses to prevent them from accessing your site. You can also enter a fully qualified domain name, and the IP Deny Manager will attempt to resolve it to an IP address for you.' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Add an IP or Range' ]]);$output .= '</h2>
+        <form action="add.html" id="mainform" name="mainform">
+            <div class="form-group">
+                <label for="ip">
+                    ';$output .= $stash->get(['locale',0,'maketext',['IP Address or Domain' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" id="ip" name="ip" />
+                    </div>
+                    <div id="ip_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" id="add_ip_button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" />
+            </div>
+        </form>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: You can specify denied IP addresses in the following formats:' ]]);$output .= '
+        </p>
+
+        <dl>
+            <dt>';$output .= $stash->get(['locale',0,'maketext',['Single IP Address' ]]);$output .= '</dt>
+            <dd>192.168.0.1</dd>
+            <dd>2001:db8::1</dd>
+            <dt>';$output .= $stash->get(['locale',0,'maketext',['Range' ]]);$output .= '</dt>
+            <dd>192.168.0.1-192.168.0.40</dd>
+            <dd>2001:db8::1-2001:db8::3</dd>
+            <dt>';$output .= $stash->get(['locale',0,'maketext',['Implied Range' ]]);$output .= '</dt>
+            <dd>192.168.0.1-40</dd>
+            <dt>';$output .= $stash->get(['locale',0,'maketext',['CIDR Format' ]]);$output .= '</dt>
+            <dd>192.168.0.1/32</dd>
+            <dd>2001:db8::/32</dd>
+            <dt>';$output .= $stash->get(['locale',0,'maketext',['Implies [asis,192.*.*.*]' ]]);$output .= '</dt>
+            <dd>192.</dd>
+        </dl>
+    </div>
+
+    <div class="section">
+        <h2>
+            ';$output .= $stash->get(['locale',0,'maketext',['Currently-Blocked IP Addresses:' ]]);$output .= '
+        </h2>
+        <table class="sortable table table-striped" id="denyiptbl">
+            <thead>
+                <tr>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Server Setting' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Beginning IP' ]]);$output .= '
+                    </th>
+                    <th>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Ending IP' ]]);$output .= '
+                    </th>
+                    <th nonsortable="true">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+
+            ';if ($stash->get(['deny_ip_list',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('deny_ip_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ip_info'}=$_tt_value;$output .= '
+                <tr>
+                    <td>';$output .= $stash->get(['ip_info',0,'ip',0,'html',0]);$output .= '</td>
+                    <td>';$output .= $stash->get(['ip_info',0,'start',0,'html',0]);$output .= '</td>
+                    <td>';$output .= $stash->get(['ip_info',0,'end',0,'html',0]);$output .= '</td>
+                    <td>
+                        <a class="btn btn-link" href="delconfirm.html?ip=';$output .= $stash->get(['ip_info',0,'ip',0,'html',0]);$output .= '" id="lnkDel';$output .= $stash->get(['ip_info',0,'ip',0,'html',0]);$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td colspan="4" class="errors">
+                        ';$output .= $stash->get(['locale',0,'maketext',['No IPs are being blocked.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+        </table>
+    </div>
+    ';$output .= $context->include('_assets/paginate.html.tt');$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ip_blocker','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\nvar ip_range = function() {\n    var str = YAHOO.util.Dom.get(\"ip\").value;\n\n    // if it's a number hostname, we're good\n    if (CPANEL.validate.positive_integer(str) == true) return true;\n\n    // has alpha so assume hostname/domain name\n    if (/[A-Za-z]/.test(str)) {\n        if (CPANEL.validate.host(str)) return true;\n        if (CPANEL.validate.fqdn(str)) return true;\n    }\n    // single IP\n    if (CPANEL.validate.ip(str)) return true;\n    if (CPANEL.validate.ipv6(str)) return true;\n\n    // IP range - has hyphen\n    if (/-/.test(str)) {\n        range = str.split('-');\n\n        // split should be exactly 2 chunks\n        if (range.length != 2) return false;\n\n        // if the first chunk is not an IP, return false\n        if (!CPANEL.validate.ip(range[0]) && !CPANEL.validate.ipv6(range[0])) return false;\n\n        // if the second chunk is a valid IP, return TRUE\n        if (CPANEL.validate.ip(range[1]) || CPANEL.validate.ipv6(range[1])) return true;\n\n        // first chunk is valid IP, second chunk is a group of 1-3 digits (class C range)\n        if (/^\\d{1,3}\$/.test(range[1])) {\n            // check that the second range is between 0 and 255\n            if (range[1] < 256) return true;\n        }\n\n        return false;\n    }\n\n    // CIDR test - has forward slash\n    if (/\\//.test(str)) {\n        range = str.split('/');\n\n        // there should be exactly two chunks\n        if (range.length != 2) return false;\n\n        // first chunk should be a valid IP\n        if (!CPANEL.validate.ip(range[0]) && !CPANEL.validate.ipv6(range[0])) return false;\n\n        // second chunk is two digits\n        if (/^\\d{1,3}\$/.test(range[1])) {\n            // digits are less than 33\n            if (range[1] < 128) return true;\n        }\n\n        return false;\n    }\n\n    // wildcards (1-3 groups of 1-3 digits)\n    if (/^(\\d{1,3}\\.){1,3}\$/.test(str)) {\n        values = str.split('.');\n\n        // don't need to check the last chunk\n        for (var i = 0; i < (values.length - 1); i++) {\n            if (values[i] > 255) return false\n        }\n\n        return true;\n    }\n\n    return false;\n};\n\nvar init = function() {\n    var validation = new CPANEL.validate.validator(\"\");\n    validation.add(\"ip\", ip_range, \"";$output .= $stash->get(['locale',0,'maketext',['Invalid IP Address Range' ]]);$output .= '");
+    validation.attach();
+
+    CPANEL.validate.attach_to_form("add_ip_button", validation);
+
+    YAHOO.util.Dom.get("ip").focus();
+};
+
+YAHOO.util.Event.onDOMReady(init);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

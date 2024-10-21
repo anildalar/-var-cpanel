@@ -1,0 +1,84 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/tools/status.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('server_information','');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['CPANEL',0,'feature',['serverstatus' ]])){$stash->set('server_information',$stash->get(['execute',['ServerInformation','get_information' ]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    <div class="section">
+        <h3>
+            ';$output .= $stash->get(['locale',0,'maketext',['Server Information' ]]);$output .= '
+        </h3>
+        <div id="cPanel_information">
+            ';$output .= $context->process('_assets/cpanel_info.html.tt');$output .= '
+        </div>
+    </div>
+
+    ';if (!$stash->get(['server_information',0,'status',0])){$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['server_information',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+                <div class=\'alert-message\'>
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+    ';if ($stash->get(['CPANEL',0,'feature',['serverstatus' ]])&& $stash->get(['server_information',0,'status',0])){$output .= '
+    <div id="serviceInfoSection" class="section">
+        <h3>
+            ';$output .= $stash->get(['locale',0,'maketext',['Service Information' ]]);$output .= '
+        </h3>
+        <table id="serviceInfoTable" class="table table-striped sortable">
+            <thead>
+                <tr id="serverstatus_tableheader">
+                   <th>';$output .= $stash->get(['locale',0,'maketext',['Service' ]]);$output .= '</th>
+                   <th>';$output .= $stash->get(['locale',0,'maketext',['Details' ]]);$output .= '</th>
+                   <th>';$output .= $stash->get(['locale',0,'maketext',['Status' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['server_information',0,'data',0,'size',0])eq 0){$output .= '
+                <tr><td colspan="3">';$output .= $stash->get(['locale',0,'maketext',['No services are available.' ]]);$output .= '</td></tr>
+            '}else {$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['server_information',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'status'}=$_tt_value;$stash->set('name_slug',$stash->get(['status',0,'name',0,'slugify',0]));$output .= '
+                    <tr>
+                        <td class="statuscell" id="service-status-name-';$output .= $stash->get('name_slug');$output .= '">
+                            ';$output .= $stash->get(['status',0,'name',0,'html',0]);$output .= '
+                            ';if ($stash->get(['status',0,'version',0,'defined',0])){$output .= '
+                                (';$output .= $stash->get(['status',0,'version',0,'html',0]);$output .= ')
+                            '}$output .= '
+                        </td>
+                        <td class="statuscell" id="service-status-value-';$output .= $stash->get('name_slug');$output .= '">';$output .= $stash->get(['status',0,'value',0,'html',0]);$output .= ' </td>
+                        <td class="statuscell" id="service-status-';$output .= $stash->get('name_slug');$output .= '">
+                            ';if ($stash->get(['status',0,'status',0])eq 1){$output .= '
+                                <img id="service-status-ok-';$output .= $stash->get('name_slug');$output .= '"
+                                     title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is ok.',$stash->get(['status',0,'name',0,'html',0])]]);$output .= '"
+                                     src="/green-status.gif" />
+                            '}elsif ($stash->get(['status',0,'status',0])eq 0){$output .= '
+                                <img id="service-status-warn-';$output .= $stash->get('name_slug');$output .= '"
+                                     title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is reporting warnings.',$stash->get(['status',0,'name',0,'html',0])]]);$output .= '"
+                                     src="/yellow-status.gif" />
+                            '}elsif ($stash->get(['status',0,'status',0])eq -1 || $stash->get(['status',0,'error',0])){$output .= '
+                                <img id="service-status-error-';$output .= $stash->get('name_slug');$output .= '"
+                                     title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” is reporting errors.',$stash->get(['status',0,'name',0,'html',0])]]);$output .= '"
+                                     src="/red-status.gif" />
+                            '}$output .= '
+                        </td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            </tbody>
+        </table>
+    </div>
+    '}$output .= '
+
+    ';$stash->set('return_link',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).'index.html');$output .= $context->process('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Server Information' ]]),'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

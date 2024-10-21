@@ -1,0 +1,118 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mailbox_converter/views/selectAccountsView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="list-container">
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <search ng-model="meta.filterValue" ng-change="searchList()"></search>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+            <div class="pagination-container hidden-xs hidden-sm">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row hidden-xs hidden-sm">
+        <div class="col-xs-4">
+            <div class="page-stats pull-right">
+                <span class="title">{{ pagination_msg() }}</span>
+            </div>
+        </div>
+    </div>
+    <table class="table table-striped responsive-table">
+        <thead>
+            <tr>
+                <th>
+                     <span class="tri-state-box">
+                        <tri-state-checkbox checkboxes="filteredAccounts" use-int="{{ true }}"></tri-state-checkbox>
+                    </span>
+                </th>
+                <th class="col-xs-3 col-sm-3 col-md-2 col-lg-2">
+                    <span toggle-sort id="sortUsername" sort-meta="meta"
+                              sort-field="username"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="col-xs-4 col-sm-5 col-md-6 col-lg-6">
+                    <span toggle-sort id="sortDomain" sort-meta="meta"
+                              sort-field="domain"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </span>
+                </th>
+                <th>
+                    <span toggle-sort id="sortMailbox" sort-meta="meta"
+                              sort-field="mailbox_format"
+                              onSort="sortList">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Current Format' ]]);$output .= "\n                    </span>\n                </th>\n            </tr>\n        </thead>\n        <tbody>\n            <tr ng-repeat=\"account in filteredAccounts track by \$index\"\n                ng-click=\"account.selected = !account.selected ? 1 : 0\"\n                class=\"clickable\">\n                <td>\n                    <input type=\"checkbox\" ng-checked=\"account.selected\"></input>\n                </td>\n                <td data-title=\"";$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '" ng-bind="account.username">
+                </td>
+                <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '" ng-bind="account.domain">
+                </td>
+                <td>
+                    <span ng-bind="account.mailbox_format"></span>
+                </td>
+            </tr>
+            <tr ng-if="accounts" ng-hide="filteredAccounts.length" class="info empty-row">
+                <td colspan="4">';$output .= $stash->get(['locale',0,'maketext',['No results match.' ]]);$output .= '</td>
+            </tr>
+            <tr ng-hide="accounts.length" class="info empty-row">
+                <td colspan="4">';$output .= $stash->get(['locale',0,'maketext',['No users.' ]]);$output .= '</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="row hidden-md hidden-lg">
+        <div class="col-xs-8 pull-right">
+            <div class="page-stats pull-right">
+                <span class="title">{{ pagination_msg() }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+        <div class="col-xs-12 col-sm-12">
+            <div class="pagination-container">
+                <page-size id="pageSize"
+                    allowed-sizes="meta.pageSizes"
+                    total-items="meta.totalItems"
+                    ng-model="meta.pageSize"
+                    show-all="true"
+                    ng-show="showPager"
+                    ng-change="selectPageSize()">
+                </page-size>
+                <uib-pagination id="paginateItems"
+                    total-items="meta.totalItems"
+                    ng-model="meta.currentPage"
+                    max-size="0"
+                    boundary-links="true"
+                    rotate="false"
+                    previous-text="<"
+                    next-text=">"
+                    first-text="<<"
+                    last-text=">>"
+                    items-per-page="meta.pageSize"
+                    ng-show="showPager"
+                    ng-change="selectPage()">
+                </uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

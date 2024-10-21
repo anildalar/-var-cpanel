@@ -1,0 +1,86 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/installpackage.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+
+<div id="content">
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/installpackage" method="post">
+        <div class="form-group">
+            <label for="search_pattern">
+                ';$output .= $stash->get(['locale',0,'maketext',['Provide a partial package name:' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="text" id="search_pattern"
+                        class="form-control inline-search-input"
+                        placeholder="Search pattern"
+                        title="Search for packages."
+                        ';if ($stash->get(['data',0,'search_pattern',0])){$output .= 'value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'search_pattern',0]);&$_tt_filter($output)};$output .= '"'}$output .= '
+                        autofocus="true"
+                        name="search_pattern">
+                    <button id="btnSearch" class="btn btn-primary inline-search-btn" type="submit">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '
+                    </button>
+                    <span class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enter a search pattern for the package name you would like to install.' ]]);$output .= '
+                    </span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    ';if ($stash->get(['data',0,'too_many',0])){$output .= '    <div class="alert alert-warning" role="alert">
+        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <span class="alert-body">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Too many results were found from your search. Not all results were displayed. Please try a more specific search' ]]);$output .= '
+            </span>
+        </div>
+    </div>
+    '}$output .= '
+    ';if ($stash->get(['data',0,'search_pattern',0])){$output .= '
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Version' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Repo' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Arch' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'packages',0,'sort',['name' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'package'}=$_tt_value;$output .= '        <tr>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'name',0]);&$_tt_filter($output)};$output .= '</td>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'version',0]);&$_tt_filter($output)};$output .= '</td>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'repo',0]);&$_tt_filter($output)};$output .= '</td>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'arch',0]);&$_tt_filter($output)};$output .= '</td>
+            <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['package',0,'description',0]);&$_tt_filter($output)};$output .= '</td>
+            <td>
+                <a class="btn btn-primary"
+                    href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/doinstallpackage?installpkgs=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['package',0,'name_and_arch',0]);&$_tt_filter($output)};$output .= '">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '
+                </a>
+            </td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        ';if (!$stash->get(['data',0,'packages',0,'size',0])){$output .= '
+        <tr class="info empty-row">
+            <td colspan="6">
+                ';$output .= $stash->get(['locale',0,'maketext',['No matches found for pattern: [output,strong,_1]',$stash->get(['data',0,'search_pattern',0])]]);$output .= '
+            <td>
+        </tr>
+        '}$output .= '
+        </tbody>
+    </table>
+    '}$output .= '
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'install_an_rpm','extrastyle'=>'
+        .inline-search-input {
+            display: inline-block;
+            width: 60%;
+        }
+
+        .inline-search-btn {
+            display: inline-block;
+        }
+    ','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

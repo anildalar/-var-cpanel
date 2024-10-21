@@ -1,0 +1,63 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/delete_locale_form.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';if ($stash->get(['data',0,'formref',0,'validate',0])){$output .= '
+    <p>Are you sure you want to permanently delete the locale <b>';$output .= $stash->get(['data',0,'formref',0,'locale',0]);$output .= '</b> from <b>root and all themes</b>?<?p>
+    <table border="0" cellpadding="10" cellspacing="10">
+    <tr>
+      <td>
+    <form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/delete_locale">
+       <input type="hidden" name="locale" value="';$output .= $stash->get(['data',0,'formref',0,'locale',0]);$output .= '" />
+       <input type="submit" value="Yes" class="btn-primary" />
+    </form>
+      </td>
+      <td>
+    <form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/delete_locale_form">
+       <input type="hidden" name="locale" value="';$output .= $stash->get(['data',0,'formref',0,'locale',0]);$output .= '" />
+       <input type="submit" value="No" class="btn-secondary" />
+    </form>
+      </td>
+    </tr>
+  </table>
+'}else {$output .= '
+
+<link rel="stylesheet" type="text/css" href="/yui/container/assets/container.css" /><script type="text/javascript" src="/yui/utilities/utilities.js"></script><script type="text/javascript" src="/yui/container/container.js"></script>
+<script type="text/javascript" src="/js/popupbox.js"></script>
+<style type="text/css">
+        .info_box {
+            background-color:#FFFFCC;
+            border:1px solid #666666;
+            margin-left:20px;
+            padding:5px;
+            width:500px;
+        }
+        .info_box_transparent {
+            font-weight: bold;
+            border:1px solid #666666;
+            margin-left:20px;
+            padding:5px;            width:500px;
+        }
+</style>
+
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/delete_locale_form">
+   <input type="hidden" name="validate" value="1" />
+   <table border="0" cellpadding="10">
+     <tr>
+        <td>Locale</td>
+        <td>
+   <select name="locale">
+       ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+   </select>
+      </td>
+    </tr>
+    <tr><td colspan="2"><input type="submit" value="Delete" class="btn-primary" /></td></tr>
+  </table>
+</form>
+
+<p><em>Comments:</em>
+    <ul>
+        <li>Only locales not provided by cPanel can be removed.</li>
+        <li>If a locale seems to be missing you may need to <a href="javascript:display_quickpopupbox(\'Compiling locale databases\',\'<iframe height=90% width=100% src=';$output .= $stash->get('cp_security_token');$output .= '/cgi/build_locale_databases.pl />\')">rebuild the locale databases</a> in order to bring it into the system.</li>
+    </ul>
+</p>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'delete_a_locale','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,332 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/config.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="section-body">
+        <div id="loadingSettingsMsg" class="ng-hide" ng-show="!backupConfigLoaded">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>';$output .= $stash->get(['locale',0,'maketext',['Loading settings …' ]]);$output .= '</span>
+        </div>
+        <form name="backup_config_form" id="backupConfigForm" ng-if="backupConfigLoaded" novalidate>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <h3 id="backup_status">';$output .= $stash->get(['locale',0,'maketext',['Backup Status' ]]);$output .= '</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="checkbox" id="enable_backups_toggle" ng-model="formData.backupenable" ng-change="enableBackupConfig()"><label for="enable_backups_toggle">';$output .= $stash->get(['locale',0,'maketext',['Enable Backups' ]]);$output .= '</label>
+                        <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Toggle backup activity.' ]]);$output .= '</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <h3>';$output .= $stash->get(['locale',0,'maketext',['Global Settings' ]]);$output .= '</h3>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Backup Type]' ]]);$output .= '</p>
+                        <input type="radio" ng-model="formData.backuptype" value="compressed" id="type_compressed" name="backup_type" ng-disabled="!formEnabled" /><span><label for="type_compressed">';$output .= $stash->get(['locale',0,'maketext',['Compressed' ]]);$output .= '</label></span>
+                        <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Save all of your information, use less disk space, but take more time to create a backup.' ]]);$output .= '</p>
+                        <input type="radio" ng-model="formData.backuptype" value="uncompressed" id="type_uncompressed" name="backup_type" ng-disabled="!formEnabled" /><span><label for="type_uncompressed">';$output .= $stash->get(['locale',0,'maketext',['Uncompressed' ]]);$output .= '</label></span>
+                        <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Save all of your information, use more disk space, but take less time to complete a backup.' ]]);$output .= '</p>
+                        <input type="radio" ng-model="formData.backuptype" value="incremental" id="type_incremental" name="backup_type" ng-disabled="!formEnabled" /><span><label for="type_incremental">';$output .= $stash->get(['locale',0,'maketext',['Incremental' ]]);$output .= '</label></span>
+                        <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Only save the information that has changed since your last backup.' ]]);$output .= '</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="incremental_warning" class="alert alert-warning" ng-if="formData.backuptype === \'incremental\'">
+                            <span class="glyphicon glyphicon-warning-sign"></span>
+                            <p class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['When you select incremental backups, the system will [output,strong,not] change or alter the state of your existing non-incremental backup destinations.' ]]);$output .= '</p>
+                            <p class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['You can [output,strong,only] use the [asis,Rsync] transport with incremental backups.' ]]);$output .= '</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+<input
+    type="checkbox"
+    id="check_disk_space_toggle"
+    ng-model="formData.check_min_free_space"
+    ng-disabled="!formEnabled">
+        <label for="check_disk_space_toggle">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Check the Available Disk Space]' ]]);$output .= '</label>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['If you enable this option and the available disk space is less than the amount that you specified, the system will not run the backup.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        ng-model=\"formData.min_free_space\"\n                        class=\"form-control\"\n                        ng-min=\"1\"\n                        ng-max=\"formData.min_free_space_unit === 'percent' ? 99 : 9900000000000\"\n                        id=\"min_free_space\" name=\"min_free_space\"\n                        ng-disabled=\"!formData.check_min_free_space || !formEnabled\"\n                        ng-required=\"formData.check_min_free_space\"\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                    <span class=\"input-group-addon zero-width\"></span>\n                    <select name=\"min_free_space_unit\" id=\"min_free_space_unit\" class=\"form-control\" ng-model=\"formData.min_free_space_unit\" ng-disabled=\"!formData.check_min_free_space || !formEnabled\">\n                        <option value=\"percent\">%</option>\n                        <option value=\"MB\">";$output .= $stash->get(['locale',0,'maketext',['MB' ]]);$output .= "</option>\n                    </select>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.min_free_space.\$error.required || backup_config_form.min_free_space.\$error.min || backup_config_form.min_free_space.\$error.max || backup_config_form.min_free_space.\$error.number || backup_config_form.min_free_space.\$error.positiveInteger\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.min_free_space.\$error.required || backup_config_form.min_free_space.\$error.min || backup_config_form.min_free_space.\$error.number || backup_config_form.min_free_space.\$error.positiveInteger\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter an integer greater than zero.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.min_free_space.\$error.max && formData.min_free_space_unit === 'percent'\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                           ";$output .= $stash->get(['locale',0,'maketext',['You must enter a value of less than 100 percent.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.min_free_space.\$error.max && formData.min_free_space_unit === 'MB'\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                           ";$output .= $stash->get(['locale',0,'maketext',['You must enter a value of less than 9900000000000 MB (990 petabytes).' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Maximum Destination Backup Timeout]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Enter the number of seconds during which the destination backup will attempt to run.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the destination backup attempt is not successful during this time, it will time out and stop.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        name=\"maximum_timeout\"\n                        id=\"maximum_timeout\"\n                        ng-model=formData.maximum_timeout\n                        class=\"form-control\"\n                        ng-min=\"300\"\n                        ng-max=\"50000\"\n                        ng-disabled=\"!formEnabled\"\n                        required\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                    <span class=\"input-group-addon\">";$output .= $stash->get(['locale',0,'maketext',['seconds' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.maximum_timeout.\$dirty && (backup_config_form.maximum_timeout.\$error.required || backup_config_form.maximum_timeout.\$error.min || backup_config_form.maximum_timeout.\$error.max || backup_config_form.maximum_timeout.\$error.number || backup_config_form.maximum_timeout.\$error.positiveInteger)\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_timeout.\$error.required\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a value.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_timeout.\$error.min || backup_config_form.maximum_timeout.\$error.max\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a timeout value between [numf,_1] and [numf,_2] seconds.','300','50000' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_timeout.\$error.positiveInteger || backup_config_form.maximum_timeout.\$error.number\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a positive integer value.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Maximum Backup Restoration Timeout]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Enter the number of seconds during which the system will attempt to run the backup restoration.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the restoration cannot complete in the specified time, it will cancel.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        name=\"maximum_restore_timeout\"\n                        id=\"maximum_restore_timeout\"\n                        ng-model=\"formData.maximum_restore_timeout\"\n                        class=\"form-control\"\n                        ng-min=\"600\"\n                        ng-max=\"86400\"\n                        ng-disabled=\"!formEnabled\"\n                        required\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                    <span class=\"input-group-addon\">";$output .= $stash->get(['locale',0,'maketext',['seconds' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.maximum_restore_timeout.\$dirty && (backup_config_form.maximum_restore_timeout.\$error.required || backup_config_form.maximum_restore_timeout.\$error.min || backup_config_form.maximum_restore_timeout.\$error.max || backup_config_form.maximum_restore_timeout.\$error.number || backup_config_form.maximum_restore_timeout.\$error.positiveInteger)\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_restore_timeout.\$error.required\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a value.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_restore_timeout.\$error.min || backup_config_form.maximum_restore_timeout.\$error.max\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a timeout value between [numf,_1] and [numf,_2] seconds.','600','86400' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.maximum_restore_timeout.\$error.positiveInteger || backup_config_form.maximum_restore_timeout.\$error.number\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a positive integer value.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Scheduling and Retention' ]]);$output .= '</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.backup_daily_enable" id="set_daily_backup" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Daily Backup' ]]);$output .= "</span>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_daily_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <div ng-repeat=\"dailyDay in dailyDays track by \$index\">\n                    <input type=\"checkbox\" class=\"backup_daily\" name=\"daily_backup_{{dailyDay}}\" id=\"daily_backup_{{dailyDay}}\" ng-checked=\"formData.backupdays[\$index]\" ng-click=\"handleDaysToggle(\$index,backup_config_form)\" ng-disabled=\"!formEnabled\" /><span>{{dailyDay}}</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"formData.backup_daily_enable && selectedDays.length === 0\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must select at least one day.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_daily_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Retention]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Enter the number of daily backups that you wish to keep in the system at one time.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_daily_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        name=\"backup_daily_retention\"\n                        ng-model=\"formData.backup_daily_retention\"\n                        class=\"form-control\"\n                        id=\"daily_retention\"\n                        ng-min=\"1\"\n                        ng-max=\"9999\"\n                        ng-disabled=\"!formEnabled\"\n                        ng-required=\"formData.backup_daily_enable\"\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                    <span class=\"input-group-addon\">";$output .= $stash->get(['locale',0,'maketext',['backups' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.backup_daily_retention.\$error.required || backup_config_form.backup_daily_retention.\$error.min || backup_config_form.backup_daily_retention.\$error.max || backup_config_form.backup_daily_retention.\$error.number || backup_config_form.backup_daily_retention.\$error.positiveInteger\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.backup_daily_retention.\$error.required || backup_config_form.backup_daily_retention.\$error.min || backup_config_form.backup_daily_retention.\$error.max || backup_config_form.backup_daily_retention.\$error.number || backup_config_form.backup_daily_retention.\$error.positiveInteger\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter an integer between 1 and 9999.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_daily_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <input type="checkbox" ng-model="formData.force_prune_daily" id="daily_strict_enforce" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Strictly enforce retention, regardless of backup success.' ]]);$output .= '</span>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,Backup Configuration,_2,_3] documentation.','https://go.cpanel.net/whmdocsBackupRetention','target','_blank' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.backup_weekly_enable" id="backup_weekly" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Weekly Backup' ]]);$output .= "</span>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_weekly_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <div ng-repeat=\"weeklyDay in weeklyDays track by \$index\">\n                    <input type=\"radio\" value=\"{{weeklyDay}}\" name=\"weekly_backup_day\" ng-checked=\"formData.backup_weekly_day === \$index\" id=\"weekly_backup_{{weeklyDay}}\" ng-click=\"handleDayToggle(\$index,backup_config_form)\" ng-disabled=\"!formEnabled\" /><span>{{weeklyDay}}</span>\n                </div>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_weekly_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <p>";$output .= $stash->get(['locale',0,'maketext',['[output,strong,Retention]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Enter the number of weekly backups that you wish to keep in the system at one time.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_weekly_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        name=\"backup_weekly_retention\"\n                        ng-model=\"formData.backup_weekly_retention\"\n                        class=\"form-control\"\n                        id=\"weekly_retention\"\n                        ng-min=\"1\"\n                        ng-max=\"9999\"\n                        ng-disabled=\"!formEnabled\"\n                        ng-required=\"formData.backup_weekly_enable\"\n                        positive-integer\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\" />\n                    <span class=\"input-group-addon\">";$output .= $stash->get(['locale',0,'maketext',['backups' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.backup_weekly_retention.\$error.required || backup_config_form.backup_weekly_retention.\$error.min || backup_config_form.backup_weekly_retention.\$error.max || backup_config_form.backup_weekly_retention.\$error.number || backup_config_form.backup_weekly_retention.\$error.positiveInteger\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.backup_weekly_retention.\$error.required || backup_config_form.backup_weekly_retention.\$error.min || backup_config_form.backup_weekly_retention.\$error.max || backup_config_form.backup_weekly_retention.\$error.number || backup_config_form.backup_weekly_retention.\$error.positiveInteger\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter an integer between 1 and 9999.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_weekly_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <input type="checkbox" ng-model="formData.force_prune_weekly" id="weekly_strict_enforce" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Strictly enforce retention, regardless of backup success.' ]]);$output .= '</span>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,Backup Configuration,_2,_3] documentation.','https://go.cpanel.net/whmdocsBackupRetention','target','_blank' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.backup_monthly_enable" id="backup_monthly" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Monthly Backup' ]]);$output .= '</span>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_monthly_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <input type="checkbox" id="monthly_first" ng-model="monthlyBackupBool.first" ng-click="handleMonthlyToggle(\'first\')" value="first" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['The 1st day of the month.' ]]);$output .= '</span>
+                <input type="checkbox" id="monthly_fifteenth" ng-model="monthlyBackupBool.fifteenth" ng-click="handleMonthlyToggle(\'fifteenth\')" value="fifteenth" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['The 15th day of the month.' ]]);$output .= '</span>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="formData.backup_monthly_enable && !monthlyBackupBool.first && !monthlyBackupBool.fifteenth">
+                <ul class="validation-container">
+                    <li class="validation validation-error" ng-if="formData.backup_monthly_enable && !monthlyBackupBool.first && !monthlyBackupBool.fifteenth">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <span class="validation-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You must select at least one day.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_monthly_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Retention]' ]]);$output .= '</p>
+        <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Enter the number of monthly backups that you wish to keep in the system at one time.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\" ng-if=\"formData.backup_monthly_enable\">\n            <div class=\"col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5\">\n                <div class=\"input-group\">\n                    <input\n                        type=\"number\"\n                        name=\"backup_monthly_retention\"\n                        ng-model=\"formData.backup_monthly_retention\"\n                        class=\"form-control\"\n                        id=\"monthly_retention\"\n                        ng-min=\"1\"\n                        ng-max=\"9999\"\n                        ng-disabled=\"!formEnabled\"\n                        ng-required=\"formData.backup_monthly_enable\"\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\"\n                        positive-integer />\n                    <span class=\"input-group-addon\">";$output .= $stash->get(['locale',0,'maketext',['backups' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.backup_monthly_retention.\$error.required || backup_config_form.backup_monthly_retention.\$error.min || backup_config_form.backup_monthly_retention.\$error.max || backup_config_form.backup_monthly_retention.\$error.number || backup_config_form.backup_monthly_retention.\$error.positiveInteger\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.backup_monthly_retention.\$error.required || backup_config_form.backup_monthly_retention.\$error.min || backup_config_form.backup_monthly_retention.\$error.max || backup_config_form.backup_monthly_retention.\$error.number || backup_config_form.backup_monthly_retention.\$error.positiveInteger\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter an integer between 1 and 9999.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backup_monthly_enable">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-11 col-sm-5 col-md-5 col-lg-5">
+                <input type="checkbox" ng-model="formData.force_prune_monthly" id="monthly_strict_enforce" ng-disabled="!formEnabled" /><span>';$output .= $stash->get(['locale',0,'maketext',['Strictly enforce retention, regardless of backup success.' ]]);$output .= '</span>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,Backup Configuration,_2,_3] documentation.','https://go.cpanel.net/whmdocsBackupRetention','target','_blank' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="!formData.backup_daily_enable && !formData.backup_weekly_enable && !formData.backup_monthly_enable">
+                <ul class="validation-container">
+                    <li class="validation validation-error" ng-if="!formData.backup_daily_enable && !formData.backup_weekly_enable && !formData.backup_monthly_enable">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <span class="validation-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You must select at least one backup timing setting.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Files' ]]);$output .= '</h3>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Select the files that you want to include in a backup.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.backupaccts" id="account_backup" ng-disabled="!formEnabled" /><span><label for="account_backup">';$output .= $stash->get(['locale',0,'maketext',['Back up User Accounts' ]]);$output .= '</label></span>
+                <button type="button" class="btn btn-default" id="select_users_btn" ng-click="redirectToSelectUsers()" ng-disabled="!formEnabled">';$output .= $stash->get(['locale',0,'maketext',['Select Users' ]]);$output .= '</button>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Root users can toggle a user account backup or assign a specific backup system to a user.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backupaccts">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input id="suspend_account_toggle" type="checkbox" ng-model="formData.backupsuspendedaccts" ng-disabled="!formEnabled"><label for="suspend_account_toggle">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Back up Suspended Accounts]' ]]);$output .= '</label>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Toggle backups for suspended accounts.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backupaccts">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input id="access_log__toggle" type="checkbox" ng-model="formData.backuplogs" ng-disabled="!formEnabled"><label for="access_log__toggle">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Back up Access Logs]' ]]);$output .= '
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backupaccts">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input id="backup_bandwidth_toggle" type="checkbox" ng-model="formData.backupbwdata" ng-disabled="!formEnabled"><label for="backup_bandwidth_toggle">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Back up Bandwidth Data]' ]]);$output .= '</label>
+            </div>
+        </div>
+        <div class="row" ng-if="formData.backupaccts">
+            <div class="col-xs-offset-1 col-sm-offset-1 col-md-offset-1 col-lg-offset-1 col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input id="local_zone_toggle" type="checkbox" ng-model="formData.localzonesonly" ng-disabled="!formEnabled"><label for="local_zone_toggle">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Use Local DNS]' ]]);$output .= '</label>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Confine the domain lookup to this server only and do not query the DNS cluster.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.backupfiles" id="set_backup_system_files" ng-disabled="!formEnabled" /><span><label for="set_backup_system_files">';$output .= $stash->get(['locale',0,'maketext',['Back up System Files' ]]);$output .= '</label></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Recommended.] Supports server restoration.' ]]);$output .= '</p>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" ng-if="!formData.backupaccts && !formData.backupfiles">
+                    <ul class="validation-container">
+                        <li class="validation validation-error" ng-if="!formData.backupaccts && !formData.backupfiles">
+                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                            <span class="validation-message">
+                                ';$output .= $stash->get(['locale',0,'maketext',['You must select at least one set of files to back up.' ]]);$output .= '
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '</h3>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Select the databases that you want to include in a backup.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Back up SQL Databases]' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div>
+                    <input type="radio" ng-model="formData.mysqlbackup" name="set_sql_database" id="backup_sql_database_per_acct" value="accounts" ng-disabled="!formEnabled" /><span><label for="backup_sql_database_per_acct">';$output .= $stash->get(['locale',0,'maketext',['Per Account Only' ]]);$output .= '</label></span>
+                    <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Use the “[_1]” command to create backup files with the “[_2]” file extension for each account.','mysqldump','.sql' ]]);$output .= '</p>
+                </div>
+                <div>
+                    <input type="radio" ng-model="formData.mysqlbackup" name="set_sql_database" id="backup_sql_database_entire_dir" value="dir"
+                    ';if ($stash->get(['data',0,'is_remote_mysql',0])){$output .= '
+                        ng-disabled="true"
+                    '}else {$output .= '
+                        ng-disabled="!formEnabled"
+                    '}$output .= '
+                        /><span><label for="backup_sql_database_entire_dir">';$output .= $stash->get(['locale',0,'maketext',['Entire Data Directory' ]]);$output .= '</label></span>
+                    <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Back up all files in the “[_1]” directory.',$stash->get(['data',0,'mysql_data_dir',0,'html',0])]]);$output .= '</p>
+                </div>
+                <div>
+                    <input type="radio" ng-model="formData.mysqlbackup" name="set_sql_database" id="backup_sql_database_per_acct_and_entire_dir" value="both"
+                    ';if ($stash->get(['data',0,'is_remote_mysql',0])){$output .= '
+                        ng-disabled="true"
+                    '}else {$output .= '
+                        ng-disabled="!formEnabled"
+                    '}$output .= '
+                        /><span><label for="backup_sql_database_per_acct_and_entire_dir">';$output .= $stash->get(['locale',0,'maketext',['Per Account and Entire Data Directory' ]]);$output .= '</label></span>
+                    <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Back up all files in the “[_1]” directory, and use the “[_2]” command to create backup files with the “[_3]” extension for each account.',$stash->get(['data',0,'mysql_data_dir',0,'html',0]),'mysqldump','.sql' ]]);$output .= '</p>
+                </div>
+                <div id="msyqlWarning" class="callout callout-warning" ng-if="formData.mysqlbackup == \'both\' || formData.mysqlbackup == \'dir\'">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Exercise extreme caution if you select this setting.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['This setting backs up the data directory without stopping the database service.' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['This action may cause [asis,InnoDB] issues with the data directory backup.' ]]);$output .= '
+                    <p ng-if="formData.mysqlbackup == \'both\'"><br />';$output .= $stash->get(['locale',0,'maketext',['This will not affect “[_1]” backups.','mysqldump' ]]);$output .= '</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h3>';$output .= $stash->get(['locale',0,'maketext',['Configure the Backup Directory' ]]);$output .= '</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Default Backup Directory]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['You must enter an absolute path to the local backup directory.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <input type=\"text\" name=\"backup_directory\" class=\"form-control\" ng-pattern=\"absolutePathRegEx\" ng-model=\"formData.backupdir\" id=\"backup_directory\" ng-disabled=\"!formEnabled\" required/>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.backup_directory.\$error.pattern || backup_config_form.backup_directory.\$error.required\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.backup_directory.\$error.pattern\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter the backup destination path with a forward slash to be a valid absolute path.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.backup_directory.\$error.required\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a backup path.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        ';if ($stash->get(['data',0,'are_quotas_on',0])){$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="callout callout-info">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system does not apply quota limits to the default backup directory, /backup.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['To avoid performance degradation, we recommend that you store backups in a quota-disabled filesystem.' ]]);$output .= '
+                    </div>
+                </div>
+            </div>
+        '}$output .= '
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Backup Staging Directory]' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['You must enter an absolute path. The backup staging directory temporarily stores a remote backup’s files and directories during a backup restoration. The directory empties once the system restores the backup.' ]]);$output .= "</p>\n            </div>\n        </div>\n        <div class=\"row\">\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                <input type=\"text\" name=\"staging_directory\" class=\"form-control\" ng-pattern=\"absolutePathRegEx\" ng-model=\"formData.remote_restore_staging_dir\" id=\"staging_directory\" ng-disabled=\"!formEnabled\" required/>\n            </div>\n            <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\" ng-if=\"backup_config_form.staging_directory.\$error.pattern || backup_config_form.staging_directory.\$error.required\">\n                <ul class=\"validation-container\">\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.staging_directory.\$error.pattern\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter an absolute path.' ]]);$output .= "\n                        </span>\n                    </li>\n                    <li class=\"validation validation-error\" ng-if=\"backup_config_form.staging_directory.\$error.required\">\n                        <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                        <span class=\"validation-message\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['You must enter a backup staging directory path.' ]]);$output .= '
+                        </span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="callout callout-info">
+                    ';$output .= $stash->get(['locale',0,'maketext',['The system restores backups one at a time. The backup staging directory must be large enough to contain the largest remote backup file that you wish to restore.' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" ng-model="formData.keeplocal" id="set_backups_retain" ng-disabled="!formEnabled" /><label for="set_backups_retain">';$output .= $stash->get(['locale',0,'maketext',['Retain Backups in the Default Backup Directory' ]]);$output .= '</label>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Retain backups in the default local backup directory, even after the system transfers the backups to another destination.' ]]);$output .= '</p>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['If you disable this option, the system will delete the backups after they move to another destination.' ]]);$output .= '</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input type="checkbox" id="mount_backup_toggle" ng-model="formData.backupmount" ng-disabled="!formEnabled" ng-checked="formData.backupmount"><label for="mount_backup_toggle">';$output .= $stash->get(['locale',0,'maketext',['Mount Backup Drive as Needed' ]]);$output .= '</label>
+                <p class="text-muted">';$output .= $stash->get(['locale',0,'maketext',['Requires a separate drive or other mount point.' ]]);$output .= "</p>\n            </div>\n        </div>\n    </div>\n    <div class=\"row\">\n        <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n            <button type=\"submit\"\n                    id=\"save_config_btn\" cp-action=\"saveConfiguration(backup_config_form)\" ng-disabled=\"!backup_config_form.\$dirty || !backup_config_form.\$valid ||\n                    (formData.backup_daily_enable && selectedDays.length === 0) ||\n                    (formData.backup_monthly_enable && !monthlyBackupBool.first && !monthlyBackupBool.fifteenth) ||\n                    (!formData.backup_daily_enable && !formData.backup_weekly_enable && !formData.backup_monthly_enable)\">";$output .= $stash->get(['locale',0,'maketext',['Save Configuration' ]]);$output .= "</button>\n            <button type=\"reset\" class=\"btn btn-default\" id=\"reset_config\" ng-disabled=\"backup_config_form.\$pristine\" ng-click=\"resetConfiguration(backup_config_form)\">";$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '</button>
+        </div>
+    </div>
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

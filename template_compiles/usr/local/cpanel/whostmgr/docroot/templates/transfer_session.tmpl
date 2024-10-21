@@ -1,0 +1,43 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_session.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= $context->process('_ajaxapp.tmpl');$output .= '
+';$stash->set('spinner16',$stash->get(['MagicRevision',['/images/loading-arrows-16.gif' ]]));$output .= '
+
+<div id="content">
+    <div id="header" class="row"></div>
+    ';$output .= $context->process('_transfer_error_messages.tmpl');$output .= '
+    <div id="windows" class="row"></div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="notes" class="alert alert-info">
+                ';$output .= $stash->get(['locale',0,'maketext',['The transfer process does [output,strong,not] stop when you close this window. To view the transfer, run the following command: [output,strong,_1]','/usr/local/cpanel/bin/view_transfer ' .$stash->get(['data',0,'transfer_session_id',0])]]);$output .= '
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="summary" class="panel panel-success">
+                <div class="panel-heading">
+                    <h4 id="summary_header"></h4>
+                </div>
+                <div class="panel-body">
+                    <div id="report"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+';$output .= $context->process('_transfer_error_script.tmpl');$output .= '
+
+<script>
+    (function(){
+        CPANEL.namespace("CPANEL.PAGE");
+        CPANEL.PAGE = {
+            action: ';$output .= $stash->get(['data',0,'action',0,'json',0]);$output .= ',
+            state: ';$output .= $stash->get(['data',0,'state',0,'json',0]);$output .= ',
+            transfer_session_id: ';$output .= $stash->get(['data',0,'transfer_session_id',0,'json',0]);$output .= ',
+            spinner16: ';$output .= $stash->get(['MagicRevision',['/images/loading-arrows-16.gif' ],'json',0]);$output .= '
+        };
+    })();
+</script>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['data',0,'initiator_info',0,'name',0])|| $stash->get(['data',0,'header',0]),'breadcrumburl'=>$stash->get(['data',0,'initiator_info',0,'url',0])|| '/scripts5/account_copy_input','theme'=>'bootstrap','stylesheets'=>['/cjt/css/wrapped-select.css','/css2/newform.css','/yui/progressbar/assets/progressbar-core.css','/yui/progressbar/assets/skins/sam/progressbar.css','/cjt/css/ajaxapp-styles.css','/css/transfers/TransferLogRender.css' ],'scripts'=>['/libraries/handlebars/handlebars.min.js','/js2-min/transfer_session_support.js','/yui/progressbar/progressbar-min.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

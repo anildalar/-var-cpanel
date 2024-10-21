@@ -1,0 +1,30 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/htaccess/leechprotect/doleech.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('return_url','dohtaccess.html?dir=' .$stash->get(['FORM',0,'dir',0,'uri',0]).'&is_parent=' .$stash->get(['FORM',0,'is_parent',0])* 1);$output .= $stash->get(['Api1',0,'pre_exec',['LeechProtect','enable' ]]);$stash->set('results',$stash->get(['Api1',0,'exec',['LeechProtect','enable',[$stash->get(['RAW_FORM',0,'dir',0]),$stash->get(['RAW_FORM',0,'numhits',0]),$stash->get(['RAW_FORM',0,'rurl',0]),$stash->get(['RAW_FORM',0,'email',0]),$stash->get(['RAW_FORM',0,'disableacct',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['LeechProtect','enable' ]]);$stash->set('error',$stash->get(['CPANEL',0,'CPERROR',0,'leechprotect',0]));if (!$stash->get('error')){$output .= $stash->get(['Api1',0,'pre_exec',['LeechProtect','setup' ]]);$stash->set('hits',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'numhits','html' ]]]));$stash->set('url',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'url','html' ]]]));$stash->set('email',$stash->get(['Api1',0,'exec',['LeechProtect','setup',[$stash->get(['RAW_FORM',0,'dir',0]),'email','html' ]]]));$output .= $stash->get(['Api1',0,'post_exec',['LeechProtect','setup' ]])}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get('error')){$output .= '
+        <div id="leechEnabledSuccess" class="alert alert-success">
+            <span id="leechEnabledImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="leechEnabledMsg" class="alert-message">
+               ';$output .= $stash->get(['locale',0,'maketext',['[asis,Leech Protection] enabled.' ]]);$output .= '
+            </div>
+        </div>
+        <pre id="outDirectory">';$output .= $stash->get(['locale',0,'maketext',['Directory: [_1]',$stash->get(['FORM',0,'dir',0])]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Number of logins per user name allowed: [_1]',$stash->get('hits')]]);if ($stash->get('url')){$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Leech Redirect URL: [_1]',$stash->get('url')]]);$output .= '
+'}if ($stash->get('email')){$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Leech Notification Email: [_1]',$stash->get('email')]]);$output .= '
+'}$output .= '</pre>
+    '}else {$output .= '
+        <div id="leechEnableError" class="alert alert-danger">
+            <span id="leechEnableImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="leechEnableMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[asis,Leech Protection] not enabled.' ]]);$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'leechprotect',0,'html',0]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'leech_protection','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,497 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/email_accounts/views/manage.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('HTTP',$context->plugin('HTTP'));$output .= '
+<section>
+    <p id="descEmailAccountsManage" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Use this page to manage your email accounts.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','https://go.cpanel.net/ManageEmailAccount','cp-manage-email','lnkManageEmailAccountsDocumentation' ]]);$output .= '
+    </p>
+</section>
+
+<cp-loading-panel id="manageLoadingPanel" ng-if="emailAccount.isLoading">
+    <span>';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+</cp-loading-panel>
+
+<section ng-if="!emailAccount.isLoading">
+    <div class="row">
+        <div class="col-xs-12 col-sm-8 col-md-6">
+            <form name="emailAccount.frmManageAccount" novalidate>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <div class="widget-title pull-left flip">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage An Email Account' ]]);$output .= '
+                        </div>
+                        <div class="pull-right flip">
+                            <button type="button"
+                                class="btn btn-default btn-xs"
+                                id="lnkshowHideHelp"
+                                ng-click="emailAccount.toggleHelp()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                                <i class="far fa-question-circle form-info-sign"></i>
+                            </button>
+                        </div>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label id="lblEmail" for="lblEmailAccount">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Email Account' ]]);$output .= '
+                                    </label>
+                                </div>
+                                <div class="col-xs-12">
+                                    <span id="lblEmailAccount" class="wordbreak">
+                                        {{emailAccount.details.email}}
+                                    </span>
+                                </div>
+                                <div class="col-xs-12">
+                                    <a id="lnkCheckEmail"
+                                        class="btn btn-link form-link"
+                                        ng-if="::emailAccount.webmailEnabled"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Check email for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                                        ng-href="{{::emailAccount.dprefix}}mail/webmailform.html?user={{emailAccount.details.email | encodeURIComponent}}&return_request_uri=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'ENV',0,'REQUEST_URI',0]);&$_tt_filter($output)};$output .= '"
+                                        target="_blank">
+                                        <span class="fas fa-fw fa-external-link-alt" aria-hidden="true"></span>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Check Email' ]]);$output .= '
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <section class="form-section" id="securitySection">
+                            <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Security' ]]);$output .= '</h4>
+
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <label id="lblAddEmailPassword"
+                                            for="txtEmailPassword">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['New Password' ]]);$output .= '
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <!-- prevent password autofill -->
+                                        <input type="text" style="display:none">
+                                        <input type="password" autocomplete=\'off\' style="display:none">
+                                        <!-- prevent Firefox from displaying the "Save Password" dialog -->
+                                        <input type="password" autocomplete=\'off\' style="display:none;" value="fakepassword1">
+                                        <input type="password" autocomplete=\'off\' style="display:none;" value="fakepassword2">
+                                        <password name="txtEmailPassword"
+                                            class="form-control"
+                                            password="emailAccount.details.password"
+                                            class="form-control"
+                                            minimum-length="5"
+                                            minimum-strength="{{::emailAccount.requiredPasswordStrength}}"
+                                            show-meter="true"
+                                            show-strength="false"
+                                            show-generator="true"
+                                            generate-button-tab-index="-1"
+                                            toggle-view-button-tab-index="-1"
+                                            generate-settings-tab-index="-1"
+                                            ></password>
+                                        </span>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <ul validation-container id="txtEmailPasswordErrorPanel" field-name="txtEmailPassword">
+                                            <li validation-item field-name="txtEmailPassword" validation-name="minlength" id="val-password-minlength">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a password that contains at least [quant,_1,character,characters].',5 ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="txtEmailPassword" validation-name="minimumPasswordStrength" id="val-password-minimum-strength">';$output .= $stash->get(['locale',0,'maketext',['Enter a [output,strong,stronger] password.' ]]);$output .= '                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="form-section form-section-last" id="storageSection">
+                            <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Storage' ]]);$output .= '</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-12" id="lblCurrentStorage">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Current Storage Usage' ]]);$output .= '
+                                    </label>
+                                    <div class="col-xs-12">
+                                        <div class="storage-details">
+                                            <div>
+                                                <span id="currentStorage" ng-bind-html="emailAccount.details.humandiskused"></span>
+                                                <span>/</span>
+                                                <span id="quotaUsed" ng-bind-html="emailAccount.details.humandiskquota"></span>
+                                                <span id="percentageUsed" ng-bind-html="emailAccount.details.humandiskusedpercent"></span>
+                                            </div>
+                                            <div>
+                                                <uib-progressbar ng-if="emailAccount.details.diskquota !== 0 && emailAccount.details.diskquota !== \'unlimited\'"
+                                                    type="{{ emailAccount.details.quotaProgressType }}"
+                                                    max="emailAccount.details._diskquota"
+                                                    value="emailAccount.details._diskused"
+                                                    title="{{ emailAccount.details.humandiskusedpercent }}">
+                                                    <span class="sr-only">{{ emailAccount.details.humandiskusedpercent }}</span>
+                                                </uib-progressbar>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <toggle-label-info
+                                            for="quota"
+                                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Allocated Storage Space' ]]);$output .= '"
+                                            label-id="lblDiskSpace"
+                                            info-icon-id="icoDiskSpace"
+                                            info-block-id="txtDiskSpace"
+                                            show-info-block="{{showAllHelp}}"
+                                            >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The amount of space that your email account can use to store emails.' ]]);$output .= '
+                                        </toggle-label-info>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="limitOptions"
+                                                    id="limitedQuota"
+                                                    ng-model="emailAccount.details.quotaType"
+                                                    value="userdefined">
+                                                <bytes-input
+                                                    name="quota"
+                                                    ng-model="emailAccount.details.quota"
+                                                    display-format="si"
+                                                    value-format="binary"
+                                                    value-unit="MiB"
+                                                    ng-required="emailAccount.details.quotaType === \'userdefined\'"
+                                                    is-disabled="emailAccount.details.quotaType !== \'userdefined\'"
+                                                    size="11"
+                                                    bytes-input-min="1"
+                                                    bytes-input-max="{{::maxQuota}}"/>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="limitOptions"
+                                                    id="unlimitedQuota"
+                                                    ng-model="emailAccount.details.quotaType"
+                                                    value="unlimited">
+                                                {{maxEmailQuotaText}}
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12">
+                                        <ul validation-container field-name="quota" id="valQuotaErrorPanel">
+                                            <li validation-item field-name="quota" validation-name="max" id="val-quota-max-quota">
+                                                {{maxQuotaHelpText}}
+                                            </li>
+                                            <li validation-item field-name="quota" validation-name="required" id="val-quota-required">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a number.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="quota" validation-name="number" id="val-quota-number">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a number.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="quota" validation-name="min" id="val-quota-min-quota">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a number that is larger than zero.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="quota" validation-name="integer" id="val-quota-positive-integer">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a positive number.' ]]);$output .= '
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="form-section" id="restrictions">
+                            <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Restrictions' ]]);$output .= '</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-12">';$output .= $stash->get(['locale',0,'maketext',['Receiving Incoming Mail' ]]);$output .= '</label>
+                                    <div class="col-xs-12">
+                                        <div class="radio-inline">
+                                            <label for="incomingAllowed">
+                                                <input type="radio" name="incomingRadio" id="incomingAllowed" ng-model="emailAccount.suspendOptions.incoming" ng-value="false"  value="false">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Allow' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label for="incomingSuspended">
+                                                <input type="radio" name="incomingRadio" id="incomingSuspended" ng-model="emailAccount.suspendOptions.incoming" ng-value="true"  value="true">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Suspend' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-12">';$output .= $stash->get(['locale',0,'maketext',['Sending Outgoing Email' ]]);$output .= '</label>
+                                    <div class="col-xs-12">
+                                        <div class="radio-inline">
+                                            <label for="outgoingAllowed">
+                                                <input type="radio" name="outgoingRadio" id="outgoingAllowed" ng-model="emailAccount.suspendOptions.outgoing" value="allow">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Allow' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label for="outgoingSuspended">
+                                                <input type="radio" name="outgoingRadio" id="outgoingSuspended" ng-model="emailAccount.suspendOptions.outgoing" value="suspend">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Suspend' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label for="outgoingHeld">
+                                                <input type="radio" name="outgoingRadio" id="outgoingHeld" ng-model="emailAccount.suspendOptions.outgoing" value="hold">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Hold' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="emailAccount.currentSuspendedState.outgoing === \'hold\'">
+                                    <div class="radio">
+                                        <label class="col-xs-12">
+                                            <span ng-if="emailAccount.suspendOptions.currentlyHeld > 0">
+                                                <input type="checkbox" ng-model="emailAccount.suspendOptions.deleteHeldMessages">
+                                                <span ng-bind="emailAccount.currentlyHeldMessageText(emailAccount.suspendOptions.currentlyHeld)"></span>
+                                            </span>
+                                            <i ng-if="emailAccount.suspendOptions.currentlyHeld === 0">';$output .= $stash->get(['locale',0,'maketext',['The mail queue does not contain any messages on hold.' ]]);$output .= '</i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <cp-alert type="warning" ng-if="emailAccount.suspendOptions.hold_outgoing && emailAccount.suspendOptions.currentlyHeld > 0 && emailAccount.suspendOptions.outgoing === \'hold\' && emailAccount.suspendOptions.deleteHeldMessages">
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['If you allow outgoing mail for “[_1]” while the delete is in progress, messages held in the queue may be delivered instead of deleted.','{{ emailAccount.details.email }}' ]]);$output .= '</span>
+                                </cp-alert>
+                                <cp-alert type="info" ng-if="emailAccount.suspendOptions.hold_outgoing && emailAccount.suspendOptions.currentlyHeld > 0 && emailAccount.suspendOptions.outgoing === \'allow\' && emailAccount.suspendOptions.deleteHeldMessages">
+                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Outgoing mail for “[_1]” will be released after the held messages are deleted.','{{ emailAccount.details.email }}' ]]);$output .= '</span>
+                                </cp-alert>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <label class="col-xs-12">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Logging In' ]]);$output .= '
+                                    </label>
+                                    <div class="col-xs-12">
+                                        <div class="radio-inline">
+                                            <label for="loginAllowed">
+                                                <input type="radio" name="loginRadio" id="loginAllowed" ng-model="emailAccount.suspendOptions.login" ng-value="false"  value="false">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Allow' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label for="loginSuspended">
+                                                <input type="radio" name="loginRadio" id="loginSuspended" ng-model="emailAccount.suspendOptions.login" ng-value="true"  value="true">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Suspend' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <section class="form-section" id="plusAddressing">
+                            <h4 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Plus Addressing' ]]);$output .= '</h4>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <toggle-label-info
+                                            id="lblSubaddressing"
+                                            for="autoaddressing"
+                                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders for Plus Addressing' ]]);$output .= '"
+                                            show-info-block="{{showAllHelp}}" >
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Automatically create a folder when this email address receives a message that uses plus addressing. For example, the system would place a message addressed to “[_1]” in a new folder called “[asis,plusaddress]”.','{{emailAccount.examplePlusAddress}}' ]]);$output .= '
+                                        </toggle-label-info>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <div class="radio-inline">
+                                            <label for="autoAddressingCreate">
+                                                <input type="radio" name="autoaddressing" id="autoAddressingCreate"
+                                                    ng-model="emailAccount.details.autoCreateSubaddressFolders"
+                                                    ng-value="true" value="true">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Automatically Create Folders' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label for="autoAddressingInbox">
+                                                <input type="radio" name="autoaddressing" id="autoAddressingInbox"
+                                                    ng-model="emailAccount.details.autoCreateSubaddressFolders"
+                                                    ng-value="false" value="false">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Do Not Automatically Create Folders' ]]);$output .= '
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="checkbox create-email-checkbox">
+                            <label>
+                                <input type="checkbox" name="stay" id="stay" ng-model="emailAccount.stayOnView" ng-change="emailAccount.stayOnPageChanged()">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Stay on this page after I click [output,em,Update Email Settings].' ]]);$output .= '
+                            </label>
+                        </div>
+                        <hr class="separator"/>
+                        <button id="btnUpdateEmailEmailAccount"
+                                type="submit"
+                                spinner-id="spinnerUpdateEmail"
+                                cp-action="emailAccount.update(emailAccount.details)"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Click here to update email settings.' ]]);$output .= '">
+                                <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Update Email Settings' ]]);$output .= '
+                        </button>
+                        <button id="btnCancelEmailAccount"
+                            type="button"
+                            class="btn btn-link pull-right flip"
+                            ng-click="emailAccount.backToListView()"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Go back to the list of email accounts.' ]]);$output .= '">
+                            <i class="fas" ng-class="{ \'fa-arrow-left\': !emailAccount.RTL, \'fa-arrow-right\': emailAccount.isRTL }" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="row">
+                <div class="col-xs-12">
+                    <section class="panel panel-danger">
+                        <div class="panel-heading">
+                            <span class="widget-title">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delete Email Account' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="panel-body">
+                            <div>';$output .= $stash->get(['locale',0,'maketext',['Are you sure? When you delete an email account, we permanently delete [output,strong,all] of the account’s data.' ]]);$output .= '</div>
+                            <div class="margin-top-20 margin-bottom-20">
+                                <button id="btnEmailDelete"
+                                        type="button"
+                                        class="btn btn-outline-primary"
+                                        ng-click="emailAccount.delete_requested=true"
+                                        title="';$output .= $stash->get(['locale',0,'maketext',['Delete Email Account' ]]);$output .= '"
+                                        ng-disabled="emailAccount.delete_requested">
+                                        <i class="fas fa-trash-alt" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Delete Email Account' ]]);$output .= '
+                                </button>
+                                <callout callout-type="warning" ng-if="emailAccount.delete_requested">
+                                    <div class="delete-warning">
+                                        <div class="display-table">
+                                            <div class="display-table-cell">
+                                                <span class="delete-question-mark">?</span>
+                                            </div>
+                                            <div class="display-table-cell">
+                                                <div class="box">
+                                                    <span class="delete-message wordbreak">';$output .= $stash->get(['locale',0,'maketext',['You’re about to delete “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '</span>
+                                                    <p>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['When you delete an email account, we permanently delete [output,strong,all] of the account’s data.' ]]);$output .= '
+                                                    </p>
+                                                </div>
+                                                <div class="box">
+                                                    <button type="button" id="emailDeleteConfirmation"
+                                                        class="btn btn-primary btn-sm"
+                                                        title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '"
+                                                        spinner-id="spinnerDelete"
+                                                        cp-action="emailAccount.delete(emailAccount.details.email)">
+                                                        <i class="fas fa-trash" aria-hidden="true"></i>
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                                                    </button>
+                                                    <button type="button" id="emailCancelDelete"
+                                                        class="btn btn-link"
+                                                        title="';$output .= $stash->get(['locale',0,'maketext',['Cancel.' ]]);$output .= '"
+                                                        ng-click="emailAccount.delete_requested=false"
+                                                        ng-disabled="emailAccount.removing">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </callout>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-3">
+            <section class="widget" ng-if="emailAccount.emailDiskUsageEnabled || emailAccount.emailFiltersEnabled || emailAccount.autoResponderEnabled">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['I want to …' ]]);$output .= '</h3>
+                <ul ng-if="emailAccount.details.email">
+                    <li>
+                        <a id="lnkManageDiskUsage"
+                            ng-if="emailAccount.emailDiskUsageEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage storage space for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/manage_disk_usage/?account={{ emailAccount.details.email | encodeURIComponent }}">
+                            <i class="fas fa-fw fa-eraser" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Free up Email Storage' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkMailFilter"
+                            ng-if="emailAccount.emailFiltersEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage email filters for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/filters/userfilters.html?account={{ emailAccount.details.email | encodeURIComponent }}"
+                            >
+                            <i class="fas fa-fw fa-filter" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage Email Filters' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkMailAutoResponder"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Set up autoresponders for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/autores.html"
+                            ng-if="emailAccount.autoResponderEnabled">
+                            <i class="fas fa-fw fa-magic" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Send Automated Responses' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Configure' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <a id="lnkSetupEmailClient"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Set Up a Mail Client for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/clientconf.html?acct={{emailAccount.details.email | encodeURIComponent}}">
+                            <i class="fas fa-fw fa-mobile-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Connect Devices' ]]);$output .= '
+                        </a>
+                    </li>
+                    <li>
+                        <a id="lnkConfigCalContacts"
+                            ng-if="emailAccount.showCalAndContacts"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Configure calendars and contacts for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/calendars_and_contacts/index.html.tt?user={{emailAccount.details.email | encodeURIComponent}}">
+                            <i class="fas fa-fw fa-address-book" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Calendars and Contacts Configuration' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section class="widget" ng-if="emailAccount.externalAuthConfig">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Authentication' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <a id="lnkExternalAuthConfig"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage external authentication for “[_1]”.','{{ ::emailAccount.details.email }}' ]]);$output .= '"
+                            ng-href="{{::emailAccount.dprefix}}mail/authentication/manage.html#/{{ ::emailAccount.details.email | encodeURIComponent }}">
+                            <i class="fas fa-fw fa-lock" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage External Authentication' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+            <section class="widget">
+                <h3 class="widget-title">';$output .= $stash->get(['locale',0,'maketext',['Need Help?' ]]);$output .= '</h3>
+                <ul>
+                    <li>
+                        <a href="https://go.cpanel.net/ManageEmailAccount"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Need help? Click here to read more about how to create and manage email addresses.' ]]);$output .= '"
+                            target="cp-manage-email">
+                            <i class="fas fa-fw fa-external-link-alt" aria-hidden="true"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['About This Interface' ]]);$output .= '
+                        </a>
+                    </li>
+                </ul>
+            </section>
+        </div>
+    </div>
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

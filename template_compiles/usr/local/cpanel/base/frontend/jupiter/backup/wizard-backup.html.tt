@@ -1,0 +1,48 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard-backup.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ServerRoles',$context->plugin('ServerRoles'));$stash->set('Services',$context->plugin('Services'));$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if ($stash->get(['ServerRoles',0,'is_role_enabled',['MailReceive' ]])){if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$stash->set('email_label',$stash->get(['locale',0,'maketext',['Email Forwarders [output,amp] Filters' ]]))}else {$stash->set('email_label',$stash->get(['locale',0,'maketext',['Email Forwarders' ]]))}}elsif ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$stash->set('email_label',$stash->get(['locale',0,'maketext',['Email Filters' ]]))}}$stash->set('can_backup_db',$stash->get(['CPANEL',0,'feature',['mysql' ]])&& $stash->get(['Services',0,'is_service_provided',['mysql' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        <div id="backup-nav" class="row">
+            <div class="col-xs-12">
+                <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                <ol>
+                    <li id="tabBackupRestore" class="one"><a href="wizard.html" id="backupRestore"><span>';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></a></li>
+                    <li id="tabFullPartial" class="two"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Full or Partial Backup' ]]);$output .= '</span></li>
+                    <li id="tabDownload" class="three"><span>';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="br-wrap" class="row">
+
+            <div id="br-content-main" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h2 id="hdrFullBackup">';$output .= $stash->get(['locale',0,'maketext',['Full Backup' ]]);$output .= '</h2>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to create an archive of all the files and configurations on your website.' ]]);$output .= '</p>
+                <p><a href="wizard-fullbackup.html" id="wizard-backup-full" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Full Backup' ]]);$output .= '</a></p>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['Note: You can only use this option to move your account to another server or to download a copy of your account. You cannot restore Full Backups through your [asis,cPanel] interface.' ]]);$output .= '</p>
+            </div>
+
+            <div id="br-content-sec" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h2 id="hdrPartialBackup">';$output .= $stash->get(['locale',0,'maketext',['Select Partial Backup' ]]);$output .= '</h2>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to select which partial backup you want to download.' ]]);$output .= '</p>
+
+                <a href="wizard-backup-type.html?type=homedir" class="btn btn-default" id="btnHomeDirectory">';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= '</a>
+
+                ';if ($stash->get('can_backup_db')){$output .= '<a href="wizard-backup-type.html?type=mysql" class="btn btn-default" id="btnDatabases">';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '</a>'}$output .= '
+
+                ';if ($stash->get('email_label')){$output .= '
+                    <a href="wizard-backup-type.html?type=email" class="btn btn-default" id="btnForwarders">';$output .= $stash->get('email_label');$output .= '</a>
+                '}$output .= '
+            </div>
+
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'wizard.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_stylesheets'=>['css2-min/backup.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

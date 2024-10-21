@@ -1,0 +1,180 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/views/AmazonS3Transport.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Amazon S3™,target,_blank] Destination','http://aws.amazon.com/s3/' ]]);$output .= '</a></h4>
+<p class="documentation-info" id="documentation-info">
+    ';$output .= $stash->get(['locale',0,'maketext',['For more information on how to properly configure [asis,Amazon S3] as a remote backup destination, read [output,url,_1,our documentation,target,_2].','https://go.cpanel.net/AWSBackupConfiguration','amazons3doc' ]]);$output .= '
+    <span class=\'fas fa-external-link-alt fa-sm\'></span>
+</p>
+<div class="section-body">
+    <form name="amazonS3Destination" ng-if="!destinationState.fetching_data" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination" novalidate>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="name">';$output .= $stash->get(['locale',0,'maketext',['Destination Name' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter a name for this destination.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input type="text"
+                            name="name"
+                            id="amazons3_name"
+                            required
+                            class="form-control"
+                            minlength="1"
+                            ng-maxlength="256"
+                            ng-model="destinationState.destination.amazons3.name" />
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <ul validation-container field-name="name">
+                        <validation-item
+                            field-name="name"
+                            validation-name="required">
+                                ';$output .= $stash->get(['locale',0,'maketext',['You must enter a destination name.' ]]);$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="name"
+                            validation-name="maxlength">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The destination name must contain between [numf,1] and [numf,256] characters.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input type="checkbox" name="upload_system_backup" id="amazons3_system" ng-model="destinationState.destination.amazons3.upload_system_backup"/>
+                    <label for="amazons3_system">';$output .= $stash->get(['locale',0,'maketext',['Transfer System Backups to this Destination' ]]);$output .= '</label>
+                    <div class="callout callout-warning">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] System Backups contain sensitive security details and should not be transferred over non-encrypted methods.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+		<div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input
+                        ng-model="destinationState.destination.amazons3.only_used_for_logs"
+                        type="checkbox"
+                        name="only_used_for_logs"
+                        id="amazons3_logsonly"/>
+                    <label for="amazons3_logsonly">';$output .= $stash->get(['locale',0,'maketext',['Only use this destination for log file transfers[comment,title of option like one above, but looks wrong title cased]' ]]);$output .= '</label>
+                    <div class="callout callout-warning">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] Enabling this option will prevent it from being used for account and/or system backups.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enable this option if this destination will only be used for log backups. If it will be used for all backups, leave this unchecked.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="folder">';$output .= $stash->get(['locale',0,'maketext',['Folder' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Optional. Specify the path, relative to the account’s home directory, where the system stores backups.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input
+                        type="text"
+                        name="folder"
+                        id="amazons3_path"
+                        class="form-control"
+                        backup-location
+                        ng-model="destinationState.destination.amazons3.folder" />
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <ul validation-container field-name="folder">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="bucket">';$output .= $stash->get(['locale',0,'maketext',['Bucket' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter the bucket name on the remote destination.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" name="bucket" id="amazons3_bucket" class="form-control" required bucket="amazon" ng-model="destinationState.destination.amazons3.bucket" />
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <ul validation-container field-name="bucket">
+                        <validation-item
+                            field-name="bucket"
+                            validation-name="required">
+                                ';$output .= $stash->get(['locale',0,'maketext',['You must enter a bucket name.' ]]);$output .= '
+                        </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="awsAccessKeyId">';$output .= $stash->get(['locale',0,'maketext',['Access Key [asis,ID]' ]]);$output .= '</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input type="text" name="awsAccessKeyId" id="amazons3_username" class="form-control" required ng-model="destinationState.destination.amazons3.aws_access_key_id" />
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <ul validation-container
+                        field-name="awsAccessKeyId">
+                            <validation-item
+                                field-name="awsAccessKeyId"
+                                validation-name="required">
+                                     ';$output .= $stash->get(['locale',0,'maketext',['You must enter an Access Key [asis,ID] for the remote destination.' ]]);$output .= '
+                            </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="password">';$output .= $stash->get(['locale',0,'maketext',['Secret Access Key' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['For security reasons, you will not see the Secret Access Key.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['Only enter the Secret Access Key when you create this destination, or when you change the Secret Access Key.' ]]);$output .= '</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <input type="password" name="password" id="amazons3_password" class="form-control" ng-required="destinationState.newMode" ng-model="destinationState.destination.amazons3.password" />
+                </div>
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <ul validation-container field-name="password">
+                        <validation-item
+                            field-name="password"
+                            validation-name="required">
+                                ';$output .= $stash->get(['locale',0,'maketext',['You must enter a Secret Access Key.' ]]);$output .= '
+                            </validation-item>
+                    </ul>
+                </div>
+            </div>
+        </div>
+';$stash->set('timeout_required_number_message',$stash->get(['locale',0,'maketext',['You must enter a positive integer for the timeout value.' ]]));$stash->set('timeout_min_max_message',$stash->get(['locale',0,'maketext',['You must enter a timeout value between [numf,30] and [numf,300] seconds.' ]]));$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-md-6 col-lg-6">
+                    <label for="timeout">';$output .= $stash->get(['locale',0,'maketext',['Timeout' ]]);$output .= '</label>
+                    <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['The number of seconds that the system will wait for a response from the remote server.' ]]);$output .= "</span>\n                </div>\n            </div>\n            <div class=\"row\">\n                <div class=\"col-xs-12 col-md-6 col-lg-6\">\n                    <input\n                        type=\"number\"\n                        name=\"timeout\"\n                        id=\"amazons3_timeout\"\n                        class=\"form-control\"\n                        min=\"30\"\n                        max=\"300\"\n                        ng-keydown=\"noDecimalPoints(\$event)\"\n                        ng-paste=\"onlyNumbers(\$event)\"\n                        ng-model=\"destinationState.destination.amazons3.timeout\"\n                        positive-integer />\n                </div>\n                <div class=\"col-xs-12 col-md-6 col-lg-6\">\n                    <ul validation-container field-name=\"timeout\">\n                        <validation-item\n                            field-name=\"timeout\"\n                            validation-name=\"number\">\n                                ";$output .= $stash->get('timeout_required_number_message');$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="timeout"
+                            validation-name="min">
+                                ';$output .= $stash->get('timeout_min_max_message');$output .= '
+                        </validation-item>
+                        <validation-item
+                            field-name="timeout"
+                            validation-name="max">
+                                ';$output .= $stash->get('timeout_min_max_message');$output .= "\n                        </validation-item>\n                    </ul>\n                </div>\n            </div>\n        </div>\n        <div class=\"form-group\">\n            <div class=\"row\">\n                <div class=\"col-xs-12\">\n                    <div id=\"save_config\">\n                        <button type=\"submit\" id=\"save_destination_button\" cp-action=\"saveDestination(destinationState.destination)\" ng-disabled=\"amazonS3Destination.\$pristine || amazonS3Destination.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save Destination' ]]);$output .= "</button>\n                        <button type=\"button\" button-class=\"btn-default\" id=\"save_and_validate_destination_button\" cp-action=\"saveAndValidateDestination(destinationState.destination)\" ng-disabled=\"amazonS3Destination.\$pristine || amazonS3Destination.\$invalid || destinationState.savingDestination || destinationState.validatingDestination\">";$output .= $stash->get(['locale',0,'maketext',['Save and Validate Destination' ]]);$output .= '</button>
+                        <button type="button" class="btn btn-link" id="cancel_destination_button" ng-click="cancelDestination()" ng-disabled="destinationState.savingDestination || destinationState.validatingDestination">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

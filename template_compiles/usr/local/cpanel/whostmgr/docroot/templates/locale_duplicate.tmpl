@@ -1,0 +1,12 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/locale_duplicate.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'theme'=>'yui' });$stash->set('back','');$output .= '
+';if (!$stash->get(['data',0,'copy_target',0])||!$stash->get(['data',0,'copy_args',0,0,0])||!$stash->get(['data',0,'copy_args',0,1,0])){if (!$stash->get(['data',0,'copy_args',0,0,0])){$output .= '      <p class="error">Invalid source locale.</p>
+    '}elsif (!$stash->get(['data',0,'copy_args',0,1,0])){$output .= '
+      <p class="error">Invalid target locale data.</p>'}$stash->set('back','?' .$stash->get(['data',0,'back_query_string',0]));$output .= '
+'}else {$output .= '
+   <pre>';$output .= $stash->get(['data',0,'copy_locale',[$stash->get(['data',0,'copy_args',0])]]);$output .= '</pre>
+
+   <p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/download_locale?locale=';$output .= $stash->get(['data',0,'copy_args',0,1,0]);$output .= '">Click here to download</a> \'';$output .= $stash->get(['data',0,'copy_args',0,1,0]);$output .= '\' in XML format. You can edit the XML and <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/upload_locale_form">upload it here</a>.</p>';if (!$stash->get(['data',0,'cpanel_provided',0,'exists',[$stash->get(['data',0,'copy_args',0,0,0])]])){$output .= '<p>You may also <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/delete_locale_form?locale=';$output .= $stash->get(['data',0,'copy_args',0,0,0]);$output .= '&validate=1&theme=__ALL__">delete the source locale</a> \'';$output .= $stash->get(['data',0,'copy_args',0,0,0]);$output .= '\'.</p>'}}$output .= '
+
+<p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_duplicate_form';$output .= $stash->get('back');$output .= '">Back</a></p>
+
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' })}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

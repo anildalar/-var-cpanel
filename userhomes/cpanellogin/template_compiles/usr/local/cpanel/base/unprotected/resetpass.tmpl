@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/unprotected/resetpass.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$stash->set('mode','debug');$stash->set('optimized',0)}else {$stash->set('mode','release');$stash->set('optimized',1)}$stash->set('disp_apps',{'whostmgrd'=>'WHM','webmaild'=>'Webmail','cpaneld'=>'cPanel' });$stash->set('disp_app',$stash->get(['disp_apps',0,'item',[$stash->get('app_name')]])|| 'cPanel');$stash->set('app_images',{'whostmgrd'=>'whm-logo_white.svg','webmaild'=>'webmail-logo.svg','cpaneld'=>'cpanel-logo.svg' });$stash->set('app_image',$stash->get(['app_images',0,$stash->get('app_name'),0])|| $stash->get(['app_images',0,'cpaneld',0]));$stash->set('app_image',$stash->get(['MagicRevision',[$stash->get(['get_theme_url',['images/' .$stash->get('app_image')]])]]));$stash->set('stylesheets',[$stash->get(['MagicRevision',[$stash->get(['get_theme_url',['fonts/open_sans/open_sans.min.css' ]])]]),$stash->get(['MagicRevision',[$stash->get(['get_theme_url',['style_v2_optimized.css' ]])]])]);$output .= '<!DOCTYPE html>
+<html lang="';$output .= $stash->get(['locale',0,'get_language_tag',0]);$output .= '" dir="';$output .= $stash->get(['locale',0,'get_html_dir_attr',0]);$output .= '">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>';if ($stash->get('entry_point')eq 'resetpass'){$output .= '        ';$output .= $stash->get(['locale',0,'maketext',['Reset Password' ]])}elsif ($stash->get('entry_point')eq 'invitation'){$output .= '        ';$output .= $stash->get(['locale',0,'maketext',['Set a password for your new account.' ]])}$output .= '        </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1">
+
+        <link rel="shortcut icon" href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['MagicRevision',[$stash->get(['get_theme_url',['favicon.ico' ]])]]);&$_tt_filter($output)};$output .= '" type="image/x-icon" />
+
+        <!-- EXTERNAL CSS -->
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('stylesheets');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'source'}=$_tt_value;$output .= '        <link href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('source');&$_tt_filter($output)};$output .= '" rel="stylesheet" type="text/css" />';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '    </head>
+    <body class="cp">
+        <div id="login-wrapper">
+
+            <div id="resetpass">
+                <div id="login-container">
+                    <div id="login-sub-container">
+
+                        <div id="login-sub-header">
+                            <img src="';$output .= $stash->get('app_image');$output .= '" height="50" alt="logo" />
+                        </div>
+
+                        <div id="notify"';if (!$stash->get('notice_text')){$output .= '
+                             style="display:none"
+                            '}$output .= '>
+                            <div id="login-status"
+                                 class="';$output .= $stash->get('notice_class')|| 'info-notice';$output .= '">
+                                <div id="login-detail">
+                                    <div id="login-status-icon-container">
+                                        <span class="login-status-icon"></span>
+                                    </div>
+                                    <div id="';$output .= $stash->get('notice_id')|| 'login-status-message';$output .= '" class="login-status-message">
+                                        ';$output .= $stash->get('notice_text');$output .= '
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="reset-sub">
+                            ';$output .= $context->process(('templates/' .$stash->get('page_to_show')));$output .= '
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="copyright">
+            ';$output .= $stash->get(['locale',0,'maketext',['Copyright©[output,nbsp][current_year] cPanel, L.L.C.' ]]);$output .= '
+            <br />
+            <a href="https://go.cpanel.net/privacy" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Privacy Policy' ]]);$output .= '</a>
+        </div>
+    </body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

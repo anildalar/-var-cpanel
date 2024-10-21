@@ -1,0 +1,131 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/telnet/keys/addkey.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('required_strength_resp',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'sshkey' }]]));$output .= $stash->get(['Api2',0,'post_exec',['PasswdStrength','get_required_strength' ]]);if ($stash->get(['required_strength_resp',0,'size',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,0,0,'strength',0]))}$output .= '
+
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrGenerateKey">';$output .= $stash->get(['locale',0,'maketext',['Generating a Public Key' ]]);$output .= '</h2>
+    <p id="descGenerateKey">
+        ';$output .= $stash->get(['locale',0,'maketext',['RSA vs DSA: RSA and DSA are encryption algorithms used to encrypt your key. DSA is faster for Key Generation and Signing and RSA is faster for Verification.' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <form method="post" action="doaddkey.html" name="passform" id="passform">
+            <div class="form-group">
+                <label id="lblKeyName" for="name">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Name (This value defaults to “[asis,id_rsa]”.):' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="name" id="name" value="id_rsa" />
+                    </div>
+                    <div id="name_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKeyPass" for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Password:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" name="password" id="password" class="form-control"/>
+                    </div>
+                    <div id="password_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblPassAgain" for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Reenter Password:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" name="password2" id="password2" class="form-control"/>
+                    </div>
+                    <div id="password2_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblStrength">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= '
+                    <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKeyType" for="ddlType">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Type:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="ddlType" name="type" class="form-control" data-testid="selectKeyType">
+                            <option value="dsa">';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,DSA,Digital Signature Algorithm]' ]]);$output .= '</option>
+                            <option value="rsa" selected>RSA</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKeySize" for="ddlKeySize">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Key Size:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id="ddlKeySize" name="keysize" class="form-control" data-testid="selectKeySize">
+                            <option value="1024">1024</option>
+                            <option value="2048" selected>2048</option>
+                            <option value="4096">4096</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Generate Key' ]]);$output .= '" id="submit" />
+            </div>
+        </form>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssh_access','page_js'=>$stash->get('js_code'),'feature'=>'ssh','content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get('required_strength');$output .= '\', 10);
+
+    var init_page = function() {
+        var name_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Key Name' ]]);$output .= '");
+        name_validator.add("name", "filename", "';$output .= $stash->get(['locale',0,'maketext',['Key Name' ]]);$output .= '");
+        name_validator.attach();
+
+        var requiredStrength = (REQUIRED_PASSWORD_STRENGTH > 0) ? REQUIRED_PASSWORD_STRENGTH : -1;
+        var enforceMinLength = (REQUIRED_PASSWORD_STRENGTH > 0) ? void 0 : 0;
+
+        var password_validators = CPANEL.password.setup("password", "password2", "password_strength", requiredStrength, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text", enforceMinLength);
+
+        password_validators.push(name_validator);
+        CPANEL.validate.attach_to_form("submit", password_validators);
+
+        YAHOO.util.Dom.get("password").focus();
+        name_validator.verify();
+    };
+    YAHOO.util.Event.onDOMReady(init_page);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

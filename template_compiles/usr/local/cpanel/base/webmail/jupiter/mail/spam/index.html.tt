@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/spam/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('SpamAssassin',$context->plugin('SpamAssassin'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('spam_settings',$stash->get(['execute',['Email','get_spam_settings',{'account'=>$stash->get(['CPANEL',0,'authuser',0])}],'data',0]));$stash->set('page_data',{'spam_settings'=>$stash->get('spam_settings'),'authuser'=>$stash->get(['CPANEL',0,'authuser',0])});$stash->set('can_disable_filter',$stash->get(['spam_settings',0,'spam_status_changeable',0]));$stash->set('max_spam_threshold',$stash->get(['spam_settings',0,'cpuser_spam_auto_delete',0])? ($stash->get(['spam_settings',0,'cpuser_spam_auto_delete_score',0])- 1): '');$output .= '
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+<script>
+    if (!window.CPANEL) CPANEL = {};
+    CPANEL.PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('page_data')]]);$output .= ';
+</script>
+
+<div class=\'body-content\'>
+    ';if ($stash->get(['CPANEL',0,'feature',['spamassassin' ]])&& $stash->get(['spam_settings',0,'spam_enabled',0])){$output .= '        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['This utility lets you filter unwanted “spam” email before it reaches your inbox.' ]]);$output .= '
+        </p>
+
+        <div ng-cloak id="ng_content" class="body-content"
+            ng-controller="BaseController"
+        >
+            <cp-alert-list></cp-alert-list>
+
+            <h4>';$output .= $stash->get(['locale',0,'maketext',['Spam Auto-Delete Threshold' ]]);$output .= '</h4>
+
+            <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This server assigns a spam score (via the [output,class,_1,code] header) to each email that you receive. Use this control to tell the server to discard any emails whose spam score meets or exceeds a designated threshold. [output,strong,The lower the threshold~, the more emails the server will discard.]','X-Spam-Bar' ]]);$output .= '</p>
+
+            ';if ($stash->get(['spam_settings',0,'cpuser_spam_auto_delete',0])){$output .= '                <div class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    <div class="alert-message">
+                        ';if ($stash->get(['CPANEL',0,'authuser',0])eq $stash->get(['CPANEL',0,'user',0])){$output .= '                            ';$output .= $stash->get(['locale',0,'maketext',['You have set an account-wide auto-delete threshold of [numf,_1] in the [asis,cPanel] interface. The current interface controls an optional auto-delete threshold that is specific to your system email account. This threshold, if defined, must be lower than the account-wide threshold.' ]]);$output .= '                        '}else {$output .= '                            ';$output .= $stash->get(['locale',0,'maketext',['Your account owner has set an auto-delete threshold of [numf,_1]. You can use that threshold or set a lower one for your own account, but you cannot disable the auto-deletion.',$stash->get(['spam_settings',0,'cpuser_spam_auto_delete_score',0])]]);$output .= '                        '}$output .= '                    </div>
+                </div>
+            '}$output .= '
+           <form class="main-page-form" cp-form-waiting="save()" cp-form-waiting-spinner-size="2">
+                <div class="form-group">
+                    <div class="main-page-form-content">
+                        <div>
+                            <span ng-click="!spam_auto_delete && deferred_focus(\'spam_score_input\'); spam_auto_delete = true;">
+                                <label><input type="radio" name="spam_auto_delete" ng-model="spam_auto_delete" ng-value="true">
+                                    ';if ($stash->get(['CPANEL',0,'authuser',0])eq $stash->get(['CPANEL',0,'user',0])){$output .= '                                        ';$output .= $stash->get(['locale',0,'maketext',['Set a custom threshold for your system email account:' ]]);$output .= '
+                                    '}else {$output .= '                                        ';$output .= $stash->get(['locale',0,'maketext',['Set a custom threshold:' ]]);$output .= '
+                                    '}$output .= '                                </label>
+                                <input type="number" id="spam_score_input" class="disabled-receive-click" ng-model="spam_auto_delete_score" ng-disabled="!spam_auto_delete" min="1" max="';$output .= $stash->get('max_spam_threshold');$output .= '">
+                            </span>
+                        </div>
+                        <div>
+                            <label><input type="radio" name="spam_auto_delete" ng-model="spam_auto_delete" ng-value="false">
+                                ';if ($stash->get(['spam_settings',0,'cpuser_spam_auto_delete',0])){$output .= '                                    ';if ($stash->get(['CPANEL',0,'authuser',0])eq $stash->get(['CPANEL',0,'user',0])){$output .= '                                        ';$output .= $stash->get(['locale',0,'maketext',['Use your account-wide threshold from [asis,cPanel] ([numf,_1])',$stash->get(['spam_settings',0,'cpuser_spam_auto_delete_score',0])]]);$output .= '                                    '}else {$output .= '                                        ';$output .= $stash->get(['locale',0,'maketext',['Use the account owner’s threshold ([numf,_1])',$stash->get(['spam_settings',0,'cpuser_spam_auto_delete_score',0])]]);$output .= '                                    '}$output .= '                                '}elsif ($stash->get('can_disable_filter')){$output .= '                                    ';$output .= $stash->get(['locale',0,'maketext',['Disable Spam Auto-Delete' ]]);$output .= '                                '}else {$output .= '                                    ';$output .= $stash->get(['locale',0,'maketext',['Use the system-wide default threshold ([numf,_1]). [output,strong,The server may discard a significant amount of your mail.]',$stash->get(['SpamAssassin',0,'DEFAULT_REQUIRED_SCORE',0])]]);$output .= '                                '}$output .= '                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group main-page-form-content">
+                    <button class="btn btn-primary" type="submit">';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '</button>
+                </div>
+           </form>
+        </div>
+    '}else {$output .= '        <h4>';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled.' ]]);$output .= '</h4>
+    '}$output .= '</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'apache_spam_assassin','include_legacy_stylesheets'=>0,'page_stylesheets'=>['mail/spam/index.css' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

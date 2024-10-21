@@ -1,0 +1,120 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/setlang/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('Api2',$context->plugin('Api2'));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+';$stash->set('account_locale',$stash->get(['locale',0,'get_user_locale',0]));$stash->set('account_locale_name',$stash->get(['locale',0,'get_locale_name_or_nothing',[$stash->get('account_locale'),1 ]])|| ('(' .$stash->get('account_locale').')'));$stash->set('button_text',$stash->get(['locale',0,'maketext',['Revert to Account’s Locale Setting' ]]));$output .= '
+
+';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '<div class="body-content">
+<p class="description" id="txtDescription">
+    ';$output .= $stash->get(['locale',0,'maketext',['This function allows you to change the language displayed in your cPanel interface. If you need a new language, contact your cPanel provider so they can install it.' ]]);$output .= '
+</p>
+
+<div id="cjt_pagenotice_container">
+    <div id="success_preload" class="cjt-notice cjt-notice-success" style="position:absolute;visibility:hidden">
+        <div class="bd"></div>
+    </div>
+</div>
+
+<div class="section">
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Change Language' ]]);$output .= '</h2>
+    <div class="alert alert-info" id="alertSuccess">
+        <span class="glyphicon glyphicon-info-sign" id="alertSuccessIcon"></span>
+        ';$output .= $stash->get(['locale',0,'maketext',['Your account’s language is set to “[_1]”.',$stash->get('account_locale_name')]]);$output .= '
+    </div>
+    <form action="javascript:void(0)" onsubmit="save(this)">
+        <div class="form-group">
+            <label for="lang" id="lblLang">
+                ';$output .= $stash->get(['locale',0,'maketext',['Select a Language' ]]);$output .= '
+            </label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <select id="lang" name="lang" class="form-control">
+                    ';$output .= $context->process('setlang/_locale_option_tags.html.tt',{'selected_locale'=>$stash->get('account_locale')});$output .= '                    </select>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 help-block">
+                    ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <input id="submit" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext_plain_context',['Change' ]]);$output .= '" />
+        </div>
+    </form>
+</div>
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '</div>
+
+<script type="text/plain" id="session_locale_reset">
+<div id="session_locale_reset_alert" class="cjt-alert-info">
+    <div class="message-container">
+        <span class="glyphicon glyphicon-info-sign" id="alertRevertInfoIcon"></span>
+        <div id="txtSessionLocaleReset" class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['The locale selected when you logged in is overriding your account’s locale setting. To use your account’s locale setting, click the “[_1]” button below.',$stash->get('button_text')]]);$output .= '
+        </div>
+    </div>
+
+    <div class="controls-container" id="btnResetSessionLocaleContainer">
+        <button id="btnResetSessionLocale" onclick="reset_session_locale()" class="btn btn-primary">';$output .= $stash->get('button_text');$output .= '</button>
+    </div>
+</div>
+</script>
+
+
+';$output .= '
+
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'app_key'=>'change_language','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<script type=\"text/javascript\">\n    EVENT.onDOMReady( function() {\n        DOM.get(\"success_preload\").parentNode.removeChild(DOM.get(\"success_preload\"));\n    } );\n\n    if ( /\\bsession_locale=[^;]/.test(document.cookie) ) {\n        window.HAS_SESSION_LOCALE_COOKIE = true;\n        var SESSION_LOCALE_NOTICE = new CPANEL.widgets.Page_Notice( {\n            content: DOM.get(\"session_locale_reset\").text\n        } );\n    }\n\n    function _cookie_reset() {\n        document.cookie = \"session_locale=;path=/;expires=\" + (new Date(0)).toUTCString();\n    }\n\n    function reset_session_locale() {\n        if (window.HAS_SESSION_LOCALE_COOKIE) {\n            _cookie_reset();\n            var content = \"<div>";$output .= $stash->get(['locale',0,'maketext',['You are now using your account’s locale setting. This page will now reload and display in [get_locale_name,_1,1].',$stash->get(['locale',0,'get_user_locale',0])]]);$output .= '</div>";
+            new CPANEL.widgets.Page_Notice( {level:"success", content:content, replaces:SESSION_LOCALE_NOTICE} );
+            location.reload();
+        }
+    }
+
+    var ERROR_NOTICE;
+    function save(form) {
+        var panel = new CPANEL.ajax.Progress_Panel( null, {
+            status_html: "';$output .= $stash->get(['locale',0,'maketext',['Saving new locale …' ]]);$output .= '"
+        } );
+        var source = DOM.get("submit");
+        panel.show_from_source(source);
+
+        setTimeout(function() {
+            CPANEL.api( {
+                module: "SetLang",
+                func:   "setlocale",
+                data: { locale: form.lang.options[ form.lang.selectedIndex ].value },
+                callback: {
+                    failure: function(o) {
+                        panel.after_hideEvent.subscribe( panel.destroy, panel, true );
+                        panel.hide_to_point(source);
+
+                        var err = String(o.error || o.cpanel_error || o);
+
+                        if (ERROR_NOTICE && ERROR_NOTICE.cfg) {
+                            ERROR_NOTICE.cfg.setProperty("content", err.html_encode());
+                        }
+                        else {
+                            ERROR_NOTICE = new CPANEL.widgets.Page_Notice({level:"error", content:err.html_encode(), replaces:ERROR_NOTICE});
+                        }
+                    },
+                    success: function(o) {
+                        _cookie_reset();
+                        panel.set_status("';$output .= $stash->get(['locale',0,'maketext',['Success! This page will now reload.' ]]);$output .= '");
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+                    }
+                }
+            } );
+        }, 3000);
+    }
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n<style type=\"text/css\">\n    #cjt_pagenotice_container {\n        margin-bottom: 10px;\n    }\n\n    .cjt-alert-info {\n        color: #31708F;\n    }\n\n    #session_locale_reset_alert .alert-message {\n        display: inline;\n    }\n\n    #session_locale_reset_alert .controls-container {\n        margin-top: 10px;\n    }\n\n    .externalLink:after {\n        font-family: \"Font Awesome 5 Free\";\n        font-weight: 600;\n        content: \"\\f35d\";\n        display: inline-block;\n        padding: 0 3px 0 3px;\n    }\n</style>\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

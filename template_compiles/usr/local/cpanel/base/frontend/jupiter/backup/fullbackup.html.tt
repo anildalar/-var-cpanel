@@ -1,0 +1,52 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/fullbackup.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('backups_list_full_backups',$stash->get(['Api2',0,'exec',['Backups','listfullbackups',{}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['A full backup will create an archive of all the files and configurations on your website. You can only use this to move your account to another server, or to keep a local copy of your files. You [output,strong,cannot] restore full backups through your cPanel interface.' ]]);$output .= '
+        </p>
+
+        <div class="section">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Backups Available for Download:' ]]);$output .= '</h2>
+            <ul class="list-unstyled" id="backupList">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('backups_list_full_backups');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                <li>
+                ';if ($stash->get(['hashref',0,'status',0])ne 'inprogress'){$output .= '
+                    <a href="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/download?file=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'file',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" title="';$output .= $stash->get(['hashref',0,'status',0,'html',0]);$output .= '">
+                    ';if ($stash->get(['hashref',0,'status',0])eq 'complete'){$output .= '
+                        <span class="glyphicon glyphicon-ok-sign"></span>
+                    '}else {$output .= '
+                        <span class="glyphicon glyphicon-remove-sign"></span>
+                    '}$output .= '
+                '}else {$output .= '
+                        <span class="glyphicon glyphicon-transfer"></span>
+                '}$output .= '
+                        <strong>';$output .= $stash->get(['hashref',0,'file',0,'html',0]);$output .= '</strong> (';$output .= $stash->get(['hashref',0,'localtime',0,'html',0]);$output .= ')</a>
+                        ';if ($stash->get(['hashref',0,'status',0])ne 'complete'){$output .= '
+                            [';$output .= $stash->get(['hashref',0,'status',0,'html',0]);$output .= ']
+                        '}$output .= '
+                </li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Generate a Full Backup' ]]);$output .= '</h2>
+
+            <form name="mainform" id="mainform" action="dofullbackup.html" enctype="multipart/form-data" method="post">
+                <!-- prevent password autofill -->
+                <input type="text" style="display:none">
+                <input type="password" autocomplete=\'off\' style="display:none">
+                ';$output .= $context->include('fullbackup-include.html.tt');$output .= '
+            </form>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

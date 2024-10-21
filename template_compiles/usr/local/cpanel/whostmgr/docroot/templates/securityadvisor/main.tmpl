@@ -1,0 +1,311 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/securityadvisor/main.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$output .= '
+
+';$stash->set('wrapper_path','_defwrapper.tmpl');$stash->set('wrapper_theme','');$output .= '
+
+';if ($stash->get(['Whostmgr',0,'RELEASE_VERSION',0])>= 63){$stash->set('wrapper_path','master_templates/master.tmpl');$stash->set('wrapper_theme','bootstrap')}$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$output .= '<style>
+    td * {
+        vertical-align: middle;
+    }
+    h3 {
+        margin-top: 0;
+    }
+    h3 * {
+        vertical-align: middle;
+    }
+    h3 i {
+        margin-bottom: 2px;
+    }
+    .callout {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+</style>
+
+<span>
+    <button
+        type="button"
+        class="btn btn-primary"
+        id="scan_button"
+        onclick="scanner.run_scan()">
+        ';$output .= $stash->get(['locale',0,'maketext',['Scan Again' ]]);$output .= '
+    </button>
+    <i id="spinner" style="display:none;" class="fas fa-sync fa-spin text-info" aria-hidden="true"></i>
+
+    <span id="current_item"></span>
+</span>
+<span class="pull-right">
+    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Version:] [_1]',$stash->get('security_advisor_version')]]);$output .= '
+</span>
+
+
+<div id="securityadvice">
+  <h1 id="securityadvice_error_header" style="display:none">
+      ';$output .= $stash->get(['locale',0,'maketext',['Important' ]]);$output .= '
+  </h1>
+  <div id="securityadvice_error"></div>
+  <h1 id="securityadvice_warn_header" style="display:none">
+      ';$output .= $stash->get(['locale',0,'maketext',['Recommendations' ]]);$output .= '
+  </h1>
+  <div id="securityadvice_warn"></div>
+  <h1 id="securityadvice_info_header" style="display:none">
+      ';$output .= $stash->get(['locale',0,'maketext',['Information' ]]);$output .= '
+  </h1>
+  <div id="securityadvice_info"></div>
+  <h1 id="securityadvice_success_header" style="display:none">
+      ';$output .= $stash->get(['locale',0,'maketext',['Verified' ]]);$output .= '
+  </h1>
+  <div id="securityadvice_success"></div>
+</div>
+<script id="item-template-error" type="text/x-handlebars-template">
+    <div id="{{messageId}}" class="callout callout-danger" aria-lable="danger">
+        <h3>
+            <i class="fas fa-exclamation-circle" style="color:#d03f00"></i>
+            {{text}}
+        </h3>
+        {{#if suggestion}}
+        <p>
+            {{suggestion}}
+        </p>
+        {{/if}}
+    </div>
+</script>
+<script id="item-template-success" type="text/x-handlebars-template">
+    <div id="{{messageId}}" class="callout callout-success" aria-lable="success">
+        <h3>
+            <i class="fas fa-check-circle" style="color:#83b655"></i>
+            {{text}}
+        </h3>
+        {{#if suggestion}}
+        <p>
+            {{suggestion}}
+        </p>
+        {{/if}}
+        {{#if landingpage}}
+        <p>
+            <a href={{landingpage.link}} target=_parent>{{landingpage.text}}<a/>
+        </p>
+        {{/if}}
+        {{#if infolink}}
+        <p>
+            <a href={{infolink.link}} target=_blank>{{infolink.text}}<a/>
+        </p>
+        {{/if}}
+    </div>
+</script>
+<script id="item-template-warn" type="text/x-handlebars-template">
+    <div id="{{messageId}}" class="callout callout-warning" aria-lable="warning">
+        <h3>
+            <i class="fas fa-exclamation-circle" style="color:#f6c342"></i>
+            {{text}}
+        </h3>
+        {{#if suggestion}}
+        <p>
+            {{suggestion}}
+        </p>
+        {{/if}}
+    </div>
+</script>
+<script id="item-template-info" type="text/x-handlebars-template">
+    <div id="{{messageId}}" class="callout callout-info" aria-lable="info">
+        <h3>
+            <i class="fas fa-info-circle" style="color:#179bd7"></i>
+            {{text}}
+        </h3>
+        {{#if suggestion}}
+        <p>
+            {{suggestion}}
+        </p>
+        {{/if}}
+    </div>
+</script>
+
+<script>
+function Scanner() {
+    this.scan_running = false;
+    this.estimated_runtimes = {};
+    this.templates = {
+        success: window.Handlebars.compile(document.getElementById("item-template-success").innerHTML),
+        info:  window.Handlebars.compile(document.getElementById("item-template-info").innerHTML),
+        warn: window.Handlebars.compile(document.getElementById("item-template-warn").innerHTML),
+        error:  window.Handlebars.compile(document.getElementById("item-template-error").innerHTML)
+    };
+    this.headers = {
+        success: document.getElementById(\'securityadvice_success_header\'),
+        info: document.getElementById(\'securityadvice_info_header\'),
+        warn: document.getElementById(\'securityadvice_warn_header\'),
+        error: document.getElementById(\'securityadvice_error_header\')
+    };
+};
+
+Scanner.prototype.run_scan = function() {
+    if ( !this.scan_running) {
+        var headers = this.headers;
+        [\'success\', \'info\', \'warn\', \'error\'].forEach(function(name) {
+            headers[name].style.display = \'none\';
+        });
+        document.getElementById(\'scan_button\').style.display = "";
+        document.getElementById(\'securityadvice_error\').innerHTML = "";
+        document.getElementById(\'securityadvice_warn\').innerHTML = "";
+        document.getElementById(\'securityadvice_info\').innerHTML = "";
+        document.getElementById(\'securityadvice_success\').innerHTML = "";
+
+        var current_time = new Date;
+        var scan_channel = "/addon_securityadvisor/" + current_time.getTime();
+
+        this.scan_running = true;
+        this.estimated_runtimes = {};
+        this.estimated_runtimes[\'total\'] = 0;
+
+        this.start_comet_scanner(scan_channel);
+    }
+};
+Scanner.prototype.start_comet_scanner = function(channel) {
+    var cometd = new YAHOO.util.Cometd;
+    cometd.configure(\'';$output .= $stash->get('cp_security_token');$output .= '/cometd\');
+
+    // This listener waits until the subscription actually goes through
+    // before sending the request to start the scan
+    var subscription_listener = cometd.addListener(\'/meta/subscribe\', function(message) {
+        cometd.removeListener(subscription_listener);
+        var start_scan_callback = {
+            success:function(o) {
+                var data = YAHOO.lang.JSON.parse(o.responseText);
+                if (data.status != 1) {
+                    this.scan_running = false;
+                    cometd.disconnect();
+                    document.getElementById(\'scan_button\').style.display = \'\';
+                    alert("Failed to start scan: " + data.message);
+                }
+            },
+            failure:function(o) {
+                this.scan_running = false;
+                cometd.disconnect();
+                document.getElementById(\'scan_button\').style.display=\'\';
+                alert("Failed to start scan: " + o.statusText);
+            }
+        };
+
+        YAHOO.util.Connect.asyncRequest(\'POST\', window.location.href, start_scan_callback, "start_scan=1&channel=" + encodeURIComponent(channel) );
+    });
+
+    cometd.handshake();
+
+    var lastmsgid;
+    var subscription = cometd.subscribe(channel, this, function(o) {
+        //var msgsEl = document.getElementById(\'msgs\');
+        //msgsEl.innerHTML += this.parse_comet_message(o.data);
+        this.parse_comet_message(o.data);
+
+        if (o.data.type === "scan_run" && o.data.state == 1) {
+            this.scan_running = false;
+            document.getElementById(\'scan_button\').style.display=\'\';
+            cometd.unsubscribe(subscription);
+            cometd.disconnect();
+        }
+
+    });
+};
+
+Scanner.prototype.parse_comet_message = function(data) {
+    var message = "";
+    if (data.type == "mod_load") {
+        if (data.state == 1 ) {
+            this.estimated_runtimes[data.module] = data.runtime;
+            this.estimated_runtimes[\'total\'] += data.runtime;
+        //    message = "<p>Loaded " + data.module + " with an estimated runtime of " + data.runtime + " (total " + this.estimated_runtimes[\'total\'] + ")</p>";
+        }
+        else {
+        //    message = "<p>Failed to load " + data.module + ": " + data.message + "<p>";
+        }
+    }
+    else if (data.type == "scan_run") {
+        var current_time = new Date;
+        if (data.state == 0) {
+            document.getElementById(\'scan_button\').style.display=\'none\';
+            this.estimated_runtimes[\'remaining\'] = this.estimated_runtimes[\'total\'];
+            document.getElementById(\'spinner\').style.display=\'\';
+        }
+        else {
+            document.getElementById(\'current_item\').innerHTML = \'\';
+            document.getElementById(\'spinner\').style.display=\'none\';
+        }
+    }
+    else if (data.type == "mod_run") {
+        document.getElementById(\'current_item\').innerHTML = data.module + " " + data.version;
+        var current_time = new Date;
+        if (data.state == 0) {
+        //    message = "<p>Starting checks for " + data.module + "</p>";
+        }
+        else if (data.state == 1) {
+            this.estimated_runtimes[\'remaining\'] -= this.estimated_runtimes[data.module];
+        //    message = "<p>Finished checks for " + data.module + " successfully at " + current_time + " (remaining " + this.estimated_runtimes[\'remaining\'] + ")</p>";
+        }
+        else if (data.state == -1) {
+            this.estimated_runtimes[\'remaining\'] -= this.estimated_runtimes[data.module];
+        //    message = "<p>Finished checks for " + data.module + " unsuccessfully at " + current_time + " (remaining " + this.estimated_runtimes[\'remaining\'] + ")</p>";
+        }
+    }
+    else if (data.type == "mod_advice") {
+        var advise_notice_type = "success";
+        switch(data.advice.type) {
+            case 8:
+                advise_notice_type = "error";
+                break;
+            case 4:
+                advise_notice_type = "warn";
+                break;
+            case 2:
+                advise_notice_type = "info";
+                break;
+        }
+
+        this.headers[advise_notice_type].style.display = \'block\';
+
+        var id = \'securityadvice_\' + advise_notice_type;
+        var container = document.getElementById(id);
+        var advice = data.advice;
+        advice.messageId = YAHOO.lang.escapeHTML(advice.key);
+
+        if (advice.suggestion) {
+            advice.suggestion = new window.Handlebars.SafeString(advice.suggestion);
+        }
+
+        if (advice.infolink) {
+            advice.infolink.text = new window.Handlebars.SafeString(advice.infolink.text);
+            advice.infolink.link = new window.Handlebars.SafeString(advice.infolink.link);
+        }
+
+        if (advice.landingpage) {
+            advice.landingpage.text = new window.Handlebars.SafeString(advice.landingpage.text);
+            advice.landingpage.link = new window.Handlebars.SafeString(advice.landingpage.link);
+        }
+
+        advice.text = new window.Handlebars.SafeString(advice.text);
+
+        var messageEl = document.createElement(\'div\');
+        messageEl.innerHTML = this.templates[advise_notice_type](advice);
+        container.appendChild(messageEl.children[0]);
+    }
+    else {
+        //message = "<p>Unknown data received: " + YAHOO.lang.escapeHTML(YAHOO.lang.JSON.stringify(data)) + "</p>";
+    }
+    return message;
+};
+
+var YAHOO = window.YAHOO;
+var CPANEL = window.CPANEL;
+var DOM = YAHOO.util.Dom;
+var EVENT = YAHOO.util.Event;
+var scanner;
+
+window.onload = function() {
+    scanner = new Scanner();
+    scanner.run_scan()
+};
+
+</script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl');$context->include($stash->get('wrapper_path'),{'header'=>'cPanel Security Advisor','icon'=>'ico-security-advisor.png','theme'=>$stash->get('wrapper_theme'),'app_key'=>'securityadvisor','scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['libraries/handlebars/handlebars.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['sharedjs/cometd_optimized.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['sharedjs/yui/yui.cometd_optimized.js' ]])],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

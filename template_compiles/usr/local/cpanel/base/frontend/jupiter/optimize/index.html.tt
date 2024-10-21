@@ -1,0 +1,78 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/optimize/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api1',0,'pre_exec',['OptimizeWS','loadoptimizesettings' ]]);$stash->set('res',$stash->get(['Api1',0,'exec',['OptimizeWS','loadoptimizesettings',[$stash->get('undef')]]]));$output .= $stash->get(['Api1',0,'post_exec',['OptimizeWS','loadoptimizesettings' ]]);$stash->set('apache_1_3',(($stash->get(['CPANEL',0,'ENV',0,'optimize_apache_version',0]))eq '1.3'));$stash->set('deflate_disabled',(($stash->get(['CPANEL',0,'ENV',0,'deflate_selected',0]))eq 'disabled'));$stash->set('deflate_all',(($stash->get(['CPANEL',0,'ENV',0,'deflate_selected',0]))eq 'all'));$stash->set('deflate_list',(($stash->get(['CPANEL',0,'ENV',0,'deflate_selected',0]))eq 'list'));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Optimize the performance of your website by tweaking the way Apache handles requests.' ]]);$output .= '
+    </p>
+
+    <div class="alert alert-info">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="alert-message">
+            <strong>Info:</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['This setting changes [asis,mod_deflate] usage by [asis,Apache] only.' ]]);$output .= '
+            ';if ($stash->get(['CPANEL',0,'feature',['multiphp_ini_editor' ]])){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Use the [output,url,_1,MultiPHP INI Editor] interface to manage [asis,zlib] compression on [asis,PHP] scripts.','../multiphp_ini_editor/index.html' ]]);$output .= '
+            '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Contact your system administrator about [asis,zlib] compression on [asis,PHP] scripts.' ]]);$output .= '
+            '}$output .= '
+        </div>
+    </div>
+
+    <div class="section">
+        <form action="dooptimize.html">
+            <h2>';$output .= $stash->get(['locale',0,'maketext',['Compress Content' ]]);$output .= '</h2>
+            <p class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['Apache allows you to compress content before sending it to the visitor’s browser. The types of content to be compressed are specified by [output,acronym,MIME,Multipurpose Internet Mail Extensions] type. This feature requires Apache’s mod_deflate to function correctly.' ]]);$output .= '
+            </p>
+
+            ';if ($stash->get('apache_1_3')){$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['This functionality is not available with the current server configuration.' ]]);$output .= '
+            </p>
+            '}else {$output .= '
+
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type=\'radio\' name=\'deflate\' id=\'rbtnDisabled\' value=\'disabled\' ';if ($stash->get('deflate_disabled')){$output .= 'checked'}$output .= ' />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type=\'radio\' name=\'deflate\' id=\'rbtnAll\' value=\'all\' ';if ($stash->get('deflate_all')){$output .= 'checked'}$output .= ' />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Compress [output,strong,All] Content' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="radio">
+                    <label>
+                        <input type=\'radio\' id=\'rbtnMimeType\' name=\'deflate\' value=\'list\' ';if ($stash->get('deflate_list')){$output .= 'checked'}$output .= ' />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Compress the specified [output,acronym,MIME,Multipurpose Internet Mail Extensions] types.' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-xs-offset-1 col-xs-11 col-sm-6 col-md-6 col-lg-6">
+                        <label for="deflate-mime-list">
+                            ';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,MIME,Multipurpose Internet Mail Extensions] Types' ]]);$output .= '
+                        </label>
+                        <input type="text" class="form-control" name="deflate-mime-list" id="deflate-mime-list" size="50" value="';$output .= $stash->get(['CPANEL',0,'ENV',0,'deflate_mime_list',0,'html',0]);$output .= '" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" id="btnSubmit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Update Settings' ]]);$output .= '" />
+            </div>
+            '}$output .= '
+        </form>
+    </div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'optimize_website','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

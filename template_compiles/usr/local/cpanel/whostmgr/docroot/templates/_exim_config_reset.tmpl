@@ -1,0 +1,140 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/_exim_config_reset.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<form ';if ($stash->get('in_tab')){$output .= 'target="tabaction"'}$output .= ' action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/reset_exim_config" onSubmit="notify_parent_submit();">
+<input type="hidden" name="in_tab" value="';$output .= $stash->get('in_tab');$output .= '">
+<div>
+    <div>If you would like to reset your Exim configuration to the default version that comes with this version of cPanel &amp; WHM, please choose the reset type and click the <em>Reset</em> button:
+    </div>
+	    <table class="reset_tbl">
+	                <tr>
+	                    <td style="border:0;">Reset type:</td>
+	                    <td style="border:0;">
+	                        <select id="reset_options" name="reset" onChange="check_reset_options(this);">
+	                            <option value="progressive">Reset cPanel &amp; WHM Exim configuration files, one option at a time, until the installed Exim configuration is valid</option>
+	                            <option value="progressive-up2date">Update the installed Exim configuration to the minimum version required by this version of cPanel &amp; WHM</option>
+	                            <option value="reset_all">Reset the entire Exim configuration to the default settings provided with cPanel &amp; WHM </option>
+	                            <option value="reset_base_acls">Reset any manually customized data in the <em>ACLs</em> section.</option>
+	                            <option value="reset_custom_inserts">Reset all <em>Advanced Editor</em> options, except third-party and custom ACLs</option>
+	                            <option value="disable_custom_acls">Disable all third-party and custom ACLs</option>
+	                        </select>
+	                     </td>
+	                 </tr>
+	                <tr>
+	                   <td colspan="2">
+	                        <div id ="help" style="border: 1px dashed #ccc;">
+	                            <div class="resetdocs" style="display:;" id="progressive_help"><br />
+	                    <strong>Reset cPanel &amp; WHM Exim configuration files, one option at a time, until the installed Exim configuration is valid.</strong><br /><br />
+	                    When you select this setting, the system does the following:
+	                                <ol>
+	                                    <li> Merges the Exim configuration on this server with the cPanel provided Exim configuration, then installs the result. </li>
+	                                    <li> If step 1 fails, the system resets the manually customized configuration in the <em>ACLs</em> section. </li>
+	                                    <li> If step 2 fails, the system resets all options in the <em>Advanced Editor</em>, except the following: </li>
+                                        <ul>
+                                            <li>ACL settings configured by third-party software</li>
+                                            <li>ACL settings beginning with <em>custom_</em></li>
+                                        </ul>
+	                                    <li> If step 3 fails, the system resets all options in the <em>Basic Editor</em>. </li>
+	                                    <li> If step 4 fails, the system disables all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>. </li>
+
+	                                </ol>
+	                            </div>
+	                            <div class="resetdocs" style="display;" id="progressive-up2date_help">
+	                    <br />
+	                    <strong>Update the installed Exim configuration to the minimum version required by this version of cPanel &amp; WHM.</strong><br /><br />
+	                    When you select this setting, the system does the following:
+	                                <ol>
+                                        <li> Verifies that the Exim configurtion matches the minimum version required by cPanel &amp; WHM.</li>
+	                                    <li> If step 1 fails (the configuration is not up to date), the system merges the Exim configuration on this server with the cPanel-provided Exim configuration, then installs the result.</li>
+	                                    <li> If step 2 fails, the system resets the manually customized configuration in the <em>ACLs</em> section. </li>
+	                                    <li> If step 3 fails, the system resets all options in the <em>Advanced Editor</em>, except the following: </li>
+                                        <ul>
+                                            <li>ACL settings configured by third-party software</li>
+                                            <li>ACL settings beginning with <em>custom_</em></li>
+                                        </ul>
+	                                    <li> If step 4 fails, the system resets all options in the <em>Basic Editor</em>. </li>
+	                                    <li> If step 5 fails, the system disables all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>. </li>
+	                                </ol>
+	                            </div>
+	                            <div class="resetdocs" style="display;" id="reset_all_help">
+	                    <br />
+	                    <strong> Reset the entire Exim configuration to the default settings provided with cPanel &amp; WHM.</strong><br /><br />
+	                    When you select this setting, the system does the following:
+	                                <ol>
+                                        <li>Resets the manual configuration in the <em>ACLs</em> section. </li>
+	                                    <li>Resets all options in the <em>Advanced Editor</em>, except the following: </li>
+                                        <ul>
+                                            <li>ACL settings configured by third-party software</li>
+                                            <li>ACL settings beginning with <em>custom_</em></li>
+                                        </ul>
+                                        <li>Resets all options in the <em>Advanced Editor</em>, except the options in the <em>ACLs</em> section. </li>
+	                                    <li>Resets all options in the <em>Basic Editor</em>. </li>
+	                                    <li>If requested, this setting will also disable all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>.</li>
+	                                </ol>
+	                            </div>
+
+	                            <div class="resetdocs" style="display;" id="reset_base_acls_help">
+	                    <br />
+	                    <strong>Reset any manually customized data in the <em>ACLs</em> section.</strong><br /><br />
+	                    This setting will reset any manually customized data in the <em>ACLs</em> section.</li>
+	                    <ol><li>If requested, this setting will also disable all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>.</li></ol>
+	                            </div>
+	                            <div class="resetdocs" style="display;" id="reset_custom_inserts_help">
+	                    <br />
+	                    <strong>Reset all <em>Advanced Editor</em> options, except third-party and custom ACLs.</strong><br /><br />
+	                    This setting will reset all Exim configuration file options displayed in the <em>Advanced Editor</em>, except the following:
+	                                <ul>
+	                                    <li>ACL settings configured by third-party software</li>
+	                                    <li>ACL settings beginning with <em>custom_</em> </li>
+	                                </ul>
+	                    <ol><li>If requested, this setting will also disable all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>.</li></ol>
+	                            </div>
+	                            <div class="resetdocs" style="display;" id="disable_custom_acls_help">
+	                    <br />
+	                    <strong>Disable all third-party and custom ACLs.</strong><br /><br />
+	                    This setting will disable all ACL settings configured by third-party software, and all ACL settings beginning with <em>custom_</em>.
+	                            </div>
+	                        </div>
+	                   </td>
+	                </tr>
+	                 <tr>
+	                     <td style="border:0;"></td>
+	                     <td style="border:0;">
+	                        <div id="disable_custom_acls_container" style="display;">
+	                            <input type="checkbox" name="disable_custom_acls" value="1" onClick="check_disable_custom_acls(this);" id="disable_custom_acls"> <label for="disable_custom_acls">Disable third-party and custom ACLs</label>
+	                        </div>
+	                     </td>
+	                 </tr>
+	             </table>
+    <input type="submit" value="Reset" class="btn-primary">
+    </div>
+</div>
+</form>
+<script>
+function check_reset_options(El) {
+    var optVal = El.options[El.selectedIndex].value;
+    document.getElementById(\'disable_custom_acls_container\').style.display = (optVal == "disable_custom_acls" || El.options[El.selectedIndex].value.match(\'progressive\')) ? \'none\' : \'\';
+
+    var elements = YAHOO.util.Dom.getElementsByClassName(\'resetdocs\', \'div\');
+
+
+    for(var i=0;i<elements.length;i++) {
+        elements[i].style.display = elements[i].id == optVal + \'_help\' ? \'\' : \'none\';
+    }
+
+}
+function notify_parent_submit() {
+    if (parent && parent.notify_submit)  {
+        parent.notify_submit(\'reset\',\'Resetting Configuration...\');
+    }
+}
+function check_disable_custom_acls(El) {
+    var elements = YAHOO.util.Dom.getElementsByClassName(\'disable_custom_acls\', \'span\');
+    for(var i=0;i<elements.length;i++) {
+          elements[i].style.display = El.checked ? \'\' : \'none\';
+    }
+}
+
+check_disable_custom_acls(YAHOO.util.Dom.get(\'disable_custom_acls\'));
+check_reset_options(YAHOO.util.Dom.get(\'reset_options\'));
+</script>
+';$context->include('_brick.tmpl',{'bricktitle'=>'Reset Configuration','brickpercent'=>'auto','content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

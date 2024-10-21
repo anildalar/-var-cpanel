@@ -1,0 +1,24 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/delmime.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('delete_mime',$stash->get(['execute',['Mime','delete_mime',{'type'=>$stash->get(['RAW_FORM',['usermime' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['delete_mime',0,'status',0])){$output .= '
+        <div id="mimeTypeRemovedSuccess" class="alert alert-success">
+            <span id="mimeTypeRemoveSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="mimeTypeRemoveSuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The MIME type “[_1]” has been removed.',$stash->get(['FORM',0,'usermime',0])]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div id="mimeTypeRemoveError" class="alert alert-danger">
+            <span id="mimeTypeRemoveErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+              <span id="mimeTypeRemoveErrorMsg" class="alert-message">
+              ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['delete_mime',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('q');&$_tt_filter($output)};$output .= '
+              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '              </span>
+        </div>
+    '}$output .= '
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'mime.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'mime_types','content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

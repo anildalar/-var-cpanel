@@ -1,0 +1,167 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/diskusage/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('has_emailarchive',($stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0])eq 'disable' ? 0 : $stash->get(['CPANEL',0,'CPCONF',0,'emailarchive',0,'html',0])));$output .= '
+
+';$output .= $context->process('_assets/resource_usage_macro.html.tt');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+';$stash->set('resource_usage_key','diskusage');$stash->set('resource_usage_percent_used_to_warn',80);$output .= $context->process('resource_usage_block');$output .= '
+    <p id="descMonitorYourAccount">
+        ';$output .= $stash->get(['locale',0,'maketext',['Monitor your account[output,apos]s available space with the Disk Usage feature. All presented figures are relative to the largest directory.' ]]);$output .= '
+
+        ';if ($stash->get(['ExpVar',0,'expand',['$haspostgres' ]])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Use the [output,url,_1,File Manager,id,_2,target,filemgr] to see usage data for individual files and the [output,url,_3,Manage My Databases,id,_4,target,databases] and [output,url,_5,PostgreSQL,id,_6,target,postgresql] features to see data for individual databases.','../filemanager/index.html','lnkMonitorYourAccountFileManager','../sql/index.html','lnkMonitorYourAccountDatabases','../psql/index.html','lnkMonitorYourAccountPostgreSQL' ]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Use the [output,url,_1,File Manager,id,_2,target,filemgr] to see usage data for individual files and the [output,url,_3,Manage My Databases,id,_4,target,databases] feature to see data for individual databases.','../filemanager/index.html','lnkMonitorYourAccountFileManager','../sql/index.html','lnkMonitorYourAccountPostgreSQL' ]]);$output .= '
+        '}$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/DiskUsage','_blank','lnkMonitorYourAccountForMoreInformation' ]]);$output .= '
+    </p>
+
+    <div id="cjt_pagenotice_container"></div>
+
+    <div class="section">
+        <div id="loading">
+            <img  id="imgLoading" src="';$output .= $stash->get(['theme_magic_url',['/cjt/images/loading.gif' ]]);$output .= '" alt="loading" />
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+        <table id="usage-table" class="table table-condensed usage-table">
+            <thead>
+                <tr>
+                    <th id="lblTableLocation">';$output .= $stash->get(['locale',0,'maketext',['Location' ]]);$output .= '</th>
+                    <th id="lblTableSize">';$output .= $stash->get(['locale',0,'maketext',['Size (MB)' ]]);$output .= '</th>
+                    <th id="lblTableDiskUsage">';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody id="usage-table-body"></tbody>
+        </table>
+    </div>
+
+    <div id="hidden_copy">
+        <p id="descTheseFiguresMayNotReflect">
+            <strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['These figures may not reflect recent changes to your account’s disk usage.' ]]);$output .= '
+            </strong>
+        </p>
+
+        <p id="descDiskUsageTableBelow">';$output .= $stash->get(['locale',0,'maketext',['The Disk Usage table below indicates how much space the directories’ contents use, not how much space the directory itself uses.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Files typically occupy more disk space than their actual size.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This may cause discrepancies between the data you see in the [output,url,_1,File Manager,id,_2,target,filemgr] versus the information you find here.','../filemanager/index.html','lnkDiskUsageTableBelowFileManager' ]]);$output .= '
+        </p>
+    </div>
+
+    <div class="section">
+        <div id="sort_div" style="display:none;">
+            <div id="sort_div_contents">
+                <strong id="lblSortDirectoriesBy">';$output .= $stash->get(['locale',0,'maketext',['Sort directories by:' ]]);$output .= '</strong>
+                <label id="lblSortDivRadName" class="checkbox-inline">
+                    <input id="radName" type="radio" name="dir_sort" checked="checked" onclick="flip_sort(true)" />
+                    &nbsp;';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                </label>
+                <label id="lblSortDivRadUsage" class="checkbox-inline">
+                    <input id="radUsage" type="radio" name="dir_sort" onclick="flip_sort(false)" />&nbsp;
+                    ';$output .= $stash->get(['locale',0,'maketext',['Disk Usage' ]]);$output .= '
+                </label>
+            </div>
+        </div>
+
+        <div id="table_container">
+        </div>
+    </div>
+</div>
+
+
+<script type="text/plain" id="total_disk_usage_template">
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">
+            <div class="total">
+            ';$output .= $stash->get(['locale',0,'maketext',['[_1] MB total disk space used.','{mib}' ]]);$output .= '
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/plain" id="quota_usage_template">
+    <tr>
+        <td>&nbsp;</td>
+        <td colspan="2">
+            <div class="total">
+            ';$output .= $stash->get(['locale',0,'maketext',['[_1] MB quota limit ([_2] MB used).','{limit}','{used}' ]]);$output .= '
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/plain" id="table-row-template">
+    <tr>
+        <td class="directory">{url}</td>
+        <td class="percentage">{usage} MB</td>
+        <td class="usage-bar">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" aria-valuenow="{width}" aria-valuemin="0" aria-valuemax="100" style="width: {width}%;"></div>
+            </div>
+        </td>
+    </tr>
+</script>
+
+<script type="text/plain" id="table-row-template-with-note">
+    <tr>
+        <td class="directory">{url}</td>
+        <td class="percentage">{usage} MB</td>
+        <td class="usage-bar">
+            <div class="usage-background">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{width}" aria-valuemin="0" aria-valuemax="100" style="width: {width}%;"></div>
+                </div>
+            </div>
+            <p class="help-block">{note}</p>
+        </td>
+    </tr>
+</script>
+
+
+<!-- Identical to the above except for “unknown” -->
+<script type="text/plain" id="table-row-unknown-template">
+    <tr class="directory-wrap clearfix">
+        <td class="directory">{url}</td>
+        <td class="percentage">';$output .= $stash->get(['locale',0,'maketext',['unknown' ]]);$output .= '</td>
+        <td class="usage-bar">
+            <div class="usage-background">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="{width}" aria-valuemin="0" aria-valuemax="100" style="width: {width}%;"></div>
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
+
+';$output .= $context->include('diskusage/diskusage_extras.html.tt');$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'disk_usage','page_js'=>$stash->get('js_code'),'include_legacy_stylesheets'=>0,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_scripts'=>['/yui/datasource/datasource.js','js2-min/diskusage/index.js' ],'page_stylesheets'=>['css2-min/diskusage/index.css' ],'content',$output })};$output .= '
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var CONF = {
+        system_has_email_archive : ';$output .= $stash->get(['has_emailarchive',0,'json',0])|| 'null';$output .= ',
+        user_has_email_archive : \'';if ($stash->get(['CPANEL',0,'feature',['emailarchive' ]])){$output .= '1'}$output .= '\'
+    };
+
+    var LEXICON = {
+        not_in_subdir:      \'';$output .= $stash->get(['locale',0,'maketext',['Files in home directory.' ]]);$output .= '\',
+        hidden_subdirs:     \'';$output .= $stash->get(['locale',0,'maketext',['Files in hidden subdirectories.' ]]);$output .= '\',
+        mailing_lists:      \'';$output .= $stash->get(['locale',0,'maketext',['Mailing Lists' ]]);$output .= '\',
+        mailaccounts:       \'';$output .= $stash->get(['locale',0,'maketext',['Email Accounts' ]]);$output .= '\',
+        mailarchives:       \'';$output .= $stash->get(['locale',0,'maketext',['Email Archives' ]]);$output .= '\',
+        mail_note:          \'';$output .= $stash->get(['locale',0,'maketext',['[comment,the star is a footnote]* Contained in the mail directory.' ]]);$output .= '\',
+        mail_excludes_note: \'';$output .= $stash->get(['locale',0,'maketext',['[comment,the star is a footnote]* Excludes email archives.' ]]);$output .= '\',
+        other_usage:        \'';$output .= $stash->get(['locale',0,'maketext',['Other Usage' ]]);$output .= '\',
+        over_quota:         \'';$output .= $stash->get(['locale',0,'maketext',['This account has exceeded its disk quota.' ]]);$output .= '\',
+        warn_quota:         \'';$output .= $stash->get(['locale',0,'maketext',['This account is using more than 90% of its disk quota.' ]]);$output .= '\'
+    };
+
+    var has_postgres = Boolean( Number( ';$output .= $stash->get(['ExpVar',0,'expand',['$haspostgres' ],'json',0])|| 'null';$output .= ' ) );
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

@@ -1,0 +1,401 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $stash->get(['Api2',0,'pre_exec',['NVData','get' ]]);$stash->set('nvdata_info',$stash->get(['Api2',0,'exec',['NVData','get',{'names'=>'ignorecharencoding|showhiddenfiles|defaultdir|defaultdirtype|defaultdirdomain','html_encoded'=>'1' }]]));$output .= $stash->get(['Api2',0,'post_exec',['NVData','get' ]]);$stash->set('CacheBuster',$context->plugin('CacheBuster'));$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['Email','fetchcharmaps' ]]);$stash->set('fetch_char_maps',$stash->get(['Api2',0,'exec',['Email','fetchcharmaps',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','fetchcharmaps' ]]);$output .= '
+
+';if ($stash->get(['CPANEL',0,'feature',['filemanager' ]])){$output .= '
+';$stash->set('VarCache',$context->plugin('VarCache'));if (!$cVC::S{'is_wp_squared'}){$output .= '';$cVC::S{'is_wp_squared'}=$stash->get(['CPANEL',0,'is_server_wp_squared',0])}$output .= '
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    ';$output .= $context->include('_assets/charset.html.tt');$output .= '
+    <title>
+        ';$output .= $stash->get(['locale',0,'maketext',['cPanel File Manager v3' ]]);$output .= '
+    </title>
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+    ';$stash->set(['CPANEL',0,'CPVAR',0,'debug',0],'0');$output .= '
+    <meta name="apple-itunes-app" content="app-id=593289722">
+    <meta name="viewport" content="user-scalable=0">
+    <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['/yui/container/assets/container.css' ]]);$output .= '" />
+    <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['/yui/menu/assets/menu.css' ]]);$output .= '" />
+    <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['/yui/datatable/assets/skins/sam/datatable.css' ]]);$output .= '" />
+    <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['/yui/treeview/assets/skins/sam/treeview.css' ]]);$output .= '" />
+
+    <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap/optimized/css/bootstrap.min.css' ]]);$output .= '" />
+    ';if ($stash->get(['locale_attributes',0,'direction',0])eq 'rtl'){$output .= '
+    <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]]);$output .= '" />
+    '}$output .= '
+    <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/ui-fonts/open_sans/optimized/open_sans.min.css' ]]);$output .= '" />
+    <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/fontawesome/css/all.min.css' ]]);$output .= '" />
+
+    <link type="text/css" rel="stylesheet" href="';$output .= $stash->get(['theme_magic_url',['filemanager/css/tree_styles2_optimized.css' ]]);$output .= '" />
+
+    <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+    <script type="text/javascript" src="';$output .= $stash->get(['CPANEL',0,'get_cjt_url',0]);$output .= '"></script>
+
+    ';$output .= $context->include('_assets/_calendar.html.tt');$output .= '
+
+    <script type="text/javascript">
+        if (!self[\'NVData\']) {
+            NVData={};
+        }
+
+        ';if ($stash->get(['nvdata_info',0,'size',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('nvdata_info');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'nvdata'}=$_tt_value;$output .= '
+                NVData.';$output .= $stash->get(['nvdata',0,'name',0,'html',0]);$output .= ' = unescape(\'';$output .= $stash->get(['nvdata',0,'value',0,'uri',0]);$output .= '\');
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+
+        var LANG = {
+            today: "';$output .= $stash->get(['locale',0,'maketext',['Today' ]]);$output .= '",
+            yesterday: "';$output .= $stash->get(['locale',0,'maketext',['Yesterday' ]]);$output .= '",
+            dir_empty : "';$output .= $stash->get(['locale',0,'maketext',['This directory is empty.' ]]);$output .= '",
+            confirm_download: "';$output .= $stash->get(['locale',0,'maketext',['You are about to download multiple items at once. Are you sure you want to do this?' ]]);$output .= '",
+            auto_detect : "';$output .= $stash->get(['locale',0,'maketext',['(auto-detect)' ]]);$output .= '",
+            detecting_encoding: "';$stash->set('file','{file_html}');$output .= $stash->get(['locale',0,'maketext',['Detecting character encoding for “[_1]” …',$stash->get('file')]]);$output .= '",
+            loading   : "';$output .= $stash->get(['locale',0,'maketext',['Fetching directory contents …' ]]);$output .= '"
+        };
+        var homedir = ';$output .= $stash->get(['ExpVar',0,'expand',['$abshomedir' ],'json',0])|| 'null';$output .= ';
+        var workingdir = ';$output .= $stash->get(['RAW_FORM',0,'dir',0,'json',0])|| 'null';$output .= ' || NVData.defaultdir;
+
+        var showhidden = NVData.showhiddenfiles || null;
+
+        var webprotect_feature =
+            ';if ($stash->get(['CPANEL',0,'feature',['webprotect' ]])){$output .= '
+                true;
+            '}else {$output .= '
+                false;
+            '}$output .= '
+
+        var thisTheme = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'RS',0,'html',0,'json',0])|| 'null';$output .= ';
+        var maindomain = ';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'DNS',0,'html',0,'json',0])|| 'null';$output .= ';
+        var charmaps = [
+            ';if ($stash->get(['fetch_char_maps',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('fetch_char_maps');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                \'';$output .= $stash->get(['hashref',0,'map',0,'html',0]);$output .= '\',
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            \'\'
+        ];
+        charmaps.pop();
+        globalhtmledit=1;
+
+        var HAS_UNZIP = !!+';$output .= $stash->get(['ExpVar',0,'expand',['$hasunzip' ],'json',0])|| 'null';$output .= ';
+        var is_server_type_wp_squared = (';$output .= $cVC::S{'is_wp_squared'};$output .= ') ? true : false;
+    </script>
+
+</head>
+<body class="yui-skin-sam" id="index">
+            <div id="logger" style="z-index: 9999; position: absolute;"></div>
+<div id="top">
+    <div id="topbar" class="navbar navbar-inverse navbar-cpanel clear" role="navigation">
+        <span id="branding" class="navbar-brand">
+            <a id="lnkHeaderHome" href="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= 'index.html">
+                <img id="imgLogo" class="navbar-brand-logo" src="';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]);$output .= 'assets/brand/logo_small.svg" alt="cPanel"  />
+            </a>
+            <span class="brand-name">
+            ';$output .= $stash->get(['locale',0,'maketext',['File Manager' ]]);$output .= '
+            </span>
+        </span>
+        <div id="rightNavArea" class="pull-right">
+            <form class="form-inline search" onsubmit="return false;">
+                <div class="form-group form-group-sm">
+                    <label id="lblSearch" for="searchdir">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '
+                    </label>
+                    <select name="searchdir" id="searchdir" class="form-control input-sm">
+                        <option value="">';$output .= $stash->get(['locale',0,'maketext',['All Your Files' ]]);$output .= '</option>
+                        <option value="public_html">';$output .= $stash->get(['locale',0,'maketext',['Only [asis,public_html]' ]]);$output .= "</option>\n                        <option value=\"\$cwd\">";$output .= $stash->get(['locale',0,'maketext',['Current Directory' ]]);$output .= '</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label id="lblFor" for="searchbox">
+                        ';$output .= $stash->get(['locale',0,'maketext',['for[comment,this is meant to be a horizontal separator of 2 side by side things]' ]]);$output .= '
+                    </label>
+                    <input id="searchbox" type="text" class="form-control input-sm" name="searchbox"/>
+                </div>
+                <div class="form-group">
+                    <input id="btnSearch" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" class="btn btn-sm btn-primary" onclick="dosearch(\'searchdir\',\'searchbox\')" />
+                </div>
+            </form>
+            ';if (!$cVC::S{'is_wp_squared'}){$output .= '
+            <span id="settings" class="topbar-settings">
+                <a id="btnSettings" class="btn btn-sm btn-default" onclick="showPrefs(); return false;" href="javascript:void(0)">
+                    <span class="glyphicon glyphicon-cog"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '
+                </a>
+            </span>
+            '}$output .= '
+        </div>
+    </div>
+    <div id="topnav" class="clear">
+        <ul>
+            <li id="action-newfile" onclick="return actionHandler(\'newfile\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['New File' ]]);$output .= '" class="btn btn-link">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['File' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-newfolder" onclick="return actionHandler(\'newfolder\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['New Folder' ]]);$output .= '" class="btn btn-link">
+                    <span class="glyphicon glyphicon-plus"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Folder' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-copy" onclick="return actionHandler(\'copy\');">
+                <a href="copymove.html.tt" title="';$output .= $stash->get(['locale',0,'maketext',['Copy' ]]);$output .= '" target="_blank" id="actionCopy" class="btn btn-link">
+                    <i class="far fa-copy"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Copy' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-move" onclick="return actionHandler(\'move\');">
+                <a href="copymove.html.tt" title="';$output .= $stash->get(['locale',0,'maketext',['Move File' ]]);$output .= '" target="_blank" id="actionMove" class="btn btn-link">
+                    <span class="glyphicon glyphicon-move"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Move' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-upload" onclick="return actionHandler(\'upload\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-upload"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Upload' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-download" onclick="return actionHandler(\'download\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-download"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Download' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-delete" onclick="return actionHandler(\'delete\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '" class="btn btn-link">
+                    <span class="glyphicon glyphicon-remove"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-restore" onclick="return actionHandler(\'restore\');" class="divider">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '" class="btn btn-link">
+                    <span class="fas fa-undo"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-rename" onclick="return actionHandler(\'rename\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-file"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Rename' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-edit" onclick="return actionHandler(\'edit\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-pencil-alt"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                </a>
+            </li>
+            ';if (!$cVC::S{'is_wp_squared'}){$output .= '
+            <li id="action-htmledit" onclick="return actionHandler(\'htmledit\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['HTML Editor' ]]);$output .= '" class="btn btn-link">
+                    <i class="far fa-edit"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['HTML Editor' ]]);$output .= '
+                </a>
+            </li>
+            '}$output .= '
+            <li id="action-chmod" onclick="return actionHandler(\'chmod\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Change Permissions' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-key"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Permissions' ]]);$output .= '
+                </a>
+            </li>
+            <li class="divider" id="action-view" onclick="return actionHandler(\'view\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '" class="btn btn-link">
+                    <i class="fas fa-eye"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-extract" onclick="return actionHandler(\'extract\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Extract' ]]);$output .= '" class="btn btn-link">
+                    <i class="glyphicon glyphicon-resize-full"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Extract' ]]);$output .= '
+                </a>
+            </li>
+            <li id="action-compress" onclick="return actionHandler(\'compress\');">
+                <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Compress' ]]);$output .= '" class="btn btn-link">
+                    <i class="glyphicon glyphicon-resize-small"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Compress' ]]);$output .= '
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    </div>
+</div>
+
+<div id="subleft">
+    <div class="path">
+        <div class="input-group">
+              <span class="input-group-addon">
+                  <span id="imgHome" class="fas fa-home"></span>
+              </span>
+              <input id="location" type="text" class="form-control">
+              <span class="input-group-btn">
+                <button id="btnGo" class="btn btn-default" type="button" onclick="dirnav();">';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '</button>
+              </span>
+        </div>
+    </div>
+
+    <div id="main">
+        <div id="content">
+            <form name="mainForm" action="javascript:;">
+                <div class="newsItem">
+                    <div id="expandcontractdiv" class="clear">
+                        <button type="button" onclick="RootFileTree.collapseAll()" id="collapseAll" class="btn btn-default btn-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Collapse All' ]]);$output .= '
+                        </button>
+                    </div>
+                    <div id="treeScroller">
+                        <div style="text-decoration: none;" id="treeContainer">
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="footerContainer">
+            <div id="footer">
+                <p>&nbsp;</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="subright">
+   <div id="midtoolbar" class="clear">
+        <div id="srtoolbar">
+           <ul>
+               <li id="action-home" onclick="return actionHandler(\'home\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <span class="fas fa-home"></span>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-navup" onclick="return actionHandler(\'navup\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="fas fa-level-up-alt"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Up One Level' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-navback" onclick="return actionHandler(\'navback\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="fas fa-arrow-left"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Back' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-navnext" onclick="return actionHandler(\'navnext\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="fas fa-arrow-right"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Forward' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-refresh" onclick="return actionHandler(\'refresh\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="fas fa-sync"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Reload' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-selectall" onclick="return actionHandler(\'selectall\');">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="far fa-check-square"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Select All' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-unselectall" onclick="return actionHandler(\'unselectall\');" class="divider">
+                   <a href="javascript:void(0)" class="btn btn-link">
+                       <i class="far fa-square"></i>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Unselect All' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-viewtrash" onclick="return actionHandler(\'viewtrash\');">
+                   <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['View Trash' ]]);$output .= '" class="btn btn-link">
+                       <span class="glyphicon glyphicon-trash"></span>
+                       ';$output .= $stash->get(['locale',0,'maketext',['View Trash' ]]);$output .= '
+                   </a>
+               </li>
+               <li id="action-emptytrash" onclick="return actionHandler(\'emptytrash\');">
+                   <a href="javascript:void(0)" title="';$output .= $stash->get(['locale',0,'maketext',['Empty Trash' ]]);$output .= '" class="btn btn-link">
+                       <span class="glyphicon glyphicon-trash"></span>
+                       ';$output .= $stash->get(['locale',0,'maketext',['Empty Trash' ]]);$output .= '
+                   </a>
+               </li>
+           </ul>
+        </div>
+    </div>
+    <div id="filesarea">
+    </div>
+</div>
+
+';$output .= $context->include('popups/changeperms.html.tt');$output .= '
+';$output .= $context->include('popups/edit.html.tt');$output .= '
+';$output .= $context->include('popups/compress.html.tt');$output .= '
+';$output .= $context->include('popups/copy.html.tt');$output .= '
+';$output .= $context->include('popups/delete.html.tt');$output .= '
+';$output .= $context->include('popups/emptytrash.html.tt');$output .= '
+';$output .= $context->include('popups/encodingsdisabled.html.tt');$output .= '
+';$output .= $context->include('popups/extract.html.tt');$output .= '
+';if (!$cVC::S{'is_wp_squared'}){$output .= '
+';$output .= $context->include('popups/htmledit.html.tt');$output .= '
+'}$output .= '
+';$output .= $context->include('popups/move.html.tt');$output .= '
+';$output .= $context->include('popups/newfile.html.tt');$output .= '
+';$output .= $context->include('popups/newfolder.html.tt');$output .= '
+';$output .= $context->include('popups/prefs.html.tt');$output .= '
+';$output .= $context->include('popups/rename.html.tt');$output .= '
+';$output .= $context->include('popups/restore.html.tt');$output .= '
+';$output .= $context->include('popups/search.html.tt');$output .= '
+';$output .= $context->include('popups/trash.html.tt');$output .= '
+
+<div id="copyi" class="zOverlay">
+    <img src="../images/symbol-add.gif">
+</div>
+
+<div id="filesi" class="zOverlay">
+    ';$output .= $stash->get(['locale',0,'maketext',['[quant,_1,file,files,No files]','1' ]]);$output .= '
+</div>
+
+<iframe id="downloadbox" name="downloadbox" src="" style="width:0px;height:0px;border:0">
+</iframe>
+
+<div class="zOverlay">
+    <form id="actionform" action="" target="_blank" method="get">
+        <input type="hidden" name="file" id="actionform_file" />
+        <input type="hidden" name="fileop" id="actionform_fileop" />
+        <input type="hidden" name="dir" id="actionform_dir" />
+        <input type="hidden" name="dirop" id="actionform_dirop" />
+        <input type="hidden" name="charset" id="actionform_charset" />
+        <input type="hidden" name="file_charset" id="actionform_temp_charset" />
+        <input type="hidden" name="baseurl" id="actionform_baseurl" />
+        <input type="hidden" name="basedir" id="actionform_basedir" />
+    </form>
+</div>
+<div id="select" style="padding:0px;margin:0px;opacity:0.4;filter:progid:DXImageTransform.Microsoft.Alpha(opacity=40);filter=alpha(opacity=40);position:absolute;float:left;z-index:3000;left:1px;top:1px;background-color:#aaf;border: solid 2px #33c;display:none;">&nbsp;</div>
+
+<script type="text/javascript">
+    if (typeof LANG === "undefined") {
+        LANG = {};
+    }
+
+    LANG.tooMany = "';$output .= $stash->get(['locale',0,'maketext',['You may only edit one file at a time.' ]]);$output .= '";
+    LANG.tooFew  = "';$output .= $stash->get(['locale',0,'maketext',['You must first select a file to edit.' ]]);$output .= '";
+    LANG.notValid= "';$output .= $stash->get(['locale',0,'maketext',['You cannot open this file because it is either a directory or a file larger than one megabyte (1 MB). To edit the file, download it and use a local editor.' ]]);$output .= '";
+    LANG.notValidHTML = "';$output .= $stash->get(['locale',0,'maketext',['The HTML editor cannot open the selected file because it is not saved as a .html or .htm file, or because the file is larger than one megabyte (1 MB).' ]]);$output .= '";
+    LANG.notValidType= "';$output .= $stash->get(['locale',0,'maketext',['This file is an invalid file type. Do you still wish to edit this file?' ]]);$output .= '";
+    LANG.rename_conflict = "';$stash->set('file_name','{file}');$output .= $stash->get(['locale',0,'maketext',['File “[_1]” already exists. You must delete or rename the existing file before you can save the current file. You may also specify a different name for the current file.',$stash->get('file_name')]]);$output .= '";
+    LANG.chmod_error= "';$output .= $stash->get(['locale',0,'maketext',['Invalid permission mask. You must enter four digits and each digit must have a value from zero to seven.' ]]);$output .= '";
+</script>
+<script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui-gen/data/data.js' ]]);$output .= '"></script>
+<script type="text/javascript">var MimeTypesIconClasses=';$output .= $context->include('_assets/mime_types_icon_classes.tt',{'generateJSON'=>1 });$output .= '</script>
+<script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/filemanager_optimized.js' ]]);$output .= '"></script>
+
+'}else {$output .= '
+';$output .= do {my$output='';$output .= '
+';$context->include('_assets/master.html.tt',{'feature'=>'filemanager','content',$output })};$output .= '
+'}$output .= '
+
+</body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

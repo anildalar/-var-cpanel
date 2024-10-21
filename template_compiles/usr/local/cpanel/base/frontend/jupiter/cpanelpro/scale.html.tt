@@ -1,0 +1,198 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/cpanelpro/scale.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('full_filename',$stash->get(['RAW_FORM',0,'dir',0]).$stash->get(['RAW_FORM',0,'file',0]));$stash->set('file_info',$stash->get(['execute',['Fileman','get_file_information',{'path'=>$stash->get('full_filename'),'include_mime'=>1 }]]));$output .= $stash->get(['Api1',0,'pre_exec',['ImageManager','hdimension' ]]);$stash->set('hdim_result',$stash->get(['Api1',0,'exec',['ImageManager','hdimension',[$stash->get(['RAW_FORM',0,'dir',0]),$stash->get(['RAW_FORM',0,'file',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['ImageManager','hdimension' ]]);$output .= $stash->get(['Api1',0,'pre_exec',['ImageManager','wdimension' ]]);$stash->set('wdim_result',$stash->get(['Api1',0,'exec',['ImageManager','wdimension',[$stash->get(['RAW_FORM',0,'dir',0]),$stash->get(['RAW_FORM',0,'file',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['ImageManager','wdimension' ]]);$output .= $stash->get(['Api1',0,'pre_exec',['ImageManager','dimensions' ]]);$stash->set('dim_result',$stash->get(['Api1',0,'exec',['ImageManager','dimensions',[$stash->get(['RAW_FORM',0,'dir',0]),$stash->get(['RAW_FORM',0,'file',0])]]]));$output .= $stash->get(['Api1',0,'post_exec',['ImageManager','dimensions' ]]);$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['file_info',0,'status',0])&&!$stash->get(['file_info',0,'data',0,'rawmimetype',0,'match',['^image/(?!svg)\S+$' ]])){$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-mimetype">
+                        ';$output .= $stash->get(['locale',0,'maketext',['You can only perform this operation on raster images.' ]]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    '}elsif (!$stash->get('hdim_result')||!$stash->get('wdim_result')){$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-read %]">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The system cannot read the image’s dimensions.' ]]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+    '}else {$output .= '
+    <div class="section">
+
+        <form name="sff" action="doscale.html">
+            <p id="descFileToScale">
+                ';$output .= $stash->get(['locale',0,'maketext',['We will be scaling “[_1]”.',$stash->get(['full_filename',0,'html',0])]]);$output .= '
+            </p>
+            <p id="descCurrentFileDimensions">
+                ';$output .= $stash->get(['locale',0,'maketext',['Current Dimensions: [_1]',$stash->get('dim_result')]]);$output .= '
+            </p>
+
+            <div class="form-group">
+                <label id="lblNewDimensionsWidth" for="width">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Dimensions:' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <input id="width" type="text" class="form-control" name="width" value="';$output .= $stash->get('wdim_result');$output .= '" size="3" onchange="checkhdim();" />
+                    </div>
+                    <div class="col-xs-1"><span>x</span></div>
+                    <div class="col-xs-2">
+                        <input id="height" type="text" class="form-control" name="height" value="';$output .= $stash->get('hdim_result');$output .= '" size="3" onchange="checkwdim();" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblScalePercentage" for="widthpercent">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Percent' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-2">
+                        <div class="input-group">
+                            <input id="widthpercent" type="text" class="form-control" name="widthpercent" size="3" value="100" onchange="checkwpdim();" />
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-1"><span>x</span></div>
+                    <div class="col-xs-2">
+                        <div class="input-group">
+                            <input id="heightpercent" type="text" class="form-control" name="heightpercent" size="3" value="100" onchange="checkhpdim();" />
+                            <span class="input-group-addon">%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label id="lblKeepAspectRatio">
+                        <input id="ckbKeepAspectRatio" type="checkbox" name="aspect" value="1" checked  />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Keep Aspect Ratio' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+            <div id="apiOutputViewFile">
+
+                ';if ($stash->get(['file_info',0,'status',0])){$output .= '
+                    <h3>
+                        <img src="../mimeicons/';$output .= $stash->get(['file_info',0,'data',0,'mimename',0,'html',0]);$output .= '.png" alt="';$output .= $stash->get(['file_info',0,'data',0,'rawmimetype',0,'html',0]);$output .= '"> ';$output .= $stash->get(['file_info',0,'data',0,'file',0,'html',0]);$output .= '
+                        <small> ';$output .= $stash->get(['locale',0,'maketext',['File Type: [_1]',$stash->get(['file_info',0,'data',0,'rawmimetype',0,'html',0])]]);$output .= ' </small>
+                    </h3>
+                    <div>
+                        <img name="fmfile" src="';$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);$output .= '/viewer/';$output .= $stash->get(['file_info',0,'data',0,'fullpath',0,'uri',0]);$output .= '">
+                    </div>
+                '}else {$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['file_info',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+                        <div class="alert alert-danger" role="alert">
+                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                            <div class="alert-message">
+                                <strong class="alert-title">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                                </strong>
+                                <span class="alert-body">
+                            <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                            </span>
+                        </span>
+                            </div>
+                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}$output .= '
+            </div>
+            <div class="form-group">
+                <div class="checkbox">
+                    <label id="lblRetainCopy">
+                        <input id="ckbRetainCopy" type="checkbox" name="retain" value="1" checked  />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Retain a copy of the old image as:' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';$stash->set('path',$stash->get(['RAW_FORM',0,'dir',0]).'/old-' .$stash->get(['RAW_FORM',0,'file',0]));$stash->set('path',$stash->get(['path',0,'replace',['//','/' ]]));$output .= '
+                        <input id="txtOldImage" type="text" size="70" class="form-control" name="oldimage" value="';$output .= $stash->get(['path',0,'html',0]);$output .= '"  />
+                    </div>
+                </div>
+            </div>
+
+            <input id="hidDirectory" type="hidden" name="dir" value="';$output .= $stash->get(['FORM',0,'dir',0]);$output .= '" />
+            <input id="hidFileName" type="hidden" name="file" value="';$output .= $stash->get(['FORM',0,'file',0]);$output .= '" />
+
+            <div class="form-group">
+                <input id="btnScale" class="btn btn-primary" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Scale Image' ]]);$output .= '"  />
+                <input id="btnReset" class="btn btn-default" type="button" value="';$output .= $stash->get(['locale',0,'maketext',['Reset Dimensions' ]]);$output .= '" onclick="document.sff.reset();imagescale(document.sff.width.value,document.sff.height.value);"  />
+            </div>
+        </form>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'images.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$output .= '
+
+';$context->include('_assets/master.html.tt',{'page_js'=>$stash->get('js_code'),'app_key'=>'images','page_sub_heading'=>$stash->get(['locale',0,'maketext',['Scaler' ]]),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+
+imagescale(document.sff.width.value,document.sff.height.value);
+
+function imagescale(w,h) {
+    document.images.fmfile.width = w;
+    document.images.fmfile.height = h;
+}
+
+parseInt(\'';$output .= $stash->get('sendcontact_success');$output .= '\', 10);
+
+var hdim = parseInt(';$output .= $stash->get('hdim_result');$output .= ');
+
+var wdim = parseInt(';$output .= $stash->get('wdim_result');$output .= ');
+
+function checkhpdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.widthpercent.value = document.sff.heightpercent.value;
+    }
+    document.sff.width.value = (wdim * (document.sff.widthpercent.value/100));
+    document.sff.height.value = (hdim * (document.sff.heightpercent.value/100));
+    imagescale(document.sff.width.value,document.sff.height.value);
+}
+function checkwpdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.heightpercent.value = document.sff.widthpercent.value;
+    }
+    document.sff.width.value = (wdim * (document.sff.widthpercent.value/100));
+    document.sff.height.value = (hdim * (document.sff.heightpercent.value/100));
+    imagescale(document.sff.width.value,document.sff.height.value);
+}
+
+function checkhdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.height.value = (document.sff.width.value * (hdim/wdim));
+    }
+    document.sff.widthpercent.value = ((document.sff.width.value/wdim)*100);
+    document.sff.heightpercent.value = ((document.sff.height.value/hdim)*100);
+    imagescale(document.sff.width.value,document.sff.height.value);
+}
+function checkwdim() {
+    if (document.sff.aspect.checked == true) {
+        document.sff.width.value = (document.sff.height.value * (wdim/hdim));
+    }
+    document.sff.heightpercent.value = ((document.sff.height.value/hdim)*100);
+    document.sff.widthpercent.value = ((document.sff.width.value/wdim)*100);
+    imagescale(document.sff.width.value,document.sff.height.value);
+}
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

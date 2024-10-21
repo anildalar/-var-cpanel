@@ -1,0 +1,44 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/backup/wizard-restore.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ServerRoles',$context->plugin('ServerRoles'));$stash->set('Services',$context->plugin('Services'));$stash->set(['CPANEL',0,'CPVAR',0,'headerimg',0],'../images/tools.gif');$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('can_backup_db',$stash->get(['CPANEL',0,'feature',['mysql' ]])&& $stash->get(['Services',0,'is_service_provided',['mysql' ]]));if ($stash->get(['ServerRoles',0,'is_role_enabled',['MailReceive' ]])){if ($stash->get(['CPANEL',0,'feature',['forwarders' ]])){if ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$stash->set('has_forwarders',1);$stash->set('has_filters',1)}else {$stash->set('has_forwarders',1)}}elsif ($stash->get(['CPANEL',0,'feature',['blockers' ]])){$stash->set('has_filters',1)}}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'feature',['backup' ]])){$output .= '
+        <meta http-equiv="refresh" content="0;url=../index.html" />
+    '}else {$output .= '
+
+        <div id="backup-nav" class="row">
+            <div class="col-xs-12">
+                <h2 id="hdrSteps">';$output .= $stash->get(['locale',0,'maketext',['Steps:' ]]);$output .= '</h2>
+                <ol>
+                    <li id="tabBackupRestore" class="one"><a href="wizard.html" id="backupRestore"><span>';$output .= $stash->get(['locale',0,'maketext',['Back Up or Restore' ]]);$output .= '</span></a></li>
+                    <li id="tabFullPartial" class="two"><span class="current">';$output .= $stash->get(['locale',0,'maketext',['Select Restore Type' ]]);$output .= '</span></li>
+                    <li id="tabRestore" class="three"><span>';$output .= $stash->get(['locale',0,'maketext',['Restore' ]]);$output .= '</span></li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="br-wrap" class="row">
+
+            <div id="br-content-wide" class="col-xs-12">
+                <h2 id="hdrRestoreType">';$output .= $stash->get(['locale',0,'maketext',['Select Restore Type' ]]);$output .= '</h2>
+                <p id="descRestoreType">';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to select what to restore.' ]]);$output .= '</p>
+                ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['FileStorage' ]])){$output .= '                    <a href="wizard-restore-type.html?type=home" class="btn btn-default" id="btnHomeDirectory">';$output .= $stash->get(['locale',0,'maketext',['Home Directory' ]]);$output .= '</a>
+                '}$output .= '                ';if ($stash->get('can_backup_db')){$output .= '
+                    <a href="wizard-restore-type.html?type=db" class="btn btn-default" id="btnDatabases">';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '</a>
+                '}$output .= '
+                ';if ($stash->get('has_forwarders')){$output .= '
+                    <a href="wizard-restore-type.html?type=forwarder" class="btn btn-default" id="btnForwarders">';$output .= $stash->get(['locale',0,'maketext',['Email Forwarders' ]]);$output .= '</a>
+                '}$output .= '
+                ';if ($stash->get('has_filters')){$output .= '
+                    <a href="wizard-restore-type.html?type=filter" class="btn btn-default" id="btnFilters">';$output .= $stash->get(['locale',0,'maketext',['Email Filters' ]]);$output .= '</a>
+                '}$output .= '
+                </ul>
+            </div>
+
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'wizard.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'backup_wizard','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_stylesheets'=>['css2-min/backup.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

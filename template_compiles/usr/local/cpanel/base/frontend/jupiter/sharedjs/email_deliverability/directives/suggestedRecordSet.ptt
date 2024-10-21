@@ -1,0 +1,48 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sharedjs/email_deliverability/directives/suggestedRecordSet.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="record-set">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-group">
+                <label>
+                    <span id="{{::parentID}}_recordSet_label" ng-bind="label"></span>
+                    <span id="{{::parentID}}_recordSet_zoneTypeLabel" ng-bind="recordZoneType" class="label label-info"></span>
+                </label>
+            </div>
+            <div class="form-group" ng-if="recordsLoaded && !record">
+                <callout callout-type="info"><em ng-bind="noRecordMessage"></em></callout>
+            </div>
+            <div class="form-group" ng-if="recordsLoaded && record">
+                <copy-field label="';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '" id="{{::parentID}}_recordSet_name" text="nameText"></copy-field>
+                <copy-field label="';$output .= $stash->get(['locale',0,'maketext',['Value' ]]);$output .= '" id="{{::parentID}}_recordSet_value" text="valueText">
+
+                    <span id="{{::parentID}}_viewSelector" class="change-view" ng-if="splitable && !!valueText && valueText.length > 255">
+                        <label for="{{::parentID}}_dkim_style">';$output .= $stash->get(['locale',0,'maketext',['View:' ]]);$output .= '</label>
+                        <div class="btn-group btn-group-xs">
+                            <a class="btn btn-default" href="javascript:void()" ng-click="toggleSplitMode()" ng-class="{ active: splitMode === \'full\' }"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Full view displays the entire record. This is useful for providers who will automatically split the record.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Full' ]]);$output .= '</a>
+                            <a class="btn btn-default" href="javascript:void()" ng-click="toggleSplitMode()" ng-class="{ active: splitMode === \'split\' }"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Split view divides the record in 255-character parts. This is useful for providers who will not automatically split the record.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Split' ]]);$output .= '</a>
+                        </div>
+                    </span>
+
+                    <a
+                        ng-if="!hideExtras && recordType === \'spf\'"
+                        href="#/manage/spf?domain={{ :: domainName | htmlSafeString}}"
+                        class="btn btn-sm btn-link">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Customize' ]]);$output .= '
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    </a>
+
+                    <a
+                        ng-if="!hideExtras && recordType === \'dkim\' && valueText"
+                        href="#/manage/dkim?domain={{ :: domainName | htmlSafeString}}"
+                        class="btn btn-sm btn-link">
+                            ';$output .= $stash->get(['locale',0,'maketext',['View the Private Key' ]]);$output .= '
+                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                    </a>
+
+                </copy-field>
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

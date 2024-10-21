@@ -1,0 +1,94 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listsslhosts.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPList',$context->plugin('CPList'));$stash->set('CPIcons',$context->plugin('CPIcons'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('SSL',$context->plugin('SSL'));$output .= do {my$output='';$stash->set('ONE_DAY',60 * 60 * 24);$stash->set('NEARLY_EXPIRED_WINDOW',30 * $stash->get('ONE_DAY'));$stash->set('MINIMUM_MODULUS_LENGTH',$stash->get(['SSL',0,'DEFAULT_KEY_SIZE',0]));$stash->set('floor',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'n' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= do {my$output='';my$_tt_filter=$context->filter('format',['%d' ])|| $context->throw($context->error);$output .= $stash->get('n');&$_tt_filter($output)}};$stash=$context->delocalise();die $@ if $@;return$output});$stash->set('ceiling',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'n' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= do {my$output='';my$_tt_filter=$context->filter('format',['%d' ])|| $context->throw($context->error);$output .= $stash->get('n')+ 1;&$_tt_filter($output)}};$stash=$context->delocalise();die $@ if $@;return$output});if (!$stash->get(['sslvhosts',0,'size',0])){$output .= '
+    <h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['SSL Hosts' ]]);$output .= '</h3>
+    <div>
+        ';$output .= $stash->get(['locale',0,'maketext',['There are no secure sites configured on your server!' ]]);$output .= '
+    </div>
+'}else {$output .= '
+    ';$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+    <div id="cjt_pagenotice_container"></div>
+
+    <section>
+    <h3 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Installed SSL Hosts' ]]);$output .= '</h3>
+    <div class="tblActionBar form-inline">
+    </div>
+    <div class="table-responsive">
+        <table role="table" class="table table-hover table-bordered table-condensed table-striped sortable" id="domainlist">
+        <tr>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Domains' ]]);$output .= '</th>
+            ';if ($stash->get('httpd_is_enabled')){$output .= '                <th>';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['IP Address Type' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Is Primary Website on IP Address?' ]]);$output .= '</th>
+                <th>';$output .= $stash->get(['locale',0,'maketext',['Is [output,acronym,SNI,Server Name Indication] Required?' ]]);$output .= '</th>
+            '}$output .= '            <th>';$output .= $stash->get(['locale',0,'maketext',['Document Root' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Owner' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Issuer' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Expires' ]]);$output .= '</th>
+            <th>';$output .= $stash->get(['locale',0,'maketext',['Key Type' ]]);$output .= '</th>
+            <th class="sorttable_nosort">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+        </tr>
+
+        ';$stash->set('sslvhosts',$stash->get(['sslvhosts',0,'sort',['host' ]]));$stash->set('now',$stash->get(['CPANEL',0,'now',0]));$stash->set('warn_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['warning',16 ]]));$stash->set('error_icon',$stash->get(['CPIcons',0,'get_common_icon_markup',['error',16 ]]));$stash->set('expiration_dates',$stash->get(['sslvhosts',0,'ofeach',['crt' ],'ofeach',['not_after' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('expiration_dates');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'expdate'}=$_tt_value;$stash->set(['expiration_dates',0,$stash->get(['loop',0,'index',0]),0],$stash->get('expdate')+ 1);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('expiration_dates',$stash->get(['locale',0,'get_lookup_hash_of_multi_epoch_datetime',[$stash->get('expiration_dates'),'date_format_short' ]]));$stash->set('expire_error_msg',$stash->get(['locale',0,'maketext',['The certificate has expired.' ]]));$stash->set('self_signed_warn_msg',$stash->get(['locale',0,'maketext',['Self-signed certificates will cause browser warnings.' ]]));$stash->set('key_critical_msg',$stash->get(['locale',0,'maketext',['A key that does not use [asis,ECDSA] or at least [numf,_1]-bit [asis,RSA] does not provide adequate security.',$stash->get('MINIMUM_MODULUS_LENGTH')]]));$stash->set('self_signed',$stash->get(['locale',0,'maketext',['[comment]- Self Signed -[comment,The decorating dashes are meant to visually distinguish this label from a certificate authority name.]' ]]));$stash->set('expire_today',$stash->get(['locale',0,'maketext',['The certificate will expire today.' ]]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sslvhosts');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hostdata'}=$_tt_value;$stash->set('host',$stash->get(['hostdata',0,'sslhost',0]));$stash->set('user',$stash->get(['hostdata',0,'user',0]));$stash->set('ip',$stash->get(['hostdata',0,'ip',0]));$stash->set('iptype',$stash->get(['hostdata',0,'iptype',0]));$stash->set('docroot',$stash->get(['hostdata',0,'docroot',0]));if (!$stash->get(['user',0,'defined',0])){$stash->set('user','nobody')}$stash->set('issuer',$stash->get('self_signed'));$stash->set('issuer_warn',1);if (!$stash->get(['hostdata',0,'crt',0,'is_self_signed',0])){$stash->set('issuer',$stash->get(['hostdata',0,'crt',0,'issuer.organizationName',0]));$stash->set('issuer_warn',0)}$stash->set('not_after',$stash->get(['hostdata',0,'crt',0,'not_after',0]));$stash->set('expiration_time',$stash->get('not_after')+ 1);$stash->set('expired',($stash->get('not_after')< $stash->get('now')));$stash->set('nearly_expired',(($stash->get('not_after')- $stash->get('now'))< $stash->get('NEARLY_EXPIRED_WINDOW')));if (!$stash->get('expired')&& $stash->get('nearly_expired')){$stash->set('daysUntilExpiration',$stash->get(['ceiling',[($stash->get('not_after')- $stash->get('now'))/ $stash->get('ONE_DAY')]]));$stash->set('expires_today',($stash->get(['floor',[($stash->get('not_after')- $stash->get('now'))/ $stash->get('ONE_DAY')]])eq 0 ? (($stash->get('not_after')- $stash->get('now'))% $stash->get('ONE_DAY'))> 0 : 0));if ($stash->get('expires_today')){$stash->set('expire_warn_msg',$stash->get('expire_today'))}else {$stash->set('expire_warn_msg',$stash->get(['locale',0,'maketext',['Your certificate will expire in [quant,_1,day,days].',$stash->get('daysUntilExpiration')]]))}}$stash->set('domains_list',[$stash->get('host')]);$stash->set('domains_list',$stash->get(['domains_list',0,'merge',[$stash->get(['hostdata',0,'aliases',0,'unique',0])],'sort',0]));$output .= '
+        <tr>
+            <td class="column column-domains">
+                <ul>
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'domain'}=$_tt_value;$output .= '                    <li>
+                        ';if ($stash->get(['hostdata',0,'crt',0,'domains',0])&& $stash->get(['SSL',0,'validate_domains_lists_have_match',[$stash->get(['hostdata',0,'crt',0,'domains',0]),$stash->get('domain')]])){$stash->set('cert_icon','fa-lock');$stash->set('cert_class','working')}else {$stash->set('cert_icon','fa-unlock');$stash->set('cert_class','not-working')}$output .= '                        ';if ($stash->get(['domain',0,'match',['[*]' ]])){$output .= '                            <span class="';$output .= $stash->get('cert_class');$output .= '">
+                                <i class="fas ';$output .= $stash->get('cert_icon');$output .= '"></i>
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '
+                            </span>
+                        '}else {$output .= '                            <a target="_blank" href="https://';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '" class="';$output .= $stash->get('cert_class');$output .= '" rel="noreferrer">
+                                <i class="fas ';$output .= $stash->get('cert_icon');$output .= '"></i>
+                                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('domain');&$_tt_filter($output)};$output .= '
+                            </a>
+                        '}$output .= '                    </li>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </ul>
+            </td>
+            ';if ($stash->get('httpd_is_enabled')){$output .= '                <td class="column column-ip">';$output .= $stash->get('ip');$output .= '</td>
+                <td class="column column-iptype">';$output .= $stash->get('iptype');$output .= '</td>
+                <td class="column column-is-primary">';$output .= $stash->get(['hostdata',0,'is_primary_on_ip',0])? $stash->get(['locale',0,'maketext',['Yes' ]]): $stash->get(['locale',0,'maketext',['No' ]]);$output .= '</td>
+                <td class="column column-sni">';$output .= $stash->get(['hostdata',0,'needs_sni',0])? $stash->get(['locale',0,'maketext',['Yes' ]]): $stash->get(['locale',0,'maketext',['No' ]]);$output .= '</td>
+            '}$output .= '            <td class="column column-docroot">';$output .= $stash->get(['docroot',0,'html',0,'breakOn',['_' ]]);$output .= '</td>
+            <td class="column column-user">';$output .= $stash->get('user');$output .= '</td>
+            <td class="column column-issuer">
+                <div>
+                ';$output .= $stash->get('issuer');$output .= '
+                ';if ($stash->get('issuer_warn')){$output .= $stash->get('warn_icon');$output .= '<div class="warn hidden"><span>';$output .= $stash->get('self_signed_warn_msg');$output .= '</span></div>'}$output .= '
+                </div>
+            </td>
+            <td class="column column-expires" sorttable_customkey="';$output .= $stash->get('expiration_time');$output .= '">
+                <div>
+                ';$output .= $stash->get(['expiration_dates',0,$stash->get('expiration_time'),0]);$output .= '
+                ';if ($stash->get('expired')){$output .= '
+                    ';$output .= $stash->get('error_icon');$output .= '<div class="error hidden"><span>';$output .= $stash->get('expire_error_msg');$output .= '</span></div>
+                '}elsif ($stash->get('nearly_expired')){$output .= '
+                    ';$output .= $stash->get('warn_icon');$output .= '<div class="warn hidden"><span>';$output .= $stash->get('expire_warn_msg');$output .= '</span></div>
+                '}$output .= '
+                </div>
+            </td>
+            <td class="column column-modulus"';if ($stash->get(['hostdata',0,'key_critical',0])){$output .= ' title="';$output .= $stash->get('key_critical_msg');$output .= '"'}$output .= '>
+                <div>
+                ';$output .= $stash->get(['hostdata',0,'key_type_label',0,'html',0]);$output .= '
+                ';if ($stash->get(['hostdata',0,'key_critical',0])){$output .= '
+                    ';$output .= $stash->get('error_icon');$output .= '<div class="error hidden"><span>';$output .= $stash->get('key_critical_msg');$output .= '</span></div>
+                '}$output .= '
+                </div>
+            </td>
+            <td class="column column-action">
+                <a href=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts2/dodelsslhost?host=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get('host');&$_tt_filter($output)};$output .= '\' class=\'btn btn-link\'>
+                    <span class="glyphicon glyphicon-trash"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                </a>
+                ';if ($stash->get('httpd_is_enabled')&&!$stash->get(['hostdata',0,'is_primary_on_ip',0])&&!$stash->get(['host',0,'match',['[*]' ]])){$output .= '                    <a href=\'javascript:void(0)\' data-servername="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('host');&$_tt_filter($output)};$output .= '" class=\'make-primary-button btn btn-link\'>
+                        <span class=\'fas fa-star\'></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Make Primary' ]]);$output .= '
+                    </a>
+                '}$output .= '            </td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </table>
+    </div>
+    </section>
+
+    ';$output .= $context->process('_ajaxapp_footer.tmpl');$output .= '
+    <script>
+        ';$output .= $context->insert('/usr/local/cpanel/base/yui/event-mouseenter/event-mouseenter-min.js');$output .= "\n\n        var EVENT = YAHOO.util.Event;\n        var DOM = YAHOO.util.Dom;\n\n        /**\n         * Initialize the page\n         */\n        var initialize = function() {\n\n            /**\n             * Initialize the handlers for the warning and errors.\n             * \@param  {HTMLElement} el Node to attach the handers too.\n             */\n            var install_handlers = function(el) {\n                var parent = el.parentNode.parentNode;\n                EVENT.on(parent, \"mouseenter\", function(e) {\n                    var thatEl = el;\n                    if (DOM.hasClass(thatEl, \"hidden\")) {\n                        DOM.removeClass(thatEl, \"hidden\");\n                    }\n                });\n\n                EVENT.on(parent, \"mouseleave\", function(e) {\n                    var thatEl = el;\n                    if (!DOM.hasClass(thatEl, \"hidden\")) {\n                        DOM.addClass(thatEl, \"hidden\");\n                    }\n                });\n\n                EVENT.on(parent, \"click\", function(e) {\n                   var thatEl = el;\n                   hasHidden = DOM.hasClass(thatEl, \"hidden\");\n                    if (!hasHidden) {\n                        DOM.addClass(thatEl, \"hidden\");\n                    } else {\n                        DOM.removeClass(thatEl, \"hidden\");\n                    }\n                });\n            };\n\n            DOM.getElementsByClassName ( \"error\" , \"div\" , \"domainlist\" , install_handlers );\n            DOM.getElementsByClassName ( \"warn\" , \"div\" , \"domainlist\" , install_handlers );\n        };\n\n        EVENT.onDOMReady(initialize);\n    </script>\n"}$context->include('master_templates/master.tmpl',{'app_key'=>'manage_ssl_hosts','theme'=>'bootstrap','include_legacy_stylesheets'=>1,'scripts'=>'/js/sorttable.js','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

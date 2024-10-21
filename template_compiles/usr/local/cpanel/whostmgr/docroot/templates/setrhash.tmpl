@@ -1,0 +1,110 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/setrhash.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if (!$stash->get(['data',0,'key',0])){$output .= '<h2>';$output .= $stash->get(['locale',0,'maketext',['Unable to retrieve key.' ]]);$output .= '</h2>
+'}else {$output .= '<style type="text/css">
+.main-content {
+    margin-left: 20px;
+}
+.bold {
+    font-weight: bold
+}
+textarea,
+.code {
+    font-family: monospace;
+}
+.access-key-area {
+    float: left;
+    margin-right: 50px;
+}
+form {
+    width: 500px;
+    float: left;
+    overflow: visible;
+}
+
+.inner-description {
+    font-style: italic;
+    margin-top: 0;
+}
+#access-hash-deprecation-notice {
+    border-radius: 4px;
+    width: 100%;
+    display: table;
+}
+.alert-row {
+    display: table-row;
+    border: 1px solid #f1c40f;
+    width: 100%;
+    border-radius: 4px;
+}
+html[dir=rtl] .alert-text {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+html[dir=ltr] .alert-text {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.alert-text {
+    display: table-cell;
+    background-color: #FCF8E1;
+    border: 1px solid #f1c40f;
+    vertical-align: middle;
+    padding: 8px;
+}
+html[dir=ltr] .alert-icon {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+}
+html[dir=rtl] .alert-icon {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.alert-icon {
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #f1c40f;
+    padding: 8px;
+    border: 1px solid #f1c40f;
+}
+</style>
+<p class="description">
+';$output .= $stash->get(['locale',0,'maketext',['Remote access keys allow you to log in to your server without the need for a password.' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['You can use a remote access key (or access hash) to authenticate with WHM’s [output,url,_1,remote API,target,_2] or DNS clustering features.','https://go.cpanel.net/whmapi1','_blank' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['If you use a remote billing solution, you will need to set up a remote access key on all of your [asis,cPanel] [output,amp] WHM servers.' ]]);$output .= '
+';$output .= $stash->get(['locale',0,'maketext',['Read our [output,url,_1,documentation,target,_2] for specific information about how to use remote access keys.','https://go.cpanel.net/AuthAPI','_blank' ]]);$output .= '
+</p>
+
+<div id="access-hash-deprecation-notice">
+    <div class="alert-row">
+        <div class="alert-icon"><img src="/images/notice-warning.png" alt="warning icon" /></div>
+        <div class="alert-text">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] This interface is [output,url,_1,deprecated,_2] and will be removed in a future release.','https://go.cpanel.net/depplan',{'target'=>'_blank' }]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['We strongly suggest that you use the [output,url,_1,_2] interface.',($stash->get('cp_security_token').'/scripts7/apitokens/home'),$stash->get(['locale',0,'maketext',['Manage [asis,API] Tokens' ]])]]);$output .= '
+        </div>
+    </div>
+</div>
+
+<div class="main-content">
+    <h4>';$output .= $stash->get(['locale',0,'maketext',['Access Key For User “[output,class,_1,_2]”',$stash->get(['data',0,'user',0]),'code' ]]);$output .= '</h4>
+    <div class="access-key-area">
+        <textarea name="key" cols="35" rows="29" readonly="readonly">';$output .= $stash->get(['data',0,'key',0,'html',0]);$output .= '</textarea>
+    </div>
+
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/setrhash" method="post">
+        <fieldset>
+        <legend>';$output .= $stash->get(['locale',0,'maketext',['Generate a new access key.' ]]);$output .= '</legend>
+            <input type="hidden" name="regen" value="1">
+            <p class="inner-description">
+                ';$output .= $stash->get(['locale',0,'maketext',['You may generate a new access key here.' ]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['When you generate a new remote access key, you will invalidate any existing remote access key. If you generate a new key, systems that use the existing key will no longer be able to connect.' ]]);$output .= '
+            </p><button type="submit" class="btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Generate New Key' ]]);$output .= '</button>
+        </fieldset>
+    </form>
+    <br style="clear: both" />
+    <h4>';$output .= $stash->get(['locale',0,'maketext',['Access Key Signature' ]]);$output .= '</h4>
+    <div class="access-key-area">
+        <textarea name="key" cols="50" rows="1" readonly="readonly">';$output .= $stash->get(['data',0,'signature',0,'html',0]);$output .= '</textarea>
+    </div>
+</div>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'remote_access_key','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

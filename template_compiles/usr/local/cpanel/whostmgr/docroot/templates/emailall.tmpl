@@ -1,0 +1,154 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/emailall.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));if ($stash->get(['data',0,'resellers',0])){$stash->set('header',$stash->get(['locale',0,'maketext',['Email All Resellers' ]]));$stash->set('breadcrumburl','/scripts/emailall?resellers=1')}else {$stash->set('header',$stash->get(['locale',0,'maketext',['Email All Users' ]]));$stash->set('breadcrumburl','/scripts/emailall')}$output .= do {my$output='';$output .= '<p class="description">
+    ';if ($stash->get(['data',0,'resellers',0])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Send an email to all resellers.' ]]);$output .= '
+    '}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Send an email to all registered users.' ]]);$output .= '
+    '}$output .= '
+</p>
+<form class="layout-medium"
+    action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/doemailall"
+    method="POST">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="fromname">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Sender Name' ]]);$output .= '
+                </label>
+                <input id="fromname"
+                    name="fromname"
+                    class="form-control"
+                    type="text"
+                    value="';$output .= $stash->get(['data',0,'default_name',0,'html',0]);$output .= '" />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <img id="fromname_error" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="frommail">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Sender Email' ]]);$output .= '
+                </label>
+                <input id="frommail"
+                    name="fromemail"
+                    class="form-control"
+                    type="text"
+                    value="';$output .= $stash->get(['data',0,'default_email',0,'html',0]);$output .= '" />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <img id="frommail_error" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="subject">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Subject' ]]);$output .= '
+                </label>
+                <input id="subject"
+                    name="subject"
+                    class="form-control"
+                    type="text"
+                    value="Updates"
+                    size="50" />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <img id="subject_error" />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label for="mailbody">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Message Body' ]]);$output .= '
+                </label>
+                <textarea id="mailbody"
+                    name="body"
+                    class="form-control"
+                    cols="80"
+                    rows="25"></textarea>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <img id="mailbody_error" />
+            </div>
+        </div>
+    </div>
+    <input type="hidden" name="resellers" value="';$output .= $stash->get(['data',0,'resellers',0,'html',0]);$output .= '" />
+    ';if ($stash->get(['data',0,'resellers',0])eq ''){$output .= '
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <label>
+                    <input id="sendall"
+                        name="sendall"
+                        type="checkbox"
+                        value="1" />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Send Email to Resellers[output,chr,8217] Customers as well.' ]]);$output .= '
+                </label>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            </div>
+        </div>
+    </div>
+    '}$output .= '    <div class="form-group">
+        <div class="row">
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <input id="submit-button"
+                    type="submit"
+                    class="btn btn-primary"
+                    value="';$output .= $stash->get(['locale',0,'maketext',['Send' ]]);$output .= '" />
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            </div>
+        </div>
+    </div>
+</form>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get('header'),'app_key'=>$stash->get('app_key'),'theme'=>'bootstrap','breadcrumburl'=>$stash->get('breadcrumburl'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/styles/legacy_yui_styles.min.css' ]])],'content',$output })};$output .= '<style type="text/css">
+    .cjt_validation_error {
+        visibility: hidden;
+    }
+    .validation_errors_div  {
+        padding: 10px;
+    }
+    .validation_errors_ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        margin-top: 18px;
+        padding-left: 15px;
+        color: #ec3f41;
+        border: none;
+        box-shadow: none;
+    }
+    .validation_errors_ul li:before {
+        margin: 0 5px 0 -15px;
+        content: "×";
+    }
+    .mask {
+        -moz-opacity: 0.5;
+        opacity: 0.5;
+        filter: alpha(opacity=50);
+        background-color: #000000;
+    }
+</style>
+<script type="text/javascript">
+//<![CDATA[
+    var init = function() {
+        var validation = new CPANEL.validate.validator("';$output .= $stash->get('header');$output .= '");
+        validation.add(\'fromname\',\'min_length(%input%,1)\', "';$output .= $stash->get(['locale',0,'maketext',['Please enter a sender name.' ]]);$output .= '");
+        validation.add(\'frommail\', \'email\', "';$output .= $stash->get(['locale',0,'maketext',['Please enter a valid return email address.' ]]);$output .= '");
+        validation.add(\'subject\', \'min_length(%input%,1)\', "';$output .= $stash->get(['locale',0,'maketext',['Please enter a subject.' ]]);$output .= '");
+        validation.add(\'mailbody\', \'min_length(%input%,1)\', "';$output .= $stash->get(['locale',0,'maketext',['The email body must not be empty.' ]]);$output .= '");
+        validation.attach();
+
+        CPANEL.validate.attach_to_form("submit-button", validation);
+    };
+    YAHOO.util.Event.onDOMReady(init);
+//]]>
+</script>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

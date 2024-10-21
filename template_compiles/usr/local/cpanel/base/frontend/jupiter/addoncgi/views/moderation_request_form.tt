@@ -1,0 +1,77 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/moderation_request_form.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('cancel_url',$stash->get(['to_uri',[$stash->get('environment'),$stash->get('actionlessuri')]]));$output .= '
+
+<p>
+    ';$output .= $stash->get(['locale',0,'maketext',['Your hosting provider moderates installations for the [_1] [asis,cPAddon].',$stash->get(['module',0,'display_app_name',0,'html',0])]]);$output .= '
+</p>
+
+';if ($stash->get(['data',0,'moderation_request_limit_reached',0])){$output .= '
+<div class="alert alert-warning">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message" id="maximum-moderation-limit">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+        ';$output .= $stash->get(['locale',0,'maketext',['You exceeded your maximum [asis,Addon Moderation Request] limit. You cannot install any additional moderated [asis,cPAddons] until your hosting provider processes your previous requests.' ]]);$output .= '
+    </div>
+</div>
+'}elsif ($stash->get(['data',0,'module_moderation_request_limit_reached',0])){$output .= '
+<div class="alert alert-warning">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message" id="maximum-moderation-limit-for-this-addon">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+        ';$output .= $stash->get(['locale',0,'maketext',['You exceeded the maximum [asis,cPAddon Moderation Request] limit for [_1]. You cannot install any additional instances of this [asis,cPAddon] until your hosting provider processes your previous requests.',$stash->get(['module',0,'display_app_name',0,'html',0])]]);$output .= '
+    </div>
+</div>
+'}elsif (!$stash->get(['data',0,'form_valid',0])){$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message" id="validationErrors">
+        <p>';$output .= $stash->get(['locale',0,'maketext',['You entered one or more invalid items:' ]]);$output .= '</p>
+        <ul>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'error_messages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+                <li>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('message');&$_tt_filter($output)};$output .= '</li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </ul>
+        </div>
+    </div>
+'}else {$output .= '
+<p>
+    ';$output .= $stash->get(['locale',0,'maketext',['You must request approval from your hosting provider below:' ]]);$output .= '
+</p>
+
+<form id="cpaddonssendmodreqform" action="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'script_name',0]);&$_tt_filter($output)};$output .= '" method="post">
+    <input type="hidden" name="debug" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'debug',0]);&$_tt_filter($output)};$output .= '" />
+    <input type="hidden" name="verbose" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'verbose',0]);&$_tt_filter($output)};$output .= '" />
+    <input type="hidden" name="addon" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['module',0,'name',0]);&$_tt_filter($output)};$output .= '" />
+    <input type="hidden" name="action" value="sendmodreq" />
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['form',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;if ($stash->get('key')eq 'addon-0'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get('key')eq 'action-0'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get('key')eq 'action'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get('key')eq 'request_note'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get('key')eq 'license'){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+    <input type="hidden" name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('key');&$_tt_filter($output)};$output .= '" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['form',0,$stash->get('key'),0]);&$_tt_filter($output)};$output .= '" id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('key');&$_tt_filter($output)};$output .= '" />
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    <p>
+        <textarea name="request_note" cols="80" rows="5" class="form-control" id="txtModerationRequest">';$output .= $stash->get(['locale',0,'maketext',['[comment,Keep the word “Please” in this string. This is not an instruction to the user, but a request that will be emailed from the user to the server administrator.]Please install the “[_1]” [asis,cPAddon] with the settings that I provided.',$stash->get(['module',0,'display_app_name',0,'html',0])]]);$output .= ('' .'
+
+');$output .= $stash->get(['locale',0,'maketext',['(Provide more information if needed)' ]]);$output .= '</textarea>
+    </p>
+    ';if ($stash->get(['data',0,'moderated_request_count',0])> 0){$output .= '
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['You have [_1] pending [numerate,_1,request,requests] for the [_2] [asis,cPAddon].',$stash->get(['data',0,'moderated_request_count',0,'html',0]),$stash->get(['module',0,'display_app_name',0,'html',0])]]);$output .= '
+    </p>
+    '}$output .= '
+    <p>
+        <button type="submit" class="btn btn-primary" id="btnSubmitModerationRequest">
+            <i id="spinner-submit" style="display: none" class="fas fa-sync fa-spin"></i>
+            <span class="button-label">
+                ';$output .= $stash->get(['locale',0,'maketext',['Submit Request' ]]);$output .= '
+            </span>
+        </button>
+        <a href="';$output .= $stash->get('cancel_url');$output .= '" class="btn btn-link" id="btnCancelModerationRequest">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </a>
+    </p>
+</form>
+'}$output .= '
+
+';if (!$stash->get(['environment',0,'called_from_root',0])){$stash->set('back_url',$stash->get(['to_uri',[$stash->get('environment')]]));$output .= '
+<p align="center">
+    [<a id="main" href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('back_url');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Main' ]]);$output .= '</a>]
+</p>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

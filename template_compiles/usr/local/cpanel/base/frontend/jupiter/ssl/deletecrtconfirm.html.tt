@@ -1,0 +1,59 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/deletecrtconfirm.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('cert_id',$stash->get(['RAW_FORM',['id' ]]));$stash->set('cert_param_missing',$stash->get('cert_id')eq '');if (!$stash->get('cert_param_missing')){$stash->set('show_cert',$stash->get(['execute',['SSL','show_cert',{'id'=>$stash->get('cert_id')}]]));if ($stash->get('show_cert')&& $stash->get(['show_cert',0,'status',0])){$stash->set('show_cert_success',1)}}$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2 id="hdrDelete">
+        ';$output .= $stash->get(['locale',0,'maketext',['Delete Certificate' ]]);$output .= '
+    </h2>
+
+    ';if ($stash->get('host_not_set')){$output .= '
+    <div id="noidError" class="alert alert-danger">
+        <span id="noidErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+        <div id="noidErrorMsg" class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['You did not provide the “[_1]” in the request.','id' ]]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <p>';$output .= $stash->get(['locale',0,'maketext',['Are you sure you wish to delete the certificate “[output,strong,_1]”?',$stash->get(['show_cert',0,'data',0,'details',0,'friendly_name',0,'html',0])]]);$output .= '</p>
+    <p id="certificate_info"></p>
+    <p>
+       <a id="btnDelete" class="btn btn-primary" href="deletecrt.html?id=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',['id' ]]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Delete Certificate' ]]);$output .= '</a>
+       <a id="lnkCancel"
+            class="btn btn-link"
+            href="crts.html">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </a>
+    </p>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'crts.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$output .= $context->process('ssl/ssl_certificate_parse.html.tt');$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+';$output .= $context->insert('sharedjs/asn1_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['base/cjt/ajaxapp-min.js','base' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslwidgets_optimized.js');$output .= '
+';$output .= $context->insert('cjt/ssl-min.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/sslwidgets_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslwidgets_optimized.js');$output .= '
+
+';$stash->set('lexicon',{'Processing …'=>$stash->get(['locale',0,'maketext',['Processing …' ]])});$output .= '
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+
+';if ($stash->get('show_cert_success')&& $stash->get(['show_cert',0,'data',0,'cert',0])){$output .= '
+(function() {
+
+    var PAGE = {
+        data : {
+            certificate : ';$output .= $stash->get(['show_cert',0,'data',0,'cert',0,'json',0]);$output .= "\n        }\n    };\n\n    /**\n      * Initialize the page\n      *\n      * \@method initialize\n      * \@private\n      */\n    var initialize = function() {\n        var panel = DOM.get(\"certificate_info\");\n        panel.innerHTML = ";$output .= $stash->get(['locale',0,'maketext',['Processing …' ],'json',0]);$output .= ';
+        CPANEL.widgets.ssl.showCertificateParse(PAGE.data.certificate, panel);
+    }
+
+    // Register startup events.
+    YAHOO.util.Event.onDOMReady(initialize);
+}());
+'}$output .= '
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

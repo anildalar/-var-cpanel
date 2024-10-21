@@ -1,0 +1,88 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/edit_apache_mem_limits.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+';$output .= do {my$output='';$output .= '
+<div id="content">
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This tool calculates and sets new [asis,Apache] memory limits. Setting a process memory limit increases the stability of your server, but may reduce performance slightly. This limit applies to each [asis,Apache] process, not to all [asis,Apache] processes combined.' ]]);$output .= '</p>
+    ';if ($stash->get(['data',0,'is_httpd_present',0])){$output .= '
+    <form action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" name="apacheRLimitsForm" method="post">
+        <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['[asis,RLimitMEM] Settings' ]]);$output .= '</h4>
+        <div class="section-body">
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <label class="radio-inline">
+                            ';if ($stash->get(['data',0,'current_rlimit',0])eq 0){$output .= '
+                            <input type="radio" name="newRLimitMem" id="rLimitMemEnabled" value="enabled" />
+                            '}else {$output .= '
+                            <input type="radio" name="newRLimitMem" id="rLimitMemEnabled" value="enabled" checked="checked" />
+                            '}$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '
+                        </label>
+                        <label class="radio-inline">
+                            ';if ($stash->get(['data',0,'current_rlimit',0])eq 0){$output .= '
+                            <input type="radio" name="newRLimitMem" id="rLimitMemDisabled" value="disabled" checked="checked" />
+                            '}else {$output .= '
+                            <input type="radio" name="newRLimitMem" id="rLimitMemDisabled" value="disabled" />
+                            '}$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6">
+                                <div class="input-group">
+                                    ';if ($stash->get(['data',0,'current_rlimit',0])eq 0){$output .= '
+                                    <input type="text" name="newRLimitMemValue" id="newRLimitMemValue" class="form-control" value="';$output .= $stash->get(['data',0,'current_rlimit',0]);$output .= '" disabled="disabled" />
+                                    '}else {$output .= '
+                                    <input type="text" name="newRLimitMemValue" id="newRLimitMemValue" class="form-control" value="';$output .= $stash->get(['data',0,'current_rlimit',0]);$output .= '" />
+                                    '}$output .= '
+                                    <span class="input-group-addon">';$output .= $stash->get(['locale',0,'maketext',['MB' ]]);$output .= '</span>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-6">
+                                <div id="newRLimitMemValue_error"></div>
+                            </div>
+                        </div>
+                        <p class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Current setting is [numf,_1] MB.',$stash->get(['data',0,'current_rlimit',0])]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['We recommend [numf,_1] MB.',$stash->get(['data',0,'calculated_rlimit',0])]]);$output .= '
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="restart_apache" id="restart_apache" checked="checked" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['Restart [asis,Apache]?' ]]);$output .= '
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary" name="btnSave" id="btnSave" value="1">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+            </div>
+        </div>
+    </form>
+    <script>
+        window.PAGE = window.PAGE || {};
+        window.PAGE.max_mem = ';$output .= $stash->get(['data',0,'max_mem',0,'json',0]);$output .= ';
+    </script>
+    '}else {$output .= '
+        <div class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+                <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['The [asis,Apache] configuration file is missing. You must have this file to make changes to the memory limits. You can use the [output,url,_1,_2] to generate a new configuration file.',$stash->get('cp_security_token').'/scripts2/rebuildhttpdconf','Rebuild Apache Configuration page' ]]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+</div>
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Configure [asis,Apache] [asis,RLimits]' ]]),'breadcrumburl'=>'/scripts2/edit_apache_mem_limits','theme'=>'bootstrap','include_legacy_stylesheets'=>1,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

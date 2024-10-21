@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/errlog.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('MAX_VISIBLE_LINES',10);$stash->set('main_domain',$stash->get(['CPANEL',0,'CPDATA',0,'DNS',0]));$stash->set('logs',[{'name'=>'error_log','title'=>$stash->get(['locale',0,'maketext',['Latest web server error log messages:' ]]),'result'=>$stash->get(['execute',['Stats','get_site_errors',{'domain'=>$stash->get('main_domain'),'log'=>'error' }]]),'no_logs'=>$stash->get(['locale',0,'maketext',['No recent web server errors exist for your domain: [_1]',$stash->get('main_domain')]])},{'name'=>'suexec_log','title'=>$stash->get(['locale',0,'maketext',['Latest [asis,suEXEC] event log messages:' ]]),'result'=>$stash->get(['execute',['Stats','get_site_errors',{'domain'=>$stash->get('main_domain'),'log'=>'suexec' }]]),'no_logs'=>$stash->get(['locale',0,'maketext',['No recent [asis,suEXEC] events exist for your domain: [_1]',$stash->get('main_domain')]])}]);$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p id="descErrlog" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['The function displays the most recent entries in your website’s error logs in reverse chronological order. You can use this information to find broken links or problems with missing files.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2].','https://go.cpanel.net/Errors','_blank' ]]);$output .= '
+    </p>
+    <div class="section">
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('logs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'log'}=$_tt_value;$output .= '
+            <h2>';$output .= $stash->get(['log',0,'title',0,'html',0]);$output .= '</h2>
+
+            ';if (!$stash->get(['log',0,'result',0,'status',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['log',0,'result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+                    <div class="alert alert-danger" role="alert">
+                        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                        <div class="alert-message">
+                            <strong class="alert-title">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                            </strong>
+                            <span class="alert-body">
+                                <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                                    ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+
+                ';$stash->set('data_size',$stash->get(['log',0,'result',0,'data',0,'size',0]));if (!$stash->get('data_size')){$output .= '
+                    <div class="alert alert-info" role="alert">
+                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                        <div class="alert-message">
+                            <span class="alert-body">
+                                <span id="no-';$output .= $stash->get(['log',0,'name',0,'html',0]);$output .= '-errors">
+                                    ';$output .= $stash->get(['log',0,'no_logs',0]);$output .= '
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                '}else {$output .= '
+                    <textarea id="';$output .= $stash->get(['log',0,'name',0,'html',0]);$output .= '-errors" class="form-control" cols="120" rows="';$output .= $stash->get('data_size')< $stash->get('MAX_VISIBLE_LINES')? $stash->get('data_size'): $stash->get('MAX_VISIBLE_LINES');$output .= '" readonly>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['log',0,'result',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'line'}=$_tt_value;$stash->set('entry',$stash->get(['line',0,'entry',0,'html',0]));$output .= $stash->get(['loop',0,'last',0])? $stash->get('entry'): $stash->get('entry').('' .'
+');;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                    </textarea>
+                '}$output .= '
+            '}$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    </div>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'errors','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

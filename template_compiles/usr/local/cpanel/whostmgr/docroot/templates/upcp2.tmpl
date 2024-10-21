@@ -1,0 +1,56 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/upcp2.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '<div class="row">
+<div class="col-xs-12">
+    <div class="form-group">
+        <div class="progress">
+            <div id="progress_bar"
+                class="progress-bar"
+                role="progressbar"
+                aria-valuenow="2"
+                aria-valuemin="0"
+                aria-valuemax="100"
+                style="min-width: 2em; width: 0%;">0%</div>
+        </div>
+        <p id="status_text" class="help-block">Starting upgrade.</p>
+    </div>
+';if ($stash->get(['data',0,'already_running',0])){$output .= '
+    <div class="alert alert-info" id="alreadyRunningNotice">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['There is another upcp process running, and you are watching the log from the existing process.' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+    <div class="alert alert-info" id="defaultNotice">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['Click on log output below to enable/disable autoscrolling.' ]]);$output .= '
+        </div>
+    </div>
+
+';$output .= '<iframe width="100%" id="upcp_output" class="pre-scrollable" src="';$output .= $stash->get('cp_security_token');$output .= '/cgi/process_tail.cgi?process=Upcp"></iframe>
+</div>
+</div>
+
+<script type="text/javascript">
+var status_field = document.getElementById("status_text");
+var progress_bar = document.getElementById("progress_bar");
+
+function update_ui_status(new_status) {
+    status_field.textContent = new_status;
+}
+
+function update_percent(new_percent) {
+    progress_bar.style.width = new_percent + "%";
+    progress_bar.textContent = new_percent + "%";
+    progress_bar.setAttribute("aria-valuenow", new_percent);
+    if (new_percent === 100) {
+        update_ui_status("';$output .= $stash->get(['locale',0,'maketext',['Upgrade complete.' ]]);$output .= '");
+        progress_bar.className += " progress-bar-success";
+    }
+}
+</script>
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade to Latest Version' ]]),'breadcrumburl'=>'/scripts2/upcpform','theme'=>'bootstrap','extrastyle'=>'
+.progress {
+    margin-bottom: 0;
+}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,145 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/changehostname.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'update_in_progress',0])){$output .= '
+<div class="alert alert-warning">
+    <span class="glyphicon glyphicon-exclamation-sign"></span>
+    <div class="alert-message">
+        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong> ';$output .= $stash->get(['locale',0,'maketext',['Your previous attempt to change the hostname is still running. Please wait until it completes.' ]]);$output .= '
+    </div>
+</div>
+'}$output .= '
+
+<div class="col-xs-12 col-sm-6">
+    <div id="brick2" class="panel panel-default">
+        <div class="panel-heading">
+            ';$output .= $stash->get(['locale',0,'maketext',['Instructions' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            ';$output .= $stash->get(['locale',0,'maketext',['It is important to choose a hostname that you will not be using for any account.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Do not choose a potential service subdomain as a hostname (for example, [asis,cpanel.example.com] or [asis,whm.example.com]).' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You should choose something that will be socially acceptable, as it will appear in all mail headers.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Choose a hostname that is 60 characters or fewer.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Your hostname must be a [output,acronym,FQDN,Fully Qualified Domain Name].' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['In English, a hostname should consist of a name and a domain name.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['All valid hostnames should have 2 dots in them.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Hostnames should never begin with “[asis,www]”.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Hostnames should also not begin with a digit, nor end with a hyphen (“-”).' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Only use lowercase, Latin-script letters in hostnames.' ]]);$output .= '
+        </div>
+    </div>
+';if ($stash->get(['data',0,'display_virtual_warn',0])){$output .= '
+    <div id="brick6" class="panel panel-info">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['Note for cloud hosted or virtualized servers' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            ';$output .= $stash->get(['locale',0,'maketext',['To provision and rename servers, many cloud hosting providers use utilities that may interfere with this function.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This conflict may cause hostname configuration issues and result in a locked [asis,cPanel amp() WHM] license.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['For more information about this problem and instructions for how to resolve it, read [output,url,_1,our Knowledgebase article,target,_blank].','https://go.cpanel.net/cloudhostname' ]]);$output .= '
+        </div>
+    </div>
+'}$output .= '
+    <div id="brick1" class="panel panel-info">
+        <div class="panel-heading">
+            ';$output .= $stash->get(['locale',0,'maketext',['Current Hostname' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            ';$output .= $stash->get(['data',0,'hostname',0]);$output .= '
+        </div>
+    </div>
+    <div id="brick5" class="panel panel-primary">
+        <div class="panel-heading">
+            <div>';$output .= $stash->get(['locale',0,'maketext',['Change Hostname' ]]);$output .= '</div>
+        </div>
+        <div class="panel-body">
+            <form class="layout-medium"
+                  onSubmit="return checkhostname()"
+                  action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/dochangehostname"
+                  name="fqdnform">
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <label for="txtHostname">
+                                ';$output .= $stash->get(['locale',0,'maketext',['New Hostname:' ]]);$output .= '
+                            </label>
+
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6">
+                            <input size="60" maxlength="255" type="text" name="hostname" id="txtHostname" class="form-control" value="';$output .= $stash->get(['data',0,'hostname',0]);$output .= '" ';if ($stash->get(['data',0,'update_in_progress',0])){$output .= 'disabled=\'disabled\''}$output .= '>
+                        </div>
+                        <div class="col-xs-12 col-sm-6">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" id="btnChange" ';if ($stash->get(['data',0,'update_in_progress',0])){$output .= 'disabled=\'disabled\''}$output .= '>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="col-xs-12 col-sm-6">
+    <div id="brick3" class="panel panel-default">
+        <div class="panel-heading">
+            ';$output .= $stash->get(['locale',0,'maketext',['Sample Hostnames' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            <ul>
+                <li>fred.em445webhosting.com</li>
+                <li>gravity.mywebhostnew.com</li>
+                <li>rr4.rrhosting.com</li>
+            </ul>
+        </div>
+    </div>
+    <div id="brick4" class="panel panel-default">
+        <div class="panel-heading">
+            <div>';$output .= $stash->get(['locale',0,'maketext',['Ten Randomly Generated Hostnames' ]]);$output .= '</div>
+        </div>
+        <div class="panel-body">
+            <ul>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'samplehostnames',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$output .= '
+                <li>';$output .= $stash->get('host');$output .= '</li>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+function checkhostname() {
+    var hostname = document.fqdnform.hostname.value;
+    if (hostname == \'\') {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot be null.' ]]);$output .= '");
+        return false;
+    }
+    if (hostname.indexOf(\' \') > -1) {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot contain any spaces.' ]]);$output .= '");
+        return false;
+    }
+    if (hostname.indexOf(\'.\') == -1) {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname must contain at least two periods.' ]]);$output .= '");
+        return false;
+    }
+    if (hostname.length < 8) {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot be less than eight characters.' ]]);$output .= "\");\n        return false;\n    }\n    var pattern = /(?:^[.]|[.]\$)/;\n    if (hostname.match(pattern) != null) {\n        alert(\"";$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot begin or end with a period.' ]]);$output .= "\");\n        return false;\n    }\n    var pattern = /(?:^[-]|[-]\$)/;\n    if (hostname.match(pattern) != null) {\n        alert(\"";$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot begin or end with a hyphen.' ]]);$output .= '");
+        return false;
+    }
+    var pattern = /^www[.]/i;
+    if (hostname.match(pattern) != null) {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname cannot begin with “[asis,www]”.' ]]);$output .= '");
+        return false;
+    }
+    var hostnamearray = hostname.split(\'.\');
+    if (hostnamearray.length < 3) {
+        alert("';$output .= $stash->get(['locale',0,'maketext',['Your hostname must contain at three unique sections split by periods.' ]]);$output .= '");
+        return false;
+    }
+    return true;
+}
+</script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'change_hostname','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

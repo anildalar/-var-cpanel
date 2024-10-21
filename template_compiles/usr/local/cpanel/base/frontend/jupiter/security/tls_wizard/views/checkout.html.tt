@@ -1,0 +1,117 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/security/tls_wizard/views/checkout.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="list-container" >
+    <h3>{{ cert_count_title() }}</h3>
+    <div class="row" ng-repeat="provider in providers" class="checkout-provider" ng-class="{\'checkout-provider-current\':get_current_step().provider == provider.name}">
+        <div class="col-md-12 checkout-provider-header-row">
+            <div class="content-wrapper">
+                <h4 class="checkout-provider-header">{{ get_purchases_title(provider) }}</h4>
+            </div>
+        </div>
+        <div
+            ng-repeat-start="step in get_steps(provider.name)"
+            ng-if="step == \'login\'"
+            ng-class="get_step_classes(provider,\'login\')">
+            <div class="content-wrapper">
+                <div class="checkout-step-inner">
+                    <div class="content-wrapper">
+                        <div class="checkout-step-icon"><span class=\'fas fa-sign-in-alt fa-5x\'></span></div>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Redirecting to the authentication server to log in.' ]]);$output .= '</span>
+                        <span class=\'fas fa-check fa-2x checkout-step-success-icon\'></span>
+                        <span class=\'fas fa-spinner fa-spin fa-2x pull-right  checkout-step-pending-icon\'></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="step == \'send_cart_items\'" ng-class="get_step_classes(provider,\'send_cart_items\')">
+            <div class="content-wrapper">
+                <div class="checkout-step-inner">
+                    <div class="content-wrapper">
+                        <div class="checkout-step-icon"><span class=\'fas fa-shopping-cart fa-5x\'></span></div>
+                        <span>{{ sending_items_msg() }}</span>
+                        <span class=\'fas fa-check fa-2x pull-right checkout-step-success-icon\'></span>
+                        <span class=\'fas fa-spinner fa-spin fa-2x pull-right checkout-step-pending-icon\'></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="step == \'checkout\'" ng-class="get_step_classes(provider,\'checkout\')">
+            <div class="content-wrapper">
+                <div class="checkout-step-inner">
+                    <div class="content-wrapper">
+                        <div class="checkout-step-icon"><span class=\'fas fa-external-link-alt fa-5x\'></span></div>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Redirecting you to the store to complete your purchase.' ]]);$output .= '</span>
+                        <span class=\'fas fa-check fa-2x pull-right checkout-step-success-icon\'></span>
+                        <span class=\'fas fa-spinner fa-spin fa-2x pull-right checkout-step-pending-icon\'></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-if="step == \'payment_callback\'" ng-class="get_step_classes(provider,\'payment_callback\')">
+            <div class="content-wrapper">
+                <div class="checkout-step-inner">
+                    <div class="content-wrapper">
+                        <div class="checkout-step-icon"><span class=\'fas fa-cloud-download-alt fa-5x\'></span></div>
+                        <span>{{ starting_polling_msg() }}</span>
+                        <span class=\'fas fa-check fa-2x pull-right checkout-step-success-icon\'></span>
+                        <span class=\'fas fa-spinner fa-spin fa-2x pull-right checkout-step-pending-icon\'></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div ng-repeat-end ng-if="step == \'checkout_complete\'" ng-class="get_step_classes(provider,\'checkout_complete\')">
+            <div class="content-wrapper">
+                <div class="checkout-step-inner">
+                    <div class="content-wrapper">
+                        <div class="checkout-step-icon"><span class=\'fas fa-check fa-5x\'></span></div>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Purchase Complete.' ]]);$output .= '</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script id="user-mismatch-modal" type="text/plain">
+    <div class="panel panel-default user-mismatch">
+        <div class="panel-heading">';$output .= $stash->get(['locale',0,'maketext',['Store User Mismatch' ]]);$output .= '</div>
+        <div class="panel-body">
+            ';$output .= $stash->get(['locale',0,'maketext',['You logged in to “[_1]” as an account that does not have privileges on order item [asis,ID] “[_2]”.','{{html_escape(provider.display_name)}}','{{html_escape(order_id)}}' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['You can log in to “[_1]” as another user or cancel the checkout.','{{html_escape(provider.display_name)}}' ]]);$output .= '
+        </div>
+
+        <div class="btn-group panel-btn-group">
+            <button type="submit" class="btn btn-primary col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                ng-click="dismiss_modal(); go_to_login()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Log In' ]]);$output .= '
+            </button>
+            <button type="button" class="btn btn-default col-xs-6 col-sm-6 col-md-6 col-lg-6"
+                ng-click="dismiss_modal(); go_to_purchase_page()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+            </button>
+        </div>
+    </div>
+</script>
+
+<style>
+    /* Shamelessly copied from whostmgr/docroot/templates/market_provider_manager/views/editProducts.ptt */
+
+    .panel.user-mismatch {
+        margin: 0;
+        border: 0;
+    }
+
+    .panel.user-mismatch .panel-btn-group {
+        width: 100%;
+    }
+
+    .panel.user-mismatch .panel-btn-group > .btn:first-child {
+        border-left: 0;
+    }
+
+    .panel.user-mismatch .panel-btn-group > .btn:last-child {
+        margin-left: 0;
+        border-right: 0;
+        border-left: 0;
+    }
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

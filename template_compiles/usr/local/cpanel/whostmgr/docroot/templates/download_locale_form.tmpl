@@ -1,0 +1,30 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/download_locale_form.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= "\n<link rel=\"stylesheet\" type=\"text/css\" href=\"/yui/container/assets/container.css\" /><script type=\"text/javascript\" src=\"/yui/utilities/utilities.js\"></script><script type=\"text/javascript\" src=\"/yui/container/container.js\"></script>\n<script type=\"text/javascript\" src=\"/js/popupbox.js\"></script>\n<style type=\"text/css\">\n        .info_box {\n            background-color:#FFFFCC;\n            border:1px solid #666666;\n            margin-left:20px;\n            padding:5px;\n            width:500px;\n        }\n        .info_box_transparent {\n            font-weight: bold;\n            border:1px solid #666666;\n            margin-left:20px;\n            padding:5px;\n            width:500px;\n        }\n        .highlight{\n        width:550px;\n        }\n        .externalLink:after {\n            font-family: \"Font Awesome 5 Free\";\n            font-weight: 600;\n            content: \"\\f35d\";\n            display: inline-block;\n            padding: 0 3px 0 3px;\n        }\n        .help-block {\n            padding-top: 10px;\n        }\n\n\n</style>\n\n<div class=\"uniform_page_padding\">\n";if ($stash->get(['data',0,'formref',0,'error',0])eq 1){$output .= '<p class="error">';$output .= $stash->get(['locale',0,'maketext',['Invalid locale. Choose one from the menu below.' ]]);$output .= '</p>'}$output .= '
+';if ($stash->get(['data',0,'formref',0,'error',0])eq 2){$output .= '<p class="error">';$output .= $stash->get(['locale',0,'maketext',['Export failed. Try again.' ]]);$output .= '</p>'}$output .= '
+
+<p>';$output .= $stash->get(['locale',0,'maketext',['You can download a locale in XML or XLF format for offline editing. It includes entries for all files in root, including addons, and in all themes. The download will include any local edits.' ]]);$output .= '</p>
+
+<div class="highlight">
+<form method="post" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/download_locale">
+ <strong>';$output .= $stash->get(['locale',0,'maketext',['Choose Locale' ]]);$output .= '</strong>
+   <select name="locale">
+     ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+   </select>
+    <div class="help-block">
+        ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+    </div>
+  <hr size="1" class="hr" />
+  <input type="submit" class="btn-primary" name="dumper-format" value="';$output .= $stash->get(['locale',0,'maketext',['Download XML' ]]);$output .= '" />
+  <input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Download XLF' ]]);$output .= '" />
+</form>
+</div>
+
+';if ($stash->get(['Whostmgr',0,'checkacl',['locale-edit' ]])){$output .= '
+<p>';$output .= $stash->get(['locale',0,'maketext',['You can upload the edited XML file via the [output,url,_1,Locale XML Upload] feature or via the command line script `/scripts/locale_import --import=path/to/your/file.xlf` (pass it --help for more information).',$stash->get('cp_security_token').'/scripts9/upload_locale_form' ]]);$output .= '</p>
+'}$output .= '
+<p><em>Note:</em>
+ <br />
+ <p>If a locale seems to be missing you may need to <a href="javascript:display_quickpopupbox(\'Compiling locale databases\',\'<iframe height=90% width=100% src=';$output .= $stash->get('cp_security_token');$output .= '/cgi/build_locale_databases.pl />\')">rebuild the locale databases</a> in order to bring it into the system.<p>
+</p>
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'locale_xml_download','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

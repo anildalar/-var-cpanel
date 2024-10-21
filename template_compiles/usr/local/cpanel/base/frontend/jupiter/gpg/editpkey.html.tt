@@ -1,0 +1,147 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/gpg/editpkey.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('export_key_call',$stash->get(['execute',['GPG','export_secret_key',{'key_id'=>$stash->get(['RAW_FORM',0,'key',0]),'passphrase'=>$stash->get(['RAW_FORM',0,'passphrase',0])}]]));$stash->set('export_key','');if ($stash->get(['export_key_call',0,'status',0])){$stash->set('export_key',$stash->get(['export_key_call',0,'data',0,'key_data',0]))}$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    <div class="section">
+        ';if ($stash->get(['export_key_call',0,'status',0])){$output .= '
+            <div class="form-group">
+                <label id="lblPrivateKey">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Private Key' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-lg-6">
+                        <textarea id="txtPrivateKey" cols="80" class="form-control" rows="10" readonly>';$output .= $stash->get('export_key');$output .= '</textarea>
+                    </div>
+                </div>
+            </div>
+        '}elsif ($stash->get(['export_key_call',0,'data',0,'type',0])eq 'Cpanel::Exception::GPG::PassphraseRequired' || $stash->get(['export_key_call',0,'data',0,'type',0])eq 'Cpanel::Exception::GPG::IncorrectPassphrase'){$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-8 col-md-6">
+                    ';if ($stash->get(['export_key_call',0,'data',0,'type',0])eq 'Cpanel::Exception::GPG::IncorrectPassphrase'){$output .= '
+                        <div>
+                            <div class="alert alert-danger" role="alert">
+                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                <div class="alert-message">
+                                    <strong class="alert-title">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                                    </strong>
+                                    <span class="alert-body">
+                                        <span id="incorrectPassphrase">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['You entered an incorrect passphrase. Please try again.' ]]);$output .= '
+                                        </span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    '}$output .= '
+                    <form method="post" id="frmPassphrase">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <label id="lblPassphrase">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Please enter the passphrase for the key “[_1]”.',$stash->get(['FORM',0,'key',0])]]);$output .= '
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input name="passphrase" type="password" class="form-control" id="pwdPassphrase">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <ul class="validation-container hidden" role="alert" id="pwdPassphraseErrorPanel">
+                                        <li class="validation validation-error">
+                                            <i class="fas fa-exclamation-circle" aria-hidden="true"></i>
+                                            <span id="pwdPassphraseErrorPanelRequired" class="validation-message">
+                                                <span>
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['You must enter a passphrase.' ]]);$output .= '
+                                                </span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="btnPassphraseSubmit">
+                            <i class="fas fa-sync fa-fw fa-spin hidden" aria-hidden="true" id="btnPassphraseSubmitSpinner"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '
+                        </button>
+                    </form>
+                </div>
+            </div>
+        '}else {$output .= '
+            <div class="col-xs-12 col-sm-8 col-md-6">
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    <div class="alert-message">
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                            <span id="loadError">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The key failed to load due to an error: [_1]',$stash->get(['export_key_call',0,'errors',0,0,0])]]);$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        '}$output .= '
+    </div>
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'encryption','page_js'=>$stash->get('js_code'),'embed_stylesheets'=>['gpg/editpkey.css' ],'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function(event) {
+        var txtarea = document.getElementById("txtPrivateKey");
+        if (txtarea) {
+            txtarea.addEventListener("click", function (e) {
+                e.target.select();
+            });
+        }
+
+        var passphraseForm = document.getElementById("frmPassphrase");
+        var passphraseInput = document.getElementById("pwdPassphrase");
+        var validationContainer = document.getElementById("pwdPassphraseErrorPanel");
+
+        if(!passphraseInput || !validationContainer || !passphraseForm) {
+            return;
+        }
+
+        passphraseInput.addEventListener("input", _validatePassphrase);
+        passphraseInput.addEventListener("change", _validatePassphrase);
+        passphraseInput.addEventListener("blur", _validatePassphrase);
+
+        function _validatePassphrase(e) {
+            if(passphraseInput.value) {
+                passphraseInput.dataset.valid = "1";
+                validationContainer.classList.add("hidden");
+            }
+            else {
+                delete passphraseInput.dataset.valid;
+                validationContainer.classList.remove("hidden");
+            }
+        }
+
+        passphraseForm.addEventListener("submit", function(e) {
+            _validatePassphrase(e);
+            if( !passphraseInput.dataset.valid ) {
+                e.preventDefault();
+                return;
+            }
+
+            var spinner = document.getElementById("btnPassphraseSubmitSpinner");
+            spinner.classList.remove("hidden");
+
+            var submitButton = document.getElementById("btnPassphraseSubmit");
+            submitButton.setAttribute("disabled", true);
+        });
+    });
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

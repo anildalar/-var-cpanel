@@ -1,0 +1,29 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/tweaksettings.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/dotweaksettings" method="POST">
+<input type="hidden" name="___has_valid_input" value="1">
+';if ($stash->get('update_in_progress')){$output .= '
+
+   <p class="alert_box">';$output .= $stash->get(['locale',0,'maketext',['In order to prevent conflicts, Tweak Settings may not be altered while a [asis,cPanel amp() WHM]® update is in progress.' ]]);$output .= '</p>
+
+'}else {$output .= '
+
+    ';$stash->set('tweakcfg',{'display_label'=>1 });$output .= '    ';$output .= $context->include('_gentweakpage.tmpl');$output .= '    <br />
+        <span class="b2">';$output .= $stash->get(['locale',0,'maketext',['Notes' ]]);$output .= ':</span>
+        <ul>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['The first time you enable a log statistics program, it will take between 24 and 48 hours for the reports to appear in a user’s [asis,cPanel] interface. If the server is under load, it can take longer than 48 hours for the report to appear.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Disabling cPanel features requires a theme which supports dynamic features.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Items prefaced by a warning icon indicate previously missing options which have received the default setting.' ]]);$output .= '</li>
+        </ul>
+    <br />
+    <table class="cellheader">
+        <tr>
+            <td><div>
+                <input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '">
+                </div>
+            </td>
+        </tr>
+    </table>
+    </form>
+
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['css/tweaksettings_optimized.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/assets/skins/sam/tabview.css' ]]),$stash->get(['Whostmgr',0,'find_file_url',['css/_gentweakpage.css' ]])],'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['yui/tabview/tabview.js' ]])],'app_key'=>'tweak_settings','warn_linked_nodes'=>1,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

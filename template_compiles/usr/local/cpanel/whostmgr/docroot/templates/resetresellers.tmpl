@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/resetresellers.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';if ($stash->get(['data',0,'resellers',0,'empty',0])){$output .= '<p>You currently have no resellers. To use this interface, create one or more resellers.</p>
+'}else {$output .= '<table width="100%">
+    <tr>
+';if (!$stash->get(['data',0,'acl_list',0,'empty',0])){$output .= '        <td valign="top">
+
+<form action="../scripts/doresetresellers" method="POST">
+<input type="hidden" name="action" value="applyacls">
+
+<h2>Apply an ACL list to multiple resellers</h2>
+
+<p>Apply this ACL list:</p>
+<div>
+        <select name="acllist">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'acl_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acl_list'}=$_tt_value;$output .= '        <option value="';$output .= $stash->get(['acl_list',0,'acl_list',0]);$output .= '">';$output .= $stash->get(['acl_list',0,'acl_list',0]);$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '       </select>
+</div>
+<p>To these Resellers:</p>
+<div>
+<table class="sortable">
+<tr><th>&nbsp;</th><th>User</th><th>Domain</th></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'resellers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'reseller'}=$_tt_value;$output .= '<tr><td><input type="checkbox" name="reseller-';$output .= $stash->get(['reseller',0,'user',0]);$output .= '" value="1"></td><td>';$output .= $stash->get(['reseller',0,'user',0]);$output .= '</td><td>';$output .= $stash->get(['reseller',0,'domain',0]);$output .= '</td></tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+</div>
+<input type="submit" class="btn-primary" value="Apply">
+</form>
+
+        </td>
+'}$output .= '        <td valign="top">
+
+        <form action="../scripts/doresetresellers" method="POST">
+<input type="hidden" name="action" value="resetpkgperms">
+
+<h2>Reset package permissions to default</h2>
+
+<p class="description">Here you can force a reseller to only use packages they own<br /> This will override any other packages they current have access<br /> to but will not change any packages that are currently being<br /> used on their accounts.</p>
+<p>Select Reseller(s) to reset:</b></p>
+<div>
+<table class="sortable">
+<tr><th>&nbsp;</th><th>User</th><th>Domain</th></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'resellers',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'reseller'}=$_tt_value;$output .= '<tr><td><input type="checkbox" name="reseller-';$output .= $stash->get(['reseller',0,'user',0]);$output .= '" value="1"></td><td>';$output .= $stash->get(['reseller',0,'user',0]);$output .= '</td><td>';$output .= $stash->get(['reseller',0,'domain',0]);$output .= '</td></tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+</div>
+
+<input class="btn-primary" type="submit" value="Reset">
+</form>
+
+        </td>
+    </tr>
+</table>
+'}$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>'/scripts/resetresellers','app_key'=>'reset_resellers','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

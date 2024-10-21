@@ -1,0 +1,86 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/delegatelist.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('full_listname',$stash->get(['RAW_FORM',['email' ]]));$stash->set('listdomain',$stash->get(['full_listname',0,'split',['@' ],1,0]));$stash->set('webmailurl',('http://mail.' .$stash->get('listdomain').'/webmail'));$stash->set('safewebmailurl',$stash->get(['webmailurl',0,'html',0]));$stash->set('delegates',$stash->get(['execute',['Email','get_mailman_delegates',{'list'=>($stash->get('full_listname'))}]]));$stash->set('delegated_users',$stash->get(['delegates',0,'data',0,'delegates',0,'join',[',' ]]));if ($stash->get(['delegates',0,'status',0])){$stash->set('delegate_map',$stash->get(['array_to_hash',[$stash->get(['delegates',0,'data',0,'delegates',0])]]))}$stash->set('all_email_users',$stash->get(['execute',['Email','list_pops' ]]));if ($stash->get(['all_email_users',0,'status',0])){$stash->set('email_users',$stash->get(['array_to_hash',[$stash->get(['all_email_users',0,'data',0]),'email' ]]));$output .= $stash->get(['email_users',0,'delete',[$stash->get(['CPANEL',0,'user',0])]])}$stash->set('sorted_email_users',$stash->get(['email_users',0,'keys',0,'sort',0]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('add_arrow',$stash->get(['locale',0,'is_rtl',0])? '&larr;' : '&rarr;');$stash->set('remove_arrow',$stash->get(['locale',0,'is_rtl',0])? '&rarr;' : '&larr;');$stash->set('securityurl','https://go.cpanel.net/mailmandelegation');$stash->set('safesecurityurl',$stash->get(['securityurl',0,'html',0]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '    ';$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '    <div class="body-content">
+        <h2 id="hdrAdminPrivDelegation">
+            ';$output .= $stash->get(['locale',0,'maketext',['Administrator Privileges Delegation' ]]);$output .= '
+        </h2>
+        <div id="cjt_pagenotice_container"></div>
+        <h3 id="hdrGrantEmail">
+            ';$output .= $stash->get(['locale',0,'maketext',['Grant email users administrative access to the mailing list “[_1]”',$stash->get(['full_listname',0,'html',0])]]);$output .= '
+        </h3>
+        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                <strong>Warning:</strong>
+                ';$output .= $stash->get(['locale',0,'maketext',['Do not delegate mailing list administration to virtual accounts that you do not trust. Delegation will give this virtual user a means by which they could take over the cPanel account. Please use this functionality with care. See [output,url,_1] for more information.',$stash->get('safesecurityurl')]]);$output .= '
+            </div>
+        </div>
+        ';if ($stash->get(['email_users',0,'size',0])){$output .= '            ';$output .= $context->include('infoText');$output .= '
+            ';$output .= $context->include('selectWrapper');$output .= '
+        '}else {$output .= '
+            ';$output .= $context->include('noUsersWarning');$output .= '
+        '}$output .= '
+
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'lists.html#listlists','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    </div>
+
+    ';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$context->include('_assets/master.html.tt',{'app_key'=>'mailing_lists','page_js_top'=>$stash->get('js_code'),'embed_scripts'=>['js2/mail/delegatelist.js' ],'embed_stylesheets'=>['css2/mail/delegatelist.css' ],'content',$output })};$output .= '
+
+';$output .= '
+
+
+
+';$output .= '
+
+';$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'noUsersWarning'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <div id="noUsersWarning">
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['You have not set up any email accounts.' ]]);$output .= '
+        </p>
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['You must first create an email account for each user whom you wish to have administrative access.' ]]);$output .= '
+        </p>
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'selectWrapper'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <div id="delegateWrapper" >
+        <div class="row">
+            <div class="selectWrapper col-xs-5">
+                <label id="lblAvailableUsers" for="available_users">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Available Users' ]]);$output .= '
+                </label>
+                <select multiple id="available_users" size="10" class="form-control" dir="ltr">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('sorted_email_users');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userEmail'}=$_tt_value;if ($stash->get(['delegate_map',0,$stash->get('userEmail'),0])eq 1){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('opt_id_html','listopt_' .$stash->get(['userEmail',0,'html',0]));$output .= ('<option id="' .$stash->get('opt_id_html').'" value="').$stash->get(['userEmail',0,'html',0]).('' .'">').$stash->get(['userEmail',0,'html',0]).'</option>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </select>
+            </div>
+            <div class="col-xs-2">
+                <button id="add_button"  class="btn btn-default" title="';$output .= $stash->get(['locale',0,'maketext',['Delegate administrative privileges to the selected user(s).' ]]);$output .= '">';$output .= $stash->get('add_arrow');$output .= '</button>
+                <button id="del_button"  class="btn btn-default" title="';$output .= $stash->get(['locale',0,'maketext',['Revoke administrative privileges from the selected user(s).' ]]);$output .= '">';$output .= $stash->get('remove_arrow');$output .= '</button>
+            </div>
+            <div class="selectWrapper col-xs-5">
+                <label id="lblListAdmin" for="assigned_users">
+                    ';$output .= $stash->get(['locale',0,'maketext',['List Administrators' ]]);$output .= '
+                </label>
+                <select id="assigned_users"  multiple size="10" class="form-control" dir="ltr">
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['delegates',0,'data',0,'delegates',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'user'}=$_tt_value;$stash->set('opt_id_html','listopt_' .$stash->get(['user',0,'html',0]));$output .= ('<option id="' .$stash->get('opt_id_html').'" value="').$stash->get(['user',0,'html',0]).('' .'">').$stash->get(['user',0,'html',0]).'</option>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </select>
+            </div>
+        </div>
+        <button id="save_button" class="btn btn-primary" disabled>';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['JSON',0,'stringify',[{'list'=>$stash->get('full_listname')}]]);$output .= ';
+    window.PAGE = PAGE;
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'infoText'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <p id="descDelegateAdmin">
+        ';$output .= $stash->get(['locale',0,'maketext',['You can delegate administrative privileges for the mailing list to the users you choose below.' ]]);$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['Once you have delegated administrative privileges to an email user for a list, the user can login to the list’s administrative console from webmail ([output,url,_1]).',$stash->get('safewebmailurl')]]);$output .= '
+    </p>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

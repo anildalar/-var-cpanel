@@ -1,0 +1,236 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/_assets/master.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Apache',$context->plugin('Apache'));$stash->set('Api2',$context->plugin('Api2'));$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('CacheBuster',$context->plugin('CacheBuster'));$stash->set('Resource',$context->plugin('Resource'));$stash->set('UI_Includes',$context->plugin('UI_Includes'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('UIAnalytics',$context->plugin('UIAnalytics'));$stash->set('has_component_system',$stash->get(['file_test',['f','/usr/local/cpanel/base/webmail/jupiter/_assets/component.html.tt' ]]));if ($stash->get('has_component_system')){$stash->set('Components',$context->plugin('Components'))}if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$stash->set('mode','debug');$stash->set('optimized',0)}else {$stash->set('mode','release');$stash->set('optimized',1)}if (!$stash->get(['include_legacy_stylesheets',0,'defined',0])){$stash->set('include_legacy_stylesheets',1)}if (!$stash->get(['hide_header',0,'defined',0])){$stash->set('hide_header',0)}if (!$stash->get(['include_legacy_scripts',0,'defined',0])){$stash->set('include_legacy_scripts',1)}if (!$stash->get(['include_cjt',0,'defined',0])){$stash->set('include_cjt',1)}if (!$stash->get(['hide_page_heading',0,'defined',0])){$stash->set('hide_page_heading',!$stash->get(['app_key',0,'defined',0])&&!$stash->get(['page_title',0,'defined',0]))}$stash->set('is_webmail',$stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail');$stash->set('cpanel_version',$stash->get(['ExpVar',0,'expand',['$version' ]]));$stash->set('locale_attributes',$stash->get(['execute',['Locale','get_attributes',{'attributes'=>'locale,encoding,direction' }],'data',0]));$stash->set('user_theme',$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('directory_prefix',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]));if (!$stash->get('hide_page_heading')){$stash->set('app_info',$stash->get(['execute',['Branding','get_information_for_applications',{'docroot'=>'/usr/local/cpanel/base/webmail/jupiter','app_keys'=>$stash->get('app_key')}],'data',0]))}$stash->set('title','Webmail');if ($stash->get('page_title')){$stash->set('title',$stash->get('title').' - ' .$stash->get('page_title'))}elsif ($stash->get(['app_key',0,'defined',0])){$stash->set('title',$stash->get('title').' - ' .$stash->get(['app_info',0,$stash->get('app_key'),0,'description',0]))}$stash->set('analytics_page_identifier','Webmail-' .$stash->get('app_key'));$stash->set('analytics_page_meta',{'product_feature'=>$stash->get('app_key'),'product_feature_group'=>'','framework_js'=>'','framework_css'=>'' });$stash->set('documentation_url','https://go.cpanel.net/webmail');$stash->set('NVData',$stash->get(['execute',['NVData','get',{'names'=>'default_webmail_app','html_encoded'=>'1' }],'data',0]));if (!$stash->get(['global',0,'mail_client_list',0])){$stash->set(['global',0,'mail_client_list',0],$stash->get(['execute',['WebmailApps','list_webmail_apps',{'theme'=>$stash->get(['CPANEL',0,'CPDATA',0,'RS',0])}],'data',0]))}$stash->set('default_webmail_app',$stash->get(['NVData',0,0,0,'value',0]));$stash->set('path_parts',$stash->get(['component',0,'caller',0,'split',['/' ]]));$stash->set('file',$stash->get(['path_parts',0,'pop',0]));$stash->set('caller_path',$stash->get(['path_parts',0,'join',['/' ]]).'/');$stash->set('theme_path',$stash->get(['caller_path',0,'replace',['/usr/local/cpanel/base/([^/]+)/([^/]+).*','/usr/local/cpanel/base/$1/$2' ]]).'/');$stash->set('caller_app_rel_path',$stash->get(['caller_path',0,'replace',['/usr/local/cpanel/base/[^/]+/[^/]+/','' ]]));$stash->set('locale_revision',$stash->get(['calculate_magic_lex_mtime',[$stash->get(['locale',0,'get_language_tag',0])]]));$stash->set('locale_query_string','?locale=' .$stash->get(['locale',0,'get_language_tag',0]).'&locale_optional=1&locale_revision=' .$stash->get('locale_revision'));$stash->set('banner_module_exists',$stash->get(['file_test',['f','/usr/local/cpanel/Cpanel/Template/Plugin/Banner.pm' ]]));$stash->set('user',$stash->get(['ExpVar',0,'expand',['$user' ]]));$stash->set('auth_user',$stash->get(['CPANEL',0,'authuser',0]));$stash->set('is_archive_user',$stash->get(['ExpVar',0,'expand',['$isarchiveuser' ]]));$stash->set('is_default_cpanel_account',$stash->get('user')eq $stash->get('auth_user'));$stash->set('is_tfa_enabled',$stash->get(['ExpVar',0,'expand',['$is_twofactorauth_sec_policy_enabled' ]]));$stash->set('is_email_account',!$stash->get('is_default_cpanel_account')&&!$stash->get('is_archive_user'));$stash->set('is_sandbox',$stash->get(['ExpVar',0,'expand',['$is_sandbox' ]])? 1 : 0);$stash->set('has_webmail_access',$stash->get(['CPANEL',0,'feature',['webmail' ]])? 1 : 0);$stash->set('can_show_canary',$stash->get('is_sandbox')&& $stash->get(['ExpVar',0,'expand',['$exists_in_webmail{"canary"}' ]])? 1 : 0);$stash->set('cpdavd_enabled',$stash->get(['ExpVar',0,'expand',['$hascpdavd' ]])? 1 : 0);$stash->set('solr_enabled',$stash->get(['ExpVar',0,'expand',['$hasdovecotsolr' ]])? 1 : 0);if (!$stash->get(['global',0,'sitemap',0])){$stash->set(['global',0,'sitemap',0],$stash->get(['execute',['Branding','get_information_for_applications',{}],'data',0]))}if (!$stash->get('is_archive_user')&& $stash->get(['CPANEL',0,'feature',['lists' ]])){$stash->set('delegated_mailman',$stash->get(['execute',['Email','has_delegated_mailman_lists',{'delegate'=>$stash->get('auth_user')}],'data',0]))}$stash->set('is_analytics_enabled_server_side',0);if ($stash->get(['CPANEL',0,'analytics_ui_includes_are_enabled',0])&& $stash->get(['CPANEL',0,'ENV',0,'DNT',0,'substr',[0,1 ]])ne '1'){$stash->set('is_analytics_enabled_server_side',1)}$stash->set('consentData',$stash->get(['execute',['NVData','get',{'names'=>'analytics','html_encoded'=>'1' }],'data',0]));$stash->set('user_analytics_consent_setting',$stash->get(['consentData',0,0,0,'value',0]));if ($stash->get('user_analytics_consent_setting')ne 'on' && $stash->get('user_analytics_consent_setting')ne 'off'){$stash->set('user_analytics_consent_setting','')}$stash->set('analytics_opt_in',0);if ($stash->get('is_analytics_enabled_server_side')&& $stash->get('user_analytics_consent_setting')eq 'on'){$stash->set('analytics_opt_in',1)}$output .= '<!DOCTYPE html>
+
+<html lang="';$output .= $stash->get(['locale_attributes',0,'locale',0])|| 'en-us';$output .= '" dir="';$output .= $stash->get(['locale_attributes',0,'direction',0])|| 'ltr';$output .= '">
+    <head>
+        <!-- Avoid indexing from search engines -->
+        <meta name="robots" content="noindex, nofollow" />
+
+        <title>';$output .= $stash->get('title');$output .= '</title>
+        <meta charset="';$output .= $stash->get(['locale_attributes',0,'encoding',0]);$output .= '" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=1">
+
+        <!-- Chrome, Firefox OS and Opera -->
+        <meta name="theme-color" content="#293a4a">
+
+            <!-- Mobile Chrome-->
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-status-bar-style" content="default">
+
+        <!-- iOS Safari -->
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="default">
+        ';if ($stash->get('app_info')&& ($stash->get(['app_info',0,'base64_png_image',0])|| $stash->get(['app_info',0,$stash->get('app_key'),0,'icon',0,'url',0]))){$output .= '
+            <link rel="apple-touch-icon" sizes="48x48"
+            href="';if ($stash->get(['app_info',0,'base64_png_image',0])){$output .= 'data:image/png;base64,';$output .= $stash->get(['app_info',0,'base64_png_image',0])}else {$output .= $stash->get(['theme_magic_url',['assets/ios_icons/' .$stash->get(['app_info',0,$stash->get('app_key'),0,'icon',0,'url',0]).'.png' ]])}$output .= '">
+            <meta name="apple-mobile-web-app-title" content="';$output .= $stash->get(['app_info',0,$stash->get('app_key'),0,'itemdesc',0]);$output .= '">
+        '}$output .= '
+
+        <meta name="referrer" content="origin">
+';if ($stash->get('meta')){$output .= '        ';$output .= $stash->get('meta');$output .= '
+        '}$output .= '
+        <link rel="shortcut icon" href="';$output .= $stash->get(['theme_magic_url',['assets/brand/favicon.ico' ]]);$output .= '" type="image/x-icon" />
+
+        <!-- Add pre-loaded styles. This is used for styles that need to be loaded before the web component bundle loads. -->
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['styles/preload_styles.min.css' ]]);$output .= '" />
+        <!--
+            Load the font faces we need. These must be defined in the master template in order for our
+            global web components to have access to them. They cannot be defined in the Shadow DOM.
+        -->
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['styles/fonts.min.css' ]]);$output .= '" />
+
+        ';if ($stash->get('is_jupiter_style')){$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',[$stash->get(['get_stylesheet_based_on_direction',['styles/jupiter-styles/dist/css/main.css',$stash->get(['locale_attributes',0,'direction',0])eq 'rtl' ]])]]);$output .= '" />
+        '}$output .= '
+';if ($stash->get('optimized')){$stash->set('css_include_name','_assets/css/master');if ($stash->get('include_legacy_stylesheets')){$stash->set('css_include_name',$stash->get('css_include_name').'-legacy')}$stash->set('css_include_name',$stash->get('css_include_name').'-' .$stash->get(['locale_attributes',0,'direction',0]));$stash->set('css_include_name',$stash->get('css_include_name').'.cmb.min.css');$output .= '
+        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',[$stash->get('css_include_name')]]);$output .= '" />
+            ';if ($stash->get('is_ng')){$output .= '
+                <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['css/ux-styles.min.css' ]]);$output .= '" />
+            '}}else {$output .= '
+';if ($stash->get('include_legacy_stylesheets')){$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['css/yui-core.css' ]]);$output .= '" />
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['css/yui-custom.css' ]]);$output .= '" />'}$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap/optimized/css/bootstrap.min.css' ]]);$output .= '" />
+            ';if ($stash->get(['locale_attributes',0,'direction',0])eq 'rtl'){$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap-rtl/optimized/dist/css/bootstrap-rtl.min.css' ]]);$output .= '" />'}$output .= '            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/ui-fonts/open_sans/optimized/open_sans.min.css' ]]);$output .= '" />
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['libraries/fontawesome/css/all.min.css' ]]);$output .= '" />
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['css/cpanel_base.min.css' ]]);$output .= '" />
+            ';if ($stash->get('is_ng')){$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['css/ux-styles.min.css' ]]);$output .= '" />
+            '}$output .= '
+            <link rel="stylesheet" type="text/css" href="';$output .= $stash->get(['theme_magic_url',['_assets/user_preferences.css' ]]);$output .= '" />
+        '}$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('page_stylesheets');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'source'}=$_tt_value;if ($stash->get('is_ng')){$stash->set('url',$stash->get(['theme_magic_url',[$stash->get('source')]]))}else {$stash->set('url',$stash->get(['theme_magic_url',[$stash->get(['calculate_mode_css_url',[$stash->get('source'),$stash->get('optimized')]])]]))}$output .= '        <link rel="stylesheet" type="text/css" href="';$output .= $stash->get('url');$output .= '" />';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('embed_stylesheets')){$output .= '
+        <style type="text/css">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('embed_stylesheets');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'source'}=$_tt_value;$stash->set('path',$stash->get(['theme_magic_path',[$stash->get(['calculate_mode_css_url',[$stash->get('source'),$stash->get('optimized')]])]]));$output .= '                /* Embedding: ';$output .= $stash->get('path');$output .= ' */
+                ';$output .= $context->insert($stash->get('path'));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </style>'}$output .= '
+';if ($stash->get('page_styles')){$output .= $stash->get('page_styles');$output .= '        '}if ($stash->get('optimized')){$stash->set('js_include_name','_assets/js/master');if ($stash->get('include_legacy_scripts')){$stash->set('js_include_name',$stash->get('js_include_name').'-legacy')}$stash->set('js_include_name',$stash->get('js_include_name').'.cmb.min.js');$output .= '
+            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',[$stash->get('js_include_name')]]);$output .= '"></script>
+        '}else {$output .= '
+';$output .= '
+            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/jquery/current/jquery.min.js' ]]);$output .= '"></script>
+            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['libraries/bootstrap/optimized/js/bootstrap.min.js' ]]);$output .= '"></script>
+';if ($stash->get('include_legacy_scripts')){$output .= '            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/x3_optimized.js' ]]);$output .= '"></script>'}$output .= '        '}$output .= '
+';if ($stash->get('include_cjt')){$stash->set('cjt_lex_url',$stash->get(['CPANEL',0,'get_cjt_lex_url',0]));$output .= '
+        <script type="text/javascript" src="';$output .= $stash->get('cjt_lex_url');$output .= '"></script>
+        <script type="text/javascript">
+            CPANEL.validate.hide_validation_summary = true;
+        </script>
+        '}$output .= '
+        <script>
+            (function(){
+                window.PAGE = window.PAGE || {};
+                window.NVData = {};
+                ';if ($stash->get('default_webmail_app')){$output .= '
+                window.NVData["default_webmail_app"] = ';$output .= $stash->get(['default_webmail_app',0,'json',0]);$output .= ';
+                '}$output .= '
+                ';if ($stash->get(['global',0,'mail_client_list',0])){$output .= '
+                window.NVData["mail_clients"] = ';$output .= $stash->get(['global',0,'mail_client_list',0,'json',0]);$output .= ';
+                '}$output .= '
+                window.thisTheme = ';$output .= $stash->get(['user_theme',0,'json',0]);$output .= ';
+            })();
+            ';if ($stash->get(['CPANEL',0,'is_qa_mode_enabled',0])){$output .= '
+                ';$output .= $context->insert('libraries/axe-core/axe.min.js');$output .= '
+                window.AXE_CONFIG = ';$output .= $context->insert('axe_config.json');$output .= ';
+                ';$output .= $context->insert('libraries/cjt2/webAccessibilityChecker.js');$output .= '
+
+                ';$output .= $context->insert('libraries/cjt2/e2e.js');$output .= '
+            '}$output .= '
+        </script>
+';if ($stash->get('page_js_top')){$output .= $stash->get('page_js_top')}$output .= '    </head>
+    <body id="';$output .= $stash->get('app_key');$output .= '" class="webmail yui-skin-sam">
+        <cp-root-variables
+            directory-prefix="';$output .= $stash->get('directory_prefix');$output .= '"
+            app-list="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['global',0,'sitemap',0,'values',0,'json',0]);&$_tt_filter($output)};$output .= '"
+            mail-client-list="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['global',0,'mail_client_list',0,'json',0]);&$_tt_filter($output)};$output .= '"
+            app-name="webmail"
+            company-id="';$output .= $stash->get('get_company_id');$output .= '"
+            cpanel-full-version="';$output .= $stash->get('cpanel_full_version');$output .= '"
+            cpanel-app-key="';$output .= $stash->get('app_key');$output .= '"
+        ></cp-root-variables>
+
+
+        ';$stash->set('cp_analytics_data',$stash->get(['UIAnalytics',0,'get_webmail_analytics_data',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['analytics_page_meta',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$stash->set(['cp_analytics_data',0,$stash->get('key'),0],$stash->get(['analytics_page_meta',0,$stash->get('key'),0]));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('analyticsConfig',{'cpAnalyticsData'=>$stash->get('cp_analytics_data'),'optInAnalytics'=>$stash->get('analytics_opt_in'),'debugMode'=>$stash->get(['CPANEL',0,'is_debug_mode_enabled',0]),'loginUser'=>$stash->get(['CPANEL',0,'authuser',0]),'isSandbox'=>$stash->get(['CPANEL',0,'is_sandbox',0])});$output .= '
+
+        <cp-ui-load-analytics
+            analytics-config="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['analyticsConfig',0,'json',0]);&$_tt_filter($output)};$output .= '"
+        >
+        </cp-ui-load-analytics>
+
+        <div id="page-overlay" class="page-overlay"></div>
+
+        <div id="wrap">';if (!$stash->get('hide_header')){$output .= '
+            <header id="masterAppContainer">
+                <div class="navbar navbar-inverse navbar-cpanel navbar-fixed-top" role="navigation">
+                    <div class="navbar-header">
+                            <a id="lnkHeaderHome" class="navbar-brand navbar-item navbar-brand-img" target="_top" href="';$output .= $stash->get('directory_prefix');$output .= 'index.html?mailclient=none">
+                                <img id="imgLogo" class="navbar-brand-logo" src="';$output .= $stash->get(['theme_magic_url',['assets/brand/webmail.svg' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '" aria-disabled="false" />
+                            </a>
+                        <div class="navbar-preferences">';$output .= '
+                            <span id="userPreferencesContainer">';$output .= $context->include('_assets/user_preferences.html.tt');$output .= '                                <span id="logoutContainer">
+                                   <div class="btn-group">
+                                    <a target="_top" href="/logout/?locale=';$output .= $stash->get(['locale',0,'get_language_tag',0]);$output .= '">
+                                      <button id="lnkHeaderLogout" class="btn btn-primary logout-btn btn-sm navbar-item">
+                                        <span id="logoutImg" class="glyphicon glyphicon-log-out"></span>
+                                        <span id="lblLogout" class="hidden-inline-xs">';$output .= $stash->get(['locale',0,'maketext',['Logout' ]]);$output .= '</span>
+                                      </button>
+                                    </a>
+                                   </div>
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            '}$output .= '
+            <!-- PAGE TEMPLATE\'S CONTENT START -->
+            <div id="content" class="container-fluid">
+            ';if ($stash->get(['CPANEL',0,'CPCONF',0,'item',['disable-security-tokens' ]])){$output .= '
+                <div class="alert alert-danger">
+                    <span class="glyphicon glyphicon-exclamation-sign"></span>
+                    <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['[output,strong, Security Warning:] security tokens are disabled. This server is currently vulnerable to cross-site request forgery and cross-site scripting attacks.' ]]);$output .= '<br />';$output .= $stash->get(['locale',0,'maketext',['To enable security tokens, contact your system administrator.' ]]);$output .= '                    </div>
+                </div>
+            '}$output .= '
+
+            <!-- Banner Section - now controlled via a plugin -->
+            ';if ($stash->get('banner_module_exists')&& $stash->get(['template_exists',['/usr/local/cpanel/base/webmail/jupiter/_assets/banner.html.tt' ]])){$output .= '
+            ';$output .= $context->include('/usr/local/cpanel/base/webmail/jupiter/_assets/banner.html.tt');$output .= '            '}$output .= '
+
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['webmail',$stash->get('app_key'),'page-top' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'page-top' })}$output .= '
+
+            ';if (!$stash->get('hide_page_heading')){$output .= '                <h1 class="page-header">
+                    <span id="pageHeading">';$output .= $stash->get('page_title')|| $stash->get(['app_info',0,$stash->get('app_key'),0,'name',0]);$output .= '</span>
+                    ';if ($stash->get(['page_sub_heading',0,'defined',0])){$output .= '
+                        <small id="pageSubHeading">';$output .= $stash->get('page_sub_heading');$output .= '</small>
+                    '}$output .= '
+                </h1>
+            '}$output .= '
+            <!-- Breadcrumb element in case the js for it is loaded. -->
+            <nav id="cpanel-breadcrumbs" class="breadcrumb" role="navigation" aria-label="breadcrumb" data-jupiter-style="1" style="display: none"></nav>
+
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['webmail',$stash->get('app_key'),'content-top' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'content-top' })}$output .= '
+';$output .= $stash->get('content');$output .= '
+            ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['webmail',$stash->get('app_key'),'content-bottom' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'content-bottom' })}$output .= '
+
+            </div>
+            <!-- PAGE TEMPLATE\'S CONTENT END -->
+            <footer>
+';if ($stash->get(['UI_Includes',0,'can_load_template',['cp_analytics_webmail.html.tt' ]])){if ($cVC::S{'is_package_update_enabled'}){$output .= '<div id="cp-analytics-webmail">';$output .= $stash->get(['UI_Includes',0,'load_template',['cp_analytics_webmail.html.tt',{'page_identifier'=>$stash->get('analytics_page_identifier'),'default_webmail_app'=>$stash->get('default_webmail_app'),'analytics_config'=>$stash->get('analyticsConfig'),'analytics_page_meta'=>$stash->get('analytics_page_meta')}]]);$output .= '</div>'}elsif ($stash->get(['CPANEL',0,'analytics_ui_includes_are_enabled',0])&& $stash->get(['CPANEL',0,'ENV',0,'DNT',0,'substr',[0,1 ]])ne '1'){$output .= '<div id="cp-analytics-webmail">';$output .= $stash->get(['UI_Includes',0,'load_template',['cp_analytics_webmail.html.tt',{'page_identifier'=>$stash->get('analytics_page_identifier'),'default_webmail_app'=>$stash->get('default_webmail_app'),'analytics_page_meta'=>$stash->get('analytics_page_meta')}]]);$output .= '</div>'}}$output .= '
+                ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['webmail',$stash->get('app_key'),'page-bottom' ]])){$output .= $context->process('_assets/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'div','SLOT'=>'page-bottom' })}$output .= '
+                <div class="container-fluid">
+                    <div class="navbar">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <a id="lnkFooterHome" href="';$output .= $stash->get('directory_prefix');$output .= 'index.html">';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '                                </a>
+                            </li>
+                            <li>
+                                <a id="lnkFooterTrademark" href="';$output .= $stash->get('directory_prefix');$output .= 'trademarks.html" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Trademarks' ]]);$output .= '                                </a>
+                            </li>
+                            <li>
+                                <a id="lnkFooterPrivacy" href="https://go.cpanel.net/privacy" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Privacy Policy' ]]);$output .= '                                </a>
+                            </li>
+                            <li>
+                                <a id="lnkFooterDocs" href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('documentation_url');&$_tt_filter($output)};$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Documentation' ]]);$output .= '                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="navbar-brand" style="display:inline-block; z-index:2147483647; visibility:visible;">
+                            <a id="lnkPoweredByCpanel" href="http://www.cpanel.net" target="cpanel" title="cPanel, L.L.C." style="display:inline-block; z-index:2147483647; visibility:visible;">
+                                <img id="imgPoweredByCpanel" src="';$output .= $stash->get(['MagicRevision',['/img-sys/powered_by_cpanel.svg' ]]);$output .= '" alt="cPanel, L.L.C." style="display:inline-block; z-index:2147483647; visibility:visible; height:20px; min-width:94px;">
+                            </a>
+                            <sub id="txtCpanelVersion" style="display:inline-block; visibility:visible;">';$output .= $stash->get('cpanel_version');$output .= '</sub>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+';if ($stash->get('is_ng')){$output .= '            <script type="text/javascript">
+            window.cp_security_token = "';$output .= $stash->get('cp_security_token');$output .= '";
+            window.LEXICON = window.LEXICON || {};
+            ';$stash->set('cldr_path','libraries/cldr/' .$stash->get(['locale',0,'get_language_tag',0]).'.js');$output .= $context->insert($stash->get('cldr_path'));$output .= '
+            </script>
+            <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['js/webmail-angular-polyfills.js' ]]).$stash->get('locale_query_string');$output .= '"></script>
+'}$output .= '
+        ';$stash->set('page_scripts',$stash->get('page_scripts')|| []);$output .= $stash->get(['page_scripts',0,'unshift',['core/web-components/dist/jupiter-web-components.cmb.js' ]]);$output .= '
+';if ($stash->get('page_init_js')){$output .= $stash->get('page_init_js')}$output .= '
+        ';if ($stash->get('is_ng')){$output .= '
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',['_assets/breadcrumb.js' ]]);$output .= '"></script>
+        '}$output .= '
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('page_scripts');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'source'}=$_tt_value;$output .= '
+        <script type="text/javascript" src="';$output .= $stash->get(['theme_magic_url',[$stash->get('source')]]).$stash->get('locale_query_string');$output .= '"></script>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if (!$stash->get('embed_scripts')){$stash->set('embed_scripts',[])}$output .= $stash->get(['embed_scripts',0,'push',['_assets/base.js','_assets/disk_usage_meter.js' ]]);if ($stash->get('embed_scripts')){$output .= '
+        <script type="text/javascript">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('embed_scripts');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'source'}=$_tt_value;$stash->set('path',$stash->get(['theme_magic_path',[$stash->get(['calculate_mode_js_url',[$stash->get('source'),$stash->get('optimized')]])]]));$output .= '
+                /* Embedding: ';$output .= $stash->get('path');$output .= ' */
+                ';$output .= $context->insert($stash->get('path'));$output .= '
+                ';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_full_path',[$stash->get('path')]]));if ($stash->get('lex_path')){$output .= '
+                /* Embedding: ';$output .= $stash->get('lex_path');$output .= ' */
+                ';$output .= $context->insert($stash->get('lex_path'))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </script>'}$output .= '
+';if ($stash->get('page_js')){$output .= $stash->get('page_js')}$output .= "        <script type=\"text/javascript\">\n        if ((\"standalone\" in window.navigator) && window.navigator.standalone) {\n            jQuery(document).ready(function(\$) {\n                \$(\"a\").click(function(event) {\n                    var alink = document.createElement('a');\n                    alink.href = \$(this).attr(\"href\");\n                    if (alink && alink.protocol.indexOf('http') !== -1 && alink.host.indexOf(document.location.host) !== -1) {\n                        event.preventDefault();\n                        window.location = alink.href;\n                    }\n                });\n            });\n        }\n        </script>\n        <script>\n        \$(\n            function() {\n                var img = \$(\"#imgPoweredByCpanel\");\n                if(img === null || img.length <= 0 ||\n                    img.attr('src') !== \"";$output .= $stash->get(['MagicRevision',['/img-sys/powered_by_cpanel.svg' ]]);$output .= '") {
+                    window.location="/";
+                }
+            }
+        );
+        </script>
+    </body>
+</html>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

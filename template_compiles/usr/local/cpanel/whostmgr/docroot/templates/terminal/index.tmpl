@@ -1,0 +1,34 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/terminal/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('PAGE_BASE','/scripts12/terminal/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+
+<div id="content"
+    ng-controller="BaseController as base"
+    ng-cloak
+>
+    <p class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface provides command line access to the server’s “[_1]” account.','root' ]]);$output .= '</p>
+
+    <cp-alert-list alert-group="\'myalerts\'"></cp-alert-list>
+
+    <div ng-if="terminal_warning_accepted">
+        <cp-terminal></cp-terminal>
+    </div>
+    <div ng-if="!terminal_warning_accepted">
+        <div class="callout callout-warning">
+            <div class="callout-heading">';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '</div>
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Exercise extreme caution if you use this interface.] Misuse of command line tools can destroy data or even render your server unusable.' ]]);$output .= '
+            </p>
+            <p><button class="btn btn-primary" ng-click="acceptWarning()">';$output .= $stash->get(['locale',0,'maketext',['I understand and want to proceed.' ]]);$output .= '</button></p>
+        </div>
+    </div>
+</div>
+
+<script>
+    ';$stash->set('terminal_warning_accepted',$stash->get(['NVData',0,'get',['terminal_warning_accepted' ]]));$output .= '    if (!window.PAGE) {
+        PAGE = {};
+    }
+
+    PAGE.terminal_warning_accepted = ';$output .= $stash->get('terminal_warning_accepted')? 'true' : 'false';$output .= ';
+</script>
+
+';$context->include('master_templates/master.tmpl',{'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get('rtl_bootstrap'),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/xtermjs/xterm.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'app_key'=>'terminal','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

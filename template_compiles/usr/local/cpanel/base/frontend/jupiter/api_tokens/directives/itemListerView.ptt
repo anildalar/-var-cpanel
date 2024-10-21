@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/api_tokens/directives/itemListerView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<tbody>
+    <tr ng-repeat="item in getItems()" id="{{item.id}}" class="data-row no-animate" ng-class="::{\'danger\':item.expired, \'warning\':item.expiresSoon}">
+        <td class="hidden-xs check-column no-animate">
+            <div class="table-action-checkbox-item">
+                <input type="checkbox"
+                    id="checkbox_{{item.id}}"
+                    name="checkbox_{{item.id}}"
+                    ng-model="item.selected"
+                    ng-change="toggleSelection(item)"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Select “[_1]”','{{item.label | htmlSafeString }}' ]]);$output .= '">
+            </div>
+        </td>
+        <td id="{{item.token}}_label" class="name-column no-animate">
+            <div >
+                <label class="table-action-checkbox-label cutoff_with_ellipses" for="checkbox_{{item.id}}">
+                    <span ng-bind="item.label | htmlSafeString"></span>
+                </label>
+            </div>
+        </td>
+        <td id="{{item.token}}_createdOn" class="hidden-xs no-animate" ng-bind="getCreationLabel(item.createdOn)"></td>
+        <td id="{{item.token}}_expiresAt" class="hidden-xs no-animate">
+            <i ng-if="::item.expired || item.expiresSoon" class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+            <span ng-bind="getExpirationLabel(item.expiresAt)"></span>
+        </td>
+        <td id="{{item.token}}_actions" class="action-column">
+            <button
+                id="{{ :: item.token}}_manageBtn"
+                type="button"
+                class="btn btn-sm btn-outline-primary no-animate"
+                ng-click="manageToken(item)">
+                <i class="fas fa-wrench" aria-hidden="true"></i>
+                <span>';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '</span>
+            </button>
+        </td>
+    </tr>
+</tbody>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

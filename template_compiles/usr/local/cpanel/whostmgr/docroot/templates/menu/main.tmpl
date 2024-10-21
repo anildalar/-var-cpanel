@@ -1,0 +1,386 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/menu/main.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('EasyApache',$context->plugin('EasyApache'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('ServerRoles',$context->plugin('ServerRoles'));$stash->set('Mysql',$context->plugin('Mysql'));$stash->set('WhostmgrMain',$context->plugin('WhostmgrMain'));$stash->set('CpanelOS',$context->plugin('CpanelOS',['can_be_elevated' ]));$output .= '
+';$stash->set('app_key','home',1);$stash->set('has_component_system',$stash->get(['template_exists',['/usr/local/cpanel/whostmgr/docroot/templates/master_templates/component.html.tt' ]]));if ($stash->get('has_component_system')){$stash->set('Components',$context->plugin('Components'))}$stash->set('has_analytics',$stash->get(['template_exists',['/var/cpanel/customizations/whm/includes/cp_analytics_whm.html.tt' ]]));if ($stash->get('has_analytics')){$stash->set('UIAnalytics',$context->plugin('UIAnalytics'))}$output .= '';$cVC::S{'checkacl_all'}=$stash->get(['Whostmgr',0,'checkacl',['all' ]]);$output .= '';$cVC::S{'dnsonly'}=$stash->get(['Whostmgr',0,'dnsonly',0]);$output .= '';$cVC::S{'server_analytics_setting'}=$stash->get(['CPANEL',0,'analytics_ui_includes_are_enabled',0]);$output .= '';$cVC::S{'user_consent_analytics_setting'}=($stash->get(['NVData',0,'get',['analytics',$stash->get('undef'),0,'whm' ]])eq 'on');$stash->set('checkacl_all',$cVC::S{'checkacl_all'});$stash->set('dnsonly',$cVC::S{'dnsonly'});$stash->set('nvdata',$stash->get(['NVData',0,'get',['home:hide_important_next_steps' ]]));$stash->set('isa_email_error',$stash->get(['data',0,'item',['isa:contact_email_save_error' ]]));$stash->set('isa_nameserver_error',$stash->get(['data',0,'item',['isa:nameservers_save_error' ]]));$stash->set('nvDataNavigationState',$stash->get(['NVData',0,'get',['whmcommand:navigation' ]]));$stash->set('expanded_groups',$stash->get(['NVData',0,'get',['toggle-status','home-tools-toggle-status' ]]));$stash->set('hideAdditionalApps',$stash->get('nvDataNavigationState')eq '1' ? 0 : 1);$stash->set('showFavoritesDescriptions',$stash->get(['to_boolean',[$stash->get(['NVData',0,'get',['showFavoritesDescriptions' ]])]]));if (!$stash->get(['showFavoritesDescriptions',0,'length',0])){$stash->set('showFavoritesDescriptions',1)}else {$stash->set('showFavoritesDescriptions',$stash->get('showFavoritesDescriptions')? 1 : 0)}$stash->set('top_tools',$stash->get(['data',0,'top_tools',0]));$stash->set('hide_important_next_steps',$stash->get('nvdata')eq '0' ? 0 : 1);$stash->set('nameserver',$stash->get(['Whostmgr',0,'check_flag',['CPCONF=local_nameserver_type' ],'lower',0]));$stash->set('nameserverConfigLink',$stash->get('cp_security_token').'/scripts/nameserverconfig');$stash->set('whm_variables',$stash->get(['Whostmgr',0,'template_vars',0]));$stash->set('license_type',$stash->get(['CPANEL',0,'get_producttype',0]));if ($stash->get(['Whostmgr',0,'has_license_flag',['dev' ]])){$stash->set('license_type',$stash->get('license_type').' DEVELOPER')}elsif ($stash->get(['Whostmgr',0,'has_license_flag',['trial' ]])){$stash->set('license_type',$stash->get('license_type').' TRIAL')}elsif ($stash->get(['Whostmgr',0,'is_test_build',0])){$stash->set('license_type',$stash->get('license_type').' TEST')}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<!-- Embed retently survey if user consent is given. -->
+';if ($stash->get('has_analytics')&& $cVC::S{'server_analytics_setting'}&& $cVC::S{'user_consent_analytics_setting'}){$output .= '
+';$stash->set('analyticsData',$stash->get(['UIAnalytics',0,'get_whm_analytics_data',0]));$stash->set('retently_email_id',$stash->get(['UIAnalytics',0,'get_email_id_for_retently_embed',[$stash->get(['analyticsData',0,'UUID',0])]]));$output .= '
+<div
+    id="retently-survey-embed"
+    data-href="https://app.retently.com/api/remote/tracking/606c61a4c8c2d36d01246bc4"
+    data-rel="dialog"
+    data-campaignId="6602b1e4dfb203deb51b48f3"
+    data-prop-analytics-id="';$output .= $stash->get(['analyticsData',0,'UUID',0]);$output .= '"
+    data-email="';$output .= $stash->get('retently_email_id');$output .= '"
+    data-prop-account-age="';$output .= $stash->get(['analyticsData',0,'ACCOUNT_AGE',0]);$output .= '"
+    data-prop-company-id="';$output .= $stash->get(['analyticsData',0,'company_id',0]);$output .= '"
+    data-prop-product-version="';$output .= $stash->get(['analyticsData',0,'product_version',0]);$output .= '"
+    data-prop-product-interface="';$output .= $stash->get(['analyticsData',0,'product_interface',0]);$output .= '"
+    data-prop-product-feature="';$output .= $stash->get('app_key');$output .= '"
+    data-prop-product-locale="';$output .= $stash->get(['analyticsData',0,'product_locale',0]);$output .= '"
+    data-prop-product-trial-status="';$output .= $stash->get(['analyticsData',0,'product_trial_status',0]);$output .= '"
+    data-prop-server-main-ip="';$output .= $stash->get(['analyticsData',0,'server_main_ip',0]);$output .= '"
+    data-prop-server-os="';$output .= $stash->get(['analyticsData',0,'server_operating_system',0]);$output .= '"
+    data-prop-is-root="';$output .= $stash->get(['analyticsData',0,'is_root',0]);$output .= '"
+    data-tags="whmadmin"
+></div>
+
+<script type="text/javascript">
+(function (d, s, id) {
+    var js, rjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s);
+    js.id = id;
+    js.src = "https://cdn.retently.com/public/components/embed/sdk.min.js";
+    rjs.parentNode.insertBefore(js, rjs);
+}(document, "script", "retently-jssdk"));
+</script>
+'}$output .= '
+
+<div class="wrapper" role="main">
+    <div class="container-lg">
+        ';if ($stash->get(['Whostmgr',0,'hasroot',0])&& $stash->get(['Mysql',0,'mysqlversion',0])eq 5.5){$output .= '
+            ';$output .= $context->process('warnings/_end_of_life_callout/callout.tmpl',{'eol_callout_name'=>'mysql55','eol_software_name'=>'MySQL 5.5','eol_date'=>1543795200,'eol_read_more_link'=>'https://go.cpanel.net/mysql55replacement','eol_read_more_target'=>'cpblog-mysql55replacement','eol_upgrade_link'=>$stash->get('cp_security_token').'/scripts/mysqlupgrade','eol_survey_link'=>'https://go.cpanel.net/mysql55survey' });$output .= '
+        '}$output .= '
+
+        ';$output .= '
+        ';$stash->set('vars',$stash->get(['Whostmgr',0,'template_vars',0]));$stash->set('display_mysql_warning',$stash->get(['Whostmgr',0,'hasroot',0])&& ($stash->get(['Mysql',0,'is_version_going_eol_soon',0])|| $stash->get(['Mysql',0,'is_version_eol_now',0])));$stash->set('display_license_excess_warning',!$cVC::S{'dnsonly'}&& $stash->get(['Whostmgr',0,'server_exceeds_max_users',0]));$output .= '
+        ';$stash->set('hide_top_section',!$stash->get('display_mysql_warning')&&!$stash->get('display_license_excess_warning'));$stash->set('cloudlinux_url',$stash->get('cp_security_token').'/scripts13/purchase_cloudlinux_init_WHM');$stash->set('os_names',{'CENTOS'=>'CentOS','REDHAT'=>'Red Hat®','CLOUDLINUX'=>'CloudLinux™' });$output .= '
+
+        <section id="topSection" ';$output .= $stash->get('hide_top_section')? 'class="hide"' : '';$output .= '>
+            ';$output .= '
+            ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '                <div id="calloutVersionExpiry" class="callout callout-cpanel hide" id="versionExpiryMessage">
+                    <h2><i class="glyphicon glyphicon-warning-sign text-danger"></i> ';$output .= $stash->get(['locale',0,'maketext',['Your Version Is Expiring' ]]);$output .= '</h2>
+                    <span id="expiryMessageContent">';$output .= $stash->get(['locale',0,'maketext',['Your server currently runs on [asis,cPanel amp() WHM] version [output,strong,_1,id,PLACEHOLDER_CURRENT_VERSION]. Your system’s version will reach [output,url,_2,End of Life,target,_blank] on [output,strong,_3,id,PLACEHOLDER_EXPIRY]. We [output,strong,strongly] recommend that you upgrade to the latest version to avoid any disruption in your service. For more information on how to update your version, read our [output,url,_4,Update Preferences] documentation.','[PLACEHOLDER_CURRENT_VERSION]','https://go.cpanel.net/longtermsupport','[PLACEHOLDER_EXPIRY]',$stash->get('cp_security_token').'/scripts2/updateconf' ]]);$output .= '</span>
+                </div>
+                ';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+            '}$output .= '
+            ';if ($stash->get('display_license_excess_warning')){$output .= '                ';$output .= $context->process('menu/_license_excess.tmpl');$output .= '            '}$output .= '        </section>
+
+        ';if ($stash->get(['Whostmgr',0,'hasroot',0])&&!$stash->get('hide_important_next_steps')&& $stash->get(['data',0,'important_next_steps',0,'size',0])> 0){$output .= '        ';if ($stash->get('isa_email_error')eq 1 || $stash->get('isa_nameserver_error')eq 1){$output .= '
+        <section id="isaAlertSection" class="isa-alert-section">
+            <div class="alert-list">
+                <div class="alert alert-danger" role="alert">
+                    <button id="btnCloseAlert" type="button" class="close" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    <div class="alert-message">
+                        <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                        <span class="alert-body">
+                            <span id="alertMessage">
+                                ';if ($stash->get('isa_email_error')&& $stash->get('isa_nameserver_error')){$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system could not save your contact email address and nameservers. [output,url,_1,Try Again,id,_2]',$stash->get('cp_security_token').$stash->get(['data',0,'basic_setup',0,'url',0]).'?find=EMAIL','lnkBasicSetup' ]]);$output .= '
+                                '}elsif ($stash->get('isa_email_error')){$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system could not save your contact email address. [output,url,_1,Try Again,id,_2]',$stash->get('cp_security_token').$stash->get(['data',0,'basic_setup',0,'url',0]).'?find=EMAIL','lnkBasicSetup' ]]);$output .= '
+                                '}elsif ($stash->get('isa_nameserver_error')){$output .= '
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system could not save your nameservers. [output,url,_1,Try Again,id,_2]',$stash->get('cp_security_token').$stash->get(['data',0,'basic_setup',0,'url',0]).'?find=nameservers','lnkBasicSetup' ]]);$output .= '
+                                '}$output .= '
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        '}$output .= '
+        <section role="region" aria-label=';$output .= $stash->get(['locale',0,'maketext',['Important next steps' ]]);$output .= ' id="nextStepsSection" class="cp-page-section">
+            <div class="section-header section-flex">
+                <h1 class="section-title">';$output .= $stash->get(['locale',0,'maketext',['Important next steps' ]]);$output .= '</h1>
+                <button id="lnkDismissNextSteps" class="btn btn-link flip pull-right dismiss" title="';$output .= $stash->get(['locale',0,'maketext',['Do not show this section in the future.' ]]);$output .= '">
+                    <i class="fas fa-times" aria-hidden="true"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Dismiss' ]]);$output .= '
+                </button>
+            </div>
+
+            <div class="tools-grid-container" id="important_next_steps">
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'important_next_steps',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'application'}=$_tt_value;$output .= '
+                    ';$output .= '
+                    ';if ($stash->get(['application',0,'file',0,'split',['\.' ],'shift',0])eq 'basic_webhost_manager_setup'){$output .= '
+                    <div>
+                        <a href="';$output .= $stash->get('cp_security_token').$stash->get(['application',0,'url',0]).'?find=EMAIL';$output .= '">
+                        <div class="cp-card cp-app">
+                            <img class="cp-card__image-next-steps" src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]);$output .= '" aria-hidden="true"/>
+                            <div class="cp-app__details">
+                                <span class="cp-app__details-title">';$output .= $stash->get(['locale',0,'maketext',['Provide Contact Information' ]]);$output .= '</span>
+                                <span class="cp-app__details-description">';$output .= $stash->get(['locale',0,'maketext',['Add your contact information. This lets [asis,cPanel amp() WHM] notify you about problems and status updates.' ]]);$output .= '</span>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                    ';if (!$cVC::S{'dnsonly'}){$output .= '
+                    <div>
+                        <a href="';$output .= $stash->get('cp_security_token').$stash->get(['application',0,'url',0]).'?find=nameservers';$output .= '">
+                            <div class="cp-card cp-app">
+                                <img class="cp-card__image-next-steps"  src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]);$output .= '" aria-hidden="true">
+                                <div class="cp-app__details">
+                                    <span class="cp-app__details-title">';$output .= $stash->get(['locale',0,'maketext',['Customize Nameservers' ]]);$output .= '</span>
+                                    <span class="cp-app__details-description">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Optionally, update your nameserver configuration. The system selects default nameservers during installation, but you can customize them before you create domains.' ]]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    '}$output .= '
+                    <div>
+                        <a href="';$output .= $stash->get('cp_security_token').$stash->get(['application',0,'url',0]).'?find=ethernet';$output .= '">
+                            <div class="cp-card cp-app">
+                                <img class="cp-card__image-next-steps"  src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]);$output .= '" aria-hidden="true">
+                                <div class="cp-app__details">
+                                    <span class="cp-app__details-title">';$output .= $stash->get(['locale',0,'maketext',['Customize Ethernet Device' ]]);$output .= '</span>
+                                    <span class="cp-app__details-description">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Select or enter the Ethernet device that the system will add new IP addresses to.' ]]);$output .= '
+                                    </span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    '}else {$output .= '
+                    <div>
+                        <a href="';$output .= $stash->get('cp_security_token').$stash->get(['application',0,'url',0]);$output .= '">
+                            <div class="cp-card cp-app">
+                                <img class="cp-card__image-next-steps" src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]);$output .= '" aria-hidden="true">
+                                <div class="cp-app__details">
+                                    <span class="cp-app__details-title">';$output .= $stash->get(['application',0,'itemdesc',0]);$output .= '</span>
+                                    <span class="cp-app__details-description">';$output .= $stash->get(['application',0,'description',0]);$output .= '</span>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    '}$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </div>
+        </section>
+        '}$output .= '
+
+        <section class="tools-stats-grid-container cp-page-section">
+            <section role="region" aria-label=';$output .= $stash->get(['locale',0,'maketext',['Favorites' ]]);$output .= ' id="top_tools">
+                <div class="section-header section-flex">
+                    <h1 class="section-title">';$output .= $stash->get(['locale',0,'maketext',['Favorites' ]]);$output .= '</h1>
+                    <button class="toggle-edit-favorites-button btn btn-default btn-sm">
+                        ';$stash->set('edit_label',$stash->get(['locale',0,'maketext',['Edit Favorites' ]]));$stash->set('done_edit_label',$stash->get(['locale',0,'maketext',['Done Editing' ]]));$output .= '
+                        <span class="toggle-edit-favorites-button__select">';$output .= $stash->get('edit_label');$output .= '</span>
+                        <span class="toggle-edit-favorites-button__done hidden">';$output .= $stash->get('done_edit_label');$output .= '</span>
+                    </button>
+                </div>
+
+                ';$stash->set('favorites',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('top_tools');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'application'}=$_tt_value;$stash->set('favorite',{'group'=>$stash->get(['application',0,'group',0]),'key'=>$stash->get(['application',0,'key',0]),'target'=>$stash->get(['application',0,'target',0])|| '_self' });if ($stash->get(['application',0,'type',0])eq 'plugin'){$stash->set(['favorite',0,'name',0],$stash->get(['application',0,'showname',0]));$stash->set(['favorite',0,'description',0],'');$stash->set(['favorite',0,'url',0],$stash->get('cp_security_token').'/cgi/' .$stash->get(['application',0,'cgi',0]));if ($stash->get(['application',0,'icon',0])){$stash->set(['favorite',0,'iconUrl',0],$stash->get(['Whostmgr',0,'get_icon_url',['addon_plugins/' .$stash->get(['application',0,'icon',0])]]))}else {$stash->set(['favorite',0,'iconUrl',0],$stash->get(['Whostmgr',0,'find_file_url',[('icons/' .$stash->get(['application',0,'tagname',0]).'.png')]])|| $stash->get(['Whostmgr',0,'find_file_url',['icons/plugin_placeholder.png' ]]))}}else {$stash->set(['favorite',0,'name',0],$stash->get(['application',0,'itemdesc',0]));$stash->set(['favorite',0,'description',0],$stash->get(['application',0,'description',0]));$stash->set(['favorite',0,'url',0],$stash->get('cp_security_token').$stash->get(['application',0,'url',0]));$stash->set(['favorite',0,'iconUrl',0],$stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]))}$output .= $stash->get(['favorites',0,'push',[$stash->get('favorite')]]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                <div class="cp-favorite-instructions cp-card hidden">
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Select your favorite tools from the [output,url,_1,Tools] sections below by clicking the star icons next to each tool.','#tools-section' ]]);$output .= '</p>
+                    <ul>
+                        <li>
+                            <i class="cp-favorite-selector--selected">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M12 18.26l-7.053 3.948 1.575-7.928L.587 8.792l8.027-.952L12 .5l3.386 7.34 8.027.952-5.935 5.488 1.575 7.928z" />
+                                </svg>
+                            </i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Selected' ]]);$output .= '
+                        </li>
+                        <li>
+                            <i class="cp-favorite-selector--unselected">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+                                    <path fill="none" d="M0 0h24v24H0z" />
+                                    <path d="M12 18.26l-7.053 3.948 1.575-7.928L.587 8.792l8.027-.952L12 .5l3.386 7.34 8.027.952-5.935 5.488 1.575 7.928L12 18.26zm0-2.292l4.247 2.377-.949-4.773 3.573-3.305-4.833-.573L12 5.275l-2.038 4.42-4.833.572 3.573 3.305-.949 4.773L12 15.968z" />
+                                </svg>
+                            </i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Unselected' ]]);$output .= '
+                        </li>
+                    </ul>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['To reorder the favorites, click and drag the tool to the desired position.' ]]);$output .= '</p>
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['To stop editing your favorites, click the [_1] button above.',$stash->get('done_edit_label')]]);$output .= '
+                    </p>
+                    <hr>
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Use the following toggle to enable or disable descriptions:' ]]);$output .= '
+                        <cpw-toggle-switch
+                            id="chkToggleCompact"
+                            class="edit-favorites-options-compact"
+                            label-position="left"
+                            init-state="';$output .= $stash->get('showFavoritesDescriptions')? 'on' : 'off';$output .= '"
+                            toggle-on-text="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                            toggle-off-text="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '">
+                        </cpw-toggle-switch>
+                    </p>
+                </div>
+                <cp-favorite-list class="tools-grid-container favorites-container"
+                    show-descriptions="';$output .= $stash->get('showFavoritesDescriptions')? 'true' : 'false';$output .= '">
+                </cp-favorite-list>
+                <div class="tools-grid-placeholder ';if ($stash->get(['top_tools',0,'size',0])ne 0){$output .= 'hidden'}$output .= '">
+                    <p>
+                        ';$output .= $stash->get(['locale',0,'maketext',['You can customize this section with the WHM features you use the most. Click [output,strong,_1] to change your favorites.',$stash->get('edit_label')]]);$output .= '
+                    </p>
+                </div>
+            </section>
+            <section role="region" aria-label=';$output .= $stash->get(['locale',0,'maketext',['Statistics' ]]);$output .= ' id="tools__stats">
+                ';$output .= '
+                <div class="stats-wrapper">
+                    <div class="section-header">
+                        <h1 class="section-title">';$output .= $stash->get(['locale',0,'maketext',['Statistics' ]]);$output .= '</h1>
+                    </div>
+                    <div class="cp-card cp-stats">
+                        <div class="cp-stat__details">
+                            <span class="cp-stat__details-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Hostname' ]]);$output .= '
+                            </span>
+                            <span class="server-hostname-value cp-stat__details-value">
+                            <cp-wrap-filter text="';$output .= $stash->get(['Whostmgr',0,'hostname',0,'html',0]);$output .= '"></cp-wrap-filter>
+                            </span>
+                        </div>
+                        <div class="cp-stat__details">
+                            <span class="cp-stat__details-title">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Load Averages' ]]);$output .= '
+                                ';$stash->set('has_all',$stash->get(['Whostmgr',0,'checkacl',['all' ]]));if ($stash->get('has_all')){$output .= '
+                                <a class="cp-stat__details-link"
+                                    href="';$output .= $stash->get('cp_security_token').'/scripts2/top';$output .= '"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Process Manager' ]]);$output .= '"
+                                    target="_self">
+                                    <i class="ri-run-line"></i>
+                                </a>
+                                '}$output .= '
+                            </span>
+                            ';if ($stash->get('has_all')){$output .= '
+                            <a class="cp-stat__details-link__wrapper"
+                                href="';$output .= $stash->get('cp_security_token').'/scripts2/top';$output .= '"
+                                target="_self">
+                            '}$output .= '
+                                <cp-load-averages id="stats" verbose="true" show-header="true" />
+                            ';if ($stash->get('has_all')){$output .= '
+                            </a>
+                            '}$output .= '
+                        </div>
+                        <div class="cp-stat__details hidden-xs">
+                            <span class="cp-stat__details-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Operating System' ]]);$output .= '
+                            </span>
+                            <span class="server-operating-system-value cp-stat__details-value">
+                            ';$output .= $stash->get(['whm_variables',0,'BASEOS',0,'html',0]);$output .= '
+                            </span>
+                        </div>
+                        <div class="cp-stat__details hidden-xs">
+                            <span class="cp-stat__details-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Product' ]]);$output .= '
+                            </span>
+                            <span class="server-whm-version-value cp-stat__details-value">
+                            cPanel &amp; WHM v';$output .= $stash->get(['Whostmgr',0,'WHM_VERSION',0]);$output .= ' (';$output .= $stash->get(['license_type',0,'html',0]);$output .= ')
+                            </span>
+                        </div>
+                        <div class="cp-stat__details">
+                            <div class="cp-stat__title_row">
+                                <label id="lblAcctUuid" class="cp-stat__details-title">';$output .= $stash->get(['locale',0,'maketext',['User Analytics ID' ]]);$output .= '</label>
+                                <span id="copyMsgContainer" class="copy-msg-container label label-success">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Copied' ]]);$output .= '
+                                </span>
+                            </div>
+                            <div id="acctUuidContainer" class="general-info-value uuid-copy-container">
+                                <i id="iconCopyUuid" class="ri-1x ri-file-copy-fill" title="';$output .= $stash->get(['locale',0,'maketext',['Click to copy the user analytics ID.' ]]);$output .= '" aria-hidden="true"></i>
+                                <a id="linkCopyUuid" href="javascript:void(0);" title="';$output .= $stash->get(['locale',0,'maketext',['Click to copy the user analytics ID.' ]]);$output .= '">
+                                    <span id="txtAcctUuid" class="general-info-value long-text-fade-overflow">';$output .= $stash->get(['whm_variables',0,'UUID',0]);$output .= '</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['whostmgr',$stash->get('app_key'),'menu-top' ]])){$output .= $context->process('master_templates/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'section','SLOT'=>'menu-top','CLASSES'=>'cp-page-section' })}$output .= '
+        <section role="region" aria-label=';$output .= $stash->get(['locale',0,'maketext',['Tools' ]]);$output .= ' id="tools" class="cp-page-section">
+            <div class="section-header">
+                <h1 class="section-title"><a name="tools-section">';$output .= $stash->get(['locale',0,'maketext',['Tools' ]]);$output .= '</a></h1>
+            </div>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'tools',0,'groups',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'group'}=$_tt_value;$output .= '
+                ';if ($stash->get(['group',0,'items',0,'size',0])> 0){$output .= '
+                <div data-group-key="';$output .= $stash->get(['group',0,'key',0]);$output .= '" class="cp-card cp-group mb-1 ';$output .= $stash->get(['expanded_groups',0,'item',[$stash->get(['group',0,'key',0])]])eq 1 ? 'expanded' : '';$output .= '">
+                    <div class="cp-group__header">
+                        <img class="cp-group__header-icon" src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['group',0,'file',0])]]);$output .= '" alt="" />
+                        <h2 class="cp-group__header-title">';$output .= $stash->get(['group',0,'groupdesc',0]);$output .= '</h2>
+                        <a href="javascript:void(0)" class="cp-group__header-expand fas" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Expand or collapse “[_1]” tools group.',$stash->get(['group',0,'groupdesc',0])]]);$output .= '">
+                        </a>
+                    </div>
+                    <div class="cp-group__content">
+                        <div class="row">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['group',0,'items',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'application'}=$_tt_value;$stash->set(['application',0,'iconUrl',0],$stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['application',0,'file',0])]]));$stash->set(['application',0,'fullUrl',0],$stash->get(['WhostmgrMain',0,'final_menu_url',[$stash->get(['application',0,'url',0])]]));$stash->set(['application',0,'type',0],'builtin');$output .= '
+                            <div class="col-md-4 cp-group__content-item">
+                                <div>
+                                    <cp-app
+                                        class="cp-app-link"
+                                        url="';$output .= $stash->get(['application',0,'fullUrl',0]);$output .= '"
+                                        target=';$output .= $stash->get(['application',0,'target',0])|| '_self';$output .= '
+                                        iconUrl="';$output .= $stash->get(['application',0,'iconUrl',0]);$output .= '"
+                                        description="';$output .= $stash->get(['application',0,'itemdesc',0]);$output .= '"
+                                        uniqueKey="';$output .= $stash->get(['application',0,'group',0]).'_' .$stash->get(['application',0,'key',0]);$output .= '"
+                                        name="';$output .= $stash->get(['application',0,'key',0]);$output .= '"
+                                    >
+                                    </cp-app>
+                                    <cp-favorite-selector
+                                        class="cp-select-for-my-tools"
+                                        group="';$output .= $stash->get(['application',0,'group',0]);$output .= '"
+                                        name="';$output .= $stash->get(['application',0,'key',0]);$output .= '"
+                                    >
+                                    </cp-favorite-selector>
+                                </div>
+                            </div>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </div>
+                    </div>
+                </div>
+                '}$output .= '
+                ';if ($stash->get(['group',0,'key',0])eq 'plugins' && $stash->get(['Whostmgr',0,'plugins_data',0,'size',0])> 0){$output .= '
+                <div data-group-key="';$output .= $stash->get(['group',0,'key',0]);$output .= '" class="cp-card cp-group mb-1 ';$output .= $stash->get(['expanded_groups',0,'item',[$stash->get(['group',0,'key',0])]])eq 1 ? 'expanded' : '';$output .= '">
+                    <div class="cp-group__header">
+                        <img class="cp-group__header-icon" src="';$output .= $stash->get(['Whostmgr',0,'get_icon_url',['icons/' .$stash->get(['group',0,'file',0])]]);$output .= '" alt="" />
+                        <h2 class="cp-group__header-title">';$output .= $stash->get(['group',0,'groupdesc',0]);$output .= '</h2>
+                        <a href="javascript:void(0)" class="cp-group__header-expand fas" aria-label="';$output .= $stash->get(['locale',0,'maketext',['Expand or collapse “[_1]” tools group.',$stash->get(['group',0,'groupdesc',0])]]);$output .= '">
+                        </a>
+                    </div>
+                    <div class="cp-group__content">
+                        <div class="row">
+                            ';$stash->set('plugins',$stash->get(['Whostmgr',0,'plugins_data',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('plugins');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'plugin'}=$_tt_value;$stash->set(['plugin',0,'key',0],$stash->get(['plugin',0,'uniquekey',0]));$stash->set(['plugin',0,'itemdesc',0],$stash->get(['plugin',0,'showname',0]));$stash->set(['plugin',0,'description',0],'');$stash->set(['plugin',0,'url',0],'/cgi/' .$stash->get(['plugin',0,'cgi',0]));$stash->set(['plugin',0,'fullUrl',0],$stash->get('cp_security_token').$stash->get(['plugin',0,'url',0]));if ($stash->get(['plugin',0,'icon',0])){$stash->set(['plugin',0,'iconUrl',0],$stash->get(['Whostmgr',0,'get_icon_url',['addon_plugins/' .$stash->get(['plugin',0,'icon',0])]]))}else {$stash->set(['plugin',0,'iconUrl',0],$stash->get(['Whostmgr',0,'find_file_url',[('icons/' .$stash->get(['plugin',0,'tagname',0]).'.png')]])|| $stash->get(['Whostmgr',0,'find_file_url',['icons/plugin_placeholder.png' ]]))}$stash->set(['plugin',0,'type',0],'plugin');$output .= '
+                            <div class="col-md-4 cp-group__content-item">
+                                <div>
+                                    <cp-app
+                                        class="cp-app-link"
+                                        url="';$output .= $stash->get(['plugin',0,'fullUrl',0]);$output .= '"
+                                        target=';$output .= $stash->get(['plugin',0,'target',0])|| '_self';$output .= '
+                                        iconUrl="';$output .= $stash->get(['plugin',0,'iconUrl',0]);$output .= '"
+                                        description="';$output .= $stash->get(['plugin',0,'showname',0,'html',0]);$output .= '"
+                                        uniqueKey="';$output .= $stash->get(['plugin',0,'key',0]);$output .= '"
+                                        name="';$output .= $stash->get(['plugin',0,'key',0]);$output .= '"
+                                    >
+                                    </cp-app>
+                                    <cp-favorite-selector
+                                        class="cp-select-for-my-tools"
+                                        group="';$output .= $stash->get(['group',0,'key',0]);$output .= '"
+                                        name="';$output .= $stash->get(['plugin',0,'key',0]);$output .= '"
+                                    >
+                                    </cp-favorite-selector>
+                                </div>
+                            </div>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </div>
+                    </div>
+                </div>
+                '}$output .= '
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </section>
+        ';if ($stash->get('has_component_system')&& $stash->get(['Components',0,'has_components_for',['whostmgr',$stash->get('app_key'),'menu-bottom' ]])){$output .= $context->process('master_templates/component.html.tt',{'APP_KEY'=>$stash->get('app_key'),'TAG'=>'section','SLOT'=>'menu-bottom','CLASSES'=>'cp-page-section' })}$output .= '
+    </div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.token = "';$output .= $stash->get('cp_security_token');$output .= '";
+    PAGE.isRoot = ';$output .= $stash->get(['Whostmgr',0,'ENV',0,'REMOTE_USER',0])eq 'root' ? 'true' : 'false';$output .= ';
+
+    PAGE.expanded_groups = ';$output .= $stash->get(['expanded_groups',0,'json',0]);$output .= ';
+    PAGE.hasBasicWHMFunctions = ';$output .= $stash->get(['Whostmgr',0,'checkacl',['basic-whm-functions' ]]);$output .= ';
+    PAGE.favorites = ';$output .= $stash->get(['favorites',0,'json',0]);$output .= ';
+    PAGE.tools = ';$output .= $stash->get(['data',0,'tools',0,'json',0]);$output .= ';
+    PAGE.plugins = ';$output .= $stash->get(['plugins',0,'json',0])|| '[]';$output .= ';
+
+    ';$output .= $context->insert('menu/main.js');$output .= '
+</script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'home','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/menu/main.min.css' ]])],'scripts'=>['/libraries/sortablejs/1.15.0/Sortable.js' ],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

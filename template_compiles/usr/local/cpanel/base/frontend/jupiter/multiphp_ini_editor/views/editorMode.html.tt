@@ -1,0 +1,78 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/multiphp_ini_editor/views/editorMode.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="editModeContainer" class="list-container">
+    <form class="layout-medium" novalidate>
+        <div class="row">
+            <div class="col-xs-12" ng-cloak>
+                <cp-alert-list></cp-alert-list>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <h3 class="section-header">';$output .= $stash->get(['locale',0,'maketext',['Edit [asis,PHP INI] settings[comment,action header]' ]]);$output .= '</h3>
+                <span class="info-block" id="infoBlk">
+                    <span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Select the home directory or a domain’s document root to open the corresponding [asis,PHP] configuration.' ]]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-7 col-md-5">
+                <div class="form-group">
+                    <select id="selectLocation"
+                            class="form-control phpSelect"
+                            ng-disabled="noIniPaths"
+                            ng-options="path.name for path in iniPathNames"
+                            ng-model="selectedIniPath"
+                            ng-change="loadContent()">
+                        <option id="selectOption"
+                            value="">
+                            {{ txtInFirstOption }}
+                        </option>
+                    </select>
+                    <span spinner id="loadingSpinner" class="addSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                </div>
+            </div>
+            <div class="col-xs-11 col-sm-5 col-md-7" ng-show="selectedIniPath.type">
+                <div class="form-group">
+                    <button id="btnSave"
+                        type="button"
+                        class="btn btn-primary floatDirection"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Save changed settings.' ]]);$output .= '"
+                        cp-action="save()">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row well well-sm iniInfoBlock" ng-show="selectedIniPath.type">
+            <div id="pathInfo" class="col-sm-12 col-md-5">
+                <span class="iniInfoTitle">';$output .= $stash->get(['locale',0,'maketext',['Path' ]]);$output .= '</span>
+                <span dir="ltr">{{currentIniPathInfo.inifullpath}}</span>
+            </div>
+            <div id="versionInfo" class="col-sm-12 col-md-3">
+                <span class="iniInfoTitle">';$output .= $stash->get(['locale',0,'maketext',['[asis,PHP] Version' ]]);$output .= '</span>
+                <span dir="ltr">{{currentIniPathInfo.version}}</span>
+            </div>
+            <div id="domainInfo" class="col-sm-12 col-md-4" ng-show="selectedIniPath.type === \'vhost\'">
+                <span class="iniInfoTitle">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</span>
+                <span dir="ltr">{{currentIniPathInfo.vhost}}</span>
+            </div>
+        </div>
+        <div ng-show="selectedIniPath.type" class="col-xs-11 col-sm-12 editorContainer">
+            <div id="editor"
+                ng-class="{ processing: processingEditor }"
+                class="iniEditor">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="callout callout-info" ng-if="!selectedIniPath.type">
+                    ';$output .= $stash->get(['locale',0,'maketext',['You must select a location.' ]]);$output .= '
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

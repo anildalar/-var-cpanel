@@ -1,0 +1,70 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/include/origin_info.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$stash->set('content_txt_color',$stash->get('med_dark_gray'),1);$stash->set('separator_color',$stash->get('medium_gray'),1);$stash->set('reduced_spacing','padding:0 0 0 0; margin: 5px 0 0 0;',1);$output .= '
+
+<div style="font-family:';$output .= $stash->get('font_family');$output .= ';border-top: 2px solid ';$output .= $stash->get('separator_color');$output .= '; padding-top:5px; margin-top: 5px; font-size:12px; color: ';$output .= $stash->get('content_txt_color');$output .= ';">
+    ';if ($stash->get(['NOTICE',0,'ip_address',0,'defined',0])){$output .= '    <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+        ';if ($stash->get(['NOTICE',0,'env_remote_user',0])){$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This notice is the result of a request made by a computer with the [output,abbr,IP,Internet Protocol] address of “[_2]” through the “[_1]” service on the server while logged in as “[_3]”.',$stash->get(['NOTICE',0,'origin',0]),$stash->get(['NOTICE',0,'ip_address',0]),$stash->get(['NOTICE',0,'env_remote_user',0])]]);$output .= '
+        '}else {$output .= '
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This notice is the result of a request made by a computer with the [output,abbr,IP,Internet Protocol] address of “[_2]” through the “[_1]” service on the server.',$stash->get(['NOTICE',0,'origin',0]),$stash->get(['NOTICE',0,'ip_address',0])]]);$output .= '
+        '}$output .= '
+    </p>
+
+    ';if ($stash->get(['NOTICE',0,'ip_address_is_public',0])){$output .= '        ';if ($stash->get(['NOTICE',0,'reverse_dns_hostnames',0,'size',0])){$output .= '            <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['A reverse [output,abbr,DNS,Domain Name Service] lookup on the remote [output,abbr,IP,Internet Protocol] address returned the host [numerate,_1,name,names] [list_and_quoted,_2].',$stash->get(['NOTICE',0,'reverse_dns_hostnames',0,'size',0]),$stash->get(['NOTICE',0,'reverse_dns_hostnames',0])]]);$output .= '
+            </p>
+        '}$output .= '        <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+            ';if ($stash->get(['NOTICE',0,'country_name',0])){$output .= '                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s location appears to be: [_1] ([_2]).',$stash->get(['NOTICE',0,'country_name',0]),$stash->get(['NOTICE',0,'country_code',0])]]);$output .= '
+            '}elsif ($stash->get(['NOTICE',0,'country_lookup_error',0])){$output .= '                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to look up the remote [output,abbr,IP,Internet Protocol] address’s geographical origin because of an error: [_1]',$stash->get(['NOTICE',0,'country_lookup_error',0,'html',0])]]);$output .= '
+            '}$output .= '        </p>
+        ';if ($stash->get(['NOTICE',0,'whois',0])){$output .= '
+            ';if ($stash->get(['NOTICE',0,'whois',0,'get',['descr' ]])){$output .= '
+                <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+                  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s [output,abbr,IP,Internet Protocol] address is assigned to the provider: [list_and_quoted,_1]',$stash->get(['NOTICE',0,'whois',0,'get',['descr' ]])]]);$output .= '
+                </p>
+            '}$output .= '
+            ';if ($stash->get(['NOTICE',0,'whois',0,'get',['comments' ]])|| $stash->get(['NOTICE',0,'whois',0,'get',['remarks' ]])){$output .= '
+                <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+                  ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The provider supplied the following remarks about the [output,abbr,IP,Internet Protocol] address allocation: [list_and_quoted,_1]',($stash->get(['NOTICE',0,'whois',0,'get',['comments' ]])|| $stash->get(['NOTICE',0,'whois',0,'get',['remarks' ]]))]]);$output .= '
+                </p>
+            '}$output .= '
+
+         '}elsif ($stash->get(['NOTICE',0,'whois_lookup_error',0])){$output .= '
+            <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+              ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to look up the remote [output,abbr,IP,Internet Protocol] address’s [asis,WHOIS] information because of an error: [_1]',$stash->get(['NOTICE',0,'whois_lookup_error',0,'html',0])]]);$output .= '
+            </p>
+        '}$output .= '
+    '}$output .= '    ';if ($stash->get(['NOTICE',0,'fingerprint',0])){$output .= '      ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['http_name' ]])){$output .= '        <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+          ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['http_flavor' ]])){$output .= '
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,HTTP,Hypertext Transfer Protocol] client appears to be: “[_1]” with version “[_2]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['http_name' ],'html',0]),$stash->get(['NOTICE',0,'fingerprint',0,'get',['http_flavor' ],'html',0])]]);$output .= '
+          '}else {$output .= '
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,HTTP,Hypertext Transfer Protocol] client appears to be: “[_1]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['http_name' ],'html',0])]]);$output .= '
+          '}$output .= '
+          ';if ($stash->get(['NOTICE',0,'fingerprint',0,'http_client_is_forged',0])){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,HTTP,Hypertext Transfer Protocol] client appears to be forged.' ]]);$output .= '
+          '}elsif ($stash->get(['NOTICE',0,'fingerprint',0,'http_client_is_proxied',0])){$output .= '            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,HTTP,Hypertext Transfer Protocol] client may be proxied.' ]]);$output .= '
+          '}$output .= '        </p>
+      '}$output .= '      ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['link_type' ]])){$output .= '        <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s network link type appears to be: “[_1]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['link_type' ],'html',0])]]);$output .= '
+        </p>
+      '}$output .= '      ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['language' ]])){$output .= '        <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s browser language setting appears to be: “[_1]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['language' ],'html',0])]]);$output .= '
+        </p>
+      '}$output .= '      ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['os_name' ]])){$output .= '        <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+          ';if ($stash->get(['NOTICE',0,'fingerprint',0,'get',['os_flavor' ]])){$output .= '
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s operating system appears to be: “[_1]” with version “[_2]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['os_name' ],'html',0]),$stash->get(['NOTICE',0,'fingerprint',0,'get',['os_flavor' ],'html',0])]]);$output .= '
+          '}else {$output .= '
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The remote computer’s operating system appears to be: “[_1]”.',$stash->get(['NOTICE',0,'fingerprint',0,'get',['os_name' ],'html',0])]]);$output .= '
+          '}$output .= '
+        </p>
+      '}$output .= '    '}elsif ($stash->get(['NOTICE',0,'fingerprint_lookup_error',0])){$output .= '
+      <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to look up the remote [output,abbr,IP,Internet Protocol] address’s fingerprint because of an error: [_1]',$stash->get(['NOTICE',0,'fingerprint_lookup_error',0,'html',0])]]);$output .= '
+      </p>
+    '}$output .= '
+'}else {$output .= '    ';if ($stash->get(['NOTICE',0,'origin',0])){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['This notice is the result of a request from “[_1]”.',$stash->get(['NOTICE',0,'origin',0])]]);$output .= '
+    '}$output .= '
+'}$output .= '    <p style="';$output .= $stash->get('reduced_spacing');$output .= '">
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system generated this notice on [datetime,_1,date_format_full] at [datetime,_1,time_format_full].',$stash->get(['CPANEL',0,'now',0])]]);$output .= '
+    </p>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

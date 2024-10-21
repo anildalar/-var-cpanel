@@ -1,0 +1,12 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/managepid.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {if (!$stash->get(['data',0,'close_trace',0])){$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Process Manager' ]]),'breadcrumburl'=>'/scripts2/top','theme'=>'yui' });do {my$_tt_result=$stash->get(['data',0,'action',0]);my$_tt_match;SWITCH: {$_tt_match='killuser';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){if ($stash->get(['data',0,'cannotroot',0])){$output .= 'Can\'t kill root\'s processes.
+'}elsif (!$stash->get(['data',0,'error',0])){$output .= 'Killed all processes owned by ';$output .= $stash->get(['data',0,'user',0]);$output .= '.
+'}last SWITCH}$_tt_match='kill';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){if (!$stash->get(['data',0,'error',0])){$output .= '
+Killed process ';$output .= $stash->get(['data',0,'pid',0]);$output .= '.
+'}last SWITCH}}};if ($stash->get(['data',0,'error',0])){$output .= 'An error occurred processing your request:
+<pre>
+';$output .= $stash->get(['data',0,'error',0]);$output .= '</pre>
+'}if ($stash->get(['data',0,'action',0])eq 'trace'){$output .= '
+<pre>
+'}else {$output .= '<a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/top">Back</a>
+'}}else {$output .= '</pre>
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

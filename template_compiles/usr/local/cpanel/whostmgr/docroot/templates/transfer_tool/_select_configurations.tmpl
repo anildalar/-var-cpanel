@@ -1,0 +1,55 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_tool/_select_configurations.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div ng-if="main.PAGE.options.unrestricted === \'1\'">
+    <p ng-show="main.olderRemote && main.meta.is_cpanel" class="alert alert-warning">';$output .= $stash->get(['locale',0,'maketext',['The source server has a [asis,cPanel] version older than 55. Therefore, transferring system configurations is not available.' ]]);$output .= '</p>
+    <p ng-show="!main.meta.is_cpanel" class="alert alert-warning">';$output .= $stash->get(['locale',0,'maketext',['The source server is using [_1]. Service Configuration transfer is only available when the source server is using [asis,cPanel amp() WHM].','{{main.meta.panel_name}}' ]]);$output .= '</p>
+    <div ng-show="!main.olderRemote">
+        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning]: When you select the Service Transfer Tool feature, the system will migrate [output,strong,all] configurations listed below and overwrite any existing configurations on the server. Do [output,strong,not] use this feature unless you wish to import configurations from another server.' ]]);$output .= '
+            </div>
+        </div>
+        <table role="table" class="table table-striped service-configuration-table">
+            <thead>
+                <tr>
+                    <th nonsortable="true"></th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Configuration Name' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Analysis' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="module in main.configuration_modules | orderBy:\'value.name\'">
+                    <td><input bool-to-int ng-disabled="module.value.error || (module.value.name === \'Easy Apache\' && main.PAGE.blockerExists)" type="checkbox" id="{{ module.key }}_enabled" ng-model="module.value.selected" ng-change="main.updateConfigurations()"></td>
+                    <td><label for="{{ module.key }}_enabled" ng-bind="module.value.name"></label></td>
+                    <td>
+                        <div>
+                            <span ng-repeat="analysis in module.value.analysis | orderBy:\'analysisKey\'">
+                                <span ng-if="analysis.analysisKey !== \'Blocker Data\'">{{ analysis.analysisKey }}: {{ analysis.analysis }}<br></span>
+                                <span ng-if="analysis.analysisKey === \'Blocker Data\'">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Migration Health Check Information:' ]]);$output .= '
+                                    <div class="panel panel-default" ng-repeat="resultSet in main.PAGE.EABlockers">
+                                        <div class="panel-heading">{{ resultSet.name }} ({{ resultSet.vendor_id }})</div>
+                                        <div class="panel-body">
+                                            <p>{{ resultSet.desc }}</p>
+                                            <ul class="list-unstyled">
+                                                <li ng-repeat="item in resultSet.items | orderBy:\'status\':true" class="alert" ng-class="{\'alert-success\': item.status === 0, \'alert-warning\': item.status === 1, \'alert-danger\': item.status === 2}">
+                                                    <span ng-show="item.status === 0"><strong>';$output .= $stash->get(['locale',0,'maketext',['Passed:' ]]);$output .= '</strong></span>
+                                                    <span ng-show="item.status === 1"><strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong></span>
+                                                    <span ng-show="item.status === 2"><strong>';$output .= $stash->get(['locale',0,'maketext',['Blocker:' ]]);$output .= '</strong></span>
+                                                    {{ item.msg }}
+                                                </li>
+                                                <li class="alert alert-success" ng-if="!resultSet.items">';$output .= $stash->get(['locale',0,'maketext',['Everything passed the pre-flight check.' ]]);$output .= '</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </span>
+                            </span>
+                        </div>
+                        <p class="text-warning" ng-show="module.value.warning">{{ module.value.warning }}</p>
+                        <p class="text-danger" ng-show="module.value.error">{{ module.value.error }}</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

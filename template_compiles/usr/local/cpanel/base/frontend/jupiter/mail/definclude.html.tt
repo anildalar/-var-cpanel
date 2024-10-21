@@ -1,0 +1,204 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/definclude.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ServerRoles',$context->plugin('ServerRoles'));$output .= '<div>
+    <div class="form-group">
+        <label id="lblFwdoptFail" for="fwdopt_fail">
+            <input name="fwdopt" type="radio" id="fwdopt_fail" value="fail" checked="checked" />
+            ';$output .= $stash->get(['locale',0,'maketext',['Discard the email while your server processes it by [output,acronym,SMTP,Secure Mail Transfer Protocol] time with an error message.' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-11 col-sm-6 col-md-6 col-lg-6">
+                <label id="lblFailInput" for="fail_input">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Failure Message (seen by sender)' ]]);$output .= '
+                </label>
+                <input onchange="choosefwd(\'fail\');" id="fail_input" name="failmsgs" onkeyup="setmodded();" type="text" class="form-control" size="40" value="';$output .= $stash->get(['locale',0,'maketext',['No such person at this address.' ]]);$output .= '" />
+            </div>
+            <div class="col-xs-5" id="fail_input_error"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label id="lblFwdRadio" for="fwd_radio">
+            <input name="fwdopt" id="fwd_radio" type="radio" value="fwd" />
+            ';$output .= $stash->get(['locale',0,'maketext',['Forward to Email Address' ]]);$output .= '
+        </label>
+        <div class="row">
+            <div class="col-xs-offset-1 col-xs-11 col-sm-6 col-md-6 col-lg-6">
+                ';if (!($stash->get(['FORM',0,'item',['acct' ]])eq $stash->get('undef'))){$output .= '
+                    <a class="btn btn-primary" href="#" onclick="usenewacct();return false;">';$output .= $stash->get(['locale',0,'maketext',['Use Newly Created Account' ]]);$output .= '</a>
+                '}$output .= '
+                <label id="lblFwdEmail" for="fwdemail">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Forward to Email Address' ]]);$output .= ':
+                </label>
+                <input onchange="choosefwd(\'fwd\');" onkeyup="setmodded();" id="fwdemail" name="fwdemail" type="text" class="form-control" size="40" />
+            </div>
+            <div class="col-xs-5" id="fwdemail_error"></div>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <a id="toggle_advanced_options" href="#">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Advanced Options' ]]);$output .= '</strong> <span class="caret"></span></a>
+    </div>
+
+    <div style="display: none;" id="advance" class="section">
+        <div class="form-group">
+            <label id="lblFwdOptSystem" for="fwdopt_system">
+                <input type="radio" name="fwdopt" id="fwdopt_system" value="system" />
+                ';$output .= $stash->get(['locale',0,'maketext',['Forward to your system account “[_1]”',$stash->get(['CPANEL',0,'user',0])]]);$output .= '
+            </label>
+        </div>
+
+        ';if ($stash->get(['ServerRoles',0,'is_role_enabled',['FileStorage' ]])){$output .= '            <div class="form-group">
+                <label id="lblFwdOpt" for="fwdopt">
+                    <input name="fwdopt" id="fwdopt" type="radio" value="pipe" />
+                    ';$output .= $stash->get(['locale',0,'maketext',['Pipe to a Program' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <input type="hidden" id="user" name="user" value="';$output .= $stash->get(['CPANEL',0,'CPDATA',0,'item',['USER' ],'html',0]);$output .= '" />
+                    <div class="col-xs-offset-1 col-xs-11">
+                        ';$stash->set(['CPANEL',0,'CPVAR',0,'autoinput',0],'pipefwd');$output .= '
+                        ';$stash->set(['CPANEL',0,'CPVAR',0,'autofunc',0],'pipeDirComplete');$output .= '
+
+                        <span class="fas fa-home">/</span>
+                        ';$output .= $context->process('autodir/dirbox.html.tt');$output .= '
+
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enter a path relative to your home directory. If the script requires an interpreter such as Perl or PHP, omit the /usr/bin/perl or /usr/bin/php portion. Make sure that your script is executable and has the appropriate [output,url,_1,target,_2,hashbang,id,lnkTarget]. If you do not know how to add the [output,url,_1,target,_2,hashbang,id,lnkTarget2], save the script file with the correct extension and it will be added automatically.','http://en.wikipedia.org/wiki/Hashbang','_blank' ]]);$output .= '
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        '}$output .= '
+        <div class="form-group">
+            <label id="lblFwdoptBlackhole" for="fwdopt_blackhole">
+                <input name="fwdopt" type="radio" id="fwdopt_blackhole" value="blackhole" />
+                ';$output .= $stash->get(['locale',0,'maketext',['Discard (Not Recommended)' ]]);$output .= '
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="form-group">
+    <input class="btn btn-primary" id="submit_forwarder" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '" />
+</div>
+
+<script type="text/javascript">
+var pipeDirComplete = function(inputObj) {
+    choosefwd(\'pipe\');
+};
+
+var choosefwd = function(valr) {
+    for(var i=0; i<=document.fwdf.fwdopt.length; i++) {
+        if (document.fwdf.fwdopt[i].value == valr) {
+            document.fwdf.fwdopt[i].checked = true;
+            break;
+        }
+    }
+};
+
+var input_modded = 0;
+var setmodded = function() {
+    input_modded = 1;
+};
+
+var validate_fail_input = function() {
+    if (YAHOO.util.Dom.get("fwdopt_fail").checked == true) {
+        if (YAHOO.util.Dom.get("fail_input").value == \'\') {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return true;
+    }
+};
+
+var validate_email_address = function(email) {
+    if (CPANEL.validate.email(email) == true) return true;
+    if (email === \'';$output .= $stash->get(['CPANEL',0,'user',0]);$output .= '\') return true;
+    return false;
+};
+
+var validate_forward_input = function() {
+    if (YAHOO.util.Dom.get("fwd_radio").checked == true) {
+        var email = YAHOO.util.Dom.get("fwdemail").value;
+        var split = email.split(",");
+        for (var i = 0; i < split.length; i++)
+            if (!validate_email_address(split[i]))
+                return false;
+        return true;
+    }
+    else {
+        return true;
+    }
+};
+
+var validate_pipe_input = function() {
+    if (YAHOO.util.Dom.get("fwdopt").checked == true) {
+        if (YAHOO.util.Dom.get("pipefwd").value == \'\') {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return true;
+    }
+};
+
+var init_validators = function() {
+    error_valid.add("fail_input", validate_fail_input, "';$output .= $stash->get(['locale',0,'maketext',['Failure message cannot be empty.' ]]);$output .= '");
+    error_valid.attach();
+
+    forward_valid.add("fwdemail", validate_forward_input, "';$output .= $stash->get(['locale',0,'maketext',['Forward address must be an email address or your account name.' ]]);$output .= '");
+    forward_valid.attach();
+
+    pipe_valid.add("pipefwd", validate_pipe_input, "';$output .= $stash->get(['locale',0,'maketext',['Please enter a path for “[_1]”.',$stash->get(['locale',0,'maketext',['Pipe to a Program' ]])]]);$output .= '");
+    pipe_valid.attach();
+
+    CPANEL.validate.attach_to_form("submit_forwarder", [error_valid, forward_valid, pipe_valid]);
+};
+
+var toggle_radio_button = function() {
+    if (YAHOO.util.Dom.get("fwdopt_fail").checked == true) {
+        forward_valid.clear_messages();
+        pipe_valid.clear_messages();
+        if (YAHOO.util.Dom.get("fail_input").value != "") error_valid.verify();
+    }
+    else if (YAHOO.util.Dom.get("fwd_radio").checked == true) {
+        error_valid.clear_messages();
+        if (YAHOO.util.Dom.get("fwdemail").value != "") forward_valid.verify();
+        pipe_valid.clear_messages();
+    }
+    else if (YAHOO.util.Dom.get("fwdopt_blackhole").checked == true) {
+        error_valid.clear_messages();
+        forward_valid.clear_messages();
+        pipe_valid.clear_messages();
+    }
+    else if (YAHOO.util.Dom.get("fwdopt").checked == true) {
+        error_valid.clear_messages();
+        forward_valid.clear_messages();
+        if (YAHOO.util.Dom.get("pipefwd").value != "") pipe_valid.verify();
+    }
+};
+
+var error_valid = new CPANEL.validate.validator("Failure Message");
+var forward_valid = new CPANEL.validate.validator("Forward Address");
+var pipe_valid = new CPANEL.validate.validator("Pipe Program");
+
+var init_definclude = function() {
+    YAHOO.util.Event.on("toggle_advanced_options", "click", function() { CPANEL.animate.slide_toggle("advance") });
+
+    init_validators();
+
+    YAHOO.util.Event.on(["fwdopt","fwd_radio","fwdopt_fail","fwdopt_blackhole"], "click", toggle_radio_button);
+};
+YAHOO.util.Event.onDOMReady(init_definclude);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

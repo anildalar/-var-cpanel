@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/InitialWebsite/Creation.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';$output .= '
+
+<div>
+    ';if (!$stash->get(['NOTICE',0,'status',0])){$output .= '
+        <div>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system failed to set up your requested website at “[_1]”.',$stash->get(['NOTICE',0,'username',0])]]);$output .= '
+        </div>
+        <div>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Error:' ]]);$output .= '
+        </div>
+        <pre>
+            ';$output .= $stash->get(['NOTICE',0,'reason',0]);$output .= '
+        </pre>
+    '}else {$output .= '
+        <div>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The system successfully created your new [asis,cPanel] account and website.' ]]);$output .= '
+        </div>
+
+        <div>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Account information:' ]]);$output .= '
+            <ul>
+                <li>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Username: [_1]',$stash->get(['NOTICE',0,'username',0,'html',0])]]);$output .= '</li>
+                <li>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Domain: [_1]',$stash->get(['NOTICE',0,'domain',0,'html',0])]]);$output .= '</li>
+            </ul>
+        </div>
+
+        <div>
+            ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To log in to your new [asis,cPanel] account, use the following login [output,acronym,URL,Uniform Resource Locator]:' ]]);$output .= '
+            <ul>
+            <li><a href="';$output .= $stash->get(['NOTICE',0,'login_url',0,'html',0]);$output .= '">';$output .= $stash->get(['NOTICE',0,'login_url',0,'html',0]);$output .= '</a></li>
+            </ul>
+        </div>
+    '}$output .= '
+</div>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

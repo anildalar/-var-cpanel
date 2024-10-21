@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/addhost.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('addhost',$stash->get(['execute',['Mysql','add_host',{'host'=>$stash->get(['FORM',0,'host',0])}]]));if ($stash->get(['addhost',0,'status',0])){$stash->set('addnotes',$stash->get(['execute',['Mysql','add_host_note',{'host'=>$stash->get(['RAW_FORM',0,'host',0]),'note'=>$stash->get(['RAW_FORM',0,'comment',0])}]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if ($stash->get(['addhost',0,'status',0])){$output .= '
+    <div id="addhostSuccess" class="alert alert-success">
+        <span id="addhostSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+        <div id="addhostSuccessMsg" class="alert-message wrap-text-forcefully">
+            ';$output .= $stash->get(['locale',0,'maketext',['The host “[_1]” was added to the access list.',$stash->get(['FORM',0,'host',0])]]);$output .= '
+            ';if ($stash->get(['FORM',0,'exists',['comment' ]])&& $stash->get(['FORM',0,'comment',0,'length',0])> 0 && $stash->get(['addnotes',0,'status',0])){$output .= '
+            <br>';$output .= $stash->get(['locale',0,'maketext',['Comment:' ]]);$output .= ' ';$output .= $stash->get(['FORM',0,'comment',0]);$output .= '
+            '}$output .= '
+        </div>
+    </div>
+    '}$output .= '
+    ';if (!$stash->get(['addnotes',0,'status',0])||!$stash->get(['addhost',0,'status',0])){$output .= '
+    <div id="addhostError" class="alert alert-danger">
+        <span id="addhostErrorImg" class="glyphicon glyphicon-exclamation-sign"></span>
+        <div id="addhostErrorMsg" class="alert-message">
+            ';if (!$stash->get(['addhost',0,'status',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['addhost',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'addhostError'}=$_tt_value;$output .= '
+                    ';$output .= $stash->get('addhostError');$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            ';if (!$stash->get(['addnotes',0,'status',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['addnotes',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'addnotesError'}=$_tt_value;$output .= '
+                    ';$output .= $stash->get('addnotesError');$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+        </div>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'managehost.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_databases','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

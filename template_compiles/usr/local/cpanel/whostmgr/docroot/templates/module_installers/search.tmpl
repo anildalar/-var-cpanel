@@ -1,0 +1,90 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/module_installers/search.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('breadcrumburl','/scripts2/module_installers_chooser');$output .= $context->process('master_templates/_defheader.tmpl',{'breadcrumburl'=>$stash->get('breadcrumburl'),'theme'=>'yui','stylesheets'=>['/themes/x/module_installers.css' ],'scripts'=>['/js/sorttable.js' ]});$output .= '<div class="body-content">
+
+<h1>';$output .= $stash->get(['data',0,'name',0,'html',0]);$output .= '</h1>
+
+<h2>
+';if ($stash->get(['data',0,'item',['settings-searchtype' ]])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Search Results for “[_1]”',$stash->get(['data',0,'searchterm',0,'html',0])]]);$output .= '
+'}else {$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Available for Installation' ]]);$output .= '
+'}$output .= '
+</h2>
+<div id="search-module_top">
+<form action="../scripts2/module_installers_search" method="GET" class="search-form">
+    <label for="searchterm_top">';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '</label>
+    <input type="hidden" name="lang" value="';$output .= $stash->get(['data',0,'lang',0,'html',0]);$output .= '" />
+    <input type="hidden" name="searchtype" value="1" />
+    ';if ($stash->get(['data',0,'is_ea4',0])&& ($stash->get(['data',0,'lang',0])eq 'php-pear' || $stash->get(['data',0,'lang',0])eq 'php-pecl')){$output .= '
+    <input type="hidden" name="version" value="';$output .= $stash->get(['data',0,'selected_php_version',0,'html',0]);$output .= '" />
+    '}$output .= '
+    <input name="searchterm" id="searchterm_top" type="text" value="';$output .= $stash->get(['data',0,'searchterm',0,'html',0]);$output .= '" />
+    <input class="btn-secondary" type="submit" id="search_top" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+</form>
+';if ($stash->get(['data',0,'item',['settings-searchtype' ]])){$output .= '
+<form action="../scripts2/module_installers_search" method="GET" class="search-form">
+    <input type="hidden" name="lang" value="';$output .= $stash->get(['data',0,'lang',0,'html',0]);$output .= '" />
+    <input type="hidden" name="searchtype" value="0" />
+    ';if ($stash->get(['data',0,'is_ea4',0])&& ($stash->get(['data',0,'lang',0])eq 'php-pear' || $stash->get(['data',0,'lang',0])eq 'php-pecl')){$output .= '
+    <input type="hidden" name="version" value="';$output .= $stash->get(['data',0,'selected_php_version',0,'html',0]);$output .= '" />
+    '}$output .= '
+    <input class="btn-secondary" type="submit" id="clear_search_top" value="';$output .= $stash->get(['locale',0,'maketext',['Clear Search' ]]);$output .= '" />
+</form>
+'}$output .= '
+</div>
+';if ($stash->get(['data',0,'results',0,'size',0])|| $stash->get(['data',0,'results_raw',0,'size',0])){$output .= '
+<table id="searchtbl" class="sortable" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Module Name' ]]);$output .= '</th>
+        <th>';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th>
+        <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+    </tr>
+    ';if ($stash->get(['data',0,'is_ea4',0])&& ($stash->get(['data',0,'lang',0])eq 'php-pear' || $stash->get(['data',0,'lang',0])eq 'php-pecl')){$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'results_raw',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'module'}=$_tt_value;$output .= '
+        <tr>
+            <td>';$output .= $stash->get(['module',0,'module',0,'html',0]);$output .= ' ';if ($stash->get(['module',0,'latest',0])){$output .= '(' .$stash->get(['module',0,'latest',0,'html',0]).')'}$output .= '</td>
+            <td>';$output .= $stash->get(['module',0,'info',0,'html',0]);$output .= '</td>
+            <td nowrap>
+                <a href="';$output .= $stash->get('cp_security_token').'/scripts2/module_installers_live_install?lang=' .$stash->get(['data',0,'lang',0,'uri',0]).'&version=' .$stash->get(['data',0,'selected_php_version',0,'uri',0]).'&mod=' .$stash->get(['module',0,'module',0,'uri',0]);$output .= '" class="action-link">';$output .= $stash->get(['locale',0,'maketext',['Install' ]]);$output .= '</a>
+                <a href="';$output .= $stash->get(['module',0,'docurl',0]);$output .= '" target="_blank" class="action-link">';$output .= $stash->get(['locale',0,'maketext',['Show Docs' ]]);$output .= '</a>
+            </td>
+        </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}else {$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'results',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'result'}=$_tt_value;$output .= '
+            ';$output .= $stash->get('result');$output .= '
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+</table>
+<div class="pagination">
+    ';if ($stash->get(['data',0,'paginator',0,'size',0])){$output .= '
+        ';$output .= $stash->get(['data',0,'paginator',0,0,0]);$output .= '
+    '}$output .= '
+</div>
+'}else {$output .= '
+<p class="search-results-isEmpty">';$output .= $stash->get(['locale',0,'maketext',['No results match your query.' ]]);$output .= '</p>
+'}$output .= '
+
+<div id="search-module_bottom">
+<form action="../scripts2/module_installers_search" class="search-form" method="GET">
+    <label for="searchterm_bottom">';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '</label>
+    <input type="hidden" name="lang" value="';$output .= $stash->get(['data',0,'lang',0,'html',0]);$output .= '" />
+    <input type="hidden" name="searchtype" value="1" />
+    ';if ($stash->get(['data',0,'is_ea4',0])&& ($stash->get(['data',0,'lang',0])eq 'php-pear' || $stash->get(['data',0,'lang',0])eq 'php-pecl')){$output .= '
+    <input type="hidden" name="version" value="';$output .= $stash->get(['data',0,'selected_php_version',0,'html',0]);$output .= '" />
+    '}$output .= '
+    <input name="searchterm" id="searchterm_bottom" type="text" value="';$output .= $stash->get(['data',0,'searchterm',0,'html',0]);$output .= '" />
+    <input class="btn-secondary" type="submit" id="search_bottom" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+</form>
+</div>
+
+<div class="return-link">
+';if ($stash->get(['data',0,'is_ea4',0])&& ($stash->get(['data',0,'lang',0])eq 'php-pear' || $stash->get(['data',0,'lang',0])eq 'php-pecl')){$output .= '
+<b>[</b> <a href="../scripts2/module_installers_main?lang=';$output .= $stash->get(['data',0,'lang',0,'uri',0]);$output .= '&version=';$output .= $stash->get(['data',0,'selected_php_version',0,'uri',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a><b> ]</b>
+'}else {$output .= '
+<b>[</b> <a href="../scripts2/module_installers_main?lang=';$output .= $stash->get(['data',0,'lang',0,'uri',0]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a><b> ]</b>
+'}$output .= '
+</div>
+
+</div>
+';$output .= $context->process('master_templates/_deffooter.tmpl',{'theme'=>'yui' });$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

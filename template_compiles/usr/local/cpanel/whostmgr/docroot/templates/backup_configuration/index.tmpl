@@ -1,0 +1,86 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/backup_configuration/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('stylesheet_includes',[$stash->get(['Whostmgr',0,'find_file_url',['/templates/backup_configuration/index.min.css' ]])]);$stash->set('jb_logo',$stash->get(['Whostmgr',0,'find_file_url',['/images/jetbackup.svg' ]]));$stash->set('PAGE_BASE','/scripts/backup_configuration/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$stash->set('PAGE_DATA',{'MAIN_TITLE'=>$stash->get('PAGE_NAME')});$output .= do {my$output='';$output .= '
+
+';if ($stash->get(['data',0,'show_jetbackup',0])){$output .= '
+    ';$output .= $context->process('backup_configuration/views/jet_backup.ptt');$output .= '
+'}$output .= '
+
+<cp-alert-list id="configuration-alert-list"></cp-alert-list>
+<div id="content"
+     ng-controller="BaseController"
+     class="ng-cloak"
+     ng-cloak>
+    <div id="tabContainer">
+        <ul class="nav nav-tabs">
+            <li ng-class="{active: currentRoute === \'/settings\'}"><a href="config">';$output .= $stash->get(['locale',0,'maketext',['Backup Settings' ]]);$output .= '</a></li>
+            <li ng-class="{active: currentRoute === \'/destinations\'}"><a href="destinations">';$output .= $stash->get(['locale',0,'maketext',['Additional Destinations' ]]);$output .= '</a></li>
+            <li ng-class="{active: currentRoute === \'/validation\'}"><a href="validation">';$output .= $stash->get(['locale',0,'maketext',['Validation Results' ]]);$output .= '</a></li>
+        </ul>
+        <div class="tab-content" ng-view></div>
+    </div>
+</div>
+
+';$stash->set('port_validation_message',$stash->get(['locale',0,'maketext',['The port number must be between [numf,1] and [numf,65535].' ]]));$stash->set('std_timeout_validation_message',$stash->get(['locale',0,'maketext',['You must enter a timeout value between [numf,30] and [numf,300] seconds.' ]]));$output .= '
+';$stash->set('std_timeout_number_message',$stash->get(['locale',0,'maketext',['You must enter a positive integer for the timeout value.' ]]));$output .= '
+
+<script type="text/javascript">
+    var PAGE = ';$output .= $stash->get(['PAGE_DATA',0,'json',0]);$output .= ";\n</script>\n\n<!-- load the main templates into \$templateCache first -->\n\n<script id=\"views/destinations.ptt\" type=\"text/ng-template\">\n    ";$output .= $context->process('backup_configuration/views/destinations.ptt');$output .= '
+</script>
+
+<script id="views/config.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/config.ptt');$output .= '
+</script>
+
+<script id="views/validationResults.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/validationResults.ptt');$output .= '
+</script>
+
+<!-- load additional destination (transport) forms -->
+
+<script id="views/customTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/customTransport.ptt');$output .= '
+</script>
+
+<script id="views/FTPTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/FTPTransport.ptt');$output .= '
+</script>
+
+<script id="views/GoogleTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/GoogleTransport.ptt');$output .= '
+</script>
+
+<script id="views/LocalTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/LocalTransport.ptt');$output .= '
+</script>
+
+<script id="views/SFTPTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/SFTPTransport.ptt');$output .= '
+</script>
+
+<script id="views/SSHKeyGen.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/SSHKeyGen.ptt');$output .= '
+</script>
+
+<script id="views/AmazonS3Transport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/AmazonS3Transport.ptt');$output .= '
+</script>
+
+<script id="views/RsyncTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/RsyncTransport.ptt');$output .= '
+</script>
+
+<script id="views/WebDAVTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/WebDAVTransport.ptt');$output .= '
+</script>
+
+<script id="views/S3CompatibleTransport.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/S3CompatibleTransport.ptt');$output .= '
+</script>
+
+<script id="views/B2.ptt" type="text/ng-template">
+    ';$output .= $context->process('backup_configuration/views/B2.ptt');$output .= '
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>$stash->get('stylesheet_includes'),'CJT2_EXCLUSIVE'=>1,'theme'=>'bootstrap','app_key'=>'backup_configuration','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,21 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/ethernet_device_select.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<script type="text/javascript">
+//<![CDATA[
+var check_ETHDEV_display = function(selEl) {
+    var ifEl = document.getElementById(\'iflist\');
+    var ifName = (ifEl ? ifEl.options[ifEl.selectedIndex].value : \'\');
+    document.getElementById(\'ETHDEVdisp\').style.display =  (ifName == \'other\' ? \'\' : \'none\');
+    VALIDATION[\'ETHDEVOther\'].verify();
+};
+//]]>
+</script>
+<select id="iflist" name="ETHDEV" onchange="check_ETHDEV_display(this);">
+    ';$stash->set('hasif',0);$output .= '
+';$output .= '    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'iflist',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'if'}=$_tt_value;$output .= '        ';if ($stash->get(['if',0,'match',['eth\d+:' ]])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '
+        <option ';if ($stash->get('if')eq $stash->get(['data',0,'ethernetdev',0])){$stash->set('hasif',1);$output .= 'selected="selected"'}$output .= ' value="';$output .= $stash->get('if');$output .= '">';$output .= $stash->get('if');$output .= '</option>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    <option ';if ($stash->get('hasif')eq 0){$output .= 'selected="selected"'}$output .= ' value="other">Other</option>
+</select>
+&nbsp;
+<span id="ETHDEVdisp" ';if ($stash->get('hasif')eq 1){$output .= 'style="display: none;"'}$output .= '><input type="text" id="ETHDEVother" name="ETHDEVother" value="';if ($stash->get('hasif')eq 0){$output .= $stash->get(['Encoder',0,'safe_html_encode_str',[$stash->get(['data',0,'ethernetdev',0])]])}$output .= '" id="ETHDEVother" size="8" /> <img src=\'\' alt=\'\' id=\'ETHDEVother_error\' /></span>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

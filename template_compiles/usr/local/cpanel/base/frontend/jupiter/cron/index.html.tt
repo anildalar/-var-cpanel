@@ -1,0 +1,868 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/cron/index.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api2',0,'pre_exec',['Cron','get_email' ]]);$stash->set('email_results',$stash->get(['Api2',0,'exec',['Cron','get_email',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Cron','get_email' ]]);if ($stash->get(['email_results',0,'size',0])){$stash->set('email',$stash->get(['email_results',0,0,0,'email',0]))}$stash->set('multiPHP_manager_url',$stash->get('cp_security_token').'/frontend/' .$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]).'/multiphp_manager/index.html');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['CPANEL',0,'feature',['cron' ]])){$output .= '
+        <p id="descCron" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cron jobs allow you to automate certain commands or scripts on your site. You can set a command or script to run at a specific time every day, week, etc. For example, you could set a cron job to delete temporary files every week to free up disk space.' ]]);$output .= '
+        </p>
+
+        <div id="details" class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign" id="detailsWarnImg"></span>
+            <span class="alert-message" id="detailsWarnMsg">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] You need to have a good knowledge of Linux commands before you can use cron jobs effectively. Check your script with your hosting administrator before adding a cron job.' ]]);$output .= '
+            </span>
+        </div>
+
+        <div id="cjt_pagenotice_container"></div>
+
+        <div id="crontab_interface" class="section">
+            <h2 id="hdrCronEmail">
+                ';$output .= $stash->get(['locale',0,'maketext',['Cron Email' ]]);$output .= '
+            </h2>
+            <div>
+                <p id="descBrief">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Send an email with the output every time the [asis,cron] job runs.' ]]);$output .= '
+                    <span id="email_toggle_more_less"
+                          class="action_link"
+                          style="text-decoration: underline; cursor: pointer;"
+                          onclick="CPANEL.util.toggle_more_less(this, \'edit_cron_email\')">
+                        ';$output .= $stash->get(['locale',0,'maketext',['more »' ]]);$output .= '
+                    </span>
+                </p>
+                <div id="edit_cron_email" style="display: none">
+                    <p id="descLong">
+                        <span class="description" id="descLongTxt">
+                            ';$output .= $stash->get(['locale',0,'maketext',['You can have [asis,cron] send an email every time it runs a command which produces output. If you do not want an email to be sent for an individual cron job, you can redirect the command’s output to [asis,/dev/null]. For example:' ]]);$output .= '
+                        </span>
+                        <code id="descLongTxtExample">
+                            mycommand &gt;/dev/null 2&gt;&amp;1
+                        </code>
+                    </p>
+                    <div id="changeEmailSection">
+                        <div class="form-group">
+                            <label id="lblCurrentEmail">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Current Email' ]]);$output .= '
+                            </label>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <span id="current_email">
+                                        ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('email');&$_tt_filter($output)};$output .= '
+                                    </span>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label id="lblEmail" for="email">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '
+                            </label>
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                    <input id="email" type="text" class="form-control"  />
+                                </div>
+                                <div id="email_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input id="update_email" type="button" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Update Email' ]]);$output .= '" />
+                            <span id="email_status">
+                            </span>
+                        </div>
+                    </div>
+                    <div id="email_status_bar" class="cjt_status_bar">
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2 id="hdrAddCronJob">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Add New Cron Job' ]]);$output .= '
+                </h2>
+                <div class="well well-sm">
+                    <h5>';$output .= $stash->get(['locale',0,'maketext',['PHP command examples:' ]]);$output .= '</h5>
+                    <p>
+                        <span class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['General example:' ]]);$output .= '
+                        </span>
+                        <code dir="ltr">
+                            /usr/local/bin/php <var>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'homedir',0]);&$_tt_filter($output)};$output .= '</var>/public_html/path/to/cron/script</var>
+                        </code>
+                    </p>
+                    ';if ($stash->get(['CPANEL',0,'feature',['multiphp' ]])){$output .= '
+                    <p>
+                        <span class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Domain-specific example:' ]]);$output .= '
+                        </span>
+                        <code dir="ltr">
+                            /usr/local/bin/<var>ea-php99</var> <var>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'homedir',0]);&$_tt_filter($output)};$output .= '</var>/<var>domain_path</var>/path/to/cron/script
+                        </code>
+                        <span class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['In the above example, replace “[_1]” with the PHP version assigned to the domain you wish to use. Look in the [output,url,_2,MultiPHP Manager,_type,offsite] for the actual PHP version assigned to a domain.','ea-php99',$stash->get('multiPHP_manager_url')]]);$output .= '
+                        </span>
+                    </p>
+                    '}$output .= '
+                    <!-- end cpanelfeature multiphp -->
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label id="lblCommonSettings" for="common_options">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <select id="common_options" onchange="select_common_option()"
+                                        class="form-control">
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= ' --
+                                    </option>
+                                    <option value="* * * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Minute' ]]);$output .= '(* * * * *)
+                                    </option>
+                                    <option value="*/5 * * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Five Minutes' ]]);$output .= '(*/5 * * * *)
+                                    </option>
+                                    <option value="0,30 * * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Twice Per Hour' ]]);$output .= '(0,30 * * * *)
+                                    </option>
+                                    <option value="0 * * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Hour' ]]);$output .= '(0 * * * *)
+                                    </option>
+                                    <option value="0 0,12 * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Twice Per Day' ]]);$output .= '(0 0,12 * * *)
+                                    </option>
+                                    <option value="0 0 * * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Day' ]]);$output .= '(0 0 * * *)
+                                    </option>
+                                    <option value="0 0 * * 0">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Week' ]]);$output .= '(0 0 * * 0)
+                                    </option>
+                                    <option value="0 0 1,15 * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['On the 1st and 15th of the Month' ]]);$output .= '(0 0 1,15 * *)
+                                    </option>
+                                    <option value="0 0 1 * *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Month' ]]);$output .= '(0 0 1 * *)
+                                    </option>
+                                    <option value="0 0 1 1 *">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Year' ]]);$output .= '(0 0 1 1 *)
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblMinute" for="minute">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Minute:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input id="minute" type="text" class="form-control" size="4" />
+                            </div>
+                            <div class="col-xs-4">
+                                <select id="minute_options" class="form-control"
+                                        onchange="select_single_option(\'minute\')">
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= ' --
+                                    </option>
+                                    <option value="*">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Minute' ]]);$output .= '(*)
+                                    </option>
+                                    <option value="*/2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Two Minutes' ]]);$output .= '(*/2)
+                                    </option>
+                                    <option value="*/5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Five Minutes' ]]);$output .= '(*/5)
+                                    </option>
+                                    <option value="*/10">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Ten Minutes' ]]);$output .= '(*/10)
+                                    </option>
+                                    <option value="*/15">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Fifteen Minutes' ]]);$output .= '(*/15)
+                                    </option>
+                                    <option value="0,30">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Once Per Thirty Minutes' ]]);$output .= '(0,30)
+                                    </option>
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Minutes' ]]);$output .= ' --
+                                    </option>
+                                    <option value="0">
+                                        :00 ';$output .= $stash->get(['locale',0,'maketext',['(At the beginning of the hour.)' ]]);$output .= ' (0)
+                                    </option>
+                                    <option value="1">
+                                        :01 (1)
+                                    </option>
+                                    <option value="2">
+                                        :02 (2)
+                                    </option>
+                                    <option value="3">
+                                        :03 (3)
+                                    </option>
+                                    <option value="4">
+                                        :04 (4)
+                                    </option>
+                                    <option value="5">
+                                        :05 (5)
+                                    </option>
+                                    <option value="6">
+                                        :06 (6)
+                                    </option>
+                                    <option value="7">
+                                        :07 (7)
+                                    </option>
+                                    <option value="8">
+                                        :08 (8)
+                                    </option>
+                                    <option value="9">
+                                        :09 (9)
+                                    </option>
+                                    <option value="10">
+                                        :10 (10)
+                                    </option>
+                                    <option value="11">
+                                        :11 (11)
+                                    </option>
+                                    <option value="12">
+                                        :12 (12)
+                                    </option>
+                                    <option value="13">
+                                        :13 (13)
+                                    </option>
+                                    <option value="14">
+                                        :14 (14)
+                                    </option>
+                                    <option value="15">
+                                        :15 ';$output .= $stash->get(['locale',0,'maketext',['(At one quarter past the hour.)' ]]);$output .= ' (15)
+                                    </option>
+                                    <option value="16">
+                                        :16 (16)
+                                    </option>
+                                    <option value="17">
+                                        :17 (17)
+                                    </option>
+                                    <option value="18">
+                                        :18 (18)
+                                    </option>
+                                    <option value="19">
+                                        :19 (19)
+                                    </option>
+                                    <option value="20">
+                                        :20 (20)
+                                    </option>
+                                    <option value="21">
+                                        :21 (21)
+                                    </option>
+                                    <option value="22">
+                                        :22 (22)
+                                    </option>
+                                    <option value="23">
+                                        :23 (23)
+                                    </option>
+                                    <option value="24">
+                                        :24 (24)
+                                    </option>
+                                    <option value="25">
+                                        :25 (25)
+                                    </option>
+                                    <option value="26">
+                                        :26 (26)
+                                    </option>
+                                    <option value="27">
+                                        :27 (27)
+                                    </option>
+                                    <option value="28">
+                                        :28 (28)
+                                    </option>
+                                    <option value="29">
+                                        :29 (29)
+                                    </option>
+                                    <option value="30">
+                                        :30 ';$output .= $stash->get(['locale',0,'maketext',['(At half past the hour.)' ]]);$output .= ' (30)
+                                    </option>
+                                    <option value="31">
+                                        :31 (31)
+                                    </option>
+                                    <option value="32">
+                                        :32 (32)
+                                    </option>
+                                    <option value="33">
+                                        :33 (33)
+                                    </option>
+                                    <option value="34">
+                                        :34 (34)
+                                    </option>
+                                    <option value="35">
+                                        :35 (35)
+                                    </option>
+                                    <option value="36">
+                                        :36 (36)
+                                    </option>
+                                    <option value="37">
+                                        :37 (37)
+                                    </option>
+                                    <option value="38">
+                                        :38 (38)
+                                    </option>
+                                    <option value="39">
+                                        :39 (39)
+                                    </option>
+                                    <option value="40">
+                                        :40 (40)
+                                    </option>
+                                    <option value="41">
+                                        :41 (41)
+                                    </option>
+                                    <option value="42">
+                                        :42 (42)
+                                    </option>
+                                    <option value="43">
+                                        :43 (43)
+                                    </option>
+                                    <option value="44">
+                                        :44 (44)
+                                    </option>
+                                    <option value="45">
+                                        :45 ';$output .= $stash->get(['locale',0,'maketext',['(At one quarter until the hour.)' ]]);$output .= ' (45)
+                                    </option>
+                                    <option value="46">
+                                        :46 (46)
+                                    </option>
+                                    <option value="47">
+                                        :47 (47)
+                                    </option>
+                                    <option value="48">
+                                        :48 (48)
+                                    </option>
+                                    <option value="49">
+                                        :49 (49)
+                                    </option>
+                                    <option value="50">
+                                        :50 (50)
+                                    </option>
+                                    <option value="51">
+                                        :51 (51)
+                                    </option>
+                                    <option value="52">
+                                        :52 (52)
+                                    </option>
+                                    <option value="53">
+                                        :53 (53)
+                                    </option>
+                                    <option value="54">
+                                        :54 (54)
+                                    </option>
+                                    <option value="55">
+                                        :55 (55)
+                                    </option>
+                                    <option value="56">
+                                        :56 (56)
+                                    </option>
+                                    <option value="57">
+                                        :57 (57)
+                                    </option>
+                                    <option value="58">
+                                        :58 (58)
+                                    </option>
+                                    <option value="59">
+                                        :59 (59)
+                                    </option>
+                                </select>
+                            </div>
+                            <div id="minute_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblHour" for="hour">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Hour:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input id="hour" type="text" class="form-control" size="4"  />
+                            </div>
+                            <div class="col-xs-4">
+                                <select id="hour_options" class="form-control" onchange="select_single_option(\'hour\')">
+                                    <option value="--">
+                                        --
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= '
+                                            --
+                                    </option>
+                                    <option value="*">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Hour' ]]);$output .= '
+                                            (*)
+                                    </option>
+                                    <option value="*/2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Other Hour' ]]);$output .= '
+                                            (*/2)
+                                    </option>
+                                    <option value="*/3">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Third Hour' ]]);$output .= '
+                                            (*/3)
+                                    </option>
+                                    <option value="*/4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Fourth Hour' ]]);$output .= '
+                                            (*/4)
+                                    </option>
+                                    <option value="*/6">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Sixth Hour' ]]);$output .= '
+                                            (*/6)
+                                    </option>
+                                    <option value="0,12">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Twelve Hours' ]]);$output .= '
+                                            (0,12)
+                                    </option>
+                                    <option value="--">
+                                        --
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Hours' ]]);$output .= '
+                                            --
+                                    </option>
+                                    <option value="0">
+                                        12:00 a.m.
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Midnight' ]]);$output .= '
+                                            (0)
+                                    </option>
+                                    <option value="1">
+                                        1:00 a.m. (1)
+                                    </option>
+                                    <option value="2">
+                                        2:00 a.m. (2)
+                                    </option>
+                                    <option value="3">
+                                        3:00 a.m. (3)
+                                    </option>
+                                    <option value="4">
+                                        4:00 a.m. (4)
+                                    </option>
+                                    <option value="5">
+                                        5:00 a.m. (5)
+                                    </option>
+                                    <option value="6">
+                                        6:00 a.m. (6)
+                                    </option>
+                                    <option value="7">
+                                        7:00 a.m. (7)
+                                    </option>
+                                    <option value="8">
+                                        8:00 a.m. (8)
+                                    </option>
+                                    <option value="9">
+                                        9:00 a.m. (9)
+                                    </option>
+                                    <option value="10">
+                                        10:00 a.m. (10)
+                                    </option>
+                                    <option value="11">
+                                        11:00 a.m. (11)
+                                    </option>
+                                    <option value="12">
+                                        12:00 p.m.
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Noon' ]]);$output .= '
+                                            (12)
+                                    </option>
+                                    <option value="13">
+                                        1:00 p.m. (13)
+                                    </option>
+                                    <option value="14">
+                                        2:00 p.m. (14)
+                                    </option>
+                                    <option value="15">
+                                        3:00 p.m. (15)
+                                    </option>
+                                    <option value="16">
+                                        4:00 p.m. (16)
+                                    </option>
+                                    <option value="17">
+                                        5:00 p.m. (17)
+                                    </option>
+                                    <option value="18">
+                                        6:00 p.m. (18)
+                                    </option>
+                                    <option value="19">
+                                        7:00 p.m. (19)
+                                    </option>
+                                    <option value="20">
+                                        8:00 p.m. (20)
+                                    </option>
+                                    <option value="21">
+                                        9:00 p.m. (21)
+                                    </option>
+                                    <option value="22">
+                                        10:00 p.m. (22)
+                                    </option>
+                                    <option value="23">
+                                        11:00 p.m. (23)
+                                    </option>
+                                </select>
+                            </div>
+                            <div id="hour_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblDay" for="day">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Day:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" size="4" id="day" />
+                            </div>
+                            <div class="col-xs-4">
+                                <select id="day_options" onchange="select_single_option(\'day\')" class="form-control">
+                                    <option value="--">
+                                        --
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= '
+                                            --
+                                    </option>
+                                    <option value="*">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Day' ]]);$output .= '
+                                            (*)
+                                    </option>
+                                    <option value="*/2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Other Day' ]]);$output .= '
+                                            (*/2)
+                                    </option>
+                                    <option value="1,15">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['On the 1st and 15th of the Month' ]]);$output .= '
+                                            (1,15)
+                                    </option>
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Days' ]]);$output .= ' --
+                                    </option>
+                                    <option value="1">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['1st' ]]);$output .= ' (1)
+                                    </option>
+                                    <option value="2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['2nd' ]]);$output .= ' (2)
+                                    </option>
+                                    <option value="3">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['3rd' ]]);$output .= ' (3)
+                                    </option>
+                                    <option value="4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['4th' ]]);$output .= ' (4)
+                                    </option>
+                                    <option value="5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['5th' ]]);$output .= ' (5)
+                                    </option>
+                                    <option value="6">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['6th' ]]);$output .= ' (6)
+                                    </option>
+                                    <option value="7">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['7th' ]]);$output .= ' (7)
+                                    </option>
+                                    <option value="8">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['8th' ]]);$output .= ' (8)
+                                    </option>
+                                    <option value="9">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['9th' ]]);$output .= ' (9)
+                                    </option>
+                                    <option value="10">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['10th' ]]);$output .= ' (10)
+                                    </option>
+                                    <option value="11">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['11th' ]]);$output .= ' (11)
+                                    </option>
+                                    <option value="12">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['12th' ]]);$output .= ' (12)
+                                    </option>
+                                    <option value="13">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['13th' ]]);$output .= ' (13)
+                                    </option>
+                                    <option value="14">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['14th' ]]);$output .= ' (14)
+                                    </option>
+                                    <option value="15">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['15th' ]]);$output .= ' (15)
+                                    </option>
+                                    <option value="16">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['16th' ]]);$output .= ' (16)
+                                    </option>
+                                    <option value="17">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['17th' ]]);$output .= ' (17)
+                                    </option>
+                                    <option value="18">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['18th' ]]);$output .= ' (18)
+                                    </option>
+                                    <option value="19">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['19th' ]]);$output .= ' (19)
+                                    </option>
+                                    <option value="20">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['20th' ]]);$output .= ' (20)
+                                    </option>
+                                    <option value="21">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['21st' ]]);$output .= ' (21)
+                                    </option>
+                                    <option value="22">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['22nd' ]]);$output .= ' (22)
+                                    </option>
+                                    <option value="23">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['23rd' ]]);$output .= ' (23)
+                                    </option>
+                                    <option value="24">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['24th' ]]);$output .= ' (24)
+                                    </option>
+                                    <option value="25">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['25th' ]]);$output .= ' (25)
+                                    </option>
+                                    <option value="26">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['26th' ]]);$output .= ' (26)
+                                    </option>
+                                    <option value="27">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['27th' ]]);$output .= ' (27)
+                                    </option>
+                                    <option value="28">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['28th' ]]);$output .= ' (28)
+                                    </option>
+                                    <option value="29">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['29th' ]]);$output .= ' (29)
+                                    </option>
+                                    <option value="30">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['30th' ]]);$output .= ' (30)
+                                    </option>
+                                    <option value="31">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['31st' ]]);$output .= ' (31)
+                                    </option>
+                                </select>
+                            </div>
+                            <div id="day_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblMonth" for="month">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Month:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" size="4" id="month" />
+                            </div>
+                            <div class="col-xs-4">
+                                <select id="month_options" onchange="select_single_option(\'month\')" class="form-control">
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= ' --
+                                    </option>
+                                    <option value="*">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Month' ]]);$output .= '
+                                            (*)
+                                    </option>
+                                    <option value="*/2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Other Month[comment,every second month]' ]]);$output .= '
+                                            (*/2)
+                                    </option>
+                                    <option value="*/4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Third Month' ]]);$output .= '
+                                            (*/4)
+                                    </option>
+                                    <option value="1,7">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Six Months' ]]);$output .= '
+                                            (1,7)
+                                    </option>
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Months' ]]);$output .= ' --
+                                    </option>
+                                    <option value="1">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['January' ]]);$output .= '
+                                            (1)
+                                    </option>
+                                    <option value="2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['February' ]]);$output .= '
+                                            (2)
+                                    </option>
+                                    <option value="3">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['March' ]]);$output .= '
+                                            (3)
+                                    </option>
+                                    <option value="4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['April' ]]);$output .= '
+                                            (4)
+                                    </option>
+                                    <option value="5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['May[comment,please use datetime methods for this sort of thing]' ]]);$output .= '
+                                            (5)
+                                    </option>
+                                    <option value="6">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['June' ]]);$output .= '
+                                            (6)
+                                    </option>
+                                    <option value="7">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['July' ]]);$output .= '
+                                            (7)
+                                    </option>
+                                    <option value="8">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['August' ]]);$output .= '
+                                            (8)
+                                    </option>
+                                    <option value="9">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['September' ]]);$output .= '
+                                            (9)
+                                    </option>
+                                    <option value="10">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['October' ]]);$output .= '
+                                            (10)
+                                    </option>
+                                    <option value="11">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['November' ]]);$output .= '
+                                            (11)
+                                    </option>
+                                    <option value="12">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['December' ]]);$output .= '
+                                            (12)
+                                    </option>
+                                </select>
+                            </div>
+                            <div id="month_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblWeekday" for="weekday">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Weekday:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <input type="text" class="form-control" size="4" id="weekday" />
+                            </div>
+                            <div class="col-xs-4">
+                                <select id="weekday_options" class="form-control" onchange="select_single_option(\'weekday\')">
+                                    <option value="--">
+                                        -- ';$output .= $stash->get(['locale',0,'maketext',['Common Settings' ]]);$output .= ' --
+                                    </option>
+                                    <option value="*">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Day' ]]);$output .= '
+                                            (*)
+                                    </option>
+                                    <option value="1-5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Weekday[comment,Monday through Friday]' ]]);$output .= '
+                                            (1-5)
+                                    </option>
+                                    <option value="0,6">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Weekend Day[comment,Saturday and Sunday]' ]]);$output .= '
+                                            (6,0)
+                                    </option>
+                                    <option value="1,3,5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Monday, Wednesday, and Friday' ]]);$output .= '
+                                            (1,3,5)
+                                    </option>
+                                    <option value="2,4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Every Tuesday and Thursday' ]]);$output .= '
+                                            (2,4)
+                                    </option>
+                                    <option value="--">
+                                        --
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Weekdays' ]]);$output .= '
+                                            --
+                                    </option>
+                                    <option value="0">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Sunday' ]]);$output .= '
+                                            (0)
+                                    </option>
+                                    <option value="1">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Monday' ]]);$output .= '
+                                            (1)
+                                    </option>
+                                    <option value="2">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Tuesday' ]]);$output .= '
+                                            (2)
+                                    </option>
+                                    <option value="3">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Wednesday' ]]);$output .= '
+                                            (3)
+                                    </option>
+                                    <option value="4">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Thursday' ]]);$output .= '
+                                            (4)
+                                    </option>
+                                    <option value="5">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Friday' ]]);$output .= '
+                                            (5)
+                                    </option>
+                                    <option value="6">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Saturday' ]]);$output .= '
+                                            (6)
+                                    </option>
+                                </select>
+                            </div>
+                            <div id="weekday_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label id="lblCommand" for="command">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Command:' ]]);$output .= '
+                        </label>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                <input type="text" class="form-control" size="45" id="command" />
+                            </div>
+                            <div id="command_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="button" id="add_new_cron" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add New Cron Job' ]]);$output .= '" />
+                        <span id="add_new_cron_status">
+                        </span>
+                    </div>
+                </div>
+                <div id="add_cron_status_bar" class="cjt_status_bar">
+                </div>
+            </div>
+            <div class="section">
+                <h2 id="hdrCurrentCronJobs">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Current Cron Jobs' ]]);$output .= '
+                </h2>
+                <div id="current_cron_jobs">
+                </div>
+            </div>
+        </div>
+        <!-- end crontab_interface -->
+'}$output .= '
+
+<!-- end cpanelfeature cron -->
+</div>
+<!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'cron_jobs','page_js'=>$stash->get('js_code'),'page_scripts'=>['js2-min/cron/index.js' ],'page_stylesheets'=>['css2-min/cron/index.css' ],'content',$output })};$output .= '
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+    var SYSTEM_ACCOUNT = ';$output .= $stash->get(['CPANEL',0,'user',0,'json',0]);$output .= ';
+    var LANG = {
+        cron_field_not_valid : ';$output .= $stash->get(['locale',0,'maketext',['You did not format the date and time settings correctly.' ],'json',0]);$output .= ',
+        command_not_empty : ';$output .= $stash->get(['locale',0,'maketext',['You must enter a command.' ],'json',0]);$output .= ',
+        edit_successful : ';$output .= $stash->get(['locale',0,'maketext',['Edit Successful' ],'json',0]);$output .= ',
+        editing_cron_job : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] is editing the cron job …' ],'json',0]);$output .= ',
+        added_cron_job : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] successfully added the [asis,cron] job.' ],'json',0]);$output .= ',
+        adding_cron_job : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] is adding the cron job …' ],'json',0]);$output .= ',
+        unknown_error : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] experienced an unknown error.' ],'json',0]);$output .= ',
+        cron_job_deleted : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] successfully deleted the [asis,cron] job.' ],'json',0]);$output .= ',
+        deleting_cron_job : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] is deleting the cron job …' ],'json',0]);$output .= ',
+        cron_valid_email : ';$output .= $stash->get(['locale',0,'maketext',['Email must be a valid email address, empty, or the system account.' ],'json',0]);$output .= ',
+        email_address : ';$output .= $stash->get(['locale',0,'maketext',['Email Address' ],'json',0]);$output .= ',
+        confirm_empty_email : ';$output .= $stash->get(['locale',0,'maketext',['Are you certain that you do NOT wish to receive emails when a [asis,cron] job runs?' ],'json',0]);$output .= ',
+        email_updated : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] successfully updated the email address.' ],'json',0]);$output .= ',
+        changing_email : ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] is changing the email address …' ],'json',0]);$output .= ',
+        none : ';$output .= $stash->get(['locale',0,'maketext',['None' ],'json',0]);$output .= ',
+        Minute : ';$output .= $stash->get(['locale',0,'maketext',['Minute' ],'json',0]);$output .= ',
+        Hour : ';$output .= $stash->get(['locale',0,'maketext',['Hour' ],'json',0]);$output .= ',
+        Day : ';$output .= $stash->get(['locale',0,'maketext',['Day' ],'json',0]);$output .= ',
+        Month : ';$output .= $stash->get(['locale',0,'maketext',['Month' ],'json',0]);$output .= ',
+        Weekday : ';$output .= $stash->get(['locale',0,'maketext',['Weekday' ],'json',0]);$output .= ',
+        Command : ';$output .= $stash->get(['locale',0,'maketext',['Command' ],'json',0]);$output .= '
+    };
+
+    ';if ($stash->get(['CPANEL',0,'CPDATA',0,'DEMO',0])){$output .= '
+    var demo_mode = true;
+    EVENT.onDOMReady( function() {
+        new CPANEL.widgets.Page_Notice( {
+            content: ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled in demo mode. The controls on this page will not submit.' ],'json',0]);$output .= ',
+            level:   "info"
+        } );
+    } );
+    '}else {$output .= '
+    var demo_mode = false;
+    '}$output .= '
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

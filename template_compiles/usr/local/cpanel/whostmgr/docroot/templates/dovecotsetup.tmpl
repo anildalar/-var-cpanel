@@ -1,0 +1,592 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dovecotsetup.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= '<style type="text/css">
+span.action_link {
+    color: blue;
+    cursor: pointer;
+}
+
+.mailserversetup {
+    margin: 0 20px;
+}
+
+#dovecotsetup {
+    border: 5px solid #ddd;
+    width: 570px;
+}
+
+#dovecotsetup td {
+    border-bottom: 1px solid #eee;
+    padding: 10px;
+}
+
+#dovecotsetup .label_title {
+    float: left;
+    font-weight: bold;
+    margin: 0 10px 0 0;
+    width: 200px;
+}
+
+#dovecotsetup p {
+    color: #444;
+    line-height: 1.5;
+    margin: 5px 0 5px 210px;
+}
+
+/* Defaults back to regular labels for normal labels */
+label {
+    display: inline;
+    float: none;
+    font-weight: normal;
+    width: auto;
+}
+
+#dovecotsetup p.distinct:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+/* ------ BEGIN EXTRACTABLE STICKY-TOOLTIP CSS ------ */
+#dovecotsetup .help_hover_wrapper {
+    position: relative;
+}
+
+#dovecotsetup .help_hover {
+    margin-left: 1em;
+    cursor: help;
+}
+
+#dovecotsetup .help_hover + .help_text {
+    display: none;
+}
+
+#dovecotsetup .help_hover:hover {
+    text-decoration: none;
+}
+
+#dovecotsetup .help_hover.force + .help_text, /* debug */
+#dovecotsetup .help_hover:hover + .help_text,
+#dovecotsetup .help_hover:focus + .help_text {
+    position: absolute;
+    display: block;
+    width: 250px;
+    top: 0;
+    left: 125%;
+    background-color: #eee;
+    border: 1px solid #aaa;
+    border-radius: 3px;
+    padding: 3px;
+}
+/* ------ END EXTRACTABLE STICKY-TOOLTIP CSS ------ */
+
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+var validators = {};
+
+// set default values
+var set_defaults = function() {
+    var protocols = ';$output .= $stash->get(['data',0,'protocols_options',0,'json',0])|| '[]';$output .= ';
+
+    var default_protocols = ';$output .= $stash->get(['defaults',0,'protocols_lookup',0,'json',0])|| '{}';$output .= ';
+    for (var p=protocols.length-1; p>=0; p--) {
+        var cur_prot = protocols[p].option;
+        DOM.get("protocols_enabled_" + cur_prot).checked = cur_prot in default_protocols;
+    }
+
+    YAHOO.util.Dom.get("enable_plaintext_auth").value = \'';if ($stash->get(['defaults',0,'disable_plaintext_auth',0])eq 'no'){$output .= 'yes'}else {$output .= 'no'}$output .= '\';
+    YAHOO.util.Dom.get("ssl_cipher_list").value = \'';$output .= $stash->get(['defaults',0,'ssl_cipher_list',0]);$output .= '\';
+    YAHOO.util.Dom.get("protocol_imap.mail_max_userip_connections").value = \'';$output .= $stash->get(['defaults',0,'protocol_imap',0,'mail_max_userip_connections',0]);$output .= '\';
+    YAHOO.util.Dom.get("protocol_imap.imap_idle_notify_interval").value = \'';$output .= $stash->get(['defaults',0,'protocol_imap',0,'imap_idle_notify_interval',0]);$output .= '\';
+    YAHOO.util.Dom.get("protocol_pop3.mail_max_userip_connections").value = \'';$output .= $stash->get(['defaults',0,'protocol_pop3',0,'mail_max_userip_connections',0]);$output .= '\';
+    YAHOO.util.Dom.get("login_processes_count").value = \'';$output .= $stash->get(['defaults',0,'login_processes_count',0]);$output .= '\';
+    YAHOO.util.Dom.get("login_max_processes_count").value = \'';$output .= $stash->get(['defaults',0,'login_max_processes_count',0]);$output .= '\';
+    YAHOO.util.Dom.get("login_process_size").value = \'';$output .= $stash->get(['defaults',0,'login_process_size',0]);$output .= '\';
+    YAHOO.util.Dom.get("mail_process_size").value = \'';$output .= $stash->get(['defaults',0,'mail_process_size',0]);$output .= '\';
+    YAHOO.util.Dom.get("mdbox_rotate_interval").value = \'';$output .= $stash->get(['defaults',0,'mdbox_rotate_interval',0]);$output .= '\';
+    YAHOO.util.Dom.get("mdbox_rotate_size").value = \'';$output .= $stash->get(['defaults',0,'mdbox_rotate_size',0]);$output .= '\';
+    YAHOO.util.Dom.get("max_mail_processes").value = \'';$output .= $stash->get(['defaults',0,'max_mail_processes',0]);$output .= '\';
+    YAHOO.util.Dom.get("auth_cache_size").value = \'';$output .= $stash->get(['defaults',0,'auth_cache_size',0]);$output .= '\';
+    YAHOO.util.Dom.get("auth_cache_ttl").value = \'';$output .= $stash->get(['defaults',0,'auth_cache_ttl',0]);$output .= '\';
+    YAHOO.util.Dom.get("auth_cache_negative_ttl").value = \'';$output .= $stash->get(['defaults',0,'auth_cache_negative_ttl',0]);$output .= '\';
+    YAHOO.util.Dom.get("login_process_per_connection").value = \'';$output .= $stash->get(['defaults',0,'login_process_per_connection',0]);$output .= '\';
+    YAHOO.util.Dom.get("mailbox_idle_check_interval").value = \'';$output .= $stash->get(['defaults',0,'mailbox_idle_check_interval',0]);$output .= '\';
+    YAHOO.util.Dom.get("imap_hibernate_timeout").value = \'';$output .= $stash->get(['defaults',0,'imap_hibernate_timeout',0]);$output .= '\';
+    YAHOO.util.Dom.get("expire_trash_ttl").value = \'';$output .= $stash->get(['defaults',0,'expire_trash_ttl',0]);$output .= '\';
+    YAHOO.util.Dom.get("expire_spam_ttl").value = \'';$output .= $stash->get(['defaults',0,'expire_spam_ttl',0]);$output .= '\';
+    YAHOO.util.Dom.get("lmtp_user_concurrency_limit").value = \'';$output .= $stash->get(['defaults',0,'lmtp_user_concurrency_limit',0]);$output .= '\';
+    YAHOO.util.Dom.get("lmtp_process_min_avail").value = \'';$output .= $stash->get(['defaults',0,'lmtp_process_min_avail',0]);$output .= '\';
+    YAHOO.util.Dom.get("compress_messages_level").value = \'';$output .= $stash->get(['defaults',0,'compress_messages_level',0]);$output .= '\';
+
+    YAHOO.util.Dom.get("lmtp_process_limit").value = \'';$output .= $stash->get(['defaults',0,'lmtp_process_limit',0]);$output .= '\';
+    YAHOO.util.Dom.get("config_vsz_limit").value = \'';$output .= $stash->get(['defaults',0,'config_vsz_limit',0]);$output .= '\';
+    YAHOO.util.Dom.get("ssl_min_protocol").value = \'';$output .= $stash->get(['defaults',0,'ssl_min_protocol',0]);$output .= '\';
+    YAHOO.util.Dom.get("include_trash_in_quota").checked = false;
+    YAHOO.util.Dom.get("compress_messages").checked = false;
+    var quota_radios = document.getElementsByName("incoming_reached_quota");
+    for (var qr=0; qr<quota_radios.length; qr++) {
+        quota_radios[qr].checked = (quota_radios[qr].value === ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['defaults',0,'incoming_reached_quota',0])]]);$output .= ");\n    }\n\n    verify_data();\n};\n\nvar reset_form = function() {\n    // reset the form\n    YAHOO.util.Dom.get(\"mainform\").reset();\n\n    // show validation\n    verify_data();\n};\n\nvar verify_data = function() {\n    for (var i in validators) {\n        validators[i].verify();\n    }\n};\n\nvar ssl_chars = function(value) {\n    var pattern = new RegExp(/^[\\-\\w\\!\\+\\\@\\~\\:]+\$/);\n    if (pattern.test(value) == false) return false;\n    return true;\n};\n\n//CJT’s functions for this don’t work! The value “-” gets accepted.\nfunction is_integer(input) {\n    var val = input.value;\n    return /^-?[0-9]+(?:\\.0+)?\$/.test(val);\n}\nfunction is_positive_integer(input) {\n    var val = input.value;\n    return( is_integer(input) && parseInt(val, 10) > 0 );\n}\nfunction is_nonnegative_integer(input) {\n    var val = input.value;\n    return( is_integer(input) && parseInt(val, 10) >= 0 );\n}\n\nfunction is_invalid_weeks_rotation_interval() {\n    var val = YAHOO.util.Dom.get(\"mdbox_rotate_interval\").value;\n    if (val.match('w\$') && parseInt(val) > 7101) return false;\n    return true;\n}\n\nfunction is_invalid_days_rotation_interval() {\n    var val = YAHOO.util.Dom.get(\"mdbox_rotate_interval\").value;\n    if (val.match('d\$') && parseInt(val) > 49710) return false;\n    return true;\n}\n\nvar init_page = function() {\n\n    // ssl cipher list\n    validators['ssl_cipher_list'] = new CPANEL.validate.validator(";$output .= $stash->get(['locale',0,'maketext',['[output,acronym,SSL,Secure Socket Layer] Cipher List' ],'json',0]);$output .= ');
+    validators[\'ssl_cipher_list\'].add("ssl_cipher_list", function() { return ssl_chars(YAHOO.util.Dom.get("ssl_cipher_list").value); }, ';$output .= $stash->get(['locale',0,'maketext',['The [output,acronym,SSL,Secure Socket Layer] Cipher List must be defined using alphanumeric characters with regular expressions ! + _ @ ~ and use a colon (:) for a separator.' ],'json',0]);$output .= ');
+
+    // maximum imap connections per IP
+    validators[\'protocol_imap.mail_max_userip_connections\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Maximum [output,acronym,IMAP,Internet Message Access Protocol] Connections Per [output,acronym,IP,Internet Protocol] Address' ],'json',0]);$output .= ');
+    validators[\'protocol_imap.mail_max_userip_connections\'].add("protocol_imap.mail_max_userip_connections", "positive_integer", ';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum [output,acronym,IMAP,Internet Message Access Protocol] Connections Per [output,acronym,IP,Internet Protocol] Address must be a positive whole number.' ],'json',0]);$output .= ');
+    validators[\'protocol_imap.mail_max_userip_connections\'].add("protocol_imap.mail_max_userip_connections", "max_length(%input%, 4)", ';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum [output,acronym,IMAP,Internet Message Access Protocol] Connections Per [output,acronym,IP,Internet Protocol] Address cannot exceed 4 digits.' ],'json',0]);$output .= ');
+
+    // Interval between IMAP IDLE "OK Still here" messages
+    validators[\'protocol_imap.imap_idle_notify_interval\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Interval between [output,acronym,IMAP,Internet Message Access Protocol] [asis,IDLE] “OK Still here” messages.' ],'json',0]);$output .= ');
+    validators[\'protocol_imap.imap_idle_notify_interval\'].add("protocol_imap.imap_idle_notify_interval", "positive_integer", ';$output .= $stash->get(['locale',0,'maketext',['The input value for “Interval between [output,acronym,IMAP,Internet Message Access Protocol] IDLE ‘OK Still here’ messages” must be a positive whole number.' ],'json',0]);$output .= ');
+    validators[\'protocol_imap.imap_idle_notify_interval\'].add("protocol_imap.imap_idle_notify_interval", "max_length(%input%, 2)", ';$output .= $stash->get(['locale',0,'maketext',['Interval between [output,acronym,IMAP,Internet Message Access Protocol] [asis,IDLE] “OK Still here” messages cannot exceed 2 digits.' ],'json',0]);$output .= ');
+
+
+    // maximum pop3 connections per IP
+    validators[\'protocol_pop3.mail_max_userip_connections\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Maximum [output,acronym,POP3,Post Office Protocol] Connections per [output,acronym,IP,Internet Protocol] Address' ],'json',0]);$output .= ');
+    validators[\'protocol_pop3.mail_max_userip_connections\'].add("protocol_pop3.mail_max_userip_connections", "positive_integer", ';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum [output,acronym,POP3,Post Office Protocol] Connections Per [output,acronym,IP,Internet Protocol] must be a positive whole number.' ],'json',0]);$output .= ');
+    validators[\'protocol_pop3.mail_max_userip_connections\'].add("protocol_pop3.mail_max_userip_connections", "max_length(%input%, 4)", ';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum [output,acronym,POP3,Post Office Protocol] Connections Per [output,acronym,IP,Internet Protocol] Address cannot exceed 4 digits.' ],'json',0]);$output .= ');
+
+    // spare authentication processes
+    validators[\'login_processes_count\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Number of Spare Authentication Processes' ]]);$output .= '");
+    validators[\'login_processes_count\'].add("login_processes_count", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Number of Spare Authentication Processes must be a positive whole number.' ]]);$output .= '");
+    validators[\'login_processes_count\'].add("login_processes_count", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Number of Spare Authentication Processes cannot exceed 4 digits.' ]]);$output .= '");
+    validators[\'login_processes_count\'].add("login_processes_count",
+        function(el) {
+            var lpc = 1 * el.value;
+            var lmpc = 1 * DOM.get("login_max_processes_count").value;
+console.log(lpc, lmpc, arguments);
+            return( lpc <= lmpc );
+        },
+        "';$output .= $stash->get(['locale',0,'maketext',['This value cannot exceed the value of “[_1]”.',$stash->get(['locale',0,'maketext',['Maximum Number of Authentication Processes' ]])]]);$output .= '"
+    );
+
+    // maximum authentication processes
+    validators[\'login_max_processes_count\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Maximum Number of Authentication Processes' ]]);$output .= '");
+    validators[\'login_max_processes_count\'].add("login_max_processes_count", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum Number of Authentication Processes must be a positive whole number.' ]]);$output .= '");
+    validators[\'login_max_processes_count\'].add("login_max_processes_count", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum Number of Authentication Processes cannot exceed 4 digits.' ]]);$output .= '");
+
+    // maximum mail processes
+    validators[\'max_mail_processes\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Maximum Number of Mail Processes' ]]);$output .= '");
+    validators[\'max_mail_processes\'].add("max_mail_processes", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum Number of Mail Processes must be a positive whole number.' ]]);$output .= '");
+    validators[\'max_mail_processes\'].add("max_mail_processes", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Maximum Number of Mail Processes cannot exceed 4 digits.' ]]);$output .= '");
+
+    // maximum mail process size
+    validators[\'mail_process_size\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit for Mail ([output,abbr,MB,Megabytes])' ],'json',0]);$output .= ');
+    validators[\'mail_process_size\'].add("mail_process_size", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Process Limit for Mail must be a positive whole number.' ]]);$output .= '");
+    validators[\'mail_process_size\'].add("mail_process_size", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Process Limit for Mail cannot exceed 4 digits.' ]]);$output .= '");
+
+    validators[\'mdbox_rotate_size\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['MDBOX rotation size ([output,acronym,MB,Megabytes])' ],'json',0]);$output .= ');
+    validators[\'mdbox_rotate_size\'].add("mdbox_rotate_size", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for MDBOX rotation size cannot exceed 4 characters.' ]]);$output .= "\");\n    validators['mdbox_rotate_size'].add(\"mdbox_rotate_size\",\n                    function() { return YAHOO.util.Dom.get(\"mdbox_rotate_size\").value.match('^[0-9]{1,3}M\$'); },\n                    ";$output .= $stash->get(['locale',0,'maketext',['The MDBOX rotation size ([output,acronym,MB,Megabytes]) must be a positive integer followed by the character “M”. (Example: 2M, 10M)' ],'json',0]);$output .= ');
+
+    // maximum login process size
+    validators[\'login_process_size\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit for Authentication ([output,abbr,MB,Megabytes])' ],'json',0]);$output .= ');
+    validators[\'login_process_size\'].add("login_process_size", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Process Memory Limit for Authentication must be a positive whole number.' ]]);$output .= '");
+    validators[\'login_process_size\'].add("login_process_size", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Process Memory Limit for Authentication cannot exceed 4 digits.' ]]);$output .= '");
+
+    validators[\'config_vsz_limit\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit: [asis,config] ([output,abbr,MB,Megabytes])' ],'json',0]);$output .= ');
+    validators[\'config_vsz_limit\'].add("config_vsz_limit", is_positive_integer, "';$output .= $stash->get(['locale',0,'maketext',['This value must be a positive integer.' ]]);$output .= '");
+    validators[\'config_vsz_limit\'].add("config_vsz_limit", "min_value(%input%, 128)", "';$output .= $stash->get(['locale',0,'maketext',['This value cannot be lower than [numf,_1].',128 ]]);$output .= '");
+    validators[\'config_vsz_limit\'].add("config_vsz_limit", "max_value(%input%, 99999)", "';$output .= $stash->get(['locale',0,'maketext',['This value cannot be greater than [numf,_1].',99999 ]]);$output .= '");
+
+    validators[\'mdbox_rotate_interval\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['MDBOX rotation interval (Weeks or Days)' ]]);$output .= '");
+    validators[\'mdbox_rotate_interval\'].add("mdbox_rotate_interval", "max_length(%input%, 6)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for MDBOX rotation interval cannot exceed 6 characters.' ]]);$output .= "\");\n    validators['mdbox_rotate_interval'].add(\"mdbox_rotate_interval\",\n                    function() { return YAHOO.util.Dom.get(\"mdbox_rotate_interval\").value.match('^(0|[1-9][0-9]{0,4}[wd])\$'); },\n                    \"";$output .= $stash->get(['locale',0,'maketext',['The MDBOX rotation interval (Weeks or Days) must be a positive integer followed by the character “w” or “d” or “0”. (Example: 500d, 0)' ]]);$output .= '"
+    );
+    validators[\'mdbox_rotate_interval\'].add("mdbox_rotate_interval", is_invalid_weeks_rotation_interval, "';$output .= $stash->get(['locale',0,'maketext',['The MDBOX rotation interval cannot be more than 7101 weeks.' ]]);$output .= '");
+    validators[\'mdbox_rotate_interval\'].add("mdbox_rotate_interval", is_invalid_days_rotation_interval, "';$output .= $stash->get(['locale',0,'maketext',['The MDBOX rotation interval cannot be more than 49710 days.' ]]);$output .= '");
+
+
+    // size of authentication cache
+    validators[\'auth_cache_size\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Size of Authentication Cache ([output,abbr,MB,Megabytes])' ],'json',0]);$output .= ');
+    validators[\'auth_cache_size\'].add("auth_cache_size", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Size of Authentication Cache cannot exceed 4 characters.' ]]);$output .= "\");\n    validators['auth_cache_size'].add(\"auth_cache_size\",\n                    function() { return YAHOO.util.Dom.get(\"auth_cache_size\").value.match('^[0-9]{1,3}M\$'); },\n                    ";$output .= $stash->get(['locale',0,'maketext',['The Size of Authentication Cache ([output,acronym,MB,Megabytes]) must be a positive integer followed by the character “M”. (Example: 2M, 10M)' ],'json',0]);$output .= ');
+
+
+    // time to cache successful logins
+    validators[\'auth_cache_ttl\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Time to Cache Successful Logins' ]]);$output .= '");
+    validators[\'auth_cache_ttl\'].add("auth_cache_ttl", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Time to Cache Successful Logins must be a positive whole number.' ]]);$output .= '");
+    validators[\'auth_cache_ttl\'].add("auth_cache_ttl", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Time to Cache Successful Logins cannot exceed 4 digits.' ]]);$output .= '");
+
+    // time to cache failed logins
+    validators[\'auth_cache_negative_ttl\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Time to Cache Failed Logins' ]]);$output .= '");
+    validators[\'auth_cache_negative_ttl\'].add("auth_cache_negative_ttl", "positive_integer", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Time to Cache Failed Logins must be a positive whole number.' ]]);$output .= '");
+    validators[\'auth_cache_negative_ttl\'].add("auth_cache_negative_ttl", "max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Time to Cache Failed Logins cannot exceed 4 digits.' ]]);$output .= '");
+
+    // idle check interval
+    validators[\'mailbox_idle_check_interval\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Idle Check Interval' ]]);$output .= '");
+    validators[\'mailbox_idle_check_interval\'].add("mailbox_idle_check_interval", "min_value(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Idle Check Interval must be an integer greater than 0.' ]]);$output .= '");
+    validators[\'mailbox_idle_check_interval\'].add("mailbox_idle_check_interval","max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Idle Check Interval cannot exceed 4 digits.' ]]);$output .= '");
+
+    // imap hibernate timeout
+    validators[\'imap_hibernate_timeout\'] = new CPANEL.validate.validator(';$output .= $stash->get(['locale',0,'maketext',['Idle Hibernate Timeout (Seconds)' ],'json',0]);$output .= ');
+    validators[\'imap_hibernate_timeout\'].add("imap_hibernate_timeout", "min_value(%input%, 0)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Idle Hibernate Timeout (Seconds) must be a valid positive integer.' ]]);$output .= '");
+    validators[\'imap_hibernate_timeout\'].add("imap_hibernate_timeout","max_length(%input%, 4)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Idle Hibernate Timeout (Seconds) cannot exceed 4 digits.' ]]);$output .= '");
+
+    // expire trash ttl
+    validators[\'expire_trash_ttl\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Trash Expire Time' ]]);$output .= '");
+    validators[\'expire_trash_ttl\'].add("expire_trash_ttl", "min_value(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Trash Expire Time must be an integer greater than 0.' ]]);$output .= '");
+    validators[\'expire_trash_ttl\'].add("expire_trash_ttl", "max_value(%input%, 366)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Trash Expire Time must be an integer less than 366.' ]]);$output .= '");
+
+    // expire spam ttl
+    validators[\'expire_spam_ttl\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Spam Expire Time' ]]);$output .= '");
+    validators[\'expire_spam_ttl\'].add("expire_spam_ttl", "min_value(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Spam Expire Time must be an integer greater than 0.' ]]);$output .= '");
+    validators[\'expire_spam_ttl\'].add("expire_spam_ttl", "max_value(%input%, 366)", "';$output .= $stash->get(['locale',0,'maketext',['The input value for Spam Expire Time must be an integer less than 366.' ]]);$output .= '");
+
+    validators[\'lmtp_process_min_avail\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Minimum Available [asis,LMTP] Processes' ]]);$output .= '");
+    validators[\'lmtp_process_min_avail\'].add("lmtp_process_min_avail", is_integer, "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” must be an integer.',$stash->get(['locale',0,'maketext',['Minimum Available [asis,LMTP] Processes' ]])]]);$output .= '");
+    validators[\'lmtp_process_min_avail\'].add("lmtp_process_min_avail", "min_value(%input%, 0)", "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” cannot be a negative value.',$stash->get(['locale',0,'maketext',['Minimum Available [asis,LMTP] Processes' ]])]]);$output .= '");
+    validators[\'lmtp_process_min_avail\'].add("lmtp_process_min_avail", "max_value(%input%, 99)", "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” cannot be greater than [numf,_2].',$stash->get(['locale',0,'maketext',['Minimum Available [asis,LMTP] Processes' ]]),99 ]]);$output .= '");
+
+    validators[\'compress_messages_level\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Compression Level' ]]);$output .= '");
+    validators[\'compress_messages_level\'].add("compress_messages_level", is_integer, "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” must be an integer.',$stash->get(['locale',0,'maketext',['Compression Level' ]])]]);$output .= '");
+    validators[\'compress_messages_level\'].add("compress_messages_level", "min_value(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” cannot be less than [numf,_2].',$stash->get(['locale',0,'maketext',['Compression Level' ]]),1 ]]);$output .= '");
+    validators[\'compress_messages_level\'].add("compress_messages_level", "max_value(%input%, 9)", "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” cannot be greater than [numf,_2].',$stash->get(['locale',0,'maketext',['Compression Level' ]]),9 ]]);$output .= '");
+
+
+    validators[\'lmtp_process_limit\'] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['[asis,LMTP] Process Limit' ]]);$output .= '");
+    validators[\'lmtp_process_limit\'].add("lmtp_process_limit", is_positive_integer, "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” must be a positive integer.',$stash->get(['locale',0,'maketext',['[asis,LMTP] Process Limit' ]])]]);$output .= '");
+    validators[\'lmtp_process_limit\'].add("lmtp_process_limit", "max_value(%input%, 9999)", "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” cannot be greater than [numf,_2].',$stash->get(['locale',0,'maketext',['[asis,LMTP] Process Limit' ]]),9999 ]]);$output .= '");
+
+    validators["lmtp_user_concurrency_limit"] = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['[asis,LMTP] User Concurrency Limit' ]]);$output .= '");
+    validators["lmtp_user_concurrency_limit"].add("lmtp_user_concurrency_limit", is_nonnegative_integer, "';$output .= $stash->get(['locale',0,'maketext',['“[_1]” must be a nonnegative integer.',$stash->get(['locale',0,'maketext',['[asis,LMTP] User Concurrency Limit' ]])]]);$output .= '");
+    validators["lmtp_user_concurrency_limit"].add(
+        "lmtp_user_concurrency_limit",
+        function(el) {
+            var ucl = 1 * el.value;
+            var pl = 1 * DOM.get("lmtp_process_limit").value;
+console.log(ucl, pl, arguments);
+            return( ucl <= pl );
+        },
+        "';$output .= $stash->get(['locale',0,'maketext',['This value cannot exceed the value of “[_1]”.',$stash->get(['locale',0,'maketext',['[asis,LMTP] Process Limit' ]])]]);$output .= '"
+    );
+
+    for (var i in validators) {
+        validators[i].attach();
+    }
+
+    CPANEL.validate.attach_to_form("submit_page", validators);
+
+    YAHOO.util.Event.on("use_defaults", "click", set_defaults);
+    YAHOO.util.Event.on("reset_form", "click", reset_form);
+
+    //CPANEL.panels.create_help("example_ssl_cipher_link", "example_ssl_cipher");
+
+    YAHOO.util.Event.on("expire_trash", "click", function(){
+        YAHOO.util.Dom.get("expire_trash_ttl").disabled = !YAHOO.util.Dom.get("expire_trash").checked;
+    });
+
+    YAHOO.util.Event.on("expire_spam", "click", function(){
+        YAHOO.util.Dom.get("expire_spam_ttl").disabled = !YAHOO.util.Dom.get("expire_spam").checked;
+    });
+
+    YAHOO.util.Event.on("compress_messages", "click", function(){
+        YAHOO.util.Dom.get("compress_messages_level").disabled = !YAHOO.util.Dom.get("compress_messages").checked;
+    });
+};
+YAHOO.util.Event.onDOMReady(init_page);
+//]]>
+</script>
+<!--
+<div id="example_ssl_cipher" style="display: none">
+<ul>
+    <li>ALL:!ADH:RC4+RSA:+HIGH:+MEDIUM:-LOW:-SSLv2:-EXP</li>
+    <li>example2</li>
+    <li>example3</li>
+</ul>
+</div>
+-->
+<div class="mailserversetup">
+<p>';$output .= $stash->get(['locale',0,'maketext',['Dovecot is a mail server capable of handling the [output,acronym,IMAP,Internet Message Access Protocol] and [output,acronym,POP3,Post Office Protocol] protocols. This interface allows you to configure various aspects of Dovecot’s behavior.' ]]);$output .= '</p>
+<form action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" name="mainform" id="mainform" method="post">
+<table id="dovecotsetup" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Protocols Enabled' ]]);$output .= '</label>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'protocols_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '
+                <input ';if ($stash->get(['option',0,'name',0])eq 'LMTP'){$output .= 'disabled="disabled"'}$output .= ' type="checkbox" name="protocols_enabled_';$output .= $stash->get(['option',0,'option',0]);$output .= '" class="ipv4_protocol_controls" id="protocols_enabled_';$output .= $stash->get(['option',0,'option',0]);$output .= '" onchange="disableProtocol()" ';if ($stash->get(['option',0,'checked',0])eq 'checked'){$output .= 'checked="checked"'}$output .= ' />
+                <label for="protocols_enabled_';$output .= $stash->get(['option',0,'option',0]);$output .= '">';do {my$_tt_result=$stash->get(['option',0,'name',0]);my$_tt_match;SWITCH: {$_tt_match='LMTP';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,LMTP,Local Mail Transfer Protocol]' ]]);last SWITCH}$_tt_match='IMAP';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,IMAP,Internet Message Access Protocol]' ]]);last SWITCH}$_tt_match='IMAPS';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,IMAPS,Internet Message Access Protocol over SSL]' ]]);last SWITCH}$_tt_match='POP3';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,POP3,Post Office Protocol 3]' ]]);last SWITCH}$_tt_match='POP3S';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,POP3S,Post Office Protocol 3 over SSL]' ]]);last SWITCH}$_tt_match='LDA';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['[output,acronym,LDA,Local Delivery Agent]' ]]);last SWITCH}$output .= $stash->get(['option',0,'name',0])}};$output .= '</label>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            <p>';$output .= $stash->get(['locale',0,'maketext',['These checkboxes select which protocols [asis,Dovecot] will listen on.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: [asis,cPanel]’s Webmail system requires [output,acronym,IMAP,Internet Message Access Protocol] in order to function.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: If you do not select a checkbox, the system will operate in authentication-only mode.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: [output,acronym,LMTP,Local Mail Transfer Protocol] is required and you cannot disable it.' ]]);$output .= '</p>
+        </td>
+    </tr>
+';if ($stash->get(['data',0,'show_ipv6',0])){$output .= '
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['IPv6 Enabled' ]]);$output .= '</label>
+                <input type="checkbox" name="ipv6" id="ipv6" ';if ($stash->get(['data',0,'ipv6',0])){$output .= 'checked="checked"'}$output .= ' />
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This option allows you to enable [asis,Dovecot] to listen for [output,acronym,IPv6,Internet Protocol Version 6] Address requests.' ]]);$output .= '</p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: You must select a protocol in the Protocols Enabled section before selecting IPv6 Enabled.' ]]);$output .= '</p>
+        </td>
+    </tr>
+'}$output .= '
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Allow Plaintext Authentication (from remote clients)' ]]);$output .= '</label>
+            <select name="enable_plaintext_auth" id="enable_plaintext_auth">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'enable_plaintext_auth_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '
+                <option ';if ($stash->get(['option',0,'selected',0])eq 'selected'){$output .= 'selected="selected"'}$output .= ' value="';$output .= $stash->get(['option',0,'option',0]);$output .= '">';do {my$_tt_result=$stash->get(['option',0,'option',0]);my$_tt_match;SWITCH: {$_tt_match='yes';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);last SWITCH}$_tt_match='no';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['No' ]]);last SWITCH}$output .= $stash->get(['option',0,'option',0])}};$output .= '</option>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </select>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This setting will allow remote email clients to authenticate using unencrypted connections. When set to “no”, only connections originating on the local server will be allowed to authenticate without encryption. Selecting “no” is preferable to disabling [output,acronym,IMAP,Internet Message Access Protocol] in the [output,em,Protocols Enabled] section since it will force remote users to use encryption while still allowing webmail to function correctly.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,SSL,Secure Socket Layer] Cipher List' ]]);$output .= '</label>
+            <input type="text" name="ssl_cipher_list" id="ssl_cipher_list" value="';$output .= $stash->get(['data',0,'ssl_cipher_list',0]);$output .= '" /> <span id="ssl_cipher_list_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This is a standard format list of the [output,acronym,SSL,Secure Socket Layer] ciphers [asis,Dovecot] should use. Typically this will only need to be adjusted for [output,acronym,PCI,Payment Card Industry] compliance.' ]]);$output .= '"
+            <!--<span id="example_ssl_cipher_link" class="action_link">see example</span>--></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,SSL,Secure Socket Layer] Minimum Protocol' ]]);$output .= '</label>
+            <select name="ssl_min_protocol" id="ssl_min_protocol">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'ssl_min_protocol_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '
+                <option ';if ($stash->get(['option',0,'selected',0])eq 'selected'){$output .= 'selected="selected"'}$output .= ' value="';$output .= $stash->get(['option',0,'option',0]);$output .= '">';$output .= $stash->get(['option',0,'option',0]);$output .= '</option>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </select>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This value represents the minimum [output,acronym,SSL,Secure Socket Layer] protocol that [asis,Dovecot] clients may use to connect. Typically, you will only need to adjust this value for [output,acronym,PCI,Payment Card Industry] compliance.' ]]);$output .= '
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Maximum Number of Mail Processes' ]]);$output .= '</label>
+            <input type="text" name="max_mail_processes" id="max_mail_processes" value="';$output .= $stash->get(['data',0,'max_mail_processes',0]);$output .= '" /> <span id="max_mail_processes_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies the maximum number of mail ([output,acronym,IMAP,Internet Message Access Protocol] and [output,acronym,POP3,Post Office Protocol] servers) processes that may be running at one time.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit for Mail ([output,abbr,MB,Megabytes])' ]]);$output .= '</label>
+            <input type="text" name="mail_process_size" id="mail_process_size" value="';$output .= $stash->get(['data',0,'mail_process_size',0]);$output .= '" /> <span id="mail_process_size_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum memory usage of the [output,acronym,IMAP,Internet Message Access Protocol] and [output,acronym,POP3,Post Office Protocol] processes, in [output,acronym,MB,Megabytes]. These processes read mostly memory-mapped files, so setting a high limit should not affect your server’s performance.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Maximum [output,acronym,IMAP,Internet Message Access Protocol] Connections Per IP Address' ]]);$output .= '</label>
+            <input type="text" name="protocol_imap.mail_max_userip_connections" id="protocol_imap.mail_max_userip_connections" value="';$output .= $stash->get(['data',0,'protocol_imap',0,'mail_max_userip_connections',0]);$output .= '" /> <span id="protocol_imap.mail_max_userip_connections_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies the number of simultaneous [output,acronym,IMAP,Internet Message Access Protocol] connections that a single user ([output,acronym,IP,Internet Protocol] address) may make from each IP address.' ]]);$output .= '</p>
+        </td>
+    </tr>
+   <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Interval between [output,acronym,IMAP,Internet Message Access Protocol] [asis,IDLE] “OK Still here” messages.' ]]);$output .= '</label>
+            <input type="text" name="protocol_imap.imap_idle_notify_interval" id="protocol_imap.imap_idle_notify_interval" value="';$output .= $stash->get(['data',0,'protocol_imap',0,'imap_idle_notify_interval',0]);$output .= '" /> <span id="protocol_imap.imap_idle_notify_interval_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies the number of minutes between [output,acronym,IMAP,Internet Message Access Protocol] IDLE “OK Still here” messages. Increasing this may help increase battery life for some mobile clients.' ]]);$output .= '</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Maximum [output,acronym,POP3,Post Office Protocol] Connections per [output,acronym,IP,Internet Protocol] Address' ]]);$output .= '</label>
+            <input type="text" name="protocol_pop3.mail_max_userip_connections" id="protocol_pop3.mail_max_userip_connections" value="';$output .= $stash->get(['data',0,'protocol_pop3',0,'mail_max_userip_connections',0]);$output .= '" /> <span id="protocol_pop3.mail_max_userip_connections_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies the number of simultaneous [output,acronym,POP3,Post Office Protocol] connections that a single user (IP address) may make from each IP address.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Number of Spare Authentication Processes' ]]);$output .= '</label>
+            <input type="text" name="login_processes_count" id="login_processes_count" value="';$output .= $stash->get(['data',0,'login_processes_count',0]);$output .= '" /> <span id="login_processes_count_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This specifies how many spare authentication processes should be kept running to listen for new connections.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Maximum Number of Authentication Processes' ]]);$output .= '</label>
+            <input type="text" name="login_max_processes_count" id="login_max_processes_count" value="';$output .= $stash->get(['data',0,'login_max_processes_count',0]);$output .= '" /> <span id="login_max_processes_count_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies the maximum number of authentication processes that may be running at one time.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit for Authentication ([output,abbr,MB,Megabytes])' ]]);$output .= '</label>
+            <input type="text" name="login_process_size" id="login_process_size" value="';$output .= $stash->get(['data',0,'login_process_size',0]);$output .= '" /> <span id="login_process_size_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum memory usage of the [output,acronym,IMAP,Internet Message Access Protocol] and [output,acronym,POP3,Post Office Protocol] login processes, in [output,acronym,MB,Megabytes].' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Idle Hibernate Timeout (Seconds)' ]]);$output .= '</label>
+            <input type="text" name="imap_hibernate_timeout" id="imap_hibernate_timeout" value="';$output .= $stash->get(['data',0,'imap_hibernate_timeout',0]);$output .= '" /> <span id="imap_hibernate_timeout_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The number of seconds to delay before moving users to the IMAP hibernate process. This will help save system memory. A value of “0” disables this option.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Size of Authentication Cache ([output,abbr,MB,Megabytes])' ]]);$output .= '</label>
+            <input type="text" name="auth_cache_size" id="auth_cache_size" value="';$output .= $stash->get(['data',0,'auth_cache_size',0]);$output .= '" /> <span id="auth_cache_size_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The master authentication process keeps a cache of validated logins so that it does not need to recheck the login credentials each time mail is retrieved. This specifies the amount of memory used for the cache, in [output,abbr,MB,Megabytes].' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Time to Cache Successful Logins' ]]);$output .= '</label>
+            <input type="text" name="auth_cache_ttl" id="auth_cache_ttl" value="';$output .= $stash->get(['data',0,'auth_cache_ttl',0]);$output .= '" /> <span id="auth_cache_ttl_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The time, in seconds, that successful logins will be stored in the authentication cache. A lower value may cause more work for the authentication server but decrease the likelihood of problems when passwords are updated.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Time to Cache Failed Logins' ]]);$output .= '</label>
+            <input type="text" name="auth_cache_negative_ttl" id="auth_cache_negative_ttl" value="';$output .= $stash->get(['data',0,'auth_cache_negative_ttl',0]);$output .= '" /> <span id="auth_cache_negative_ttl_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The time in seconds that failed logins will be stored in the authentication cache. Lowering this value may cause more work for the authentication server but decrease the likelihood of problems when passwords are updated.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Use New Authentication Process for Each Connection' ]]);$output .= '</label>
+            <select name="login_process_per_connection" id="login_process_per_connection">
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'login_process_per_connection_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '
+                <option ';if ($stash->get(['option',0,'selected',0])eq 'selected'){$output .= 'selected="selected"'}$output .= ' value="';$output .= $stash->get(['option',0,'option',0]);$output .= '">';do {my$_tt_result=$stash->get(['option',0,'option',0]);my$_tt_match;SWITCH: {$_tt_match='yes';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);last SWITCH}$_tt_match='no';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= $stash->get(['locale',0,'maketext',['No' ]]);last SWITCH}$output .= $stash->get(['option',0,'option',0])}};$output .= '</option>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </select>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Specifies whether to use a new login process for each new [output,acronym,POP3,Post Office Protocol] or [output,acronym,IMAP,Internet Message Access Protocol] connection. Setting this to yes may improve the security of the [asis,Dovecot] authentication processes, but doing so imposes a significant performance penalty on heavily loaded servers.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Process Memory Limit: [asis,config] ([output,abbr,MB,Megabytes])' ]]);$output .= '</label>
+            <input type="text" name="config_vsz_limit" id="config_vsz_limit" value="';$output .= $stash->get(['data',0,'config_vsz_limit',0]);$output .= '" /> <span id="config_vsz_limit_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum memory usage (in [output,abbr,MB,Megabytes]) of [asis,Dovecot]’s internal “[asis,config]” service. Each [asis,SSL]/[asis,TLS] certificate that [asis,Dovecot] tracks requires additional memory. Servers with many domains may need to increase this value to ensure that [asis,Dovecot] operates correctly.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Idle Check Interval' ]]);$output .= '</label>
+            <input type="text" name="mailbox_idle_check_interval" id="mailbox_idle_check_interval" value="';$output .= $stash->get(['data',0,'mailbox_idle_check_interval',0]);$output .= '" /> <span id="mailbox_idle_check_interval_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The time in seconds between updates to idle [output,acronym,IMAP,Internet Message Access Protocol] connections. Lowering this value will cause idle clients to see new messages faster, however lower values may also increase server load slightly. The default setting of 30 is recommended.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Include Trash in Quota' ]]);$output .= '</label>
+            <input type="checkbox" name="include_trash_in_quota" id="include_trash_in_quota" value="1" ';$output .= $stash->get(['data',0,'include_trash_in_quota',0])? 'checked="checked"' : '';$output .= ' /> <span id="include_trash_in_quota_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['When this option is enabled, the system will count email messages in the Trash folder against the user’s quota.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Note: In order to recalculate existing quotas, you must run the “[_1]” command in a root shell after you modify this option.','/usr/local/cpanel/scripts/generate_maildirsize --allaccounts --confirm' ]]);$output .= '
+          </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Compress Messages' ]]);$output .= '</label>
+            <input type="checkbox" name="compress_messages" id="compress_messages" value="1" ';$output .= $stash->get(['data',0,'compress_messages',0])? 'checked="checked"' : '';$output .= ' /> <span id="compress_messages_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['When you enable this option, the system will compress recently created and delivered messages.' ]]);$output .= '</p>
+          </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Compression Level' ]]);$output .= '</label>
+            <input type="text" name="compress_messages_level" id="compress_messages_level" value="';$output .= $stash->get(['data',0,'compress_messages_level',0]);$output .= '" ';$output .=!$stash->get(['data',0,'compress_messages',0])&& 'disabled';$output .= ' /> <span id="compress_messages_level_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The compression level to save messages in when you enable “Compress Messages”.' ]]);$output .= '</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Auto Expunge Trash' ]]);$output .= '</label>
+            <input type="checkbox" name="expire_trash" id="expire_trash" value="1" ';$output .= $stash->get(['data',0,'expire_trash',0])? 'checked="checked"' : '';$output .= ' /> <span id="expire_trash_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['When this option is enabled, the system will remove messages in the Trash and Deleted Messages folders based on the expiration time configured below.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Trash Expire Time' ]]);$output .= '</label>
+            <input type="text" name="expire_trash_ttl" id="expire_trash_ttl" value="';$output .= $stash->get(['data',0,'expire_trash_ttl',0]);$output .= '" ';$output .= $stash->get(['data',0,'expire_trash',0])? '' : 'disabled';$output .= '/> <span id="expire_trash_ttl_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The number of days to keep messages before the [output,em,Auto Expunge Trash] function removes them. This function only works if the [output,em,Auto Expunge Trash] function is enabled.' ]]);$output .= '</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Auto Expunge Spam' ]]);$output .= '</label>
+            <input type="checkbox" name="expire_spam" id="expire_spam" value="1" ';$output .= $stash->get(['data',0,'expire_spam',0])? 'checked="checked"' : '';$output .= ' /> <span id="expire_spam_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['When this option is enabled, the system will remove messages in the Spam folder based on the expiration time configured below.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Spam Expire Time' ]]);$output .= '</label>
+            <input type="text" name="expire_spam_ttl" id="expire_spam_ttl" value="';$output .= $stash->get(['data',0,'expire_spam_ttl',0]);$output .= '" ';$output .= $stash->get(['data',0,'expire_spam',0])? '' : 'disabled';$output .= '/> <span id="expire_spam_ttl_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The number of days to keep messages before the [output,em,Auto Expunge Spam] function removes them. This function only works if the [output,em,Auto Expunge Spam] function is enabled.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[asis,MDBOX] rotation size ([output,acronym,MB,Megabytes])' ]]);$output .= '</label>
+            <input type="text" name="mdbox_rotate_size" id="mdbox_rotate_size" value="';$output .= $stash->get(['data',0,'mdbox_rotate_size',0]);$output .= '" /> <span id="mdbox_rotate_size_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum size to which a [asis,MDBOX] mailbox file may grow before the system rotates it.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[asis,MDBOX] rotation interval (Weeks or Days)' ]]);$output .= '</label>
+            <input type="text" name="mdbox_rotate_interval" id="mdbox_rotate_interval" value="';$output .= $stash->get(['data',0,'mdbox_rotate_interval',0]);$output .= '" /> <span id="mdbox_rotate_interval_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum time that an [asis,MDBOX] mailbox file may exist before the system rotates it.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Disk Quota Delivery Failure Response' ]]);$output .= '</label>
+            <p class="distinct"><label>';$output .= $stash->get(['locale',0,'maketext',['How [asis,Dovecot] will respond when a system disk quota or mailbox disk quota prevents delivery:' ]]);$output .= '</label></p>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'incoming_reached_quota_options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'irq_opt'}=$_tt_value;$output .= '                <p class="distinct">
+                    <label><input type="radio" name="incoming_reached_quota" value="';$output .= $stash->get(['irq_opt',0,'value',0,'html',0]);$output .= '" ';$output .= $stash->get(['irq_opt',0,'value',0])eq $stash->get(['data',0,'incoming_reached_quota',0])&& 'checked';$output .= '> ';$output .= $stash->get(['irq_opt',0,'label',0,'html',0]);$output .= '</label>
+                    <span class="help_hover_wrapper">
+                        <a href="javascript:void(0)" class="help_hover">[ ? ]</a>
+                        <span class="help_text">';$output .= $stash->get(['irq_opt',0,'help',0,'html',0]);$output .= '</span>
+                    </span>
+                </p>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['Minimum Available [asis,LMTP] Processes' ]]);$output .= '</label>
+            <input type="text" name="lmtp_process_min_avail" id="lmtp_process_min_avail" value="';$output .= $stash->get(['data',0,'lmtp_process_min_avail',0]);$output .= '" /> <span id="lmtp_process_min_avail_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The minimum number of processes that the system will attempt to reserve in order to accept more client connections.' ]]);$output .= '
+               ';$output .= $stash->get(['locale',0,'maketext',['A setting of [numf,_1] will only start the [asis,LMTP] server when needed and will conserve memory.',0 ]]);$output .= '
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[asis,LMTP] Process Limit' ]]);$output .= '</label>
+            <input type="text" name="lmtp_process_limit" id="lmtp_process_limit" value="';$output .= $stash->get(['data',0,'lmtp_process_limit',0]);$output .= '" /> <span id="lmtp_process_limit_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum number of [asis,LMTP] server processes.' ]]);$output .= '</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <label class="label_title">';$output .= $stash->get(['locale',0,'maketext',['[asis,LMTP] User Concurrency Limit' ]]);$output .= '</label>
+            <input type="text" name="lmtp_user_concurrency_limit" id="lmtp_user_concurrency_limit" value="';$output .= $stash->get(['data',0,'lmtp_user_concurrency_limit',0]);$output .= '" /> <span id="lmtp_user_concurrency_limit_error"></span>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['The maximum number of concurrent [asis,LMTP] deliveries per user. A value of “[numf,_1]” disables the per-user limit.',0 ]]);$output .= '</p>
+        </td>
+    </tr>
+</table>
+<br />
+<table style="width: 570px">
+    <tr>
+        <td><input type="button" value="';$output .= $stash->get(['locale',0,'maketext',['Use Default Values' ]]);$output .= '" id="use_defaults" class="btn btn-default" /></td>
+        <td style="text-align: right">
+            <span id="reset_form" class="action_link">';$output .= $stash->get(['locale',0,'maketext',['Reset Form' ]]);$output .= '</span><input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save Changes' ]]);$output .= '" id="submit_page" class="btn btn-primary" />
+        </td>
+    </tr>
+</table>
+<br />
+</form>
+</div>
+<script>
+// Disable IPv6 protocol upon disabling its corresponding IPv4 protocol
+var disableProtocol = function() {
+    var IPv4Controls = document.getElementsByClassName("ipv4_protocol_controls");
+    for (var i = 0; i < IPv4Controls.length; i++) {
+        if(IPv4Controls[i].checked) {
+            document.getElementById("ipv6").disabled = false;
+            return;
+        }
+    }
+    document.getElementById("ipv6").disabled = true;
+    document.getElementById("ipv6").checked = false;
+}
+</script>
+</body>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

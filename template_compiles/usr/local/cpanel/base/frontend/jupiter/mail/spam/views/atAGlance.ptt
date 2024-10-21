@@ -1,0 +1,160 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/spam/views/atAGlance.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <div class="section">
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <h3 class="toggling-header">
+                    <toggle-switch
+                        id="toggleSpamAssassinSwitch"
+                        ng-model="settings.spam_enabled"
+                        ng-disabled="!settings.spam_status_changeable"
+                        enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Process New Emails and Mark them as Spam:' ]]);$output .= '"
+                        disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Process New Emails and Mark them as Spam:' ]]);$output .= '"
+                        on-toggle="toggleEnable()" ></toggle-switch><span></span>
+                </h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                <p ng-if="settings.spam_enabled">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,Apache SpamAssassin] is [output,strong,enabled].' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['This will mark suspicious email messages as spam. The server will update the header of new messages whose calculated spam score meets or exceeds the [output,url,_2,Spam Threshold Score] ([_1]).','{{ :: preferences.required_score}}','#/required-score' ]]);$output .= '
+                </p>
+                <p ng-if="!settings.spam_enabled">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,Apache SpamAssassin] is [output,strong,disabled].' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['When enabled, new emails with a spam score that meets or exceeds the [output,url,_2,“Spam Threshold”] ([_1]) will have their headers updated to identify them as spam.','{{ :: preferences.required_score}}','#/required-score' ]]);$output .= '
+                </p>
+                <p ng-if="!settings.spam_status_changeable">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your hosting provider enables this feature by default. You [output,strong,cannot] disable this feature.' ]]);$output .= '
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="list-group">
+        <div class="section sub-feature-section list-group-item" ng-show="spamBoxFeatureEnabled">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <h4 class="toggling-header">
+                        <toggle-switch
+                            id="toggleSpamBoxSwitch"
+                            ng-model="settings.spam_box_enabled"
+                            enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Move New Spam to a Separate Folder (Spam Box):' ]]);$output .= '"
+                            disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Move New Spam to a Separate Folder (Spam Box):' ]]);$output .= '"
+                            on-toggle="toggleEnableSpamBox()" ></toggle-switch>
+                    </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <p ng-if="settings.spam_box_enabled">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Spam Box is [output,strong,enabled].' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Spam Box will direct all new email messages with a calculated spam score that meets or exceeds the [output,url,_2,Spam Threshold Score] ([_1]) to a separate folder for you to review.','{{ :: preferences.required_score}}','#/required-score' ]]);$output .= '
+                    </p>
+                    <p ng-if="!settings.spam_box_enabled">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Spam Box is currently [output,strong,disabled].' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enable this option to mark suspicious emails as spam. When you enable this option, the server will mark new email messages with a calculated spam score that meets or exceeds the [output,url,_2,Spam Threshold Score] ([_1]) as spam and place them in a separate [output,em,spam] folder for you to review.','{{ :: preferences.required_score}}','#/required-score' ]]);$output .= '
+                    </p>
+                    <a href="#/spambox" id="configureSpamBox" class="btn btn-link" ><span class=\'glyphicon glyphicon-pencil\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Configure Spam Box Settings' ]]);$output .= '</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="section sub-feature-section list-group-item" ng-show="autoDeleteFeatureEnabled">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <h4 class="toggling-header">
+                        <toggle-switch
+                            id="toggleSpamAutoDeleteSwitch"
+                            ng-model="settings.spam_auto_delete"
+                            enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Automatically Delete New Spam (Auto-Delete):' ]]);$output .= '"
+                            disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Automatically Delete New Spam (Auto-Delete):' ]]);$output .= '"
+                            on-toggle="toggleEnableAutoDelete()" ></toggle-switch>
+                    </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                    <p ng-if="settings.spam_auto_delete">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Auto-Delete is [output,strong,enabled].' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['This will permanently delete all new email messages with a calculated spam score that meets or exceeds the [output,url,_2,Auto-Delete Threshold Score] ([_1]).','{{ :: settings.spam_auto_delete_score }}','#/autodelete' ]]);$output .= '
+                    </p>
+                    <p ng-if="!settings.spam_auto_delete">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Auto-Delete is currently [output,strong,disabled].' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Enable this option to automatically delete spam messages. The Auto-Delete option permanently deletes new emails with a calculated spam score that meets or exceeds the Auto-Delete Threshold Score.' ]]);$output .= '
+                    </p>
+                    <callout callout-type="danger" ng-show="settings.spam_auto_delete && preferences.required_score > settings.spam_auto_delete_score">
+                        ';$output .= $stash->get(['locale',0,'maketext',['The current [output,url,_2,Auto-Delete Threshold Score] ([_3]) is lower than the [output,url,_1,Spam Threshold Score] ([_4]). This will cause the system to automatically delete messages that it did not previously consider to be spam. We [output,strong,strongly] recommend that you increase your [output,url,_2,Auto-Delete Threshold Score].','#/required-score','#/autodelete','{{settings.spam_auto_delete_score}}','{{preferences.required_score}}' ]]);$output .= '
+                    </callout>
+                    <callout callout-type="warning" ng-if="spamBoxFeatureEnabled && !settings.spam_auto_delete">
+                        ';$output .= $stash->get(['locale',0,'maketext',['We recommend that you use [output,url,_1,_2] instead of [asis,Auto-Delete] because [output,url,_1,_2] allows you to recover messages marked as SPAM from your email account’s spam folder.','#/spambox','Spam Box' ]]);$output .= '
+                    </callout>
+                    <a href="#/autodelete" id="configureAutoDelete" class="btn btn-link" ><span class=\'glyphicon glyphicon-pencil\'></span> ';$output .= $stash->get(['locale',0,'maketext',['Configure Auto-Delete Settings' ]]);$output .= '</a>
+                </div>
+            </div>
+        </div>
+
+        <div ng-show="settings.spam_enabled">
+            <div class="section sub-feature-section list-group-item">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <h4>';$output .= $stash->get(['locale',0,'maketext',['Additional Configurations (For Advanced Users):' ]]);$output .= '</h4>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['Most users will not need to customize these settings.' ]]);$output .= '</p>
+                        <a id="showAdditionalConfigurationsButton"
+                            ng-click="toggleAdditionalFeatures(!showingAdditionalFeatures)"
+                            class="btn btn-link" >
+                                <span ng-hide="showingAdditionalFeatures">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Show Additional Configurations' ]]);$output .= '
+                                    <span class=\'glyphicon glyphicon-chevron-down\'></span>
+                                </span>
+                                <span ng-show="showingAdditionalFeatures">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Hide Additional Configurations' ]]);$output .= '
+                                    <span class=\'glyphicon glyphicon-chevron-up\'></span>
+                                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="section sub-feature-section list-group-item" ng-show="showingAdditionalFeatures">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <h5>';$output .= $stash->get(['locale',0,'maketext',['Whitelist (Emails [output,strong,Always] Allowed)' ]]);$output .= '</h5>
+                        <p ng-bind="whitelistCountString()"></p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['The spam filters will always allow these items.' ]]);$output .= '</p>
+                        <a href="#/whitelist" id="configureWhitelist" class="btn btn-link" >
+                            <span class=\'glyphicon glyphicon-pencil\'></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Edit Spam Whitelist Settings' ]]);$output .= '
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section sub-feature-section list-group-item" ng-show="showingAdditionalFeatures">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <h5>';$output .= $stash->get(['locale',0,'maketext',['Blacklist (Emails [output,strong,Never] Allowed)' ]]);$output .= '</h5>
+                        <p ng-bind="blacklistCountString()"></p>
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['The spam filters will never allow these items.' ]]);$output .= '</p>
+                        <a href="#/blacklist" id="configureBlacklist" class="btn btn-link" >
+                            <span class=\'glyphicon glyphicon-pencil\'></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Edit Spam Blacklist Settings' ]]);$output .= '
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section sub-feature-section list-group-item" ng-show="showingAdditionalFeatures">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                        <h5>';$output .= $stash->get(['locale',0,'maketext',['Calculated Spam Score Settings:' ]]);$output .= '</h5>
+                        <p ng-bind="scoreCountString()"></p>
+                        <a href="#/advanced-settings" id="configureAutoDelete" class="btn btn-link" >
+                            <span class=\'glyphicon glyphicon-pencil\'></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Configure Calculated Spam Scores Settings' ]]);$output .= '
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

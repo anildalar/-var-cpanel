@@ -1,0 +1,28 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/addusertodb.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('api_call',$stash->get(['execute',['Postgresql','grant_all_privileges',{'user'=>$stash->get(['RAW_FORM',0,'user',0]),'database'=>$stash->get(['RAW_FORM',0,'db',0])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if ($stash->get(['api_call',0,'status',0])){$output .= '
+    <div id="addSuccess" class="alert alert-success">
+        <span id="addSuccessImg" class="glyphicon glyphicon-info-sign"></span>
+        <span id="addSuccessMsg">
+            ';$output .= $stash->get(['locale',0,'maketext',['You have added the user “[_1]” to the database “[_2]”.',$stash->get(['FORM',0,'user',0]),$stash->get(['FORM',0,'db',0])]]);$output .= '
+        </span>
+    </div>
+    '}else {$output .= '
+    <div id="addError" class="alert alert-danger">
+        <span id="addErrorImg" class="glyphicon glyphicon-exclamation-sign"></span>
+        <span id="addErrorMsg">
+            ';$output .= $stash->get(['locale',0,'maketext',['There was a problem adding the user.' ]]);$output .= '
+            ';$output .= $stash->get(['api_call',0,'errors_as_string',0,'html',0]);$output .= '
+        </span>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_databases','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,93 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/showlog.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPDate',$context->plugin('CPDate'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('is_webmail',$stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' ? 1 : 0);if ($stash->get('is_webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'account',0],$stash->get(['CPANEL',0,'authuser',0]))}$stash->set('logdate',$stash->get(['RAW_FORM',0,'logdate',0]));if (!$stash->get(['logdate',0,'defined',0])|| $stash->get('logdate')eq '' ||!$stash->get(['logdate',0,'search',['^\d+$' ]])){$stash->set('logdate',$stash->get(['CPANEL',0,'now',0]))}if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$stash->set('boxtrapper_showlog',$stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]]))}else {$stash->set('boxtrapper_showlog',$stash->get(['execute',['BoxTrapper','get_log',{'email'=>$stash->get(['RAW_FORM',0,'account',0]),'date'=>$stash->get('logdate')}]]))}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    ';if (($stash->get('is_webmail')&&!($stash->get(['FORM',0,'account',0])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+    <div class="alert alert-danger" id="logError">
+        <span class="glyphicon glyphicon-remove-sign" id="logErrorImg"></span>
+        <div class="alert-message" id="logErrorMsg">
+            ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to view logs for the user “[output,strong,_1]”.',$stash->get(['FORM',0,'account',0])]]);$output .= '
+        </div>
+    </div>
+    '}else {$output .= '
+    <div class="section">
+        <h2 id="acctLog">
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] Log for “[output,strong,_1]”',$stash->get(['FORM',0,'account',0])]]);$output .= '
+        </h2>
+
+        ';if (!$stash->get(['boxtrapper_showlog',0,'status',0])){$output .= '
+           ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['boxtrapper_showlog',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'error'}=$_tt_value;$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class=\'glyphicon glyphicon-remove-sign\' aria-hidden="true"></span>
+            <div class=\'alert-message\'>
+                <strong class="alert-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                </strong>
+                <span class="alert-body">
+                    <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                        ';$output .= $stash->get(['error',0,'html',0]);$output .= '
+                    </span>
+                </span>
+            </div>
+        </div>
+           ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}else {$output .= '
+        ';$stash->set('script_url','showlog.html');$stash->set('current_day',$stash->get('logdate'));$stash->set('previous_day',$stash->get('current_day')- 86400);$stash->set('next_day',$stash->get('current_day')+ 86400);$output .= '
+        <table id="tblBoxTrapperLogs" class="table">
+            <tr>
+                <td class="previous-date">
+                    ';if ($stash->get('previous_day')>= 0){$output .= '
+                    <form action="';$output .= $stash->get('script_url');$output .= '" method="post">
+                        <input type="hidden" name="bxaction" value="" />
+                        <input type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+                        <input type="hidden" name="logdate" value="';$output .= $stash->get('previous_day');$output .= '" />
+                        <button id="previous-date" type="submit" class="btn btn-link pull-left">
+                            &lt;&lt; ';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('previous_day')]]);$output .= '
+                        </button>
+                    </form>
+                    '}else {$output .= '
+                    N/A
+                    '}$output .= '
+                </td>
+                <td class="current-date">
+                    ';if ($stash->get('current_day')>= 0){$output .= '
+                    <span id="current-date">';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('current_day')]]);$output .= '</span>
+                    '}else {$output .= '
+                    N/A
+                    '}$output .= '
+                </td>
+                <td class="next-date">
+                    ';if ($stash->get('next_day')>= 0){$output .= '
+                    <form action="';$output .= $stash->get('script_url');$output .= '" method="post">
+                        <input type="hidden" name="bxaction" value="" />
+                        <input type="hidden" name="account" value="';$output .= $stash->get(['FORM',0,'account',0]);$output .= '" />
+                        <input type="hidden" name="logdate" value="';$output .= $stash->get('next_day');$output .= '" />
+                        <button id="next-date" type="submit" class="btn btn-link pull-right">
+                            ';$output .= $stash->get(['locale',0,'local_datetime',[$stash->get('next_day')]]);$output .= ' &gt;&gt;
+                        </button>
+                    </form>
+                    '}else {$output .= '
+                    N/A
+                    '}$output .= '
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <textarea readonly="readonly"
+                              class="form-control"
+                              rows="20"
+                              id="txtLog">';if ($stash->get(['boxtrapper_showlog',0,'data',0,'lines',0,'size',0])eq 0){$output .= $stash->get(['locale',0,'maketext',['No log data exists for this date.' ]])}else {$output .= $stash->get(['boxtrapper_showlog',0,'data',0,'lines',0,'join',[('' .'
+')]])}$output .= '                    </textarea>
+                </td>
+            </tr>
+        </table>
+        '}$output .= '
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

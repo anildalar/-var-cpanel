@@ -1,0 +1,223 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/nameserverconfig.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+
+<div>
+    <p>A nameserver is a program that maintains a list of your domain names and their corresponding IP addresses, allowing visitors to find the domains hosted on your server. It is a vital component of the networking setups of most servers. However, servers using a remote nameserver do not need to configure their own.</p>
+    <p>Here you can select the nameserver you wish to use, if any.</p>
+    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/doconfigurenameserver">
+        <table class="table table-striped table-bordered" id="nameserverconfig">
+            <tr>
+                <th></th>
+                <th>Nameserver</th>
+                <th class="advantageContent">Advantages</th>
+                <th class="advantageContent">Disadvantages</th>
+                <th>Notes</th>
+            </tr>
+
+            ';if ($stash->get(['data',0,'available',0,'PowerDNS',0])ne 1){$output .= '
+            <tr class="danger">
+                <td colspan="5">
+                    <p>PowerDNS is not available for your system. Please choose another nameserver configuration.</p>
+                </td>
+            </tr>
+            '}$output .= '
+
+            <tr>
+                <td><input
+                    type="radio"
+                    id="nameserver_pdns"
+                    name="nameserver"
+                    value="powerdns"
+                    ';if ($stash->get(['data',0,'available',0,'PowerDNS',0])ne 1){$output .= '
+                        disabled="true"
+                    '}$output .= '
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= '
+                        checked="checked"
+                    '}$output .= '
+                    onclick="updateSaveBtnState();
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= 'confirmPdnsSwitch();'}$output .= '">
+                </td>
+                <td><label for="nameserver_pdns">PowerDNS</label></td>
+                <td>
+                    <ul>
+                        <li>
+                            Very high performance.
+                        </li>
+                        <li>
+                            Instant start-up.
+                        </li>
+                        <li>
+                            Low memory requirements.
+                        </li>
+                </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            Does not provide a recursive (caching) nameserver.
+                            (<a target=_blank href="';$output .= $stash->get('cp_security_token');$output .= '/scripts2/setupresolvconf">requires external nameservers in resolv.conf</a>)
+                        </li>
+                        <li>
+                            CPU intensive with a high volume of DNS zones that use DNSSEC
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        <li>
+                            This is the default choice.
+                        </li>
+                        <li>';if ($stash->get(['data',0,'available',0,'PowerDNS',0])ne 1){$output .= '
+                            <b>PowerDNS is not available for your system:</b> ';$output .= $stash->get(['data',0,'warnings',0,'PowerDNS',0])}else {$output .= '
+                            Built-in support for DNSSEC.'}$output .= '
+                        </li>
+                </ul>
+                </td>
+            </tr>
+
+            ';if ($stash->get(['data',0,'available',0,'BIND',0])ne 1){$output .= '
+            <tr class="danger">
+                <td colspan="5">
+                    <p>Bind is not available for your system. Please choose another nameserver configuration.</p>
+                </td>
+            </tr>
+            '}$output .= '
+
+            <tr>
+                <td><input
+                    type="radio"
+                    id="nameserver_bind"
+                    name="nameserver"
+                    value="bind"
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'BIND'){$output .= '
+                        checked="checked"
+                    '}$output .= '
+                    ';if ($stash->get(['data',0,'available',0,'BIND',0])ne 1){$output .= '
+                        disabled="true"
+                    '}$output .= '
+                    onclick="updateSaveBtnState();
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= 'confirmPdnsSwitch();'}$output .= '">
+                </td>
+                <td><label for="nameserver_bind">BIND</label></td>
+                <td>
+                    <ul>
+                        <li>
+                            Configuration file can be manually edited.
+                        </li>
+                        <li>
+                            Extremely configurable.
+                        </li>
+                        <li>
+                            Provides a caching nameserver.
+                        </li>
+                        <li>
+                            Very tolerant of syntax errors in zone files.
+                        </li>
+                </ul>
+                </td>
+                <td><ul>
+                        <li>
+                            Large memory footprint.
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+
+        ';if ($stash->get('dnsonly')ne 1){$output .= '            <tr>
+                <td><input
+                    type="radio"
+                    id="nameserver_disabled"
+                    name="nameserver"
+                    value="disabled"
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'DISABLED'){$output .= '
+                        checked="checked"
+                    '}$output .= '
+                    onclick="updateSaveBtnState();
+                    ';if ($stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= 'confirmPdnsSwitch();'}$output .= '">
+                </td>
+                <td><label for="nameserver_disabled">Disabled</label></td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>
+                    <ul>
+                        <li>This option will disable the nameserver.  If you are serving dns as part of a cluster you may not need to run one locally.</li>
+                    </ul>
+                </td>
+            </tr>
+        '}$output .= '        </table>
+
+        ';if ($stash->get(['data',0,'available',0,'PowerDNS',0])eq 1 && $stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= '
+        <div id="dnssec_alert_container" style="display: none">
+            <div id="dnssec-alert" class="alert alert-warning" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <p class="alert-body">
+                        <strong>';$output .= $stash->get(['locale',0,'maketext',['Warning:' ]]);$output .= '</strong>
+                        ';$output .= $stash->get(['locale',0,'maketext',['If you switch your nameserver away from [asis,PowerDNS], your [asis,DNS] server will no longer serve [asis,DNSSEC] records.' ]]);$output .= '
+                    </p>
+                    <p class="alert-body">';$output .= $stash->get(['locale',0,'maketext',['You must ensure that the following records are not configured on your domains to avoid [asis,DNS] resolution issues:' ]]);$output .= '</p>
+                    <ul>
+                        <li><span>';$output .= $stash->get(['locale',0,'maketext',['An [asis,ALIAS] record.' ]]);$output .= '</span></li>
+                        <li><span>';$output .= $stash->get(['locale',0,'maketext',['A [asis,DS] record at the domain’s registrar.' ]]);$output .= '</span></li>
+                    </ul>
+                    <div class="checkbox"><input type="checkbox" id="confirm_pdns_checkbox" onclick="pdnsUnderstand();"><label for="confirm_pdns_checkbox">';$output .= $stash->get(['locale',0,'maketext',['I understand and want to continue.' ]]);$output .= '</label></div>
+                </div>
+            </div>
+        </div>
+        '}$output .= '
+        <input type="submit" value="Save" id="nameserver_save_btn" class="btn btn-primary">
+    </form>
+    <script>
+        var originalSelection = "';$output .= $stash->get(['data',0,'nameserver',0]);$output .= '";
+        var saveButton = document.querySelector("#nameserver_save_btn");
+        saveButton.disabled = true;
+
+        //Check for changes to the form selection:
+        function updateSaveBtnState () {
+            var currSelection = document.querySelector(\'input[name="nameserver"]:checked\').value;
+
+            if (currSelection
+                && ((originalSelection.toLowerCase() !== "powerdns" && currSelection.toLowerCase() !== originalSelection.toLowerCase() )
+                || currSelection.toLowerCase() === "disabled" ) ){
+                    saveButton.disabled = false;
+            }else{
+                 saveButton.disabled = true;
+            }
+        }
+    </script>
+    ';if ($stash->get(['data',0,'available',0,'PowerDNS',0])eq 1 && $stash->get(['data',0,'nameserver',0])eq 'POWERDNS'){$output .= '
+    <script>
+        var pdns_checkbox = document.getElementById("confirm_pdns_checkbox");
+
+        function confirmPdnsSwitch () {
+            var pdns_radio = document.getElementById("nameserver_pdns");
+            var disabled_radio = document.getElementById("nameserver_disabled");
+            var pdns_alert = document.getElementById("dnssec_alert_container");
+
+            pdns_checkbox.checked = false;
+
+            if (pdns_radio.checked || disabled_radio.checked) {
+                pdns_alert.style.display = "none";
+            } else {
+                saveButton.disabled = true;
+                pdns_alert.style.display = "inline";
+            }
+        }
+
+        function pdnsUnderstand () {
+            saveButton.disabled = !pdns_checkbox.checked;
+        }
+    </script>
+    '}$output .= '
+</div>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'nameserver_selection','header'=>$stash->get(['locale',0,'maketext',['Nameserver Selection' ]]),'breadcrumburl'=>'/scripts/nameserverconfig','base'=>'/scripts/nameserverconfig','extrastyle'=>'
+        .alert {
+            margin-bottom: 0;
+        }
+        #dnssec-alert {
+            margin-bottom: 10px;
+        }
+        .advantageContent {
+            width: 30%;
+        }
+        ','theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,174 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/module_installers/main.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set('EasyApache',$context->plugin('EasyApache'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $context->process('supported_langs.html.tt');$stash->set('is_supported',$stash->get(['FORM',0,'defined',['lang' ]])&& $stash->get(['supported_langs',0,'grep',['^' .$stash->get(['CPScalar',0,'quotemeta',[$stash->get(['FORM',0,'lang',0])]]).'$' ],'size',0]));if ($stash->get('is_supported')){$stash->set('ea_version',$stash->get(['EasyApache',0,'get_ea_version',0]));$stash->set('lang_mods_get_key_names',$stash->get(['Api2',0,'exec',['LangMods','getkey',{'lang'=>$stash->get(['FORM',0,'lang',0]),'key'=>'names' }],0,0]));$stash->set('lang_mods_get_key_name',$stash->get(['Api2',0,'exec',['LangMods','getkey',{'lang'=>$stash->get(['FORM',0,'lang',0]),'key'=>'name' }],0,0]));$stash->set('lang_mods_get_magic_status',$stash->get(['Api2',0,'exec',['LangMods','magic_status',{'lang'=>$stash->get(['FORM',0,'lang',0])}],0,0]));$stash->set('lang_mods_get_prefix',$stash->get(['Api2',0,'exec',['LangMods','getprefix',{'lang'=>$stash->get(['FORM',0,'lang',0])}],0,0]));$stash->set('lang_mods_list_installed',$stash->get(['Api2',0,'exec',['LangMods','list_installed',{'lang'=>$stash->get(['FORM',0,'lang',0])}]]))}$output .= '
+
+';if (!$stash->get('is_supported')){$output .= '
+    ';$output .= $context->process('not_supported.html.tt',{'lang'=>$stash->get(['FORM',0,'lang',0])});$output .= '
+'}else {$output .= '
+
+';$output .= $context->process('installer_app_key.html.tt');$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <h2 id="hdrInstaller">';$output .= $stash->get(['locale',0,'maketext',['“[_1]” Installer[comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_name',0,'key',0,'html',0])]]);$output .= '</h2>
+
+    ';do {my$_tt_result=$stash->get(['FORM',0,'lang',0]);my$_tt_match;SWITCH: {$_tt_match='perl';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Perl modules are collections of functions that allow you to perform tasks in Perl. You will need to install a Perl module before you can use it inside a Perl program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Modules are installed directly from the CPAN repository.' ]]);$output .= '
+        </p>
+    ';last SWITCH}$_tt_match='php-pear';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['PEAR packages are collections of functions that allow you to perform tasks in PHP. You will need to install a PEAR package before you can use it inside a PHP program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Packages are installed directly from the PHP Extensions and Applications repository (PEAR).' ]]);$output .= '
+        </p>
+    ';last SWITCH}$_tt_match='ruby';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+        <p>
+            ';$output .= $stash->get(['locale',0,'maketext',['Ruby Gems are collections of functions that allow you to perform tasks in Ruby. You will need to install a Gem before you can use it inside a Ruby program.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] Gems are installed directly from the RubyForge repository.' ]]);$output .= '
+        </p>
+        <div class="alert alert-warning" id="ruby-gems-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] This installer only works for the legacy Ruby installation and does not affect applications that you install with the “[_1]” interface.',$stash->get(['locale',0,'maketext',['Application Manager' ]])]]);$output .= '
+            </div>
+        </div>
+    ';last SWITCH}}};$output .= '
+
+    <div class="section">
+        <h2 id="hdrLocation">';$output .= $stash->get(['locale',0,'maketext',['Module Install Path' ]]);$output .= '</h2>
+        <p>
+            <span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Path: [output,strong,_1]',$stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0])]]);$output .= '
+            </span>
+        </p>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrKeyName">';$output .= $stash->get(['locale',0,'maketext',['Using Your [_1][comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_names',0,'key',0,'html',0])]]);$output .= '</h2>
+        ';if (($stash->get(['FORM',0,'lang',0])eq 'ruby')){$output .= '
+            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Important]: At this time [asis,Rails 3.0] is not supported and can cause a broken [asis,ruby/rails] environment.' ]]);$output .= '</p>
+        '}$output .= '
+
+        ';if ($stash->get('lang_mods_get_magic_status')&& ($stash->get('ea_version')ne 4 || ($stash->get(['FORM',0,'lang',0])ne 'php-pear'))){$output .= '
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['The administrator has enabled auto loading of “[_1]” from “[output,strong,_2]”.',$stash->get(['lang_mods_get_key_name',0,'key',0,'html',0]),$stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0])]]);$output .= '
+            </p>
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['You will not need to modify your scripts.' ]]);$output .= '
+            </p>
+        '}else {$output .= '
+            ';do {my$_tt_result=$stash->get(['FORM',0,'lang',0]);my$_tt_match;SWITCH: {$_tt_match='php-pear';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+                <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['You will need to add “[output,strong,_1]” to the include path.',$stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0])]]);$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['You can do this by adding the following code to your script:' ]]);$output .= '
+                </p>
+                <p>
+                    <code dir="ltr">ini_set("include_path", \'';$output .= $stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0]);$output .= ':\' . ini_get("include_path")  );</code>
+                </p>
+            ';last SWITCH}$_tt_match='perl';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Your Perl script needs to know how to find the modules in your path.' ]]);$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['You can do this by adding one of the two choices below to the top of your script:' ]]);$output .= '
+                </p>
+                <p>
+                <code dir="ltr">
+                #!/usr/bin/perl<br />
+                use cPanelUserConfig;
+                </code>
+                </p>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['or[comment,this is meant to be a horizontal separator of 2 things stacked vertically]' ]]);$output .= '</p>
+                <p>
+                <code dir="ltr">
+                #!/usr/bin/perlml
+                </code>
+                </p>
+            ';last SWITCH}$_tt_match='ruby';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$output .= '
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['You will need to add “[output,strong,_1]” to the include path.',$stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0])]]);$output .= "\n                </p>\n                <p>\n                <code dir=\"ltr\">\$:.push(\"";$output .= $stash->get(['lang_mods_get_prefix',0,'prefix',0,'html',0]);$output .= '")</code>
+                </p>
+            ';last SWITCH}}};$output .= '
+        '}$output .= '
+    </div>
+
+    <div class="section">
+        <h2 id="hdrFindKey">';$output .= $stash->get(['locale',0,'maketext',['Find a “[_1]”[comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_name',0,'key',0,'html',0])]]);$output .= '</h2>
+        <div class="row">
+            <div class="col-xs-12 col-md-6">
+                <form action="search.html" method="get">
+                    <div class="mod-form-container">
+                        <label id="lblSearchterm" for="searchterm" class="sr-only">
+                        </label>
+                        <input type="text" class="form-control mod-form-input mod-form-input-search" id="searchterm" name="searchterm" size="15" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '" />
+                        <input type="hidden" name="lang" id="searchlang" value="';$output .= $stash->get(['FORM',0,'lang',0]);$output .= '" />
+                        <input type="hidden" name="searchtype" id="searchtype" value="1" />
+                        <input class="btn btn-primary" type="submit" id="findAMod" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+                    </div>
+                </form>
+            </div>
+            <div class="col-xs-12 col-md-6">
+                <form action="search.html" method="get">
+                    <div>
+                        <span class="or-separator">
+                            ';$output .= $stash->get(['locale',0,'maketext',['or[comment,this is meant to be a horizontal separator of 2 things stacked vertically]' ]]);$output .= '
+                        </span>
+                        <input type="hidden" name="lang" id="langShow" value="';$output .= $stash->get(['FORM',0,'lang',0]);$output .= '" />
+                        <input type="hidden" name="searchtype" id="searchShow" value="0" />
+                        <input class="btn btn-primary" type="submit" id="showMods" value="';$output .= $stash->get(['locale',0,'maketext',['Show Available Modules' ]]);$output .= '" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrInstallKey">';$output .= $stash->get(['locale',0,'maketext',['Install a [_1][comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_name',0,'key',0,'html',0])]]);$output .= '</h2>
+        <div class="row">
+            <div class="col-xs-12 col-sm-8">
+                <form action="install.html" method="get">
+                    <div class="mod-form-container">
+                        <input type="text" class="form-control mod-form-input mod-form-input-install" id="installname" name="mod" />
+                        <input type="hidden" name="lang" id="installLang" value="';$output .= $stash->get(['FORM',0,'lang',0]);$output .= '" />
+                        <input class="btn btn-primary" type="submit" id="install" value="';$output .= $stash->get(['locale',0,'maketext',['Install Now' ]]);$output .= '" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Installed [_1][comment,## no extract maketext (will be done via case 119361)]',$stash->get(['lang_mods_get_key_names',0,'key',0,'html',0])]]);$output .= '</h2>
+        <table id="maintbl" class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Module Name' ]]);$output .= '</th>
+                    <th>';$output .= $stash->get(['locale',0,'maketext',['Version' ]]);$output .= '</th>
+                    <th nonsortable="true">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('lang_mods_list_installed');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+            <tr>
+                <td>';$output .= $stash->get(['hashref',0,'module',0,'html',0]);$output .= '</td>
+                <td>';$output .= $stash->get(['hashref',0,'latest',0,'html',0]);$output .= '</td>
+                <td>
+                    <a href="update.html?lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',0,'lang',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&mod=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'module',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" id="update_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" class="btn btn-link">
+                    <span class="fas fa-download"></span> ';$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '
+                    </a>
+                    <a href="reinstall.html?lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',0,'lang',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&mod=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'module',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" id="reinstall_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" class="btn btn-link">
+                    <span class="fas fa-download"></span> ';$output .= $stash->get(['locale',0,'maketext',['Reinstall' ]]);$output .= '
+                    </a>
+                    <a href="uninstall.html?lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',0,'lang',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&mod=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'module',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" id="uninstall_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" class="btn btn-link">
+                    <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Uninstall' ]]);$output .= '
+                    </a>
+                    <a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['hashref',0,'docurl',0]);&$_tt_filter($output)};$output .= '" id="docs_';$output .= $stash->get(['loop',0,'count',0]);$output .= '" target="_blank" class="btn btn-link">
+                    <span class="fas fa-search"></span> ';$output .= $stash->get(['locale',0,'maketext',['Show Docs' ]]);$output .= '
+                    </a>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </table>
+    </div>
+
+    <div class="section">
+        <a href="syslist.html?lang=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',0,'lang',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" id="showSysMods" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Show System Installed Modules' ]]);$output .= '</a>
+    </div>
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('installer_app_key'),'page_stylesheets'=>['module_installers/module.css' ],'content',$output })}}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

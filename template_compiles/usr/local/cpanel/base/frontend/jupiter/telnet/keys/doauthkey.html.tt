@@ -1,0 +1,27 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/telnet/keys/doauthkey.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$output .= '
+
+';$output .= $stash->get(['Api2',0,'pre_exec',['SSH','authkey' ]]);$stash->set('authkey',$stash->get(['Api2',0,'exec',['SSH','authkey',{'action'=>$stash->get(['FORM',0,'action',0]),'key'=>$stash->get(['FORM',0,'key',0])}]]));$output .= $stash->get(['Api2',0,'post_exec',['SSH','authkey' ]]);$output .= '
+
+';if (($stash->get(['FORM',0,'item',['action' ]])eq 'Deauthorize')){$stash->set(['CPANEL',0,'CPVAR',0,'authorized',0],'0')}else {$stash->set(['CPANEL',0,'CPVAR',0,'authorized',0],'1')}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['CPANEL',0,'CPERROR',0,'item',['ssh' ]])){$output .= '
+        <div id="authKeySuccess" class="alert alert-success">
+            <span id="authKeySuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            <div id="authKeySuccessMsg" class="alert-message">
+                ';$output .= $stash->get(['CPANEL',0,'CPVAR',0,'authorized',0])? $stash->get(['locale',0,'maketext',['The key “[_1]” has been authorized.',$stash->get(['FORM',0,'key',0])]]): $stash->get(['locale',0,'maketext',['The key “[_1]” has been deauthorized.',$stash->get(['FORM',0,'key',0])]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div id="authKeyError" class="alert alert-danger">
+            <span id="authKeyErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="authKeyErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['CPANEL',0,'CPERROR',0,'item',['ssh' ],'html',0]);$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'ssh_access','feature'=>'ssh','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

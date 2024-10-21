@@ -1,0 +1,112 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/managehost.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$output .= $stash->get(['Api2',0,'pre_exec',['MysqlFE','listhosts' ]]);$stash->set('hosts',$stash->get(['Api2',0,'exec',['MysqlFE','listhosts',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['MysqlFE','listhosts' ]]);$stash->set('host_notes_call',$stash->get(['execute',['Mysql','get_host_notes',{}]]));$stash->set('host_notes',$stash->get(['host_notes_call',0,'data',0]));$stash->set('errors',[]);$stash->set('errors',$stash->get(['errors',0,'merge',[$stash->get(['host_notes_call',0,'errors',0])]]));if ($stash->get(['CPANEL',0,'CPERROR',0,'mysqlfe',0])){$output .= $stash->get(['errors',0,'push',[$stash->get(['CPANEL',0,'CPERROR',0,'mysqlfe',0])]])}$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if (!$stash->get(['errors',0,'size',0])){$output .= '
+    <p id="descIntro" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Add a specific domain name to allow visitors to connect to your databases. Applications like bulletin boards, online shopping carts, and content management systems require databases to operate. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/RemoteMySql','_blank','lnkRemoteMySqlDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2 id="hdrAddHost">';$output .= $stash->get(['locale',0,'maketext',['Add Access Host' ]]);$output .= '</h2>
+        <form action="addhost.html" name="mainform" id="mainform" method="post">
+            <div class="form-group">
+                <label id="lblHost" for="host">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Host (% wildcard is allowed)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="host" id="host">
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span id="host_error"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblComment" for="comment">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Comment (optional)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" name="comment" id="comment" maxlength="255">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="submit-button" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add Host' ]]);$output .= '" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+
+    <div class="section">
+        <h2 id="hdrManageAccessHosts">';$output .= $stash->get(['locale',0,'maketext',['Manage Access Hosts' ]]);$output .= '</h2>
+        <table id="sqltbl" class="sortable table table-striped responsive-table">
+            <thead>
+                <tr>
+                    <th scope="col">';$output .= $stash->get(['locale',0,'maketext',['Access Hosts' ]]);$output .= '</th>
+                    <th scope="col" id="commentLabel">';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '</th>
+                    <th nonsortable="true" scope="col">';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+            ';if ($stash->get(['hosts',0,'size',0])){$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('hosts');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$stash->set('host_comment',$stash->get(['host_notes_call',0,'data',0,$stash->get(['host',0,'host',0]),0]));$stash->set('delete_url','delhostconfirm.html?host=' .$stash->get(['host',0,'host',0,'uri',0]));$output .= '
+                <tr class="row-';$output .= $stash->get(['loop',0,'index',0])% 2 eq 0 ? 'even' : 'odd';$output .= '">
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Access Hosts' ]]);$output .= '">
+                        ';$output .= $stash->get(['host',0,'host',0,'html',0]);$output .= '
+                    </td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Comment' ]]);$output .= '">
+                        <form action="updatehostnotes.html" name="updateCommentForm" id="';$output .= $stash->get(['host',0,'host',0]);$output .= '_updateCommentForm" method="post">
+                            <input type="hidden" name="host" value="';$output .= $stash->get(['host',0,'host',0]);$output .= '">
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="comment" value="';$output .= $stash->get(['host_comment',0,'html',0]);$output .= '" id="';$output .= $stash->get(['host',0,'host',0]);$output .= '_comment" maxlength="255" aria-label="Comment for ';$output .= $stash->get(['host',0,'host',0,'html',0]);$output .= '">
+                                <span class="input-group-btn">
+                                    <button type="submit" class="btn btn-default" id="';$output .= $stash->get(['host',0,'host',0]);$output .= '_updateCommentButton"><i class="fas fa-pencil-alt"></i> ';$output .= $stash->get(['locale',0,'maketext',['Update' ]]);$output .= '</button>
+                                </span>
+                            </div>
+                        </form>
+                    </td>
+                    <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '">
+                        ';$output .= '
+                        <form action="delhostconfirm.html" name="delHostForm" id="';$output .= $stash->get(['host',0,'host',0]);$output .= '_deleteForm" method="post">
+                            <input type="hidden" name="host" value="';$output .= $stash->get(['host',0,'host',0,'html',0]);$output .= '">
+                            <input type="hidden" name="comment" value="';$output .= $stash->get(['host_comment',0,'html',0]);$output .= '">
+                            <button type="submit" class="btn btn-link" id="';$output .= $stash->get(['host',0,'host',0]);$output .= '_deleteButton">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}else {$output .= '
+                <tr>
+                    <td colspan="3" class="errors">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no additional database access hosts configured.' ]]);$output .= '
+                    </td>
+                </tr>
+            '}$output .= '
+            </tbody>
+        </table>
+    </div>
+
+    '}else {$output .= '
+
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['errors',0,'unique',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+        <div class="alert alert-danger" role="alert">
+            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+            <div class="alert-message">
+                <strong class="alert-title">';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+                <span class="alert-body">
+                    ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                </span>
+            </div>
+        </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'remote_mysql','include_legacy_stylesheets'=>1,'include_legacy_scripts'=>1,'include_cjt'=>1,'page_scripts'=>['js2-min/sql/managehost.js' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

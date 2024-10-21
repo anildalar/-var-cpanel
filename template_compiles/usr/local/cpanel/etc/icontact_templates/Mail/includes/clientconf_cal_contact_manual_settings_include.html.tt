@@ -1,0 +1,68 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Mail/includes/clientconf_cal_contact_manual_settings_include.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('txt_password',$stash->get(['locale',0,'maketext',['Use the email account’s password.' ]]));if ($stash->get(['mail_client_settings',0,'from_archiving',0])|| $stash->get(['mail_client_settings',0,'inbox_username',0,'match',['_mainaccount@' ]])||!$stash->get(['mail_client_settings',0,'inbox_username',0,'match',['@' ]])){$stash->set('txt_password',$stash->get(['locale',0,'maketext',['Use your [asis,cPanel] password.' ]]))}$stash->set('table_props','style="border-collapse: collapse; border-spacing: 0; margin-bottom: 0; width: 100%; background-color: transparent; max-width: 100%;"');$stash->set('td_props','style="border-top: 1px solid #ddd; padding: 8px;"');$stash->set('li_props','style="display: inline-block; padding-left: 5px; padding-right: 5px;"');$stash->set('ul_props','style="margin-bottom: 10px; margin-top: 0; list-style: outside none none; margin-left: -5px; padding-left: 0;"');$stash->set('h2_title',$stash->get(['locale',0,'maketext',['Calendar [output,amp] Contacts Manual Settings' ]]));if ($stash->get(['mail_client_settings',0,'selected_account_services',0,'caldav',0])&&!$stash->get(['mail_client_settings',0,'selected_account_services',0,'carddav',0])){$stash->set('h2_title',$stash->get(['locale',0,'maketext',['Calendar Manual Settings' ]]))}elsif ($stash->get(['mail_client_settings',0,'selected_account_services',0,'carddav',0])&&!$stash->get(['mail_client_settings',0,'selected_account_services',0,'caldav',0])){$stash->set('h2_title',$stash->get(['locale',0,'maketext',['Contacts Manual Settings' ]]))}$stash->set('styles',{'ssl'=>{'outer'=>'style="background-color: #fff;  border: 1px solid transparent; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; border-color: #428bca;"','inner'=>'style="border-top-left-radius: 3px; border-top-right-radius: 3px; padding: 10px 15px; background-color: #428bca; border-color: #428bca; color: #fff;"' },'no_ssl'=>{'outer'=>'style="background-color: #fff;  border: 1px solid transparent; border-radius: 4px; box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05); margin-bottom: 20px; border-color: #f6c342;"','inner'=>'style="border-top-left-radius: 3px; border-top-right-radius: 3px; padding: 10px 15px; background-color: #fcf8e1; border-color: #f6c342; color: #333;"' }});$stash->set('phrases',{'ssl'=>$stash->get(['locale',0,'maketext',['Secure [output,abbr,SSL,Secure Sockets Layer]/[output,abbr,TLS,Transport Layer Security] Settings (Recommended).' ]]),'no_ssl'=>$stash->get(['locale',0,'maketext',['Non-[asis,SSL] Settings (NOT Recommended).' ]])});$output .= '
+
+    <div class="section">
+        <h2>';$output .= $stash->get('h2_title');$output .= '</h2>
+        <div class="row">
+         ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=['ssl','no_ssl' ];unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'type'}=$_tt_value;$output .= '
+         <div class="col-md-6">
+          <div ';$output .= $stash->get(['styles',0,$stash->get('type'),0,'outer',0]);$output .= ' class="preferred-selection panel panel-primary">
+               <div ';$output .= $stash->get(['styles',0,$stash->get('type'),0,'inner',0]);$output .= ' class="panel-heading">
+                ';$output .= $stash->get(['phrases',0,$stash->get('type'),0]);$output .= '
+              </div>
+              <table class="table manual_settings_table" ';$output .= $stash->get('table_props');$output .= '>
+                  <tr>
+                      <td ';$output .= $stash->get('td_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '</td>
+                      <td ';$output .= $stash->get('td_props');$output .= ' class="data wrap-text">';$output .= $stash->get(['mail_client_settings',0,'cal_contacts_config',0,'user',0]);$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';$output .= $stash->get('td_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Password:' ]]);$output .= '</td>
+                      <td ';$output .= $stash->get('td_props');$output .= ' class="escape-note"> ';$output .= $stash->get('txt_password');$output .= '</td>
+                  </tr>
+                  <tr>
+                      <td ';$output .= $stash->get('td_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Server:' ]]);$output .= '</td>
+                      <td ';$output .= $stash->get('td_props');$output .= ' class="data">';$output .= $stash->get(['mail_client_settings',0,'cal_contacts_config',0,$stash->get('type'),0,'server',0]);$output .= '
+                          <ul
+                          ';$output .= $stash->get('ul_props');$output .= '
+                          class="port_list list-inline">
+                              <li ';$output .= $stash->get('li_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Port: [_1]',$stash->get(['mail_client_settings',0,'cal_contacts_config',0,$stash->get('type'),0,'port',0])]]);$output .= '</li>
+                          </ul>
+                      </td>
+                  </tr>
+                  ';if ($stash->get(['mail_client_settings',0,'selected_account_services',0,'caldav',0])){$output .= '
+                  <tr>
+                      <td ';$output .= $stash->get('td_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Full Calendar URL(s):' ]]);$output .= '</td>
+                      <td ';$output .= $stash->get('td_props');$output .= ' class="data">
+                          <ul
+                          ';$output .= $stash->get('ul_props');$output .= '
+                          class="port_list list-inline">
+                              ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_client_settings',0,'cal_contacts_config',0,$stash->get('type'),0,'calendars',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'thing'}=$_tt_value;$output .= '
+                              <li ';$output .= $stash->get('li_props');$output .= '><b>';$output .= $stash->get(['thing',0,'name',0]);$output .= '</b>:</li>
+                              <li ';$output .= $stash->get('li_props');$output .= '>';$output .= $stash->get(['thing',0,'url',0]);$output .= '</li>
+                              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                          </ul>
+                      </td>
+                  </tr>
+                  '}$output .= '
+                  ';if ($stash->get(['mail_client_settings',0,'selected_account_services',0,'carddav',0])){$output .= '
+                  <tr>
+                      <td ';$output .= $stash->get('td_props');$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Full Contact List URL(s):' ]]);$output .= '</td>
+                      <td ';$output .= $stash->get('td_props');$output .= ' class="data">
+                          <ul
+                          ';$output .= $stash->get('ul_props');$output .= '
+                          class="port_list list-inline">
+                              ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_client_settings',0,'cal_contacts_config',0,$stash->get('type'),0,'contacts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'thing'}=$_tt_value;$output .= '
+                              <li ';$output .= $stash->get('li_props');$output .= '><b>';$output .= $stash->get(['thing',0,'name',0]);$output .= '</b>:</li>
+                              <li ';$output .= $stash->get('li_props');$output .= '>';$output .= $stash->get(['thing',0,'url',0]);$output .= '</li>
+                              ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                          </ul>
+                      </td>
+                  </tr>
+                  '}$output .= '
+              </table>
+          </div>
+         </div>
+         ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+      </div>
+    </div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

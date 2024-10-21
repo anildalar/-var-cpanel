@@ -1,0 +1,80 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/dialog.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+';$output .= do {my$output='';my ($_tt_error,$_tt_handler);eval {$output .= '
+';$output .= $context->process(('' .$stash->get(['data',0,'header',0])));$output .= '
+'};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error if$_tt_error->type =~ /^(return|stop)$/;$stash->set('error',$_tt_error);$stash->set('e',$_tt_error);if (defined ($_tt_handler=$_tt_error->select_handler('file'))){if ($_tt_handler eq 'file'){$output .= '
+'}$_tt_error=0}}die$_tt_error if$_tt_error;$output};$output .= '
+';if ($stash->get(['data',0,'pageActionResultOutputsOnPage',0])){$output .= '
+    <div class="dialog-box">
+        <div>
+            <div class="dialog-content">
+                ';$output .= $stash->get(['data',0,'msg',0]);$output .= '
+            </div>
+            <div class="dialog-submit">
+                <input id="proceedBtn" type="submit" class="btn-primary" value="Proceed &gt;&gt;" onclick="performAction();">
+            </div>
+        </div>
+    </div>
+    <div id="cjt_static_notice_container" class="cjt-pagenotice-container cjt-notice-container">
+        <div class="yui-module cjt-notice cjt-pagenotice cjt-notice-success">
+            <div class="bd">
+                <div id="actionMsgForced" class="cjt-notice-content hide">';$output .= $stash->get(['locale',0,'maketext',['A forced reboot is now in progress …' ]]);$output .= '</div>
+                <div id="actionMsg" class="cjt-notice-content hide">';$output .= $stash->get(['locale',0,'maketext',['A reboot is now in progress …' ]]);$output .= '</div>
+            </div>
+        </div>
+    </div>
+    <script>
+    function performAction(){
+        var dialogType = \'';$output .= $stash->get(['data',0,'dialogType',0]);$output .= '\';
+        var xmlhttp = new XMLHttpRequest();
+
+        xmlhttp.open("GET","';$output .= $stash->get(['data',0,'action',0]);$output .= '",true);
+        xmlhttp.send();
+        document.getElementById("proceedBtn").setAttribute("disabled",true);
+
+        if(dialogType === "forcereboot"){
+            document.getElementById("actionMsgForced").classList.remove("hide");
+            document.getElementById("actionMsgForced").className += " show";
+        }else{
+            document.getElementById("actionMsg").classList.remove("hide");
+            document.getElementById("actionMsg").className += " show";
+        }
+        document.getElementById("cjt_static_notice_container").className += " show";
+    }
+    </script>
+'}else {$output .= '
+    <div class="dialog-box">
+        <form action="';$output .= $stash->get(['data',0,'action',0]);$output .= '" name="mainform">
+            <div class="dialog-content">
+                ';$output .= $stash->get(['data',0,'msg',0]);$output .= '
+            </div>
+            <div class="dialog-submit">
+                <input type="submit" class="btn-primary" value="Proceed &gt;&gt;">
+            </div>
+        </form>
+    </div>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>$stash->get(['defheader',0,'app_key',0]),'breadcrumburl'=>$stash->get(['defheader',0,'breadcrumburl',0]),'extrastyle'=>'
+       .dialog-content {
+            color: #333333;
+        }
+       .dialog-submit {
+            margin-top: 20px;
+            text-align: right;
+        }
+        .dialog-box {
+            background-color: #F3F3F3;
+            border: 1px solid #DCDFE3;
+            width: 60%;
+            margin: 10px 0 10px 0;
+            padding: 10px;
+        }
+        .cjt-pagenotice-container {
+            display:none;
+        }
+        .hide {
+            display: none!important;
+        }
+        .show {
+            display: block;
+        }
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

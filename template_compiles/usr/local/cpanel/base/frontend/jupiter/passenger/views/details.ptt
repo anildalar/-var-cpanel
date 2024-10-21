@@ -1,0 +1,297 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/passenger/views/details.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<ol class="breadcrumb">
+    <li><a href id="gotoAppList" ng-click="details.goToView(\'manage\')">';$output .= $stash->get(['locale',0,'maketext',['Applications' ]]);$output .= '</a></li>
+    <li class="active">{{ details.get_page_title() }}</li>
+</ol>
+<h3 class="section-heading">{{ details.get_application_title() }}</h3>
+<div class="section-body">
+<p id="application-details-description" class="description">
+    {{ details.formDescription }}
+    ';$output .= $stash->get(['locale',0,'maketext',['For more information, read our [output,url,_1,documentation,target,_2,id,_3].','https://go.cpanel.net/ApplicationManager','_blank','application-details-docs-link' ]]);$output .= '
+</p>
+<form id="add_app" name="details.add_app" novalidate>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Application Configuration' ]]);$output .= '</h3>
+            <a id="toggle-all-help-link" ng-click="details.toggleShowAllHelp()">
+                ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                <i class="far fa-question-circle form-info-sign"></i>
+            </a>
+        </div>
+        <div class="panel-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            for="applName"
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Application Name' ]]);$output .= '"
+                            label-id="applNameLabel"
+                            info-icon-id="applNameIcon"
+                            info-block-id="applNameInfo"
+                            show-info-block="{{details.savedSettings.showAllHelp}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enter a display name for the deployed application.' ]]);$output .= "\n                        </toggle-label-info>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <input type=\"text\"\n                            id=\"applName\"\n                            name=\"applName\"\n                            class=\"form-control\"\n                            ng-trim=\"false\"\n                            required\n                            max-length=\"50\"\n                            ng-pattern=\"/^[0-9a-zA-Z][0-9a-zA-Z_\\- ]*\$/\"\n                            ng-model=\"details.application.name\">\n                    </div>\n                    <div class=\"col-xs-12\">\n                        <ul validation-container field-name=\"applName\">\n                            <li validation-item\n                                field-name=\"applName\"\n                                validation-name=\"required\">";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter an application name.' ]]);$output .= '
+                            </li>
+                            <li validation-item
+                                field-name="applName"
+                                validation-name="pattern">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The name can contain up to 50 characters; it may [output,strong,only] contain spaces, numbers, letters, hyphens, and underscores; and it [output,strong,must] begin with a letter or number.' ]]);$output .= '
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            for="applDomain"
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Deployment Domain' ]]);$output .= '"
+                            label-id="applDomainLabel"
+                            info-icon-id="applDomainIcon"
+                            info-block-id="applDomainInfo"
+                            show-info-block="{{details.savedSettings.showAllHelp}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Select the domain or subdomain to deploy the application to.' ]]);$output .= '
+                        </toggle-label-info>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        ';if (!$stash->get(['CPANEL',0,'ua_is_mobile',0])){$output .= '
+                        <select id="applDomain"
+                            name="applDomain"
+                            class="form-control ng-cloak"
+                            ng-class="{ \'chosen-rtl\': details.isRTL }"
+                            required
+                            ng-model="details.application.domain"
+                            chosen
+                            search_contains="true"
+                            ng-options="d.domain as d.domain group by d.type for d in details.domains">
+                            <option value=""></option>
+                            </select>
+                        '}else {$output .= '
+                        <select id="applDomain"
+                            name="applDomain"
+                            class="form-control ng-cloak"
+                            required
+                            ng-model="details.application.domain"
+                            ng-options="d.domain as d.domain group by d.type for d in details.domains">
+                            <option value=""></option>
+                            </select>
+                        '}$output .= '
+                    </div>
+                    <div class="col-xs-12">
+                        <ul validation-container field-name="applDomain">
+                            <li validation-item
+                                field-name="applDomain"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] select a domain to deploy the application to.' ]]);$output .= '
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-if="details.application.domain">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            for="applURL"
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Base Application [asis,URL]' ]]);$output .= '"
+                            label-id="applURLLabel"
+                            info-icon-id="applURLIcon"
+                            info-block-id="applURLInfo"
+                            show-info-block="{{details.savedSettings.showAllHelp}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enter the application’s base [output,acronym,URL,Universal Resource Locator]. After you register the application, you can use this [output,acronym,URL,Uniform Resource Locator] to access it.' ]]);$output .= '
+                        </toggle-label-info>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="input-group">
+                            <span class="input-group-addon">{{details.application.domain}}</span>
+                            <input type="text"
+                                id="applURL"
+                                name="applURL"
+                                class="form-control"
+                                ng-trim="false"
+                                baseuri
+                                required
+                                ng-model="details.application.base_uri">
+                        </div>
+                    </div>
+                    <div class="col-xs-12">
+                        <ul validation-container field-name="applURL">
+                            <li validation-item
+                                field-name="applURL"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a base URL.' ]]);$output .= '
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            for="applPath"
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Application Path' ]]);$output .= '"
+                            label-id="applPathLabel"
+                            info-icon-id="applPathIcon"
+                            info-block-id="applPathInfo"
+                            show-info-block="{{details.savedSettings.showAllHelp}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enter the path to your application’s source code directory, relative to the home directory.' ]]);$output .= "\n                        </toggle-label-info>\n                    </div>\n                </div>\n                <div class=\"row\">\n                    <div class=\"col-xs-12\">\n                        <div class=\"input-group\">\n                            <span class=\"input-group-addon\">\n                                <i class=\"fas fa-home\" title=\"{{ details.user_home_dir }}\"></i>\n                                <span>/</span>\n                            </span>\n                            <input type=\"text\"\n                                id=\"applPath\"\n                                name=\"applPath\"\n                                class=\"form-control\"\n                                ng-trim=\"false\"\n                                required\n                                valid-path\n                                no-apache-literals\n                                ng-pattern=\"/^(?![\\/]+\$)/\"\n                                ng-model=\"details.application.path\">\n                        </div>\n                    </div>\n                    <div class=\"col-xs-12\">\n                        <ul validation-container field-name=\"applPath\">\n                            <li validation-item\n                                field-name=\"applPath\"\n                                validation-name=\"required\">";$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter the path to your source code.' ]]);$output .= '
+                            </li>
+                            <li validation-item
+                                field-name="applPath"
+                                validation-name="pattern">';$output .= $stash->get(['locale',0,'maketext',['Your source code [output,strong,must] exist in a subdirectory within your home directory.' ]]);$output .= '
+                            </li>
+                            <li validation-item
+                                field-name="applPath"
+                                validation-name="noApacheLiterals">';$output .= $stash->get(['locale',0,'maketext',['The path [output,strong,cannot] contain [asis,Apache] literal and substitution variables: [_1]',('' ."\${")]]);$output .= '
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <toggle-label-info
+                            for="deploymentMode"
+                            label-text="';$output .= $stash->get(['locale',0,'maketext',['Deployment Environment' ]]);$output .= '"
+                            label-id="deploymentModeLabel"
+                            info-icon-id="deploymentModeIcon"
+                            info-block-id="deploymentModeInfo"
+                            show-info-block="{{details.savedSettings.showAllHelp}}">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Select the server environment in which your application will run.' ]]);$output .= '
+                        </toggle-label-info>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                    name="deploymentMode"
+                                    id="deployment_dev"
+                                    value="development"
+                                    ng-model="details.application.deployment_mode">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Development' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                        <div class="radio">
+                            <label>
+                                <input type="radio"
+                                    name="deploymentMode"
+                                    id="deployment_prod"
+                                    value="production"
+                                    ng-model="details.application.deployment_mode">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Production' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default" ng-if="details.supports_env_vars">
+        <div class="panel-heading">
+            <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Environment Variables' ]]);$output .= '</h3>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <div class="pull-left flip">
+                        <div class="form-group">
+                            <button id="addEnvarButton"
+                                type="button"
+                                class="btn btn-default"
+                                ng-disabled="details.editing_envar"
+                                ng-click="details.add_envar()">
+                                <span class="glyphicon glyphicon-plus"></span> ';$output .= $stash->get(['locale',0,'maketext',['Add Variable' ]]);$output .= '</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <div id="envarPaginator" class="pagination-container pull-right hidden-xs hidden-sm">
+                        <page-size id="envarPageSize"
+                            allowed-sizes="details.meta.pageSizes"
+                            total-items="details.meta.totalItems"
+                            ng-model="details.meta.pageSize"
+                            show-all="false"
+                            ng-change="details.selectPageSize()">
+                        </page-size>
+                        <uib-pagination id="topPager"
+                            ng-change="details.selectPage()"
+                            ng-model="details.meta.pageNumber"
+                            max-size="details.meta.maxPages"
+                            items-per-page="details.meta.pageSize"
+                            total-items="details.meta.totalItems"
+                            direction-links="true"
+                            boundary-links="true"
+                            rotate="false"
+                            first-text="<<"
+                            last-text=">>"
+                            previous-text="<"
+                            next-text=">">
+                        </uib-pagination>
+                    </div>
+                </div>
+            </div>
+            <div id="envarTableStats" class="row">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="page-stats pull-right hidden-xs hidden-sm">
+                    {{details.paginationMessage()}}
+                    </div>
+                </div>
+            </div>
+            <table class="table table-striped responsive-table">
+                <thead>
+                    <tr>
+                        <th><span toggle-sort id="sortByName" onsort="details.sortList" sort-meta="details.meta" sort-field="name">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Variable Name' ]]);$output .= '
+                            </span>
+                        </th>
+                        <th><span toggle-sort id="sortByValue" onsort="details.sortList" sort-meta="details.meta" sort-field="value">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Value' ]]);$output .= '
+                            </span>
+                        </th>
+                        <th class="actions-column">';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr id="loadingNotice" class="info empty-row ng-hide" ng-show="details.is_loading">
+                        <td colspan="3" id="loadingMessage">
+                            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+                        </td>
+                    </tr>
+                    <tr id="emptyListNotice" class="info empty-row ng-hide" ng-show="details.filteredEnvars.length == 0 && !details.editing_envar && !details.is_loading">
+                        <td colspan="3" id="emptyMessage">';$output .= $stash->get(['locale',0,'maketext',['The system could not find any environment variables.' ]]);$output .= '</td>
+                    </tr>
+                    <tr ng-repeat-start="envar in details.filteredEnvars" id="envar_{{ envar._id }}" ng-if="!envar.is_editing">
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Variable Name' ]]);$output .= '"> {{envar.name}} </td>
+                        <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Value' ]]);$output .= '"> {{envar.value}} </td>
+                        <td class="action-buttons" data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '">
+                            <button type="button" id="edit_btn_{{ envar._id }}" class="btn btn-link"
+                                ng-click="details.edit_envar(envar)"
+                                ng-disabled="details.editing_envar">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                            </button>
+                            <button type="button" id="delete_btn_{{ envar._id }}" class="btn btn-link"
+                                ng-click="details.delete_envar(envar)"
+                                ng-disabled="details.editing_envar">
+                                <span class="glyphicon glyphicon-trash"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                            </button>\n                        </td>\n                    </tr>\n                    <tr ng-repeat-end\n                        ng-if=\"envar.is_editing\"\n                        table-row-form\n                        form-model=\"envar\"\n                        on-save=\"details.save_envar(envar, name, value)\"\n                        on-cancel=\"details.close_envar_editor(envar)\"></tr>\n                    </tr>\n                </tbody>\n            </table>\n            <div id=\"envarTableStats\" class=\"row hidden-md hidden-lg\">\n                <div class=\"col-xs-12 col-sm-12\">\n                    <div class=\"page-stats pull-right\">\n                    {{details.paginationMessage()}}\n                    </div>\n                </div>\n            </div>\n            <div class=\"row visible-sm-block visible-xs-block hidden-lg hidden-md\">\n                <div class=\"col-xs-12 col-md-6\">\n                    <div id=\"envarPaginatorBottom\" class=\"pagination-container pull-right flip\">\n                        <page-size id=\"envarPageSizeBottom\"\n                            allowed-sizes=\"details.meta.pageSizes\"\n                            total-items=\"details.meta.totalItems\"\n                            ng-model=\"details.meta.pageSize\"\n                            show-all=\"false\"\n                            ng-change=\"details.selectPageSize()\">\n                        </page-size>\n                        <uib-pagination id=\"envarPagerBottom\"\n                            ng-change=\"details.selectPage()\"\n                            ng-model=\"details.meta.pageNumber\"\n                            max-size=\"details.meta.maxPages\"\n                            items-per-page=\"details.meta.pageSize\"\n                            total-items=\"details.meta.totalItems\"\n                            direction-links=\"true\"\n                            boundary-links=\"true\"\n                            rotate=\"false\"\n                            first-text=\"<<\"\n                            last-text=\">>\"\n                            previous-text=\"<\"\n                            next-text=\">\">\n                        </uib-pagination>\n                    </div>\n                </div>\n            </div>\n        </div>\n    </div>\n    <div class=\"form-group\">\n        <button type=\"submit\"\n            id=\"deploy_application\"\n            name=\"save_application\"\n            cp-action=\"details.save_application()\"\n            button-class=\"btn btn-primary\"\n            ng-disabled=\"details.add_app.\$pristine\">\n            ";$output .= $stash->get(['locale',0,'maketext',['Deploy' ]]);$output .= '
+        </button>
+        <button type="button"
+            id="cancel_deploy_application"
+            name="cancel_save_application"
+            class="btn btn-link"
+            ng-click="details.goToView(\'manage\')"
+            ng-disabled="details.is_loading">
+            ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+        </button>
+    </div>
+</form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

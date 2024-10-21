@@ -1,0 +1,12 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/sql/changepasswd.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= $stash->get(['Api2',0,'pre_exec',['PasswdStrength','get_required_strength' ]]);$stash->set('required_strength_resp',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'mysql' }]]));$output .= $stash->get(['Api2',0,'post_exec',['PasswdStrength','get_required_strength' ]]);if ($stash->get(['required_strength_resp',0,'size',0])){$stash->set('required_strength',$stash->get(['required_strength_resp',0,0,0,'strength',0]))}$output .= $context->process('_assets/_ajaxapp_header.html.tt');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <h2>';$output .= $stash->get(['locale',0,'maketext',['Set Database User Password' ]]);$output .= '</h2>
+    <div id="cjt_pagenotice_container"></div>
+    ';$output .= $context->process('_assets/sql/sql_password.html.tt',{'dbuser'=>$stash->get(['RAW_FORM',['user' ]]),'db_engine'=>'mysql','success_url'=>'index.html' });$output .= '</div>
+
+';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Back to Manage My Databases' ]])});$output .= '
+
+';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'mysql_databases','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

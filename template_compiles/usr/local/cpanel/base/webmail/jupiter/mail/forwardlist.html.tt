@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/webmail/jupiter/mail/forwardlist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')){if (!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}}if (($stash->get(['RAW_FORM',0,'item',['account' ]]))){$stash->set('fetch_cfg',$stash->get(['execute',['BoxTrapper','get_forwarders',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]])}]]))}else {$stash->set('fetch_cfg',{'status'=>0,'errors_as_string'=>$stash->get(['locale',0,'maketext',['You must pass the “account” parameter with a value.' ]])})}$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+        <div id="forwardDeniedText" class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign" id="forwardDeniedTextImg"></span>
+            <div class="alert-message" id="forwardDeniedTextMsg">
+                ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,strong,_1]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+
+    <div class="section">
+        <h2 id="hdrBoxtrapperFwd">';$output .= $stash->get(['locale',0,'maketext',['BoxTrapper Forward List Editor' ]]);$output .= '</h2>
+        ';if ($stash->get(['fetch_cfg',0,'status',0])){$output .= '
+        <div class="description">
+            <p id="descFwdList">
+                ';$output .= $stash->get(['locale',0,'maketext',['The Forward List is a list of email addresses to which whitelisted and verified mail should be sent, in addition to the address BoxTrapper is protecting.' ]]);$output .= '
+            </p>
+
+            ';$output .= $stash->get(['locale',0,'maketext',['Examples:' ]]);$output .= "\n            <ul>\n                <li>mobilephone\@pdaco.example.com</li>\n                <li>mobilepda\@phoneco.example.net</li>\n            </ul>\n        </div>\n            <form action=\"saveforwardlist.html\" method=\"post\">\n                <div class=\"form-group\">\n                    <label for=\"txtPage\">\n                        ";$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] Forward List for “[output,class,_1,status]”',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+                    </label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <textarea name="page" rows="20" class="form-control" id="txtPage">';$output .= $stash->get(['fetch_cfg',0,'data',0,'join',[('' .'
+')],'html',0]);$output .= '</textarea>
+                            <input type="hidden" name="filetype" id="hidFileType" value="list">
+                            <input type="hidden" name="account" id="hidAccount" value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                            <input type="hidden" value="forward-list.txt" name="file" id="hidFile">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" id="btnSave" class="btn btn-primary">
+                </div>
+            </form>
+        '}else {$output .= '
+            <div id="fetch_cfg_error_message" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['The system encountered an error when it tried to list the forwarders: “[output,asis,_1]”.',$stash->get(['fetch_cfg',0,'errors_as_string',0,'html',0])]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

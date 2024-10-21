@@ -1,0 +1,237 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/api_tokens/views/create.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div>
+    <form id="createTokenForm" name="createTokenForm">
+        <div class="panel panel-default" ng-class="{\'panel-success\': generatedToken}">
+            <div class="panel-heading">
+                <div class="widget-title pull-left flip" ng-bind="pageTitle"></div>
+                <div class="pull-right flip">
+                    <button type="button"
+                        class="btn btn-default btn-xs"
+                        id="lnkshowHideHelp"
+                        ng-click="toggleHelp()">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Show/Hide Help' ]]);$output .= '
+                        <i class="far fa-question-circle form-info-sign"></i>
+                    </button>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            ';$output .= "\n            <div class=\"panel-body\" ng-if=\"!generatedToken\">\n                <div>\n                    <section>\n                        <div class=\"form-group\" ng-class=\"{'has-error':createTokenForm.tokenName.\$dirty && createTokenForm.tokenName.\$invalid}\">\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\">\n                                    <toggle-label-info\n                                        for=\"tokenName\"\n                                        label-text=\"";$output .= $stash->get(['locale',0,'maketext',['[asis,API] Token Name' ]]);$output .= '"
+                                        label-id="lbl_tokenName"
+                                        info-icon-id="icon_tokenNameInfo"
+                                        info-block-id="infoBlk_tokenName"
+                                        show-info-block="{{showAllHelp}}">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The name of the token that you are creating.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Enter a descriptive name. You will use this name when you update the token via [asis,API].' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div>
+                                <input
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Enter the [asis,API] token name.' ]]);$output .= "\"\n                                    token-name-is-unique\n                                    type=\"text\" ng-required=\"true\" class=\"form-control\" pattern=\"^[A-Za-z0-9_-]+\$\" maxlength=\"50\"\n                                    size=\"50\" autocomplete=\"off\" id=\"tokenName\" name=\"tokenName\" ng-model=\"working.name\" />\n                                <span class=\"help-block\">";$output .= $stash->get(['locale',0,'maketext',['[asis,API] token names can be alpha-numeric and can contain dashes and underscores.' ]]);$output .= '</span>
+                            </div>
+                            <div>
+                                <ul validation-container field-name="tokenName" role="alert" id="tokenNameErrorPanel">
+                                    <li validation-item field-name="tokenName" validation-name="required" id="val_tokenName_required">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You [output,strong,must] enter a name.' ]]);$output .= '
+                                    </li>
+                                    <li validation-item field-name="tokenName" validation-name="maxlength" id="val_tokenName_maxLength">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Your token name cannot contain more than [numf,_1] [numerate,_1,character,characters].',50 ]]);$output .= '
+                                    </li>
+                                    <li validation-item field-name="tokenName" validation-name="pattern" id="val_tokenName_invalidChars">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['You cannot create an [asis,API] token with a name that is longer than 50 characters, and the name may only contain the following characters: [join, ,_1]',['a-z','A-Z','0-9','_','-' ]]]);$output .= '
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- should the token expire -->
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="tokenExpires"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Should the [asis,API] Token Expire?' ]]);$output .= '"
+                                        label-id="lbl_tokenExpires"
+                                        info-icon-id="icon_tokenExpiresInfo"
+                                        info-block-id="infoBlk_tokenExpires"
+                                        show-info-block="{{showAllHelp}}">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Specify whether the [asis,API] token will expire on a specific date.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="radio">
+                                    <label for="tokenExpires_noExpiry">
+                                        <input type="radio" name="tokenExpires" id="tokenExpires_noExpiry" ng-value="false" checked ng-model="working.tokenExpires">
+                                        <span>';$output .= $stash->get(['locale',0,'maketext',['The [asis,API] Token will not expire.' ]]);$output .= '</span>
+                                    </label>
+                                </div>
+                                <div class="radio">
+                                    <label for="tokenExpires_expiry">
+                                        <input type="radio" name="tokenExpires" id="tokenExpires_expiry" ng-value="true" checked ng-model="working.tokenExpires" ng-change="resetDate()">
+                                        <span>';$output .= $stash->get(['locale',0,'maketext',['Specify an expiration date.' ]]);$output .= "</span>\n                                    </label>\n                                </div>\n                            </div>\n                        </div>\n                        <!-- / should the token expire -->\n\n                        <!-- set expiry date -->\n                        <div ng-if=\"working.tokenExpires\" class=\"form-group\" ng-class=\"{'has-error':createTokenForm.expiresAt.\$dirty && createTokenForm.expiresAt.\$invalid}\">\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\">\n                                    <toggle-label-info\n                                        for=\"expiresAt\"\n                                        label-text=\"";$output .= $stash->get(['locale',0,'maketext',['[asis,API] Token Expiration Date' ]]);$output .= '"
+                                        label-id="lbl_expiresAt"
+                                        info-icon-id="icon_expiresAtInfo"
+                                        info-block-id="infoBlk_expiresAt"
+                                        show-info-block="{{showAllHelp}}">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['The expiration date of the [asis,API] token.' ]]);$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Enter a future date on which you want the [asis,API] token to expire.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display:flex;align-items:center">
+                                    <div>
+                                        <date-picker
+                                            id="expiresDate"
+                                            ng-model="working.expiresAt"
+                                            options="datePickerOptions"
+                                            ng-change="dateValidator(createTokenForm.expiresAt)"
+                                            name="expiresAt"
+                                            required
+                                        >
+                                        </date-picker>
+                                    </div>
+                                    <div id="createToken_expires_errors">
+                                        <ul validation-container field-name="expiresAt" id="expiresAtErrorPanel">
+                                            <li validation-item field-name="expiresAt" validation-name="required">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= '
+                                            </li>
+                                            <li validation-item field-name="expiresAt" name="expiresAt">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['The expiration date must be set in the future.' ]]);$output .= "\n                                            </li>\n                                        </ul>\n                                    </div>\n                                    <!--div>\n                                        <time-picker ng-model=\"working.expiresAt\" options=\"timePickerOptions\"></time-picker>\n                                    </div-->\n                                </div>\n                            </div>\n                        </div>\n                        <!-- / set expiry date -->\n                        <div class=\"form-group\" ng-if=\"canCreateLimited\" ng-class=\"{'has-error':createTokenForm.unrestrictedToggle.\$dirty && createTokenForm.unrestrictedToggle.\$invalid}\">\n                            <div class=\"row\">\n                                <div class=\"col-xs-12\">\n                                    <toggle-label-info\n                                        for=\"unrestrictedToggle\"\n                                        label-text=\"";$output .= $stash->get(['locale',0,'maketext',['Features' ]]);$output .= '"
+                                        label-id="lbl_unrestrictedToggle"
+                                        info-icon-id="icon_unrestrictedToggleInfo"
+                                        info-block-id="infoBlk_unrestrictedToggle"
+                                        show-info-block="{{showAllHelp}}">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Specify which features to assign to the the [asis,API] token.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div>
+                                <toggle-switch
+                                    id="unrestrictedToggle"
+                                    ng-model="working.unrestricted"
+                                    no-spinner="true"
+                                    enabled-label="';$output .= $stash->get(['locale',0,'maketext',['Unrestricted' ]]);$output .= '"
+                                    disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Limited' ]]);$output .= '"
+                                    on-toggle="working.unrestricted = !working.unrestricted;" />
+                                <span class="help-block" ng-if="!working.unrestricted">';$output .= $stash->get(['locale',0,'maketext',['Click here to set the [asis,API] token to unrestricted.' ]]);$output .= '</span>
+                                <span class="help-block" ng-if="working.unrestricted">';$output .= $stash->get(['locale',0,'maketext',['Click here to set the [asis,API] token to limited.' ]]);$output .= '</span>
+                            </div>
+                        </div>
+                        <div callout callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Danger:' ]]);$output .= '" callout-type="danger" role="alert" ng-show="working.unrestricted">
+                            ';$output .= $stash->get(['locale',0,'maketext',['The [asis,API] token can access every API that you can access.' ]]);$output .= '
+                        </div>
+                        <div class="form-group" ng-if="canCreateLimited && !working.unrestricted">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <toggle-label-info
+                                        for="selectedFeatures"
+                                        label-text="';$output .= $stash->get(['locale',0,'maketext',['Selected Features' ]]);$output .= '"
+                                        label-id="lbl_selectedFeatures"
+                                        info-icon-id="icon_selectedFeatures"
+                                        info-block-id="infoBlk_selectedFeatures"
+                                        show-info-block="{{showAllHelp}}">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Create an unrestricted [asis,API] token, or specify which features to include.' ]]);$output .= '
+                                    </toggle-label-info>
+                                </div>
+                            </div>
+                            <div cp-loading-panel ng-show="!features">';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</div>
+                            <div class="feature-chooser';$output .= $stash->get(['CPANEL',0,'ua_is_mobile',0])? ' is-mobile' : '';$output .= '" ng-if="features">
+                                <div class="form-group">
+                                    <search
+                                        id="searchFeatures"
+                                        ng-model="featureFilterValue"
+                                        autocomplete="off">
+                                    </search>
+                                    <div>
+                                        <table class="table table-condensed header-table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="check-column">
+                                                        <input type="checkbox"
+                                                            name="checkAllInList"
+                                                            id="checkAllInList"
+                                                            aria-label="';$output .= $stash->get(['locale',0,'maketext',['Toggle Select All' ]]);$output .= '"
+                                                            ng-model="checkAll.all"
+                                                            ng-change="toggleSelectAllFeatures()"
+                                                            indeterminate-state
+                                                            check-state="getFeaturesIndeterminateState()">
+                                                    </th>
+                                                    <th class="name-column">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+                                    </div>
+                                    <div class="features-list">
+                                        <table class="table table-condensed">
+                                            <tbody>
+                                                <tr ng-repeat="feature in features | filter:featureFilterValue">
+                                                    <td class="check-column">
+                                                        <input type="checkbox" ng-model="working.features[feature.id]" ng-change="updateSelectedFeatures()"/>
+                                                    </td>
+                                                    <td>
+                                                        <span ng-bind="feature.label"></span>
+                                                        <span class="label label-info" ng-repeat="badge in feature.badges" ng-bind="badge"></span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="panel-body" ng-if="generatedToken">
+                <p ng-if="working.unrestricted">';$output .= $stash->get(['locale',0,'maketext',['You successfully created an [output,strong,unrestricted] [asis,API] token “[_1]”.','{{ working.name }}' ]]);$output .= '</p>
+                <p ng-if="!working.unrestricted">';$output .= $stash->get(['locale',0,'maketext',['You successfully created a [output,strong,limited-access] [asis,API] token “[_1]”.','{{ working.name }}' ]]);$output .= '</p>
+                <p>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Copy the following token to a safe place:' ]]);$output .= '
+                </p>
+                <copy-field label="';$output .= $stash->get(['locale',0,'maketext',['[asis,API] Token' ]]);$output .= '" text="generatedToken"></copy-field>
+                <div callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '">
+                    <p>
+                        <span ng-if="working.tokenExpires" ng-bind="newTokenExpiresMessage(working)"></span>
+                        <span ng-if="working.tokenExpires" >';$output .= $stash->get(['locale',0,'maketext',['When this [asis,API] token expires, the system will [output,strong,not] delete it. You [output,strong,must] manually delete this [asis,API] token.' ]]);$output .= '</span>
+                    </p>
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['This is your only opportunity to copy this token!' ]]);$output .= '</p>
+                </div>
+                <p>';$output .= $stash->get(['locale',0,'maketext',['For more information about how to use this token to make [asis,API] calls, read our [output,url,_1,Developer Documentation].','https://go.cpanel.net/developerdocs' ]]);$output .= '
+            </p>
+            </div>
+            ';$output .= "\n            <div class=\"panel-footer\" class=\"text-right\">\n                <div ng-if=\"!generatedToken\">\n                    <button id=\"btnCreateAPIToken\"\n                        type=\"submit\"\n                        spinner-id=\"spinnerCreateAPIToken\"\n                        ng-disabled=\"(working.tokenExpires && datePickerOptions.minDate > working.expiresAt) || createTokenForm.\$invalid\"\n                        cp-action=\"create(working)\"\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Click here to create your new [asis,API] token.' ]]);$output .= '">
+                        <i class="fas fa-plus" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                    </button>
+                    <button id="btnCancelAPIToken"
+                        type="button"
+                        ng-if="apiTokens.length"
+                        class="btn btn-link pull-right flip"
+                        ng-click="backToListView()"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Go back to the list of [asis,API] tokens.' ]]);$output .= '">
+                        <i class="fas" ng-class="{ \'fa-arrow-left\': !RTL, \'fa-arrow-right\': isRTL }" aria-hidden="true"></i>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '
+                    </button>
+                </div>
+                <div ng-if="generatedToken">
+                    <div class="checkbox copy-token-checkbox">
+                        <label>
+                            <input type="checkbox" name="stay" id="stay" ng-model="ui.stayAfterCopy" ng-change="stayAfterCopyChanged()">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Create another token after I click [output,em,_1].',$stash->get(['locale',0,'maketext',['Yes, I saved my token' ]])]]);$output .= '
+                        </label>
+                    </div>
+                    <hr class="separator"/>
+                    <button id="confirmCopiedToken"
+                        type="button"
+                        ng-if="generatedToken"
+                        class="btn btn-primary"
+                        ng-click="tokenCopied(createTokenForm)">';$output .= $stash->get(['locale',0,'maketext',['Yes, I saved my token' ]]);$output .= '</button>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

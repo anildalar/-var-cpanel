@@ -1,0 +1,41 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/webmailform.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('WebmailRedirect',$context->plugin('WebmailRedirect'));$stash->set('HTTP',$context->plugin('HTTP'));if ($stash->get(['RAW_FORM',0,'return_request_uri',0])){$stash->set('return_url',$stash->get(['HTTP',0,'get_client_url',[$stash->get(['RAW_FORM',0,'return_request_uri',0])]]))}if (!$stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$stash->set('redir_data',$stash->get(['WebmailRedirect',0,'create_webmail_session',[$stash->get(['RAW_FORM',0,'user',0]),$stash->get('return_url')]]))}$stash->set('url',$stash->get(['redir_data',0,'url',0]));$stash->set('session_str',$stash->get(['redir_data',0,'session',0]));$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    ';if ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '        <div id="details" class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]]);$output .= '
+        </div>
+    '}else {$output .= '
+
+        ';if ($stash->get(['redir_data',0,'warning',0])){$output .= '            <div class="callout callout-warning">';$output .= $stash->get(['redir_data',0,'warning',0,'html',0]);$output .= '</div>
+        '}$output .= '
+        <div class="section">
+            <h2 id="hdrWebmailLogin">';$output .= $stash->get(['locale',0,'maketext',['WebMail Login' ]]);$output .= '</h2>
+
+            <div>
+                <img id="imgLoading" src="../images/loader.gif" alt="Loading progress image" /><br/>
+                <form id=\'wmlinkEl\' method=\'POST\' action="';$output .= $stash->get(['url',0,'html',0]);$output .= '" >
+                    <input type=\'hidden\' name=\'session\' value="';$output .= $stash->get(['session_str',0,'html',0]);$output .= '">
+                    <input type=\'hidden\' name=\'locale\' value="';$output .= $stash->get(['locale',0,'get_language_tag',0,'html',0]);$output .= '">
+                    <input id=\'submit-button\' type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Log in' ]]);$output .= '">
+                </form>
+            </div>
+        </div>
+
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../email_accounts/index.html.tt','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'webemail','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var navit = function() {
+        document.getElementById(\'wmlinkEl\').submit();
+        document.getElementById(\'submit-button\').value=\'';$output .= $stash->get(['locale',0,'maketext',['Logging you in …' ]]);$output .= '\';
+    }
+
+    ';if (!$stash->get(['redir_data',0,'warning',0])){$output .= '        YAHOO.util.Event.addListener(window, "load", navit);
+    '}$output .= '</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

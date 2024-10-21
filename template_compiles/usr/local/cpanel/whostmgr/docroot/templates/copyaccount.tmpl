@@ -1,0 +1,207 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/copyaccount.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('OVER_USERS',$stash->get(['Whostmgr',0,'get_max_users',0])&& $stash->get(['Whostmgr',0,'minimum_accounts_needed',[$stash->get(['Whostmgr',0,'get_max_users',0])+ 1 ]]));$stash->set('scripts',$stash->get('OVER_USERS')? 0 : ['/js2/_sshkey_selection.js' ]);$output .= do {my$output='';$output .= '
+';if ($stash->get('OVER_USERS')){$output .= $context->process('menu/_license_excess_create.tmpl');$output .= '    ';$output .= '
+    <span aria="hidden" class="help-block whmHelp"></span>
+    <input aria="hidden" name="host" id="host" type="hidden" />
+    <input aria="hidden" name="remote_server_type" id="remote_server_type" type="hidden" />
+'}else {$output .= '
+
+    ';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp.tmpl');$output .= '
+
+    <div id="content">
+
+        ';$output .= $context->include('_pending_transfers.tmpl');$output .= '
+
+        <!--TODO: Find solution so we open new page in a new tab -->
+        <form name="copyform" method="post" role="form" id=\'copyform\'>
+            <input type="hidden" name="copytype" value="';$output .= $stash->get(['data',0,'action',0]);$output .= '" />
+            ';$output .= $context->include('_sshkey_selection.tmpl');$output .= '
+            ';$stash->set('restricted_by_default',0);$output .= '
+            ';$output .= $context->process('_restricted_restore_option.tmpl');$output .= '
+            <!-- We must set this value or they will not be given the choice for each account -->
+            <input type="hidden" name="copy_reseller_privs" value="1" />
+            <fieldset>
+                <legend>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Advanced' ]]);$output .= '
+                    <button id="showHideAdvanced" type="button" class="btn btn-default btn-xs">';$output .= $stash->get(['locale',0,'maketext',['Show' ]]);$output .= '</button>
+                </legend>
+
+                <div id="advancedOptions" class="col-sm-10">
+                <div class="form-group">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Remote Server Type:' ]]);$output .= '</label>
+                    <div class="row">
+                            <div class="col-sm-6">
+                                <select  id="remote_server_type" name="remote_server_type" class="form-control">
+                                    <option value="auto" selected="selected">';$output .= $stash->get(['locale',0,'maketext',['Auto Detect' ]]);$output .= '</option>
+                                    <option value="WHM">cPanel &amp; WHM</option>
+                                    <option value="plesk">Parallels Plesk®</option>
+                                    <option value="directadmin">DirectAdmin</option>
+                                    <option value="ensim">Ensim</option>
+                                </select>
+                        </div>
+                        <span class="help-block whmHelp">
+                            ';$output .= $stash->get(['locale',0,'maketext',['WHM version will be auto detected.' ]]);$output .= '
+                        </span>
+                            </div>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="unencrypted"
+                                    id="unencrypted"
+                                    value="1"/>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Unencrypted' ]]);$output .= '
+                        </label>
+                    </div>
+                    <span class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['To use encryption, the remote server must run [asis,cPanel] version “[_1]” or later.','11.23.6' ]]);$output .= '
+                    </span>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="compressed"
+                                    id="compressed"
+                                    checked="checked"
+                                    value="1"/>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Compressed Transfers' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="low_priority"
+                                    id="low_priority"
+                                    value="1"
+                                    />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Low Priority' ]]);$output .= '
+                        </label>
+                    </div>
+                    <span class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Low Priority transfers run with a lower CPU and disk IO priority on the source server.' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['This option will reduce the impact to performance on the source server, but it will increase the time it takes to transfer accounts.' ]]);$output .= '
+                    </span>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="use_backups"
+                                    id="use_inc_backup_speedup"
+                                    value="1"
+                                    checked="checked"
+                                    />
+                            ';$output .= $stash->get(['locale',0,'maketext',['Use Incremental Backups Speed-up' ]]);$output .= '
+                        </label>
+                    </div>
+                    <span class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel 11.29.126] and later required on both ends.' ]]);$output .= '
+                    </span>
+                    <div class="checkbox">
+                        <label>
+                            <input  type="checkbox"
+                                    name="enable_custom_pkgacct"
+                                    id="enable_custom_pkgacct"
+                                    checked="checked"
+                                    value="1"/>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Use custom account packaging modules from “[_1]”.','/var/cpanel/lib/Whostmgr/Pkgacct' ]]);$output .= '
+                        </label>
+                    </div>
+                    <div class="help-block">
+                        ';$output .= $stash->get(['locale',0,'maketext',['To find out more about custom account packaging and restoring modules (previously called overrides), please read the documentation found [output,url,_1,here,target,_blank].','https://go.cpanel.net/override' ]]);$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['Custom restore modules placed in “[_1]” will always be preferred over the cPanel-provided modules in “[_2]”.',$stash->get(['data',0,'CUSTOM_PERL_MODULES_DIR',0]).'/Whostmgr/Transfers/Systems','/usr/local/cpanel/Whostmgr/Transfers/Systems' ]]);$output .= '
+                    </div>
+                    <div class="form-group">
+                        <label for="transfer_threads">';$output .= $stash->get(['locale',0,'maketext',['Number of Transfer Threads' ]]);$output .= ':</label>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="number" value="';$output .= $stash->get(['data',0,'transfer_threads_soft_limit',0]);$output .= '" id="transfer_threads" name="transfer_threads" size="1" maxlength="1" min="1" max="';$output .= $stash->get(['data',0,'transfer_threads_hard_limit',0]);$output .= '" step="1" title="';$output .= $stash->get(['locale',0,'maketext',['You must provide an integer number between 1 and [numf,_1].',$stash->get(['data',0,'transfer_threads_hard_limit',0])]]);$output .= '" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="help-block">
+                            ';if ($stash->get(['data',0,'thread_recommendations_are_max',0])){$output .= '                                ';$output .= $stash->get(['locale',0,'maketext',['You should use no more than [quant,_1,transfer thread,transfer threads] to avoid performance degradation.',$stash->get(['data',0,'transfer_threads_hard_limit',0])]]);$output .= '
+                            '}else {$output .= '                                ';$output .= $stash->get(['locale',0,'maketext',['Because your system has [format_bytes,_1] of available memory and [quant,_2,CPU,CPUs], you should use no more than [quant,_3,transfer thread,transfer threads] to avoid severe performance degradation.',$stash->get(['data',0,'available_memory_bytes',0]),$stash->get(['data',0,'cpu_count',0]),$stash->get(['data',0,'transfer_threads_soft_limit',0])]]);$output .= '
+                            '}$output .= '                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="restore_threads">';$output .= $stash->get(['locale',0,'maketext',['Number of Restore Threads' ]]);$output .= ':</label>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="number" value="';$output .= $stash->get(['data',0,'restore_threads_soft_limit',0]);$output .= '" id="restore_threads" name="restore_threads" size="1" maxlength="1" min="1" max="';$output .= $stash->get(['data',0,'restore_threads_hard_limit',0]);$output .= '" step="1" title="';$output .= $stash->get(['locale',0,'maketext',['You must provide an integer number between 1 and [numf,_1].',$stash->get(['data',0,'restore_threads_hard_limit',0])]]);$output .= '" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="help-block">
+                            ';if ($stash->get(['data',0,'thread_recommendations_are_max',0])){$output .= '                                ';$output .= $stash->get(['locale',0,'maketext',['You should use no more than [quant,_1,restore thread,restore threads] to avoid performance degradation.',$stash->get(['data',0,'restore_threads_hard_limit',0])]]);$output .= '
+                            '}else {$output .= '                                ';$output .= $stash->get(['locale',0,'maketext',['Because your system has [format_bytes,_1] of available memory and [quant,_2,CPU,CPUs], you should use no more than [quant,_3,restore thread,restore threads] to avoid severe performance degradation.',$stash->get(['data',0,'available_memory_bytes',0]),$stash->get(['data',0,'cpu_count',0]),$stash->get(['data',0,'restore_threads_soft_limit',0])]]);$output .= '
+                            '}$output .= '                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="restore_threads">';$output .= $stash->get(['locale',0,'maketext',['Transfer Session Timeout' ]]);$output .= ':</label>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="number" value="';$output .= $stash->get(['data',0,'default_session_timeout',0]);$output .= '" id="session_timeout" name="session_timeout" size="1" maxlength="';$output .= $stash->get(['data',0,'max_session_timeout',0,'size',0]);$output .= '" min="';$output .= $stash->get(['data',0,'min_session_timeout',0]);$output .= '" max="';$output .= $stash->get(['data',0,'max_session_timeout',0]);$output .= '" step="1" title="';$output .= $stash->get(['locale',0,'maketext',['You must provide an integer number between [numf,_1] and [numf,_2].',$stash->get(['data',0,'min_session_timeout',0]),$stash->get(['data',0,'max_session_timeout',0])]]);$output .= '" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="help-block">
+                ';if ($stash->get(['data',0,'max_session_timeout',0])< 60){$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['This value represents the number of seconds that you wish for the transfer session to remain open before it times out due to a lack of activity. We recommend that you do not enter a value greater than [quant,_2,second,seconds] ([list_and,_1]).',$stash->get(['data',0,'seconds_to_locale',[$stash->get(['data',0,'max_session_timeout',0])]]),$stash->get(['data',0,'max_session_timeout',0])]]);$output .= '
+                '}else {$output .= '
+                    ';$output .= $stash->get(['locale',0,'maketext',['This value represents the number of seconds that the transfer session remains open before it times out. We recommend that you do not enter a value greater than [quant,_1,second,seconds].',$stash->get(['data',0,'max_session_timeout',0])]]);$output .= '
+                '}$output .= '
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div id="tlsWarning" class="alert alert-message alert-warning hidden">
+                <div id="tlsWarningHeader" class="tlsWarningText">';$output .= $stash->get(['locale',0,'maketext',['This connection is untrusted.' ]]);$output .= '</div>
+
+                <div id="tlsWarningText1" class="tlsWarningText"></div>
+
+                <div id="sshAPIReturnText">
+                    <pre><code></code></pre>
+                </div>
+
+                <div id="tlsWarningText2" class="tlsWarningText"></div>
+
+                <div id="tlsWarningText3" class="tlsWarningText"></div>
+                <div id="tlsWarningText4" class="tlsWarningText"></div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="retryContCheck" id="retryContCheck" value="0" />
+                        ';$output .= $stash->get(['locale',0,'maketext',['I understand the risks. Connect anyway.' ]]);$output .= '
+                    </label>
+                </div>
+
+                <div id="retryBtnContainer">
+                    <button id="retryTransportBtn" type="button" class="btn btn-primary" disabled="true">';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+                    <button id="cancelRetryTransportBtn" type="button" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+                </div>
+            </div>
+
+            <div id="callback_block"></div>
+            <button id="formSubmitButton" type="submit" class="btn btn-primary">
+                <div class="button-text">';$output .= $stash->get(['data',0,'actionname',0]);$output .= '</div>
+            </button>
+        </form>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="copyrights" class="pull-right">
+                ';$output .= $stash->get(['locale',0,'maketext',['All trademarks are owned by their respective authors.' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+
+    ';$output .= $context->include('_transfer_api_info.tmpl');$output .= '
+    <script text="text/javascript">
+        CPANEL.namespace("CPANEL.PAGE");
+        CPANEL.PAGE = {
+            key_list: ';$output .= $stash->get(['data',0,'key_list',0,'json',0]);$output .= ',
+            transfer_threads_soft_limit: ';$output .= $stash->get(['data',0,'transfer_threads_soft_limit',0]);$output .= ',
+            restore_threads_soft_limit: ';$output .= $stash->get(['data',0,'restore_threads_soft_limit',0]);$output .= ',
+            transfer_threads_hard_limit: ';$output .= $stash->get(['data',0,'transfer_threads_hard_limit',0]);$output .= ',
+            restore_threads_hard_limit: ';$output .= $stash->get(['data',0,'restore_threads_hard_limit',0]);$output .= ',
+            default_session_timeout: ';$output .= $stash->get(['data',0,'default_session_timeout',0]);$output .= '
+        };
+    </script>
+    '}$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'transfer_tool','header'=>$stash->get(['data',0,'header',0]),'stylesheets'=>['/css/whm_dynamic_notices.css' ],'scripts'=>$stash->get('scripts'),'theme'=>'bootstrap','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

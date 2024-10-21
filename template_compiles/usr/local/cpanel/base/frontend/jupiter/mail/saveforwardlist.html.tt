@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/saveforwardlist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+    <div class="body-content">
+        ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+        <div id="saveChangesErrorMsg" class="alert alert-danger">
+            <span class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,strong,_1]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+            </div>
+        </div>
+        '}elsif ($stash->get(['CPANEL',0,'CPDATA',0,'item',['DEMO' ]])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is disabled in demo mode.' ]]);$output .= '
+        '}else {$output .= '
+            ';if (($stash->get(['RAW_FORM',0,'item',['account' ]]))){$stash->set('status',$stash->get(['execute',['BoxTrapper','set_forwarders',{'email'=>$stash->get(['RAW_FORM',0,'item',['account' ]]),'forwarder'=>$stash->get(['RAW_FORM',0,'item',['page' ],'split',['\r?\n' ]])}]]))}else {$stash->set('status',{'status'=>0,'errors_as_string'=>$stash->get(['locale',0,'maketext',['You must pass the “account” parameter with a value.' ]])})}$output .= '
+
+            ';if (!$stash->get(['status',0,'status',0])){$output .= '
+            <div id="saveChangesErrorMsg" class="alert alert-danger">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system encountered an error when it tried to save the new forwarders: “[output,asis,_1]”.',$stash->get(['status',0,'errors_as_string',0,'html',0])]]);$output .= '
+                </div>
+            </div>
+            '}else {$output .= '
+            <div id="saveChangesSuccessMsg" class="alert alert-success">
+                <span class="glyphicon glyphicon-ok-sign"></span>
+                <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Your changes have been saved.' ]]);$output .= '
+                </div>
+            </div>
+            '}$output .= '
+        '}$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html?account=' .$stash->get(['FORM',0,'item',['account' ]]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    </div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

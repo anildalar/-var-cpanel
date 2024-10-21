@@ -1,0 +1,102 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mail_blocked_countries/directives/countryCodesTable.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<section class="list-section">
+
+    <div class="row search-page-container">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+            <search id="email_table_search" ng-model="meta.filterValue"
+                autocomplete="off"
+                debounce="750"
+                autofocus
+                ng-change="fetch()">
+            </search>
+            <quick-filters title="';$output .= $stash->get(['locale',0,'maketext',['Filter:' ]]);$output .= '" active="meta.quickFilterValue" on-filter-change="deselectAll(); fetch()">
+                <quick-filter-item value="all">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</quick-filter-item>
+                <quick-filter-item value="{{ true }}">';$output .= $stash->get(['locale',0,'maketext',['Allowed' ]]);$output .= '</quick-filter-item>
+                <quick-filter-item value="{{ false }}">';$output .= $stash->get(['locale',0,'maketext',['Blocked' ]]);$output .= '</quick-filter-item>
+            </quick-filters>
+        </div>
+    </div>
+
+    <div class="row action-bar">
+        <div class="col-xs-12">
+            <div class="pull-left flip hidden-xs">
+                <div class="table-action-button-container">
+                    <label class="table-action-button-label table-action-button-sm">
+                        <input type="checkbox"
+                            id="checkAllInList"
+                            title="{{ getSelectAllToggleTitle() }}"
+                            ng-checked="allAreSelected()"
+                            ng-click="toggleSelectAll()">
+                    </label>
+                </div>
+                <button id="btnBlockSelection"
+                    class="btn btn-sm btn-danger"
+                    type="button"
+                    ng-disabled="!selectedAllowed.length"
+                    cp-action="blockCountries(selectedItems)"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Block Selected' ]]);$output .= '">
+                        <i class="fas fa-ban" aria-hidden="true"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Block Selected' ]]);$output .= '
+                </button>
+
+                <button id="btnAllowSelection"
+                    class="btn btn-sm btn-success"
+                    type="button"
+                    ng-disabled="!selectedBlocked.length"
+                    cp-action="unblockCountries(selectedItems)"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Allow Selected' ]]);$output .= '">
+                        <i class="fas fa-check" aria-hidden="true"></i>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Allow Selected' ]]);$output .= '
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <table id="countries_table" class="table table-striped no-animate" ng-class="{\'table-overlay\':countriesUpdating}">
+        <thead>
+            <tr>
+                <th class="mass_edit_checkbox"></th>
+                <th class="name_column">
+                    <span toggle-sort id="sortName" onsort="fetch" sort-meta="meta" sort-field="name">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Country Name' ]]);$output .= '
+                    </span>
+                </th>
+                <th class="status_header">';$output .= $stash->get(['locale',0,'maketext',['Allowed' ]]);$output .= '</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="info empty-row" ng-if="loading || items.length === 0" >
+                <td colspan="4">
+                    <i ng-show="loading" class="fas fa-spinner fa-spin"></i>
+                    <span ng-show="loading">';$output .= $stash->get(['locale',0,'maketext',['Loading countries data …' ]]);$output .= '</span>
+                    <span ng-show="!loading && items.length === 0" >';$output .= $stash->get(['locale',0,'maketext',['The countries list is empty.' ]]);$output .= '</span>
+                </td>
+            </tr>
+            <tr ng-repeat="item in filteredList" class="no-animate"
+                ng-class="{success:item.allowed,danger:!item.allowed}">
+                <td class="mass_edit_checkbox no-animate check-column">
+                    <input type="checkbox"
+                        id="{{ :: item.code}}_checked"
+                        class="countries_select_item no-animate"
+                        title="{{getToggleSelectTitle(item)}}"
+                        ng-checked="exists(item.code, selectedItems)"
+                        ng-click="toggleSelect(item.code, selectedItems)">
+                </td>
+                <td class="name-column no-animate"><label for="{{ :: item.code}}_checked">{{ :: item.name}} ({{ :: item.code}})</label></td>
+                <td class="no-animate toggle-column">
+                    <toggle-switch id="toggleAllow_{{ :: item.code}}"
+                           title="{{ getTitleLabel(item.name, item.allowed) }}"
+                           ng-model="item.allowed"
+                           on-toggle="toggleBlocked(item)"
+                           aria-label="{{ getAriaLabel(item.name, item.allowed) }}"
+                           enabled-label=""
+                           disabled-label=""
+                           no-spinner="false"
+                           class="no-animate">
+                    </toggle-switch>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</section>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

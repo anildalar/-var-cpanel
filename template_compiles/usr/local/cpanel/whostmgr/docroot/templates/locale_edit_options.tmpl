@@ -1,0 +1,60 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/locale_edit_options.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('css_block_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['Locale Editor - Bulk Mode' ]]);$output .= '</h3>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['You can edit any locale’s phrases. You can use this to make small changes to a locale or completely update a cloned locale into a new language.' ]]);$output .= '</p>
+
+<div>
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/locale_editor">
+<table>
+  <tr>
+    <td><label for="locale">';$output .= $stash->get(['locale',0,'maketext',['Locale:' ]]);$output .= '</label></td>
+    <td>
+      <select name="locale" id="locale">
+        ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+      </select>
+    </td>
+    <td>
+      <label for="theme">';$output .= $stash->get(['locale',0,'maketext',['Theme:' ]]);$output .= '</label>
+    </td>
+    <td>
+      <select id="theme" name="theme">
+      ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'themes',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'theme'}=$_tt_value;$output .= '      <option value="';$output .= $stash->get('theme');$output .= '" ';$output .= $stash->get(['data',0,'selected_theme',0])eq $stash->get('theme')? ' selected="selected"' : '';$output .= '>';$output .= $stash->get('theme');$output .= '</option>
+      ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '      </select>
+    </td>
+    <td>
+      <input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+    </td>
+  </tr>
+</table>
+</form>
+    <div class="help-block">
+        ';$output .= $stash->get('user_feedback_text_for_more_locales');$output .= '
+    </div>
+</div>
+
+<h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['Non Standard Locale Configuration' ]]);$output .= '</h3>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['Locales are identified by ISO standard language (and sometimes territory) codes.' ]]);$output .= '</p>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['Each locale has standard data defined in the [output,url,_1,CLDR,target,_2].','http://cldr.unicode.org','_blank' ]]);$output .= '</p>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['An ‘i_’ tag is a standard way to create, identify, and work with a non-standard locale by prefixing the code with the letter ‘i’ followed by an underscore.' ]]);$output .= '</p>
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['You can use this tool to configure data as defined by the CLDR for standard tags.' ]]);$output .= '</p>
+<p class="description">&nbsp;</p>
+<div>
+';if ($stash->get(['data',0,'i_locales',0,'size',0])){$output .= '
+  ';$stash->set(['data',0,'only_include_locale_menu',0],$stash->get(['data',0,'i_locales',0]));$output .= '
+  <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts9/i_tag_configure_form">
+  <label>';$output .= $stash->get(['locale',0,'maketext',['Locale:' ]]);$output .= '
+  <select name="locale" id="locale">
+    ';$output .= $context->process('_locale_option_tags.tmpl');$output .= '
+  </select></label>
+   ';$output .= $stash->get(['data',0,'delete',['only_include_locale_menu' ]]);$output .= '
+&nbsp;
+<input type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Go' ]]);$output .= '" />
+</form>
+</div>
+
+'}else {$output .= '
+   <p>';$output .= $stash->get(['locale',0,'maketext',['There are currently no “i_ tag” locales on the server.' ]]);$output .= '</p>
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','scripts'=>'/js/lang.js','app_key'=>'edit_a_locale','extrastyle'=>$stash->get('css_block_code'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= "\n  .externalLink:after {\n      font-family: \"Font Awesome 5 Free\";\n      font-weight: 600;\n      content: \"\\f35d\";\n      display: inline-block;\n      padding: 0 3px 0 3px;\n  }\n"}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

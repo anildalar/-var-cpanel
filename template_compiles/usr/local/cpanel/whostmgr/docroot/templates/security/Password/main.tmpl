@@ -1,0 +1,88 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/security/Password/main.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<link rel="stylesheet" type="text/css" href="/unprotected/yui/container/assets/container.css" />
+<script language="javascript">
+//<![CDATA[
+var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['data',0,'minpwstrength',0]);$output .= '\') || 0;
+var init_page = function() {
+   var oldpass_validator = new CPANEL.validate.validator("Old Password");
+   oldpass_validator.add("oldpassword", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['Old password cannot be empty.' ]]);$output .= '");
+   oldpass_validator.attach();
+
+   var password_validators = CPANEL.password.setup("password", "pass2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+
+   CPANEL.validate.attach_to_form("submit", [oldpass_validator, password_validators[0], password_validators[1]]);
+
+   YAHOO.util.Dom.get("oldpassword").focus();
+};
+YAHOO.util.Event.onDOMReady(init_page);
+//]]>
+</script>
+<div class="body-content">
+
+<div class="h1Title"><div class="spriteicon_img_mini" id="icon-password_mini"></div></div>
+';if ($stash->get(['data',0,'msg',0])eq 'age'){$output .= '<div class="highlight">
+';$output .= $stash->get(['locale',0,'maketext',['You have not changed your password in [quant,_1,day,days]. The current security policy requires that you change your password every [quant,_2,day,days] to prevent compromised accounts.',$stash->get(['data',0,'days_since_change',0]),$stash->get(['data',0,'maxage',0])]]);$output .= '</div>
+'}if ($stash->get(['data',0,'msg',0])eq 'strength'){$output .= '<div class="highlight">';$output .= $stash->get(['locale',0,'maketext',['Your password does not meet the strength requirements. Change it now to avoid compromised accounts.' ]]);$output .= '</div>
+'}$output .= '
+<p class="description">';$output .= $stash->get(['locale',0,'maketext',['Change your account password below. Password strength is important in web hosting; we strongly recommend using the Password Generator to create your password. Follow the tips below to keep your password safe.' ]]);$output .= '</p>
+
+<form  method="post" name="userform" id="userform" action="';$output .= $stash->get('cp_security_token');$output .= '/?key=';$output .= $stash->get(['data',0,'acct_randkey',0]);$output .= '" target="_top">
+<!-- prevent password autofill -->
+<input type="text" style="display:none">
+<input type="password" autocomplete=\'off\' style="display:none">
+<input type="hidden" name="formaction" value="changepw">
+   <div class="highlight">
+   <table border="0" cellspacing="2" cellpadding="0">
+      <tr>
+         <td align="right"><label for="oldpassword">';$output .= $stash->get(['locale',0,'maketext',['Old Password:' ]]);$output .= '</label></td>
+         <td><input style="width: 150px" type="password" autocomplete=\'off\' maxlength="128" name="oldpass" id="oldpassword" size="20" /></td>
+         <td><div id="oldpassword_error"></div></td>
+      </tr>
+      <tr>
+         <td align="right"><label for="password">';$output .= $stash->get(['locale',0,'maketext',['New Password:' ]]);$output .= '</label></td>
+         <td><input style="width: 150px" type="password" autocomplete=\'off\' name="newpass" id="password" maxlength="128" /></td>
+         <td><div id="password_error"></div></td>
+      </tr>
+      <tr>
+         <td align="right"><label for="pass2">';$output .= $stash->get(['locale',0,'maketext',['New Password (again):' ]]);$output .= '</label></td>
+         <td><input style="width: 150px" maxlength="128" size="20" name="newpass2" id="pass2" type="password" autocomplete=\'off\' /></td>
+         <td><div id="pass2_error"></div></td>
+      </tr>
+      <tr>
+         <td align="right">';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' (<div style="display: inline" id="why_strong_passwords_link" class="action_link">';$output .= $stash->get(['locale',0,'maketext',['[comment,lowercase]why?' ]]);$output .= '</div>):</td>
+         <td><div id="password_strength" style="width: 150px; height: 20px; border: 1px solid black; margin: 5px 0px 3px 0px"></div></td>
+         <td><input type="button"class="btn-secondary" id="create_strong_password" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" /></td>
+      </tr>
+      <tr><td colspan="3"><br /></td></tr>
+      <tr>
+         <td>&nbsp;</td>
+         <td colspan="2"><input name="B1" type="submit" class="btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Change your password now!' ]]);$output .= '" id="submit" /></td>
+      </tr>
+   </table>
+   <div id="why_strong_passwords_text" style="display: none">
+       ';$output .= $stash->get(['locale',0,'maketext',['In web hosting, it is particularly important that you choose a strong password. Web servers are usually more powerful and have access to greater bandwidth than your personal computer. This makes them a prime target for [output,url,_1,password crackers,target,_blank].','http://en.wikipedia.org/wiki/Password_cracking' ]]);$output .= '
+       ';$output .= $stash->get(['locale',0,'maketext',['To increase the strength of your password, add UPPER CASE letters, numbers, and symbol characters (@, #, $, %, etc).' ]]);$output .= '</div>
+   </div><!-- end highlight -->
+   </form>
+
+   <h2>';$output .= $stash->get(['locale',0,'maketext',['Protect your password:' ]]);$output .= '</h2>
+   <ul>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Memorize your password. Do [output,strong,not] write it down.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Do [output,strong,not] share your password. Create a new account instead.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Do [output,strong,not] use one password for multiple accounts.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Do [output,strong,not] provide your password to someone unless you verify that the following are true:' ]]);$output .= '
+         <ul>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['The person needs to know the password.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['You have verified the person’s identity.' ]]);$output .= '</li>
+         </ul>
+      </li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['If possible, do [output,strong,not] log in from public computers.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Change your password frequently.' ]]);$output .= '</li>
+   </ul>
+   <h2>';$output .= $stash->get(['locale',0,'maketext',['Password tips:' ]]);$output .= '</h2>
+   <ul>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Avoid dictionary words.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Avoid familiar information (for example, names or phone numbers).' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Use a combination of letters, numbers, and special characters.' ]]);$output .= '</li>
+      <li>';$output .= $stash->get(['locale',0,'maketext',['Use eight or more characters.' ]]);$output .= '</li>
+   </ul>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','header'=>$stash->get(['locale',0,'maketext',['Change Password' ]]),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

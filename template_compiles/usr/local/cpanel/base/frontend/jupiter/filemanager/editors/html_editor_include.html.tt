@@ -1,0 +1,154 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/filemanager/editors/html_editor_include.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$stash->set('account_locale',$stash->get(['locale',0,'get_user_locale',0]));$stash->set('direction',$stash->get(['locale',0,'get_html_dir_attr',0]));$stash->set('form',$stash->get(['CPANEL',0,'FORM',0]));$stash->set('security_token',$stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]));$stash->set('directory_path',$stash->get(['form',0,'dir',0]));$stash->set('file_name',$stash->get(['form',0,'file',0]));$stash->set('charset',$stash->get(['form',0,'charset',0]));$stash->set('file_charset',$stash->get(['form',0,'file_charset',0]));$stash->set('base_url',$stash->get(['form',0,'baseurl',0]));$stash->set('base_dir',$stash->get(['form',0,'basedir',0]));$stash->set('theme',$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('home_dir_path',$stash->get(['CPANEL',0,'ENV',0,'HOME',0]));$stash->set('url','http://' .$stash->get(['CPANEL',0,'ENV',0,'DOMAIN',0]));$stash->set('file_open_results',$stash->get(['execute',['Fileman','get_file_content',{'dir'=>$stash->get('directory_path'),'file'=>$stash->get('file_name'),'from_charset'=>$stash->get('charset')}]]));$stash->set('file_info',$stash->get(['file_open_results',0,'data',0]));$output .= '
+
+<style type="text/css">
+';$output .= $context->insert('filemanager/editors/html_editor.css');$output .= '
+</style>
+
+<form id="htmlEditorForm" class="cpanelHide">
+    <textarea id="editorArea" name="content"></textarea>
+</form>
+
+';if ($stash->get(['CPANEL',0,'is_debug_mode_enabled',0])){$output .= '
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/cjt/cpanel-all.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['../../libraries/jquery/current/jquery.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['../../libraries/ckeditor/optimized/ckeditor.js' ]]);$output .= '"></script>
+'}else {$output .= '
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/yui-gen/utilities_container/utilities_container.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['/cjt/cpanel-all-min.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['../../libraries/jquery/current/jquery.min.js' ]]);$output .= '"></script>
+<script type="text/javascript" src="';$output .= $stash->get(['MagicRevision',['../../libraries/ckeditor/optimized/ckeditor.js' ]]);$output .= '"></script>
+'}$output .= '
+
+';$stash->set('lex_path',$stash->get(['locale',0,'cpanel_get_lex_path',['/usr/local/cpanel/base/frontend/' .$stash->get('theme').'/filemanager/editors/html_editor.js','./html_editor.js' ]]));$output .= '
+';if ($stash->get('lex_path')){$output .= '<script src="';$output .= $stash->get('lex_path');$output .= '"></script>'}$output .= '
+<script type="text/javascript" src="./html_editor.js"></script>
+
+';$output .= $context->process('_assets/_ajaxapp.html.tt');$output .= '
+<script type="text/javascript">
+(function() {
+var encodedURIForBrowse = "./image_browser.html?dir=" + encodeURIComponent("';$output .= $stash->get('base_dir');$output .= '") + "&dirPath=" + encodeURIComponent("';$output .= $stash->get('directory_path');$output .= '");
+var encodedURIForLink = "./image_link.html?dir=" + encodeURIComponent("';$output .= $stash->get('base_dir');$output .= '") + "&dirPath=" + encodeURIComponent("';$output .= $stash->get('directory_path');$output .= '");
+
+    var config = {
+        toolbar: "cpanelToolbar",
+        baseHref: "';$output .= $stash->get('base_url');$output .= '",
+        toolbar_cpanelToolbar: [
+            { name: "save", items : [ "CpanelSave","-", "Templates" ] },
+            { name: "newdocument", items: ["Print"]},
+            { name: "clipboard", items : ["Paste","PasteText","PasteFromWord","-","Undo","Redo" ] },
+            { name: "editing", items : [ "Find","Replace","-","SelectAll"] },
+            { name: "forms", items : [ "Form", "Checkbox", "Radio", "TextField", "Textarea", "Select", "Button", "HiddenField" ] },
+            "/",
+            { name: "basicstyles", items : [ "Bold","Italic","Underline","Strike","Subscript","Superscript","-","RemoveFormat" ] },
+            { name: "paragraph", items : [ "NumberedList","BulletedList","-","Outdent","Indent","-","Blockquote","CreateDiv","-","JustifyLeft","JustifyCenter","JustifyRight","JustifyBlock","-","BidiLtr","BidiRtl" ] },
+            { name: "links", items : [ "Link","Unlink","Anchor" ] },
+            { name: "insert", items : [ "Image", "oembed", "Table","HorizontalRule","SpecialChar","PageBreak" ] },
+            "/",
+            { name: "styles", items : [ "Styles","Format","Font","FontSize" ] },
+            { name: "colors", items : [ "TextColor","BGColor" ] },
+            { name: "tools", items : [ "ShowBlocks"] },
+            { name: "source", items: ["Source"]},
+            { name: "cppreview", items : [ "CpanelPreview" ] },
+            { name: "editordetails", items: ["About"]}
+        ],
+        contentsLangDirection: "';$output .= $stash->get('direction');$output .= '", // set users current lang direction
+        language: "';$output .= $stash->get('account_locale');$output .= '", // set users current language
+        defaultLanguage: "en",
+        dialog_buttonOrder: "';$output .= $stash->get('direction');$output .= '", // set users current lang direction
+        dialog_startupFocusTab: true,
+        fullPage: true,
+        toolbarCanCollapse: false,
+        fillEmptyBlocks : false,
+        extraPlugins : "cpanelsave,cpanelpreview",
+        filebrowserImageUploadUrl: "./image_upload.html",
+        filebrowserImageBrowseUrl: encodedURIForBrowse,
+        oembed_WrapperClass: "embededContent",
+        image_previewText: " ",
+        autoParagraph: true,
+        autoUpdateElement: true,
+        removePlugins : "scayt,save,flash",
+        disableNativeSpellChecker : false,
+        allowedContent: true,
+        appData: {
+            unprotectedClassNames: ["cpanelShow", "cpanelHide"],
+            homeDir: "';$output .= $stash->get('base_dir');$output .= '",
+            baseURL: "';$output .= $stash->get('base_url');$output .= '"
+        },
+        keystrokes: [
+            [ CKEDITOR.CTRL + 66, \'bold\' ],
+            [ CKEDITOR.CTRL + 73, \'italic\' ],
+            [ CKEDITOR.CTRL + 85, \'underline\'],
+
+            [ CKEDITOR.CTRL + 90, \'undo\' ],
+            [ CKEDITOR.CTRL + 89, \'redo\' ],
+
+            [ CKEDITOR.CTRL + 83, \'cpanelsave\' ],
+        ]
+    };
+
+
+    // adding a test to see if the api call to get the file and contents went correctly
+    // then we can do things to appData based on that result
+    var apiReturn = ';$output .= $stash->get(['file_open_results',0,'json',0]);$output .= ';
+
+    var appData = {
+        container :"editorArea",
+        fileContentInfo: ';$output .= $stash->get(['file_info',0,'json',0])|| '{}';$output .= ',
+        fileMetaData: {
+            dirPath: ';$output .= $stash->get(['directory_path',0,'json',0])|| '""';$output .= ',
+            fileName: ';$output .= $stash->get(['file_name',0,'json',0])|| '""';$output .= ',
+            charset: ';$output .= $stash->get(['file_info',0,'from_charset',0,'json',0])|| '""';$output .= '
+        },
+        securityToken: ';$output .= $stash->get(['security_token',0,'json',0])|| '""';$output .= ',
+        formID: "htmlEditorForm"
+    };
+    if (apiReturn.errors) {
+        _openError();
+        appData.fileMetaData.dirPath = "";
+        appData.fileMetaData.fileName = "";
+    }
+
+
+    // Configure the custom plugins for the editor.
+    var customPlugins = [
+        {
+            name : "cpanelsave",
+            path : "../../../ckeditor_plugins/cpanelsave/"
+        },
+        {
+            name : "cpanelpreview",
+            path : "../../../ckeditor_plugins/cpanelpreview/"
+        }
+    ];
+    // function to show growl message if we fail to open a file when invoking the editor
+    // fade_delay is an optional number of seconds to show the growl (default is 5)
+    // closable is an optional bool that allows the notice to be dismissed by clicking (default true)
+    function _openError(){
+        var Dynamic_Notice = CPANEL.ajax.Dynamic_Notice,
+            result = apiReturn,
+            errorContent = "",
+            notice;
+
+        if (result.errors) {
+            errorContent = result.errors.join(" ");
+            notice = new Dynamic_Notice({
+                content: LOCALE.maketext("Failed to open the file with the following errors: [_1]", errorContent.html_encode()),
+                level: "error",
+                fade_delay: 20,
+                closable: true
+            });
+        } else {
+            notice = new Dynamic_Notice({
+                content: LOCALE.maketext("Failed to open the file."),
+                level: "error",
+                fade_delay: 20,
+                closable: true
+            });
+        }
+    }
+
+    CPANEL.editor.initialize(config, appData, customPlugins);
+})();
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

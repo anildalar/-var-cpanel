@@ -1,0 +1,373 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/cpanel_plugin_manager/views/createPluginView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= '
+
+<section>
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Plugins allow you to add links from the [asis,cPanel] interface to your own applications or to third-party sites.' ]]);$output .= '
+    </p>
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['This interface creates plugin files that can contain one or more items. Use the left side of the form to add each of your desired items, then click the Generate button on the right to generate the plugin. You may always find the plugin files in “[output,strong,_1]”. For more information about registering the plugin, read the [output,url,_2,documentation,target,blank].','/var/cpanel/cpanel_plugin_generator','https://go.cpanel.net/plugingen' ]]);$output .= '
+    </p>
+</section>
+
+<form name="pluginForm" enctype="multipart/form-data" novalidate>
+<section ng-controller="createPluginController" class="pluginSection">
+    <div class="ng-cloak col-xs-12 col-sm-11 col-md-10 col-lg-10" ng-cloak>
+        <cp-alert-list></cp-alert-list>
+    </div>
+    <ng-form name="addItemForm"
+        class="layout-medium"
+        novalidate>
+        <div class="section-body col-xs-12 col-sm-6 col-md-5 col-lg-5 pull-left">
+            <div id="linkInfoSection" class="section-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="txtItemId">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unique Identifier' ]]);$output .= "\n                            </label>\n                        </div>\n                        <div class=\"col-xs-12\">\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <input type=\"text\" name=\"txtItemId\" id=\"txtItemId\"\n                                    auto-focus=\"focusOnId\"\n                                    required\n                                    ng-pattern=\"/^[0-9a-z_-]+\$/i\"\n                                    ng-model=\"item.id\"\n                                    class=\"form-control\"\n                                    placeholder=\"unique_id\"\n                                    ng-change=\"validateDuplicate()\">\n                            <span class=\"help-block\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Required. Use letters, numbers, hyphens ([asis,-]), and underscores ([asis,_]).' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <div ng-show="showOverwrite" class="inline-warn-section">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="item.overwrite" ng-change="validateOverwrites()">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Overwrite existing [asis,cPanel] item.' ]]);$output .= '
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valItemId" validation-container field-name="txtItemId">
+                                <validation-item
+                                    field-name="txtItemId"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Unique Identifier is required.' ]]);$output .= '
+                                </validation-item>
+                                <validation-item
+                                    field-name="txtItemId"
+                                    validation-name="pattern">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only letters, numbers, hyphens ([asis,-]), and underscores ([asis,_]) are valid.' ]]);$output .= '
+                                </validation-item>
+                                <validation-item
+                                    field-name="txtItemId"
+                                    validation-name="unique">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['An item with this [asis,ID] is already added.' ]]);$output .= '
+                                </validation-item>
+                                <validation-item
+                                    field-name="txtItemId"
+                                    validation-name="existing">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['An item with this [asis,ID] exists in cPanel.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="txtItemName">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Name' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="text" name="txtItemName" id="txtItemName"
+                                    required
+                                    ng-model="item.name"
+                                    class="form-control"
+                                    placeholder="Item name">
+                            <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valItemName" validation-container field-name="txtItemName">
+                                <validation-item
+                                    field-name="txtItemName"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Item name is required.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="checkbox">
+                                 <label>
+                                   <input type="checkbox" ng-model="item.featuremanager">
+                                   <span>';$output .= $stash->get(['locale',0,'maketext',['Feature Manager Support' ]]);$output .= '</span>
+                                 </label>
+                                 <span class="help-block">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['This option adds a new feature with the same name as the plugin. You can then use WHM Feature Manager to control access to the plugin.' ]]);$output .= '
+                                 </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Group' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <select id="ddlGroup" name="ddlGroup"
+                                class="form-control groupSelection"
+                                ng-required="!showNewGroup"
+                                ng-model="item.group_id"
+                                ng-options="group.id as group.name for group in groups | orderBy:\'name\'"
+                                ng-disabled="showNewGroup">
+                                <option value="">';$output .= $stash->get(['locale',0,'maketext',['[comment,used for highlight in select option]-- Select a group --[comment,used for highlight in select option]' ]]);$output .= '</option>
+                            </select>
+                            <button id="btnAddGroup" name="btnAddGroup"
+                                    class="btn btn-default"
+                                    type="button"
+                                    title="Add a new group"
+                                    ng-click="addGroup()"
+                                    ng-disabled="showNewGroup">
+                                <span class=\'glyphicon glyphicon-plus\'></span>
+                            </button>
+                            <span ng-show="!showNewGroup" class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valItemGroup" validation-container field-name="ddlGroup">
+                                <validation-item
+                                    field-name="ddlGroup"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Group is required.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" ng-show="showNewGroup">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="">
+                                ';$output .= $stash->get(['locale',0,'maketext',['New Group Name' ]]);$output .= '
+                            </label>
+                            <span class="glyphicon glyphicon-info-sign"></span>
+                            <span class="info-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The new group will be added when the current item is added to the plugin that is to be generated.' ]]);$output .= "\n                            </span>\n                        </div>\n                        <div class=\"col-xs-12\">\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <input type=\"text\" name=\"txtItemGroup\" id=\"txtItemGroup\"\n                                    auto-focus=\"showNewGroup\"\n                                    ng-model=\"newGroup\"\n                                    ng-required=\"showNewGroup\"\n                                    ng-pattern=\"/^[a-z_0-9\\s-]+\$/i\"\n                                    ng-disabled=\"!showNewGroup\"\n                                    ng-change=\"validateGroupNameDuplicate()\"\n                                    class=\"form-control newGroup\"\n                                    placeholder=\"My Group\">\n                            <button class=\"btn btn-link\"\n                                    type=\"button\" id=\"btnCancelNewGroup\"\n                                    title=\"Cancel new group\"\n                                    ng-disabled=\"!showNewGroup\"\n                                    ng-click=\"cancelNewGroup()\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                            </button>
+                            <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required. Use numbers, letters, hyphens ([asis,-]), underscores and whitespace.' ]]);$output .= '
+                            </span>
+                        </div>
+
+                        <div class="col-xs-12">
+                            <ul id="valItemNewGroup" validation-container field-name="txtItemGroup">
+                                <validation-item
+                                    field-name="txtItemGroup"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Group name is required.' ]]);$output .= '
+                                </validation-item>
+                                <validation-item
+                                    field-name="txtItemGroup"
+                                    validation-name="pattern">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only numbers, letters, hyphens ([asis,-]), underscores and whitespace are valid.' ]]);$output .= '
+                                </validation-item>
+                                <validation-item
+                                    field-name="txtItemGroup"
+                                    validation-name="unique">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['This group name already exists.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="txtPriority">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Priority' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-5 col-sm-3 col-md-3 col-lg-3">
+                            <input type="text" name="txtPriority" id="txtPriority"
+                                    ng-model="item.order"
+                                    required
+                                    positive-integer
+                                    class="form-control"
+                                    placeholder="99">
+                        </div>
+                        <div class="col-xs-12">
+                            <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required. Use Positive integer.' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valItemPriority" validation-container field-name="txtPriority">
+                                <validation-item
+                                    field-name="txtPriority"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Priority is required.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="txtLinkUri">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,URI,Uniform Resource Identifier]' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <input type="text" name="txtLinkUri" id="txtLinkUri"
+                                    ng-model="item.uri"
+                                    class="form-control"
+                                    required
+                                    placeholder="index.html">
+                            <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required.' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valItemUri" validation-container field-name="txtLinkUri">
+                                <validation-item
+                                    field-name="txtLinkUri"
+                                    validation-name="required">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,URI,Uniform Resource Identifier] is required.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="txtLinkUriTarget">
+                                ';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,URI,Uniform Resource Identifier] Target' ]]);$output .= "\n                            </label>\n                        </div>\n                    </div>\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <input type=\"text\" name=\"txtLinkUriTarget\" id=\"txtLinkUriTarget\"\n                                    ng-model=\"item.target\"\n                                    ng-pattern=\"/^[0-9a-z-_]+\$/i\"\n                                    class=\"form-control\"\n                                    placeholder=\"_blank\">\n                            <span class=\"help-block\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['An optional target for the plugin [output,acronym,URI,Uniform Resource Identifier]' ]]);$output .= '
+                            </span>
+                        </div>
+                        <div class="col-xs-12">
+                            <ul id="valLinkUriTarget" validation-container field-name="txtLinkUriTarget">
+                                <validation-item
+                                    field-name="txtLinkUriTarget"
+                                    validation-name="pattern">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only letters, numbers, hyphens ([asis,-]), and underscores ([asis,_]) are valid.' ]]);$output .= '
+                                </validation-item>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <label for="">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Icon' ]]);$output .= '
+                            </label>
+                        </div>
+                        <div class="col-xs-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="upload-field col-xs-12">
+                            <span class="btn-wrap">
+                                <input type="file" ng-model="itemIcon"
+                                    file-model="itemIcon"
+                                    file-type="[\'image/png\',\'image/svg+xml\']"
+                                    name="fileIcon" id="fileIcon" />
+                                <span class="btn btn-default" id="fileIconBtnWrap">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Browse' ]]);$output .= '
+                                </span>
+                            </span>
+                            <span trigger-for="fileIcon">
+                                <span class="far fa-image fa-lg"
+                                    ng-show="itemIcon">
+                                </span>
+                                <span id="fileIcon_filename"
+                                    class="filename">
+                                    {{itemIcon.name}}
+                                </span>
+                            </span>
+                            <span class="help-block">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Required. Must be a [list_or,_1] or [list_or,_2] image. Recommended size is [numf,_3][output,abbr,px,pixels] by [numf,_4][output,abbr,px,pixels].',['<em>.png</em>' ],['<em>.svg</em>' ],48,48 ]]);$output .= "\n                            </span>\n                        </div>\n\n                        <div class=\"col-xs-12\">\n                            <ul id=\"valItemIcon\" class=\"validation-container\"\n                                ng-show=\"addItemForm.fileIcon.\$invalid\">\n                                <li class=\"validation validation-error\"\n                                    ng-show=\"addItemForm.fileIcon.\$error.filetype\">\n                                    <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                    <span class=\"validation-message\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['You must select a [list_or,_1] or [list_or,_2] image.',['<em>.png</em>' ],['<em>.svg</em>' ]]]);$output .= "\n                                    </span>\n                                </li>\n                                <li class=\"validation validation-error\"\n                                    ng-show=\"addItemForm.fileIcon.\$error.filesize\">\n                                    <span class=\"glyphicon glyphicon-exclamation-sign\"></span>\n                                    <span class=\"validation-message\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Image file cannot be empty.' ]]);$output .= "\n                                    </span>\n                                </li>\n                            </ul>\n                        </div>\n                    </div>\n                </div>\n\n                <div class=\"form-group action-group\">\n                    <div class=\"row\">\n                        <div class=\"col-xs-12\">\n                            <button class=\"btn btn-default\" type=\"button\" id=\"btnAddItem\"\n                                title=\"Add item to the plugin you want to generate\"\n                                ng-click=\"addItemToPlugin()\"\n                                ng-disabled=\"addItemProcessing || addItemForm.\$invalid\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Add Item' ]]);$output .= '
+                            </button>
+                            <button class="btn btn-link"
+                                    type="button" id="btnClearItem"
+                                    title="Clear the item information"
+                                    ng-click="clearItem()">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Clear' ]]);$output .= '
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- END OF ADD LINKS SECTION -->
+        </div> <!-- END OF CREATE PLUGIN SECTION -->
+    </ng-form>
+
+    <ng-form name="createPluginForm"
+        class="layout-medium"
+        novalidate>
+
+        <div id="linkListSection" class="col-xs-12 col-sm-5 col-md-5 col-lg-5 pull-left">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Plugin Information' ]]);$output .= '
+                </div>
+                <div class="panel-body">
+                     <ul ng-show="itemList.length" class="list-group">
+                        <li ng-repeat="item in itemList" class="list-group-item no-border compact-list">
+                            <div class="newItemName">{{item.name}}</div>
+                            <button type="button" id="btnRemoveItem" class="btn btn-link list-item pull-right" ng-click="removeItem(item.id)">';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '</button>
+                        </li>
+                    </ul>
+
+                    <div ng-show="itemList.length" class="form-group">
+                        <label class="sr-only">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Plugin Name' ]]);$output .= "\n                        </label>\n                        <div class=\"row\">\n                            <div class=\"col-xs-12\">\n                                <input type=\"text\"  name=\"txtPluginName\" id=\"txtPluginName\"\n                                        maxlength=\"255\"\n                                        ng-model=\"pluginName\"\n                                        class=\"form-control\"\n                                        ng-pattern=\"/^[0-9a-z_-]+\$/\"\n                                        required\n                                        placeholder=\"Plugin Name\">\n                                <span class=\"help-block\">\n                                    ";$output .= $stash->get(['locale',0,'maketext',['Use lowercase letters, numbers, hyphens ([asis,-]), and underscores ([asis,_]).' ]]);$output .= '</span>
+                            </div>
+                            <div class="col-xs-12">
+                                <ul id="valItemPluginName" validation-container field-name="txtPluginName">
+                                    <validation-item
+                                        field-name="txtPluginName"
+                                        validation-name="required">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Plugin name is required.' ]]);$output .= '
+                                    </validation-item>
+                                    <validation-item
+                                        field-name="txtPluginName"
+                                        validation-name="pattern">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Only lowercase letters, numbers, hyphens ([asis,-]), and underscores ([asis,_]) are valid.' ]]);$output .= "\n                                    </validation-item>\n                                </ul>\n                            </div>\n                        </div>\n                    </div>\n                    <div ng-show=\"itemList.length\">\n                        <button class=\"btn btn-primary\" type=\"button\"\n                            id=\"btnGenerate\" ng-disabled=\"createPluginForm.\$invalid\"\n                            cp-action=\"generatePlugin()\">\n                            ";$output .= $stash->get(['locale',0,'maketext',['Generate' ]]);$output .= '
+                        </button>
+                    </div>
+
+                    <p ng-show="!itemList.length">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Please use the form on the left to add items to this plugin.' ]]);$output .= '
+                    </p>
+                </div>
+            </div>
+        </div>
+    </ng-form>
+</section>
+</form>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

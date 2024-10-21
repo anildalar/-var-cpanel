@@ -1,0 +1,60 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/market_provider_manager/index.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts2/market_provider/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+    <div id="content"
+        ng-controller="BaseController as base"
+        class="ng-cloak"
+        ng-cloak>
+        <div class="callout callout-info">
+            <p>
+                ';$output .= $stash->get(['locale',0,'maketext',['This feature allows you to manage products that users may purchase via the [asis,cPanel] interface.' ]]);$output .= '
+            </p>
+            <p>';$output .= $stash->get(['locale',0,'maketext',['For more information about how to create your own provider modules, read our [output,url,_1,SDK documentation,target,_blank].','https://go.cpanel.net/custommarketproviderwizard' ]]);$output .= '
+            </p>
+        </div>
+
+        <uib-tabset active="activeTabIndex">
+            <uib-tab select="go(\'\',0)">
+                <uib-tab-heading>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Providers' ]]);$output .= '
+                    <span ng-show="loading && active_path==\'\'"><i class="fas fa-spinner fa-spin"></i></span>
+                </uib-tab-heading>
+            </uib-tab>
+            <uib-tab select="go(\'edit_products\',1)">
+                <uib-tab-heading>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Products' ]]);$output .= '
+                    <span ng-show="loading && active_path==\'edit_products\'"><i class="fas fa-spinner fa-spin"></i></span>
+                </uib-tab-heading>
+            </uib-tab>
+            <uib-tab select="go(\'edit_cpstore_config\',2)">
+                <uib-tab-heading>
+                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel Store] Configuration' ]]);$output .= '
+                    <span ng-show="loading && active_path==\'edit_cpstore_config\'"><i class="fas fa-spinner fa-spin"></i></span>
+                </uib-tab-heading>
+            </uib-tab>
+        </uib-tabset>
+        <div ng-class="{\'view-disabled\': loading}" class="animate-view" ng-view></div>
+        <div growl></div>
+    </div>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.providers = ';$output .= $stash->get(['data',0,'providers',0,'json',0]);$output .= '
+</script>
+
+<style>
+    .no-animations {
+        transition: none !important;
+        -webkit-transition: none !important;
+    }
+
+    /* need to override line-height for ie11 because the line-height is larger than the height */
+    .new-price-input-field {
+        line-height:42px !important;
+    }
+</style>
+
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'market_provider_manager','header'=>$stash->get(['locale',0,'maketext',['Market Provider Manager' ]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

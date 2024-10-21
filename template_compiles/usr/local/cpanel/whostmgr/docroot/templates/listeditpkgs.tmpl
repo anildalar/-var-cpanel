@@ -1,0 +1,33 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listeditpkgs.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '<style>
+.pkg_select {
+    width: 100%;
+    overflow:auto;
+}
+</style>
+<div id="content">
+
+';if (!$stash->get(['data',0,'packages_list',0,'size',0])){$output .= '<p style="margin-left:20px">';$output .= $stash->get(['locale',0,'maketext',['You have no packages set up. You may add one by selecting “[output,url,_1,Add a Package]” from the navigation menu.','addpkg2' ]]);$output .= '</p>
+'}else {$output .= '<form action="../scripts/editpkg2" name="fmain">
+
+<div class="form_action">
+<fieldset>
+<ul>
+    <li>
+        <div class="fields">
+            <label for="pkg_select" class="fixed">';$output .= $stash->get(['locale',0,'maketext',['Package' ]]);$output .= '</label>
+                <select class="pkg_select" size="7" name="pkg">
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'packages_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pkg'}=$_tt_value;$output .= '                    <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('pkg');&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('pkg');&$_tt_filter($output)};$output .= '</option>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </select>
+        </div>
+    </li>
+</ul>
+</fieldset>
+</div>
+
+
+<input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '" name="submit-domain" class="btn-primary" />
+
+</form>
+'}$output .= '
+</div>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'edit_a_package','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

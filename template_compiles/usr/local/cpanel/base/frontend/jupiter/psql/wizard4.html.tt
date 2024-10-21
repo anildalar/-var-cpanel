@@ -1,0 +1,47 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/wizard4.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('prefix_length',$stash->get(['dbownerprefix',0,'length',0]));$stash->set('adduserdb',$stash->get(['execute',['Postgresql','grant_all_privileges',{'database'=>$stash->get(['RAW_FORM',0,'db',0]),'user'=>$stash->get(['RAW_FORM',0,'user',0])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if ($stash->get(['adduserdb',0,'status',0])){$output .= '
+    <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok-sign"></span>
+        ';$output .= $stash->get(['locale',0,'maketext',['Added the user “[output,strong,_1]” to the database “[output,strong,_2]”.',$stash->get(['FORM',0,'user',0]),$stash->get(['FORM',0,'db',0])]]);$output .= '
+    </div>
+    '}else {$output .= '
+        ';if ($stash->get(['adduserdb',0,'errors',0,'size',0])){$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['adduserdb',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    <div class="alert-message">
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                    </div>
+                </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        '}$output .= '
+    '}$output .= '
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Step 4: Complete the Task' ]]);$output .= '</h2>
+        <a href="wizard1.html">';$output .= $stash->get(['locale',0,'maketext',['Add another database.' ]]);$output .= '</a><br />
+        <br />
+        <a href="wizard2.html?db=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['RAW_FORM',0,'db',0,'substr',[$stash->get('prefix_length')]]);&$_tt_filter($output)};$output .= '&nocreate=1">';$output .= $stash->get(['locale',0,'maketext',['Add another user for your PostgreSQL database.' ]]);$output .= '</a><br />
+        <br />
+        <a href="index.html">';$output .= $stash->get(['locale',0,'maketext',['Return to PostgreSQL Databases.' ]]);$output .= '</a><br />
+        <br />
+        <a href="../index.html">';$output .= $stash->get(['locale',0,'maketext',['Return Home' ]]);$output .= '</a><br />
+    </div>
+
+
+
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_database_wizard','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

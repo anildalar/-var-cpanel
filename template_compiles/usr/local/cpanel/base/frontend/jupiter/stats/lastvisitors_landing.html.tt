@@ -1,0 +1,50 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/lastvisitors_landing.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$output .= do {my$output='';$output .= '
+
+';$stash->set('list_last_visitors',$stash->get(['Api2',0,'exec',['Stats','listlastvisitors',{}]]));$output .= '
+
+<div class="body-content">
+    <p id="dscLastVisitors" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['This function displays up to [numf,_1] of the most recent entries in the domain’s web server log.',1000 ]]);$output .= '
+    </p>
+    <div class="section">
+        <h2 id="hdrSelectDomain">
+            ';$output .= $stash->get(['locale',0,'maketext',['Select a Domain' ]]);$output .= '
+        </h2>
+        <table class="sortable table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '
+                    </th>
+                    <th nowrap nonsortable="true" scope="col">
+                        ';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                ';if ($stash->get(['list_last_visitors',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('list_last_visitors');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'lastVisitor'}=$_tt_value;$output .= '
+                    <tr class="row-';$output .= $stash->get(['loop',0,'index',0])% 2 eq 0 ? 'even' : 'odd';$output .= '" >
+                        <td>';$output .= $stash->get(['lastVisitor',0,'txt',0,'html',0]);$output .= '</td>
+                        <td class="nobrd-center-t">
+                            <a href="lastvisit.html?domain=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['lastVisitor',0,'domain',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '&ssl=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['lastVisitor',0,'ssl',0]);&$_tt_filter($output)};&$_tt_filter($output)};$output .= '" >
+                            <span class="glyphicon glyphicon-search"></span>
+                            </a>
+                        </td>
+                    </tr>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                '}else {$output .= '
+                    <tr>
+                        <td class="errors" colspan="2">
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no domains which have last visitors stats to display.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}$output .= '
+            </tbody>
+        </table>
+    </div>
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'visitors','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

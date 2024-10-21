@@ -1,0 +1,122 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/indexmanager/dohtaccess.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPScalar',$context->plugin('CPScalar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('index_type',$stash->get(['execute',['DirectoryIndexes','get_indexing',{'dir'=>$stash->get(['RAW_FORM',0,'dir',0])}]]));$stash->set('directory',$stash->get(['RAW_FORM',0,'dir',0,'replace',['/+','/' ],'replace',['/$','' ]]));$stash->set('from_parent_node',$stash->get(['FORM',0,'is_parent',0]));$stash->set('quoted_home_directory',$stash->get(['CPANEL',0,'homedir',0,'quotemeta',0]));if ($stash->get(['directory',0,'match',[('^' .$stash->get('quoted_home_directory').'/.+')]])){$stash->set('return_dirs',$stash->get(['directory',0,'split',['/+' ]]));$stash->get(['return_dirs',0,'pop',0]);$stash->set('up_one_directory',$stash->get(['return_dirs',0,'join',['/' ]]))}$stash->set('return_url','index.html?dir=' .(!$stash->get('from_parent_node')? $stash->get(['up_one_directory',0,'uri',0]): $stash->get(['directory',0,'uri',0])|| '/'));$stash->set('relative_directory',$stash->get(['directory',0,'replace',[('^' .$stash->get('quoted_home_directory').'[/]?'),'' ]]));$output .= '
+
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    <p class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['The “[_1]” allows you to customize the way a directory appears when no index files reside in a directory.',$stash->get(['locale',0,'maketext',['Index Manager' ]])]]);$output .= '
+        <a id="toggle-example-index-files">';$output .= $stash->get(['locale',0,'maketext',['Show example index files.' ]]);$output .= '</a>
+        <div id="example-index-files" class="hidden callout callout-info">
+            <h4>';$output .= $stash->get(['locale',0,'maketext',['Example Index Files' ]]);$output .= '</h4>
+            <ul>
+                <li>index.php</li>
+                <li>index.php5</li>
+                <li>index.php4</li>
+                <li>index.php3</li>
+                <li>index.perl</li>
+                <li>index.pl</li>
+                <li>index.plx</li>
+                <li>index.ppl</li>
+                <li>index.cgi</li>
+                <li>index.jsp</li>
+                <li>index.jp</li>
+                <li>index.phtml</li>
+                <li>index.shtml</li>
+                <li>index.xhtml</li>
+                <li>index.html</li>
+                <li>index.htm</li>
+                <li>index.wml</li>
+                <li>Default.html</li>
+                <li>Default.htm</li>
+                <li>default.html</li>
+                <li>default.htm</li>
+                <li>home.html</li>
+                <li>home.htm</li>
+                <li>index.js</li>
+            </ul>
+        </div>
+    </p>
+
+    ';if (!$stash->get(['index_type',0,'status',0])){$output .= '
+    <div class="alert alert-danger" role="alert">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            <strong class="alert-title">
+                ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+            </strong>
+            <span class="alert-body">
+                <span id="error-config">
+                    ';$output .= $stash->get(['index_type',0,'errors_as_string',0,'html',0]);$output .= '
+                </span>
+            </span>
+        </div>
+    </div>
+    '}else {$output .= '
+    ';$stash->set('index_type',$stash->get(['index_type',0,'data',0]));$output .= '
+    <div class="section">
+        <p>
+            <h4 id="hdrSetIndexing">
+                ';if ($stash->get(['relative_directory',0,'defined',0])&& $stash->get('relative_directory')ne ''){$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Set Indexing for “[output,strong,_1]”',$stash->get(['relative_directory',0,'html',0,'breakOn',['\.' ]])]]);$output .= '
+                '}else {$output .= '
+                ';$output .= $stash->get(['locale',0,'maketext',['Set Indexing Settings for all directories.' ]]);$output .= '
+                '}$output .= '
+            </h4>
+        </p>
+
+        <form id="the-form" action="changepro.html">
+            <input type="hidden" name="dir" id="dir" value="';$output .= $stash->get(['FORM',0,'dir',0]);$output .= '">
+            <input type="hidden" name="is_parent" id="is_parent" value="';$output .= $stash->get(['FORM',0,'is_parent',0]);$output .= '">
+            <div class="radio">
+                <label id="lblDefault">
+                    <input type="radio" name="listable_type" id="rdoDefault" value="inherit" ';if ($stash->get('index_type')eq 'inherit'){$output .= ' checked '}$output .= '>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Inherit' ]]);$output .= '</span>
+                </label>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Select this mode to use the parent directory’s setting. If the index settings are not defined in the parent directory, the system will use its default settings.' ]]);$output .= '
+                </span>
+            </div>
+            <div class="radio">
+                <label id="lblNoIndex">
+                    <input type="radio" name="listable_type" id="rdoNoIndex" value="disabled" ';if ($stash->get('index_type')eq 'disabled'){$output .= ' checked '}$output .= '>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['No Indexing' ]]);$output .= '</span>
+                </label>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['No files will appear for this directory if a default file is missing.' ]]);$output .= '
+                </span>
+            </div>
+            <div class="radio">
+                <label id="lblStdIndex">
+                    <input type="radio" name="listable_type" id="rdoStdIndex" value="standard" ';if ($stash->get('index_type')eq 'standard'){$output .= ' checked '}$output .= '>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Show Filename Only' ]]);$output .= '</span>
+                </label>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['This mode shows a simple list of the files present if the default file is missing.' ]]);$output .= '
+                </span>
+            </div>
+            <div class="radio">
+                <label id="lblFancyIndex">
+                    <input type="radio" name="listable_type" id="rdoFancyIndex" value="fancy" ';if ($stash->get('index_type')eq 'fancy'){$output .= ' checked '}$output .= '>
+                    <span>';$output .= $stash->get(['locale',0,'maketext',['Show Filename and Description' ]]);$output .= '</span>
+                </label>
+                <span class="help-block">
+                    ';$output .= $stash->get(['locale',0,'maketext',['This mode shows a list of files and their attributes: file size and file type.' ]]);$output .= '
+                </span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" id="btnSave" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '">
+            </div>
+        </form>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>$stash->get('return_url'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+<script>
+var PAGE = {
+    showLabel: ';$output .= $stash->get(['locale',0,'maketext',['Show example index files.' ],'json',0]);$output .= ',
+    hideLabel: ';$output .= $stash->get(['locale',0,'maketext',['Hide example index files.' ],'json',0]);$output .= '
+};
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'indexes','page_stylesheets'=>'indexmanager/dohtaccess.css','use_master_bootstrap'=>0,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

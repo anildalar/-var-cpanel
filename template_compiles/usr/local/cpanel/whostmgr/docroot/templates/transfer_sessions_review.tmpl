@@ -1,0 +1,52 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/transfer_sessions_review.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set('displayorder',['FAILED','ABORTING','PAUSING','ABORTED','PAUSED','RUNNING','COMPLETED' ]);$output .= '
+
+<div id="content">
+';if (!$stash->get(['data',0,'total_sessions',0])){$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['This interface displays account transfer and restoration sessions.' ]]);$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['There are no pending or completed transfers or restoration sessions to display.' ]]);$output .= '
+'}else {$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('displayorder');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'session_type'}=$_tt_value;$output .= '
+    ';if ($stash->get(['data',0,'sessions',0,$stash->get('session_type'),0,'size',0])){$output .= '
+
+        <h3>';$output .= $stash->get('session_type');$output .= ' Sessions</h3>
+        <table border="1" class="sortable"> <tr>
+            <th>Session</th>
+            <th>Initiator</th>
+            <th>Source Host</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Actions</th>
+        </tr>
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'sessions',0,$stash->get('session_type'),0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'session'}=$_tt_value;$output .= '
+            <tr class="tdshade';$output .= $stash->get(['loop',0,'count',0])% 2 ? 1 : 2;$output .= '">
+            <td>';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['session',0,'initiator',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['session',0,'source_host',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['session',0,'starttime',0]);$output .= '</td>
+            <td>';$output .= $stash->get(['session',0,'endtime',0]);$output .= '</td>
+            <td>';if ($stash->get('session_type')eq 'PAUSED'){$output .= '
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '</a>
+                <br /><!-- FIXME: remove br -->
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '&action=resume" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Resume' ]]);$output .= '</a>
+                <br /><!-- FIXME: remove br -->
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '&action=abort" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Abort' ]]);$output .= '</a>
+                '}elsif ($stash->get('session_type')eq 'RUNNING' || $stash->get('session_type')eq 'PAUSING'){$output .= '
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '</a>
+                <br /><!-- FIXME: remove br -->
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '&action=abort" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Abort' ]]);$output .= '</a>
+                '}elsif ($stash->get('session_type')eq 'COMPLETED' || $stash->get('session_type')eq 'FAILED'){$output .= '
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Review' ]]);$output .= '</a>
+                '}else {$output .= '
+                <a href="transfer_session?transfer_session_id=';$output .= $stash->get(['session',0,'sessionid',0]);$output .= '" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '</a>
+                '}$output .= '</td>
+            </tr>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </table>
+    '}$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+</div>
+
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

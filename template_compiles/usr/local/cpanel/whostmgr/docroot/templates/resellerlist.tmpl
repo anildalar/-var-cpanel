@@ -1,0 +1,134 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/resellerlist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$output .= do {my$output='';$output .= '
+';$stash->set('hasreseller',0);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdomains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;if ($stash->get(['userdata',0,'is_reseller',0])){$stash->set('hasreseller',1);last FOR1};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+<script type="text/javascript">
+    ';$output .= $stash->get(['Whostmgr',0,'find_file_and_insert',['js2-min/resellerlist.js' ]]);$output .= '
+</script>
+
+<style type="text/css">';$output .= $stash->get(['Whostmgr',0,'find_file_and_insert',['css2-min/resellerlist.css' ]]);$output .= '</style>
+
+<div class="callout callout-info">
+  <i>';$output .= $stash->get(['locale',0,'maketext',['Note: All functions found on this menu are now available via the main WHM menu.' ]]);$output .= '</i>
+    ';if (!$stash->get('hasreseller')){$output .= '      <br><i>';$output .= $stash->get(['locale',0,'maketext',['This interface will display additional functions after you add reseller privileges to an account.' ]]);$output .= '</i>
+    '}$output .= '</div>
+
+<div class="row">
+    ';$stash->set('resellers',[]);$stash->set('non_resellers',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdomains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;if ($stash->get(['userdata',0,'is_reseller',0])){$output .= $stash->get(['resellers',0,'push',[$stash->get('userdata')]])}else {if ($stash->get(['userdata',0,'is_demo_user',0])eq 1){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}if ($stash->get(['userdata',0,'has_workloads',0])eq 1){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= $stash->get(['non_resellers',0,'push',[$stash->get('userdata')]])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    ';if ($stash->get(['non_resellers',0,'size',0])){$output .= '        <div class="col-md-6">
+            <div class="panel panel-default privileges-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Add Reseller Account Privileges' ]]);$output .= ' </h3>
+                </div>
+                <div class="panel-body">
+                    <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/addres" class="form-inline" method="POST">
+                        <select name="res" id="addres" class="form-control domain-select">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('non_resellers');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$output .= '                                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= ' ';if ($stash->get(['userdata',0,'domain',0])){$output .= '(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= ')'}$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '"><br />
+                        <div class="checkbox cowner-checkbox">
+                            <label for="cowner">
+                                <input id="cowner" type="checkbox" name="cowner" value="1" checked="checked">
+                                <span>';$output .= $stash->get(['locale',0,'maketext',['Make the new reseller own their own account.' ]]);$output .= '</span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    '}$output .= '
+    ';if ($stash->get(['resellers',0,'size',0])){$output .= '
+        <div class="col-md-6">
+            <div class="panel panel-default privileges-panel">
+                <div class="panel-heading">
+                    <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Remove Reseller Account Privileges' ]]);$output .= ' </h3>
+                </div>
+                <div class="panel-body">
+                    <form method="POST" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/delres" class="form-inline">
+                        <select name="res" id="delres" class="form-control domain-select">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('resellers');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$output .= '                                <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= ' ';if ($stash->get(['userdata',0,'domain',0])){$output .= '(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= ')'}$output .= '</option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </select>
+                        <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '">
+                    </form>
+                </div>
+            </div>
+        </div>
+    '}$output .= '</div>
+
+';if ($stash->get('hasreseller')){$output .= '
+';if ($stash->get(['Whostmgr',0,'has_multiuser',0])){$output .= '
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Change Account Ownership/Email Resellers' ]]);$output .= ' </h3>
+                </div>
+                <div class="panel-body">
+                    <a class="btn btn-link" id="change-owner" href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/edituser">
+                        <img class="reseller-action-icon" src="';$output .= $stash->get(['MagicRevision',[$stash->get(['Whostmgr',0,'find_file_url',['icons/change_ownership_of_an_account.png' ]])]]);$output .= '" border="0">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Change Ownership of an Account' ]]);$output .= '</span>
+                    </a>
+
+                    <a class="btn btn-link" id="email-all" href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/emailall?resellers=1">
+                        <img class="reseller-action-icon" src="';$output .= $stash->get(['MagicRevision',[$stash->get(['Whostmgr',0,'find_file_url',['icons/email_all_resellers.png' ]])]]);$output .= '" border="0">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Email All Resellers' ]]);$output .= '</span>
+                    </a>
+
+                    <a class="btn btn-link" id="reset-perm" href="';$output .= $stash->get('cp_security_token');$output .= '/scripts/resetresellers">
+                        <img class="reseller-action-icon" src="';$output .= $stash->get(['MagicRevision',[$stash->get(['Whostmgr',0,'find_file_url',['icons/reset_resellers.png' ]])]]);$output .= '" border="0">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Reset Resellers’ Permissions' ]]);$output .= '</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+'}$output .= '
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading form-inline" >
+                <h3 class="panel-title">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Reseller Actions for [_1]','<span id="reseller_actions_select_placeholder"></span>' ]]);$output .= '
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div style="display:none;" id="reseller_redirect_actions">
+                    <form id="reseller_actions_delegateip" action="../scripts2/delegatemainip" method="GET"><input type="hidden" name="user" id="reseller_actions_delegateip_user"></form>
+                    <form id="reseller_actions_xferwhm" action="../xferwhm/%user%" target="_blank" method="GET"></form>
+                    <form id="reseller_actions_xfercpanel" action="../xfercpanel/%user%" target="_blank" method="GET"></form>
+                </div>
+
+                <div class="reseller_actions ';$output .= $stash->get(['Whostmgr',0,'has_multiuser',0])&& 'multiuser';$output .= '">
+                    ';$stash->set('reseller_action_links',[{'href'=>'../scripts2/editres?res=','img_src'=>'icons/edit_reseller_name_servers_and_privileges.png','label'=>$stash->get(['locale',0,'maketext',['Edit Reseller Nameservers and Privileges' ]]),'id'=>'edit-privileges' },{'multiuser_required'=>1,'href'=>'../scripts2/multichangeowner?newowner=','img_src'=>'icons/change_ownership_of_multiple_accounts.png','label'=>$stash->get(['locale',0,'maketext',['Change Ownership of Multiple Accounts' ]]),'id'=>'change-owner-multiple' },{'multiuser_required'=>1,'href'=>'../scripts2/statres?res=','img_src'=>'icons/view_reseller_usage_and_manage_account_status.png','label'=>$stash->get(['locale',0,'maketext',['View Reseller Usage and Manage Account Status' ]]),'id'=>'view-usage' },{'multiuser_required'=>1,'href'=>'../scripts2/delegateips?user=','img_src'=>'icons/manage_resellers_ip_delegation.png','label'=>$stash->get(['locale',0,'maketext',['Manage [output,abbr,IP,Internet Protocol] Address Delegation' ]]),'id'=>'manage-ip' },{'multiuser_required'=>1,'href'=>'../scripts2/delegatemainip?user=','img_src'=>'icons/manage_resellers_shared_ip.png','label'=>$stash->get(['locale',0,'maketext',['Manage Reseller’s Shared [output,abbr,IP,Internet Protocol] Address' ]]),'id'=>'manage-shared-ip' },{'onclick'=>'return handle_reseller_redirect_action(\'xferwhm\')','img_src'=>'icons/web_host_manager.png','label'=>$stash->get(['locale',0,'maketext',['Log in to [asis,WHM]' ]]),'id'=>'login-whm' },{'onclick'=>'return handle_reseller_redirect_action(\'xfercpanel\')','img_src'=>'images/cpanel.png','label'=>$stash->get(['locale',0,'maketext',['Log in to [asis,cPanel]' ]]),'id'=>'login-cpanel' }]);$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('reseller_action_links');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ra'}=$_tt_value;$output .= '                        ';if ($stash->get(['ra',0,'multiuser_required',0])&&!$stash->get(['Whostmgr',0,'has_multiuser',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '                        <div class="reseller_action">
+                            <a id="';$output .= $stash->get(['ra',0,'id',0]);$output .= '" class="btn btn-link" ';$output .= $stash->get(['ra',0,'onclick',0])&& ('onclick="' .$stash->get(['ra',0,'onclick',0]).'"');$output .= ' href="';$output .= $stash->get(['ra',0,'href',0])|| 'javascript:void(0)';$output .= '">
+                                <img class="reseller-action-icon" src="';$output .= $stash->get(['MagicRevision',[$stash->get(['Whostmgr',0,'find_file_url',[$stash->get(['ra',0,'img_src',0])]])]]);$output .= '" style="margin:5px 5px 5px 0">
+                                <span>';$output .= $stash->get(['ra',0,'label',0]);$output .= '</span>
+                            </a>
+                        </div>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- this gets moved into the localized text -->
+<select name="res" id="reseller_actions_select" class="form-control domain-select" onchange="handle_reseller_select_update(this)" style="display:none">
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'userdomains',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'userdata'}=$_tt_value;$output .= '        ';if (!$stash->get(['userdata',0,'is_reseller',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$output .= '        <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'name',0]);&$_tt_filter($output)};$output .= ' ';if ($stash->get(['userdata',0,'domain',0])){$output .= '(';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['userdata',0,'domain',0]);&$_tt_filter($output)};$output .= ')'}$output .= '</option>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</select>
+<script type="text/javascript">
+    // //<![CDATA[
+    /* injects select into the appropriate place in the translated text */
+    window.onload = function(){
+        var holder = document.getElementById("reseller_actions_select_placeholder");
+        var select = document.getElementById("reseller_actions_select");
+        if (holder) {
+            holder.appendChild(select);
+            select.style.display = "inline-block";
+        }
+
+        handle_reseller_select_update( document.getElementById("reseller_actions_select") );
+    };
+    // ]]>
+</script>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'reseller_center','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

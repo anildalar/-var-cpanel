@@ -1,0 +1,90 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/notifications/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Master',$context->plugin('Master'));$stash->set('Api2',$context->plugin('Api2'));$stash->set('CPBranding',$context->plugin('CPBranding'));$stash->set('VarCache',$context->plugin('VarCache'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('doesNewsExist',$stash->get(['Api2',0,'exec',['News','does_news_exist',{}]]));if ($stash->get(['doesNewsExist',0,0,0])){$stash->set('doesGlobalNewsExist',$stash->get(['Api2',0,'exec',['News','does_news_type_exist',{'type'=>'global' }]]));if ($stash->get(['doesGlobalNewsExist',0,0,0])){$stash->set('globalNews',$stash->get(['Api2',0,'exec',['News','get_news',{'type'=>'global' }],0,0]))}$stash->set('doesResoldNewsExist',$stash->get(['Api2',0,'exec',['News','does_news_type_exist',{'type'=>'resold' }]]));if ($stash->get(['doesResoldNewsExist',0,0,0])){$stash->set('resoldNews',$stash->get(['Api2',0,'exec',['News','get_news',{'type'=>'resold' }],0,0]))}$stash->set('doesResellersNewsExist',$stash->get(['Api2',0,'exec',['News','does_news_type_exist',{'type'=>'cpanel' }]]));if ($stash->get(['doesResellersNewsExist',0,0,0])){$stash->set('resellerNews',$stash->get(['Api2',0,'exec',['News','get_news',{'type'=>'cpanel' }],0,0]))}}$output .= $stash->get(['Api2',0,'pre_exec',['Email','listpopswithdisk' ]]);$stash->set('mail_accounts_near_quota',$stash->get(['Api2',0,'exec',['Email','listpopswithdisk',{'nearquotaonly'=>'1' }]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listpopswithdisk' ]]);if (!$stash->get(['CPANEL',0,'notification_count',0])){$stash->set(['CPANEL',0,'notification_count',0],$stash->get(['execute',['Notifications','get_notifications_count',{}],'data',0]))}$stash->set('notifications_exist',0);$output .= '
+
+';$output .= do {my$output='';$output .= '
+<ul class="alert-list clearfix">
+    ';if ($stash->get(['CPANEL',0,'ENV',0,'item',['CPRESELLER' ]])){$output .= '
+        ';$stash->set('notifications_exist',1);$output .= '
+        <li class="alert-item">
+                <div id="alertRoorResellerLoggedin" class="alert alert-info">
+                    <span class="glyphicon glyphicon-info-sign"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Information:] You are logged in as a reseller or root user.' ]]);$output .= '
+                </div>
+        </li>
+    '}$output .= '
+    ';if (($stash->get(['ExpVar',0,'expand',['$disk_quota_is_full' ]]))){$output .= '
+        ';$stash->set('notifications_exist',1);$output .= '
+        ';if ($stash->get(['CPANEL',0,'feature',['diskusageviewer' ]])){$stash->set('disk_usage_info',$stash->get(['CPBranding',0,'get_application_from_available_applications',[$cVC::S{'available_applications'},'disk_usage' ]]));$stash->set('error_msg',$stash->get(['locale',0,'maketext',['[output,strong,Warning:] This account has reached the maximum disk usage quota. Use [output,url,_1,_2,id,_3] to delete unused files or contact the system administrator.',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).$stash->get(['disk_usage_info',0,'url',0]),$stash->get(['disk_usage_info',0,'itemdesc',0]),'lnkDiskUsage' ]]))}else {$stash->set('error_msg',$stash->get(['locale',0,'maketext',['[output,strong,Warning:] This account has reached the maximum disk usage quota.' ]]))}$output .= '
+
+        <li class="alert-item">
+            <div id="alertDiskUsage" class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                ';$output .= $stash->get('error_msg');$output .= '
+            </div>
+        </li>
+    '}$output .= '
+
+    ';if ($stash->get(['mail_accounts_near_quota',0,'size',0])){$output .= '
+        ';$stash->set('notifications_exist',1);$output .= '
+        <li class="alert-item">
+            <div id="alertMailAccountQuota" class="alert alert-warning">
+                <span class="glyphicon glyphicon-exclamation-sign"></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] The following email account(s) have quota issues:' ]]);$output .= '
+                <ul class="quota-warning">
+                ';$stash->set('mailFeatureEnabled',$stash->get(['CPANEL',0,'feature',['popaccts' ]]));$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('mail_accounts_near_quota');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'mail_account'}=$_tt_value;$output .= '
+                    ';if ($stash->get('mailFeatureEnabled')){$stash->set('url',$stash->get(['CPANEL',0,'CPVAR',0,'dprefix',0]).'mail/editquota.html?email=' .$stash->get(['mail_account',0,'user',0,'uri',0]).'&domain=' .$stash->get(['mail_account',0,'domain',0,'uri',0]));$output .= '
+                    <li>
+                        <a href="';$output .= $stash->get('url');$output .= '">';$output .= $stash->get(['mail_account',0,'email',0,'html',0]);$output .= '</a>
+                    </li>
+                    '}else {$output .= '
+                    <li>
+                        ';$output .= $stash->get(['mail_account',0,'email',0,'html',0]);$output .= '
+                    </li>
+                    '}$output .= '
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </ul>
+            </div>
+        </li>
+    '}$output .= '
+</ul>
+
+';$output .= '
+
+';if ($stash->get(['doesNewsExist',0,0,0])){$output .= '
+';$stash->set('notifications_exist',1);$output .= '
+<ul class="alert-list clearfix">
+    ';if ($stash->get('globalNews')){$output .= '
+        <li class="alert-item">
+            ';$output .= $context->process('news',{'type'=>'global','heading'=>$stash->get(['locale',0,'maketext',['General News' ]]),'news'=>$stash->get('globalNews')});$output .= '
+        </li>
+    '}$output .= '
+    ';if ($stash->get('resoldNews')){$output .= '
+        <li class="alert-item">
+            ';$output .= $context->process('news',{'type'=>'resold','heading'=>$stash->get(['locale',0,'maketext',['News' ]]),'news'=>$stash->get('resoldNews')});$output .= '
+        </li>
+    '}$output .= '
+    ';if ($stash->get('resellerNews')){$output .= '
+        <li class="alert-item">
+            ';$output .= $context->process('news',{'type'=>'reseller','heading'=>$stash->get(['locale',0,'maketext',['News' ]]),'news'=>$stash->get('resellerNews')});$output .= '
+        </li>
+    '}$output .= '
+</ul>
+'}$output .= '
+
+';if ($stash->get('notifications_exist')eq 0){$output .= '
+    <section id="calloutNoNotifications" class="callout callout-info">
+        ';$output .= $stash->get(['locale',0,'maketext',['You have not received any notifications.' ]]);$output .= '
+    </section>
+'}$output .= '
+
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Notifications' ]]),'hide_page_heading'=>1,'app_key'=>'notifications','page_stylesheets'=>['notifications/index.css' ],'focus_feature_search'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'news'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<div class="panel panel-widget">
+    <div id="news_';$output .= $stash->get('type');$output .= '_heading" class="panel-heading widget-heading">
+        ';$output .= $stash->get('heading');$output .= '
+    </div>
+    <div id="news_';$output .= $stash->get('type');$output .= '_content"  class="panel-body">
+        ';$output .= $stash->get('news');$output .= '
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

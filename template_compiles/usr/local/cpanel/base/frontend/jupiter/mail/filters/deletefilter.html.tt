@@ -1,0 +1,37 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/filters/deletefilter.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('deletefilter',$stash->get(['execute',['Email','delete_filter',{'filtername'=>$stash->get(['RAW_FORM',0,'filtername',0]),'account'=>$stash->get(['RAW_FORM',0,'account',0])}]]));$stash->set('email_acct',$stash->get(['execute',['Email','account_name',{'account'=>$stash->get(['FORM',0,'account',0]),'display'=>'0' }],'data',0]));$output .= '
+
+';if ($stash->get(['FORM',0,'account',0])ne '' || $stash->get('email_acct')ne ''){$stash->set('app_name','email_filters')}else {$stash->set('app_name','global_email_filters')}$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    ';if ($stash->get(['deletefilter',0,'status',0])){$output .= '
+        <div id="deleteSuccess" class="alert alert-success">
+            <span id="deleteSuccessImg" class="glyphicon glyphicon-ok-sign"></span>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['deletefilter',0,'messages',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+            <div class="alert-message">
+                ';$output .= $stash->get(['msg',0,'html',0]);$output .= '
+            </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+    '}else {$output .= '
+        <div id="deleteError" class="alert alert-danger">
+            <span id="deleteErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['There was a problem deleting the filter.' ]]);$output .= '
+            </div>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['deletefilter',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msg'}=$_tt_value;$output .= '
+            <div class="alert-message">
+                ';$output .= $stash->get(['msg',0,'html',0]);$output .= '
+            </div>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        </div>
+    '}$output .= '
+
+    ';if ($stash->get(['FORM',0,'account',0])){$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html?account=' .$stash->get(['FORM',0,'account',0]).'','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}else {$output .= '
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'userfilters.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+    '}$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>$stash->get('app_name'),'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

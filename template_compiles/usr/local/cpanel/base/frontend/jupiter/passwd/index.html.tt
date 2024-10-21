@@ -1,0 +1,232 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/passwd/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('password_max_age',($stash->get(['CPANEL',0,'CPCONF',0,'item',['SecurityPolicy::PasswordAge::maxage' ]])eq 'disable')? 0 : $stash->get(['CPANEL',0,'CPCONF',0,'item',['SecurityPolicy::PasswordAge::maxage' ]]));$stash->set('password_strength_get_required_strength',$stash->get(['Api2',0,'exec',['PasswdStrength','get_required_strength',{'app'=>'passwd' }],0,0]));$stash->set('web_disk_has_digest',$stash->get(['Api2',0,'exec',['WebDisk','hasdigest',{}],0,0]));$stash->set('mysqlfe_has_mycnf_for_cpuser',$stash->get(['Api2',0,'exec',['MysqlFE','has_mycnf_for_cpuser',{}]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+
+';$output .= do {my$output='';$output .= '
+    ';$stash->set('external_auth_modules',$stash->get(['execute',['ExternalAuthentication','configured_modules' ],'data',0]));$stash->set('configured_providers',$stash->get(['execute',['ExternalAuthentication','get_authn_links' ],'data',0]));$output .= '
+
+    ';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+
+    ';if ($stash->get(['external_auth_modules',0,'size',0])&& $stash->get('external_auth_modules')){$output .= '
+
+        <div class="ng-cloak body-content">
+            <div class="section">
+                <h2>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                </h2>
+                <div>
+                    ';$output .= $context->process('change_password_form');$output .= '
+                </div>
+            </div>
+            <div class="section">
+                <h2>
+                    ';$output .= $stash->get(['locale',0,'maketext',['External Authentication' ]]);$output .= '
+                </h2>
+                <div>
+                    ';$output .= $context->process('manage_external_auth.html.tt');$output .= '
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            CPANEL.namespace("CPANEL.PAGE");
+            CPANEL.PAGE.external_auth_modules = ';$output .= $stash->get(['external_auth_modules',0,'json',0]);$output .= ';
+            CPANEL.PAGE.configured_providers  = ';$output .= $stash->get(['configured_providers',0,'json',0]);$output .= ';
+            ';if (($stash->get(['FORM',0,'item',['msg' ]])eq 'forced')){$output .= '
+            CPANEL.PAGE.skipNotificationsCheck = true;
+            '}$output .= '
+            window.PAGE = CPANEL.PAGE;
+        </script>
+    '}else {$output .= '
+        <div class="body-content">
+            <div class="section">
+                <h2>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                </h2>
+                <div>
+                    ';$output .= $context->process('change_password_form');$output .= '
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            CPANEL.namespace("CPANEL.PAGE");
+            ';if (($stash->get(['FORM',0,'item',['msg' ]])eq 'forced')){$output .= '
+            CPANEL.PAGE.skipNotificationsCheck = true;
+            '}$output .= '
+            window.PAGE = CPANEL.PAGE;
+        </script>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/_ajaxapp_footer.html.tt');$output .= '
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'change_password','feature'=>'password','page_js'=>$stash->get('js_code'),'use_master_bootstrap'=>0,'page_stylesheets'=>[],'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <script type="text/javascript">
+        var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['password_strength_get_required_strength',0,'strength',0]);$output .= '\', 10) || 0;
+        var init_page = function() {
+            var oldpass_validator = new CPANEL.validate.validator("Old Password");
+            oldpass_validator.add("oldpassword", "min_length(%input%, 1)", "';$output .= $stash->get(['locale',0,'maketext',['Old password cannot be empty.' ]]);$output .= '");
+            oldpass_validator.attach();
+
+            var password_validators = CPANEL.password.setup("password", "pass2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+
+            // attach the old vs new validator to the password field using the existing password field validator
+            // so it gets executed at the same time as the other validators
+            password_validators[0].add("password", "not_equals(\'oldpassword\', \'password\')", "';$output .= $stash->get(['locale',0,'maketext',['You cannot reuse the old password.' ]]);$output .= '");
+
+            CPANEL.validate.attach_to_form("btnChangePassword", [oldpass_validator, password_validators[0], password_validators[1]]);
+
+            YAHOO.util.Dom.get("oldpassword").focus();
+        };
+        YAHOO.util.Event.onDOMReady(init_page);
+    </script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'change_password_form'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+    <div class="callout callout-info">
+        ';if (($stash->get(['FORM',0,'item',['msg' ]])eq 'age')){$output .= '
+            <p ng-non-bindable id="msgExpiredPassword">
+                ';$output .= $stash->get(['locale',0,'maketext',['You have not changed your password in [quant,_1,day,days]. The current security policy requires that you change your password every [quant,_2,day,days] to avoid your account being compromised.',$stash->get(['FORM',0,'item',['days_since_change' ]]),$stash->get(['password_max_age',0,'html',0])]]);$output .= '
+            </p>
+        '}$output .= '
+
+        ';if (($stash->get(['FORM',0,'item',['msg' ]])eq 'strength')){$output .= '
+            <p id="msgPasswordStrengthRequirements">
+                ';$output .= $stash->get(['locale',0,'maketext',['Your password does not meet the strength requirements, you must change it now to avoid having your account compromised.' ]]);$output .= '
+            </p>
+        '}$output .= '
+
+        ';if (($stash->get(['FORM',0,'item',['msg' ]])eq 'forced')){$output .= '
+            <p id="msgAdminRequestsChangePassword">
+                ';$output .= $stash->get(['locale',0,'maketext',['An administrator has requested you change your password.' ]]);$output .= '
+            </p>
+        '}$output .= '
+
+        <p id="msgChangePassword">
+            ';$output .= $stash->get(['locale',0,'maketext',['Change your account password below. Password strength is important in web hosting; we strongly recommend using the Password Generator to create your password. Follow the tips below to keep your password safe.' ]]);$output .= '
+        </p>
+        <p id="msgChangePasswordLogoutMessage">
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] If you change your password, you will end your current session.' ]]);$output .= '
+        </p>
+    </div>
+
+
+    <!-- ';$output .= $stash->get(['web_disk_has_digest',0,'hasdigest',0,'html',0]);$output .= ' -->
+    <form  method="post" name="userform" id="userform" action="changepass.html">
+        <!-- prevent password autofill -->
+        <input type="text" style="display:none">
+        <input type="password" autocomplete=\'off\' style="display:none">
+        ';if ($stash->get(['FORM',0,'item',['msg' ]])){$output .= '
+        <input ng-non-bindable type="hidden" name="msg" id="msg" value="';$output .= $stash->get(['FORM',0,'item',['msg' ]]);$output .= '" />
+        '}$output .= '
+        ';if (($stash->get(['FORM',0,'item',['days_since_change' ]]))){$output .= '
+        <input ng-non-bindable type="hidden" name="days_since_change" id="days_since_change" value="';$output .= $stash->get(['FORM',0,'item',['days_since_change' ]]);$output .= '" />
+        '}$output .= '
+        <div class="form-group">
+            <label id="lblOldPassword" for="oldpassword">';$output .= $stash->get(['locale',0,'maketext',['Old Password' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' maxlength="128" name="oldpass" id="oldpassword" size="20" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><div id="oldpassword_error"></div></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblPassword" for="password">';$output .= $stash->get(['locale',0,'maketext',['New Password' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="password" autocomplete=\'off\' name="newpass" id="password" maxlength="128" class="form-control" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><div id="password_error"></div></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblPassword2" for="pass2">';$output .= $stash->get(['locale',0,'maketext',['New Password (Again):' ]]);$output .= '</label>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input class="form-control" autocomplete=\'off\' maxlength="128" size="20" name="newpass2" id="pass2" type="password" />
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"><div id="pass2_error"></div></div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label id="lblPasswordStrength">
+                ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' (<div style="display: inline" id="why_strong_passwords_link" class="action_link">';$output .= $stash->get(['locale',0,'maketext',['Why?' ]]);$output .= '</div>)
+            </label>
+            ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div id="password_strength" class="password_strength"></div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <input type="button"class="btn btn-default" id="create_strong_password" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                </div>
+            </div>
+        </div>
+        <!--
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('hashref');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();$stash=$context->localise();$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->get(['import',[$_tt_value]])if ref$_tt_value eq 'HASH';$output .= $stash->get(['hashref',0,'item',['has_mycnf_for_cpuser' ],'html',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash=$context->delocalise();die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+        -->
+        ';if (!($stash->get(['CPANEL',0,'CPVAR',0,'item',['has_mycnf_for_cpuser' ]]))){$output .= '
+            <input type="hidden" name="enablemysql" id="hidEnableMysql" checked="checked" value="1">
+        '}else {$output .= '
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" id="enablemysql" name="enablemysql" value="1">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Synchronize database password' ]]);$output .= '
+                            </label>
+                            <span id="enablemysql-info" class="glyphicon glyphicon-info-sign" onclick="CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Synchronize database password' ]]);$output .= '\');" title="';$output .= $stash->get(['locale',0,'maketext',['This option will set your database password to be the same as your new password. If you have a “[_1]” set up in your home directory and want to keep using the password in your “[_1]”, you should uncheck this option. Checking this option will not update the password currently set in “[_1]”.','.my.cnf' ]]);$output .= '">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+        '}$output .= '
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <div class="checkbox">
+                        <label>
+                            ';if (($stash->get(['CPANEL',0,'CPVAR',0,'item',['hasdigest' ]])|| ($stash->get(['FORM',0,'item',['enable_digest' ]]))|| $stash->get(['FORM',0,'item',['enabledigest' ]]))){$output .= '
+                                <input type="checkbox" value="1" checked="checked" id="enabledigest" name="enabledigest">
+                            '}else {$output .= '
+                                <input type="checkbox" value="1" id="enabledigest" name="enabledigest">
+                            '}$output .= '
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                        </label>
+                        <span id="enabledigest-info" class="glyphicon glyphicon-info-sign" onclick="CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication' ]]);$output .= '\');" title="';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '"></span>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <input name="B1" type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Change your password now!' ]]);$output .= '" id="btnChangePassword" />
+        </div>
+    </form>
+
+    <h2 id="hdrProtectPassword">
+        ';$output .= $stash->get(['locale',0,'maketext',['Protect your password:' ]]);$output .= '
+    </h2>
+    <span id="msgDontWritePassword">
+        ';$output .= $stash->get(['locale',0,'maketext',['Don’t write down your password, memorize it. In particular, don’t write it down and leave it anywhere, and don’t place it in an unencrypted file! Use unrelated passwords for systems controlled by different organizations. Don’t give or share your password, in particular to someone claiming to be from computer support or a vendor unless you are sure they are who they say they are. Don’t let anyone watch you enter your password. Don’t enter your password on a computer you don’t trust. Use the password for a limited time and change it periodically.' ]]);$output .= '
+    </span>
+
+    <h2 id="hdrHardToGuess">
+        ';$output .= $stash->get(['locale',0,'maketext',['Choose a hard-to-guess password:' ]]);$output .= '
+    </h2>
+    <ul id="listPasswordManagementAdvice">
+        <li>';$output .= $stash->get(['locale',0,'maketext',['The system attempts to prevent particularly insecure passwords, but it is not foolproof.' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['Do not use words that are in a dictionary, names, or any personal information (for example, your birthday or phone number).' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['Avoid simple patterns. Instead, use UPPER and lower case letters, numbers, and symbols. Make certain that your password is at least eight characters long.' ]]);$output .= '</li>
+        <li>';$output .= $stash->get(['locale',0,'maketext',['When you choose a new password, make certain that it is not related to your previous passwords.' ]]);$output .= '</li>
+    </ul>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

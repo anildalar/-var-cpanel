@@ -1,0 +1,16 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/DnsAdmin/ClusterError.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'clustererror',0])eq 'ERROR_INVALID_RESPONSE_LOGGED'){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Invalid response from [output,abbr,DNS,Domain Name Service] Cluster Peer “[_1]”.',$stash->get(['NOTICE',0,'dnspeer',0])]]))}elsif ($stash->get(['NOTICE',0,'clustererror',0])eq 'ERROR_AUTH_FAILED_LOGGED'){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Failed to authenticate to [output,abbr,DNS,Domain Name Service] Cluster Peer “[_1]”.',$stash->get(['NOTICE',0,'dnspeer',0])]]))}elsif ($stash->get(['NOTICE',0,'clustererror',0])eq 'ERROR_NO_PERMISSION'){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Permission denied from [output,abbr,DNS,Domain Name Service] Cluster Peer “[_1]”.',$stash->get(['NOTICE',0,'dnspeer',0])]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,DNS,Domain Name Service] Cluster Error with peer “[_1]”.',$stash->get(['NOTICE',0,'dnspeer',0])]]))}$output .= '
+
+<p>
+    ';if ($stash->get(['NOTICE',0,'clustererror',0])eq 'ERROR_AUTH_FAILED_LOGGED'){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You should update the authentication credential for “[_1]” at [output,url,_2,_2,target,_3].',$stash->get(['NOTICE',0,'dnspeer',0]),$stash->get(['NOTICE',0,'cluster_status_url',0]),'_blank' ]]);$output .= '
+    '}elsif ($stash->get(['NOTICE',0,'clustererror',0])eq 'ERROR_NO_PERMISSION'){$output .= '
+        ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['You will need to contact the server administrator of “[_1]” and get permission to make the changes you have attempted.',$stash->get(['NOTICE',0,'dnspeer',0])]]);$output .= '
+    '}$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,0,0]),'title'=>$stash->get(['CPANEL',0,'locale',0,'maketext',['Review the attached error log for further details.' ]])}]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

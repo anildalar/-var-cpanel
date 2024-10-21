@@ -1,0 +1,78 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/passwdlist.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('password_strength_required_strength',$stash->get(['execute',['PasswdStrength','get_required_strength',{'app'=>'list' }]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+    <div class="section">
+        <form method="post" action="dopasswdlist.html" id="userform" name="userform">
+            <!-- prevent password autofill -->
+            <input type="text" style="display:none">
+            <input type="password" autocomplete=\'off\' style="display:none">
+            <input type="hidden" name="email" id="hidEmail" value="';$output .= $stash->get(['FORM',0,'email',0]);$output .= '" />
+
+            <p id="descPassword">';$output .= $stash->get(['locale',0,'maketext',['Changing password for “[_1]” …',$stash->get(['FORM',0,'email',0])]]);$output .= '</p>
+
+            <div class="form-group">
+                <label id="lblPassword" for="password">
+                    ';$output .= $stash->get(['locale',0,'maketext',['New Password' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' name="password" id="password" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password_error"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblPassword2" for="password2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Password (Again)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password" autocomplete=\'off\' name="password2" id="password2" class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6" id="password2_error"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label id="lblPasswordStrength">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Strength' ]]);$output .= ' <span id="why_strong_passwords_link" class="glyphicon glyphicon-info-sign"></span>
+                </label>
+                ';$output .= $context->include('_assets/why_strong_passwords.html.tt');$output .= '
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="password_strength" class="password_strength"></div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="button" id="create_strong_password" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Password Generator' ]]);$output .= '" tabindex="-1" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" id="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'lists.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'mailing_lists','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+var REQUIRED_PASSWORD_STRENGTH = parseInt(\'';$output .= $stash->get(['password_strength_required_strength',0,'data',0,'strength',0,'html',0]);$output .= '\', 10) || 0;
+
+var init_page = function() {
+    var password_validators = CPANEL.password.setup("password", "password2", "password_strength", REQUIRED_PASSWORD_STRENGTH, "create_strong_password", "why_strong_passwords_link", "why_strong_passwords_text");
+    CPANEL.validate.attach_to_form("submit", password_validators);
+
+    YAHOO.util.Dom.get("password").focus();
+};
+YAHOO.util.Event.onDOMReady(init_page);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

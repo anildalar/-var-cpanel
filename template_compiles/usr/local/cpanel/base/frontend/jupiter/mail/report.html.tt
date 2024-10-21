@@ -1,0 +1,338 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/report.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Mysql',$context->plugin('Mysql'));$stash->set('DataURI',$context->plugin('DataURI'));$stash->set('HTMLOptions',$context->plugin('HTMLOptions'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('spinner_url','/images/report-spinner.gif');if ($stash->get(['CPANEL',0,'ua_is_ie',0])&& $stash->get(['CPANEL',0,'ua_is_ie',0])< 8){$stash->set('spinner_url',$stash->get(['MagicRevision',[$stash->get('spinner_url')]]));$output .= ('<img src=\'' .$stash->get('spinner_url').'\' style=\'display:none\'>')}else {$stash->set('spinner_url',$stash->get(['DataURI',0,'datauri',[$stash->get('spinner_url'),'image/gif' ]]))}$stash->set('nvdata',$stash->get(['NVData',0,'get_page_nvdata',0]));$stash->set('stats_db_status',$stash->get(['execute',['Email','stats_db_status' ]]));$stash->set('upcp_running',($stash->get(['stats_db_status',0,'data',0])eq 'upcp')&& $stash->get(['locale',0,'maketext',['An update of [asis,cPanel amp() WHM] on this system is in progress. Email statistics are not available.' ]]));$output .= '
+<script type="text/javascript">
+    var setShowAllFilter = function(showAll) {
+        var advancedForm = DOM.get("advanced-form");
+
+        // if there is no recipient email clear the trace
+        if( !DOM.get("freeform").value.trim() ) {
+            DOM.setStyle( "outer_trace_container", "display", "none" );
+        }
+
+        // set filter states
+        if( showAll ) {
+            advancedForm.success.checked = 1;
+            advancedForm.failure.checked = 1;
+            advancedForm.defer.checked = 1;
+            advancedForm.inprogress.checked = 1;
+        } else {
+            advancedForm.success.checked  = 0;
+            advancedForm.failure.checked  = 1;
+            advancedForm.defer.checked  = 0;
+            advancedForm.inprogress.checked  = 0;
+        }
+        check_filter();
+    }
+
+    var runReport = function() {
+        setSpinner();
+        doTrace();
+        doupdate();
+    }
+
+    var setSpinner = function() {
+        return function () {
+            var run_buttons = DOM.getElementsByClassName(\'search-button\');
+            for(var i = 0 ; i < run_buttons.length ; i++){
+                run_buttons[i].disabled = true;
+                DOM.setStyle(run_buttons[i].getElementsByClassName(\'search-button-spinner-text\')[0], \'opacity\', 0.2);
+            }
+        }
+    }();
+
+    var hide_spinner = function () {
+        return function () {
+            var run_buttons = DOM.getElementsByClassName(\'search-button\');
+            for(var i = 0 ; i < run_buttons.length ; i++){
+                run_buttons[i].disabled = false;
+                DOM.setStyle(run_buttons[i].getElementsByClassName(\'search-button-spinner-text\')[0], \'opacity\', 1);
+            }
+        }
+    }();
+
+</script>
+
+
+<script type="text/plain" id="actions_template">
+    <div class="icon_holder">
+        <a id="lnkViewDetails" href="javascript:void(0)" onclick="show_details(this)" title="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '">
+            <span class="fas fa-info-circle" title="';$output .= $stash->get(['locale',0,'maketext',['View Details' ]]);$output .= '"></span>
+        </a>
+    </div>
+</script>
+
+';$output .= $context->include('_assets/_calendar.html.tt');$output .= '
+<div class="body-content">
+
+    ';if ($stash->get(['stats_db_status',0,'status',0])&&!$stash->get('upcp_running')){$output .= '
+        <p id="descTrackDelivery" class="description">
+    ';$output .= $stash->get(['locale',0,'maketext',['Review an email’s delivery route. This can be useful if you need to locate problems with email delivery. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/TrackDelivery','_blank','lnkTrackDeliveryDocumentation' ]]);$output .= '
+        </p>
+
+        ';if ($stash->get(['stats_db_status',0,'data',0])eq 'importing'){$output .= '            <div class="alert alert-info">
+                <span class="glyphicon glyphicon-remove-sign"></span>
+                <div class="alert-message">
+                    ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note]: A rebuild of this database is in progress. Search results may be incomplete.' ]]);$output .= '
+                </div>
+            </div>
+        '}$output .= '
+        ';$stash->set('retention',$stash->get(['CPANEL',0,'CPCONF',0,'exim_retention_days',0])|| 10);$output .= '
+        <div class="sample"></div>
+        <div class="section">
+            <form action="javascript:void(0)" name=\'search-fields\' id=\'search-fields\' onsubmit="runReport()">
+                <input id="type-select" type="hidden" name="mainkey" value="recipient" />
+                <input id="hidSearchmatch" type="hidden" name="searchmatch" value="eq" />
+                <input id="deliverytype_all" type="hidden" name="deliverytype" value="all" />
+                <input id="startdate" name="startdate" type="hidden" />
+                <input id="enddate" name="endddate" type="hidden" />
+                <input id="endtime" name="endtime" type="hidden" />
+                <input id="starttime" name="starttime" type="hidden" />
+                <div class="form-group">
+                    <label id="lblRecipientEmail" for="freeform">';$output .= $stash->get(['locale',0,'maketext',['Recipient Email (optional)' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="freeform" name="freeform" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Optional' ]]);$output .= '" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit">';$output .= $stash->get(['locale',0,'maketext',['Run Report' ]]);$output .= '</button>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                            <div id="freeform_error"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" class="btn btn-default search-button" id=\'show-all-run-button\' onclick="setShowAllFilter(true)">
+                        <span class=\'search-button-spinner-text\'>';$output .= $stash->get(['locale',0,'maketext',['Show All' ]]);$output .= '</span>
+                    </button>
+                    <button type="button" class="btn btn-default search-button" id=\'show-fails-run-button\' onclick="setShowAllFilter(false)">
+                        <span class=\'search-button-spinner-text\'>';$output .= $stash->get(['locale',0,'maketext',['Show Blocked [output,amp] Failed' ]]);$output .= '</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div id="cjt_pagenotice_container"></div>
+
+        <a id="report"></a>
+        <div class="section">
+        <div id=\'table_container\'>
+            <div id=\'page-control\' class="clearfix">
+                <h2>';$output .= $stash->get(['locale',0,'maketext',['Delivery Report' ]]);$output .= '</h2>
+                <div class="results-output">
+                    <div class="results-header"></div>
+                    <div class="total-items">
+                        <div id="results-header"></div>
+                    </div>
+                </div>
+                <div id="floater">
+                    <div id="top-page-nav"></div>
+                </div>
+            </div>
+            <div id="option_header" style="display:none;">
+                <div class="table-box">
+                    <div class="table-top group">
+                        <div style=\'float: right\' id=\'toggle_col_options\'>
+                            <a href=\'javascript:void(0)\' onclick=\'toggle_options()\'>
+                                <img border=0 src="';$output .= $stash->get(['MagicRevision',['../images/edit-list.png' ]]);$output .= '" alt="';$output .= $stash->get(['locale',0,'maketext',['Table Options' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Table Options' ]]);$output .= '" />
+                            </a>
+                        </div>
+                        <br style="clear:both" />
+
+                        <div id=\'filterItems\'>
+                            <div class="top-filterItems">
+                                <div class="filterItems-Arrow"></div>
+                            </div>
+                            <form class="advanced-section" id="advanced-form" action="javascript:void(0)">
+                                <span class="inputs">
+                                    <label>
+                                        <input type="checkbox" name="success" value="1" ';if ($stash->get('nvdata')&& $stash->get(['nvdata',0,'show_success',0])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' />
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show Successes' ]]);$output .= '
+                                    </label>
+                                </span>
+
+                                <span class="inputs">
+                                    <label>
+                                        <input type="checkbox" name="defer" value="1" ';if ($stash->get('nvdata')&& $stash->get(['nvdata',0,'show_defer',0])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' />
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show Deferred' ]]);$output .= '
+                                    </label>
+                                </span>
+                                <span class="inputs">
+                                    <label>
+                                        <input type="checkbox" name="failure" value="1" ';if (!$stash->get('nvdata')|| $stash->get(['nvdata',0,'show_failure',0])||!$stash->get(['nvdata',0,'defined',['show_failure' ]])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' />
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show Failures' ]]);$output .= '
+                                    </label>
+                                </span>
+                                <span class="inputs">
+                                    <label>
+                                        <input type="checkbox" name="inprogress" value="1" ';if ($stash->get('nvdata')&& $stash->get(['nvdata',0,'show_inprogress',0])){$output .= 'checked'}$output .= ' onclick=\'return check_filter()\' />
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Show In-Progress' ]]);$output .= '
+                                    </label>
+                                </span>
+                                <div class="inputs mxresults">
+                                    <label>';$output .= $stash->get(['locale',0,'maketext',['Max Results/Type:' ]]);$output .= '
+                                        <select name="max_results_by_type">
+                                        ';$output .= $stash->get(['HTMLOptions',0,'options_as_html',[[{'v'=>250,'t'=>250 },{'v'=>500,'t'=>500 },{'v'=>1000,'t'=>1000 },{'v'=>2500,'t'=>2500 },{'v'=>5000,'t'=>5000 },{'v'=>0,'t'=>$stash->get(['locale',0,'maketext',['Unlimited' ]])}],{'value'=>'v','text'=>'t','selected'=>$stash->get(['nvdata',0,'max_results_by_type',0])|| 250 }]]);$output .= '                                        </select>
+                                    </label>
+                                </div>
+                            </form>
+                        </div><!-- filteritems -->
+                    </div><!-- table-top group -->
+                    <div id="deliveryreport" class="deliveryreport"></div>
+                    <div class="data-retained">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Data is retained for [quant,_1,day,days].',$stash->get('retention')]]);$output .= '
+                    </div>
+                </div><!-- table-box -->
+            </div><!-- option_header -->
+            <div id=\'bottom-nav\'>
+                <div id=\'floater-bottom\' style="float:right; padding:0px; margin:0px">
+                    <div id="bottom-page-nav"></div>
+                </div>
+                <br style="clear: both" />
+            </div>
+            <br style="clear: both" />
+
+            <div id="outer_trace_container" style="display:none">
+                <h2>';$output .= $stash->get(['locale',0,'maketext',['Email Address Trace' ]]);$output .= '</h2>
+                <div id="trace_container" class="trace-container">
+                    <div id="trace_message" class="email-trace"></div>
+                </div>
+            </div><!-- outer_trace_container -->
+        </div><!-- table_container -->
+        </div>
+       <div id="col_options">
+            <div class="options-top group"></div>
+            <div class="hd"></div>
+            <div class="options-bd">
+                <div class="tb-options">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Table Options' ]]);$output .= '
+                    <div class="closeit"><a href=\'#\' onclick=\'header_panel.hide(); return false\'>X</a></div>
+                </div>
+                <div class="info-blurb">';$output .= $stash->get(['locale',0,'maketext',['Select the columns you wish to display in the table.' ]]);$output .= '</div>
+                <div id="option_area"></div>
+            </div>
+        </div>
+
+        <div id="startcal">
+            <div class="bd">
+                <div id="cal1Container"></div>
+            </div>
+        </div>
+
+        <div id="emailreport"></div>
+
+        <div style="width: 1px; height: 1px; position:absolute; top:-999999px; left:-999999px;" id="printpanel"></div>
+
+        <div id="dateSelect" style="display:none"></div>
+
+    '}else {$output .= '
+        <div id="main_content">
+            <p class="description">
+                ';$stash->set('alert_type',$stash->get('upcp_running')? 'info' : 'danger');$output .= '
+                <div class="alert alert-';$output .= $stash->get('alert_type');$output .= '">
+                    <span class="glyphicon glyphicon-remove-sign"></span>
+                    <div class="alert-message">
+                        ';$output .= $stash->get('upcp_running')|| $stash->get(['stats_db_status',0,'errors_as_string',0]);$output .= '
+                    </div>
+                </div>
+            </p>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div><!-- end body-content -->
+
+<script type="text/javascript">
+    /* load initial page */
+    YAHOO.util.Event.onDOMReady(function(){
+        var tt2 = new YAHOO.widget.Tooltip("tt2", {
+                context:"Search_TT",
+                text: ';$output .= $stash->get(['locale',0,'maketext',['This search persists until you clear it. Because searching updates the report, new data may appear after you click [output,class,Go,_1].','ui-term-reference' ],'json',0]);$output .= ',
+                autodismissdelay: 100000, xyoffset: [5,10]
+        });
+        setSpinner();
+        doTrace();
+        doupdate();
+    });
+</script>
+
+<style type="text/css">
+/* ----- Counteract Bootstrap: */
+.email-trace dl {
+    margin-bottom: 0;
+}
+.email-trace code {
+    color: inherit;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.email-trace dt,
+.email-trace dl {
+    line-height: 1.6;
+}
+/* ----- */
+
+:not([dir=rtl]) .email-trace dd {
+    margin-left: 1em;
+}
+
+[dir=rtl] .email-trace dd {
+    margin-right: 1em;
+}
+
+/* Padding between each route destination: */
+.email-trace dl.route-list > dd:not(:last-of-type) {
+    margin-bottom: 1em;
+}
+
+:not([dir=rtl]) .email-trace .icon-wrapper {
+    margin-right: 0.25em;
+}
+
+[dir=rtl] .email-trace .icon-wrapper {
+    margin-left: 0.25em;
+}
+
+.email-trace .icon-wrapper {
+    font-size: larger;
+    vertical-align: middle;
+}
+</style>
+
+<!-- start trace logic -->
+<script src="/sharedjs/email_trace_tree.js"></script>
+<script>
+    var traceDiv = DOM.get("trace_message");
+    window.doTrace = function(email) {
+        email = email || DOM.get("freeform").value.trim();
+
+        if (email) {
+            CPANEL.api( {
+                version: 3,
+                module: "Email",
+                func: "trace_delivery",
+                data: { recipient: email },
+                callback: {
+                    success: function(o) {
+                        traceDiv.innerHTML = CPANEL.emailTraceTree(o.cpanel_data);
+                        DOM.get("outer_trace_container").style.display = "";
+                    },
+                    failure: function(o) {
+                        var msgHtml = o.cpanel_messages.filter(
+                            function(m) { return m.level === "error" }
+                        ).map(
+                            function(m) { return m.content.html_encode(); }
+                        ).join(" ");
+
+                        msgHtml = "';$output .= $stash->get(['locale',0,'maketext',['The system failed to trace delivery to “[_1]” because of an error: [_2]','%dest%','%err' ]]);$output .= '".replace(/%dest%/, email.html_encode()).replace(/%err/, msgHtml);
+
+                        CPANEL.ajax.show_api_error(msgHtml,"cjt_pagenotice_container");
+                    },
+                },
+            } );
+        }
+    };
+</script>
+<!-- end trace logic -->
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,206 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/ssl/install.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('ExpVar',$context->plugin('ExpVar'));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('CPList',$context->plugin('CPList'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('ssl_capable_domains',$stash->get(['execute_or_die',['WebVhosts','list_ssl_capable_domains' ],'data',0]));$stash->set('installable_domains',$stash->get(['ssl_capable_domains',0,'ofeach',['domain' ]]));$stash->set('domain_proxies',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('ssl_capable_domains');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ssl_d'}=$_tt_value;if (!$stash->get(['ssl_d',0,'is_proxy',0])){($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}$stash->set('proxy_minus_label',$stash->get(['ssl_d',0,'domain',0,'replace',['^[^.]+\.','' ]]));$stash->set('label',$stash->get(['ssl_d',0,'domain',0,'replace',['^([^.]+).+','$1' ]]));if ($stash->get(['domain_proxies',0,$stash->get('proxy_minus_label'),0])){$output .= $stash->get(['domain_proxies',0,$stash->get('proxy_minus_label'),0,'push',[$stash->get('label')]])}else {$stash->set(['domain_proxies',0,$stash->get('proxy_minus_label'),0],[$stash->get('label')])};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$stash->set('domain_aliases',{});$stash->set('display_domains',[{'domain'=>$stash->get(['ExpVar',0,'expand',['$CPDATA{DOMAIN}' ]]),'web_subdomain_aliases'=>$stash->get(['execute_or_die',['DomainInfo','main_domain_builtin_subdomain_aliases' ],'data',0])}]);$stash->set('display_domains',$stash->get(['display_domains',0,'import',[$stash->get(['Api2',0,'exec_or_die',['SubDomain','listsubdomains' ]]),$stash->get(['Api2',0,'exec_or_die',['AddonDomain','listaddondomains' ]]),$stash->get(['Api2',0,'exec_or_die',['Park','listparkeddomains' ]])]]));$stash->set('installed_hosts_api_call',$stash->get(['execute_or_die',['SSL','installed_hosts' ]]));$stash->set('installed_hosts',$stash->get(['installed_hosts_api_call',0,'data',0]));$stash->set('safe_ip',$stash->get(['ExpVar',0,'expand',['$ip' ]]));if ($stash->get(['RAW_FORM',0,'id',0])){$stash->set('cert_info',$stash->get(['execute',['SSL','fetch_cert_info',{'id'=>$stash->get(['RAW_FORM',0,'id',0])}]]))}$stash->set('market_products',$stash->get(['execute',['Market','get_all_products',{'api.filter'=>1,'api.filter_term_0'=>'ssl_certificate','api.filter_type_0'=>'eq','api.filter_column_0'=>'product_group','api.filter_column_1'=>'enabled','api.filter_type_1'=>'eq','api.filter_term_1'=>'1' }],'data',0]));$output .= '
+
+';$stash->set('css_code',do {my$output='';$output .= $context->process('css_block');$output});$output .= '
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= $context->include('_assets/_ajaxapp_header.html.tt');$output .= '
+<div class="body-content">
+    <h2 id="hdrManageHosts">
+        ';$output .= $stash->get(['locale',0,'maketext',['Manage SSL Hosts' ]]);$output .= '
+    </h2>
+
+    ';if (!$stash->get(['CPANEL',0,'feature',['sslinstall' ]])||!$stash->get(['ExpVar',0,'expand',['$isallowedssl' ]])){$output .= '        <div id="notAvailableError" class="alert alert-danger">
+            <span id="notAvailableErrorImg" class="glyphicon glyphicon-remove-sign"></span>
+            <div id="notAvailableErrorMsg" class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['This feature is not available to your account.' ]]);$output .= '            </div>
+        </div>
+    '}else {$output .= '    <p id="descInterface" class="description">';$output .= $stash->get(['locale',0,'maketext',['This interface lets you configure SSL for your domains.' ]]);$output .= '</p>
+    <p id="descAboutCert" class="description">';$output .= $stash->get(['locale',0,'maketext',['An SSL certificate can secure one or more domains; to create an SSL host for a domain, you must have a certificate that secures that domain. Each SSL certificate has a matching key file that must also be present to install the certificate. SSL certificates for production use usually also require a [output,acronym,CA,Certificate Authority] bundle, which this page will automatically try to obtain from the server; in the event that the server cannot find the required CA bundle, you will need to paste it here.' ]]);$output .= '</p>
+    </p>
+
+        ';if ($stash->get(['ExpVar',0,'expand',['$hasdedicatedip' ]])){$output .= '            <p>';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] You don’t have a dedicated IP address. Browsers that were released before 2013 may not support [output,abbr,SNI,Server Name Indication]. Because of this, users may see false security warnings when they visit your SSL-secured websites.' ]]);$output .= '</p>
+        '}$output .= '
+    <div id="cjt_pagenotice_container"></div>
+
+    <div id="installed_ssl_hosts_area" class="ssl-table-area no-hosts-installed">
+        <h2 id="hdrInstalledWebsites" class="page-section-header">';$output .= $stash->get(['locale',0,'maketext',['Manage Installed SSL Websites' ]]);$output .= '</h2>
+
+        <div id="installed_ssl_hosts_table" class="sortable"></div>
+    </div>
+
+    <h2 id="hdrInstallWebsite">';$output .= $stash->get(['locale',0,'maketext',['Install an SSL Website' ]]);$output .= '</h2>
+
+    <a id="linkInstaller" name="installer"></a>
+    <div class="section">
+        <div id="sni_warning_container"></div>
+        <div id="wildcard_subdomain_warning"></div>
+        <div id="autofill_message_container"></div>
+    </div>
+    <div class="section">
+        <form id="mainform" action="javascript:void(0)" name="mainform" method="post" enctype="multipart/form-data">
+            <input id="hidIp" type="hidden" name="ip" value="';$output .= $stash->get('safe_ip');$output .= '">
+            <div class="form-group">
+                <input type="button" class="btn btn-primary" id="sslbrowse" value="';$output .= $stash->get(['locale',0,'maketext',['Browse Certificates' ]]);$output .= '">
+            </div>
+            <div class="form-group">
+                <label id="lblSSLDomain" for="ssldomain">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-4">
+                        <select id="ssldomain" name="domain" class="form-control">
+                            <option value="">';$output .= $stash->get(['locale',0,'maketext',['Select a Domain' ]]);$output .= '</option>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['display_domains',0,'sort',['domain' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'dom'}=$_tt_value;$output .= '
+                                ';$stash->set('aliases',[]);$output .= '                                ';if ($stash->get(['dom',0,'web_subdomain_aliases',0,'size',0])|| $stash->get(['domain_proxies',0,$stash->get(['dom',0,'domain',0]),0])){$output .= '
+                                    ';$stash->set('aliases',$stash->get(['aliases',0,'import',[$stash->get(['dom',0,'web_subdomain_aliases',0]),$stash->get(['domain_proxies',0,$stash->get(['dom',0,'domain',0]),0])]]));$output .= '                                    <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '&nbsp;&nbsp;&nbsp;&nbsp;(+ ';$output .= $stash->get(['locale',0,'maketext',['[numerate,_1,subdomain,subdomains]: [join,~, ,_2]',$stash->get(['aliases',0,'size',0]),$stash->get(['aliases',0,'sort',0])],'html',0]);$output .= ')</option>
+                                '}else {$output .= '
+                                    <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['dom',0,'domain',0]);&$_tt_filter($output)};$output .= '</option>
+                                '}$output .= '
+                                ';$stash->set(['domain_aliases',0,$stash->get(['dom',0,'domain',0]),0],$stash->get('aliases'));$output .= '                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        </select>
+                    </div>
+                    <div class="col-xs-4">
+                        <input type="button" id="fetch-domain" value="';$output .= $stash->get(['locale',0,'maketext',['Autofill by Domain' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Fill this form’s other fields with values that match this domain.' ]]);$output .= '" class="btn btn-primary" style="display:none;">
+                    </div>
+                    <div class="col-xs-4">
+                        <div id="ssldomain_error"></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblIp" for="ip">';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <span>';$output .= $stash->get('safe_ip');$output .= '</span>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblCrt" for="sslcrt">';$output .= $stash->get(['locale',0,'maketext',['Certificate: ([output,asis,CRT])' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea id="sslcrt" rows="10" name="crt" class="textarea-base64 form-control" dir="ltr">';$output .= $stash->get(['cert_info',0,'data',0,'certificate',0]);$output .= '</textarea>
+                        <div id="cert_parse" class="textarea-parse"></div>
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The certificate may already be on your server. You can either paste the certificate here or try to retrieve it for your domain.' ]]);$output .= '</div>
+                    </div>
+                    <div class="col-xs-4">
+                      <div style="padding-bottom: 10px;">
+                        <input type="button" id="fetch-cert" value="';$output .= $stash->get(['locale',0,'maketext',['Autofill by Certificate' ]]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Fill this form’s other fields with values that match this certificate.' ]]);$output .= '" class="btn btn-primary" style="display:none;">
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="sslcrt_error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblKey" for="sslkey">';$output .= $stash->get(['locale',0,'maketext',['Private Key ([output,asis,KEY])' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea id="sslkey" class="textarea-base64 form-control" rows="10" name="key" dir="ltr">';$output .= $stash->get(['cert_info',0,'data',0,'key',0]);$output .= '</textarea>
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['The private key may already be on your server. You can either paste the private key here or try to retrieve the matching key for your certificate.' ]]);$output .= '</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="sslkey_error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblCab" for="sslcab">';$output .= $stash->get(['locale',0,'maketext',['Certificate Authority Bundle: ([output,asis,CABUNDLE])' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <textarea id="sslcab" rows="10" class="textarea-base64 form-control" name="cabundle" dir="ltr">';$output .= $stash->get(['cert_info',0,'data',0,'cabundle',0]);$output .= '</textarea>
+                        <div class="help-block">';$output .= $stash->get(['locale',0,'maketext',['In most cases, you do not need to supply the CA bundle because the server will fetch it from a public repository during installation.' ]]);$output .= '</div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <div id="sslcab_error"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input id="btnInstall" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Install Certificate' ]]);$output .= '" class="btn btn-primary" title="';$output .= $stash->get(['locale',0,'maketext',['Click to install the certificate on your site.' ]]);$output .= '" />
+                <input type="reset" class="btn btn-default" value="';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '" id="sslreset">
+            </div>
+        </form>
+    </div>
+        ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to SSL Manager' ]])});$output .= '
+
+</div><!-- end body-content -->
+
+<script id="ssl-install-require-template" type="text/html">
+    ';$output .= $stash->get(['locale',0,'maketext',['You may only create SSL hosts for domains that are currently attached to your account.' ]]);$output .= '
+    ';$stash->set($stash->get('domains_link'),'<a href="../domains/index.html">' .$stash->get(['locale',0,'maketext',['Domains' ]]).'</a>');$output .= '
+    ';$output .= $stash->get(['locale',0,'maketext',['Before you install an SSL certificate for a domain that is not listed below, you must go to the [_1] page and attach the domain to your account.',$stash->get($stash->get('domains_link'))]]);$output .= '
+</script>
+
+<script id="ssl_hosts_action_template" type="text/x-handlebars-template">
+<div class="action-links">
+    {{#if can_be_set_primary}}
+        <a href="javascript:void(0)" class="make-primary-link">';$output .= $stash->get(['locale',0,'maketext',['Make Primary' ]]);$output .= '</a>
+        <span class="link-spacer"></span>
+    {{/if}}
+    <a href="javascript:void(0)" class="uninstall-link">';$output .= $stash->get(['locale',0,'maketext',['Uninstall' ]]);$output .= '</a>
+
+    <span class="link-spacer"></span>
+
+    <a href="javascript:void(0)" class="update-link">';$output .= $stash->get(['locale',0,'maketext',['Update Certificate' ]]);$output .= '</a>
+    <span class="link-spacer"></span>
+
+    <a id="{{certificate_id}}_DetailsLink" href="javascript:void(0)" class="details-link">';$output .= $stash->get(['locale',0,'maketext',['Certificate Details' ]]);$output .= '</a>
+    <span class="link-spacer"></span>
+
+    <a href="javascript:void(0)" class="new-host-link">';$output .= $stash->get(['locale',0,'maketext',['Use Certificate for New Site' ]]);$output .= '</a>
+</div>
+</script>
+
+<script id="document_root_template" type="text/x-handlebars-template">
+<div class="document-root">
+    <span class="fas fa-home"></span>{{{documentRoot}}}
+</div>
+</script>
+
+<!-- needed for javascript -->
+<div id="sdiv"></div>
+
+        ';$output .= $context->process('_assets/_ajaxapp_footer.html.tt');$output .= '    '}$context->include('_assets/master.html.tt',{'app_key'=>'ssl_tls','include_legacy_scripts'=>1,'include_cjt'=>1,'page_js'=>$stash->get('js_code'),'page_styles'=>$stash->get('css_code'),'embed_stylesheets'=>['css/ssl.css' ],'page_stylesheets'=>['css2-min/ssl/install.css','css2-min/ssl/list-certs.css' ],'content',$output })};$output .= '
+
+';$output .= '
+
+';$output .= '
+
+';$output .= '
+<script>
+PAGE.data.domain_aliases = ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('domain_aliases')]]);$output .= ';
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+';$stash->set('lexicon',{'SSL/TLS Manager: Manage SSL Hosts'=>$stash->get(['locale',0,'lextext',['SSL/TLS Manager: Manage SSL Hosts' ]]),'Manage SSL Hosts'=>$stash->get(['locale',0,'lextext',['Manage SSL Hosts' ]]),'This interface lets you configure SSL for your domains.'=>$stash->get(['locale',0,'lextext',['This interface lets you configure SSL for your domains.' ]]),'An SSL certificate can secure one or more domains; to create an SSL host for a domain, you must have a certificate that secures that domain. Each SSL certificate has a matching key file that must also be present to install the certificate. SSL certificates for production use usually also require a [output,abbr,CA,Certificate Authority] bundle, which this page will automatically try to obtain from the server; in the event that the server cannot find the required CA bundle, you will need to paste it here.'=>$stash->get(['locale',0,'lextext',['An SSL certificate can secure one or more domains; to create an SSL host for a domain, you must have a certificate that secures that domain. Each SSL certificate has a matching key file that must also be present to install the certificate. SSL certificates for production use usually also require a [output,abbr,CA,Certificate Authority] bundle, which this page will automatically try to obtain from the server; in the event that the server cannot find the required CA bundle, you will need to paste it here.' ]]),'Manage Installed SSL Hosts'=>$stash->get(['locale',0,'lextext',['Manage Installed SSL Hosts' ]]),'Browse Certificates'=>$stash->get(['locale',0,'lextext',['Browse Certificates' ]]),'Domain:'=>$stash->get(['locale',0,'lextext',['Domain:' ]]),'SSLSelectDomain'=>$stash->get(['locale',0,'lextext',['Select a Domain' ]]),'Autofill by Domain'=>$stash->get(['locale',0,'lextext',['Autofill by Domain' ]]),'Fill this form’s other fields with values that match this domain.'=>$stash->get(['locale',0,'lextext',['Fill this form’s other fields with values that match this domain.' ]]),'IP Address:'=>$stash->get(['locale',0,'lextext',['IP Address:' ]]),'Certificate: ([output,asis,CRT])'=>$stash->get(['locale',0,'lextext',['Certificate: ([output,asis,CRT])' ]]),'Autofill by Certificate'=>$stash->get(['locale',0,'lextext',['Autofill by Certificate' ]]),'Fill this form’s other fields with values that match this certificate.'=>$stash->get(['locale',0,'lextext',['Fill this form’s other fields with values that match this certificate.' ]]),'The certificate may already be on your server. You can either paste the certificate here or try to retrieve it for your domain.'=>$stash->get(['locale',0,'lextext',['The certificate may already be on your server. You can either paste the certificate here or try to retrieve it for your domain.' ]]),'Private Key: ([output,asis,KEY])'=>$stash->get(['locale',0,'lextext',['Private Key: ([output,asis,KEY])' ]]),'The private key may already be on your server. You can either paste the private key here or try to retrieve the matching key for your certificate.'=>$stash->get(['locale',0,'lextext',['The private key may already be on your server. You can either paste the private key here or try to retrieve the matching key for your certificate.' ]]),'Certificate Authority Bundle: ([output,asis,CABUNDLE])'=>$stash->get(['locale',0,'lextext',['Certificate Authority Bundle: ([output,asis,CABUNDLE])' ]]),'In most cases, you do not need to supply the CA bundle because the server will fetch it from a public repository during installation.'=>$stash->get(['locale',0,'lextext',['In most cases, you do not need to supply the CA bundle because the server will fetch it from a public repository during installation.' ]]),'SSLInstallCert'=>$stash->get(['locale',0,'lextext',['Install Certificate' ]]),'Click to install the certificate on your site.'=>$stash->get(['locale',0,'lextext',['Click to install the certificate on your site.' ]]),'SSLReturn'=>$stash->get(['locale',0,'lextext',['Return to SSL Manager' ]]),'Processing …'=>$stash->get(['locale',0,'lextext',['Processing …' ]]),'Make Primary'=>$stash->get(['locale',0,'lextext',['Make Primary' ]]),'Update SSL'=>$stash->get(['locale',0,'lextext',['Update SSL' ]]),'Uninstall'=>$stash->get(['locale',0,'lextext',['Uninstall' ]]),'Certificate Details'=>$stash->get(['locale',0,'lextext',['Certificate Details' ]]),'Use Certificate for New Site'=>$stash->get(['locale',0,'lextext',['Use Certificate for New Site' ]]),'Browse Certificates'=>$stash->get(['locale',0,'lextext',['Browse Certificates' ]]),'Optional'=>$stash->get(['locale',0,'lextext',['Optional' ]]),'Click to install the certificate on your site.'=>$stash->get(['locale',0,'lextext',['Click to install the certificate on your site.' ]]),'Clear'=>$stash->get(['locale',0,'lextext',['Clear' ]]),'You may only create SSL hosts for domains that are currently attached to your account.'=>$stash->get(['locale',0,'lextext',['You may only create SSL hosts for domains that are currently attached to your account.' ]]),'Before you install an SSL certificate for a domain that is not listed below, you must go to the [_1] page and attach the domain to your account.'=>$stash->get(['locale',0,'lextext',['Before you install an SSL certificate for a domain that is not listed below, you must go to the [_1] page and attach the domain to your account.' ]]),'Main Domain'=>$stash->get(['locale',0,'lextext',['Main Domain' ]]),'Actions'=>$stash->get(['locale',0,'lextext',['Actions' ]]),'Are you sure that you want to delete the SSL host “[_1]”? This operation cannot be undone!'=>$stash->get(['locale',0,'lextext',['Are you sure that you want to delete the SSL host “[_1]”? This operation cannot be undone!' ]]),'Certificate Expiration'=>$stash->get(['locale',0,'lextext',['Certificate Expiration' ]]),'Certificate ID'=>$stash->get(['locale',0,'lextext',['Certificate ID' ]]),'Certificate Key Size'=>$stash->get(['locale',0,'lextext',['Certificate Key Size' ]]),'Confirm SSL Host Delete'=>$stash->get(['locale',0,'lextext',['Confirm SSL Host Delete' ]]),'Deleting SSL host “[_1]” …'=>$stash->get(['locale',0,'lextext',['Deleting SSL host “[_1]” …' ]]),'Document Root'=>$stash->get(['locale',0,'lextext',['Document Root' ]]),'Domains'=>$stash->get(['locale',0,'lextext',['Domains' ]]),'IP Address'=>$stash->get(['locale',0,'lextext',['IP Address' ]]),'Is Primary Website on IP Address?'=>$stash->get(['locale',0,'lextext',['Is Primary Website on IP Address?' ]]),'Loading …'=>$stash->get(['locale',0,'lextext',['Loading …' ]]),'Is Web [output,acronym,SNI,Server Name Indication] Required?'=>$stash->get(['locale',0,'lextext',['Is Web [output,acronym,SNI,Server Name Indication] Required?' ]]),'No'=>$stash->get(['locale',0,'lextext',['No' ]]),'Setting “[_1]” as the primary SSL host on “[_2]” …'=>$stash->get(['locale',0,'lextext',['Setting “[_1]” as the primary SSL host on “[_2]” …' ]]),'The SSL host for “[_1]” has been removed.'=>$stash->get(['locale',0,'lextext',['The SSL host for “[_1]” has been removed.' ]]),'This host’s certificate does not secure this domain. Security warnings will show in users’ web browsers when loading this domain.'=>$stash->get(['locale',0,'lextext',['This host’s certificate does not secure this domain. Security warnings will show in users’ web browsers when loading this domain.' ]]),'This host’s certificate secures this domain.'=>$stash->get(['locale',0,'lextext',['This host’s certificate secures this domain.' ]]),'Yes'=>$stash->get(['locale',0,'lextext',['Yes' ]]),'[quant,_1,bit,bits]'=>$stash->get(['locale',0,'lextext',['[quant,_1,bit,bits]' ]]),'“[_1]” is now the primary SSL host on “[_2]”.'=>$stash->get(['locale',0,'lextext',['“[_1]” is now the primary SSL host on “[_2]”.' ]]),'Certificate ID:'=>$stash->get(['locale',0,'lextext',['Certificate ID:' ]]),'This website’s certificate does not secure this domain.'=>$stash->get(['locale',0,'lextext',['This website’s certificate does not secure this domain.' ]]),'This website’s certificate secures “[_1]”.'=>$stash->get(['locale',0,'lextext',['This website’s certificate secures “[_1]”.' ]]),'You can only install this IP address’s active certificate onto another website with at least one domain that the certificate supports, or update the certificate for your currently installed SSL websites.'=>$stash->get(['locale',0,'lextext',['You can only install this IP address’s active certificate onto another website with at least one domain that the certificate supports, or update the certificate for your currently installed SSL websites.' ]]),'You cannot update the certificate unless the new certificate matches at least one domain for each SSL website on this IP address.'=>$stash->get(['locale',0,'lextext',['You cannot update the certificate unless the new certificate matches at least one domain for each SSL website on this IP address.' ]]),'To update the certificate on an existing SSL website will affect all of your SSL websites, and new SSL websites must use the currently installed certificate.'=>$stash->get(['locale',0,'lextext',['Updating the certificate on an existing SSL website will affect all of your SSL websites, and new SSL websites must use the currently installed certificate.' ]]),'[output,strong,Note:] You don’t have a dedicated IP address. Browsers that were released before 2013 may not support [output,abbr,SNI,Server Name Indication]. Because of this, users may see false security warnings when they visit your SSL-secured websites.'=>$stash->get(['locale',0,'lextext',['[output,strong,Note:] You don’t have a dedicated IP address. Browsers that were released before 2013 may not support [output,abbr,SNI,Server Name Indication]. Because of this, users may see false security warnings when they visit your SSL-secured websites.' ]]),'An update to the certificate on an existing SSL website will affect all of your SSL websites, and new SSL websites must use the currently installed certificate.'=>$stash->get(['locale',0,'lextext',['An update to the certificate on an existing SSL website will affect all of your SSL websites, and new SSL websites must use the currently installed certificate.' ]])});$output .= '
+YAHOO.lang.augmentObject( LOCALE.LEXICON, ';$output .= $stash->get(['lexicon',0,'json',0]);$output .= ' );
+
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/form_submit_handler_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/form_submit_handler_optimized.js');$output .= '
+
+(function() {
+    ';$stash->set('page_data',{'homedir'=>$stash->get(['CPANEL',0,'homedir',0]),'installed_ssl_hosts'=>$stash->get('installed_hosts'),'installable_domains'=>$stash->get('installable_domains'),'dedicated_ip'=>$stash->get(['ExpVar',0,'expand',['$hasdedicatedip' ]])&& $stash->get('safe_ip')});$output .= '    var PAGE = {
+        data : ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get('page_data')]]);$output .= ',
+        nvdata : ';$output .= $stash->get(['JSON',0,'stringify',[$stash->get(['NVData',0,'get_page_nvdata',0])|| {}]]);$output .= ',
+        cpmarket_can_sell_ssl: ';$output .= $stash->get(['CPANEL',0,'feature',['tls_wizard' ]])&& $stash->get(['market_products',0,'size',0])? 'true' : 'false';$output .= ",\n    };\n    window.PAGE = PAGE;\n\n    /**\n      * Initialize the page\n      *\n      * \@method initialize\n      * \@private\n      */\n    var initialize = function() {\n\n        //In case there are validation messages on page load.\n        CPANEL.align_panels_event.fire();\n\n        setTimeout(function(){\n            // Check for certificate \"id\" in url, auto-expand details if it exists.\n            var query = CPANEL.util.parse_query_string();\n            var detailsLink = document.getElementById(query.id + \"_DetailsLink\");\n            if(detailsLink){\n                detailsLink.click();\n\n                // Then we scroll to the detail block.\n                setTimeout(function(){\n                    var detailBlock = document.getElementsByClassName(\"yui-dt-expansion\");\n                    if(detailBlock.length){\n                        var firstBlock = detailBlock[0];\n                        var bodyRect = document.body.getBoundingClientRect(),\n                            elemRect = firstBlock.getBoundingClientRect(),\n                            offset   = elemRect.top - bodyRect.top;\n                        var rect = firstBlock.getBoundingClientRect();\n                        window.scrollTo(0, offset - 50);\n                    }\n                },500);\n            }\n        },500);\n    }\n\n    // Register startup events.\n    YAHOO.util.Event.onDOMReady(initialize);\n\n}());\n\n";$output .= $context->insert('sharedjs/asn1_optimized.js');$output .= '
+';$output .= $context->insert('cjt/ssl-min.js');$output .= '
+</script>
+
+';$output .= $context->process('ssl/ssl_certificate_parse.html.tt');$output .= $context->process('ssl/ssltable_include.html.tt');$output .= $context->process('ssl/sslinstall_include.html.tt');$output .= '
+<script type="text/javascript">
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/sslwidgets_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslwidgets_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/ssltable_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/ssltable_optimized.js');$output .= '
+';$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['sharedjs/sslinstall_optimized.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('sharedjs/sslinstall_optimized.js');$output .= '
+';$output .= $context->insert('yui/datasource/datasource-min.js');$output .= '
+';$output .= $context->insert('cjt/yui-patch/datatable/datatable-min.js');$output .= '
+';$output .= $context->insert('sharedjs/yui2_datatable_row_expansion_optimized.js');$stash->set('lex_path',$stash->get(['CPANEL',0,'get_js_lex_app_rel_path',['js2/ssl/install.js' ]]));if ($stash->get('lex_path')){$output .= $context->insert($stash->get('lex_path'))}$output .= $context->insert('js2/ssl/install.js');$output .= '
+
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},'css_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<style type="text/css">
+';$output .= $context->insert('sharedcss/sslinstall_optimized.css');$output .= '
+';$output .= $context->insert('sharedcss/ssltable_optimized.css');$output .= '
+';$output .= $context->insert('yui/datatable/assets/datatable-core.css');$output .= '
+';$output .= $context->insert('yui/datatable/assets/datatable.css');$output .= '
+</style>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

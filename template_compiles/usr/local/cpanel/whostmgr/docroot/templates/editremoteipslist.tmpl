@@ -1,0 +1,36 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/editremoteipslist.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '</style>
+<div id="block">
+<form id="the_form" action="doeditremoteipslist" method="POST">
+<div id="editremoteipslist" class="yui-navset" style="width:235px; margin-left:20px;">
+    <ul class="yui-nav" style="width:613px">
+        <li><a href="#remotemail" class="selected"><em>Remote Mail Server IPs</em></a></li>
+        <li><a href="#remotedns"><em>Remote Name Server IPs</em></a></li>
+    </ul>
+    <div class="yui-content" style="width:585px;padding-left:20px">
+        <div id="remotemail">
+			<span style="display:block;margin:10px 0 0"><strong>Enter one IP address per line:</strong></span>
+            <table style="border-collapse:collapse"><tr>
+    		<td><textarea id="remotemail_text" rows="5" cols="26" name="remotemail">';$output .= $stash->get(['data',0,'remotemail',0]);$output .= '</textarea></td>
+            <td><span id="remotemail_text_error"></span></td>
+            </tr></table>
+        	<div style="padding-top:10px;padding-bottom:20px;border-bottom:1px solid #ccc"><input type="submit" value="Save" class="btn-primary"></div>
+
+
+
+<p><em>Mail servers whose IPs are in this list will be considered local mail exchangers when auto-detecting mail routing.</em>	</p>
+
+
+
+        </div>
+        <div id="remotedns">
+
+        		<span style="display:block;margin:10px 0 0"><strong>Enter one IP address per line:</strong></span>
+                <table style="border-collapse:collapse"><tr>
+        		<td><textarea id="remotedns_text" rows="5" cols="26" name="remotedns">';$output .= $stash->get(['data',0,'remotedns',0]);$output .= "</textarea></td>\n                <td><span id=\"remotedns_text_error\"></span></td>\n                </tr></table>\n        		<div style=\"padding-top:10px;padding-bottom:20px;border-bottom:1px solid #ccc\"><input type=\"submit\" value=\"Save\" class=\"btn-primary\"></div>\n\n				<p>\n	        		<em>Users are permitted to add addon or parked domains only with nameserver IPs in this list.</em><br />\n	        	</p>\n        </div>\n    </div>\n</div>\n</form>\n</div>\n\n<script type=\"text/javascript\">\n(function() {\n\nvar tabView = new YAHOO.widget.TabView('editremoteipslist');\ntabView.selectTab(0);\n\ntabView.getTab(0).addListener( 'click', function() {\n    dns_validate.clear_messages();\n    mx_validate.verify();\n} );\n\ntabView.getTab(1).addListener( 'click', function() {\n    mx_validate.clear_messages();\n    dns_validate.verify();\n} );\n\nfunction valid_ip_list(list_text) {\n    list_text = list_text.trim();\n    if ( list_text === \"\" ) return true;\n    return list_text.split(/\\s*\\n\\s*/).every(function (e) { return CPANEL.validate.ip(e) || CPANEL.validate.ipv6(e); });\n};\n\nfunction dns_validator_function() {\n    return valid_ip_list( DOM.get('remotedns_text').value );\n}\nfunction mx_validator_function() {\n    return valid_ip_list( DOM.get('remotemail_text').value );\n}\n\nvar mx_validate = new CPANEL.validate.validator(\"Mail server IPs\");\nmx_validate.add(\"remotemail_text\", mx_validator_function, \"Invalid MX IP list.\");\nmx_validate.attach();\n\nvar dns_validate = new CPANEL.validate.validator(\"Nameserver IPs\");\ndns_validate.add(\"remotedns_text\", dns_validator_function, \"Invalid DNS IP list.\");\ndns_validate.attach();\n\nmx_validate.verify();\n\nYAHOO.util.Event.on('the_form','submit', function(e) {\n    if ( !dns_validate.is_valid() || !mx_validate.is_valid() ) {\n        YAHOO.util.Event.preventDefault(e);\n    }\n} );\n\n})();\n</script>\n";$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'configure_remote_service_ips','scripts'=>'/yui/tabview/tabview.js','stylesheets'=>'/yui/tabview/assets/skins/sam/tabview.css','extrastyle'=>'
+	.yui-skin-sam .yui-navset .yui-content {
+	background:#fff;
+	}
+	.yui-skin-sam .yui-navset .yui-nav, .yui-skin-sam .yui-navset .yui-navset-top .yui-nav {
+	border-color:#00576A;
+	}
+','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

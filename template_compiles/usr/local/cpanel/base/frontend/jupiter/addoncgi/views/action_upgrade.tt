@@ -1,0 +1,107 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/addoncgi/views/action_upgrade.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('JSON',$context->plugin('JSON'));$output .= '
+';if (!$stash->get(['data',0,'notices',0,'has',0])){$output .= '
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['The system successfully upgraded the [asis,cPAddon].' ]]);$output .= '
+    </p>
+'}else {$output .= '
+    ';$output .= $context->process('addoncgi/views/notices.tt',{'notices'=>$stash->get(['data',0,'notices',0])});$output .= '
+'}$output .= '
+
+';if ($stash->get(['data',0,'show_converted',0])){$output .= '
+
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['The system could not upgrade the [asis,cPAddon]. The upgrade patch failed because the current installation uses the legacy [asis,cPAddon] system.' ]]);$output .= '
+    </p>
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['Choose one of the following options:' ]]);$output .= '
+        <ul>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Install a new one and manually import the current installation’s data into it.' ]]);$output .= '</li>
+            <li>';$output .= $stash->get(['locale',0,'maketext',['Do not change.' ]]);$output .= '</li>
+        </ul>
+    </p>
+
+'}else {$output .= '
+
+    ';if ($stash->get(['data',0,'has_patch',0])&& $stash->get(['data',0,'patch_failed',0])&&!$stash->get(['data',0,'forced',0])){$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['You modified this [asis,cPAddon] or the upgrade test failed. You cannot update this [asis,cPAddon] via this interface.' ]]);$output .= '
+        </div>
+    </div>
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['To force the upgrade, enter the following information in the form below:' ]]);$output .= '
+    </p>
+    ';if ($stash->get(['data',0,'has_patch',0])&& $stash->get(['data',0,'patch_failed',0])&&!$stash->get(['form',0,'force',0])){$stash->set('force_string',$stash->get(['String',0,'new',[$stash->get('force_text')]]));$output .= '
+        <p>
+            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('force_text');&$_tt_filter($output)};$output .= '
+        </p>
+        ';if (!$stash->get(['environment',0,'called_from_root',0])){$output .= '
+            ';if ($stash->get(['data',0,'patch_test_output',0])&& $stash->get(['data',0,'verbose',0])){$output .= '
+                ';$output .= $context->process('addoncgi/views/collapse.tt',{'id'=>'patch_test_output_b','show'=>$stash->get(['locale',0,'maketext',['Display the patch test output.' ]]),'hide'=>$stash->get(['locale',0,'maketext',['Hide patch test output.' ]]),'content'=>$stash->get(['data',0,'patch_test_output',0])});$output .= '
+            '}$output .= '
+
+    <div class="row">
+        <div id="upgrade-force-confirmation" class="col-xs-12 col-lg-7 callout callout-danger upgrade-force-confirm">
+            <div class="upgrade-confirm-message">
+                <i class="upgrade-force-dialog-icon fas fa-question-circle"></i>
+
+                <form id="cpaddonsupform" method="post" action="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['environment',0,'script_name',0]);&$_tt_filter($output)};$output .= '" class="layout-medium">
+                    <input type="hidden" name="verified" value="1" />
+                    <input type="hidden" name="addon" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'addon',0]);&$_tt_filter($output)};$output .= '" />
+                    <input type="hidden" name="workinginstall" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'workinginstall',0]);&$_tt_filter($output)};$output .= '" />
+                    <input type="hidden" name="action" value="upgrade" />
+                    <div class="form-group">
+                        <p>
+                            <strong>';$output .= $stash->get(['locale',0,'maketext',['To force the upgrade, enter the following information in the form below:' ]]);$output .= '</strong>
+                        </p>
+                        <p id="sourcetext">
+                            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'force_text',0]);&$_tt_filter($output)};$output .= '
+                        </p>
+                        <textarea type="text" name="force" class="form-control" maxlength="';$output .= $stash->get(['data',0,'force_text_length',0]);$output .= '" id="txtForce" rows="3" cols="80"></textarea>
+                    </div>
+                    <div class="form-group action-group">
+                        <button type="submit" class="btn btn-primary" id="btnForce" disabled>
+                            <i id="spinner-install" style="display: none" class="fas fa-sync fa-spin"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['I understand that if I proceed, this process could possibly delete all customizations and break my installation.' ]]);$output .= '
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        window.force_text = ';$output .= $stash->get(['data',0,'force_text',0,'json',0]);$output .= '
+    </script>
+        '}else {$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            <strong>';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '</strong>
+            ';$output .= $stash->get(['locale',0,'maketext',['You modified this [asis,cPAddon] or the upgrade test failed. You cannot update this [asis,cPaddon] via this interface.' ]]);$output .= '
+        </div>
+    </div>
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['For technical reasons, you can only attempt a forced upgrade via [asis,cPanel] when logged in as the user with the user’s password.' ]]);$output .= '
+    </p>
+        '}$output .= '
+    '}$output .= '
+    '}$output .= '
+'}$output .= '
+';if (!$stash->get(['environment',0,'called_from_root',0])){if ($stash->get(['data',0,'notices',0,'has',['critical_error','error' ]])){if ($stash->get(['form',0,'oneclick',0])eq '1'){$stash->set('fix_url',$stash->get(['to_uri',[$stash->get('environment'),'addon=' .$stash->get(['module',0,'name',0]).'&oneclick=1' ]]))}else {$stash->set('fix_url',$stash->get(['to_uri',[$stash->get('environment'),$stash->get('actionlessuri')]]))}$output .= '
+        <p align="center" id="fix">
+            [<a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('fix_url');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Back' ]]);$output .= '</a>]
+        </p>
+    '}else {$output .= '
+        <p align="center" id="back">
+            ';$stash->set('back_url',$stash->get(['to_uri',[$stash->get('environment'),'addon=' .$stash->get(['module',0,'name',0]).'&oneclick=' .$stash->get(['form',0,'oneclick',0])]]));$output .= '
+            [<a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('back_url');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Back' ]]);$output .= '</a>]
+        </p>
+    '}$output .= '
+    <p align="center" id="home">
+        ';$stash->set('home_url',$stash->get(['to_uri',[$stash->get('environment')]]));$output .= '
+        [<a href="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get('home_url');&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '</a>]
+    </p>
+'}$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

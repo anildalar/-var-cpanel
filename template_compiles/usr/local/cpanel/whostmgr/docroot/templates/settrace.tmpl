@@ -1,0 +1,47 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/settrace.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+<p>
+';$output .= $stash->get(['locale',0,'maketext',['Traceroute displays the packet routing statistics from the server to another network host. It can be used to map the network’s topology and subsequently be used as a tool to focus a hacking attack.' ]]);$output .= '</p>
+</p>
+
+<h3>Traceroute Status</h3>
+
+';if (!$stash->get(['data',0,'binaries',0,'keys',0,'size',0])){$output .= '
+<section class="callout callout-warning">  ';$output .= $stash->get(['locale',0,'maketext',['No traceroute binaries exist on your system.' ]]);$output .= '</section>
+'}else {$output .= '
+';if (!$stash->get(['data',0,'funky',0])&&!$stash->get(['data',0,'disabled',0])&& $stash->get(['data',0,'enabled',0])){$output .= '
+<section class="callout callout-info">  ';$output .= $stash->get(['locale',0,'maketext',['Traceroute is currently enabled.' ]]);$output .= '</section>
+'}elsif (!$stash->get(['data',0,'funky',0])&&!$stash->get(['data',0,'enabled',0])&& $stash->get(['data',0,'disabled',0])){$output .= '
+<section class="callout callout-info">  ';$output .= $stash->get(['locale',0,'maketext',['Traceroute is currently disabled.' ]]);$output .= '</section>
+'}else {$output .= '
+<section class="callout callout-warning">  ';$output .= $stash->get(['locale',0,'maketext',['Traceroute is currently partially enabled.' ]]);$output .= '</section>
+'}$output .= '
+
+';if ($stash->get(['data',0,'errors',0,'keys',0])){$output .= '
+<div class="alert alert-danger">
+    <span class="glyphicon glyphicon-remove-sign"></span>
+    <div class="alert-message">
+      ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Error]: Some file permissions were set improperly.' ]]);$output .= '
+    </div>
+</div>
+'}$output .= '
+
+';if ($stash->get(['data',0,'binaries',0,'keys',0])){$output .= '
+<table class="table">
+<tr><th>Binary</th><th>Permissions</th></tr>
+';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'binaries',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'binary'}=$_tt_value;$output .= '
+<tr ';if ($stash->get(['data',0,'errors',0,$stash->get('binary'),0])){$output .= 'class="callout callout-danger"'}$output .= '>
+  <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('binary');&$_tt_filter($output)};$output .= '</td>
+  <td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'binaries',0,$stash->get('binary'),0]);&$_tt_filter($output)};$output .= '</td>
+</tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '</table>
+'}$output .= '
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/settrace">
+';if ($stash->get(['data',0,'enabled',0])|| $stash->get(['data',0,'funky',0])){$output .= '
+<input type="submit" class="btn btn-primary" value="Disable" name="dis" />
+'}$output .= '
+';if ($stash->get(['data',0,'disabled',0])|| $stash->get(['data',0,'funky',0])){$output .= '
+<input type="submit" class="btn btn-primary" value="Enable" name="ena" />
+'}$output .= '
+</form>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'theme'=>'bootstrap','app_key'=>'traceroute_enable_disable','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

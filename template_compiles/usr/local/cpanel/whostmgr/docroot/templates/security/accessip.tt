@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/security/accessip.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$stash->set('Net',$context->plugin('Net'));$output .= '<div class="body-content">
+';if ($stash->get(['data',0,'status',0])){$output .= '<p ';if ($stash->get(['data',0,'success',0])){$output .= 'class="status" '}else {$output .= 'class="error" '}$output .= '>';$output .= $stash->get(['data',0,'status',0]);$output .= '</p>
+'}$output .= '<h3><div id="h1Title" class="h1Title"><div class="spriteicon_img_mini" id="icon-sec_policy_mini"></div>';$output .= $stash->get(['locale',0,'maketext',['Add recognized IP for “[_1]”.',$stash->get(['data',0,'account',0,'html',0])]]);$output .= '</div></h3>
+<form id="add_ip_form" action="?cmd=accessips" method="post">
+<input type="hidden" name="mode" value="add" />
+<input type="hidden" name="account" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'account',0]);&$_tt_filter($output)};$output .= '">
+   <div class="highlight">
+      <label for="ip">';$output .= $stash->get(['locale',0,'maketext',['IP:' ]]);$output .= '</label>
+      <input class="ip" type="text" size="3" maxlength="3" name="ip"/>.<input class="ip" type="text" size="3" maxlength="3" name="ip2"/>.<input class="ip" type="text" size="3" maxlength="3" name="ip3"/>.<input class="ip" type="text" size="3" maxlength="3" name="ip4"/>
+      <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" class="btn-primary">   </div>
+      <p>';$output .= $stash->get(['locale',0,'maketext',['You may enter an asterisk as a wildcard in the last number of the IP address.' ]]);$output .= '</p>
+      <p>';$output .= $stash->get(['locale',0,'maketext',['You are accessing WHM from this IP: [_1]',$stash->get(['data',0,'remote_addr',0])]]);$output .= '</strong></p>
+</form>
+<h2>';$output .= $stash->get(['locale',0,'maketext',['Recognized IPs for “[_1]”.',$stash->get(['data',0,'account',0,'html',0])]]);$output .= '</h2>
+<table cellpadding="0" cellspacing="0" class="sortable" width="50%">
+   <tr><th>';$output .= $stash->get(['locale',0,'maketext',['IP Address' ]]);$output .= '</th><th>';$output .= $stash->get(['locale',0,'maketext',['Functions' ]]);$output .= '</th></tr>
+';if ($stash->get(['data',0,'iplist',0,'size',0])){do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'iplist',0,'ipsort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'ip'}=$_tt_value;$output .= '    <tr><td>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('ip');&$_tt_filter($output)};$output .= '</td><td style="text-align:center"><form action="?cmd=accessips" method="post"><input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Remove' ]]);$output .= '" class="btn-secondary"><input type="hidden" name="ip" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('ip');&$_tt_filter($output)};$output .= '"><input type="hidden" name="account" value="';$output .= $stash->get(['data',0,'account',0,'html',0]);$output .= '"><input type="hidden" name="mode" value="del"></form></td></tr>
+';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '    <tr><td colspan=2>No Access IPs</td></tr>
+'}$output .= '</table>
+
+
+<div class="return-link"><b>[</b>&nbsp;<a href = "edit_sourceipcheck?account=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'account',0]);&$_tt_filter($output)};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</a>&nbsp;<b>]</b></div>
+
+
+</div>
+<script type="text/javascript">
+//allow a period (.) to advance the input focus in the IP address inputs
+var ip_inputs = DOM.getElementsByClassName( \'ip\', \'input\', \'add_ip_form\' );
+for (var i=0; i<ip_inputs.length; i++) {
+    YAHOO.util.Event.addListener( ip_inputs[i], \'keydown\', function(e) {
+        //period is code 190
+        if ( YAHOO.util.Event.getCharCode(e) === 190 ) {
+            var next_input = DOM.getNextSiblingBy( e.currentTarget, function(node) {
+                return (node.nodeName.toLowerCase() === \'input\');
+            } );
+            if ( DOM.hasClass(next_input, \'ip\') ) next_input.focus();
+            e.preventDefault();  //don\'t actually write the period
+        }
+    } );
+}
+</script>
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','app_key'=>'add_remove_recognized_ip_addresses','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

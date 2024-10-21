@@ -1,0 +1,189 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/greylist/views/reports.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<h3>';$output .= $stash->get(['locale',0,'maketext',['[asis,Greylisting] Report' ]]);$output .= '</h3>
+<p>';$output .= $stash->get(['locale',0,'maketext',['The [asis,Greylist] Report displays the current state of triplets in the system. A triplet consists of a sender [asis,IP] address, From address, and To address.' ]]);$output .= '</p>
+
+<section id="greylistReport">
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-offset-7 col-md-5">
+        <div class="action-container">
+            <button type="button"
+                spinner-id="refresh"
+                cp-action="refresh()"
+                button-class="btn-default"
+                ng-disabled="loadingPageData">';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '</button>
+        </div>
+    </div>
+</div>
+<div class="row search-page-container">
+    <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7">
+        <div class="search-container">
+            <label for="emailFilter_input">';$output .= $stash->get(['locale',0,'maketext',['Filter' ]]);$output .= '</label>
+            <div class="search">
+                <search id="emailFilter" ng-model="meta.filterValue" ng-change="search()"></search>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+        <div class="pagination-container hidden-xs hidden-sm">
+            <page-size id="topPageSize"
+                allowed-sizes="meta.pageSizes"
+                total-items="meta.totalRows"
+                ng-model="meta.pageSize"
+                show-all="false"
+                ng-change="changePageSize()">
+            </page-size>
+            <uib-pagination id="topPager"
+                ng-change="fetchPage(page)"
+                ng-model="meta.pageNumber"
+                max-size="meta.maxPages"
+                items-per-page="meta.pageSize"
+                total-items="meta.totalRows"
+                direction-links="true"
+                boundary-links="true"
+                rotate="false"
+                first-text="<<"
+                last-text=">>"
+                previous-text="<"
+                next-text=">"
+                class="pagination-small">
+            </uib-pagination>
+        </div>
+    </div>
+</div>
+<div class="row hidden-xs hidden-sm">
+    <div class="col-xs-12 col-md-offset-7 col-md-5">
+        <p class="text-right">';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.pageNumberStart }}','{{ meta.pageNumberEnd }}','{{ meta.totalRows }}' ]]);$output .= '</p>
+    </div>
+</div>
+
+<table id="deferredTable" class="table table-striped table-condensed responsive-table">
+    <thead>
+        <th>
+            <span toggle-sort id="sortIp" onsort="sortList" sort-meta="meta" sort-field="sender_ip">
+                ';$output .= $stash->get(['locale',0,'maketext',['Sender [asis,IP] Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortFromAddress" onsort="sortList" sort-meta="meta" sort-field="from_addr">
+                ';$output .= $stash->get(['locale',0,'maketext',['From Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortToAddress" onsort="sortList" sort-meta="meta" sort-field="to_addr">
+                ';$output .= $stash->get(['locale',0,'maketext',['To Address' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortDeferred" onsort="sortList" sort-meta="meta" sort-field="deferred_count" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Deferred' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortAccepted" onsort="sortList" sort-meta="meta" sort-field="accepted_count" sort-type="numeric">
+                ';$output .= $stash->get(['locale',0,'maketext',['Accepted' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortCreation" onsort="sortList" sort-meta="meta" sort-field="create_time">
+                ';$output .= $stash->get(['locale',0,'maketext',['Create Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortBlockExpiration" onsort="sortList" sort-meta="meta" sort-field="block_exp_time">
+                ';$output .= $stash->get(['locale',0,'maketext',['Block Expire Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortRetryBy" onsort="sortList" sort-meta="meta" sort-field="must_retry_by">
+                ';$output .= $stash->get(['locale',0,'maketext',['Must Retry Time' ]]);$output .= '
+            </span>
+        </th>
+        <th>
+            <span toggle-sort id="sortRecordExpiration" onsort="sortList" sort-meta="meta" sort-field="record_exp_time">
+                ';$output .= $stash->get(['locale',0,'maketext',['Record Expire Time' ]]);$output .= '
+            </span>
+        </th>
+        <th></th>
+    </thead>
+    <tbody ng-class="{ \'table-overlay\': updatingPageData }">
+        <tr ng-repeat="entry in greylistEntries">
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Sender [asis,IP] Address' ],'html',0]);$output .= '">{{ entry.sender_ip }}</td>
+            <td class="email-column"
+                data-title="';$output .= $stash->get(['locale',0,'maketext',['From Address' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.from_addr }}"
+                tooltip-append-to-body="true">{{ entry.from_addr }}</td>
+            <td class="email-column"
+                data-title="';$output .= $stash->get(['locale',0,'maketext',['To Address' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.to_addr }}"
+                tooltip-append-to-body="true">{{ entry.to_addr }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Deferred' ],'html',0]);$output .= '">{{ entry.deferred_count }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Accepted' ],'html',0]);$output .= '">{{ entry.accepted_count }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Create Time' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.create_time + \' \' + timezone }}"
+                tooltip-append-to-body="true">{{ entry.create_time | relativeTime:utcOffset:false }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Block Expire Time' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.block_exp_time + \' \' + timezone }}"
+                tooltip-append-to-body="true">{{ entry.block_exp_time | relativeTime:utcOffset:false }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Must Retry Time' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.must_retry_by + \' \' + timezone }}"
+                tooltip-append-to-body="true">{{ entry.must_retry_by | relativeTime:utcOffset:false }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Record Expire Time' ],'html',0]);$output .= '"
+                uib-tooltip="{{ entry.record_exp_time + \' \' + timezone }}"
+                tooltip-append-to-body="true">{{ entry.record_exp_time | relativeTime:utcOffset:false }}</td>
+            <td data-title="';$output .= $stash->get(['locale',0,'maketext',['Actions' ],'html',0]);$output .= "\" class=\"actionsMenu\">\n                <div class=\"btn-group\"\n                    id=\"addHostMenu_{{ \$index }}\"\n                    uib-dropdown\n                    on-toggle=\"toggleIPAddressDropdown(open, entry.sender_ip)\">\n                    <button type=\"button\"\n                        class=\"btn btn-default dropdown-toggle\"\n                        uib-dropdown-toggle\n                        title=\"";$output .= $stash->get(['locale',0,'maketext',['Click to add [asis,IP] address or range to the Trusted Hosts list.' ],'html',0]);$output .= '">
+                      <span class="glyphicon glyphicon-plus"></span>
+                      <span class="action-help-text">';$output .= $stash->get(['locale',0,'maketext',['Add to Trusted Hosts' ]]);$output .= '</span>
+                      <span class="caret"></span>
+                    </button>
+                    <ul
+                        class="dropdown-menu';if ($stash->get(['locale',0,'get_html_dir_attr',0])ne 'rtl'){$output .= '                        dropdown-menu-right'}$output .= ' gear_menu"
+                        uib-dropdown-menu
+                        role="menu">
+                        <li role="presentation" class="dropdown-header reports-dropdown">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Add to Trusted Hosts' ]]);$output .= '
+                        </li>
+                        <li role="presentation" ng-repeat="address in dropdownAddresses">
+                            <a href role="menuitem" ng-click="addToTrustedHost(address);">{{ address }}</a>
+                        </li>
+                    </ul>
+                </div>
+            </td>
+        </tr>
+        <tr class="info empty-row" ng-hide="greylistEntries.length" ng-switch="loadingPageData">
+            <td colspan="10" id="noRecords" ng-switch-when="true">
+                <i id="loading_brutes_spinner" class="fas fa-spinner fa-spin"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['Loading [asis,Greylist] records.' ]]);$output .= '
+            </td>
+            <td colspan="10" id="noRecords" ng-switch-default>';$output .= $stash->get(['locale',0,'maketext',['The [asis,Greylist] Report is empty.' ]]);$output .= '</td>
+        </tr>
+    </tbody>
+</table>
+<div class="search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <div>
+                <uib-pagination id="bottomPager"
+                    ng-change="fetchPage(page)"
+                    ng-model="meta.pageNumber"
+                    max-size="meta.maxPages"
+                    items-per-page="meta.pageSize"
+                    total-items="meta.totalRows"
+                    direction-links="true"
+                    boundary-links="true"
+                    rotate="false"
+                    first-text="<<"
+                    last-text=">>"
+                    previous-text="<"
+                    next-text=">"></uib-pagination>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Displaying [_1] to [_2] out of [_3] records','{{ meta.pageNumberStart }}','{{ meta.pageNumberEnd }}','{{ meta.totalRows }}' ]]);$output .= '</p>
+        </div>
+    </div>
+</div>
+</section>
+
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

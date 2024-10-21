@@ -1,0 +1,58 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/psql/wizard3.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('dbownerprefix',$stash->get(['ExpVar',0,'expand',['$dbownerprefix' ]]));$stash->set('return_link','wizard2.html?db=' .$stash->get(['RAW_FORM',0,'db',0,'uri',0]).'&nocreate=1');$stash->set('psqluser',$stash->get('dbownerprefix').$stash->get(['RAW_FORM',0,'user',0]));$stash->set('adduser_result',$stash->get(['execute',['Postgresql','create_user',{'name'=>$stash->get(['RAW_FORM',0,'item',['user' ]]),'password'=>$stash->get(['RAW_FORM',0,'item',['pass' ]])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+
+';if ($stash->get(['adduser_result',0,'status',0])){$output .= '
+    <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok-sign"></span>
+        ';$output .= $stash->get(['locale',0,'maketext',['You have successfully created a [asis,PostgreSQL] user named “[output,class,_1,status]”.',$stash->get(['psqluser',0,'html',0])]]);$output .= '
+    </div>
+
+    <h2>
+        ';$output .= $stash->get(['locale',0,'maketext',['Step 3: Add user to the database.' ]]);$output .= '
+    </h2>
+
+    <p>
+        ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= ': <b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('dbownerprefix').$stash->get(['RAW_FORM',0,'user',0]);&$_tt_filter($output)};$output .= '</b><br />
+        ';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= ': <b>';$output .= $stash->get(['FORM',0,'db',0]);$output .= '</b>
+    </p>
+
+    <form method="post" action="wizard4.html">
+        <input type="hidden" name="db" value="';$output .= $stash->get(['FORM',0,'db',0]);$output .= '" id="db" />
+        <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('dbownerprefix').$stash->get(['RAW_FORM',0,'user',0]);&$_tt_filter($output)};$output .= '" id="user" />
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" id="submit" />
+        </div>
+    </form>
+'}else {$output .= '
+    ';if ($stash->get(['adduser_result',0,'errors',0,'size',0])){$output .= '
+        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['adduser_result',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                <div class="alert-message">
+                    <strong class="alert-title">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                    </strong>
+                    <span class="alert-body">
+                        <span id="error-';$output .= $stash->get(['loop',0,'index',0]);$output .= '">
+                            ';$output .= $stash->get(['message',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                </div>
+            </div>
+        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    '}$output .= '
+'}$output .= '
+
+    <ul class="list-inline text-center">
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkStep2','return_location'=>$stash->get('return_link'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+        </li>
+        <li>
+            ';$output .= $context->include('_assets/return_link.html.tt',{'id_prefix'=>'lnkHome','return_location'=>'index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Return to PostgreSQL Databases Main' ]])});$output .= '
+        </li>
+    </ul>
+
+</div><!-- end body-content -->
+';$context->include('_assets/master.html.tt',{'app_key'=>'postgresql_database_wizard','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

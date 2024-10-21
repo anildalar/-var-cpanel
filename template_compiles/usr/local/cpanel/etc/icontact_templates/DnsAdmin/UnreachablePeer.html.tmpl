@@ -1,0 +1,22 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/etc/icontact_templates/DnsAdmin/UnreachablePeer.html.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= $context->process('include/colors.tmpl');$output .= $context->process('include/styles.tmpl');$output .= $context->process('include/code_block.tmpl');$output .= do {my$output='';if ($stash->get(['NOTICE',0,'down_hosts',0,'size',0])> 1){$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Unreachable [output,abbr,DNS,Domain Name Service] Cluster Members' ]]))}else {$stash->set(['NOTICE',0,'email_reason',0],$stash->get(['CPANEL',0,'locale',0,'maketext',['Unreachable [output,abbr,DNS,Domain Name Service] Cluster Member: [_1]',$stash->get(['NOTICE',0,'down_hosts',0,0,0])]]))}$output .= '
+
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['The [output,abbr,DNS,Domain Name Service] server on “[_1]” cannot reach the following [output,abbr,DNS,Domain Name Service] cluster members. This message includes the error log for each unreachable [output,abbr,DNS,Domain Name Service] cluster member.',$stash->get(['NOTICE',0,'host_server',0])]]);$output .= '
+</p>
+<p>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['NOTICE',0,'down_hosts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'host'}=$_tt_value;$output .= '
+        ';$stash->set('loop_index',$stash->get(['loop',0,'index',0]));$output .= '
+        ';$output .= $stash->get(['code_block',[{'formatted_code'=>$stash->get(['NOTICE',0,'log_preview',0,$stash->get('loop_index'),0]),'title'=>$stash->get('host')}]]);$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['[output,abbr,DNS,Domain Name Service] commands for these servers are currently being queued.' ]]);$output .= '
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['If the [output,abbr,DNS,Domain Name Service] cluster members are unreachable because of a temporary network outage, the system will automatically process the queued commands when it reestablishes connectivity.' ]]);$output .= '
+</p>
+<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To check the [output,abbr,DNS,Domain Name Service] cluster settings or disable this notification, use the “[_1]” interface in [asis,WHM] at [output,url,_2,_2,target,_3].',$stash->get(['CPANEL',0,'locale',0,'maketext',['Configuration Cluster' ]]),$stash->get(['NOTICE',0,'cluster_status_url',0]),'_blank' ]]);$output .= '
+</p>
+
+';$context->include('wrapper/main.html.tmpl',{'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

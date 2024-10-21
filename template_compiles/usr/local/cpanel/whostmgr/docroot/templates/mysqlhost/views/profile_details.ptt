@@ -1,0 +1,173 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlhost/views/profile_details.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('CPUsername',$context->plugin('CPUsername'));$stash->set('USERNAME_REGEX',$stash->get(['CPUsername',0,'make_strict_regexp_str',[1 ]]));$stash->set('USERNAME_MAX_LENGTH',$stash->get(['CPUsername',0,'get_max_username_length',0]));$output .= '
+
+<div class="loading" ng-show="loadingProfiles">
+    <p class="alert alert-info col-xs-12">
+        <span><i class="fas fa-spinner fa-spin"></i> ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '</span>
+    </p>
+</div>
+<div id="editor" class="panel panel-primary" ng-hide="loadingProfiles">
+    <div class="panel-heading">
+        <h3 class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Edit Profile' ]]);$output .= '</h3>
+    </div>
+    <div class="panel-body">
+    <form class="layout-medium ng-pristine ng-valid" id="editorForm" name="editorForm" novalidate>
+        <!-- prevent password autofill -->
+        <input type="text" style="display:none">
+        <input type="password" autocomplete=\'off\' style="display:none">
+        <h4 class="section-heading" id="sectionHeaderProfileType">';$output .= $stash->get(['locale',0,'maketext',['Profile Settings' ]]);$output .= '</h4>
+        <div class="section-body">
+            <div class="form-group">
+                <label for="txtField_name">';$output .= $stash->get(['locale',0,'maketext',['Profile Name' ]]);$output .= '</label>
+                <span class="glyphicon glyphicon-info-sign"
+                    role="tooltip"
+                    tabindex="0"
+                    aria-describedby="txtField_name"
+                    uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['The name of the database profile. Once you save this, you cannot change the Profile Name.' ]]);$output .= "\"\n                    tooltip-trigger=\"focus\"\n                    tooltip-placement=\"top\"></span>\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                        <input type=\"text\"\n                            id=\"txtField_name\"\n                            name=\"txtField_name\"\n                            ng-model=\"currentProfile.name\"\n                            ng-disabled=\"true\"\n                            ng-maxlength=\"32\"\n                            required\n                            ng-pattern=\"/^[a-zA-Z][\\w\\s\\-]*\$/\"\n                            class=\"form-control\" />\n                    </div>\n                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                        <ul validation-container field-name=\"txtField_name\">\n                            <validation-item\n                                field-name=\"txtField_name\"\n                                validation-name=\"maxlength\">";$output .= $stash->get(['locale',0,'maketext',['Profile names must be no more than 32 characters.' ]]);$output .= '</validation-item>
+                            <validation-item
+                                field-name="txtField_name"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                            <validation-item
+                                field-name="txtField_name"
+                                validation-name="pattern">
+                                ';$output .= $stash->get(['locale',0,'maketext',['A profile name must begin with a letter and may only contain letters, numbers, underscores, hyphens, or spaces.' ]]);$output .= '
+                            </validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Host Settings' ]]);$output .= '</h4>
+        <div class="section-body">
+            <div class="form-group">
+                <label for="txtField_host">';$output .= $stash->get(['locale',0,'maketext',['Host' ]]);$output .= '</label>
+                <span class="glyphicon glyphicon-info-sign"
+                    role="tooltip"
+                    tabindex="0"
+                    aria-describedby="txtField_host"
+                    uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['The database server’s [asis,IP] address or [asis,hostname].' ]]);$output .= '"
+                    tooltip-trigger="focus"
+                    tooltip-placement="right"></span>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text"
+                            id="txtField_host"
+                            name="txtField_host"
+                            ng-model="currentProfile.host"
+                            required
+                            hostname-or-ip
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['[asis,Hostname] or [asis,IP] address.' ]]);$output .= '"
+                            class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <ul validation-container field-name="txtField_host">
+                            <validation-item
+                                field-name="txtField_host"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="txtField_port">';$output .= $stash->get(['locale',0,'maketext',['Port' ]]);$output .= '</label>
+                <span class="glyphicon glyphicon-info-sign"
+                    role="tooltip"
+                    tabindex="0"
+                    aria-describedby="txtField_port"
+                    uib-tooltip="';$output .= $stash->get(['locale',0,'maketext',['The database server’s port. The port must be between 1 and 65535.' ]]);$output .= '"
+                    tooltip-trigger="focus"
+                    tooltip-placement="right"></span>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text"
+                            id="txtField_port"
+                            name="txtField_port"
+                            ng-model="currentProfile.port"
+                            required
+                            positive-integer
+                            num-greater-than-equal="1"
+                            num-less-than-equal="65535"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Port number for database connection.' ]]);$output .= '"
+                            class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <ul validation-container field-name="txtField_port">
+                            <validation-item
+                                field-name="txtField_port"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4 class="section-heading">';$output .= $stash->get(['locale',0,'maketext',['Login Information' ]]);$output .= '</h4>
+        <div class="section-body">
+            <div class="form-group">
+                <label for="txtField_account">';$output .= $stash->get(['locale',0,'maketext',['Username' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text"
+                            id="txtField_account"
+                            name="txtField_account"
+                            ng-model="currentProfile.account"
+                            ng-pattern="/';$output .= $stash->get('USERNAME_REGEX');$output .= '/"
+                            required
+                            maxlength="';$output .= $stash->get('USERNAME_MAX_LENGTH');$output .= '"
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Username for database connection.' ]]);$output .= '"
+                            class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <ul validation-container field-name="txtField_account">
+                            <validation-item
+                                field-name="txtField_account"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                            <validation-item
+                                field-name="txtField_account"
+                                validation-name="pattern">';$output .= $stash->get(['locale',0,'maketext',['A username must not begin with a period or number and may only contain letters, numbers, underscores, hyphens, or periods.' ]]);$output .= '</validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="txtField_password">';$output .= $stash->get(['locale',0,'maketext',['Password' ]]);$output .= '</label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="password"
+                            autocomplete=\'off\'
+                            id="txtField_password"
+                            name="txtField_password"
+                            ng-model="currentProfile.password"
+                            required
+                            placeholder="';$output .= $stash->get(['locale',0,'maketext',['Account password for database connection.' ]]);$output .= '"
+                            class="form-control" />
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <ul validation-container field-name="txtField_password">
+                            <validation-item
+                                field-name="txtField_password"
+                                validation-name="required">';$output .= $stash->get(['locale',0,'maketext',['This field is required.' ]]);$output .= '</validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="row">
+                <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+                    <button
+                        type="submit"
+                        spinner-id="saveProfile"
+                        cp-action="saveProfile(editorForm)"
+                        button-class="btn-primary"
+                        ng-disabled="disableSave(editorForm)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+                    <a id="backLink"
+                        href="profiles"
+                        class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</a>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

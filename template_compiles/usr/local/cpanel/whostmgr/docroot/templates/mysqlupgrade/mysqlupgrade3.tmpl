@@ -1,0 +1,60 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/mysqlupgrade/mysqlupgrade3.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= $context->process('master_templates/_defheader.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Upgrade Database Version (Step [numf,_1] of [numf,_2])',3,5 ]]),'breadcrumburl'=>'/scripts/mysqlupgrade','theme'=>'bootstrap','extrastyle'=>'
+        .inline-block { display: inline-block; }
+' });$stash->set('Mysql',$context->plugin('Mysql'));$output .= '<div id="content">
+    <p>';$output .= $stash->get(['locale',0,'maketext',['The rest of the upgrade process requires no user input, but you can perform it interactively.' ]]);$output .= '</p>
+    <h4 class="section-heading"> ';$output .= $stash->get(['locale',0,'maketext',['Upgrade Type' ]]);$output .= ' </h4>
+    <div class="section-body">
+        <form id="mysql_upgrade_form_3" name="mysql_upgrade_form_3" action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="post">
+        <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+        <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+        <input type="hidden" name="step" value="4">
+        <div class="radio">
+            <label>
+                <input type=radio name="upgrade_type" id="unattended_sub1" value="unattended_automatic">
+                ';$output .= $stash->get(['locale',0,'maketext',['Unattended Upgrade' ]]);$output .= '
+            </label>
+            <span class="help-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['This option automatically completes the upgrade process.' ]]);$output .= '
+            </span>
+        </div>
+        <div class="radio">
+            <label>
+                <input type=radio name="upgrade_type" id="interactive_upgrade" value="interactive">
+                ';$output .= $stash->get(['locale',0,'maketext',['Interactive Upgrade' ]]);$output .= '
+            </label>
+            <span class="help-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['This option steps you through the upgrade process. This process includes the update of your database version.' ]]);$output .= '
+            </span>
+        </div>
+        <div class="form-group inline-block">
+            <button type="submit" id="continue_button" class="btn btn-primary" disabled>';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '</button>
+        </form>
+        <form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts/mysqlupgrade" method="get" id="mysql_upgrade_form_2" class="inline-block">
+            <input type="hidden" name="step" value="2">
+            <input type="hidden" name="selected_version" value="';$output .= $stash->get(['data',0,'selected_version',0,'html',0]);$output .= '">
+            <input type="hidden" name="current_version" value="';$output .= $stash->get(['data',0,'current_version',0,'html',0]);$output .= '">
+            <button type="submit" id="back_button" class="btn btn-default">';$output .= $stash->get(['locale',0,'maketext',['Go Back' ]]);$output .= '</button>
+        </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function update_continue_button() {
+        var radios = document.forms["mysql_upgrade_form_3"].upgrade_type;
+        var checked = false;
+        for (var i = 0, len = radios.length; i < len; i++) {
+            if (radios[i].checked) {
+                checked = true;
+                break;
+            }
+        }
+        document.getElementById("continue_button").disabled = !checked;
+    }
+    window.addEventListener("load", function() {
+        var radios = document.forms["mysql_upgrade_form_3"].upgrade_type;
+        for (var i = 0, len = radios.length; i < len; i++) {
+            radios[i].addEventListener("click", update_continue_button);
+        }
+    });
+</script>
+';$output .= $context->process('master_templates/_deffooter.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

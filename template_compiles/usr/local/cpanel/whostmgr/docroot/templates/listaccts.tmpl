@@ -1,0 +1,737 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/listaccts.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('column_headers',{'suspended'=>$stash->get(['locale',0,'maketext',['Suspended' ]]),'domain'=>$stash->get(['locale',0,'maketext',['Domain' ]]),'ip'=>$stash->get(['locale',0,'maketext',['IP Address' ]]),'user'=>$stash->get(['locale',0,'maketext',['Username' ]]),'email'=>$stash->get(['locale',0,'maketext',['Contact Email' ]]),'startdate'=>$stash->get(['locale',0,'maketext',['Setup Date' ]]),'partition'=>$stash->get(['locale',0,'maketext',['Partition' ]]),'limit'=>$stash->get(['locale',0,'maketext',['Quota' ]]),'used'=>$stash->get(['locale',0,'maketext',['Disk Used' ]]),'plan'=>$stash->get(['locale',0,'maketext',['Package' ]]),'package'=>$stash->get(['locale',0,'maketext',['Package' ]]),'theme'=>$stash->get(['locale',0,'maketext',['Theme' ]]),'owner'=>$stash->get(['locale',0,'maketext',['Reseller/Owner' ]]),'domain_and_user'=>$stash->get(['locale',0,'maketext',['Username or Domain' ]]),'upgrade_opportunities'=>$stash->get(['locale',0,'maketext',['Upgrade Opportunities' ]])});$stash->set('column_order',['ip','user','email','startdate','partition','limit','used','plan','theme','owner','suspended' ]);if ($stash->get(['data',0,'display_upgrade_opportunities',0])){$output .= $stash->get(['column_order',0,'push',['upgrade_opportunities' ]])}$stash->set('filter_friendly_name',{'suspended'=>$stash->get(['locale',0,'maketext',['Suspended' ]]),'upgrade_opportunity'=>$stash->get(['locale',0,'maketext',['Upgrade[output,nbsp]Opportunity' ]])});$stash->set('upgrade_opportunity_filter_title',{'bw_limit'=>$stash->get(['locale',0,'maketext',['Filter by bandwidth limit opportunity met.' ]]),'disk_usage'=>$stash->get(['locale',0,'maketext',['Filter by disk usage opportunity met.' ]])});$stash->set('upgrade_opportunity_icon',{'bw_limit'=>'fas fa-tachometer-alt','disk_usage'=>'fas fa-chart-pie','default'=>'fas fa-chart-line' });$stash->set('bandwidth_exceeded_text',$stash->get(['locale',0,'maketext',['Bandwidth Limit Exceeded' ]]));$output .= '
+';$output .= '
+';$stash->set('BOTTOM_SEARCH_THRESHOLD',10);$output .= '
+';$stash->set('NUMBER_OF_COLUMNS',$stash->get(['column_order',0,'size',0])+ 3);$output .= '
+';$stash->set('MAX_LEADING_PAGES',5);$output .= '
+';$stash->set('MAX_TRAILING_PAGES',5);$output .= '
+
+';$stash->set('headerText',$stash->get(['locale',0,'maketext',['List Accounts' ]]));$stash->set('hasFilter',$stash->get(['data',0,'filtertype',0])&& $stash->get(['data',0,'filtertype',0])ne 'none');if ($stash->get(['data',0,'search',0,'length',0])){$stash->set('headerText',$stash->get(['locale',0,'maketext',['List accounts where “[_1]” matches “[_2]”.',$stash->get(['column_headers',0,'item',[$stash->get(['data',0,'searchtype',0])]]),('' .$stash->get(['data',0,'search',0]))]]));if ($stash->get('hasFilter')){$stash->set('headerText',$stash->get(['locale',0,'maketext',['List accounts where “[_1]” matches “[_2]” and filtered by “[_3]”.',$stash->get(['column_headers',0,'item',[$stash->get(['data',0,'searchtype',0])]]),('' .$stash->get(['data',0,'search',0])),$stash->get(['filter_friendly_name',0,'item',[$stash->get(['data',0,'filtertype',0])]])]]))}}else {if ($stash->get('hasFilter')){$stash->set('headerText',$stash->get(['locale',0,'maketext',['List accounts filtered by “[_1]”.',$stash->get(['filter_friendly_name',0,'item',[$stash->get(['data',0,'filtertype',0])]])]]))}}$output .= '
+';$stash->set('search',sub {my$output='';my (%_tt_args,$_tt_params);@_tt_args{'data','locale','postfix' }=splice(@_,0,3);$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$output .= '
+<div class="';$output .= $stash->get('postfix');$output .= '-group group">
+    <a name="search';$output .= $stash->get('postfix');$output .= '"></a>
+    <div id="search-';$output .= $stash->get('postfix');$output .= '">
+        <form class="form-horizontal" action="../scripts4/listaccts" autocomplete="off">
+            <div class="form-group">
+                <label for="searchtxt';$output .= $stash->get('postfix');$output .= '" class="col-xs-2 control-label">';$output .= $stash->get(['locale',0,'maketext',['Search For:' ]]);$output .= '</label>
+                <div class="col-xs-10">
+                    <input id="searchtxt';$output .= $stash->get('postfix');$output .= '" type="text" name="search" value="';$output .= $stash->get(['data',0,'search',0,'defined',0])? $stash->get(['data',0,'search',0]): '\.net$';$output .= '" />
+                    <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Find' ]]);$output .= '" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="searchtype" class="col-xs-2 control-label">';$output .= $stash->get(['locale',0,'maketext',['Search By:' ]]);$output .= '</label>
+                <div class="col-xs-10">
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Defaults to searching domain and user name.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= (!$stash->get(['data',0,'searchtype',0])|| $stash->get(['data',0,'searchtype',0])eq 'domain_and_user')? 'checked="checked"' : '';$output .= ' value="domain_and_user" /><span>';$output .= $stash->get(['locale',0,'maketext',['Username/Domain' ]]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Search by domain name.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= $stash->get(['data',0,'searchtype',0])eq 'domain' ? 'checked="checked"' : '';$output .= ' value="domain" /><span>';$output .= $stash->get(['column_headers',0,'domain',0]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Search by user name.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= $stash->get(['data',0,'searchtype',0])eq 'user' ? 'checked="checked"' : '';$output .= ' value="user" /><span>';$output .= $stash->get(['column_headers',0,'user',0]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Search by owner name.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= $stash->get(['data',0,'searchtype',0])eq 'owner' ? 'checked="checked"' : '';$output .= ' value="owner" /><span>';$output .= $stash->get(['column_headers',0,'owner',0]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Search by assigned package.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= $stash->get(['data',0,'searchtype',0])eq 'package' ? 'checked="checked"' : '';$output .= ' value="package" /><span>';$output .= $stash->get(['column_headers',0,'plan',0]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Search by assigned IP address.' ]]);$output .= '"><input type="radio" name="searchtype" ';$output .= $stash->get(['data',0,'searchtype',0])eq 'ip' ? 'checked="checked"' : '';$output .= ' value="ip" /><span>';$output .= $stash->get(['locale',0,'maketext',['IP[output,nbsp]Address' ]]);$output .= '</span></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="filtertype" class="col-xs-2 control-label">';$output .= $stash->get(['locale',0,'maketext',['Filter By:' ]]);$output .= '</label>
+                <div class="col-xs-10">
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['No filter.' ]]);$output .= '"><input type="radio" name="filtertype" ';$output .= (!$stash->get(['data',0,'filtertype',0])|| $stash->get(['data',0,'filtertype',0])eq 'none')? 'checked="checked"' : '';$output .= ' value="none" onchange="optionsChange(this)" /><span>';$output .= $stash->get(['locale',0,'maketext',['None' ]]);$output .= '</span></label>
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Filter by suspended status.' ]]);$output .= '"><input type="radio" name="filtertype" ';$output .= $stash->get(['data',0,'filtertype',0])eq 'suspended' ? 'checked="checked"' : '';$output .= ' value="suspended" onchange="optionsChange(this)" /><span>';$output .= $stash->get(['filter_friendly_name',0,'suspended',0]);$output .= '</span></label>
+                    ';if ($stash->get(['data',0,'display_upgrade_opportunities',0])){$output .= '
+                    <label class="radio-inline" title="';$output .= $stash->get(['locale',0,'maketext',['Filter by upgrade opportunity.' ]]);$output .= '"><input type="radio" name="filtertype" ';$output .= $stash->get(['data',0,'filtertype',0])eq 'upgrade_opportunity' ? 'checked="checked"' : '';$output .= ' value="upgrade_opportunity" onchange="optionsChange(this)" id="upgrade_opportunity_input_';$output .= $stash->get('postfix');$output .= '" /><span>';$output .= $stash->get(['filter_friendly_name',0,'upgrade_opportunity',0]);$output .= '</span></label>
+                    '}$output .= '
+                </div>
+            </div>
+            ';if ($stash->get(['data',0,'display_upgrade_opportunities',0])){$output .= '
+            <div class="form-group';$output .= $stash->get(['data',0,'filtertype',0])eq 'upgrade_opportunity' ? '' : ' hidden';$output .= '" id="upgrade_opportunity_input_';$output .= $stash->get('postfix');$output .= '_options">
+                <div class="col-xs-10 col-xs-offset-2">';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['settings',0,'upgrade_opportunities_name',0,'opportunity',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'opportunity'}=$_tt_value;$output .= '
+                    <label class="checkbox-inline" title="';$output .= $stash->get(['upgrade_opportunity_filter_title',0,$stash->get('opportunity'),0]);$output .= '">
+                        <input type="checkbox" name="filteropt" ';$output .= (!$stash->get(['data',0,'filteropt',0,'size',0])|| $stash->get(['data',0,'filteropt',0,$stash->get('opportunity'),0]))? 'checked="checked"' : '';$output .= ' value="';$output .= $stash->get('opportunity');$output .= '" />
+                        <i class="';$output .= $stash->get(['upgrade_opportunity_icon',0,$stash->get('opportunity'),0])|| $stash->get(['upgrade_opportunity_icon',0,'default',0]);$output .= '" aria-hidden="true"></i>
+                        <span>';$output .= $stash->get(['settings',0,'upgrade_opportunities_name',0,'opportunity',0,$stash->get('opportunity'),0,'html',0]);$output .= '</span>
+                    </label>
+                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </div>
+            </div>
+            '}$output .= '
+            <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                    <button type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Apply Filter' ]]);$output .= '</button>
+                </div>
+            </div>
+            ';if ($stash->get(['settings',0,'has_search_filter_sort',0])){$output .= '
+            <div class="form-group">
+                <div class="col-xs-10 col-xs-offset-2">
+                    <input type="button" onclick="window.location.href=\'listaccts\';" value="';$output .= $stash->get(['locale',0,'maketext',['Reset' ]]);$output .= '" class="btn btn-default">
+                </div>
+            </div>
+            '}$output .= '
+            <input type="hidden" name="acctp" value="';$output .= $stash->get(['data',0,'acctsperpage',0]);$output .= '" />
+        </form>
+    </div>
+</div>
+'};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+';$stash->set('CPDate',$context->plugin('CPDate'));$stash->set('Encoder',$context->plugin('Encoder'));$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('VarCache',$context->plugin('VarCache'));$output .= do {my$output='';$stash->set('display_license_excess_warning',!$cVC::S{'dnsonly'}&& $stash->get(['Whostmgr',0,'server_exceeds_max_users',0]));$stash->set('child_workload_accts',{});do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'child_workload_accts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acct'}=$_tt_value;$stash->set(['child_workload_accts',0,$stash->get('acct'),0],1);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '';$cVC::S{'change_image'}=$stash->get(['MagicRevision',['/change.gif' ]]);$output .= '';$cVC::S{'close_image'}=$stash->get(['MagicRevision',['/cjt/images/close-btn.png' ]]);$output .= '';$cVC::S{'error_image'}=$stash->get(['MagicRevision',['/cjt/images/icons/error.png' ]]);$output .= '';$cVC::S{'warning_image'}=$stash->get(['MagicRevision',['/cjt/images/icons/warning.png' ]]);$output .= '
+';if ($stash->get('display_license_excess_warning')){$output .= '    ';$output .= $context->process('menu/_license_excess.tmpl')}$output .= '
+';$output .= $context->process('_ajaxapp_header.tmpl');$output .= '
+';$stash->set('pagecontrols',do {my$output='';$output .= '
+    <div class="pgitem">';$output .= $stash->get(['locale',0,'maketext',['Page:' ]]);$output .= ' </div>';$output .= '';$cVC::S{'query_addition'}='&search=' .$stash->get(['data',0,'search',0,'cpanel_uri_encode_str',0]).'&searchtype=' .$stash->get(['data',0,'searchtype',0,'cpanel_uri_encode_str',0]).'&filtertype=' .$stash->get(['data',0,'filtertype',0,'cpanel_uri_encode_str',0]).'&acctp=' .$stash->get(['data',0,'acctsperpage',0]).'&sortrev=' .$stash->get(['data',0,'sortrev',0,'cpanel_uri_encode_str',0]).'&sortorder=' .$stash->get(['data',0,'sortorder',0,'cpanel_uri_encode_str',0]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'filteropt',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'opt'}=$_tt_value;$output .= '';$cVC::S{'query_addition'}=$cVC::S{'query_addition'}.'&filteropt=' .$stash->get(['opt',0,'cpanel_uri_encode_str',0]);;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+    ';$stash->set('first_leading_page',((($stash->get(['data',0,'page',0])- 1 - $stash->get('MAX_LEADING_PAGES'))>= 0)? ($stash->get(['data',0,'page',0])- 1 - $stash->get('MAX_LEADING_PAGES')): 0));$output .= '
+    ';$stash->set('last_trailing_page',((($stash->get(['data',0,'page',0])- 1 + $stash->get('MAX_TRAILING_PAGES'))< $stash->get(['data',0,'pagecount',0])- 1)? ($stash->get(['data',0,'page',0])- 1 + $stash->get('MAX_TRAILING_PAGES')): $stash->get(['data',0,'pagecount',0])- 1));$output .= '
+
+    ';if ($stash->get(['data',0,'page',0])eq 1 || $stash->get(['data',0,'page',0])eq 'all'){$output .= '
+    <div class="pgsel-disabled pgaction">
+        <span>';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '</span>
+    </div>
+    '}else {$output .= '
+    <div class="pgsel pgaction">
+        <a href="listaccts?skip=1';$output .= $cVC::S{'query_addition'};$output .= '">';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '</a>
+    </div>
+    '}$output .= '
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'pagelist',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'pg'}=$_tt_value;$output .= '
+    ';if (($stash->get(['loop',0,'index',0])>= $stash->get('first_leading_page'))&& ($stash->get(['loop',0,'index',0])<= $stash->get('last_trailing_page'))|| ($stash->get(['loop',0,'index',0])eq 0)|| ($stash->get(['loop',0,'index',0])eq ($stash->get(['data',0,'pagecount',0])- 1))){$output .= '
+        ';if ($stash->get(['data',0,'page',0])eq 'all'){$output .= '
+        <div class="pgsel-disabled pgaction">
+            <span>';$output .= $stash->get(['pg',0,'pagenum',0]);$output .= '</span>
+        </div>
+        '}else {$output .= '
+        <div class="';if ($stash->get(['pg',0,'selected',0])){$output .= 'pgselected'}$output .= ' pgsel">
+            <a href="listaccts?skip=';$output .= $stash->get(['pg',0,'pagenum',0]);$output .= $cVC::S{'query_addition'};$output .= '">';$output .= $stash->get(['pg',0,'pagenum',0]);$output .= '</a>
+        </div>
+        '}$output .= '
+    '}elsif (($stash->get(['loop',0,'index',0])eq $stash->get('first_leading_page')- 1)|| ($stash->get(['loop',0,'index',0])eq $stash->get('last_trailing_page')+ 1)){$output .= '
+    <div class="pgelipse">
+        <span>&hellip;</span>
+    </div>
+    '}else {$output .= '
+        ';($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1;$output .= '
+    '}$output .= '
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    ';if ($stash->get(['data',0,'page',0])eq $stash->get(['data',0,'pagecount',0])|| $stash->get(['data',0,'page',0])eq 'all'){$output .= '
+    <div class="pgsel-disabled pgaction">
+        <span>';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '</span>
+    </div>
+    '}else {$output .= '
+    <div class="pgsel pgaction">
+        <a href="listaccts?skip=';$output .= $stash->get(['data',0,'pagecount',0]);$output .= $cVC::S{'query_addition'};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Navigate to page [numf,_1].',('' .$stash->get(['data',0,'pagecount',0]))]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '</a>
+    </div>
+    '}$output .= '
+
+
+    ';if ($stash->get(['data',0,'page',0])eq 'all'){$output .= '
+    <div class="pgsel pgaction">
+        <a href="listaccts?skip=1';$output .= $cVC::S{'query_addition'};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['View the accounts in sets of [numf,_1].',('' .$stash->get(['data',0,'acctsperpage',0]))]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Paged' ]]);$output .= '</a>
+    </div>
+    '}$output .= '
+    <div class="';if ($stash->get(['data',0,'allselected',0])){$output .= 'pgselected'}$output .= ' pgsel pgaction" >
+        <a href="listaccts?viewall=1';$output .= $cVC::S{'query_addition'};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['View all the accounts matching the current filter.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</a>
+    </div>
+    ';if ($stash->get(['settings',0,'has_search_filter_sort',0])){$output .= '
+     <div class="pgsel pgaction">
+        <a href="listaccts?viewall=1&acctp=';$output .= $stash->get(['data',0,'acctsperpage',0]);$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['View all the accounts after removing the current filter.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All (Forget Search [output,amp] Sort)' ]]);$output .= '</a>
+     </div>
+    '}$output .= '
+    <div id="page-size-selector">
+        <form action="../scripts4/listaccts">
+            <input type="hidden" name="skip" value="1" />
+            <input type="hidden" name="search" value="';$output .= $stash->get(['data',0,'search',0]);$output .= '" />
+            <input type="hidden" name="searchtype" value="';$output .= $stash->get(['data',0,'searchtype',0]);$output .= '" />
+            <input type="hidden" name="filtertype" value="';$output .= $stash->get(['data',0,'filtertype',0]);$output .= '" />
+            <input type="hidden" name="sortrev" value="';$output .= $stash->get(['data',0,'sortrev',0]);$output .= '" />
+            <input type="hidden" name="sortorder" value="';$output .= $stash->get(['data',0,'sortorder',0]);$output .= '" />
+            <label class="de-emphasized-label" title="';$output .= $stash->get(['locale',0,'maketext',['Accounts displayed per page.' ]]);$output .= '" ';if ($stash->get(['data',0,'page',0])eq 'all'){$output .= 'class="disabled"'}$output .= '>';$output .= $stash->get(['locale',0,'maketext',['Per[output,nbsp]Page:' ]]);$output .= '</label>
+            <input size="4" maxsize="4" type="text" name="acctp" value="';$output .= $stash->get(['data',0,'acctsperpage',0]);$output .= '" ';if ($stash->get(['data',0,'page',0])eq 'all'){$output .= 'disabled="disabled"'}$output .= ' />
+        </form>
+    </div>
+    <div class="pgitem"></div>
+';$output});$output .= '
+
+<div class="yui-skin-sam">
+
+    ';$output .= '
+    ';$stash->set('transferMessage','');$stash->set('transferPath',($stash->get('cp_security_token').'/scripts2/tweaksettings?find=account_login_access'));$output .= '
+    ';if (!$stash->get(['settings',0,'transferheader',0])){$output .= '       ';if ($stash->get(['Whostmgr',0,'hasroot',0])){$output .= '            ';$stash->set('transferMessage',$stash->get(['locale',0,'maketext',['Root access to users’ cPanel accounts has been disabled in [output,url,_1,Tweak Settings].',$stash->get('transferPath')]]))}else {$output .= '            ';$stash->set('transferMessage',$stash->get(['locale',0,'maketext',['Reseller access to users’ cPanel accounts has been disabled in Tweak Settings.' ]]))}$output .= '
+    '}elsif ($stash->get(['settings',0,'transferheader',0])eq 2 && $stash->get(['Whostmgr',0,'hasroot',0])){$output .= '       ';$stash->set('transferMessage',$stash->get(['locale',0,'maketext',['A grey [asis,cPanel] icon indicates that the server administrator disabled access to users’ [asis,cPanel] accounts in [output,url,_1,_2].',$stash->get('transferPath'),$stash->get(['locale',0,'maketext',['Tweak Settings' ]])]]));$output .= '
+    '}elsif ($stash->get(['settings',0,'transferheader',0])eq 2){$output .= '       ';$stash->set('transferMessage',$stash->get(['locale',0,'maketext',['A grey [asis,cPanel] icon indicates that the server administrator disabled access to users’ [asis,cPanel] accounts.' ]]))}$output .= '
+
+    ';if ($stash->get('transferMessage')){$output .= '
+    <i>';$output .= $stash->get('transferMessage');$output .= '</i>
+    '}$output .= '
+    ';$stash->set('show_createacct',($stash->get(['acl',0,'all',0])|| $stash->get(['acl',0,'item',['create-acct' ]]))&& (!$stash->get(['Whostmgr',0,'get_max_users',0])|| $stash->get(['Whostmgr',0,'get_users_count',0])< $stash->get(['Whostmgr',0,'get_max_users',0])));$output .= '
+    ';if ($stash->get('show_createacct')){$output .= '
+    <!-- Quick link to account creation page -->
+    <p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/wwwacctform" class="btn btn-primary" id="create_account_link_top">';$output .= $stash->get(['locale',0,'maketext',['Create a New Account' ]]);$output .= '</a></p>
+    '}$output .= '
+    ';$output .= $stash->get(['search',[$stash->get('data'),$stash->get('locale'),'top' ]]);$output .= '
+    <div class="pager-section pager-section-top group">
+        ';$output .= $stash->get('pagecontrols');$output .= '
+        ';if ($stash->get(['data',0,'totaltime',0])){$stash->set('totaltime',$stash->get(['data',0,'totaltime',0]))}else {$stash->set('totaltime',1)}$output .= '
+        <div class="stats">
+            ';if ($stash->get(['settings',0,'has_search_filter_sort',0])){$output .= '
+            ';if ($stash->get(['data',0,'domaincount',0])eq 0){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['No matching records.' ]]);$output .= '
+            '}elsif ($stash->get(['data',0,'showcount',0])eq $stash->get(['data',0,'domaincount',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Showing all matching records.' ]]);$output .= '
+            '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Showing [numf,_1] of [numf,_2] matching records.',('' .$stash->get(['data',0,'showcount',0])),('' .$stash->get(['data',0,'domaincount',0]))]]);$output .= '
+            '}$output .= '
+            '}else {$output .= '
+            ';if ($stash->get(['data',0,'domaincount',0])eq 0){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['No records available.' ]]);$output .= '
+            '}elsif ($stash->get(['data',0,'showcount',0])eq $stash->get(['data',0,'domaincount',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Showing all [numf,_1] records.',('' .$stash->get(['data',0,'domaincount',0]))]]);$output .= '
+            '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Showing [numf,_1] of [numf,_2] records.',('' .$stash->get(['data',0,'showcount',0])),('' .$stash->get(['data',0,'domaincount',0]))]]);$output .= '
+            '}$output .= '
+            '}$output .= '
+            <span style="background-color: #f4c6cb;">';$output .= $stash->get(['locale',0,'maketext',['Suspended accounts are highlighted in red.' ]]);$output .= '</span>
+        </div>
+    </div>
+    <div id="acctlistblk">
+        <table id="listaccts" class="sortable">
+            <tr class="tblheader0">
+                <th nonsortable="true">&nbsp;</th>
+                <th class="yui-dt-sortable ';if ($stash->get(['data',0,'sortorder',0])eq 'domain'){$output .= $stash->get(['data',0,'sortrev',0])? 'yui-dt-desc' : 'yui-dt-asc'}$output .= '" nonsortable="true"><div class="yui-dt-liner"><a href="';$output .= $stash->get(['data',0,'sorturls',0,'domain',0]);$output .= '">';$output .= $stash->get(['column_headers',0,'domain',0,'replace',['\s','&nbsp;' ]]);$output .= '</a></div></th>
+                ';if ($stash->get(['settings',0,'transferheader',0])){$output .= '
+                <th nonsortable="true"><div class="yui-dt-liner">';$output .= $stash->get(['locale',0,'maketext',['cPanel' ]]);$output .= '</div></th>
+                '}$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('column_order');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'column'}=$_tt_value;$output .= '
+                <th nowrap class="yui-dt-sortable ';if ($stash->get('column')eq $stash->get(['data',0,'sortorder',0])){$output .= $stash->get(['data',0,'sortrev',0])? 'yui-dt-desc' : 'yui-dt-asc'}$output .= '" nonsortable="true">
+                    <div class="yui-dt-liner">
+                        <a href="';$output .= $stash->get(['data',0,'sorturls',0,$stash->get('column'),0]);$output .= '">
+                        ';$output .= $stash->get(['column_headers',0,$stash->get('column'),0,'replace',[' ','&nbsp;' ]]);$output .= '
+                        ';if (($stash->get('column')eq 'limit' || $stash->get('column')eq 'used')){$output .= '
+                            <img
+                                class="quota_sensitive"
+                                src=\'';$output .= $cVC::S{'warning_image'};$output .= '\'
+                                alt=\'';$output .= $cVC::S{'warning_string'};$output .= '\'
+                                title=\'';$output .= $stash->get(['locale',0,'maketext',['Warning: Quotas are currently disabled.' ]]);$output .= '\'
+                                style="display:none;"
+                            />
+                        '}$output .= '
+                        </a>
+                    </div>
+                </th>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </tr>
+';$output .= '';$cVC::S{'cpanel_disable_image'}=$stash->get(['MagicRevision',['/images/cpanel-disabled.png' ]]);$output .= '';$cVC::S{'cpanel_image'}=$stash->get(['MagicRevision',['/images/cpanel.png' ]]);$output .= '';$cVC::S{'plus_image'}=$stash->get(['MagicRevision',['/plus.gif' ]]);$output .= '';$cVC::S{'account_impersonation_disabled_string'}=$stash->get(['locale',0,'maketext',['[asis,cPanel] account impersonation is disabled.' ]]);$output .= '';$cVC::S{'missing_string'}=$stash->get(['locale',0,'maketext',['Missing' ]]);$output .= '';$cVC::S{'warning_string'}=$stash->get(['locale',0,'maketext',['Warning!' ]]);$output .= '';$cVC::S{'unknown_string'}=$stash->get(['locale',0,'maketext',['Unknown' ]]);$output .= '';$cVC::S{'unlimited_string'}=$stash->get(['locale',0,'maketext',['unlimited' ]]);$output .= '';$cVC::S{'quota_disabled_string'}=$stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '';$cVC::S{'NA_string'}=$stash->get(['locale',0,'maketext',['N/A' ]]);$output .= '
+            ';if ($stash->get(['data',0,'showcount',0])eq 0){$output .= '
+            <tr>
+                <td colspan="';$output .= $stash->get('NUMBER_OF_COLUMNS');$output .= '" class="final">
+                    <p>
+                    ';if ($stash->get(['settings',0,'has_search_filter_sort',0])){$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no matching accounts on your system.' ]]);$output .= '
+                    '}else {$output .= '
+                        ';$output .= $stash->get(['locale',0,'maketext',['There are no accounts on your system.' ]]);$output .= '
+                    '}$output .= '
+                    ';if ($stash->get('show_createacct')){$output .= '
+                        <!-- Quick link to account creation page -->
+                        <a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/wwwacctform" id="create_account_link_in_table">';$output .= $stash->get(['locale',0,'maketext',['Create a New Account' ]]);$output .= '</a>
+                    '}$output .= '
+                    </p>
+                </td>
+            </tr>
+            '}$output .= '
+
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'accts',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'acct'}=$_tt_value;$output .= '';$cVC::S{'acct'}=$stash->get('acct');$output .= '
+                ';$stash->set('username',$stash->get(['acct',0,'user',0]));$output .= '
+
+                ';if ($stash->get(['child_workload_accts',0,'exists',[$stash->get($stash->get('username'))]])){$output .= '
+                    <tr class="child-account-row">
+                        ';$output .= '                        <td class="control-col"></td>
+
+                        ';$output .= '                        <td>';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'domain'});$output .= '&nbsp;</td>
+
+                        <td class="child-account-msg" colspan="';$output .= $stash->get('NUMBER_OF_COLUMNS')- 2;$output .= '">
+                            ';$output .= $stash->get(['locale',0,'maketext',['User Editing Locked:' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['You must edit this account on the parent node.' ]]);$output .= '
+                        </td>
+                    </tr>
+                '}else {$output .= '
+                    <tr onclick="clickrow(this)" email="';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'email'});$output .= '" user="';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'user'});$output .= '" domain="';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'domain'});$output .= '" suspended="';$output .= $cVC::S{'acct'}->{'is_suspended'};$output .= '" suspension_locked="';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'suspension_locked'});$output .= '" suspension_date="';$output .= $cVC::S{'acct'}->{'suspension_date'}eq 1 ? $stash->get('bandwidth_exceeded_text'): $stash->get(['CPDate',0,'iso_format',[$cVC::S{'acct'}->{'suspension_date'}],'replace',['\s','&nbsp;' ]]);$output .= '" suspension_reason="';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'suspension_reason'});$output .= '" class="';$output .= ($stash->get(['loop',0,'index',0])% 2)? 'tdshade1' : 'tdshade2';if ($cVC::S{'acct'}->{'is_suspended'}){$output .= ' suspended'}if ($stash->get(['child_workload_accts',0,$stash->get('acct'),0,'user',0])){$output .= 'disabled'}$output .= '">
+
+                        ';$output .= '                        <td class="control-col" onclick="toggleRowEditor(this, false, \'password';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'user'});$output .= '\'); Bubble_Click = true;" title="';$output .= $stash->get(['locale',0,'maketext',['Open the actions panel for this account.' ]]);$output .= '"><img border="0" src="';$output .= $cVC::S{'plus_image'};$output .= '"></td>
+
+                        ';$output .= '                        <td><a href="http://';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'domain'});$output .= '" class="domain-link" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['Browse to the site hosted at: [_1]',Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'domain'})]]);$output .= '">';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'domain'});$output .= '&nbsp;</a></td>
+
+                        ';$output .= '                        ';if ($stash->get(['settings',0,'transferheader',0])){if ($cVC::S{'acct'}->{'can_login'}){$output .= '                        <td>
+                        <form method=\'POST\' ACTION=\'/xfercpanel\' target="_blank">
+                            <input type=\'hidden\' name=\'token\' value="';$output .= $stash->get('cp_security_token');$output .= '">
+                            <input type=\'hidden\' name=\'user\' value="';$output .= Cpanel::Encoder::URI::uri_encode_str($cVC::S{'acct'}->{'user'});$output .= '">
+                            <input type="image" src="';$output .= $cVC::S{'cpanel_image'};$output .= '" border="0">
+                        </form>
+                        </td>'}else {$output .= '                        <td><img src="';$output .= $cVC::S{'cpanel_disable_image'};$output .= '" border="0" title="';$output .= $cVC::S{'account_impersonation_disabled_string'};$output .= '"></td>
+'}$output .= '                        '}$output .= '
+
+                        ';$output .= '                        <td class="nowrap">
+                        ';if ($cVC::S{'acct'}->{'ip'}){$output .= '
+                            <a href="http://';$output .= Cpanel::Encoder::URI::uri_encode_str($cVC::S{'acct'}->{'ip'});$output .= '/~';$output .= Cpanel::Encoder::URI::uri_encode_str($cVC::S{'acct'}->{'user'});$output .= '/" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['View the files hosted at this domain.' ]]);$output .= '">';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'ip'});$output .= '</a>
+                        '}else {$output .= '
+                            <img src=\'';$output .= $cVC::S{'error_image'};$output .= '\' alt=\'';$output .= $cVC::S{'warning_string'};$output .= '\' title=\'';$output .= $stash->get(['locale',0,'maketext',['Warning: No IP address set for this account.' ]]);$output .= '\'> <span>';$output .= $cVC::S{'missing_string'};$output .= '</span>
+                        '}$output .= '
+                        </td>
+
+                        ';$output .= '                        <td>
+                            ';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'user'});$output .= '
+                        </td>
+
+                        ';$output .= '                        <td>
+                            ';if ($cVC::S{'acct'}->{'email'}){$output .= '
+                            <a href="mailto:';$output .= Cpanel::Encoder::URI::uri_encode_str($cVC::S{'acct'}->{'email'});$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Send an email to “[_1]”.',Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'email'})]]);$output .= '">';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'email'});$output .= '</a>
+                            '}$output .= '
+                        </td>
+
+                        ';$output .= '                        <td class="nowrap">
+                            ';if ($cVC::S{'acct'}->{'startdate'}){$output .= '
+                            ';$output .= $stash->get(['CPDate',0,'iso_format',[$cVC::S{'acct'}->{'startdate'}]]);$output .= '
+                            '}else {$output .= '
+                            <span>';$output .= $cVC::S{'unknown_string'};$output .= '</span>
+                            '}$output .= '
+                        </td>
+
+                        ';$output .= '                        <td class="';if ($stash->get(['acl',0,'item',['rearrange-accts' ]])){$output .= 'editor'}$output .= '">
+                            ';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'partition'});$output .= '
+                        </td>
+
+                        ';$output .= '                        <td class="number">
+                            <span class="quota_sensitive" style="display:none;">';$output .= $cVC::S{'quota_disabled_string'};$output .= '</span>
+                            <span class="quota_insensitive">
+                            ';if ($cVC::S{'acct'}->{'disklimit'}){$output .= '
+                                ';$output .= int($cVC::S{'acct'}->{'disklimit'}/ 1024);$output .= '&nbsp;MB
+                            '}else {$output .= '
+                                ';$output .= $cVC::S{'unlimited_string'};$output .= '
+                            '}$output .= '
+                            </span>
+                        </td>
+
+                        ';$output .= '                        <td class="number">
+                                <span class="quota_sensitive" style="display:none;">';$output .= $cVC::S{'NA_string'};$output .= '</span>
+                                <span class="quota_insensitive">';$output .= $cVC::S{'acct'}->{'diskused_mb'};$output .= '&nbsp;MB</span>
+                        </td>
+
+                        ';$output .= '                        <td>
+                            ';if ($cVC::S{'acct'}->{'plan'}){$output .= '
+                                ';if ($stash->get(['Whostmgr',0,'checkacl',['edit-pkg' ]])){$output .= '
+                                    <a href="../scripts/editpkg2?pkg=';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'plan'});$output .= '" target="_blank" title="';$output .= $stash->get(['locale',0,'maketext',['View the “[_1]” package settings.',Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'plan'})]]);$output .= '">';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'plan'});$output .= '</a>
+                                '}else {$output .= '
+                                    ';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'plan'});$output .= '
+                                '}$output .= '
+                            '}else {$output .= '
+                            <img src=\'';$output .= $cVC::S{'error_image'};$output .= '\' alt=\'';$output .= $cVC::S{'warning_string'};$output .= '\' title=\'';$output .= $stash->get(['locale',0,'maketext',['Warning: No plan set for this account.' ]]);$output .= '\'><span>';$output .= $cVC::S{'unknown_string'};$output .= '</span>
+                            '}$output .= '
+                        </td>
+
+                        ';$output .= '                        <td>
+                            ';if ($cVC::S{'acct'}->{'theme'}){$output .= '
+                            ';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'theme'});$output .= '
+                            '}else {$output .= '
+                            <img src=\'';$output .= $cVC::S{'error_image'};$output .= '\' alt=\'';$output .= $cVC::S{'warning_string'};$output .= '\' title=\'';$output .= $stash->get(['locale',0,'maketext',['Warning: No theme set for this account.' ]]);$output .= '\'><span>';$output .= $cVC::S{'unknown_string'};$output .= '</span>
+                            '}$output .= '</td>
+
+                        ';$output .= '                        <td>
+                            ';$output .= Cpanel::Encoder::Tiny::safe_html_encode_str($cVC::S{'acct'}->{'owner'});$output .= '
+                        </td>
+
+                        ';$output .= '
+                        <td>
+                            ';if ($cVC::S{'acct'}->{'startdate'}){if ($cVC::S{'acct'}->{'suspension_date'}eq 1){$output .= $stash->get('bandwidth_exceeded_text')}else {$output .= $stash->get(['CPDate',0,'iso_format',[$cVC::S{'acct'}->{'suspension_date'}],'replace',['\s','&nbsp;' ]])}}else {$output .= '                                <span>';$output .= $cVC::S{'unknown_string'};$output .= '</span>'}$output .= '
+                        </td>
+
+                        ';if ($stash->get(['data',0,'display_upgrade_opportunities',0])){$output .= '                        <td class="upgrade-opportunities">
+                            <ul class="upgrade-opportunity">
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['acct',0,'upgrade_opportunities',0,'keys',0,'sort',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'opportunity'}=$_tt_value;do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['acct',0,'upgrade_opportunities',0,$stash->get('opportunity'),0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR3: while (!$_tt_error){$stash->{'message'}=$_tt_value;$output .= '                                <li><i class="';$output .= $stash->get(['upgrade_opportunity_icon',0,$stash->get('opportunity'),0])|| $stash->get(['upgrade_opportunity_icon',0,'default',0]);$output .= '" aria-hidden="true"></i> ';$output .= $stash->get(['message',0,'html',0]);$output .= '</li>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </ul>
+                        </td>
+                        '}$output .= '
+                '}$output .= '
+                    </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </table>
+        </div>
+    </div>
+
+    <div class="pager-section pager-section-bottom group">
+        ';$output .= $stash->get('pagecontrols');$output .= '
+        <div class="controls controls-bottom" style="float:right;"><a href="../scripts/fetchcsv" target="_blank">';$output .= $stash->get(['locale',0,'maketext',['Download all records to a [output,acronym,CSV,Comma Separated Values] file.' ]]);$output .= '</a></div>
+    </div>
+
+';if ($stash->get(['data',0,'showcount',0])> $stash->get('BOTTOM_SEARCH_THRESHOLD')){$output .= '
+    ';$output .= $stash->get(['search',[$stash->get('data'),$stash->get('locale'),'bottom' ]]);$output .= '
+'}$output .= '
+
+';if ($stash->get('show_createacct')){$output .= '
+<!-- Quick link to account creation page -->
+<p><a href="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/wwwacctform" class="btn btn-primary" id="create_account_link_bottom">';$output .= $stash->get(['locale',0,'maketext',['Create a New Account' ]]);$output .= '</a></p>
+'}$output .= '
+';$context->include('master_templates/master.tmpl',{'app_key'=>'list_accounts','theme'=>'bootstrap','include_legacy_stylesheets'=>1,'header'=>$stash->get('headerText'),'stylesheets'=>['/yui/datatable/assets/skins/sam/datatable.css','/templates/accounts/listaccts.min.css' ],'content',$output })};$output .= '
+
+';$output .= $context->process('_loadjs.tmpl',{'src'=>'/js/sorttable.js' });$output .= '
+<script type="text/javascript">
+var hasoutevent = {};
+var DOM = YAHOO.util.Dom;
+function initializeCellSubmit() {
+
+    // This function initializes the handers to makes the entire
+    // surface of the sortable header cells for the table clickable
+    // to initiate the sorting.
+
+    var Event = YAHOO.util.Event;
+
+    var tr = DOM.getElementsByClassName("tblheader0");
+    if(tr) {
+        var sortableColumns = DOM.getElementsByClassName("yui-dt-sortable", "th", tr[0]);
+
+        if(sortableColumns) {
+            var cellClick = function(evt) {
+                var as = DOM.getElementsBy(function() {return true;}, "a", evt.target);
+                if(as.length) {
+                    window.location = as[0].href;
+                }
+            }
+
+            for(var i = 0, l = sortableColumns.length; i < l; i++) {
+                Event.addListener(sortableColumns[i], "click", cellClick);
+            }
+        }
+    }
+}
+
+function toggleRowEditor(el, noCollapse, focusEl, inForm) {
+
+    // This function toggles the row editor from open to closed
+    var Dom = YAHOO.util.Dom;
+
+    // Get the parent row and then the first column
+    var exptd = null;
+    if(!inForm) {
+        exptd = DOM.getAncestorByTagName(el, \'tr\').cells[0];
+    }
+    else {
+        var row = DOM.getAncestorByTagName(el, \'tr\');
+        if(row)
+            exptd = DOM.getPreviousSibling(row).cells[0];
+    }
+
+    // Find the image tag in that cell
+    var img;
+    for ( var i = 0, l = exptd.childNodes.length; i < l; i++ ) {
+        if (exptd.childNodes[i].tagName == "IMG") {
+            img = exptd.childNodes[i];
+            break;
+        }
+    }
+
+    // Toggle the output
+    if (img.src.indexOf("plus.gif") > 0) {
+        img.src=\'';$output .= $stash->get(['MagicRevision',['/minus.gif' ]]);$output .= '\';
+        expandRow(exptd.parentNode);
+    }
+    else {
+        if (!noCollapse) {
+            img.src=\'';$output .= $stash->get(['MagicRevision',['/plus.gif' ]]);$output .= '\';
+            collapseRow(exptd.parentNode);
+        }
+    }
+
+    if(focusEl) {
+        setElementFocus(focusEl);
+    }
+}
+
+function collapseRow(ownerRow) {
+    var tBodyEl = ownerRow.parentNode;
+    var nextSib = ownerRow.nextSibling;
+    var div = nextSib.childNodes[0];
+    if (nextSib.getAttribute(\'dynarow\') == 1) {
+        CPANEL.animate.slide_up(nextSib, function() { tBodyEl.removeChild(nextSib); } );
+    }
+}
+
+var USER_TRANSFERRED_MESSAGE_RE = new RegExp(\'^';$output .= $stash->get(['data',0,'user_transferred_message',0]);$output .= "\$');\n\n\nfunction expandRow(ownerRow) {\n    var Dom = YAHOO.util.Dom;\n\n    var domainLinkEl = ownerRow.querySelector('a.domain-link');\n    var domainIsOverflowing = domainLinkEl.scrollWidth > domainLinkEl.offsetWidth;\n\n    var user = ownerRow.getAttribute('user');\n    var email = ownerRow.getAttribute('email');\n    var domain = ownerRow.getAttribute('domain');\n    var is_suspended = ownerRow.getAttribute('suspended');\n    var suspension_locked = ownerRow.getAttribute('suspension_locked');\n    var suspended_reason = ownerRow.getAttribute('suspension_reason');\n    var suspended_date = ownerRow.getAttribute('suspension_date');\n\n    var tBodyEl = ownerRow.parentNode;\n    var nextSib = ownerRow.nextSibling;\n    var newtr = document.createElement('tr');\n    var newtd = document.createElement('td');\n    newtr.setAttribute('dynarow', 1);\n    newtr.className = ownerRow.className.replace(/\\bclicked\\b/,\"\").replace(/\\s+/,' ').trim();\n    newtd.setAttribute('colspan', ownerRow.cells.length);\n    newtd.className = \"editor-cell\";\n    if (newtd.colSpan) {\n        newtd.colSpan = ownerRow.cells.length;\n    }\n\n    var command_template  =\n        \"<a class='editor-closer' id='close\" + user + \"' title='";$output .= $stash->get(['locale',0,'maketext',['Close the editor panel.' ]]);$output .= '\' onclick=\'toggleRowEditor(this,null,null,true); return false;\'><img src=\'';$output .= $cVC::S{'close_image'};$output .= '\' alt=\'';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '\'></a>" +
+        (domainIsOverflowing ? "<div class=\'wordbreak full-domain\'><label>';$output .= $stash->get(['locale',0,'maketext',['Full Domain:' ]]);$output .= '</label> " + domain + "</div>" : "") +
+        "<div class=\'editor-container group\'>";
+        ';if ($stash->get(['acl',0,'passwd',0])){$output .= '        command_template += "<div class=\'sub-form password-form\'>" +
+        "  <form method=\'POST\' ACTION=\'../scripts/passwd\'>" +
+        "    <input type=\'text\' style=\'display:none\'>" +
+        "    <input type=\'password\' autocomplete=\'off\' style=\'display:none\'>" +
+        "    <label for=\'password" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Change Password:' ]]);$output .= '</label>" +
+        "    <input id=\'password" + user + "\' type=\'password\' autocomplete=\'off\' name=\'password\'>" +
+        "    <input type=\'hidden\' name=\'user\' value=\'" + user + "\'>" +
+        "    <input type=\'hidden\' name=passwordtoken value=\'';$output .= $stash->get(['data',0,'passwordtoken',0]);$output .= '\'>" +
+        "    <input class=\'btn btn-primary\' type=\'submit\' value=\'';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '\'>" +
+        "    <div class=\'enablemysql-loader-container\' id=\'enablemysql_loader-" + user + "\' style=\'clear:both\'> " +
+                "<div>" +
+                    "<img src=\'';$output .= $stash->get(['MagicRevision',['/images/report-spinner.gif' ]]);$output .= '\' class=\'enablemysql-loading\' id=\'enablemysql-loading-" + user + "\'/>" +
+                    "';$output .= $stash->get(['locale',0,'maketext',['Determining database password status …' ]]);$output .= '" +
+                "</div>" +
+        "    </div> " +
+        "    <div class=\'enabledigestauth-loader-container\' id=\'enabledigestauth_loader-" + user + "\' style=\'clear:both\'> " +
+                "<div>" +
+                    "<img src=\'';$output .= $stash->get(['MagicRevision',['/images/report-spinner.gif' ]]);$output .= '\' class=\'enabledigest-loading\' id=\'enabledigest-loading-" + user + "\'/>" +
+                    "';$output .= $stash->get(['locale',0,'maketext',['Determining Digest Authentication status …' ]]);$output .= '" +
+                "</div>" +
+        "    </div> " +
+        "    <div class=\'enablemysql-container\' id=\'enablemysql_container-" + user + "\' style=\'clear:both;display:none;\'> " +
+                "<div class=\'checkbox\'>" +
+                    "<label for=\'enablemysql-" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Synchronize database password' ]]);$output .= '" +
+                    "<input class=\'enablemysql\' type=\'checkbox\' id=\'enablemysql-" + user + "\' name=\'enablemysql\' value=\'1\' checked=\'checked\'>" +
+                    "</label>" +
+                    "<span class=\'fas fa-question-circle fa-large\' id=\'enablemysql-info\' onclick=" + \'"\' + "CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Synchronize database password' ]]);$output .= '\');" + \'"\' + " title=\'';$output .= $stash->get(['locale',0,'maketext',['This option will set your database password to be the same as your new password.' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If a “[_1]” file exists in the user’s home directory and they still want to use the password in their “[_1]” file, uncheck this option.','.my.cnf' ]]);$output .= '\'></span>" +
+                "</div>" +
+        "    </div> " +
+        "    <div class=\'enabledigest-container\' id=\'enabledigest_container-" + user + "\' style=\'clear:both;display:none;\'> " +
+                "<div class=\'checkbox\'>" +
+                    "<label for=\'enabledigest-" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '" +
+                    "<input class=\'enabledigest\' type=\'checkbox\' id=\'enabledigest-" + user + "\' name=\'enabledigest\' value=\'1\' checked=\'checked\'>" +
+                    "</label>" +
+                    "<span class=\'fas fa-question-circle fa-large\' id=\'enabledigest-info\' onclick=" + \'"\' + "CPANEL.ajax.toggleToolTip(this,\'';$output .= $stash->get(['locale',0,'maketext',['Digest Authentication' ]]);$output .= '\');" + \'"\' + " title=\'';$output .= $stash->get(['locale',0,'maketext',['[list_and,_*] require Digest Authentication support to be enabled in order to access your Web Disk over a clear text/unencrypted connection.','Windows Vista®','Windows® 7','Windows® 8' ]]);$output .= ' ';$output .= $stash->get(['locale',0,'maketext',['If the server has an SSL certificate signed by a recognized certificate authority and you are able to make an SSL connection over port 2078, you do not need to enable this.' ]]);$output .= '\'></span>"+
+                "</div>" +
+        "    </div> " +
+        "  </form>" +
+        "</div>";
+        '}$output .= '        command_template += "<div class=\'sub-form email-form\'>" +
+        "  <form method=\'POST\' ACTION=\'../scripts2/dochangeemail\'>" +
+        "    <label for=\'user" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Change Contact Email:' ]]);$output .= '</label>" +
+        "    <input type=\'hidden\' name=\'user\' value=\'" + user.html_encode() + "\'>" +
+        "    <input type=\'hidden\' name=\'oldemail\' value=\'" + email.html_encode() + "\'>" +
+        "    <input id=\'user" + user + "\' type=\'text\' name=\'email\' value=\'" + email.html_encode() + "\'>" +
+        "    <input class=\'btn btn-primary\' type=\'submit\' value=\'';$output .= $stash->get(['locale',0,'maketext',['Change' ]]);$output .= '\'>" +
+        "  </form>" +
+        "</div>";
+        ';if ($stash->get(['acl',0,'item',['suspend-acct' ]])){$output .= '
+        command_template += "<div class=\'sub-form suspend-form\'>";
+    if( is_suspended == 1){
+        command_template += "<div>" +
+        "    <div><strong>';$output .= $stash->get(['locale',0,'maketext',['Account Suspended' ]]);$output .= '</strong></div>" +
+        "    <div><strong>';$output .= $stash->get(['locale',0,'maketext',['Reason' ]]);$output .= '</strong> " + suspended_reason.html_encode() + "</div>" +
+        "    <div><strong>';$output .= $stash->get(['locale',0,'maketext',['Suspended' ]]);$output .= '</strong> " + suspended_date + "</div>";
+        ';if ($stash->get(['acl',0,'all',0])){$output .= '
+        command_template += "    <div><strong>';$output .= $stash->get(['locale',0,'maketext',['Suspension Locked' ]]);$output .= '</strong> ";
+        command_template += (suspension_locked == 1 ) ? "Yes" : "No";
+        command_template += "</div>";
+        '}$output .= '
+        command_template += "</div>";';if (!$stash->get(['acl',0,'all',0])){$output .= '
+        if( suspension_locked == 1){
+            command_template +=
+            "    <span class=\'dlink\'>" +
+            "        <button class=\'btn btn-primary\' disabled=1 title=\'';$output .= $stash->get(['locale',0,'maketext',['Suspension Locked' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Suspension Locked' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+        }
+        else{'}$output .= "\n            command_template +=\n            \"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='unsuspendAccount(\\\"\" + user + \"\\\", \\\"\" + domain + \"\\\")' title='";$output .= $stash->get(['locale',0,'maketext',['Unsuspend' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Unsuspend' ]]);$output .= "</span>\" +\n            \"        </button>\";\n            if( USER_TRANSFERRED_MESSAGE_RE.exec(suspended_reason) ){\n                command_template +=\n                '        <div class=\"checkbox\"> \\\n                            <label> \\\n                                <input id=\"retain-proxying\" type=\"checkbox\" name=\"retain-proxying\" value=\"1\" /> \\\n                                ";$output .= $stash->get(['locale',0,'maketext',['Retain [output,url,_1,Service Proxying,target,serviceProxyingDocs]','https://go.cpanel.net/ServiceProxying' ]]);$output .= " \\\n                            </label> \\\n                            <span \\\n                                id=\\'retain-proxying-info\\' \\\n                                class=\\'fas fa-question-circle fa-large\\' \\\n                                onclick=\\'CPANEL.ajax.toggleToolTip(this,\"";$output .= $stash->get(['locale',0,'maketext',['Retain Service Proxying' ]]);$output .= "\");\\' \\\n                                title=\\'";$output .= $stash->get(['locale',0,'maketext',['Select this checkbox to keep the account’s current service proxying settings. If you do not select this checkbox, the system will disable service proxying by default.' ]]);$output .= "\\'> \\\n                                &nbsp; \\\n                            </span> \\\n                        </div>';\n            }\n            command_template += \"    </span>\";";if (!$stash->get(['acl',0,'all',0])){$output .= '
+        }'}$output .= '
+    }
+    else{
+        command_template +=
+            "<form method=\'POST\' action=\'../scripts2/suspendacct\'>" +
+            "    <label for=\'user-" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Suspend Account' ]]);$output .= '</label>" +
+            "    <input type=\'hidden\' name=\'user\' value=\'" + user + "\'>" +
+            "    <input type=\'hidden\' name=\'domain\' value=\'" + domain + "\'>" +
+            "    <input type=\'hidden\' name=\'suspend-domain\' value=\'Suspend\'>" +
+            "    <input type=\'text\' name=\'reason\' id=\'suspend-" + user + "-reason\'>" +
+            "    <input class=\'btn btn-primary\' type=\'submit\' value=\'';$output .= $stash->get(['locale',0,'maketext',['Suspend' ]]);$output .= '\' />" +';if ($stash->get(['acl',0,'all',0])){$output .= '            "    <div class=\'localsuspension-container\' id=\'locksuspension_container-" + user + "\' style=\'clear:both\'> " +
+            "        <div class=\'checkbox\'>" +
+            "            <label for=\'reason-" + user + "\'>';$output .= $stash->get(['locale',0,'maketext',['Prevent unsuspending' ]]);$output .= "\" +\n            \"                <input class='enabledigest' type='checkbox' name='disallowun' id='reason-\" + user + \"' value='1'>\" +\n            \"            </label>\" +\n            \"            <span class='fas fa-question-circle fa-large' id='prevent-unsuspend-info' onclick='CPANEL.ajax.toggleToolTip(this,\\\"";$output .= $stash->get(['locale',0,'maketext',['Prevent unsuspending' ]]);$output .= "\\\");' title='";$output .= $stash->get(['locale',0,'maketext',['Only resellers with the All privilege are allowed to unsuspend.' ]]);$output .= '\'>&nbsp;</span>" +
+            "        </div>" +
+            "    </div>" +'}$output .= '            "</form>";
+    }
+            ';$output .= '
+    command_template += "</div></div>";
+            '}$output .= '
+        ';if ($stash->get(['acl',0,'all',0])|| $stash->get(['acl',0,'item',['rearrange-accts' ]])|| $stash->get(['acl',0,'quota',0])|| $stash->get(['acl',0,'item',['upgrade-account' ]])|| $stash->get(['acl',0,'item',['edit-account' ]])|| $stash->get(['acl',0,'item',['suspend-acct' ]])|| $stash->get(['acl',0,'item',['kill-acct' ]])){$output .= '
+            command_template += "<div class=\'actions-container group\'>" +
+            "    <label class=\'title\'>';$output .= $stash->get(['locale',0,'maketext',['Actions:' ]]);$output .= '</label>" +
+            "    <div class=\'button-container\'>";
+            ';if ($stash->get(['acl',0,'all',0])){$output .= "\n            command_template +=\"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='window.location=\\\"../scripts2/changeip?domain=\" + domain + \"&user=\" + user + \"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Change the account’s IP address.' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Change IP Address' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+            ';if ($stash->get(['acl',0,'item',['rearrange-accts' ]])){$output .= "\n            command_template += \"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='window.location=\\\"../scripts/rearrangeacct?domain=\" + user + \"&user=\" + user + \"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Change the accounts disk partition.' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Change Disk Partition' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+            ';if ($stash->get(['acl',0,'quota',0])){$output .= "\n            command_template += \"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='window.location=\\\"../scripts/quotalist?domain=\" + domain + \"&user=\" + user +\"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Change the accounts disk quota.' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Change Quota' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+            ';if ($stash->get(['acl',0,'item',['upgrade-account' ]])){$output .= "\n                command_template += \"    <span class='dlink'>\" +\n            \"        <button  class='btn btn-primary' onclick='window.location=\\\"../scripts/selectupgrade?domain=\" + domain + \"&user=\" + user + \"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Change the account plan.' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Change Plan' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+            ';if ($stash->get(['acl',0,'item',['edit-account' ]])){$output .= "\n            command_template += \"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='window.location=\\\"../scripts/edituser?domain=\" + domain + \"&user=\" + user + \"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Change the account using the Modify Accounts.' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Modify Account' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+            ';if ($stash->get(['acl',0,'item',['kill-acct' ]])){$output .= "\n            command_template += \"    <span class='dlink'>\" +\n            \"        <button class='btn btn-primary' onclick='window.location=\\\"../scripts4/multikillacct/\" + user + \"\\\"' title='";$output .= $stash->get(['locale',0,'maketext',['Terminate Account' ]]);$output .= '\'>" +
+            "            <span>';$output .= $stash->get(['locale',0,'maketext',['Terminate Account' ]]);$output .= '</span>" +
+            "        </button>" +
+            "    </span>";
+            '}$output .= '
+
+
+    command_template += "</div>";
+        ';$output .= '        '}$output .= '    command_template += "</div>";
+
+    newtd.innerHTML = command_template;
+    newtr.appendChild(newtd);
+    var div = newtr.childNodes[0];
+    YAHOO.util.Dom.removeClass(newtr, \'activerow\');
+    tBodyEl.insertBefore(newtr, nextSib);
+
+    var mycnf_api_call = {
+            func: "has_mycnf_for_cpuser",
+            version: "1",
+            data: {
+                user: user
+            }
+        };
+
+    mycnf_api_call.callback = {
+        success: function(o) {
+            CPANEL.animate.slide_up(\'enablemysql_loader-\' + user);
+
+            var response = YAHOO.lang.JSON.parse( o.responseText );
+            if ( response && response.metadata && response.metadata.result === 1 ) {
+               var userMysqlCheck = DOM.get(\'enablemysql-\' + user);
+               if (userMysqlCheck) {
+                    if (  parseInt(response.data.has_mycnf_for_cpuser) ) {
+                        userMysqlCheck.checked = false;
+                        CPANEL.animate.slide_down(\'enablemysql_container-\' + user);
+                    } else {
+                        userMysqlCheck.checked = true;
+                    }
+               }
+            }
+        },
+        failure: function(o) {
+            CPANEL.animate.slide_up(\'enablemysql_loader-\' + user);
+            var userMysqlCheck = DOM.get(\'enablemysql-\' + user);
+            if (userMysqlCheck) {
+                userMysqlCheck.checked = true;
+            }
+        }
+    };
+
+    CPANEL.api(mycnf_api_call);
+
+    var digest_auth_api_call = {
+            func: "has_digest_auth",
+            version: "1",
+            data: {
+                user: user
+            }
+        };
+
+    digest_auth_api_call.callback = {
+        success: function(o) {
+            CPANEL.animate.slide_up(\'enabledigestauth_loader-\' + user);
+
+            var response = YAHOO.lang.JSON.parse( o.responseText );
+            if ( response && response.metadata && response.metadata.result === 1 ) {
+                var userDigestCheck = DOM.get(\'enabledigest-\' + user);
+
+                if (userDigestCheck) {
+                    userDigestCheck.checked = parseInt(response.data.digestauth, 10) ? true : false;
+                    CPANEL.animate.slide_down(\'enabledigest_container-\' + user);
+                }
+            }
+        },
+        failure: function(o) {
+            CPANEL.animate.slide_up(\'enabledigestauth_loader-\' + user);
+        }
+    };
+
+
+    CPANEL.api(digest_auth_api_call);
+
+}
+
+function setDefaultFocus() {
+    var searchTextEl = document.getElementById(\'searchtxttop\');
+    if (searchTextEl) {
+        var len = searchTextEl.value ? searchTextEl.value.length : 0;
+        searchTextEl.focus();
+        setCaretPosition(searchTextEl, len);
+    }
+}
+
+function unsuspendAccount(user, domain) {
+    var retainProxyingEl = document.getElementById(\'retain-proxying\');
+    var retainProxying = retainProxyingEl && retainProxyingEl.checked ? "1" : "0";
+    window.location = "../scripts2/suspendacct?user=" + user + "&domain=" + domain + "&unsuspend-domain=Unsuspend&reason=&retain-proxying=" + retainProxying;
+}
+
+function setElementFocus(el) {
+    if(isString(el))
+        el = document.getElementById(el);
+    if(el) {
+        setTimeout(function() {
+            var that = el;
+            that.focus();
+            }, 0);
+    }
+}
+
+function isString(obj) {
+    return obj !== undefined && obj != null && obj.toLowerCase !== undefined;
+}
+
+
+function setCaretPosition(el, pos) {
+    if(el.setSelectionRange) {
+        el.focus();
+        el.setSelectionRange(pos, pos);
+    }
+    else if(el.createTextRange) {
+        var range = el.createTextRange();
+        range.collapse(true);
+        range.moveEnd(\'character\', pos);
+        range.moveStart(\'character\', pos);
+        range.select();
+    }
+}
+
+Bubble_Click = false;
+function clickrow(row_el) {
+    if (Bubble_Click) {
+        Bubble_Click = false;
+        return;
+    }
+    CPANEL.dom.toggle_class(row_el, \'clicked\');
+}
+
+// Show or hide additional form input options based on input selection
+function optionsChange(selected_el) {
+    var selected_name = selected_el.getAttribute("name");
+    var enclosing_form = selected_el.form;
+
+    // For all input elements of the same name in the enclosing form...
+    enclosing_form
+        .querySelectorAll(\'input[name="\' + selected_name + \'"]\')
+        .forEach(function(input_el) {
+            var input_id = input_el.getAttribute("id");
+
+            // If an element ID exists that matches the input ID w/ _options
+            // suffix, then hide or unhide that element depending on input state
+            var options_el = enclosing_form.querySelector("#" + input_id + "_options");
+            if (options_el) {
+                if (input_el.checked) {
+                    options_el.classList.remove("hidden");
+                } else {
+                    options_el.classList.add("hidden");
+                }
+            }
+        });
+}
+
+YAHOO.util.Event.addListener(window,\'load\',setDefaultFocus);
+YAHOO.util.Event.addListener(window,\'load\',initializeCellSubmit);
+</script>
+
+';$output .= $context->process('_ajaxapp_footer.tmpl')}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

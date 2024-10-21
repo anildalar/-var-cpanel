@@ -1,0 +1,349 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/convert_addon_to_account/views/db_options.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="ng-hide" ng-show="db_selection_vm.ui.is_loading">
+    <div class="alert alert-info">
+        <div class="alert-message">
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+    </div>
+</div>
+<div class="ng-hide" ng-show="!db_selection_vm.ui.is_loading && !db_selection_vm.ui.domain_exists">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['The system could not find the addon domain “[_1]”.','{{ db_selection_vm.domain_name }}' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['[output,url,_1,Go back,_2].','main',{'id'=>'backToMainView' }]]);$output .= '
+        </div>
+    </div>
+</div>
+<div ng-hide="db_selection_vm.ui.is_loading || !db_selection_vm.ui.domain_exists">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['How do you want to transfer your databases?' ]]);$output .= '</span>
+                </div>
+                <div class="panel-body">
+                    <label class="radio-inline">
+                        <input type="radio"
+                            name="dbMoveType"
+                            id="dbMove"
+                            ng-model="db_selection_vm.move_type"
+                            value="move"> ';$output .= $stash->get(['locale',0,'maketext',['Move' ]]);$output .= '
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio"
+                            name="dbMoveType"
+                            id="dbCopy"
+                            ng-model="db_selection_vm.move_type"
+                            value="copy"> ';$output .= $stash->get(['locale',0,'maketext',['Copy' ]]);$output .= '
+                    </label>
+                    <div class="alert alert-warning panel__alert-bottom" ng-show="db_selection_vm.move_type == \'move\'">
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        <div class="alert-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['When you move a database, you must also move the associated database users to preserve their privileges.' ]]);$output .= '
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Databases for “[_1]”','{{ db_selection_vm.domain_name }}' ]]);$output .= '</span>
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-info panel__alert-top" ng-show="db_selection_vm.move_type == \'move\'">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['When you move a database:' ]]);$output .= '
+                            <ul class="panel__alert-list">
+                                <li>';$output .= $stash->get(['locale',0,'maketext',['The addon domain owner “[_1]” will lose access to the database.','{{ db_selection_vm.this_domain.details.owner }}' ]]);$output .= '</li>
+                                <li>';$output .= $stash->get(['locale',0,'maketext',['The newly created [asis,cPanel] account “[_1]” will gain full access to the database.','{{ db_selection_vm.this_domain.account_settings.username }}' ]]);$output .= '</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="paginationControls" class="row search-page-container">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <search id="filterList"
+                                ng-model="db_selection_vm.dbs.meta.filterValue"
+                                ng-change="db_selection_vm.dbs.searchList()"></search>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                            <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+                                <page-size id="topPageSize"
+                                    allowed-sizes="db_selection_vm.dbs.meta.pageSizes"
+                                    total-items="db_selection_vm.dbs.meta.totalItems"
+                                    ng-model="db_selection_vm.dbs.meta.pageSize"
+                                    show-all="true"
+                                    ng-change="db_selection_vm.dbs.selectPageSize()">
+                                </page-size>
+                                <uib-pagination id="topPager"
+                                    ng-change="db_selection_vm.dbs.selectPage()"
+                                    ng-model="db_selection_vm.dbs.meta.pageNumber"
+                                    max-size="db_selection_vm.dbs.meta.maxPages"
+                                    items-per-page="db_selection_vm.dbs.meta.pageSize"
+                                    total-items="db_selection_vm.dbs.meta.totalItems"
+                                    direction-links="true"
+                                    boundary-links="true"
+                                    rotate="false"
+                                    first-text="<<"
+                                    last-text=">>"
+                                    previous-text="<"
+                                    next-text=">">
+                                </uib-pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tableStats" class="row hidden-xs hidden-sm">
+                        <div class="col-xs-8">
+                            <div class="page-stats selected-stats">
+                                <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Selected:' ]]);$output .= '</span>
+                                <span id="selectedCounter" class="badge badge-info">
+                                    {{db_selection_vm.dbs.totalSelected}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="page-stats pull-right flip">
+                            {{db_selection_vm.dbs.paginationMessage()}}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mysqlDbTableContainer">
+                        <form id="mysqldb_settings" name="mysqldb_settings" novalidate>
+                        <table id="mysqldb_table" class="table table-striped responsive-table">
+                            <thead>
+                                <tr>
+                                    <th class="checkColumn">
+                                        <div class="btn-group checkbox-group" uib-dropdown is-open="db_selection_vm.dbs.checkDropdownOpen">
+                                            <span class="btn check-box">
+                                                <input type="checkbox" id="selectAll"
+                                                    ng-model="db_selection_vm.dbs.allRowsSelected"
+                                                    title="';$output .= $stash->get(['locale',0,'maketext',['Select all items on this page' ]]);$output .= "\"\n                                                    ng-change=\"db_selection_vm.dbs.selectAll(db_selection_vm.dbs.allRowsSelected)\">\n                                            </span>\n                                            <button type=\"button\" class=\"btn btn-default dropdown-toggle\" uib-dropdown-toggle>\n                                                <span class=\"caret\"></span>\n                                                <span class=\"sr-only\">Checkbox Options</span>\n                                            </button>\n                                            <ul class=\"dropdown-menu\" role=\"menu\" uib-dropdown-menu>\n                                                <li><a href=\"javascript:void(0)\" ng-click=\"db_selection_vm.dbs.clearAllSelections(\$event)\">";$output .= $stash->get(['locale',0,'maketext',['Clear all selections[comment,action text]' ]]);$output .= '</a></li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                    <th id="ownerHeader">
+                                        <span toggle-sort id="sortDbs" onsort="db_selection_vm.dbs.sortList" sort-meta="db_selection_vm.dbs.meta" sort-field="db_name">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= '
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyDbListNotice" class="info empty-row" ng-show="db_selection_vm.dbs.filteredList.length == 0">
+                                    <td colspan="2" id="emptyDbTableMessage">';$output .= $stash->get(['locale',0,'maketext',['No databases found.' ]]);$output .= "</td>\n                                </tr>\n                                <tr ng-repeat=\"mysqldb in db_selection_vm.dbs.filteredList\">\n                                    <td class=\"checkColumn\">\n                                        <input type=\"checkbox\" id=\"rowSelector{{\$index}}\"\n                                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Select this database' ]]);$output .= '"
+                                            ng-model="mysqldb.selected"
+                                            ng-change="db_selection_vm.dbs.selectDb(mysqldb)">
+                                    </td>
+                                    <td class="" data-title="';$output .= $stash->get(['locale',0,'maketext',['Database' ]]);$output .= "\">\n                                        <span>{{mysqldb.db_name}}</span>\n                                        <div class=\"inline-table-form\" ng-if=\"db_selection_vm.move_type == 'copy' && mysqldb.selected\">\n                                            <div class=\"form-group\">\n                                                <div class=\"row\">\n                                                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                                                        <label for=\"mysqldb_new_name_{{\$index}}\">";$output .= $stash->get(['locale',0,'maketext',['New Database' ]]);$output .= "</label>\n                                                    </div>\n                                                </div>\n                                                <div class=\"row\">\n                                                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                                                        <div class=\"input-group\">\n                                                            <span class=\"input-group-addon\"\n                                                                id=\"mysqldb_prefix_{{\$index}}\"\n                                                                ng-if=\"db_selection_vm.is_prefixing_enabled\">{{ mysqldb.db_prefix }}</span>\n                                                            <input type=\"text\"\n                                                                id=\"mysqldb_new_name_{{\$index}}\"\n                                                                name=\"mysqldb_new_name_{{\$index}}\"\n                                                                class=\"form-control\"\n                                                                ng-model=\"mysqldb.db_new_name\"\n                                                                required\n                                                                maxlength=\"{{db_selection_vm.database_name_max_length}}\"\n                                                                mysql-db-name>\n                                                        </div>\n                                                    </div>\n                                                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                                                        <ul validation-container field-name=\"mysqldb_new_name_{{\$index}}\">\n                                                            <li validation-item field-name=\"mysqldb_new_name_{{\$index}}\" validation-name=\"required\">\n                                                                ";$output .= $stash->get(['locale',0,'maketext',['You must complete this field.' ]]);$output .= "\n                                                            </li>\n                                                            <li validation-item field-name=\"mysqldb_new_name_{{\$index}}\" validation-name=\"db\"></li>\n                                                        </ul>\n                                                    </div>\n                                                </div>\n                                            </div>\n                                        </div>\n                                    </td>\n                                </tr>\n                            </tbody>\n                        </table>\n                        </form>\n                        </div>\n                        <div class=\"row hidden-md hidden-lg\">\n                            <div class=\"col-xs-4\">\n                                <div class=\"page-stats selected-stats\">\n                                    <span class=\"title\">";$output .= $stash->get(['locale',0,'maketext',['Selected' ]]);$output .= '</span>
+                                    <span id="selectedCounter" class="badge badge-info">
+                                        {{db_selection_vm.dbs.totalSelected}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <div class="page-stats pull-right flip">
+                                    {{db_selection_vm.dbs.paginationMessage()}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+                            <div class="col-xs-12 col-sm-12">
+                                <div id="paginatorBottom" class="pagination-container">
+                                    <page-size id="bottomPageSize"
+                                        allowed-sizes="db_selection_vm.dbs.meta.pageSizes"
+                                        total-items="db_selection_vm.dbs.meta.totalItems"
+                                        ng-model="db_selection_vm.dbs.meta.pageSize"
+                                        show-all="true"
+                                        ng-change="db_selection_vm.dbs.selectPageSize()">
+                                    </page-size>
+                                    <uib-pagination id="bottomPager"
+                                        ng-change="db_selection_vm.dbs.selectPage()"
+                                        ng-model="db_selection_vm.dbs.meta.pageNumber"
+                                        max-size="db_selection_vm.dbs.meta.maxPages"
+                                        items-per-page="db_selection_vm.dbs.meta.pageSize"
+                                        total-items="db_selection_vm.dbs.meta.totalItems"
+                                        direction-links="true"
+                                        boundary-links="true"
+                                        rotate="false"
+                                        first-text="<<"
+                                        last-text=">>"
+                                        previous-text="<"
+                                        next-text=">">
+                                    </uib-pagination>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="db_selection_vm.move_type == \'move\'">
+        <div class="col-xs-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="panel-title">';$output .= $stash->get(['locale',0,'maketext',['Database Users for “[_1]”','{{ db_selection_vm.domain_name }}' ]]);$output .= '</span>
+                </div>
+                <div class="panel-body">
+                    <div class="alert alert-info panel__alert-top" ng-show="db_selection_vm.move_type == \'move\'">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <div class="alert-message">
+                            ';$output .= $stash->get(['locale',0,'maketext',['If you move a database user and not a database to which they have access, the user will lose all access to that database.' ]]);$output .= '
+                        </div>
+                    </div>
+                    <div id="paginationControls" class="row search-page-container">
+                        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                            <search id="filterList"
+                                ng-model="db_selection_vm.users.meta.filterValue"
+                                ng-change="db_selection_vm.users.searchList()"></search>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+                            <div id="paginator" class="pagination-container pull-right flip hidden-xs hidden-sm">
+                                <page-size id="topPageSize"
+                                    allowed-sizes="db_selection_vm.users.meta.pageSizes"
+                                    total-items="db_selection_vm.users.meta.totalItems"
+                                    ng-model="db_selection_vm.users.meta.pageSize"
+                                    show-all="true"
+                                    ng-change="db_selection_vm.users.selectPageSize()">
+                                </page-size>
+                                <uib-pagination id="topPager"
+                                    ng-change="db_selection_vm.users.selectPage()"
+                                    ng-model="db_selection_vm.users.meta.pageNumber"
+                                    max-size="db_selection_vm.users.meta.maxPages"
+                                    items-per-page="db_selection_vm.users.meta.pageSize"
+                                    total-items="db_selection_vm.users.meta.totalItems"
+                                    direction-links="true"
+                                    boundary-links="true"
+                                    rotate="false"
+                                    first-text="<<"
+                                    last-text=">>"
+                                    previous-text="<"
+                                    next-text=">">
+                                </uib-pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tableStats" class="row hidden-xs hidden-sm">
+                        <div class="col-xs-8">
+                            <div class="page-stats selected-stats">
+                                <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Selected:' ]]);$output .= '</span>
+                                <span id="selectedCounter" class="badge badge-info">
+                                    {{db_selection_vm.users.totalSelected}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="page-stats pull-right flip">
+                            {{db_selection_vm.users.paginationMessage()}}
+                            </div>
+                        </div>
+                    </div>
+                    <div id="mysqlDbTableContainer">
+                        <form id="mysqldb_settings" name="mysqldb_settings" novalidate>
+                        <table id="mysqldb_table" class="table table-striped responsive-table">
+                            <thead>
+                                <tr>
+                                    <th class="checkColumn">
+                                        <div class="btn-group checkbox-group" uib-dropdown is-open="db_selection_vm.users.checkDropdownOpen">
+                                            <span class="btn check-box">
+                                                <input type="checkbox" id="selectAll"
+                                                    ng-model="db_selection_vm.users.allRowsSelected"
+                                                    title="';$output .= $stash->get(['locale',0,'maketext',['Select all items on this page' ]]);$output .= "\"\n                                                    ng-change=\"db_selection_vm.users.selectAll(db_selection_vm.users.allRowsSelected)\">\n                                            </span>\n                                            <button type=\"button\" class=\"btn btn-default dropdown-toggle\" uib-dropdown-toggle>\n                                                <span class=\"caret\"></span>\n                                                <span class=\"sr-only\">Checkbox Options</span>\n                                            </button>\n                                            <ul class=\"dropdown-menu\" role=\"menu\" uib-dropdown-menu>\n                                                <li><a href=\"javascript:void(0)\" ng-click=\"db_selection_vm.users.clearAllSelections(\$event)\">";$output .= $stash->get(['locale',0,'maketext',['Clear all selections[comment,action text]' ]]);$output .= '</a></li>
+                                            </ul>
+                                        </div>
+                                    </th>
+                                    <th>
+                                        <span toggle-sort id="sortUsers" onsort="db_selection_vm.users.sortList" sort-meta="db_selection_vm.users.meta" sort-field="user_name">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Database User' ]]);$output .= '
+                                        </span>
+                                    </th>
+                                    <th>
+                                        <span id="databasesForUsers">
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '
+                                        </span>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="emptyUserListNotice" class="info empty-row" ng-show="db_selection_vm.users.filteredList.length == 0">
+                                    <td colspan="3" id="emptyUserTableMessage">';$output .= $stash->get(['locale',0,'maketext',['No database users found.' ]]);$output .= "</td>\n                                </tr>\n                                <tr ng-repeat=\"user in db_selection_vm.users.filteredList\">\n                                    <td class=\"checkColumn\">\n                                        <input type=\"checkbox\" id=\"rowSelector{{\$index}}\"\n                                            title=\"";$output .= $stash->get(['locale',0,'maketext',['Select this database user' ]]);$output .= '"
+                                            ng-model="user.selected"
+                                            ng-change="db_selection_vm.users.selectUser(user)">
+                                    </td>
+                                    <td class="" data-title="';$output .= $stash->get(['locale',0,'maketext',['Database User' ]]);$output .= '">
+                                        <span>{{user.user_name}}</span>
+                                    </td>
+                                    <td class="" data-title="';$output .= $stash->get(['locale',0,'maketext',['Databases' ]]);$output .= '">
+                                        <div ng-repeat="userdb in user.user_databases">{{userdb}}</div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        </form>
+                        </div>
+                        <div class="row hidden-md hidden-lg">
+                            <div class="col-xs-4">
+                                <div class="page-stats selected-stats">
+                                    <span class="title">';$output .= $stash->get(['locale',0,'maketext',['Selected' ]]);$output .= '</span>
+                                    <span id="selectedCounter" class="badge badge-info">
+                                        {{db_selection_vm.users.totalSelected}}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <div class="page-stats pull-right flip">
+                                    {{db_selection_vm.users.paginationMessage()}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row search-page-container visible-sm-block visible-xs-block hidden-lg hidden-md">
+                            <div class="col-xs-12 col-sm-12">
+                                <div id="paginatorBottom" class="pagination-container">
+                                    <page-size id="bottomPageSize"
+                                        allowed-sizes="db_selection_vm.users.meta.pageSizes"
+                                        total-items="db_selection_vm.users.meta.totalItems"
+                                        ng-model="db_selection_vm.users.meta.pageSize"
+                                        show-all="true"
+                                        ng-change="db_selection_vm.users.selectPageSize()">
+                                    </page-size>
+                                    <uib-pagination id="bottomPager"
+                                        ng-change="db_selection_vm.users.selectPage()"
+                                        ng-model="db_selection_vm.users.meta.pageNumber"
+                                        max-size="db_selection_vm.users.meta.maxPages"
+                                        items-per-page="db_selection_vm.users.meta.pageSize"
+                                        total-items="db_selection_vm.users.meta.totalItems"
+                                        direction-links="true"
+                                        boundary-links="true"
+                                        rotate="false"
+                                        first-text="<<"
+                                        last-text=">>"
+                                        previous-text="<"
+                                        next-text=">">
+                                    </uib-pagination>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group action-group">
+        <button type="submit"
+            id="save_options"
+            name="save_options"
+            class="btn btn-primary"
+            ng-disabled="db_selection_vm.disableSave(mysqldb_settings)"
+            ng-click="db_selection_vm.saveOptions(mysqldb_settings)">';$output .= $stash->get(['locale',0,'maketext',['Save Selections' ]]);$output .= '</button>
+        <button type="button"
+            id="go_back"
+            name="go_back"
+            ng-click="db_selection_vm.goBack()"
+            class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '</button>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

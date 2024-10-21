@@ -1,0 +1,291 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/vieweximmsg.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('CPScalar',$context->plugin('CPScalar'));if ($stash->get(['data',0,'type',0])eq 'queue'){$stash->set('origin','/scripts11/fetch_mail_queue')}else {$stash->set('origin','/scripts11/emailstats_search')}$stash->set('nvdata',$stash->get(['NVData',0,'get_page_nvdata',0]));$stash->set('show_extended_headers',$stash->get(['nvdata',0,'show_extended_headers',0])eq 1);$stash->set('show_control_data',$stash->get(['nvdata',0,'show_control_data',0])eq 1);$output .= do {my$output='';$output .= '<script>CPANEL.nvdata.initial = ';$output .= $stash->get(['nvdata',0,'json',0])|| 'undefined';$output .= '</script>
+<style type="text/css">
+.toggle_ctl {
+    width: 190px;
+    float: right;
+}
+
+.hidden_control_data {
+    display:none;
+}
+
+.clearit {
+    clear:both;
+    height: 0px;
+}
+
+.email_controls {
+    clear: both;
+    width: 924px;
+    margin-bottom: 4px;
+}
+
+.email_controls_list {
+    padding: 1px;
+    margin: 0;
+}
+
+.email_controls_list li button {
+    line-height: 19px;
+}
+
+.email_controls_list li:first-child button {
+    margin-left: 0;
+}
+
+.email_controls_list li:last-child button {
+    margin-right: 0;
+}
+
+.email_control {
+    display: inline-block;
+    list-style: none;
+    vertical-align: middle;
+}
+
+.email_control a, .email_control img {
+    vertical-align: middle;
+    line-height: 22px;
+}
+
+.header_default {
+
+}
+
+.header_extended {
+    display:none;
+}
+
+.header_extended_shown {
+}
+
+.header_name {
+    color: #555;
+    font-weight: 900;
+    text-align:left;
+    vertical-align: top;
+    line-height: 20px;
+    min-width: 110px;
+}
+
+.header_value {
+    text-align:left;
+    vertical-align: middle;
+    padding-top: 4px;
+    line-height: 18px;
+}
+
+#email_control_data_ctl {
+    font-weight: 900;
+}
+
+#email_headers_ctl {
+    font-weight: 900;
+    padding-bottom: 2px;
+    text-align: right;
+}
+
+#email_message {
+    border: 1px inset #ccc;
+    padding:10px;
+    margin-left: 2px;
+    margin-right: 10px;
+    background-color: #EAEAEA;
+    border: 1px solid #FFFFFF;
+    margin-bottom: 10px;
+    margin-top: 5px;
+    outline: 1px solid #C1D0D3;
+    width: 900px;
+}
+
+#email_body {
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: 1px solid #C1D0D3;
+}
+
+#email_body div {
+    overflow:auto;
+    padding: 5px;
+    max-height: 400px;
+    background-color: white;
+}
+
+#email_control_data {
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    border-bottom: 1px solid #C1D0D3;
+}
+
+#email_control_data div.data {
+    padding: 0 5px 5px 5px;
+    max-height: 150px;
+    overflow:auto;
+}
+
+#email_headers {
+    padding: 0 5px 5px 5px;
+    max-height: 140px;
+    overflow-y: scroll;
+}
+
+pre {
+    margin:0;
+}
+
+.right_item {
+    float: right;
+}
+
+</style>';if ($stash->get(['data',0,'type',0])eq 'queue' &&!$stash->get(['data',0,'found_exim',0])){$output .= '<div>
+    <h2>Unable to locate valid exim binary. You may need to install Exim ( This is done during upcp --force now ).</h2>
+</div>
+'}elsif ($stash->get(['data',0,'header',0])){$output .= '
+<div>
+
+    <h3 class="simpleheading">';$output .= $stash->get(['locale',0,'maketext',['Message ID: [_1]',$stash->get(['data',0,'msgid',0,'html',0])]]);$output .= '</h3>
+
+    ';if ($stash->get(['data',0,'type',0])eq 'queue'){$output .= '
+        ';$stash->set('controls',do {my$output='';$output .= '
+            <div class="email_controls">
+                <ul class="email_controls_list">
+                    <li class="email_control email_control_item">
+                        <button class="btn-secondary" onclick="window.location = \'';$output .= $stash->get('cp_security_token');$output .= '/scripts11/remove_messages_mail_queue?msgid=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output .= '\';">
+                            <img class="email_control_icon" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/delete_page.gif' ]]);$output .= '" border="0">
+                            <span class="email_control_text">';$output .= $stash->get(['locale',0,'maketext',['Delete Message' ]]);$output .= '</span>
+                        </button>
+                    </li>
+                    <li class="email_control email_control_item">
+                        <button  class="btn-secondary" onclick="window.location=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts11/deliver_messages_mail_queue?msgid=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output .= '\';">
+                            <img class="email_control_icon" width="16" height="16" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/email-force-on.png' ]]);$output .= '" border="0">
+                            <span class="email_control_text">';$output .= $stash->get(['locale',0,'maketext',['Deliver Message Now' ]]);$output .= '</span>
+                        </button>
+                    </li>
+                    <li class="email_control email_control_item">
+                        <button class="btn-secondary" onclick="downloadEmail(\'';$output .= $stash->get('cp_security_token');$output .= '/scripts2/download_email_message?msgid=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output .= '\');">
+                            <img class="email_control_icon" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/download_sm.gif' ]]);$output .= '" border="0">
+                            <span class="email_control_text">';$output .= $stash->get(['locale',0,'maketext',['Download in “[output,strong,_1]” format.','.eml' ]]);$output .= '</span>
+                        </button>
+                    </li>
+                    ';if ($stash->get(['data',0,'control_data',0])){$output .= '
+                    <li class="email_control email_control_item right_item">
+                        <button class="btn-secondary" href="javascript:void(0);" onclick="toggle_control_data(this); return false;">';if ($stash->get('show_control_data')){$output .= $stash->get(['locale',0,'maketext',['Hide Control Data' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Show Control Data' ]])}$output .= '                        </button>
+                    </li>
+                    '}$output .= '
+                    <li class="email_control email_control_item right_item">
+                        <button class="btn-secondary" href="javascript:void(0);" onclick="toggle_extended_headers(this); return false; return false;">';if ($stash->get('show_extended_headers')){$output .= $stash->get(['locale',0,'maketext',['Hide Extended Headers' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Show Extended Headers' ]])}$output .= '                        </button>
+                    </li>
+                </ul>
+            </div>
+            <div class="clearit">&nbsp;</div>
+        ';$output});$output .= '
+    '}else {$output .= '
+        ';$stash->set('controls',do {my$output='';$output .= '
+            <div class="email_controls">
+                    <ul class="email_controls_list">
+                        <li class="email_control email_control_item">
+                            <button class="btn-secondary" onclick="downloadEmail(\'';$output .= $stash->get('cp_security_token');$output .= '/scripts2/download_email_message?msgid=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output .= '&transport=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'transport',0]);&$_tt_filter($output)};$output .= '&address=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'address',0]);&$_tt_filter($output)};$output .= '&path=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['data',0,'path',0]);&$_tt_filter($output)};$output .= '\');">
+                                <img class="email_control_icon" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/download_sm.gif' ]]);$output .= '" border="0">
+                                <span class="email_control_text">';$output .= $stash->get(['locale',0,'maketext',['Download in “[output,strong,_1]” format.','.eml' ]]);$output .= '</span>
+                            </button>
+                        </li>
+                        ';if ($stash->get(['data',0,'control_data',0])){$output .= '
+                        <li class="email_control email_control_item right_item">
+                            <button class="btn-secondary" onclick="toggle_control_data(this); return false;">';if ($stash->get('show_control_data')){$output .= $stash->get(['locale',0,'maketext',['Hide Control Data' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Show Control Data' ]])}$output .= '                            </button>
+                        </li>
+                        '}$output .= '
+                        <li class="email_control email_control_item right_item">
+                            <button class="btn-secondary" href="javascript:void(0);" onclick="toggle_extended_headers(this); return false; return false;">';if ($stash->get('show_extended_headers')){$output .= $stash->get(['locale',0,'maketext',['Hide Extended Headers' ]])}else {$output .= $stash->get(['locale',0,'maketext',['Show Extended Headers' ]])}$output .= '                            </button>
+                        </li>
+                    </ul>
+            </div>
+            <div class="clearit">&nbsp;</div>
+        ';$output});$output .= '
+    '}$output .= '
+
+    ';$output .= '
+
+    ';$output .= $stash->get('controls');$output .= '
+
+    <div id="email_message">
+        ';if ($stash->get(['data',0,'control_data',0])){$output .= '
+            <div id="email_control_data" class="';if ($stash->get('show_control_data')){$output .= 'shown_control_data'}else {$output .= 'hidden_control_data'}$output .= '">
+                <div class="header_name">';$output .= $stash->get(['locale',0,'maketext',['Mail Control Data:' ]]);$output .= '</div>
+                <div class="data">
+                    <pre>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'control_data',0]);&$_tt_filter($output)};$output .= '</pre>
+                </div>
+            </div>
+        '}$output .= '
+        <div id="email_headers">
+            <table class="header_table">';$stash->set('current_header','');$stash->set('date_header',{});$stash->set('from_header',{});$stash->set('to_header',{});$stash->set('subject_header',{});$stash->set('box_trapper_header',{});$stash->set('get_message_sender_via_header',{});$stash->set('mail_headers',[]);do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'header',0,'split',[('' .'
+')]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'msgheader'}=$_tt_value;if ($stash->get(['msgheader',0,'match',['^\s+' ]])){$stash->set('msgheader',$stash->get(['msgheader',0,'replace',['^\s+',' ' ]]));$stash->set('current_header',$stash->get('current_header').('' .'
+').$stash->get('msgheader'));($_tt_value,$_tt_error)=$_tt_list->get_next();next FOR1}else {if ($stash->get('current_header')){$stash->set('parts',$stash->get(['current_header',0,'split',[':\s+',2 ]]));$stash->set('header_item',{'key'=>$stash->get(['parts',0,0,0]),'value'=>$stash->get(['parts',0,1,0])});if ($stash->get(['header_item',0,'key',0,'match',['(?i)^(from|to|date|subject|x-boxtrapper-match|x-get-message-sender-via)$' ]])){do {my$_tt_result=$stash->get(['header_item',0,'key',0,'lc',0]);my$_tt_match;SWITCH: {$_tt_match='date';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('date_header',$stash->get('header_item'));last SWITCH}$_tt_match='from';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('from_header',$stash->get('header_item'));last SWITCH}$_tt_match='to';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('to_header',$stash->get('header_item'));last SWITCH}$_tt_match='subject';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('subject_header',$stash->get('header_item'));last SWITCH}$_tt_match='x-boxtrapper-match';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('box_trapper_header',$stash->get('header_item'));last SWITCH}$_tt_match='x-get-message-sender-via';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('get_message_sender_via_header',$stash->get('header_item'));last SWITCH}}}}else {$output .= $stash->get(['mail_headers',0,'push',[$stash->get('header_item')]])}}$stash->set('current_header',$stash->get('msgheader'))};($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};if ($stash->get('current_header')){$stash->set('parts',$stash->get(['current_header',0,'split',[':\s+',2 ]]));$stash->set('header_item',{'key'=>$stash->get(['parts',0,0,0]),'value'=>$stash->get(['parts',0,1,0])});if ($stash->get(['header_item',0,'key',0,'match',['(?i)^(from|to|date|subject|x-boxtrapper-match|x-get-message-sender-via)$' ]])){do {my$_tt_result=$stash->get(['header_item',0,'key',0,'lc',0]);my$_tt_match;SWITCH: {$_tt_match='date';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('date_header',$stash->get('header_item'));last SWITCH}$_tt_match='from';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('from_header',$stash->get('header_item'));last SWITCH}$_tt_match='to';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('to_header',$stash->get('header_item'));last SWITCH}$_tt_match='subject';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('subject_header',$stash->get('header_item'));last SWITCH}$_tt_match='x-boxtrapper-match';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('box_trapper_header',$stash->get('header_item'));last SWITCH}$_tt_match='x-get-message-sender-via';$_tt_match=[$_tt_match ]unless ref$_tt_match eq 'ARRAY';if (grep(/^\Q$_tt_result\E$/,@$_tt_match)){$stash->set('get_message_sender_via_header',$stash->get('header_item'));last SWITCH}}}}else {$output .= $stash->get(['mail_headers',0,'push',[$stash->get('header_item')]])}}if ($stash->get(['date_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('date_header')})}if ($stash->get(['from_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('from_header')})}if ($stash->get(['to_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('to_header')})}if ($stash->get(['subject_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('subject_header')})}if ($stash->get(['box_trapper_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('box_trapper_header')})}if ($stash->get(['get_message_sender_via_header',0,'exists',['key' ]])){$output .= $context->process('header_line',{'thisheader'=>$stash->get('get_message_sender_via_header')})}do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_headers',0,'sort',['key' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'mail_header'}=$_tt_value;$output .= $context->process('header_line',{'thisheader'=>$stash->get('mail_header')});;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            </table>
+        </div>
+        <div id="email_body"><div><pre>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'body',0]);&$_tt_filter($output)};$output .= '</pre></div></div>
+    </div>
+
+<div class="email_controls">
+        <ul class="email_controls_list">
+            <li class="email_control email_control_item">
+                <button class="btn-secondary" onclick="try { window.opener.focus(); } catch(e) {}; window.close(); return false;">
+                    <img class="email_control_icon" src="';$output .= $stash->get(['Whostmgr',0,'find_file_url',['/images/go-last.png' ]]);$output .= '" border="0">
+                    <span class="email_control_text">';if ($stash->get(['data',0,'transport',0])){$output .= '                        ';$output .= $stash->get(['locale',0,'maketext',['Return to Mail Delivery Reports.' ]])}else {$output .= '                        ';$output .= $stash->get(['locale',0,'maketext',['Return to Mail Queue Manager.' ]])}$output .= '                    </span>
+                </button>
+            </li>
+        </ul>
+</div>
+
+</div>
+
+<script type="text/javascript">
+//------------------------
+// Shortcuts
+//------------------------
+var DOM = YAHOO.util.Dom;
+var cpDOM = CPANEL.dom;
+
+var extended_headers_shown = ';if ($stash->get('show_extended_headers')eq 1){$output .= '1'}else {$output .= '0'}$output .= ';
+var control_data_shown = ';if ($stash->get('show_control_data')eq 1){$output .= '1'}else {$output .= '0'}$output .= ";;\n\n/**\n * Shows and hides the email control data\n * \@name toggle_control_data\n * \@param {HTMLElement} el\n */\nfunction toggle_control_data(el) {\n    if (control_data_shown) {\n        el.innerHTML = \"";$output .= $stash->get(['locale',0,'maketext',['Show Control Data' ]]);$output .= '";
+        control_data_shown = 0;
+
+        DOM.get(\'email_control_data\').className = \'hidden_control_data\';
+    }
+    else {
+        el.innerHTML = "';$output .= $stash->get(['locale',0,'maketext',['Hide Control Data' ]]);$output .= "\";\n        control_data_shown = 1;\n        DOM.get('email_control_data').className='shown_control_data';\n    }\n    CPANEL.nvdata.save();\n}\n\n/**\n * Shows and hides the extended email headers\n * \@name toggle_extended_headers\n * \@param {HTMLElement} el\n */\nfunction toggle_extended_headers(el) {\n    if (extended_headers_shown) {\n        el.innerHTML = \"";$output .= $stash->get(['locale',0,'maketext',['Show Extended Headers' ]]);$output .= '";
+        extended_headers_shown = 0;
+
+        var headerEls = DOM.getElementsByClassName(\'header_extended_shown\', \'tr\');
+        for(var i = 0, l = headerEls.length; i < l; i++) {
+            headerEls[i].className = \'header_extended\';
+        }
+    }
+    else {
+        el.innerHTML = "';$output .= $stash->get(['locale',0,'maketext',['Hide Extended Headers' ]]);$output .= "\";\n        extended_headers_shown = 1;\n\n        var headerEls = DOM.getElementsByClassName('header_extended', 'tr');\n        for(var i = 0, l = headerEls.length; i < l; i++) {\n            headerEls[i].className='header_extended_shown';\n        }\n    }\n    CPANEL.nvdata.save();\n}\n\n/**\n * Download the email\n * \@name downloadEmail\n * \@param {string} url\n */\nfunction downloadEmail(url)\n{\n    var iframe;\n    iframe = DOM.get(\"hiddenDownloader\");\n    if (iframe === null)\n    {\n        iframe = document.createElement('iframe');\n        iframe.id = \"hiddenDownloader\";\n        iframe.style.visibility = 'hidden';\n        document.body.appendChild(iframe);\n    }\n    iframe.src = url;\n}\n\n\n// Setup the nvdata personalization properties\n( function() {\n    CPANEL.nvdata.register('show_extended_headers', function() {\n        return (extended_headers_shown ? 1 : 0);\n    } );\n\n    CPANEL.nvdata.register('show_control_data', function() {\n        return (control_data_shown ? 1 : 0);\n    } );\n}() );\n\n</script>\n"}elsif ($stash->get(['data',0,'type',0])eq 'queue'){$output .= '
+    <p>
+        ';$stash->set('html_safe_msgid',do {my$output='';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output});$output .= '
+        ';$output .= $stash->get(['locale',0,'maketext',['The system failed to locate the message with Message [asis,ID] “[_1]” in the queue. The system may have delivered the message during the request process.',$stash->get('html_safe_msgid')]]);$output .= '
+    </p>
+    <a class="btn-secondary" href="javascript:void(0);" onClick="try { window.opener.focus(); } catch(e) {}; window.close(); return false;">';$output .= $stash->get(['locale',0,'maketext',['Return to Mail Queue.' ]]);$output .= '</a>
+'}else {$output .= '
+    <p>
+        ';$stash->set('html_safe_msgid',do {my$output='';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'msgid',0]);&$_tt_filter($output)};$output});$output .= '
+        ';if ($stash->get(['data',0,'permitted',0])){$output .= '
+            ';if ($stash->get(['data',0,'statusmsg',0])){$output .= '
+              ';$output .= $stash->get(['locale',0,'maketext',['The system failed to locate the message with Message [asis,ID] “[_1]”. The system may have deleted the message: [_2]',$stash->get('html_safe_msgid'),$stash->get(['data',0,'statusmsg',0,'html',0])]]);$output .= '
+            '}else {$output .= '
+              ';$output .= $stash->get(['locale',0,'maketext',['The system failed to locate the message with Message [asis,ID] “[_1]”. The system may have deleted the message.',$stash->get('html_safe_msgid')]]);$output .= '
+            '}$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['The system has not delivered a message with Message [asis,ID] “[_1]” to an account that you control.',$stash->get('html_safe_msgid')]]);$output .= '
+        '}$output .= '
+    </p>
+    <a class="btn-secondary" href="javascript:void(0);" onClick="try { window.opener.focus(); } catch(e) {}; window.close(); return false;">';$output .= $stash->get(['locale',0,'maketext',['Return to Mail Delivery Reports.' ]]);$output .= '</a>
+
+'}$output .= '
+
+';$context->include('master_templates/master.tmpl',{'theme'=>'yui','breadcrumburl'=>$stash->get('origin'),'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'header_line'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+        <tr class="';if ($stash->get(['thisheader',0,'key',0,'match',['(?i)^(from|to|date|subject|x-boxtrapper-match|x-get-message-sender-via)$' ]])){$output .= 'header_default'}else {if ($stash->get('show_extended_headers')){$output .= 'header_extended_shown'}else {$output .= 'header_extended'}}$output .= '">
+            <td class="header_name">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['thisheader',0,'key',0]);&$_tt_filter($output)};$output .= ':</td>
+            <td class="header_value"><pre>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['thisheader',0,'value',0]);&$_tt_filter($output)};$output .= '</pre></td>
+        </tr>
+    '}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

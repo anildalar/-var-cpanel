@@ -1,0 +1,54 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/def.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('mail_domains',$stash->get(['execute',['Email','list_mail_domains',{}]]));$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+    <p id="defaultAddressDesc" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Catch any email that is sent to an invalid email address for your domain. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/DefaultAddress','_blank','lnkDefaultAddressDocumentation' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Default Address Maintenance' ]]);$output .= '</h2>
+        <form method="post" name="fwdf" id="fwdf" action="dosetdef.html" onsubmit="return do_validate(this.id);">
+        <div class="form-group">
+            <label id="lblSendUnrouted" for="defsel">
+                ';$output .= $stash->get(['locale',0,'maketext',['Send all unrouted email for the following domain:' ]]);$output .= '
+            </label>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    <select id="defsel" name="domain" class="form-control" onchange="loaddest();">
+                        ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['mail_domains',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'hashref'}=$_tt_value;$output .= '
+                            <option value="';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '">';$output .= $stash->get(['hashref',0,'domain',0,'html',0]);$output .= '</option>
+                        ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                    </select>
+
+
+                    <span id="showdest" style="display:none;">
+                        <b>';$output .= $stash->get(['locale',0,'maketext',['Current Setting' ]]);$output .= '</b>: <span id="currentdest"></span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        ';$output .= $context->include('definclude.html.tt');$output .= '
+        </form>
+    </div>
+
+
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'default_address','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+
+var input_modded = 0;
+
+function defcallback(result) {
+    var defaddy = result[0][\'defaultaddress\'] || \'';$output .= $stash->get(['locale',0,'maketext',['Not Found' ]]);$output .= "';\n    defaddy = defaddy.replace(/^\\\"/,'').replace(/\\\"\$/,'');\n    document.getElementById('currentdest').textContent=defaddy;\n    var inputEl = document.getElementById('fwdemail');\n    if (!input_modded && inputEl) {\n        var fwd_radio = document.fwdf.fwdopt;\n        var emailtest=/^.+\@.+\\./;\n        var localtest=/^\\s*\\w+\\s*\$/;\n\n        var failtest = /^\\s*:fail:/;\n        var discardtest = /^\\s*:blackhole:/;\n        var system_user_test = /^";$output .= $stash->get(['CPANEL',0,'user',0]);$output .= "\$/;\n        var pipetest = /\\|/;\n        var advEl = document.getElementById('advance');\n        var userval = document.getElementById(\"user\").value;\n\n        if (system_user_test.test(defaddy)) {\n            selectRadioByValue(fwd_radio,'system');\n            CPANEL.animate.slide_down(advEl);\n        }\n        else if (emailtest.test(defaddy) || localtest.test(defaddy) || defaddy == userval) {\n            selectRadioByValue(fwd_radio,'fwd');\n            inputEl.value=defaddy;\n            if (advEl) { advEl.style.display='none'; }\n        }\n        else if (failtest.test(defaddy)) {\n            selectRadioByValue(fwd_radio,'fail');\n            var failEl = document.getElementById('fail_input');\n            if (failEl) { failEl.value = defaddy.replace(/\\s*:fail:\\s*/,''); }\n            if (advEl) { advEl.style.display='none'; }\n        }\n        else if (discardtest.test(defaddy)) {\n            selectRadioByValue(fwd_radio,'blackhole');\n            CPANEL.animate.slide_down(advEl);\n        }\n        else if (pipetest.test(defaddy)) {\n            selectRadioByValue(fwd_radio,'pipe');\n            var pipeEl = document.getElementById('pipefwd');\n            if (pipeEl) { pipeEl.value = defaddy.replace(/\\s*\\|\\s*/,'').replace('";$output .= $stash->get(['CPANEL',0,'homedir',0]);$output .= "','').replace(/^\\//,''); }\n            CPANEL.animate.slide_down(advEl);\n        }\n    }\n}\n\nfunction selectRadioByValue(El,Tvalue) {\n    for(var i=0;i<El.length;i++) {\n        if (El[i].value == Tvalue) {\n            El[i].checked=true;\n            break;\n        }\n    }\n}\n\nfunction loaddest() {\n    input_modded = 0;\n    document.getElementById('showdest').style.display='';\n    var defsel = document.getElementById('defsel');\n    var domain = defsel.options[defsel.selectedIndex].value;\n    document.getElementById('currentdest').innerHTML='";$output .= $stash->get(['locale',0,'maketext',['Updating' ]]);$output .= '....\';
+    cpanel_jsonapi2(defcallback,\'Email\',\'listdefaultaddresses\',\'domain\',domain);
+}
+YAHOO.util.Event.onDOMReady(loaddest);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

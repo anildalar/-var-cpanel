@@ -1,0 +1,150 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/configure_nameserver.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= $context->process('_ajaxapp_styles.tmpl');$output .= $context->process('_ajaxapp_header.tmpl');$stash->set('CPList',$context->plugin('CPList'));$output .= '<style type="text/css">
+    #main_content {
+        font-family: helvetica, Arial, sans-serif;
+        font-size: 11pt;
+        line-height: 20px;
+        color: #666;
+        padding: 30px;
+    }
+    #main_content a {
+        text-decoration: underline;
+    }
+    #main_content h2 {
+        font-family: Helvetica, Arial, sans-serif;
+        font-weight: bold;
+        font-size: 15px;
+        color: #4C5355;
+    }
+    .option_box {
+        width: 100%;
+        background-color: #E0E9EA;
+        border: 1px solid #ffffff;
+        outline: 1px solid #C1D0D3;
+        margin-bottom: 10px;
+    }
+    .option_header {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 14px;
+        font-weight: bold;
+        color: #4C3555;
+        padding: 10px;
+        border-bottom: 1px solid #C1D0D3;
+    }
+    .option_contents {
+        border-top: 1px solid #ffffff;
+        padding: 10px;
+    }
+    .option_contents input[type="text"] {
+        border-radius: 5px;
+        width: 200px;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    .option_contents input[type="checkbox"] {
+        margin-bottom: 10px;
+        margin-left: 0;
+    }
+    .option_contents .radio_group_wrapper {
+        margin-bottom: 10px;
+    }
+    .freeform {
+        margin-bottom: 10px;
+    }
+    table td {
+        vertical-align: text-top;
+    }
+    textarea {
+        margin-top: 0px;
+    }
+    .lbl {
+        font-weight: bold;
+    }
+    .notes {
+        margin-bottom: 15px;
+    }
+    select {
+        font-family: helvetica, arial, sans-serif;
+        font-size: 14px;
+    }
+    #remote_link {
+        visibility: hidden;
+        margin-left: 20px;
+        font-size: 9pt;
+    }
+</style>
+
+';if ($stash->get(['data',0,'hasroot',0])){$output .= '
+   ';$output .= $context->include('_cluster_masquerade.tmpl');$output .= '
+'}$output .= '
+
+<div id="main_content">
+    <div class="option_box">
+        <div class="option_header">
+            ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['locale',0,'maketext',['“[_1]” DNS Remote Configuration.',$stash->get(['data',0,'config',0,'name',0])]]);&$_tt_filter($output)};$output .= '
+        </div>
+        <div class="option_contents">
+            <form autocomplete="off" action=\'';$output .= $stash->get('cp_security_token');$output .= '/cgi/activate_remote_nameservers.cgi\' method="post">
+            <input type="hidden" name="cluster_user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '">
+                <input type="hidden" name=\'module\' value=\'';$output .= $stash->get(['data',0,'module',0]);$output .= '\'>
+                <table width=100% cellspacing="0" cellpadding="0" style="table-layout: fixed;">
+                    <thead>
+                        <th width="300px">&nbsp;</th>
+                        <th>&nbsp;</th>
+                    </thead>
+                    <tbody>
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'config',0,'options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'config'}=$_tt_value;$output .= '
+
+            ';if ($stash->get(['config',0,'type',0])eq 'text'){$output .= '
+            <tr>
+                <td class="lbl"><label for="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'locale_text',0]);&$_tt_filter($output)};$output .= '</label>:</td>
+                <td><input id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" type="text" name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" ';if ($stash->get(['data',0,'is_edit',0])){$output .= 'value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'server',0,$stash->get(['config',0,'name',0]),0]);&$_tt_filter($output)};$output .= '"'}$output .= ' />
+                    ';if ($stash->get(['data',0,'module',0])eq 'cPanel' && $stash->get(['config',0,'name',0])eq 'host'){$output .= '
+                        <a id="remote_link" href="javascript:void(0)" target="_blank">Generate a remote API token</a>
+                    '}$output .= '
+                </td>
+            </tr>
+
+            '}elsif ($stash->get(['config',0,'type',0])eq 'binary'){$output .= '
+                ';if ($stash->get(['data',0,'is_edit',0])){if ($stash->get(['data',0,'server',0,'exists',[$stash->get(['config',0,'name',0])]])){$stash->set('is_checked',$stash->get(['data',0,'server',0,$stash->get(['config',0,'name',0]),0]))}else {$stash->set('is_checked',0)}}else {$stash->set('is_checked',$stash->get(['config',0,'default',0]))}$output .= '
+                <tr><td colspan="2"><label><input type="checkbox" name=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= ' id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" ';if ($stash->get('is_checked')){$output .= 'checked'}$output .= '> <b>';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'locale_text',0]);&$_tt_filter($output)};$output .= '</b></label></td></tr>
+            '}elsif ($stash->get(['config',0,'type',0])eq 'radio'){$output .= '
+            <tr><td class="lbl">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'locale_text',0]);&$_tt_filter($output)};$output .= ':</td><td>
+                <div class="radio_group_wrapper">
+                ';$stash->set('set_value',$stash->get(['data',0,'server',0,$stash->get(['config',0,'name',0]),0])|| $stash->get(['config',0,'default',0]));if (!$stash->get('set_value')||!$stash->get(['config',0,'options',0,'ofeach',['value' ],'grep',[('^' .$stash->get('set_value'))],'size',0])){$stash->set('set_value',$stash->get(['config',0,'options',0,0,0,'value',0]))}$output .= '                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['config',0,'options',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR2: while (!$_tt_error){$stash->{'option'}=$_tt_value;$output .= '
+                    ';$stash->set('is_checked',$stash->get(['option',0,'value',0])eq $stash->get('set_value'));$output .= '                <label><input type="radio" name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['option',0,'value',0]);&$_tt_filter($output)};$output .= '" id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= ($stash->get(['config',0,'name',0]).'-' .$stash->get(['option',0,'value',0]));&$_tt_filter($output)};$output .= '" ';if ($stash->get('is_checked')){$output .= 'checked'}$output .= ' > ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['option',0,'label',0]);&$_tt_filter($output)};$output .= '</label><br />
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                </div>
+            </td></tr>
+
+            '}elsif ($stash->get(['config',0,'type',0])eq 'bigtext'){$output .= '
+            <tr><td colspan="2">
+            <div class="freeform lbl"><label for="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'locale_text',0]);&$_tt_filter($output)};$output .= '</label>:</div>
+            <textarea name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" style="width:95%" rows=20 id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '">';if ($stash->get(['data',0,'is_edit',0])){$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'server',0,$stash->get(['config',0,'name',0]),0]);&$_tt_filter($output)}}$output .= '</textarea><br />
+            </td></tr>
+
+            '}elsif ($stash->get(['config',0,'type',0])eq 'ip'){$output .= '
+            <tr><td class="lbl">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'locale_text',0]);&$_tt_filter($output)};$output .= '</td><td><input type="text" name="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['config',0,'name',0]);&$_tt_filter($output)};$output .= '" /></td></tr>
+            '}$output .= '
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+            <tr>
+                <td class="lbl">
+                        <label for="dnsrole">';$output .= $stash->get(['locale',0,'maketext',['[asis,DNS] Role' ]]);$output .= '</label>:
+                </td>
+                <td>
+                    <select onchange="doRoleSelect();" id="dns_role_select" name="dnsrole">
+                        ';$stash->set('dnsrole',$stash->get(['data',0,'server',0,'dnsrole',0]));$output .= '
+                        ';$output .= $context->process('_dnsroles.tmpl');$output .= '
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    ';$output .= $context->process('_dnsroles_explained.tmpl');$output .= '
+                </td>
+            </tr>
+            </tbody>
+            </table><br/><br/>
+
+            <input type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" class="btn-primary" /> &nbsp;&nbsp;&nbsp; <a href=\'';$output .= $stash->get('cp_security_token');$output .= '/scripts7/clusterstatus?cluster_user=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'cluster_user',0]);&$_tt_filter($output)};$output .= '\'>';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "</a>\n            </form>\n        </div>\n    </div>\n</div>\n<script type=\"text/javascript\">\nvar host = DOM.get('host');\nvar remote = DOM.get('remote_link');\n\nvar populate_remote = function () {\n    if (host && remote) {\n        remote.href = \"https://\" + host.value.trim().replace(/^https?\\:\\/\\//i,'') + \":2087/scripts7/apitokens/home\";\n        DOM.setStyle( remote, 'visibility', host.value ? 'visible' : 'hidden' );\n    }\n}\nEVENT.on(host, 'keyup', populate_remote);\nEVENT.on(host, 'mousedown', populate_remote);\nEVENT.on(host, 'change', populate_remote);\n\nfunction doRoleSelect () {\n    var elem = document.getElementById('recurse');\n    var select = document.getElementById('dns_role_select');\n    if (select.value === \"write-only\") {\n        elem.checked = false;\n        elem.setAttribute('disabled','');\n    } else {\n        elem.removeAttribute('disabled');\n        elem.checked = true;\n    }\n};\ndocument.addEventListener(\"DOMContentLoaded\", function(event) {\n    doRoleSelect();\n});\n\n</script>\n\n";$context->include('master_templates/master.tmpl',{'theme'=>'yui','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

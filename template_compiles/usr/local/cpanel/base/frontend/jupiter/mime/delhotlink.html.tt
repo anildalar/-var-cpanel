@@ -1,0 +1,26 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/delhotlink.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('delete_hotlink',$stash->get(['execute',['Mime','delete_hotlink' ]]));$output .= '
+
+';$output .= do {my$output='';$output .= '<div class="body-content">
+    ';if (!$stash->get(['delete_hotlink',0,'errors',0,'size',0])){$output .= '
+        <div class="alert alert-success" id="deleteHotlinkSuccess">
+            <span class="glyphicon glyphicon-ok-sign" id="deleteHotlinkSuccessImg"></span>
+            <div class="alert-message" id="deleteHotlinkSuccessMsg">
+               ';$output .= $stash->get(['locale',0,'maketext',['Hotlink Protection Disabled!' ]]);$output .= '
+            </div>
+        </div>
+    '}else {$output .= '
+        <div class="alert alert-danger" id="deleteHotlinkError">
+            <span class="glyphicon glyphicon-remove-sign" id="deleteHotlinkErrorImg"></span>
+            <div class="alert-message" id="deleteHotlinkErrorMsg">
+                ';$output .= $stash->get(['locale',0,'maketext',['There was an error while [boolean,_1,enabling,disabling] hotlink protection.',1 ]]);$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['delete_hotlink',0,'errors',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '<p>';$output .= $stash->get('q');$output .= '</p>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            </div>
+        </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'hotlink.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+';$context->include('_assets/master.html.tt',{'app_key'=>'hotlink_protection','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

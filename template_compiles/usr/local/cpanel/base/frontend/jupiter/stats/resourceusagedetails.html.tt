@@ -1,0 +1,123 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/stats/resourceusagedetails.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+';$stash->set('liveinfo_usage',$stash->get(['Api2',0,'exec',['LVEInfo','getUsage',{'period'=>$stash->get(['FORM',0,'period',0])}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+<div class="body-content">
+
+    <div class="section">
+
+        <table class="table table-striped">
+            <tr>
+                <td title="CPU Usage" nowrap>
+                    ';$output .= $stash->get(['locale',0,'maketext',['CPU Usage' ]]);$output .= '
+                </td>
+                <td>
+                    ';$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','cpu' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','cpu',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','cpu' ]]);$output .= '% / 100%
+                </td>
+            </tr>
+            <tr>
+                <td title="Memory Usage" nowrap>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Memory Usage' ]]);$output .= '
+                </td>
+                <td>
+                    ';$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','mem' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','mem',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','mem' ]]);$output .= ' / ';$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','mem_limit' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','mem_limit',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','mem_limit' ]]);$output .= '
+                </td>
+            </tr>
+            <tr>
+                <td title="';$output .= $stash->get(['locale',0,'maketext',['Simultaneously running PHP and CGI scripts, as well as CRON jobs and SHELL sessions.' ]]);$output .= '" nowrap>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Entry Processes' ]]);$output .= '</td>
+                <td>
+                    ';$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','mep' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','mep',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','mep' ]]);$output .= ' / ';$output .= $stash->get(['Api1',0,'pre_exec',['LVEInfo','mep_limit' ]]);$output .= $stash->get(['Api1',0,'exec',['LVEInfo','mep_limit',[$stash->get('undef')]]]);$output .= $stash->get(['Api1',0,'post_exec',['LVEInfo','mep_limit' ]]);$output .= '</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Timeframe' ]]);$output .= '</h2>
+        <form method="get">
+            <div class="form-group">
+                <label for="period">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Update Timeframe' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <select id=\'period\' name=\'period\' class="form-control">
+                            <option value=\'10m\'>';$output .= $stash->get(['locale',0,'maketext',['Last 10 Minutes' ]]);$output .= '</option>
+                            <option value=\'30m\'>';$output .= $stash->get(['locale',0,'maketext',['Last 30 Minutes' ]]);$output .= '</option>
+                            <option value=\'1h\'>';$output .= $stash->get(['locale',0,'maketext',['Last Hour' ]]);$output .= '</option>
+                            <option value=\'4h\'>';$output .= $stash->get(['locale',0,'maketext',['Last 4 Hours' ]]);$output .= '</option>
+                            <option value=\'1d\'>';$output .= $stash->get(['locale',0,'maketext',['Last 24 Hours' ]]);$output .= '</option>
+                            <option value=\'today\'>';$output .= $stash->get(['locale',0,'maketext',['Today' ]]);$output .= '</option>
+                            <option value=\'yesterday\'>';$output .= $stash->get(['locale',0,'maketext',['Yesterday' ]]);$output .= '</option>
+                            <option value=\'7d\'>';$output .= $stash->get(['locale',0,'maketext',['Last 7 Days' ]]);$output .= '</option>
+                            <option value=\'30d\'>';$output .= $stash->get(['locale',0,'maketext',['Last 30 Days' ]]);$output .= '</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                 <input type="submit" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Submit' ]]);$output .= '" />
+            </div>
+
+        </form>
+
+        <script type="text/javascript">
+            var p = document.getElementById(\'period\');
+            var options = p.options;
+            var period = \'';$output .= $stash->get(['FORM',0,'period',0]);$output .= '\';
+            if (period == \'\') {
+              period=\'1d\';
+            }
+            for (var i = 0; i < options.length; i++) {
+              if (options[i].value == period) {
+                        p.selectedIndex=i;
+                        break;
+              }
+            }
+        </script>
+        <img src="';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['CPANEL',0,'ENV',0,'cp_security_token',0]);&$_tt_filter($output)};$output .= '/3rdparty/lvechart.cgi?period=';$output .= do {my$output='';my$_tt_filter=$context->filter('url')|| $context->throw($context->error);$output .= $stash->get(['FORM',0,'period',0]);&$_tt_filter($output)};$output .= '">
+    </div>
+
+    <div class="section">
+        <h2>';$output .= $stash->get(['locale',0,'maketext',['Usage' ]]);$output .= '</h2>
+        <table class="sortable table table-striped">
+            <thead>
+                <tr>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Beginning of Period' ]]);$output .= '>From</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['End of Period' ]]);$output .= '>To</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Average [output,acronym,CPU,Central Processing Unit] Usage:' ]]);$output .= '>aCPU</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Max [output,acronym,CPU,Central Processing Unit] Usage:' ]]);$output .= '>mCpu</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Average Entry Processes' ]]);$output .= '>aEP</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Max Entry Processes' ]]);$output .= '>mEP</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Entry Processes Limit (simultaneously running [asis,PHP] and [asis,CGI] scripts, as well as [asis,Cron] jobs and shell sessions)' ]]);$output .= '>lEP</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Average Memory Usage' ]]);$output .= '>aMEM</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Max Memory Usage' ]]);$output .= '>mMEM</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Memory Limit' ]]);$output .= '>lMEM</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Number of times application hasn’t been able to execute correctly due to memory limit.' ]]);$output .= '>MemF</th>
+                <th title=';$output .= $stash->get(['locale',0,'maketext',['Number of times entry processes limit was reached.' ]]);$output .= '>MepF</th>
+                </tr>
+            </thead>
+            <tbody>
+                ';if ($stash->get(['liveinfo_usage',0,'size',0])){$output .= '
+                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('liveinfo_usage');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'usage'}=$_tt_value;$output .= '
+                    <tr class="row-';$output .= $stash->get(['loop',0,'index',0])% 2 eq 0 ? 'even' : 'odd';$output .= '" class="erros">
+                        <td>';$output .= $stash->get(['usage',0,'from',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['usage',0,'to',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'eapcpu',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'apcpu',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'empcpu',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'mpcpu',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'eaep',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'aep',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'emep',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'mep',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['usage',0,'lep',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'eaMem',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'aMemStr',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'emMem',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'mMemStr',0,'html',0]);$output .= '</td>
+                        <td>';$output .= $stash->get(['usage',0,'lMemStr',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'ememf',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'memf',0,'html',0]);$output .= '</td>
+                        <td class="';$output .= $stash->get(['usage',0,'emepf',0,'html',0]);$output .= '">';$output .= $stash->get(['usage',0,'mepf',0,'html',0]);$output .= '</td>
+                    </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+            '}$output .= '
+            </tbody>
+        </table>
+</div>
+';$context->include('_assets/master.html.tt',{'page_title'=>$stash->get(['locale',0,'maketext',['Current Usage' ]]),'app_key'=>'cpu_and_concurrent_connection_usage','content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

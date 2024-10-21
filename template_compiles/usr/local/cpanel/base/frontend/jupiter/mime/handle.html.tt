@@ -1,0 +1,163 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mime/handle.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$output .= '
+
+';$stash->set('js_code',do {my$output='';$output .= $context->process('js_block');$output});$output .= '
+';$output .= do {my$output='';$output .= '
+';$stash->set('user_result',$stash->get(['execute',['Mime','list_handlers',{'type'=>'user' }]]));$stash->set('system_result',$stash->get(['execute',['Mime','list_handlers',{'type'=>'system' }]]));$output .= '<div class="body-content">
+    <p id="descApacheHandlers" class="description">
+        ';$output .= $stash->get(['locale',0,'maketext',['Apache handlers control how the Apache web server software manages certain file types and extensions for your site. Apache comes configured to handle CGI scripts and server-parsed files. You can configure Apache to handle a new file type with an existing handler by manually adding the handler and extension below. For example, to have the server treat files with the extension [output,em,.example] as CGI files, you would type “cgi-script” under [output,em,Handler] and “.example” under [output,em,Extension(s)].' ]]);$output .= '
+    </p>
+
+    <div class="section">
+        <h2 id="hdrCreateApacheHandler">
+            ';$output .= $stash->get(['locale',0,'maketext',['Create an Apache Handler' ]]);$output .= '
+        </h2>
+        <form action="addhandle.html" onsubmit="return do_validate(this.id);" name="apache" id="apache">
+            <div class="form-group">
+                <label id="lblHandler" for="handle">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Handler' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" id="handle" name="handle" size="22" />
+                    </div>
+                    <div id="handle_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label id="lblExtensions" for="ext">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '
+                </label>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        <input type="text" class="form-control" id="ext" name="ext" size="22" />
+                        <span  id="descTipSeparateMultipleExtensionTypes" class="help-block">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Tip: Separate multiple extension types with a space.' ]]);$output .= '
+                        </span>
+                    </div>
+                    <div id="ext_error" class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input name="submit" id="submit" disabled="disabled" class="btn btn-primary" type="submit" value="';$output .= $stash->get(['locale',0,'maketext',['Add' ]]);$output .= '" />
+            </div>
+        </form>
+    </div><!-- end section -->
+
+    <div class="section">
+        <h2 id="hdrApacheHandlers1">';$output .= $stash->get(['locale',0,'maketext',['Apache Handlers' ]]);$output .= '</h2>
+    </div>
+
+    <div class="section">
+    <h2 id="hdrUserDefinedApacheHandlers">';$output .= $stash->get(['locale',0,'maketext',['User Defined Apache Handlers' ]]);$output .= '</h2>
+    <table class="sortable table table-striped" id="userhandletbl">
+        <thead>
+            <tr>
+                <th id="lblUserHandler">';$output .= $stash->get(['locale',0,'maketext',['Handler' ]]);$output .= '</th>
+                <th id="lblUserExtensions">';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '</th>
+                <th id="lblUserRemove" class="sorttable_nosort">
+                    ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                </th>
+            </tr>
+        </thead>
+
+        ';if (!$stash->get(['user_result',0,'status',0])){$output .= '
+        <tr>
+            <td class="errors" colspan="3">
+                ';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['user_result',0,'errors_as_string',0]);&$_tt_filter($output)};$output .= '
+            </td>
+        </tr>
+        '}elsif ($stash->get(['user_result',0,'data',0,'size',0])eq 0){$output .= '
+        <tr>
+            <td class="errors" colspan="3">
+                ';$output .= $stash->get(['locale',0,'maketext',['There are no user-configured Apache Handlers.' ]]);$output .= '
+            </td>
+        </tr>
+        '}else {$output .= '
+            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['user_result',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '            <tr>
+                <td>';$output .= $stash->get(['q',0,'handler',0]);$output .= '</td>
+                <td>';$output .= $stash->get(['q',0,'extension',0]);$output .= '</td>
+                <td>
+                    <div>
+                        <a class="btn btn-link" href="delhandleconfirm.html?userhandle=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['q',0,'extension',0]);&$_tt_filter($output)};$output .= '">
+                            <span class="glyphicon glyphicon-trash"></span> ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '        '}$output .= '
+    </table>
+    </div>
+
+    <div class="section">
+        <h2 id="lblSystemApacheHandlers">';$output .= $stash->get(['locale',0,'maketext',['System Apache Handlers' ]]);$output .= '</h2>
+        <table class="sortable table table-striped" id="syshandletbl">
+            <thead>
+                <tr>
+                    <th id="lblSysHandlers">';$output .= $stash->get(['locale',0,'maketext',['Handler' ]]);$output .= '</th>
+                    <th id="lblSysExtensions">';$output .= $stash->get(['locale',0,'maketext',['Extension(s)' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            ';if ($stash->get(['system_result',0,'data',0,'size',0])eq 0){$output .= '
+            <tr>
+                <td class="errors" colspan="2">
+                    ';$output .= $stash->get(['locale',0,'maketext',['There are no system-configured Apache Handlers.' ]]);$output .= '
+                </td>
+            </tr>
+            '}else {$output .= '
+                ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['system_result',0,'data',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'q'}=$_tt_value;$output .= '                <tr>
+                    <td>';$output .= $stash->get(['q',0,'handler',0]);$output .= '</td>
+                    <td>';$output .= $stash->get(['q',0,'extension',0]);$output .= '</td>
+                </tr>
+                ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '            '}$output .= '
+        </table>
+    </div>
+</div><!-- end body-content -->
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'apache_handlers','page_js'=>$stash->get('js_code'),'content',$output })};$output .= '
+
+';$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{'js_block'=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+<script type="text/javascript">
+    var init_page = function() {
+        var validators = [];
+
+        var handler_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['Apache Handler' ]]);$output .= '");
+        handler_validator.add("handle", "apache_handler", ';$output .= $stash->get(['locale',0,'maketext',['[asis,Apache] handler names must include a hyphen (for example, handler[asis,-]name[comment,this is meant to represent a variable]' ],'json',0]);$output .= ');
+        handler_validator.attach();
+        validators.push(handler_validator);
+
+        var ext_validator = new CPANEL.validate.validator("';$output .= $stash->get(['locale',0,'maketext',['File Extension' ]]);$output .= '");
+        ext_validator.add("ext", "mime_extension", ';$output .= $stash->get(['locale',0,'maketext',['An [asis,Apache] extension must contain at least 1 alphanumeric character and cannot contain the following characters: /, ?, [output,chr,92], [output,amp]' ],'json',0]);$output .= ');
+        ext_validator.attach();
+        validators.push(ext_validator);
+
+        var validationChanged = function() {
+            var isValid = validators.every(function(validator){
+                return validator.is_valid();
+            });
+
+            var submitEl = YAHOO.util.Dom.get("submit");
+            if (isValid) {
+                submitEl.removeAttribute("disabled");
+            } else {
+                submitEl.setAttribute("disabled", "disabled");
+            }
+
+        };
+
+        validators.forEach(function(validator) {
+            validator.validateFailure.subscribe(validationChanged, this);
+            validator.validateSuccess.subscribe(validationChanged, this);
+        } );
+
+        CPANEL.validate.attach_to_form("submit", validators);
+
+        YAHOO.util.Dom.get("handle").focus();
+    }
+    YAHOO.util.Event.onDOMReady(init_page);
+</script>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},},});

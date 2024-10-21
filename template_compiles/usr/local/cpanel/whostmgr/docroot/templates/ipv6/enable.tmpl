@@ -1,0 +1,163 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/ipv6/enable.tmpl',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('NVData',$context->plugin('NVData'));$stash->set('JSON',$context->plugin('JSON'));$output .= do {my$output='';$stash->set('spinner16',$stash->get(['MagicRevision',['/images/loading-arrows-16.gif' ]]));$stash->set('ipv6Ranges',$stash->get(['MagicRevision',['ipv6range' ]]));$output .= '
+<div id="content">
+';if ($stash->get(['data',0,'has_v4_mapped',0])){$output .= '
+    ';if ($stash->get(['data',0,'apache_reserved_ip_count',0])){$output .= '
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign"></span>
+        <div class="alert-message">';$output .= $stash->get(['locale',0,'maketext',['Apache must be updated.' ]]);$output .= '<br>
+        ';$output .= $stash->get(['locale',0,'maketext',['Your Apache installation is compiled with v4-mapped support enabled and you have Apache Reserved IPs set. This combination will cause your Apache instance to be unusable after enabling IPv6 due to the way that Apache handles IPv6 addresses by default. Please visit [output,url,_1,EasyApache] and click “Build Profile Now” to update Apache with the proper options.',$stash->get('cp_security_token').'/scripts7/EasyApache4' ]]);$output .= '
+    </div>
+    <div class="hidden">
+    '}else {$output .= '
+        <div class="alert alert-warning">
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+            <div class="alert-message">
+                ';$output .= $stash->get(['locale',0,'maketext',['Apache should be updated.' ]]);$output .= '<br>
+                ';$output .= $stash->get(['locale',0,'maketext',['Your Apache installation is compiled with v4-mapped support enabled. This is known to cause instability related to the way that Apache binds to specific ports. Please visit [output,url,_1,EasyApache] and click “Build Profile Now” to update Apache with the proper options.',$stash->get('cp_security_token').'/scripts7/EasyApache4' ]]);$output .= '
+            </div>
+        </div>
+    </div>
+    <div>
+    '}$output .= '
+'}else {$output .= '
+    <div>
+'}$output .= '
+        <form name="ipv6accounts" id="ipv6_accounts_form" class="complex">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h4>';$output .= $stash->get(['locale',0,'maketext',['Select an Account' ]]);$output .= '</h4>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div id="accounts_container" class="field filter-container">
+                        <div id="account_select_button" class="filter-button filter-select" title="';$output .= $stash->get(['locale',0,'maketext',['Select All Accounts' ]]);$output .= '">*</div>
+                        <div id="account_filter_button" class="filter-button filter-search">&nbsp;</div>
+                        <input type="hidden" id="account_selected" value="" />
+                        <input type="text" placeholder="';$output .= $stash->get(['locale',0,'maketext',['Filter Accounts' ]]);$output .= '" autocomplete="off" id="account_filter" class="filter form-control" />
+                        <ul id="account_list" class="filter-list" tabindex="-1">
+                            <li>';$output .= $stash->get(['locale',0,'maketext',['Loading Accounts' ]]);$output .= '</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <p class="help-block">';$output .= $stash->get(['locale',0,'maketext',['This feature allows users with root access to assign an IPv6 address to a specific account. IPv6 addresses that were assigned without this feature will be erased for the selected users when you enable IPv6 with this feature. Hold shift and click on an account name to select or deselect multiple accounts. Click the blue asterisk to select all accounts.' ]]);$output .= '</p>';if (!$stash->get(['data',0,'shared_ipv6',0])){$output .= '
+                    <p class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You have not configured a shared IPv6 address. To do this, use the [output,url,_1,Basic cPanel amp() WHM Setup] interface.',($stash->get('cp_security_token').'/scripts/editsets')]]);$output .= '</p>
+                    '}$output .= '
+                    <div id="api_notice" class="cjt-pagenotice-container cjt-notice-container"></div>
+                </div>
+            </div>
+        </form>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="button" title="';$output .= $stash->get(['locale',0,'maketext',['Enable Account' ]]);$output .= '" id="enable_account" class="btn btn-primary">
+                    <div class="spinner"><img src="';$output .= $stash->get('spinner16');$output .= '" /></div>
+                    <div class="button-text">';$output .= $stash->get(['locale',0,'maketext',['Enable Account' ]]);$output .= '</div>
+                </button>
+                <button type="button" title="';$output .= $stash->get(['locale',0,'maketext',['Disable Account' ]]);$output .= '" id="disable_account" class="btn btn-default">
+                    <div class="spinner"><img src="';$output .= $stash->get('spinner16');$output .= '" /></div>
+                    <div class="button-text">';$output .= $stash->get(['locale',0,'maketext',['Disable Account' ]]);$output .= '</div>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/plain" id="account_information_template">
+    <div class="yui-module cjt-notice cjt-pagenotice cjt-notice-{{type}}">
+        <div class="bd">
+            <div class="cjt-notice-content">
+            {{#if message}}
+                <p>{{message}}</p>
+            {{/if}}
+            {{#if ipv6}}
+                {{#unless message}}
+                    {{#if multipleAccounts}}
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['IPv6 currently enabled for these users.' ]]);$output .= '</p>
+                    {{else}}
+                        <p>';$output .= $stash->get(['locale',0,'maketext',['IPv6 currently enabled for this user.' ]]);$output .= '</p>
+                    {{/if}}
+                {{/unless}}
+                {{#if domain}}
+                {{#unless multipleAccounts}}
+                    {{#each ipv6}}
+                        <p class="no-wrap-overflow">';$output .= $stash->get(['locale',0,'maketext',['IPv6 Address:' ]]);$output .= '</p>
+                        <p class="no-top-margin wrap">
+                            <a href="http://[{{this}}]"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Open by IPv6 Address' ]]);$output .= '"
+                                target="_new">{{wrap this ":"}}</a>
+                        </p>
+                    {{/each}}
+                    <p class="no-wrap-overflow">';$output .= $stash->get(['locale',0,'maketext',['Primary Domain:' ]]);$output .= '</p>
+                    <p class="no-top-margin wrap">
+                        <a href="http://{{domain}}"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Open by Domain' ]]);$output .= '"
+                            target="_new">{{wrap domain "."}}</a>
+                    </p>
+                    <p class="no-wrap-overflow">';$output .= $stash->get(['locale',0,'maketext',['IPv6 Subdomain:' ]]);$output .= '</p>
+                    <p class="no-top-margin wrap">
+                        <a href="http://ipv6.{{domain}}"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Open by IPv6 Proxy' ]]);$output .= '"
+                            target="_new">ipv6.<wbr>{{wrap domain "."}}</a>
+                    </p>
+                {{/unless}}
+                {{/if}}
+            {{else}}
+                {{#if noAccount}}
+                    <p>';$output .= $stash->get(['locale',0,'maketext',['Please select an account from the list' ]]);$output .= '</p>
+                {{/if}}
+                {{#unless noAccount}}
+                    {{#unless error}}
+                        <div class="form-group">
+                        {{#if rangeAvailability}}
+                            <label for="select_range">
+                            {{#if multipleAccounts}}
+                                ';$output .= $stash->get(['locale',0,'maketext',['Enable these accounts with IPv6 addresses from the selected range:' ]]);$output .= '
+                            {{else}}
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable this account with an IPv6 address from the selected range:' ]]);$output .= '
+                            {{/if}}
+                            </label>
+                            <select id="select_range" class="form-control">
+                            {{#each ranges}}
+                                <option value="{{this}}">
+                                {{#if_eq this "SHARED"}}
+                                    ';$output .= $stash->get(['locale',0,'maketext',['The system’s shared IPv6 address.' ]]);$output .= '
+                                {{else}}
+                                    {{this}}
+                                {{/if_eq}}
+                                </option>
+                            {{/each}}
+                            </select>
+                        {{else}}
+                            ';$output .= $stash->get(['locale',0,'maketext',['No IPv6 ranges have been added. Access the [output,url,_1,_2] feature to add an IPv6 range.',$stash->get('ipv6Ranges'),$stash->get(['locale',0,'maketext',['[asis,IPv6] Ranges' ]])]]);$output .= '
+                        {{/if}}
+                        </div>
+                    {{/unless}}
+                {{/unless}}
+
+            {{/if}}
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-handlebars-template" id="accounts_template">
+    <li id="{{account}}"
+    {{#if ipv6}}
+        data-ipv6="{{#ipList ipv6}}{{this}}{{/ipList}}" class="Enabled"
+    {{/if}}
+     data-domain="{{domain}}">
+    {{account}}
+        <span class="enabledMark">';$output .= $stash->get(['locale',0,'maketext',['ENABLED' ]]);$output .= '</span>
+    </li>
+</script>
+
+<script type="text/javascript">
+    CPANEL.namespace("CPANEL.PAGE");
+    CPANEL.PAGE = {
+        users: ';$output .= $stash->get(['data',0,'users',0,'json',0]);$output .= ',
+        ranges: ';$output .= $stash->get(['data',0,'ranges',0,'json',0]);$output .= ',
+        has_v4_mapped: ';$output .= $stash->get(['data',0,'has_v4_mapped',0,'json',0]);$output .= ',
+        apache_reserved_ip_count: ';$output .= $stash->get(['data',0,'apache_reserved_ip_count',0,'json',0]);$output .= '
+    };
+</script>
+';$context->include('master_templates/master.tmpl',{'app_key'=>'assign_ipv6_address','header'=>$stash->get(['locale',0,'maketext',['Assign [asis,IPv6] Address' ]]),'breadcrumburl'=>'/scripts/ipv6list','stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/enable.min.css' ]])],'theme'=>'bootstrap','include_legacy_stylesheets'=>1,'scripts'=>[$stash->get(['Whostmgr',0,'find_file_url',['/libraries/jquery/current/jquery.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/libraries/handlebars/handlebars.min.js' ]]),$stash->get(['Whostmgr',0,'find_file_url',['/templates/ipv6/enable.min.js' ]])],'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

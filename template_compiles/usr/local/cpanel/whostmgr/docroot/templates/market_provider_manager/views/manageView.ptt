@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/whostmgr/docroot/templates/market_provider_manager/views/manageView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="description" ng-cloak >
+    <div class="list-container">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Provider' ]]);$output .= '
+                    </th>
+                    <th class="col-xs-12 col-sm-6 col-md-6 col-lg-6"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="provider in providers"  ng-class="{\'view-disabled\': !(products | filter: { provider_name: provider.name}).length }">
+                    <td>
+                        <span ng-bind="provider.display_name"></span>
+                    </td>
+                    <td data-title="">
+                        <spinner id="{{provider.name}}-spinner"
+                            class="headerSpinner"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Fetching products …' ]]);$output .= '">
+                        </spinner>
+                        <toggle-switch
+                            ng-if="!fetching_products"
+                            id="{{provider.name}}_toggle"
+                            ng-model="provider.enabled"
+                            on-toggle="set_provider(provider, !provider.enabled)"
+                            enabled-label ="';$output .= $stash->get(['locale',0,'maketext',['Enabled' ]]);$output .= '"
+                            disabled-label="';$output .= $stash->get(['locale',0,'maketext',['Disabled' ]]);$output .= '"
+                        ></toggle-switch>
+                    </td>
+                </tr>
+                <tr ng-if="!providers">
+                    <td>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['There are no available Market providers on this system.' ]]);$output .= '</span>
+                    <td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

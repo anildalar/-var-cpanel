@@ -1,0 +1,35 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/feature/manager.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('PAGE_BASE','/scripts2/featuremanager/');$stash->set('PAGE_NAME',$stash->get(['Whostmgr',0,'get_page_name_by_url',[$stash->get('PAGE_BASE')]]));$output .= do {my$output='';$output .= '
+
+<div ng-controller="applicationController">
+    <div ng-controller="commonController" class="ng-cloak" ng-cloak>
+        <div class="row">
+            <div class="col-xs-12">
+                <cp-alert-list></cp-alert-list>
+            </div>
+        </div>
+    </div>
+
+    <div id="content"
+         class="ng-cloak"
+         ng-view
+         ng-cloak></div>
+</div>
+
+<script type="text/javascript">
+    var PAGE = PAGE || {};
+
+    PAGE.NAME = "featuremanager";
+
+    PAGE.MAIN_TITLE = ';$output .= $stash->get(['PAGE_NAME',0,'json',0]);$output .= '; // common parent of all views (untranslated)
+    PAGE.featureLists = ';$output .= $stash->get(['data',0,'feature_lists',0,'json',0]);$output .= ';
+    PAGE.featureDescriptions = ';$output .= $stash->get(['data',0,'feature_descriptions',0,'json',0]);$output .= ';
+    PAGE.legacySupport = ';$output .= $stash->get(['data',0,'legacy_support',0]);$output .= ';
+    PAGE.fantasticoSupport = ';$output .= $stash->get(['data',0,'fantastico_support',0]);$output .= ';
+    PAGE.remoteUser = ';$output .= $stash->get(['data',0,'remote_user',0,'json',0]);$output .= ';
+    PAGE.hasRoot = ';$output .= $stash->get(['data',0,'has_root',0]);$output .= ';
+</script>
+
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+
+';$context->include('master_templates/master.tmpl',{'app_key'=>'feature_manager','header'=>$stash->get(['locale',0,'makevar',[$stash->get('PAGE_NAME')]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>[$stash->get(['Whostmgr',0,'find_file_url',['/templates/feature/manager.min.css' ]])],'theme'=>'bootstrap','CJT2_EXCLUSIVE'=>1,'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

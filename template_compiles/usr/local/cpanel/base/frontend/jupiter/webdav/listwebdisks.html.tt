@@ -1,0 +1,85 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/webdav/listwebdisks.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Api2',$context->plugin('Api2'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('form_regex',$stash->get(['CPANEL',0,'get_raw_form',['searchregex' ]]));$stash->set('api_response',$stash->get(['Api2',0,'exec',['WebDisk','listwebdisks',{'regex'=>$stash->get('form_regex'),'no_expvar'=>1,'api2_paginate'=>1,'api2_paginate_start'=>$stash->get(['CPANEL',0,'FORM',0,'api2_paginate_start',0]),'api2_paginate_size'=>$stash->get(['CPANEL',0,'CPVAR',0,'itemsperpage',0])}]]));$output .= '
+';if ($stash->get(['api_response',0,'size',0])){$output .= '    ';$stash->set('feature_webdisk',$stash->get(['CPANEL',0,'feature',['webdisk' ]]));$output .= '    ';$stash->set('feature_webprotect',$stash->get(['CPANEL',0,'feature',['webprotect' ]]));$output .= '    ';$stash->set('feature_filemanager',$stash->get(['CPANEL',0,'feature',['filemanager' ]]));$output .= '
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('api_response');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'webdisk'}=$_tt_value;$output .= '        <tr>
+            <td class="truncate" truncate="15">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'login',0]);&$_tt_filter($output)};$output .= '</td>
+            <td class="truncate" truncate="50">
+                <span class="fas fa-home"></span>
+                ';if ($stash->get('feature_filemanager')){$output .= '                    <a id="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'login',0]);&$_tt_filter($output)};$output .= '_lnk" href="../filemanager/index.html?dir=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'reldir',0]);&$_tt_filter($output)};$output .= '" target="_blank" class="ajaxfiles" >
+                '}$output .= '                    /';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'reldir',0]);&$_tt_filter($output)};$output .= '
+                ';if ($stash->get('feature_filemanager')){$output .= '                    </a>
+                '}$output .= '
+                ';if ($stash->get('feature_webdisk')){$stash->set('homedir_onclick','start_change_homedir(' .$stash->get(['webdisk',0,'login',0,'json',0]).',' .$stash->get(['webdisk',0,'reldir',0,'json',0]).'); return false;');$output .= '                    <a href="javascript:void(0)" id="lnkEdit_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '" onClick=\'';$output .= $stash->get(['homedir_onclick',0,'html',0]);$output .= '\' title=\'';$output .= $stash->get(['locale',0,'maketext',['Click to change this account’s home directory.' ]]);$output .= '\'>
+                        <span class="glyphicon glyphicon-pencil"></span>
+                    </a>
+                '}$output .= '
+                ';if ($stash->get('feature_webprotect')){$output .= '                    <a target="_blank" id="lnkProtect_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '" href="../htaccess/dohtaccess.html?dir=';$output .= do {my$output='';my$_tt_filter=$context->filter('uri')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'homedir',0]);&$_tt_filter($output)};$output .= '" title="';$output .= $stash->get(['locale',0,'maketext',['Click to WebProtect/Password Protect this directory.' ]]);$output .= '">
+                        <span class="glyphicon glyphicon-lock"></span>
+                    </a>
+                '}$output .= '            </td>
+            <td>
+                <a id="btnAccessWebDisk_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                    onclick=\'access_web_disk(';$output .= $stash->get(['webdisk',0,'login',0,'json',0]);$output .= ',';$output .= $stash->get(['webdisk',0,'domain',0,'json',0]);$output .= ',';$output .= $stash->get(['webdisk',0,'hasdigest',0,'json',0]);$output .= '); return false;\' href="webdavaccessdownload.html?domain=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'domain',0]);&$_tt_filter($output)};$output .= '&sslport=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'sslport',0]);&$_tt_filter($output)};$output .= '&mainport=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'mainport',0]);&$_tt_filter($output)};$output .= '&hasdigest=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'hasdigest',0]);&$_tt_filter($output)};$output .= '&user=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'login',0]);&$_tt_filter($output)};$output .= '"
+                    class="btn btn-link"
+                    title="';$output .= $stash->get(['locale',0,'maketext',['Click to view configuration details for your operating system or device.' ]]);$output .= '">
+                    <span class="fas fa-wrench"></span>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Configure Client Access' ]]);$output .= '
+                </a>
+
+                ';if ($stash->get('feature_webdisk')){$output .= '                    ';if (!$stash->get(['webdisk',0,'hasdigest',0])){$output .= '
+                        <a id="lnkEnableDigest_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                            onclick=\'set_digest_auth_popup("virtual",';$output .= $stash->get(['webdisk',0,'login',0,'json',0]);$output .= ',"enable",this); return false;\'
+                            href="#"
+                            class="btn btn-link"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to enable Digest Authentication.' ]]);$output .= '">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Enable Digest Authentication' ]]);$output .= '
+                        </a>
+                    '}else {$output .= '
+                        <a id="lnkDisableDigset_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                            onclick=\'set_digest_auth_popup("virtual",';$output .= $stash->get(['webdisk',0,'login',0,'json',0]);$output .= ',"disable",this); return false;\'
+                            href="#"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to disable Digest Authentication.' ]]);$output .= '"
+                            class="btn btn-link">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Disable Digest Authentication' ]]);$output .= '
+                        </a>
+                    '}$output .= '
+
+                    <a id="lnkChangePassword_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                        href="passwd.html?hasdigest=';$output .= $stash->get(['webdisk',0,'hasdigest',0]);$output .= '&login=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'login',0]);&$_tt_filter($output)};$output .= '"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Click to change the password on your Web Disk account.' ]]);$output .= '"
+                        class="btn btn-link">
+                        <span class="fas fa-key"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= '
+                    </a>
+
+                    <a id="lnkDelete_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                        href="del_confirm.html?login=';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['webdisk',0,'login',0]);&$_tt_filter($output)};$output .= '"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Click to delete the Web Disk account for “[_1]”.',$stash->get(['webdisk',0,'login',0])]]);$output .= '"
+                        class="btn btn-link">
+                        <span class="glyphicon glyphicon-trash"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                    </a>
+
+                    ';if ($stash->get(['webdisk',0,'perms',0])eq 'ro'){$output .= '
+                        <a id="lnkSetRW_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                            onclick=\'set_perms_popup("virtual",';$output .= $stash->get(['webdisk',0,'login',0,'json',0]);$output .= ',"rw",this); return false;\'
+                            href="#"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Click to enable read-write access.' ]]);$output .= '"
+                            class="btn btn-link">
+                            <span class="fas fa-cog"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Set Read-Write' ]]);$output .= '
+                        </a>
+                    '}else {$output .= '
+                        <a id="lnkSetRO_';$output .= $stash->get(['loop',0,'index',0,'html',0]);$output .= '"
+                            onclick=\'set_perms_popup("virtual",';$output .= $stash->get(['webdisk',0,'login',0,'json',0]);$output .= ',"ro",this); return false;\'
+                            href="#" title="';$output .= $stash->get(['locale',0,'maketext',['Click to restrict access to read-only.' ]]);$output .= '"
+                            class="btn btn-link">
+                            <span class="fas fa-cog"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Set Read-Only' ]]);$output .= '
+                        </a>
+                    '}$output .= '
+                '}$output .= '            </td>
+        </tr>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error}}else {$output .= '    ';$stash->set('err',$stash->get('form_regex')? $stash->get(['locale',0,'maketext',['No additional configured web disks match the search term “[_1]”.',$stash->get('form_regex')]]): $stash->get(['locale',0,'maketext',['No additional web disks configured.' ]]));$output .= '    <tr><td colspan="3" class="errors cell-center">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get('err');&$_tt_filter($output)};$output .= '</td></tr>
+'}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

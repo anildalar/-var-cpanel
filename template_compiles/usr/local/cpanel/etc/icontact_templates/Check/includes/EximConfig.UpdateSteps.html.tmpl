@@ -1,0 +1,38 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/etc/icontact_templates/Check/includes/EximConfig.UpdateSteps.html.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<p>
+    ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['To complete this update from configuration version “[_1]” to version “[_2]”, perform the following steps:',$stash->get(['NOTICE',0,'current_config_version',0]),$stash->get(['NOTICE',0,'new_config_version',0])]]);$output .= '
+
+    <ul>
+      ';if (!$stash->get(['NOTICE',0,'is_whm',0])){$output .= '
+        ';$output .= $context->process('Check/includes/EximConfig.WHMLoginSteps.html.tmpl');$output .= '
+      '}$output .= '
+        <li>
+            ';if ($stash->get(['NOTICE',0,'is_whm',0])){$output .= '
+             ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click the “[output,url,_1,_2]” tab.','javascript:select_exim_backup();','Backup' ]]);$output .= '
+            '}else {$output .= '
+              ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click the “[_1]” tab.','Backup' ]]);$output .= '
+            '}$output .= '
+        </li>
+        <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click “[_1]”.','Run Backup' ]]);$output .= '
+        </li>
+        <li>
+            ';if ($stash->get(['NOTICE',0,'is_whm',0])){$output .= '
+             ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click the “[output,url,_1,_2]” tab.','javascript:select_exim_reset();','Reset' ]]);$output .= '
+            '}else {$output .= '
+              ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click the “[_1]” tab.','Reset' ]]);$output .= '
+            '}$output .= '
+        </li>
+        <li>';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Select “[_1]” from the menu.','Reset cPanel &amp; WHM Exim configuration files, one option at a time, until the installed Exim configuration is valid.' ]]);$output .= '        </li>
+        <li>
+          ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Click “[_1]”.','Reset' ]]);$output .= '
+        </li>
+        <li>
+            ';if ($stash->get(['NOTICE',0,'is_whm',0])){$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Under the “[output,url,_1,_2]” and “[output,url,_3,_4]” tabs, use the data from your backup to update and reinstall your custom settings.','javascript:select_exim_basic();','Basic Editor','javascript:select_exim_advanced();','Advanced Editor' ]]);$output .= '
+            '}else {$output .= '
+                ';$output .= $stash->get(['CPANEL',0,'locale',0,'maketext',['Under the “[_1]” and “[_2]” tabs, use the data from your backup to update and reinstall your custom settings.','Basic Editor','Advanced Editor' ]]);$output .= '
+            '}$output .= '
+        </li>
+    </ul>
+</p>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

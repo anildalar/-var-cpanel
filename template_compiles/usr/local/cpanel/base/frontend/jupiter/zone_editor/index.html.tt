@@ -1,0 +1,64 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/zone_editor/index.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Services',$context->plugin('Services'));$stash->set('Api2',$context->plugin('Api2'));$stash->set('Uapi',$context->plugin('Uapi'));$stash->set('CPList',$context->plugin('CPList'));$stash->set('LinkedNode',$context->plugin('LinkedNode'));$stash->set('nvdata',$stash->get(['execute',['NVData','get',{'names'=>'zones_per_page|domains_per_page' }]]));$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');$stash->set('has_simple_feature',$stash->get(['CPANEL',0,'feature',['simplezoneedit' ]]));$stash->set('has_adv_feature',$stash->get(['CPANEL',0,'feature',['zoneedit' ]]));$stash->set('has_dnssec_feature',$stash->get(['CPANEL',0,'feature',['dnssec' ]]));$stash->set('has_mx_feature',$stash->get(['CPANEL',0,'feature',['changemx' ]]));$stash->set('zones_per_page',$stash->get(['nvdata',0,'data',0,0,0,'value',0]));$stash->set('domains_per_page',$stash->get(['nvdata',0,'data',0,1,0,'value',0]));$stash->set('base_domains_result',$stash->get(['Api2',0,'exec',['DomainLookup','getbasedomains' ]]));$stash->set('is_alias_available',$stash->get(['execute',['DNS','is_alias_available' ]]));$stash->set('theme',$stash->get(['CPANEL',0,'CPDATA',0,'RS',0]));$stash->set('RECORD_TYPES',{'A'=>{'featureNeeded'=>['simple','advanced' ],'template'=>'recordTemplates/a.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>1 },'AAAA'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/aaaa.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>2 },'ALIAS'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/alias.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>3 },'CAA'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/caa.ptt','viewTemplate'=>'viewRecordTemplates/caa.ptt','priority'=>4 },'CNAME'=>{'featureNeeded'=>['simple','advanced' ],'template'=>'recordTemplates/cname.ptt','viewTemplate'=>'viewRecordTemplates/default.ptt','priority'=>5 },'DMARC'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/dmarc.ptt','priority'=>6 },'MX'=>{'featureNeeded'=>['mx' ],'template'=>'recordTemplates/mx.ptt','viewTemplate'=>'viewRecordTemplates/mx.ptt','priority'=>7 },'SRV'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/srv.ptt','viewTemplate'=>'viewRecordTemplates/srv.ptt','priority'=>8 },'TXT'=>{'featureNeeded'=>['advanced' ],'template'=>'recordTemplates/txt.ptt','viewTemplate'=>'viewRecordTemplates/txt.phtml','priority'=>9 }});$stash->set('VIEW_TEMPLATES',['views/domain_selection.ptt','views/manage.ptt','views/dnssec.ptt','views/dnssec_generate.ptt','views/dnssec_ds_records.ptt','views/dnssec_import.ptt','views/dnssec_export.ptt','views/dnssec_dnskey.ptt','views/a_record_form.html','views/cname_record_form.html','views/mx_record_form.html','viewRecordTemplates/caa.ptt','viewRecordTemplates/mx.ptt','viewRecordTemplates/srv.ptt','viewRecordTemplates/default.ptt','viewRecordTemplates/txt.phtml' ]);$output .= do {my$output='';$output .= '
+';if ($stash->get('has_simple_feature')|| $stash->get('has_mx_feature')|| $stash->get('has_adv_feature')){$output .= '
+    <div class="body-content">
+        <p id="descDns" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['DNS converts domain names into computer-readable IP addresses. Use this feature to manage DNS zones. For more information, read the [output,url,_1,documentation,target,_2,id,_3].','//go.cpanel.net/zoneeditor','_blank','lnkZoneEditorDocumentation' ]]);$output .= '
+        </p>
+        ';if ($stash->get(['LinkedNode',0,'has_linkages',0])){$output .= '
+        <callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '" class="ng-cloak">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['This domain’s owner, “[_1]”, uses a linked node. Errors in this user’s [asis,DNS] records may corrupt the account’s use of that linkage. [output,strong,Proceed with extreme caution.]',$stash->get(['CPANEL',0,'user',0])]]);$output .= '</p>
+        </callout>
+        '}$output .= '
+        <!-- NOTE: leave the alert-group in single quotes -->
+        <cp-alert-list alert-group="\'zoneEditor\'"></cp-alert-list>
+        <div id="viewContent"
+             class="ng-cloak section"
+             ng-view
+             ng-cloak></div>
+    </div>
+    <script type="text/javascript">
+        PAGE.securityToken = ';$output .= $stash->get(['cp_security_token',0,'json',0]);$output .= ';
+        PAGE.theme = ';$output .= $stash->get(['theme',0,'json',0]);$output .= ';
+        PAGE.has_simple_feature = ';$output .= $stash->get('has_simple_feature')? 'true' : 'false';$output .= ';
+        PAGE.has_adv_feature = ';$output .= $stash->get('has_adv_feature')? 'true' : 'false';$output .= ';
+        PAGE.has_dnssec_feature = ';$output .= $stash->get('has_dnssec_feature')? 'true' : 'false';$output .= ';
+        PAGE.has_mx_feature = ';$output .= $stash->get('has_mx_feature')? 'true' : 'false';$output .= ';
+        PAGE.domains = ';$output .= $stash->get(['base_domains_result',0,'json',0]);$output .= ';
+        PAGE.zones_per_page = ';$output .= $stash->get('zones_per_page')|| 'null';$output .= ';
+        PAGE.domains_per_page = ';$output .= $stash->get('domains_per_page')|| 'null';$output .= ';
+        PAGE.isRTL = document.getElementsByTagName("HTML")[0].getAttribute("dir") === "rtl";
+        PAGE.RECORD_TYPES = ';$output .= $stash->get(['RECORD_TYPES',0,'json',0]);$output .= ';
+        PAGE.is_alias_available = ';$output .= $stash->get(['is_alias_available',0,'data',0,'alias',0])? 'true' : 'false';$output .= ';
+    </script>
+
+    ';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['RECORD_TYPES',0,'keys',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'record_type_key'}=$_tt_value;$output .= '
+    ';$stash->set('template',$stash->get(['RECORD_TYPES',0,$stash->get('record_type_key'),0,'template',0]));$output .= '
+    <script id="';$output .= $stash->get('template');$output .= '" type="text/ng-template">
+        ';$output .= $context->process(('shared/js/zone_editor/' .$stash->get('template')));$output .= '
+    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('VIEW_TEMPLATES');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'view_template'}=$_tt_value;$output .= '
+    <script id="';$output .= $stash->get('view_template');$output .= '" type="text/ng-template">
+        ';$output .= $context->process(('shared/js/zone_editor/' .$stash->get('view_template')));$output .= '
+    </script>
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+
+    <script id="views/dnssec_sidebar_help.html.tt" type="text/ng-template">
+        ';$output .= $context->process('zone_editor/views/dnssec_sidebar_help.html.tt');$output .= '
+    </script>
+
+'}else {$output .= '
+<div class="body-content">
+    <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+        <div class="alert-message">
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature is not available to your account.' ]]);$output .= '
+        </div>
+    </div>
+</div>
+
+'}$output .= '
+';$context->include('_assets/master.html.tt',{'app_key'=>'zone_editor','include_legacy_stylesheets'=>0,'include_legacy_scripts'=>0,'include_cjt'=>0,'use_master_bootstrap'=>0,'page_stylesheets'=>['zone_editor/index.css' ],'show_breadcrumb'=>1,'content',$output })}}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

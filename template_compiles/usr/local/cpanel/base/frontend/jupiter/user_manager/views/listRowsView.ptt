@@ -1,0 +1,238 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/user_manager/views/listRowsView.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div class="row">
+    <div class="col-sm-8 col-md-9">
+        <p class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['This interface allows you to manage subaccounts. Subaccounts use the same login and password information for email, FTP, and Web Disk services. The system synchronizes the password of each of the subaccount’s allowed services.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','https://go.cpanel.net/cpaneldocsUserManager','cp-user-manager-docs','lnkUserManagerDocumentation' ]]);$output .= '
+        </p>
+    </div>
+</div>
+<div class="edge" ng-show="hasFeature">
+    <cp-alert-list></cp-alert-list>
+    <div class="row">
+        <div class="col-xs-12">
+            <div id="search-area" class="form-group">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-8 col-md-6">
+                        <div class="input-group filter-controls">
+                            <input  id="userListFilter"
+                                    name="userListFilter"
+                                    class="form-control"
+                                    placeholder="';$output .= $stash->get(['locale',0,'maketext',['Search' ]]);$output .= '"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Type in your search filter.' ]]);$output .= "\"\n                                    ng-model=\"meta.filterValue\"\n                                    ng-model-options=\"{ debounce: 350 }\"\n                                    ng-keyup=\"triggerClearSearch(\$event)\"\n                                    autocomplete=\"off\"\n                                    auto-focus\n                                    model-to-lower-case>\n                            <span class=\"input-group-btn\">\n                                <button id=\"btnSearch\"\n                                        type=\"button\"\n                                        class=\"btn btn-default hidden-xs\"\n                                        ng-click=\"clearSearch()\">\n                                    <span class=\"glyphicon\" ng-class=\"{ 'glyphicon-search': !meta.filterValue, 'glyphicon-remove': meta.filterValue }\"></span>\n                                </button>\n                                <button id=\"btnToggleSettings\" class=\"btn btn-default\" ng-click=\"showAdvancedSettings = !showAdvancedSettings\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Toggle Advanced Settings' ]]);$output .= '">
+                                    <span class="fas fa-cogs"></span>
+                                </button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-xs-2 col-sm-1">
+                        <span spinner id="loadingSpinner" class="headerSpinner" title="';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '"></span>
+                    </div>
+                    <div class="col-xs-4 col-sm-2 col-md-5 text-right form-inline">
+                        <button id="btnCreate"
+                                type="button"
+                                class="btn btn-primary pull-right flip"
+                                ng-disabled="isOverQuota"
+                                ng-click="loadView(\'add\', null, { clearAlerts: true })">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Add User' ]]);$output .= '
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div id="pnlAdvancedSettings" ng-show="showAdvancedSettings" class="col-xs-12 col-md-6 ng-cloak ng-hide" ng-cloak>
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <div class="col-xs-4">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>';$output .= $stash->get(['locale',0,'maketext',['View' ]]);$output .= '</h4>
+                                        </div>
+                                        <div class="col-xs-12 checkbox">
+                                            <label><input id="other-show-linkable" type="checkbox" ng-change="fetch()" ng-model="advancedFilters.showLinkable" >';$output .= $stash->get(['locale',0,'maketext',['Group Linkable Services' ]]);$output .= '</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <h4>';$output .= $stash->get(['locale',0,'maketext',['Services' ]]);$output .= '</h4>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="service-no" type="radio" ng-model="advancedFilters.services" name="services" value="all" title="';$output .= $stash->get(['locale',0,'maketext',['List users without regard to services.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</label>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="service-email" type="radio" ng-model="advancedFilters.services" name="services" value="email" title="';$output .= $stash->get(['locale',0,'maketext',['Only list users with [asis,FTP] services.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</label>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="service-ftp" type="radio" ng-model="advancedFilters.services" name="services" value="ftp" title="';$output .= $stash->get(['locale',0,'maketext',['Only list users with [asis,FTP] services.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['FTP' ]]);$output .= '</label>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="service-webdisk" type="radio" ng-model="advancedFilters.services" name="services" value="webdisk" title="';$output .= $stash->get(['locale',0,'maketext',['Only list users with Web Disk services.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Web Disk' ]]);$output .= '</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-5">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <i id="btnClose" title="';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '" class="fas fa-times fa-lg pull-right flip" ng-click="showAdvancedSettings = false"></i>
+                                            <h4>';$output .= $stash->get(['locale',0,'maketext',['Issues' ]]);$output .= '</h4>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="other-show-both" type="radio" name="issues" ng-model="advancedFilters.issues" value="both" title="';$output .= $stash->get(['locale',0,'maketext',['List users without an issues check.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</label>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="other-show-issues" type="radio" name="issues" ng-model="advancedFilters.issues" value="issues" title="';$output .= $stash->get(['locale',0,'maketext',['Only list users that have issues.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Only Users With Issues' ]]);$output .= '</label>
+                                        </div>
+                                        <div class="col-xs-12 radio">
+                                            <label><input id="other-show-non-issues" type="radio" name="issues" ng-model="advancedFilters.issues" value="noissues" title="';$output .= $stash->get(['locale',0,'maketext',['Only list users that do not have issues.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Only Users Without Issues' ]]);$output .= '</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="row">
+                    <div id="pnlActiveFilterTags" ng-show="!showAdvancedSettings" class="col-xs-12  col-md-6 badges ng-cloak ng-hide" ng-cloak>
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-4 view-divots">
+                                <b>';$output .= $stash->get(['locale',0,'maketext',['View:' ]]);$output .= '</b>
+                                <span class="label label-info" ng-show="!advancedFilters.showLinkable" title="';$output .= $stash->get(['locale',0,'maketext',['List View' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['List View' ]]);$output .= '
+                                </span>
+                                <span class="label label-info" ng-show="advancedFilters.showLinkable" title="';$output .= $stash->get(['locale',0,'maketext',['Link View' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Link View' ]]);$output .= '
+                                </span>
+                            </div>
+                            <div class="col-xs-12 col-sm-8 filter-divots" ng-show="hasAdvancedSearch()">
+                                <b>';$output .= $stash->get(['locale',0,'maketext',['Filtered:' ]]);$output .= '</b>
+                                <span id="service-email-tag" class="label label-info label-clickable" ng-show="advancedFilters.services === \'email\'" ng-click="advancedFilters.services = \'all\'" title="';$output .= $stash->get(['locale',0,'maketext',['Showing Users With Email Services' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only Email' ]]);$output .= '
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span id="service-ftp-tag" class="label label-info label-clickable" ng-show="advancedFilters.services === \'ftp\'" ng-click="advancedFilters.services = \'all\'" title="';$output .= $stash->get(['locale',0,'maketext',['Showing Users With [asis,FTP] Services' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only [asis,FTP]' ]]);$output .= '
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span id="service-webdisk-tag" class="label label-info label-clickable" ng-show="advancedFilters.services === \'webdisk\'" ng-click="advancedFilters.services = \'all\'" title="';$output .= $stash->get(['locale',0,'maketext',['Showing Users With Web Disk Services' ]]);$output .= '">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only Web Disk' ]]);$output .= '
+                                    <i class="fas fa-times"></i>
+                                </span>
+                                <span id="other-show-issues-tag" class="label label-info label-clickable" ng-show="advancedFilters.issues === \'issues\'" title="';$output .= $stash->get(['locale',0,'maketext',['Only Users With Issues' ]]);$output .= '" ng-click="advancedFilters.issues = \'both\'">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only With Issues' ]]);$output .= '
+                                    <i class="fas fa-times" ></i>
+                                </span>
+                                <span id="other-show-non-issues-tag" class="label label-info label-clickable" ng-show="advancedFilters.issues === \'noissues\'" title="';$output .= $stash->get(['locale',0,'maketext',['Only Users Without Issues' ]]);$output .= '" ng-click="advancedFilters.issues = \'both\'">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Only Without Issues' ]]);$output .= '
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row ng-hide pagerstats-container" ng-show="totalItems > 50">
+        <div class="col-xs-12 col-sm-4 col-md-2 view-stats" ng-class="{ \'view-stats-last\': filteredTotalItems === totalItems }">
+            <b>';$output .= $stash->get(['locale',0,'maketext',['Total Items:' ]]);$output .= '</b> {{totalItems}}
+        </div>
+        <div class="col-xs-12 col-sm-4 col-md-2 view-stats view-stats-last ng-hide" ng-show="filteredTotalItems < totalItems">
+            <b>';$output .= $stash->get(['locale',0,'maketext',['Total Filtered:' ]]);$output .= '</b> {{filteredTotalItems}}
+        </div>
+        <div class="col-sm-3 col-sm-4 col-md-2 ng-hide view-stats hidden-xs" ng-show="filteredTotalItems === totalItems">
+            &nbsp;
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-8 text-right text-xs-left pager-form-inline text-nowrap">
+            <div id="containerPageSize" class="form-group hidden-xs">
+                <label for="ddlPageSize">';$output .= $stash->get(['locale',0,'maketext',['Page Size:' ]]);$output .= '
+                    <select id="ddlPageSize"
+                            class="form-control"
+                            ng-model="meta.pageSize"
+                            ng-options="size for size in meta.pageSizes">
+                    </select>
+                </label>
+            </div>
+            <label class="visible-xs-inline-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['Page:' ]]);$output .= '
+            </label>
+            <div id="topPager"
+                 uib-pagination
+                 ng-model="meta.pageNumber"
+                 items-per-page="meta.pageSize"
+                 total-items="filteredTotalItems"
+                 max-size="5"
+                 direction-links="false"
+                 boundary-links="true"
+                 first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                 last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= "\"\n                 class=\"pagination-small form-group\">\n            </div>\n        </div>\n    </div>\n    <div class=\"row ng-hide\" disable-animations ng-show=\"pagedFilteredUser.length\">\n        <div ng-repeat=\"user in pagedFilteredUser track by user.guid\"\n             cp-last-item=\"doneRendering(user)\"\n             class=\"col-xs-12 user-list\"\n             ng-class=\"{\n                    'callout callout-info': user.type === 'hypothetical' || user.type === 'sub' && user.merge_candidates.length > 0,\n                    'stripe-even': \$even && user.merge_candidates && user.merge_candidates.length === 0,\n                    'stripe-odd': \$odd && user.merge_candidates && user.merge_candidates.length === 0\n                }\">\n            <div class=\"row\">\n                <div class=\"col-xs-3 col-sm-2 col-lg-1 avatar\">\n                    <span class='fas fa-user fa-5x body' ng-class=\"{bodyhypothetical: user.type === 'hypothetical'}\" title=\"{{user.typeLabel}}\" id=\"avatar_{{\$index}}\"></span>\n                    <span class=\"fas fa-star special\" ng-if=\"user.special\" id=\"avatar_special_{{\$index}}\"></span>\n                    <span class=\"fas fa-question-circle fa-2x hypothetical\" ng-if=\"user.type === 'hypothetical'\"></span>\n                </div>\n                <div class=\"col-xs-9 col-sm-10 col-lg-11\">\n                    <div class=\"row\">\n                        <div class=\"col-xs-12 col-sm-8\" ng-hide=\"user.ui.showDeleteConfirm\">\n                            <div class=\"realname ng-hide\" ng-class=\"{ 'first-visible-name': user.real_name.length }\" id=\"real_name_{{\$index}}\" ng-hide=\"!user.real_name\">\n                                <span ng-bind-html=\"user.real_name | wrap:'[\@.]':5\"></span>\n                            </div>\n                            <div>\n                                <span class=\"username\" ng-class=\"{ 'first-visible-name': !user.real_name.length }\" ng-bind-html=\"user.full_username | wrap:'[\@.]':5\" id=\"username_{{\$index}}\"></span>\n                            </div>\n                            <div class=\"user-label-container\" ng-show=\"user.has_invite\">\n                                <span class=\"label label-info\" ng-show=\"!user.has_expired_invite\" id=\"invite-pending-label-{{ \$index }}\">\n                                    <i class=\"fas fa-info-circle\"></i>\n                                    <span title=\"";$output .= $stash->get(['locale',0,'maketext',['This user has not used the invitation to set a password.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Invite Pending' ]]);$output .= "\n                                    </span>\n                                </span>\n                                <span class=\"label label-danger\" ng-show=\"user.has_expired_invite\" id=\"invite-expired-label-{{ \$index }}\">\n                                    <i class=\"fas fa-times-circle\"></i>\n                                    <span title=\"";$output .= $stash->get(['locale',0,'maketext',['This user did not respond to the invitation before it expired. Please delete and re-create the user to send another invitation or set the user’s password yourself.' ]]);$output .= '">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Invite Expired' ]]);$output .= "\n                                    </span>\n                                </span>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-12 col-sm-4 text-nowrap services\" ng-hide=\"user.ui.showDeleteConfirm\" ng-if=\"user.type !== 'hypothetical'\">\n                            <span id=\"email_{{\$index}}\"\n                                  ng-class=\"{active: user.services.email.enabled, passive: !user.services.email.enabled}\"\n                                  class=\"text-center email-service\">\n                                <span class=\"service\">\n                                    <span class=\"fas fa-envelope fa-3x\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= "\"></span>\n                                    <span id=\"email_disabled{{\$index}}\"\n                                          class=\"fas fa-exclamation-triangle fa-2x text-warning service-disabled-decoration ng-hide\"\n                                          title=\"";$output .= $stash->get(['locale',0,'maketext',['Service Disabled' ]]);$output .= "\"\n                                          ng-show=\"!user.services.email.supports.serviceRunning && user.services.email.enabled\" >\n                                    </span>\n                                </span>\n                                <input id=\"has_email_{{\$index}}\" type=\"hidden\" value=\"{{user.services.email.enabled}}\">\n                            </span>\n                            <span id=\"ftp_{{\$index}}\"\n                                  ng-class=\"{active: user.services.ftp.enabled, passive: !user.services.ftp.enabled}\"\n                                  class=\"text-center ftp-service\">\n                                <span class=\"service\">\n                                    <span class='fas fa-truck fa-3x' title=\"";$output .= $stash->get(['locale',0,'maketext',['FTP' ]]);$output .= "\"></span>\n                                    <span id=\"ftp_disabled{{\$index}}\"\n                                          class=\"fas fa-exclamation-triangle fa-2x text-warning service-disabled-decoration ng-hide\"\n                                          title=\"";$output .= $stash->get(['locale',0,'maketext',['Service Disabled' ]]);$output .= "\"\n                                          ng-show=\"!user.services.ftp.supports.serviceRunning && user.services.ftp.enabled\" >\n                                    </span>\n                                </span>\n                                <input id=\"has_ftp_{{\$index}}\" type=\"hidden\" value=\"{{user.services.ftp.enabled}}\">\n                            </span>\n                            <span id=\"webdisk_{{\$index}}\"\n                                  ng-class=\"{active: user.services.webdisk.enabled, passive: !user.services.webdisk.enabled}\"\n                                  class=\"text-center webdisk-service\">\n                                <span class=\"service\">\n                                    <span class='far fa-hdd fa-3x' title=\"";$output .= $stash->get(['locale',0,'maketext',['Web Disk' ]]);$output .= "\"></span>\n                                    <span id=\"webdisk_disabled{{\$index}}\"\n                                          class=\"fas fa-exclamation-triangle fa-2x text-warning service-disabled-decoration ng-hide\"\n                                          title=\"";$output .= $stash->get(['locale',0,'maketext',['Service Disabled' ]]);$output .= "\"\n                                          ng-show=\"!user.services.webdisk.supports.serviceRunning && user.services.webdisk.enabled\" >\n                                    </span>\n                                </span>\n                                <input id=\"has_webdisk_{{\$index}}\" type=\"hidden\" value=\"{{user.services.webdisk.enabled}}\">\n                            </span>\n                        </div>\n                        <div class=\"col-xs-12 actions\" ng-if=\"user.type !== 'hypothetical'\" ng-hide=\"user.ui.showDeleteConfirm\">\n                            <a id=\"btnEdit_{{\$index}}\"\n                                ng-disabled=\"isOverQuota\"\n                                ng-click=\"edit(user)\"\n                                class=\"btn btn-link text-nowrap\"\n                                ng-if=\"!user.special && !user.merge_candidates.length\">\n                                <i class=\"fas fa-pencil-alt\"></i>\n                                <span>";$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= "</span>\n                            </a>\n                            <a id=\"btnPassword_{{\$index}}\"\n                                ng-disabled=\"isOverQuota\"\n                                ng-click=\"edit(user)\" class=\"btn btn-link text-nowrap\" ng-if=\"user.can_set_password && !user.merge_candidates.length\">\n                                <i class=\"fas fa-lock\"></i>\n                                <span>";$output .= $stash->get(['locale',0,'maketext',['Change Password' ]]);$output .= "</span>\n                            </a>\n                            <!-- TODO: Add this back later\n                            <a id=\"btnContact_{{\$index}}\" class=\"btn btn-link text-nowrap\" ng-if=\"user.services.email.enabled\">\n                                <i class=\"fas fa-envelope\"></i>\n                                <span>";$output .= $stash->get(['locale',0,'maketext',['Contact User' ]]);$output .= "</span>\n                            </a>\n                            -->\n                            <a id=\"btnDelete_{{\$index}}\" class=\"btn btn-link text-nowrap\" ng-if=\"user.can_delete\" ng-click=\"showDeleteConfirm(user)\">\n                                <i class=\"fas fa-trash-alt\"></i>\n                                <span>";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '</span>
+                            </a>
+                        </div>
+                        <div class="col-xs-12"
+                            ng-if="user.type === \'hypothetical\' || user.type === \'sub\' && user.merge_candidates.length > 0" ng-hide="user.ui.showDeleteConfirm">
+                            <h5>';$output .= $stash->get(['locale',0,'maketext',['Pick the services that you would like to link together.' ]]);$output .= "</h5>\n                        </div>\n                        <div id=\"deleteConfirm_{{\$index}}\"\n                             ng-show=\"user.ui.showDeleteConfirm\"\n                             class=\"col-xs-12 callout callout-danger delete-confirm ng-hide\">\n                            <div class=\"delete-confirm-message\">\n                                <i class=\"delete-dialog-icon fas fa-question-circle\"></i>\n                                <strong ng-bind-html=\"wrappedDeleteText(user)\"></strong>\n                                <span class=\"delete-note\" ng-if=\"user.services.email.enabled\">\n                                    <span class='fas fa-exclamation-triangle'></span>\n                                    ";$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] The system will delete this user’s email messages from the server. This will not affect any messages previously downloaded to the user’s devices.' ]]);$output .= "\n                                </span>\n                                <div class=\"form-group action-group\">\n                                    <button id=\"btnConfirmDelete_{{\$index}}\"\n                                        type=\"button\"\n                                        class=\"btn\"\n                                        button-class=\"btn-danger\"\n                                        spinner-id=\"spinnerDelete_{{\$index}}\"\n                                        cp-action=\"deleteUser(user)\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                                    </button>\n                                    <button id=\"btnCancelDelete_{{\$index}}\"\n                                        type=\"button\"\n                                        class=\"btn btn-link\"\n                                        ng-click=\"hideDeleteConfirm(user)\"\n                                        ng-disabled=\"isDeleting(user)\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\n                                    </button>\n                                </div>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-12 col-sm-11 user-alert\" ng-if=\"user.issues.length\">\n                            <cp-issue-list issues=\"user.issues\" id-prefix=\"{{ \$index }}\"></cp-issue-list>\n                        </div>\n                    </div>\n                </div>\n                <div class=\"col-xs-12\" ng-if=\"user.type === 'hypothetical' || user.type === 'sub'\">\n                    <div class=\"row candidates\" ng-repeat=\"candidate in user.merge_candidates | filter:filterAdvanced | filter:filterText track by candidate.guid\" ng-class-even=\"'stripe-even'\" ng-class-odd=\"'stripe-odd'\">\n                        <div class=\"col-xs-3 col-sm-2 col-md-1 avatar\">\n                            <div class=\"link-avatar-container\">\n                                <span class=\"fas fa-level-up-alt fa-flip-horizontal fa-3x potential-link\"></span>\n                                <span class=\"avatar-container\">\n                                    <span class=\"fas fa-user fa-4x body\" title=\"{{candidate.typeLabel}}\" id=\"child_avatar_{{\$parent.\$index}}_{{\$index}}\"></span>\n                                    <span id=\"child_email_{{\$parent.\$index}}_{{\$index}}\" ng-show=\"candidate.services.email.enabled\" class=\"fas fa-envelope fa-2x unlinked\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= "\"></span>\n                                    <span id=\"child_ftp_{{\$parent.\$index}}_{{\$index}}\" ng-show=\"candidate.services.ftp.enabled\" class='fas fa-truck fa-2x unlinked' title=\"";$output .= $stash->get(['locale',0,'maketext',['FTP' ]]);$output .= "\"></span>\n                                    <span id=\"child_webdisk_{{\$parent.\$index}}_{{\$index}}\" ng-show=\"candidate.services.webdisk.enabled\" class='far fa-hdd fa-2x unlinked' title=\"";$output .= $stash->get(['locale',0,'maketext',['Web Disk' ]]);$output .= "\"></span>\n                                    <span id=\"child_disabled_{{candidate.service}}_{{\$parent.\$index}}_{{\$index}}\"\n                                          ng-show=\"(!candidate.services[candidate.service].supports.allowed || !candidate.services[candidate.service].supports.serviceRunning) && candidate.services[candidate.service].enabled\"\n                                          class=\"fas fa-exclamation-triangle text-warning service-disabled-decoration ng-hide\"\n                                          title=\"{{!candidate.services[candidate.service].supports.allowed ? '";$output .= $stash->get(['locale',0,'maketext',['Feature Disabled' ]]);$output .= '\' : \'';$output .= $stash->get(['locale',0,'maketext',['Service Disabled' ]]);$output .= "'}}\">\n                                    </span>\n                                </span>\n                            </div>\n                        </div>\n                        <div class=\"col-xs-9 col-sm-10 col-md-11\">\n                            <div class=\"row\" ng-hide=\"candidate.ui.showDeleteConfirm\">\n                                <div class=\"col-xs-11 col-sm-9 id-container\">\n                                    <span class=\"username first-visible-name\" ng-bind-html=\"candidate.full_username | wrap:'[\@.]':5\" id=\"child_username_{{\$parent.\$index}}_{{\$index}}\"></span>\n                                </div>\n                                <div class=\"col-xs-6 col-sm-3 hypothetical-actions\">\n                                    <button\n                                      type=\"button\"\n                                      class=\"btn btn-primary\"\n                                      id=\"btnLink_{{\$parent.\$index}}_{{\$index}}\"\n                                      ng-disabled=\"isOverQuota || candidate.ui.linking || user.ui.linkingAll\"\n                                      cp-action=\"linkUser(candidate, user)\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Link' ]]);$output .= "\n                                    </button>\n                                    <button\n                                      class=\"btn btn-default\"\n                                      id=\"btnDismiss_{{\$parent.\$index}}_{{\$index}}\"\n                                      ng-disabled=\"isOverQuota || candidate.ui.linking || user.ui.linkingAll\"\n                                      cp-action=\"dismissLink(candidate, user)\">\n                                        ";$output .= $stash->get(['locale',0,'maketext',['Dismiss' ]]);$output .= "\n                                    </button>\n                                </div>\n                                <div class=\"col-xs-12 actions\">\n                                    <!-- TODO: Add this back later\n                                    <a id=\"btnContact_{{\$parent.\$parent.\$index}}_{{\$parent.\$index}}\" class=\"btn btn-link text-nowrap\" ng-if=\"candidate.services.email.enabled\">\n                                        <i class=\"fas fa-envelope\"></i>\n                                        <span>";$output .= $stash->get(['locale',0,'maketext',['Contact User' ]]);$output .= "</span>\n                                    </a>\n                                    -->\n                                    <a id=\"btnDelete_{{\$parent.\$parent.\$index}}_{{\$parent.\$index}}\" class=\"btn btn-link text-nowrap\" ng-if=\"candidate.can_delete && candidate.services[candidate.service].supports.deletable\" ng-click=\"showDeleteConfirm(candidate)\">\n                                        <i class=\"fas fa-trash-alt\"></i>\n                                        <span>";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "</span>\n                                    </a>\n                                </div>\n                                <div class=\"col-xs-12 col-sm-11 user-alert\">\n                                    <cp-issue-list issues=\"candidate.issues\" id-prefix=\"{{ \$parent.\$index }}_{{ \$index }}\"></cp-issue-list>\n                                </div>\n                            </div>\n                            <div id=\"deleteConfirm_{{\$parent.\$index}}_{{\$index}}\" ng-show=\"candidate.ui.showDeleteConfirm\" class=\"col-xs-12 callout callout-danger delete-confirm ng-hide\">\n                                <div class=\"delete-confirm-message\">\n                                    <i class=\"delete-dialog-icon fas fa-question-circle\"></i>\n                                    <strong ng-bind-html=\"wrappedDeleteText(candidate)\"></strong>\n                                    <span class=\"delete-note\" ng-if=\"candidate.services.email.enabled\">\n                                        <span class='fas fa-exclamation-triangle'></span>\n                                        ";$output .= $stash->get(['locale',0,'maketext',['[output,strong,Note:] The system will delete this user’s email messages from the server. This will not affect any messages previously downloaded to the user’s devices.' ]]);$output .= "\n                                    </span>\n                                    <div class=\"form-group action-group\">\n                                        <button id=\"btnConfirmDelete_{{\$parent.\$index}}_{{\$index}}\"\n                                            type=\"button\"\n                                            class=\"btn\"\n                                            button-class=\"btn-danger\"\n                                            spinner-id=\"spinnerDelete_{{\$parent.\$index}}_{{\$index}}\"\n                                            cp-action=\"deleteUser(candidate, user)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= "\n                                        </button>\n                                        <button id=\"btnCancelDelete_{{\$parent.\$index}}_{{\$index}}\"\n                                            type=\"button\"\n                                            class=\"btn btn-link\"\n                                            ng-click=\"hideDeleteConfirm(candidate)\"\n                                            ng-disabled=\"isDeleting(candidate)\">\n                                            ";$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= "\n                                        </button>\n                                    </div>\n                                </div>\n                            </div>\n                        </div>\n                    </div>\n                    <div class=\"row hidding-linkable ng-hide\" ng-show=\"(user.merge_candidates | filter:filterAdvanced | filter:filterText).length < user.merge_candidates.length\">\n                        <div class=\"col-xs-12 col-sm-9 col-lg-6\">\n                            <p>\n                                <i class=\"fas fa-exclamation-circle\"></i>\n                                <span id=\"msgHiddenServices_{{\$index}}\">";$output .= $stash->get(['locale',0,'maketext',['You have hidden potential linkable services with your filters.' ]]);$output .= '</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row hypothetical-summary" ng-if="(user.type === \'hypothetical\' || user.type === \'sub\') && user.merge_candidates.length">
+                        <div class="col-xs-12 col-sm-9 col-lg-6">
+                            <p>
+                                <i class="fas fa-exclamation-circle"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['You can link service accounts that share the same username and then manage their properties jointly. Only link service accounts that a single user owns. Click Dismiss if you do not wish to link the service accounts.' ]]);$output .= "\n                            </p>\n                        </div>\n                        <div class=\"col-xs-12 col-sm-3 hypothetical-actions ng-hide\" ng-if=\"user.merge_candidates.length > 1\" ng-show=\"advancedFilters.services === 'all'\">\n                            <button\n                              class=\"btn btn-primary\"\n                              id=\"btnLinkAll_{{\$index}}\"\n                              ng-disabled=\"isOverQuota || user.ui.linkingAny || user.ui.linkingAll\"\n                              cp-action=\"linkAll(user)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Link All' ]]);$output .= "\n                            </button>\n                            <button\n                              class=\"btn btn-default\"\n                              id=\"btnDismissAll_{{\$index}}\"\n                              ng-disabled=\"isOverQuota || user.ui.linkingAny || user.ui.linkingAll\"\n                              cp-action=\"dismissAll(user)\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['Dismiss All' ]]);$output .= '
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row ng-hide" ng-show="viewDoneLoading && !filteredUsers.length">
+        <div id="rowNoMatch" class="col-xs-12 user-list strip-even callout callout-info">
+            <i class="fas fa-exclamation-circle"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['No matching users.' ]]);$output .= '
+        </div>
+    </div>
+    <div class="row ng-hide" ng-show="!viewDoneLoading">
+        <div id="loading" class="col-xs-12 user-list strip-even callout callout-info">
+            <i class="fas fa-exclamation-circle"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+        <div id="loadingLargeSet" ng-show="totalItems > 1000" class="col-xs-12 user-list strip-odd callout callout-warning ng-hide">
+            <i class="fas fa-exclamation-circle"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['You have a large number of accounts. Some operations take longer with a large number of accounts.' ]]);$output .= '
+        </div>
+    </div>
+    <div class="row ng-hide" ng-show="viewDoneLoading && totalItems > 50">
+        <div class="col-xs-12 text-right text-xs-left pager-form-inline text-nowrap">
+            <div id="containerPageSizeBottom" class="form-group hidden-xs">
+                <label for="ddlPageSize">';$output .= $stash->get(['locale',0,'maketext',['Showing:' ]]);$output .= '
+                    <select id="ddlPageSizeBottom"
+                            class="form-control"
+                            ng-model="meta.pageSize"
+                            ng-options="size for size in meta.pageSizes">
+                    </select>
+                </label>
+            </div>
+            <label class="visible-xs-inline-block">
+                ';$output .= $stash->get(['locale',0,'maketext',['Page:' ]]);$output .= '
+            </label>
+            <div id="bottomPager"
+                 uib-pagination
+                 ng-model="meta.pageNumber"
+                 items-per-page="meta.pageSize"
+                 total-items="filteredTotalItems"
+                 max-size="5"
+                 direction-links="false"
+                 boundary-links="true"
+                 first-text="';$output .= $stash->get(['locale',0,'maketext',['First' ]]);$output .= '"
+                 last-text="';$output .= $stash->get(['locale',0,'maketext',['Last' ]]);$output .= '"
+                 class="pagination-small form-group">
+            </div>
+        </div>
+    </div>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

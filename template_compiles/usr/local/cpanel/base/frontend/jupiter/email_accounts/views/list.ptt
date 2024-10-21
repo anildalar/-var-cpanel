@@ -1,0 +1,496 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/email_accounts/views/list.ptt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="popsAccountList">
+    <div class="row">
+        <div class="col-sm-8 col-md-9">
+            <p id="descEmailAccounts" class="description">
+            ';$output .= $stash->get(['locale',0,'maketext',['This feature lets you create and manage email accounts.' ]]);$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Want to learn more? Read our [output,url,_1,documentation,class,externalLink,target,_2,id,_3].','//go.cpanel.net/Accounts','_blank','lnkEmailAccountsDocumentation' ]]);$output .= '
+            </p>
+        </div>
+        <div class="col-sm-4 col-md-3" ng-class="emailAccounts.statsCssClass">
+            <stats
+                used-id="lblUsed"
+                ng-model="accountStats.used"
+                available-id="lblAvailable"
+                max="accountStats.maximum"
+                upgrade-link-id="lblUpgradeLink"
+                upgrade-link="{{:: upgradeLink}}"
+                upgrade-link-text="';$output .= $stash->get(['locale',0,'maketext',['Buy More' ]]);$output .= '"
+                show-upgrade-link="true"
+                upgrade-link-target="emailUpgrade"
+                on-show-warning-details="emailAccounts.showNoAvailableAccountsWarning()">
+            </stats>
+        </div>
+    </div>
+
+    <callout ng-if="showNoAvailableAccounts" callout-type="warning"
+        id="emailaccountsMaxOut"
+        closeable="true"
+        on-close="emailAccounts.closeCallout()"
+        callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning! You can’t create more email accounts.' ]]);$output .= '">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Your account contains the maximum number of email accounts that you can create. To create more email accounts, delete any unwanted email accounts or contact your hosting provider.' ]]);$output .= '</p>
+            <a class="btn btn-outline-primary btn-sm"
+                id="btnCalloutUpgrade"
+                ng-if="upgradeLink"
+                title="';$output .= $stash->get(['locale',0,'maketext',['Get More' ]]);$output .= '"
+                ng-href="upgradeLink"
+                target="_blank">
+                <span class="fas fa-fw fa-external-link-alt" aria-hidden="true"></span>
+                ';$output .= $stash->get(['locale',0,'maketext',['Get More' ]]);$output .= '
+            </a>
+    </callout>
+
+    <section class="list-section">
+        <div class="row search-page-container"
+            ng-class="emailAccounts.getSearchClass()">
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-5">
+                <search id="email_table_search" ng-model="emailAccounts.meta.filterValue"
+                    autocomplete="off"
+                    debounce="750"
+                    autofocus
+                    ng-change="emailAccounts.searchList()">
+                </search>
+                <quick-filters title="';$output .= $stash->get(['locale',0,'maketext',['Filter:' ]]);$output .= '" active="emailAccounts.quickFilter" on-filter-change="emailAccounts.filterEmails()">
+                    <quick-filter-item id="lnkFilterAll" value="all" title="';$output .= $stash->get(['locale',0,'maketext',['Show all of my accounts.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['All' ]]);$output .= '</quick-filter-item>
+                    <quick-filter-item id="lnkFilterRestricted" value="restricted" title="';$output .= $stash->get(['locale',0,'maketext',['Show my restricted accounts.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Restricted' ]]);$output .= '</quick-filter-item>
+                    <quick-filter-item id="lnkFilterDefault" value="default" title="';$output .= $stash->get(['locale',0,'maketext',['Show my system account.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['System Account' ]]);$output .= '</quick-filter-item>
+                    <quick-filter-item id="lnkFilterOverQuota" value="overUsed" title="';$output .= $stash->get(['locale',0,'maketext',['Show accounts that have used all of their storage space.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Exceeded Storage' ]]);$output .= '</quick-filter-item>
+                </quick-filters>
+            </div>
+            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-7">
+                <div class="pagination-container hidden-xs hidden-sm">
+                    <uib-pagination id="email_table_paginate"
+                        total-items="emailAccounts.meta.totalItems"
+                        ng-model="emailAccounts.meta.currentPage"
+                        max-size="50"
+                        boundary-links="true"
+                        rotate="false"
+                        previous-text="<"
+                        next-text=">"
+                        first-text="<<"
+                        last-text=">>"
+                        items-per-page="emailAccounts.meta.pageSize"
+                        ng-change="emailAccounts.selectPage()"
+                        ng-disabled="emailAccounts.loadingEmailAccounts">
+                    </uib-pagination>
+                    <p class="text-small text-right flip">{{ emailAccounts.meta.mobileItemCountText }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="emailAccounts.multiDeleteSelected">
+            <div class="col-xs-12">
+                <div class="callout callout-warning">
+                    <div class="display-table">
+                        <div class="display-table-cell">
+                            <span class="delete-question-mark">?</span>
+                        </div>
+                        <div class="display-table-cell">
+                            <div class="box">
+                                <p class="delete-message wordbreak" ng-bind="emailAccounts.getDeleteMultipleMsg()"></p>
+                                <p>';$output .= $stash->get(['locale',0,'maketext',['All the data associated with the email account(s) will be [output,strong,permanently] deleted.' ]]);$output .= '</p>
+
+                                <div class="box">
+                                    <button type="button" id="confirmDelete"
+                                        class="btn btn-primary btn-sm"
+                                        cp-action="emailAccounts.deleteMultiple()">
+                                        <i class="fas fa-trash" aria-hidden="true"></i>
+                                        {{ emailAccounts.getMultiDeleteButtonTxt() }}
+                                    </button>
+                                    <button type="button" id="cancelDelete"
+                                        class="btn btn-link btn-sm"
+                                        ng-click="emailAccounts.multiDeleteSelected = false"
+                                        ng-disabled="emailAccounts.removingMultiple">
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row action-bar">
+            <div class="col-xs-12">
+                <div class="pull-left flip hidden-xs">
+                    <div class="table-action-button-container">
+                        <label class="table-action-button-label table-action-button-sm">
+                            <input type="checkbox"
+                                name="checkAllInList"
+                                id="checkAllInList"
+                                aria-label="';$output .= $stash->get(['locale',0,'maketext',['Toggle account selection' ]]);$output .= '"
+                                ng-model="emailAccounts.selectAllState"
+                                ng-change="emailAccounts.toggleSelectAll()"
+                                indeterminate-state
+                                check-state="emailAccounts.getIndeterminateState()">
+                        </label>
+                    </div>
+                    <button id="btnDeleteSelection"
+                        class="btn btn-default btn-sm"
+                        type="button"
+                        ng-click="emailAccounts.multiDeleteSelected = true"
+                        ng-disabled="!emailAccounts.getSelectedState() || !emailAccounts.hasSelectedAccounts()"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Delete selected' ]]);$output .= '">
+                        <span class="fas fa-fw fa-trash-alt" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                    </button>
+                </div>
+                <div class="pull-right flip">
+                    <button id="btnCreateEmailAccount"
+                        class="btn btn-primary btn-sm"
+                        type="button"
+                        ng-click="emailAccounts.createEmail()"
+                        title="';$output .= $stash->get(['locale',0,'maketext',['Create a new email account.' ]]);$output .= '"
+                        ng-disabled="accountStats.available==0">
+                        <span class="fas fa-plus" aria-hidden="true"></span>
+                        ';$output .= $stash->get(['locale',0,'maketext',['Create' ]]);$output .= '
+                    </button>
+                    <div class="btn-group" uib-dropdown auto-close="outsideClick">
+                        <button id="listOptions" type="button" class="btn btn-default btn-sm" uib-dropdown-toggle ng-disabled="emailAccounts.loadingEmailAccounts">
+                            <i class="fas fa-cog"></i> <span class="caret"></span>
+                        </button>
+                        <ul uib-dropdown-menu class="dropdown-menu-right" role="menu" aria-labelledby="listOptions">
+                            <li role="menuitem">
+                                <div class="text-small text-uppercase">';$output .= $stash->get(['locale',0,'maketext',['Entries Per Page' ]]);$output .= '</div>
+                                <page-size-button id="pageSize"
+                                    allowed-sizes="emailAccounts.meta.pageSizes"
+                                    total-items="emailAccounts.meta.totalItems"
+                                    ng-model="emailAccounts.meta.pageSize"
+                                    show-all="false"
+                                    ng-show="true"
+                                    ng-change="emailAccounts.selectPageSize()">
+                                </page-size-button>
+                            </li>
+                            <li class="divider"></li>
+                            <li role="menuitem">
+                                <a ng-click="emailAccounts.fetch()">
+                                    <i class="fas fa-sync-alt"></i>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Refresh' ]]);$output .= '
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table id="accounts_table" disable-animations class="table table-striped table-striped-child responsive-table details-table">
+            <thead>
+                <tr>
+                    <th class="hidden-xs"></th>
+                    <th class="name-column">
+                        <a toggle-sort sort-meta="emailAccounts.meta" sort-field="user" onSort="emailAccounts.sortList" title="';$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Account' ]])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Account' ]]);$output .= "</a>\n                        <span>\@</span>\n                        <a toggle-sort sort-meta=\"emailAccounts.meta\" sort-field=\"domain\" onSort=\"emailAccounts.sortList\" title=\"";$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Domain' ]])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Domain' ]]);$output .= '</a>
+                    </th>
+                    <th class="hidden-xs">
+                        <a toggle-sort sort-meta="emailAccounts.meta" sort-field="has_suspended" onSort="emailAccounts.sortList" title="';$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Restrictions' ]])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Restrictions' ]]);$output .= '</a>
+                    </th>
+                    <th class="hidden-xs">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Storage:' ]]);$output .= '</span>
+                        <span class="text-nowrap">
+                            <a toggle-sort sort-meta="emailAccounts.meta" sort-field="_diskused" onSort="emailAccounts.sortList" title="';$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Used' ]])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Used' ]]);$output .= '</a>
+                            <span>/</span>
+                            <a toggle-sort sort-meta="emailAccounts.meta" sort-field="_diskquota" onSort="emailAccounts.sortList" title="';$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Allocated' ]])]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Allocated' ]]);$output .= '</a>
+                            <span>/</span>
+                            <a toggle-sort sort-meta="emailAccounts.meta" sort-field="diskusedpercent_float" onSort="emailAccounts.sortList" title="';$output .= $stash->get(['locale',0,'maketext',['Sort by “[_1]”.',$stash->get(['locale',0,'maketext',['Percent Used' ]])]]);$output .= '">%</a>
+                        </span>
+                    </th>
+                    <th class=""></th>
+                </tr>
+            </thead>
+            <tbody id="accounts_table_body">
+                <tr
+                ng-repeat-start="emailAccount in emailAccounts.meta.accounts track by emailAccount.id" id="account_row_{{::emailAccount.id}}"
+                ng-class="{ \'warning\': emailAccount.delete_requested, \'active\': emailAccount.selected }"
+                class="data-row"
+                ng-if="!emailAccount.deleted">
+                    <td class="hidden-xs check-column">
+                        <div class="table-action-checkbox-item">
+                            <label class="table-action-checkbox-label">
+                                <input type="checkbox"
+                                    ng-model="emailAccount.selected"
+                                    ng-change="emailAccounts.toggleSelection(emailAccount)"
+                                    ng-if="!emailAccount.isDefault"
+                                    title="';$output .= $stash->get(['locale',0,'maketext',['Select “[_1]”','{{:: emailAccount.email }}' ]]);$output .= '">
+                            </label>
+                        </div>
+                    </td>
+                    <td id="accountCell_{{::emailAccount.id}}" class="name-column">
+                        <div class="row-expand-container">
+                            <button id="lnkToggleViewInfo_{{::emailAccount.id}}" class="btn btn-link"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['View details.' ]]);$output .= '"
+                                aria-label="';$output .= $stash->get(['locale',0,'maketext',['View details.' ]]);$output .= '"
+                                ng-click="emailAccounts.getDetails(emailAccount, !emailAccount.isExpanded);"
+                                >
+                                <i class="fas"
+                                    ng-class="{ \'fa-chevron-right\': !emailAccounts.isRTL && !emailAccount.isExpanded, \'fa-chevron-left\': emailAccounts.isRTL && !emailAccount.isExpanded, \'fa-chevron-down\': emailAccount.isExpanded }"
+                                    aria-hidden="true"
+                                    >
+                                </i>
+                            </button>
+                        </div>
+                        <span id="account-name_{{::emailAccount.id}}" class="account-name collapse-text">{{ ::emailAccount.email }}</span>
+                        <span class="table-inline-label-container">
+                            <span id="defaultLabel_{{::emailAccount.id}}" class="label label-primary label-offset" ng-if="::emailAccount.isDefault">';$output .= $stash->get(['locale',0,'maketext',['System' ]]);$output .= '</span>
+                        </span>
+                    </td>
+                    <td class="hidden-xs">
+                        <div ng-if="::emailAccount.has_suspended">
+                            <a id="email_table_restricted_{{::emailAccount.id}}"
+                                class="text-nowrap"
+                                ng-click="emailAccounts.manageAccount(emailAccount, \'restrictions\')"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Manage “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '">
+                                <i class="fas fa-exclamation-triangle text-warning"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Restricted' ]]);$output .= '
+                            </a>
+                        </div>
+                        <div ng-if="::!emailAccount.has_suspended">
+                            <a id="email_table_unrestricted_{{::emailAccount.id}}"
+                                class="text-nowrap"
+                                ng-if="::!emailAccount.isDefault"
+                                ng-click="emailAccounts.manageAccount(emailAccount, \'restrictions\')"
+                                title="';$output .= $stash->get(['locale',0,'maketext',['Manage “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '">
+                                <span class="fas fa-fw fa-check text-success"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unrestricted' ]]);$output .= '
+                            </a>
+                            <div ng-if="::emailAccount.isDefault" class="text-nowrap">
+                                <span class="fas fa-fw fa-check text-success"></span>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unrestricted' ]]);$output .= '
+                            </div>
+                        </div>
+                    </td>
+                    <td class="hidden-xs">
+                        <div class="storageDisplay" ng-if="::!emailAccount.isDefault">
+                            <div>
+                                <span id="diskused_{{::emailAccount.id}}" ng-bind-html="::emailAccount.humandiskused"></span>
+                                <input type="hidden" value="{{::emailAccount.diskused}}">
+                                <span>/</span>
+                                <span id="quota_{{::emailAccount.id}}" ng-bind-html="::emailAccount.humandiskquota"></span>
+                                <span ng-if="::emailAccount.diskquota">/</span>
+                                <span id="percentage_{{::emailAccount.id}}" ng-if="::emailAccount.diskquota"  ng-bind-html="::emailAccount.humandiskusedpercent"></span>
+                            </div>
+                            <div>
+                                <uib-progressbar ng-if="::emailAccount.displayProgressbar"
+                                    type="{{:: emailAccount.quotaProgressType }}"
+                                    max="emailAccount._diskquota"
+                                    value="::emailAccount._diskused"
+                                    title="{{:: emailAccount.humandiskusedpercent }}">
+                                    <span class="sr-only">{{:: emailAccount.humandiskusedpercent }}</span>
+                                </uib-progressbar>
+                            </div>
+                        </div>
+                        <div ng-if="::emailAccount.isDefault">
+                            <div>
+                                <span ng-bind-html="emailAccount.humandiskused"></span>
+                                <span>/</span>
+                                <span id="quota_{{::emailAccount.id}}" ng-bind-html="emailAccount.humandiskquota"></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="action-column"
+                        ng-class="{showDeleteMode: emailAccount.delete_requested}">
+                        <a class="btn btn-outline-primary btn-sm hidden-xs hidden-sm"
+                            id="email_table_menu_webmail_{{ ::emailAccount.id }}"
+                            ng-if="::emailAccounts.webmailEnabled"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Check email for “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                            ng-href="{{ ::emailAccount.webmailLink }}"
+                            target="_blank">
+                            <span class="fas fa-fw fa-external-link-alt" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Check Email' ]]);$output .= '
+                        </a>
+                        <button class="btn btn-outline-primary btn-sm"
+                            type="button"
+                            id="email_table_disk_and_quota_{{::emailAccount.id}}"
+                            ng-click="emailAccounts.manageAccount(emailAccount)"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Manage “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '">
+                            <span class="fas fa-wrench" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Manage' ]]);$output .= '
+                        </button>
+                        <button class="btn btn-outline-primary btn-sm hidden-xs hidden-sm"
+                            type="button"
+                            id="email_table_connect_devices_{{::emailAccount.id}}"
+                            ng-click="emailAccounts.connectDevices(emailAccount)"
+                            title="';$output .= $stash->get(['locale',0,'maketext',['Set up account “[_1]” on your device','{{ ::emailAccount.email }}' ]]);$output .= '">
+                            <span class="fas fa-fw fa-mobile-alt" aria-hidden="true"></span>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Connect Devices' ]]);$output .= '
+                        </button>
+                    </td>
+                </tr>
+                <tr ng-repeat-end="" class="wordbreak"
+                    ng-class="{ \'warning\': emailAccount.delete_requested, \'active\': emailAccount.selected }">
+                    <td class="expand-panel-data" colspan="5">
+                        <div class="list-panel expand-panel"
+                            ng-if="emailAccount.isExpanded">
+                            <div class="row" ng-if="!emailAccount.isDefault">
+                                <div class="col-xs-12 col-sm-8">
+                                    <dl class="email">
+                                        <div ng-if="::emailAccount.displayInnerEmail">
+                                        <dt>';$output .= $stash->get(['locale',0,'maketext',['Email' ]]);$output .= '</dt>
+                                        <dd>{{:: emailAccount.email}}</dd>
+                                        </div>
+                                        <dt>';$output .= $stash->get(['locale',0,'maketext',['Restrictions' ]]);$output .= '</dt>
+                                        <dd>
+                                            <ul class="list-inline">
+                                                <li title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” can’t read mail because logins are suspended.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                                                    ng-if="emailAccount.suspended_login">
+                                                    <span class="fas fa-exclamation text-danger"></span>
+                                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Cannot Log In' ]]);$output .= '</span>
+                                                </li>
+                                                <li title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” can’t receive mail because incoming mail is suspended.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                                                    ng-if="emailAccount.suspended_incoming">
+                                                    <span class="fas fa-exclamation text-danger"></span>
+                                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Cannot Receive Email' ]]);$output .= '</span>
+                                                </li>
+                                                <li title="';$output .= $stash->get(['locale',0,'maketext',['“[_1]” can’t send mail because outgoing mail is suspended.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                                                    ng-if="emailAccount.suspended_outgoing">
+                                                    <span class="fas fa-exclamation text-danger"></span>
+                                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Cannot Send Email' ]]);$output .= '</span>
+                                                </li>
+                                                <li title="';$output .= $stash->get(['locale',0,'maketext',['We’re holding outgoing mail for “[_1]” in the mail queue.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                                                    ng-if="emailAccount.hold_outgoing && !emailAccount.suspended_outgoing">
+                                                    <span class="fas fa-fw fa-pause text-warning"></span>
+                                                    <span>';$output .= $stash->get(['locale',0,'maketext',['Cannot Send Email' ]]);$output .= '</span>
+                                                </li>
+                                            </ul>
+                                            <div ng-if="::!emailAccount.has_suspended" class="text-nowrap">
+                                                <span class="fas fa-fw fa-check text-success"></span>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Unrestricted' ]]);$output .= '
+                                            </div>
+                                        </dd>
+                                        <div ng-if="::!emailAccount.isDefault">
+                                            <dt class="visible-xs">';$output .= $stash->get(['locale',0,'maketext',['Storage Used' ]]);$output .= '</dt>
+                                            <dd class="visible-xs">
+                                                <div class="storageDisplay">
+                                                <div>
+                                                    <span ng-bind-html="::emailAccount.humandiskused"></span>
+                                                    <input type="hidden" id="diskused_{{::emailAccount.id}}" value="{{::emailAccount.diskused}}">
+                                                    <span>/</span>
+                                                    <span id="quota_{{::emailAccount.id}}" ng-bind-html="::emailAccount.humandiskquota"></span>
+                                                    <span>/</span>
+                                                    <span id="percentage_{{::emailAccount.id}}" ng-bind-html="::emailAccount.humandiskusedpercent"></span>
+                                                </div>
+                                                <div>
+                                                    <uib-progressbar ng-if="::emailAccount.displayProgressbar"
+                                                        type="{{ ::emailAccount.quotaProgressType }}"
+                                                        max="emailAccount._diskquota"
+                                                        value="::emailAccount._diskused"
+                                                        title="{{ ::emailAccount.humandiskusedpercent }}">
+                                                        <span class="sr-only">{{ ::emailAccount.humandiskusedpercent }}</span>
+                                                    </uib-progressbar>
+                                                </div>
+                                            </dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="emailAccount.isDefault">
+                                <div class="col-xs-12 col-sm-8">
+                                    <p>';$output .= $stash->get(['locale',0,'maketext',['The system user email account accepts email addressed to your [asis,cPanel] username on the server’s hostname. Depending on the settings in the [output,url,_1,Default Address,target,_2] interface, it may also accept mail which is addressed to your domains but cannot be routed to another mailbox. This account’s username and password are the same as your [asis,cPanel] account’s login. The account can’t be deleted and has no quota.','../mail/def.html','_blank' ]]);$output .= '</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="expand-actions">
+                                        <a class="btn btn-outline-primary btn-sm hidden-md hidden-lg"
+                                            id="email_table_expand_webmail_{{ ::emailAccount.id }}"
+                                            ng-if="::emailAccounts.webmailEnabled"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Check email for “[_1]”.','{{ ::emailAccount.email }}' ]]);$output .= '"
+                                            href="{{ ::emailAccount.webmailLink }}"
+                                            target="_blank">
+                                            <span class="fas fa-fw fa-external-link-alt" aria-hidden="true"></span>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Check Email' ]]);$output .= '
+                                        </a>
+                                        <button class="btn btn-outline-primary btn-sm hidden-md hidden-lg"
+                                            type="button"
+                                            id="email_table_expand_connect_devices_{{::emailAccount.id}}"
+                                            ng-click="emailAccounts.connectDevices(emailAccount)"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Set up account “[_1]” on your device','{{ ::emailAccount.email }}' ]]);$output .= '">
+                                            <span class="fas fa-fw fa-mobile-alt" aria-hidden="true"></span>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Connect Devices' ]]);$output .= '
+                                        </button>
+                                        <button class="btn btn-outline-primary btn-sm"
+                                            type="button"
+                                            id="email_table_expand_delete_{{::emailAccount.id}}"
+                                            ng-click="emailAccount.delete_requested = true"
+                                            ng-if=":: !emailAccount.isDefault"
+                                            ng-disabled="emailAccount.delete_requested"
+                                            title="';$output .= $stash->get(['locale',0,'maketext',['Delete “[_1]”','{{ ::emailAccount.email }}' ]]);$output .= '">
+                                            <span class="fas fa-fw fa-trash-alt" aria-hidden="true"></span>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="list-panel"
+                            ng-if="emailAccount.delete_requested">
+                            <div class="delete-warning">
+                                <div class="display-table">
+                                    <div class="display-table-cell">
+                                        <span class="delete-question-mark">?</span>
+                                    </div>
+                                    <div class="display-table-cell">
+                                        <div class="box">
+                                            <span class="delete-message wordbreak">';$output .= $stash->get(['locale',0,'maketext',['Are you sure about deleting “[_1]”?','{{ ::emailAccount.email }}' ]]);$output .= '</span>
+                                            <p>';$output .= $stash->get(['locale',0,'maketext',['When you delete an email account, we permanently delete [output,strong,all] of the account’s data.' ]]);$output .= '</p>
+                                        </div>
+                                        <div class="box">
+                                            <button type="button" id="confirmDelete_{{::emailAccount.id}}"
+                                                class="btn btn-primary btn-sm"
+                                                cp-action="emailAccounts.delete(emailAccount)">
+                                                <i class="fas fa-trash" aria-hidden="true"></i>
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Delete' ]]);$output .= '
+                                            </button>
+                                            <button type="button" id="cancelDelete_{{::emailAccount.id}}"
+                                                class="btn btn-link btn-sm"
+                                                ng-click="emailAccount.delete_requested = false"
+                                                ng-disabled="emailAccount.removing">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Cancel' ]]);$output .= '
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+
+                <tr ng-if="emailAccounts.loadingEmailAccounts" class="info empty-row">
+                    <td colspan="5" id="loadingRow">
+                        <span class="fas fa-spinner fa-spin"></span>
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['Loading your email accounts …' ]]);$output .= '</span>
+                    </td>
+                </tr>
+                <tr ng-if="!(emailAccounts.meta.accounts.length > 0 || emailAccounts.loadingEmailAccounts)">
+                    <td colspan="5" id="emptyRow">
+                        <span>';$output .= $stash->get(['locale',0,'maketext',['We didn’t find any email accounts. Would you like to [output,url,_1,create one]?','#/create/' ]]);$output .= '</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="row search-page-container visible-xs-block visible-sm-block hidden-md hidden-lg">
+            <div class="col-xs-12 col-sm-12">
+                <div class="pagination-container">
+                    <p class="text-small text-right flip">{{ emailAccounts.meta.mobileItemCountText }}</p>
+                    <uib-pagination id="email_table_paginate_mobile"
+                        total-items="emailAccounts.meta.totalItems"
+                        ng-model="emailAccounts.meta.currentPage"
+                        max-size="50"
+                        boundary-links="true"
+                        rotate="false"
+                        previous-text="<"
+                        next-text=">"
+                        first-text="<<"
+                        last-text=">>"
+                        items-per-page="emailAccounts.meta.pageSize"
+                        ng-change="emailAccounts.selectPage()"
+                        ng-disabled="emailAccounts.loadingEmailAccounts"
+                        class="pagination-small">
+                    </uib-pagination>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

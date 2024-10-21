@@ -1,0 +1,45 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/twofactorauth/views/configView.ptt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '<div id="loadingConfigNotice" class="callout callout-info ng-hide" ng-show="cc.loadingIssuer">
+    <div id="loadingConfigNoticeRow">
+        <div id="loadingConfigNoticeCell">
+            <i id="loadingSpinner" class="fas fa-spinner fa-spin"></i>
+            ';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+        </div>
+    </div>
+</div>
+<div id="tfaConfig" class="ng-hide" ng-show="!cc.loadingIssuer">
+    <form class="layout-medium ng-pristine ng-valid"
+        id="config_form"
+        name="config_form"
+        autocomplete="off"
+        novalidate>
+        <div class="section-body">
+            <div class="alert alert-info" ng-hide="cc.currentUser.user_name == \'root\'">
+                <span class="glyphicon glyphicon-info-sign"></span>
+                <div class="alert-message" ng-bind-html="cc.systemWideIssuerAlert()"></div>
+            </div>
+            <div class="form-group" ng-class="{\'has-error\': cc.saveError}">
+                <label class="control-label" id="lblIssuer" for="issuer">
+                ';$output .= $stash->get(['locale',0,'maketext',['Issuer' ]]);$output .= "</label>\n                <span class=\"glyphicon glyphicon-info-sign\"\n                    role=\"tooltip\"\n                    tabindex=\"0\"\n                    aria-describedby=\"lblIssuer\"\n                    uib-tooltip=\"{{cc.issuerHelpText}}\"\n                    tooltip-trigger=\"focus\"\n                    tooltip-placement=\"top\"\n                    ng-class=\"{'has-error': cc.saveError}\"></span>\n                <div class=\"row\">\n                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                        <input type=\"text\"\n                            autocomplete=\"off\"\n                            class=\"form-control\"\n                            ng-attr-placeholder=\"{{ cc.currentUser.user_name == 'root' ? cc.rootIssuerPlaceholder : cc.issuerPlaceholder}}\"\n                            id=\"issuer\"\n                            name=\"issuer\"\n                            ng-trim=\"false\"\n                            ng-maxlength=\"32\"\n                            ng-pattern=\"/^[ a-zA-Z0-9\\._\\-]+\$/\"\n                            ng-model=\"cc.issuer\"\n                            ng-class=\"{'has-error': cc.saveError}\" />\n                    </div>\n                    <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6\">\n                        <ul validation-container field-name=\"issuer\">\n                        <validation-item\n                                field-name=\"issuer\"\n                                validation-name=\"pattern\">\n                                ";$output .= $stash->get(['locale',0,'maketext',['This field can only use spaces and the following characters: [join, ,_*]',['a-z','A-Z','0-9','.','_','-' ]]]);$output .= '
+                            </validation-item>
+                            <validation-item
+                                field-name="issuer"
+                                validation-name="maxlength">
+                                ';$output .= $stash->get(['locale',0,'maketext',['The issuer must be no more than 32 characters.' ]]);$output .= '
+                            </validation-item>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <button
+                    type="submit"
+                    spinner-id="saveConfig"
+                    cp-action="cc.saveIssuer(config_form)"
+                    button-class="btn-primary"
+                    ng-disabled="cc.disableSave(config_form)">';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

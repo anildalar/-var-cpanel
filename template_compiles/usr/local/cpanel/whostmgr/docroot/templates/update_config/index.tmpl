@@ -1,0 +1,294 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/update_config/index.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set('Whostmgr',$context->plugin('Whostmgr'));$stash->set('JSON',$context->plugin('JSON'));$stash->set('String',$context->plugin('String'));$stash->set('PAGE_BASE','/scripts2/updateconf/');$output .= do {my$output='';$output .= '
+<div ng-controller="config" class="layout-medium" ng-cloak>
+
+<cp-loading-panel id="loadingPanel" ng-show="loading">
+';$output .= $stash->get(['locale',0,'maketext',['Loading …' ]]);$output .= '
+</cp-loading-panel>
+
+<section ng-show="!loading">
+    <p class="help-block">';$output .= $stash->get(['locale',0,'maketext',['You can use this interface to choose when and how the system updates your server. For more information, read our [output,url,_1,documentation about release tiers and updates,target,_2].','https://go.cpanel.net/versionformat','cpdocs-version-format' ]]);$output .= '</p>
+    <div id="pageNotices">
+        <callout callout-type="warning" callout-heading="';$output .= $stash->get(['locale',0,'maketext',['Warning' ]]);$output .= '" ng-if="!autoUpdateEnabled">
+            <p>';$output .= $stash->get(['locale',0,'maketext',['Automatic updates are disabled for this server. We strongly recommend enabling automatic updates.' ]]);$output .= '</p>
+            <button id="enable-updates-button" type="button" spinner-id="enable-updates-spinner" cp-action="enableAutomaticUpdates()">
+                <i class="fas fa-history fa-flip-horizontal" aria-hidden="true"></i>
+                ';$output .= $stash->get(['locale',0,'maketext',['Enable Automatic Updates' ]]);$output .= '
+            </button>
+        </callout>
+
+        ';$output .= $context->process('warnings/_mysql_version.tmpl');$output .= '
+
+        <div ng-show="saved">
+            <div class="alert alert-success" id="saved_message">
+                ';$output .= $stash->get(['locale',0,'maketext',['The system saved your settings locally and will apply your changes during the next update. To update now, click [output,url,_1,here,id,updateNowBtn].','../scripts2/upcpform' ]]);$output .= '
+            </div>';if ($stash->get(['data',0,'cluster_server_info',0,'server_count',0])> 0 && ($stash->get(['data',0,'cluster_server_info',0,'remote_saved',0])> 0 || $stash->get(['data',0,'cluster_server_info',0,'remote_save_failed',0])> 0)){$stash->set('notice_type','');$stash->set('notice_content','');$stash->set('notice_additional_class','');$stash->set('notice_message',$stash->get(['locale',0,'maketext',['[numf,_1] of [numf,_2] configuration cluster servers received your updated settings.',$stash->get(['data',0,'cluster_server_info',0,'remote_saved',0]),$stash->get(['data',0,'cluster_server_info',0,'server_count',0])]]));if ($stash->get(['data',0,'cluster_server_info',0,'remote_save_failed',0])> 0 && $stash->get(['data',0,'cluster_server_info',0,'remote_saved',0])ne 0){$stash->set('notice_type',' notice-warning');$stash->set('notice_content',' warning-notice-content');$stash->set('notice_additional_class',' class="warning"')}elsif ($stash->get(['data',0,'cluster_server_info',0,'remote_save_failed',0])> 0 && $stash->get(['data',0,'cluster_server_info',0,'remote_saved',0])eq 0){$stash->set('notice_type',' notice-error');$stash->set('notice_content',' error-notice-content');$stash->set('notice_message',$stash->get(['locale',0,'maketext',['The system couldn’t update your configuration cluster servers’ settings.' ]]))}$output .= '            <div id="clusterServersNotice" class="notice';$output .= $stash->get('notice_type');$output .= '">
+                <div class="notice-content';$output .= $stash->get('notice_content');$output .= '">';$output .= $stash->get('notice_message');$output .= '                    <span id="showHideClusterDetail"';$output .= $stash->get('notice_additional_class');$output .= '>
+                        (<a href="#" id="showClusterServerResults"';$output .= $stash->get('notice_additional_class');$output .= ' ng-model="showClusterServerResults" ng-click="showClusterServerResults = !showClusterServerResults" ng-init="showClusterServerResults = false"><span id="showClusterDetail" ng-show="showClusterServerResults">';$output .= $stash->get(['locale',0,'maketext',['Show Details' ]]);$output .= '</span><span class="clusterDetailHidden" id="hideClusterDetail" ng-show="!showClusterServerResults">';$output .= $stash->get(['locale',0,'maketext',['Hide Details' ]]);$output .= '</span></a>)
+                    </span>
+                </div>
+                <div id="clusterServerDetail" ng-show="!showClusterServerResults">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <td>Server</td>
+                                <td>Status</td>
+                                <td>Message</td>
+                            </tr>
+                        </thead>
+                        <tbody>';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'cluster_server_info',0,'results',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'server_result'}=$_tt_value;$output .= '                                <tr>
+                                    <td>';$output .= $stash->get(['server_result',0,'server',0]);$output .= '                                    </td>
+                                    <td class="statusCell">';if ($stash->get(['server_result',0,'status',0])eq 'OK'){$output .= '                                            <img src="/images/success.png" title="';$output .= $stash->get(['locale',0,'maketext',['The system successfully updated the server: [_1]',$stash->get(['server_result',0,'server',0])]]);$output .= '">'}else {$output .= '                                            <img src="/images/error.png" title="';$output .= $stash->get(['locale',0,'maketext',['The system failed to update the server: [_1]',$stash->get(['server_result',0,'server',0])]]);$output .= '">'}$output .= '                                    </td>
+                                    <td class="messageCell">';if ($stash->get(['server_result',0,'exists',['message' ]])){$output .= $stash->get(['server_result',0,'message',0])}$output .= '                                    </td>
+                                </tr>';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '                        </tbody>
+                    </table>
+                </div>
+            </div>
+            '}$output .= '        </div>
+        <div class="alert alert-danger" ng-if="saveFailed">
+            <div ng-non-bindable>
+                ';if ($stash->get(['data',0,'save_fail_reason',0])){$output .= '                    ';$output .= $stash->get(['locale',0,'maketext',['The system failed to save your new settings: [_1]',$stash->get(['data',0,'save_fail_reason',0,'html',0])]]);$output .= '
+                '}else {$output .= '                    ';$output .= $stash->get(['locale',0,'maketext',['The system failed to save your new settings.' ]]);$output .= '
+                '}$output .= '            </div>
+        </div>
+    </div>
+
+';$stash->set('no_downgrades_title',$stash->get(['locale',0,'maketext',['You can’t select this tier. It requires a downgrade.' ]]));$output .= '
+';$stash->set('tier_doesnt_exist_title',$stash->get(['locale',0,'maketext',['The selected tier doesn’t exist on the update server.' ]]));$output .= '
+';$stash->set('selected_tier_is_downgrade',$stash->get(['locale',0,'maketext',['The selected tier requires a downgrade.' ]]));$output .= '
+';$stash->set('remote_tier_not_found',0);$output .= '
+';$stash->set('staging_dir_placeholder','.cpanel__' .$stash->get(['data',0,'hostname',0,'replace',['[.]','_' ]]).'__upcp_staging');$output .= '
+
+';$stash->set('extra_status_class',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'tier' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$stash->set('error_class','');if ($stash->get(['data',0,'checked',0])eq $stash->get('tier')&& $stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,$stash->get('tier'),0])]])){$stash->set('error_class','fas fa-exclamation-circle')}elsif ($stash->get(['data',0,'custom_tier',0])eq $stash->get('tier')){if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'non_named_tiers',0,$stash->get('tier'),0])]])){$stash->set('error_class','fas fa-exclamation-circle')}}elsif ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,$stash->get('tier'),0])]])){$stash->set('error_class','fas fa-exclamation-triangle')}$output .= $stash->get('error_class')};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+';$stash->set('tier_status_title',sub {my$output='';my (%_tt_args,$_tt_params);$_tt_args{'tier' }=shift;$_tt_params=shift;$_tt_params={}unless ref($_tt_params)eq 'HASH';$_tt_params={%_tt_args,%$_tt_params };my$stash=$context->localise($_tt_params);eval {$stash->set('msg_title','');if ($stash->get(['data',0,'checked',0])eq $stash->get('tier')&& $stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,$stash->get('tier'),0])]])){$stash->set('msg_title',$stash->get('selected_tier_is_downgrade'))}elsif ($stash->get(['data',0,'custom_tier',0])eq $stash->get('tier')){if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'non_named_tiers',0,$stash->get('tier'),0])]])){$stash->set('msg_title',$stash->get('selected_tier_is_downgrade'))}}elsif ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,$stash->get('tier'),0])]])){$stash->set('msg_title',$stash->get('no_downgrades_title'))}$output .= $stash->get('msg_title')};$stash=$context->delocalise();die $@ if $@;return$output});$output .= '
+
+    <div id="versionDetailsPanel" class="panel panel-primary">
+        <div class="panel-heading">
+            ';$output .= $stash->get(['locale',0,'maketext',['[asis,cPanel] [output,amp] WHM Version' ]]);$output .= '
+        </div>
+        <div class="panel-body">
+            <dl id="current_info">
+                <dt>';$output .= $stash->get(['locale',0,'maketext',['Installed Version:' ]]);$output .= '</dt>
+                <dd>
+                    ';$output .= $stash->get(['data',0,'current_version',0]);$output .= '
+                    <div ng-show="isDevVersion" class="font-italic additional-note">';$output .= $stash->get(['locale',0,'maketext',['[output,strong,About Development Releases:] Odd-numbered builds are development builds. [output,strong,Don’t] install them in a production environment. They change often and we may not have fully tested or documented them yet.' ]]);$output .= '
+                    </div>
+                </dd>
+            </dl>
+            <a class="showVersionDetails" href="javascript:void(0);" ng-click="toggleVersionDetails()">
+                {{additionalInfoText}} <i class="fas" ng-class="{\'fa-chevron-down\': !showVersionDetails, \'fa-chevron-up\': showVersionDetails}" aria-hidden="true"></i>
+            </a>
+            <dl class="additional-version-details" ng-if="showVersionDetails">
+                <dt>';$output .= $stash->get(['locale',0,'maketext',['Update From:' ]]);$output .= '</dt>
+                <dd>';$output .= $stash->get(['data',0,'httpupdate',0]);$output .= '
+                    ';if ($stash->get(['data',0,'uses_next',0])){$output .= '
+                        <div class="font-italic additional-note">
+                        ';$output .= $stash->get(['locale',0,'maketext',['[output,strong,Warning:] The server is configured to receive updates from the beta network.' ]]);$output .= '
+                        </div>
+                    '}$output .= '
+                </dd>
+                <dt>';$output .= $stash->get(['locale',0,'maketext',['Current Tier:' ]]);$output .= '</dt>
+                <dd>';$output .= do {my$output='';my$_tt_filter=$context->filter('upper')|| $context->throw($context->error);$output .= $stash->get(['data',0,'checked',0]);&$_tt_filter($output)};$output .= '</dd>
+                <dt id="support_ends_lbl" ng-if="customTierExpiration">
+                    <span ng-if="customTierIsExpired">';$output .= $stash->get(['locale',0,'maketext',['Tier Support Ended:' ]]);$output .= '</span>
+                    <span ng-if="!customTierIsExpired">';$output .= $stash->get(['locale',0,'maketext',['Tier Support Ends:' ]]);$output .= "</span>\n                </dt>\n                <dd ng-if=\"customTierExpiration\">\n                    {{ customTierExpirationLocalized }}\n                </dd>\n            </dl>\n        </div>\n    </div>\n\n    <form id=\"the_form\" method=\"post\" action=\"\" ng-submit=\"submitForm(\$event)\">\n        <h3>";$output .= $stash->get(['locale',0,'maketext',['Release Tier' ]]);$output .= '</h3>
+        <p>';$output .= $stash->get(['locale',0,'maketext',['Select the release tier to use for updating [asis,cPanel amp() WHM]. You [output,strong,can’t] downgrade or select tiers that are older than the currently-installed version.' ]]);$output .= '</p>
+        <table id="tierTable" class="table table-striped tier-table">
+            <thead>
+                <tr>
+                    <th class="col1"></th>
+                    <th class="col2">';$output .= $stash->get(['locale',0,'maketext',['Tier' ]]);$output .= '</th>
+                    <th class="col3" title="';$output .= $stash->get(['locale',0,'maketext',['The tier’s current version.' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['Currently' ]]);$output .= '</th>
+                    <th></th>
+                    <th class="col4">';$output .= $stash->get(['locale',0,'maketext',['Description' ]]);$output .= '</th>
+                </tr>
+            </thead>
+            <tbody>
+        <!-- Custom Tier -->
+                <tr ng-if="customTier" class="custom-tier-row">
+                    <td class="col1"><input id="tier_custom" type="radio" name="CPANEL" ng-model="tierSelection" value="{{customTier}}" /></td>
+                    <td class="col2"><label for="tier_custom">';$output .= $stash->get(['locale',0,'maketext',['Custom' ]]);$output .= "</label></td>\n                    <td class=\"col3\">\n                        <label for=\"tier_custom\">\n                            <span ng-if=\"customTierLatestBuild\">\n                                {{ customTierLatestBuild.replace('11\\.', '') || '";$output .= $stash->get(['locale',0,'maketext',['Unknown' ]]);$output .= '\' }}
+                            </span>
+                            <span ng-if="!customTierLatestBuild" class="text-warning">
+                                <i class="fas fa-exclamation-triangle" aria-hidden="true"></i>
+                                ';$output .= $stash->get(['locale',0,'maketext',['Unknown' ]]);$output .= '
+                            </span>
+                        </label>
+                    </td>
+                    <td>
+                        <i id="customTierStatus" class="';$output .= $stash->get(['extra_status_class',['custom' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['custom' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4"><span class="desc">';$output .= $stash->get(['locale',0,'maketext',['You configured the server to update to a specific [asis,cPanel amp() WHM] version or build. We [output,strong,strongly] recommend selecting a named release tier.' ]]);$output .= '</span></td>
+                </tr>
+                <!-- This dummy row just helps us work around the .table-striped alternating background colors -->
+                <tr ng-if="customTier && hasCustomTierWarning" class="custom-tier-warning-dummy-row"></tr>
+                <tr ng-if="customTier && hasCustomTierWarning" class="custom-tier-warning-row">
+                    <td></td>
+                    <td colspan="4">
+                        <cp-alert type="warning" id="custom-tier-expiration-warning" ng-if="customTierExpiredWarningText">
+                            {{ customTierExpiredWarningText }}
+                        </cp-alert>
+                        <cp-alert type="warning" id="custom-tier-invalid-warning" ng-if="customTierInvalidWarningText">
+                            {{ customTierInvalidWarningText }}
+                        </cp-alert>
+                    </td>
+                </tr>
+        <!-- LTS -->
+                <tr>
+                    <td class="col1"><input id="tier_lts" ';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'lts',0])]])){$output .= 'disabled="disabled"'}$output .= 'type="radio" name="CPANEL" ng-model="tierSelection" value="lts" /></td>
+                    <td class="col2';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'lts',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_lts">';$output .= $stash->get(['locale',0,'maketext',['[output,acronym,LTS,Long-Term Support]' ]]);$output .= '</label></td>
+                    <td class="col3';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'lts',0])]])){$output .= ' grayed'}$output .= "\"><label for=\"tier_lts\">{{ tiers.lts.replace('11\\.', '') }}</label></td>\n                    <td>\n                        <i id=\"ltsTierStatus\" class=\"";$output .= $stash->get(['extra_status_class',['lts' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['lts' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4"><span class="desc">';$output .= $stash->get(['locale',0,'maketext',['A well-tested and proven version that [asis,cPanel], L.L.C. supports for one full year.' ]]);$output .= '</span></td>
+                </tr>
+        <!-- STABLE -->
+                <tr>
+                    <td class="col1"><input id="tier_stable" ';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'stable',0])]])){$output .= 'disabled="disabled"'}$output .= 'type="radio" name="CPANEL" ng-model="tierSelection" value="stable" /></td>
+                    <td class="col2';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'stable',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_stable">STABLE</label></td>
+                    <td class="col3';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'stable',0])]])){$output .= ' grayed'}$output .= "\"><label for=\"tier_stable\">{{ tiers.stable.replace('11\\.', '') }}</label></td>\n                    <td>\n                        <i id=\"stableTierStatus\" class=\"";$output .= $stash->get(['extra_status_class',['stable' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['stable' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4"><span class="desc">';$output .= $stash->get(['locale',0,'maketext',['A version that is feature-complete, fully tested, and is in widespread use.' ]]);$output .= '</span></td>
+                </tr>
+        <!-- RELEASE -->
+                <tr>
+                    <td class="col1"><input id="tier_release" title="';$output .= $stash->get(['locale',0,'maketext',['Recommended for most users.' ]]);$output .= '" ';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'release',0])]])){$output .= 'disabled="disabled"'}$output .= 'type="radio" name="CPANEL" ng-model="tierSelection" value="release" /></td>
+                    <td class="col2';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'release',0])]])){$output .= ' grayed'}$output .= '">
+                        <label for="tier_release" title="';$output .= $stash->get(['locale',0,'maketext',['Recommended for most users.' ]]);$output .= '">
+                            RELEASE
+                        </label>
+                        <div class="label-container">
+                            <span class="label label-info">';$output .= $stash->get(['locale',0,'maketext',['Recommended' ]]);$output .= '</span>
+                        </div>
+                    </td>
+                    <td class="col3';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'release',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_release" title="';$output .= $stash->get(['locale',0,'maketext',['Recommended for most users.' ]]);$output .= "\">{{ tiers.release.replace('11\\.','') }}</td>\n                    <td>\n                        <i id=\"releaseTierStatus\" class=\"";$output .= $stash->get(['extra_status_class',['release' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['release' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4">
+                        <span class="desc">';$output .= $stash->get(['locale',0,'maketext',['A version that is feature-complete and well tested.' ]]);$output .= '</span>
+                    </td>
+                </tr>
+        <!-- CURRENT -->
+                <tr>
+                    <td class="col1"><input id="tier_current" ';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'current',0])]])){$output .= 'disabled="disabled" '}$output .= 'type="radio" name="CPANEL" ng-model="tierSelection" value="current" title="';$output .= $stash->get(['locale',0,'maketext',['Release Candidate' ]]);$output .= '" /> </td>
+                    <td class="col2';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'current',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_current" title="';$output .= $stash->get(['locale',0,'maketext',['Release Candidate' ]]);$output .= '">CURRENT</label></td>
+                    <td class="col3';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'current',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_current" title="';$output .= $stash->get(['locale',0,'maketext',['Release Candidate' ]]);$output .= "\">{{ tiers.current.replace('11\\.','') }}</td>\n                    <td>\n                        <i id=\"currentTierStatus\" class=\"";$output .= $stash->get(['extra_status_class',['current' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['current' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4"><span class="desc">';$output .= $stash->get(['locale',0,'maketext',['A “release candidate” version that is tested but may not be feature-complete.' ]]);$output .= '</span></td>
+                </tr>
+        <!-- EDGE -->
+                <tr>
+                    <td class="col1"><input id="tier_edge"  title="';$output .= $stash->get(['locale',0,'maketext',['Not Recommended' ]]);$output .= '" type="radio" name="CPANEL" ng-model="tierSelection" value="edge" title="';$output .= $stash->get(['locale',0,'maketext',['Not Recommended' ]]);$output .= '" ';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'edge',0])]])){$output .= 'disabled="disabled" '}$output .= '/></td>
+                    <td class="col2';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'edge',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_edge" title="';$output .= $stash->get(['locale',0,'maketext',['Not Recommended' ]]);$output .= '">EDGE</label></td>
+                    <td class="col3';if ($stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'version',0,'edge',0])]])){$output .= ' grayed'}$output .= '"><label for="tier_edge" title="';$output .= $stash->get(['locale',0,'maketext',['Not Recommended' ]]);$output .= "\">{{ tiers.edge.replace('11\\.','') }}</td>\n                    <td>\n                        <i id=\"edgeTierStatus\" class=\"";$output .= $stash->get(['extra_status_class',['edge' ]]);$output .= '" title="';$output .= $stash->get(['tier_status_title',['edge' ]]);$output .= '"></i>
+                    </td>
+                    <td class="col4"><span class="desc" title="';$output .= $stash->get(['locale',0,'maketext',['Not Recommended' ]]);$output .= '">';$output .= $stash->get(['locale',0,'maketext',['A development version for testing [output,strong,only] and [output,strong,not] for production servers.' ]]);$output .= '</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <hr>
+        <div class="selection-wrapper">
+            <h3>';$output .= $stash->get(['locale',0,'maketext',['Staging Directory' ]]);$output .= '</h3>
+            <div class="description">
+                ';$output .= $stash->get(['locale',0,'maketext',['The staging directory stores update data before the system applies it. Make sure to select a directory with enough disk space.' ]]);$output .= '
+            </div>
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                        <label id="staging_label" for="staging_dir">';$output .= $stash->get(['locale',0,'maketext',['Staging Directory' ]]);$output .= ':</label>
+                        <span class="info-block">';$output .= $stash->get(['locale',0,'maketext',['Enter a directory path or select a partition from available partitions. This value defaults to the [asis,/usr/local/cpanel] directory.' ]]);$output .= '</span>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="staging_dir" ng-model="stagingDir" name="staging_dir" ng-change="stagingdirOnChange()"/>
+                            <span id="staging_subdir" ng-show="showStagingSubdir" class="input-group-addon">';$output .= '/' .$stash->get('staging_dir_placeholder').'/';$output .= '</span>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                        <span class="help-block" ng-show="showStagingSubdir">';$output .= $stash->get(['locale',0,'maketext',['If you choose a custom location, the system stages updates in a “[_1]” subdirectory within your specified directory.',$stash->get('staging_dir_placeholder')]]);$output .= '</span>
+                    </div>
+                    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div>
+                    <label for="partition-table">';$output .= $stash->get(['locale',0,'maketext',['Available Partitions:' ]]);$output .= '</label>
+                    ';if ($stash->get(['data',0,'devices',0,'size',0])){$output .= '
+                        <table id="partition-table" class="table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Staging Directory' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Mount Point' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Size' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Used' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Available' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Percent Used' ]]);$output .= '</th>
+                                    <th>';$output .= $stash->get(['locale',0,'maketext',['Device' ]]);$output .= '</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'devices',0,'sort',['mount' ]]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'device'}=$_tt_value;$output .= '
+                                <tr>
+                                    <td>
+                                        <input type="radio"
+                                            name="staging_selection"
+                                            id="selection_';$output .= $stash->get(['loop',0,'index',0]);$output .= '"
+                                            value="';$output .= $stash->get(['device',0,'path',0,'html',0]);$output .= '"
+                                            ng-model="stagingSelection"
+                                            ng-click="changeStagingDir()" />
+                                    </td>
+                                    <td>';$output .= $stash->get(['device',0,'path',0,'html',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['device',0,'mount',0,'html',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['device',0,'total',0])],'html',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['device',0,'used',0])],'html',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['locale',0,'format_bytes',[$stash->get(['device',0,'available',0])],'html',0]);$output .= '</td>
+                                    <td>';$output .= $stash->get(['device',0,'percentage',0,'html',0]).'%';$output .= '</td>
+                                    <td>';$output .= $stash->get(['device',0,'filesystem',0,'html',0]);$output .= '</td>
+                                </tr>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            </tbody>
+                        </table>
+                    '}else {$output .= '
+                        <p class="text-info">';$output .= $stash->get(['locale',0,'maketext',['No partitions with sufficient space ([format_bytes,_1]) are available.',$stash->get(['data',0,'required_free_space',0])]]);$output .= '</p>
+                    '}$output .= '
+                </div>
+            </div>
+        </div>
+        <input type="submit" name="saveBtn" id="saveBtn" class="btn btn-primary" value="';$output .= $stash->get(['locale',0,'maketext',['Save' ]]);$output .= '" ng-class="{ disabled: isSaving }" />
+        ';if ($stash->get(['data',0,'cluster_server_info',0,'server_count',0])> 0){$output .= '
+        <input type="checkbox" id="cb_clusterservers" ng-model="clusterservers" name="clusterservers" value="1">
+        <label for="cb_clusterservers"> ';$output .= $stash->get(['locale',0,'maketext',['Send my settings to all configuration cluster servers.' ]]);$output .= '</label>
+        '}$output .= '
+    </form>
+</section>
+</div>
+<cp-alert-list></cp-alert-list>
+<script>
+    var PAGE = {
+        preventSumbit: ';$output .= ($stash->get(['data',0,'custom_tier',0])&& $stash->get(['data',0,'is_less_than_current_version',[$stash->get(['data',0,'custom_tier',0])]]))? 'true' : 'false';$output .= ',
+        saved: ';$output .= $stash->get(['data',0,'saved',0])? 'true' : 'false';$output .= ',
+        save_failed: ';$output .= $stash->get(['data',0,'save_failed',0])? 'true' : 'false';$output .= ',
+        save_fail_reason: ';$output .= $stash->get(['data',0,'save_fail_reason',0,'json',0])|| 'null';$output .= ',
+        current_major_version: "';$output .= $stash->get(['data',0,'current_major_version',0]);$output .= '",
+        checked: "';$output .= $stash->get(['data',0,'checked',0]);$output .= '",
+        custom_tier: "';$output .= $stash->get(['data',0,'custom_tier',0])|| '';$output .= '",
+        custom_tier_info: ';$output .= $stash->get(['data',0,'custom_tier_hr',0,'json',0])|| '""';$output .= ',
+        current_version: "';$output .= $stash->get(['data',0,'current_version',0]);$output .= '",
+        required_free_space: ';$output .= $stash->get(['data',0,'required_free_space',0]);$output .= ',
+        hostname: "';$output .= $stash->get(['data',0,'hostname',0]);$output .= '",
+        flat_tiers: ';$output .= $stash->get(['data',0,'flat_tiers',0,'json',0])|| 'null';$output .= ',
+        upconf: ';$output .= $stash->get(['upconf',0,'json',0]);$output .= ',
+        partitions: ';$output .= $stash->get(['data',0,'devices',0,'json',0]);$output .= '
+    };
+</script>
+';$output .= $context->process('master_templates/cjt2_header_include.tt');$output .= '
+';$context->include('master_templates/master.tmpl',{'header'=>$stash->get(['locale',0,'maketext',['Update Preferences' ]]),'breadcrumburl'=>$stash->get('PAGE_BASE'),'base'=>$stash->get('PAGE_BASE'),'stylesheets'=>['/templates/common/revised_notices.min.css','/templates/upcp/updateconf.min.css',$stash->get(['Whostmgr',0,'find_file_url',['/templates/update_config/index.min.css' ]])],'theme'=>'bootstrap','app_key'=>'update_preferences','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

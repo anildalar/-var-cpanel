@@ -1,0 +1,267 @@
+Template::Document->new({METADATA=>{'modtime'=>'1728930269','name'=>'/usr/local/cpanel/base/frontend/jupiter/htaccess/leechprotect/leechprotect.html.tt',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../../');$stash->set('leech_protection_nvdata',$stash->get(['execute',['NVData','get',{'names'=>'optionselect_leechprotect' }]]));$stash->set('directory',$stash->get(['RAW_FORM',0,'dir',0]));$stash->set('default_dir','');$output .= $stash->get(['Api2',0,'pre_exec',['Email','listmaildomains' ]]);$stash->set('domains_list',$stash->get(['Api2',0,'exec',['Email','listmaildomains',{}]]));$output .= $stash->get(['Api2',0,'post_exec',['Email','listmaildomains' ]]);if ($stash->get(['leech_protection_nvdata',0,'status',0])){$stash->set('nvdata_value',$stash->get(['leech_protection_nvdata',0,'data',0,0,0,'value',0]));$stash->set('value',$stash->get(['nvdata_value',0,'split',[':' ]]));$stash->set('selected_option',$stash->get(['value',0,0,0]));$stash->set('domain',$stash->get(['value',0,1,0]));$stash->set('always_open_dir',$stash->get(['value',0,2,0]));if ($stash->get('always_open_dir')eq 1){if ($stash->get('selected_option')eq 'home'){$stash->set('default_dir',$stash->get(['CPANEL',0,'homedir',0]))}elsif ($stash->get('selected_option')eq 'webroot'){$stash->set('default_dir',$stash->get(['CPANEL',0,'homedir',0]).'/public_html')}elsif ($stash->get('selected_option')eq 'domainrootselect'){$stash->set('default_dir',$stash->get(['Api2',0,'exec',['DomainLookup','getdocroot',{'domain'=>$stash->get('domain')}],0,0,'docroot',0]))}else {$stash->set('default_dir',$stash->get(['CPANEL',0,'homedir',0]).'/public_html');$stash->set('selected_option','webroot')}}}$stash->set('directory',$stash->get('directory')|| $stash->get('default_dir')|| $stash->get(['CPANEL',0,'homedir',0]));$stash->set('directories',$stash->get(['execute',['DirectoryProtection','list_directories',{'dir'=>$stash->get('directory')}]]));$output .= '
+
+';$output .= do {my$output='';$output .= '
+';$output .= $context->process('_assets/cjt2_header_include.tt');$output .= '
+
+<div class="body-content">
+    <p id="descLeechProtect">';$output .= $stash->get(['locale',0,'maketext',['Leech Protect allows you to prevent your users from giving out or publicly posting their passwords to a restricted area of your site. This feature will redirect accounts which have been compromised to a URL of your choice (and suspend them, if you choose).' ]]);$output .= '</p>
+    <p id="descPleaseSelect">
+        ';$output .= $stash->get(['locale',0,'maketext',['Click a folder’s icon or name to navigate the file system. To select a folder, click “[output,em,_1]”.',$stash->get(['locale',0,'maketext',['Edit' ]])]]);$output .= '
+    </p>
+    <div class="box">
+        <div class="row row-controls">
+            <div class="col-xs-12">
+                <ul class="list-inline">
+                    <li>
+                        <a id="home" href="?dir=';$output .= $stash->get(['directories',0,'data',0,'home',0,'path',0,'uri',0,'html',0])|| '/';$output .= '" class="btn btn-default btn-sm">
+                            <i class="fas fa-home"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '
+                        </a>
+                    </li>
+                    ';if ($stash->get(['directories',0,'data',0,'parent',0,'path',0])ne $stash->get(['directories',0,'data',0,'current',0,'path',0])){$output .= '
+                    <li>
+                        <a id="up-one" href="?dir=';$output .= $stash->get(['directories',0,'data',0,'parent',0,'path',0,'uri',0,'html',0]);$output .= '" class="btn btn-default btn-sm">
+                            <i class="fas fa-level-up-alt"></i>
+                            ';$output .= $stash->get(['locale',0,'maketext',['Up One Level' ]]);$output .= '
+                        </a>
+                    </li>
+                    '}$output .= '
+                    <li class="pull-right">
+                        <a id="btnSettings"
+                           class="btn btn-default btn-sm"
+                           data-toggle="modal"
+                           data-target="#modalSettings">
+                            <i class=\'fas fa-cog\' aria-hidden="true"></i>
+                            <span class="hidden-xs">';$output .= $stash->get(['locale',0,'maketext',['Settings' ]]);$output .= '</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row row-list">
+            ';if ($stash->get(['directories',0,'status',0])){$stash->set('crumbs',$stash->get(['directories',0,'data',0,'current',0,'path',0,'remove',[$stash->get(['directories',0,'data',0,'home',0,'path',0])],'split',['/' ]]));$stash->get(['crumbs',0,'shift',0]);$output .= '
+                <div class="col-xs-12">
+                    <table id="files" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Current Directory' ]]);$output .= '
+                                </th>
+                                <th class="text-center">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Protected' ]]);$output .= '
+                                </th>
+                                <th class="text-center">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['Actions' ]]);$output .= '
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <ul class="breadcrumb">
+                                        <li>
+                                            <a href="leechprotect.html?dir=';$output .= $stash->get(['directories',0,'data',0,'home',0,'path',0,'uri',0,'html',0]);$output .= '">
+                                                <i class="fas fa-home"></i>
+                                            </a>
+                                        </li>
+                                        ';$stash->set('base',$stash->get(['directories',0,'data',0,'home',0,'path',0]));do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('crumbs');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'crumb'}=$_tt_value;$stash->set('path',$stash->get('base').'/' .$stash->get('crumb'));if (!$stash->get(['loop',0,'last',0])){$output .= '
+                                                <li>
+                                                    <a href="leechprotect.html?dir=';$output .= $stash->get(['path',0,'uri',0,'html',0]);$output .= '">
+                                                        ';$output .= $stash->get(['crumb',0,'html',0,'replace',['[.]','.<wbr>' ]]);$output .= '
+                                                    </a>
+                                                </li>
+                                            '}else {$output .= '
+                                                <li>
+                                                    ';$output .= $stash->get(['crumb',0,'html',0,'replace',['[.]','.<wbr>' ]]);$output .= '
+                                                </li>
+                                            '}$stash->set('base',$stash->get('path'));;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                    </ul>
+                                </td>
+                                <td class="text-center" >
+                                    <div class="current-privacy">
+                                        ';if ($stash->get(['directories',0,'data',0,'current',0,'state',0,'error',0])){$output .= '
+                                            <div class="alert alert-danger" role="alert">
+                                                <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                                <div class="alert-message">
+                                                    <strong class="alert-title">
+                                                        ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                                                    </strong>
+                                                    <span class="alert-body">
+                                                        ';$output .= $stash->get(['directories',0,'data',0,'current',0,'state',0,'error',0,'html',0]);$output .= '
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        '}elsif ($stash->get(['directories',0,'data',0,'current',0,'state',0,'has_leech_protection',0])){$output .= '
+                                            <i class="fas fa-shield-alt fa-lg" aria-hidden="true"></i>
+                                            ';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '
+                                        '}else {$output .= '
+                                            ';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '
+                                        '}$output .= '
+                                    </div>
+                                </td>
+                                <td class="text-center">
+                                    <a id="edit-current"
+                                       href="dohtaccess.html?is_parent=1&dir=';$output .= $stash->get(['directories',0,'data',0,'current',0,'path',0,'uri',0,'html',0]);$output .= '"
+                                       class="btn btn-outline-primary btn-sm file-select-button"
+                                       alt="';$output .= $stash->get(['locale',0,'maketext',['Edit “[_1]”',$stash->get(['directories',0,'data',0,'current',0,'path',0,'html',0])]]);$output .= '">
+                                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                                        <span class="current-label">';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '</span>
+                                    </a>
+                                </td>
+                            </tr>
+                            ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['directories',0,'data',0,'children',0,'list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'directory'}=$_tt_value;$output .= '
+                            <tr>
+                                <td class="child">
+                                    <a href="leechprotect.html?dir=';$output .= $stash->get(['directory',0,'path',0,'uri',0,'html',0]);$output .= '" id="navigate-';$output .= $stash->get(['directory',0,'path',0,'slugify',0]);$output .= '">
+                                        ';if ($stash->get(['directory',0,'state',0,'has_leech_protection',0])){$output .= '
+                                            <span class="dirstack fa-stack">
+                                                <i class="diricon fas fa-folder" aria-hidden="true"></i>
+                                                <i class="fas fa-shield-alt fa-stack-1x" aria-hidden="true"></i>
+                                            </span>
+                                        '}else {$output .= '
+                                            <span class="dirstack fa-stack">
+                                                <i class="diricon fas fa-folder fa-lg" aria-hidden="true"></i>
+                                            </span>
+                                        '}$output .= '
+                                        ';$output .= $stash->get(['directory',0,'path',0,'split',['/' ],'pop',0,'html',0,'replace',['[.]','.<wbr>' ]]);$output .= '
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    ';if ($stash->get(['directory',0,'state',0,'error',0])){$output .= '
+                                        <div class="alert alert-danger" role="alert">
+                                            <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                                            <div class="alert-message">
+                                                <strong class="alert-title">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                                                </strong>
+                                                <span class="alert-body">
+                                                    ';$output .= $stash->get(['directory',0,'state',0,'error',0,'html',0]);$output .= '
+                                                </span>
+                                            </div>
+                                        </div>
+                                    '}elsif ($stash->get(['directory',0,'state',0,'has_leech_protection',0])){$output .= '
+                                        <i class="fas fa-shield-alt fa-lg" aria-hidden="true"></i> ';$output .= $stash->get(['locale',0,'maketext',['Yes' ]]);$output .= '
+                                    '}else {$output .= '
+                                        ';$output .= $stash->get(['locale',0,'maketext',['No' ]]);$output .= '
+                                    '}$output .= '
+                                </td>
+                                <td class="text-center">
+                                    <a id="edit-';$output .= $stash->get(['directory',0,'path',0,'slugify',0]);$output .= '"
+                                       href="dohtaccess.html?dir=';$output .= $stash->get(['directory',0,'path',0,'uri',0,'html',0]);$output .= '"
+                                       class="btn btn-outline-primary btn-sm file-select-button"
+                                       alt="';$output .= $stash->get(['locale',0,'maketext',['Edit “[_1]”',$stash->get(['directory',0,'path',0,'html',0])]]);$output .= '" >
+                                        <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+                                        ';$output .= $stash->get(['locale',0,'maketext',['Edit' ]]);$output .= '
+                                    </a>
+                                </td>
+                            </tr>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                            ';if ($stash->get(['directories',0,'data',0,'children',0,'size',0])eq 0){$output .= '
+                            <tr class="empty-directory">
+                                <td colspan="3">
+                                    <div class="alert alert-info" role="alert">
+                                        <span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>
+                                        <div class="alert-message">
+                                            <strong class="alert-title">
+                                                ';$output .= $stash->get(['locale',0,'maketext',['Notice:' ]]);$output .= '
+                                            </strong>
+                                            <span class="alert-body">
+                                                <span id="error-no-child">
+                                                    ';$output .= $stash->get(['locale',0,'maketext',['There are no folders in this path.' ]]);$output .= '
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            '}$output .= '
+                        </tbody>
+                    </table>
+                </div>
+            '}else {$output .= '
+                <div class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-remove-sign" aria-hidden="true"></span>
+                    <div class="alert-message">
+                        <strong class="alert-title">
+                            ';$output .= $stash->get(['locale',0,'maketext',['Error:' ]]);$output .= '
+                        </strong>
+                        <span class="alert-body">
+                        <span id="error-directories">
+                            ';$output .= $stash->get(['directories',0,'errors_as_string',0,'html',0]);$output .= '
+                        </span>
+                    </span>
+                    </div>
+                </div>
+            '}$output .= '
+        </div>
+    </div>
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'../../index.html','return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalSettings" tabindex="-1" role="dialog" aria-labelledby="lblModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="btnHeaderSettingsClose" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="lblModalLabel">';$output .= $stash->get(['locale',0,'maketext',['Leech Protection' ]]);$output .= '</h4>
+            </div>
+            <div class="modal-body">
+                <div class="radio" id="settings_home">
+                    <label for="dirselect_home">
+                      <input type="radio" name="dirselect" value="home" id="dirselect_home" ';$output .= $stash->get('selected_option')eq 'home' ||!$stash->get('selected_option')? ' checked' : '';$output .= '/>
+                      ';$output .= $stash->get(['locale',0,'maketext',['Home' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="radio" id="settings_webroot">
+                    <label for="dirselect_webroot">
+                      <input type="radio" name="dirselect" value="webroot" id="dirselect_webroot" ';$output .= $stash->get('selected_option')eq 'webroot' ? ' checked' : '';$output .= '/>
+                      ';$output .= $stash->get(['locale',0,'maketext',['Web Root ([asis,public_html or www])' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="radio" id="settings_domainroot">
+                    <label for="optionselect_domainrootselect_radio">
+                      <input  type="radio" name="dirselect" id="optionselect_domainrootselect_radio" value="domainrootselect" ';$output .= $stash->get('selected_option')eq 'domainrootselect' ? ' checked' : '';$output .= '/>
+                      ';$output .= $stash->get(['locale',0,'maketext',['Document Root for:' ]]);$output .= '
+                    </label>
+                    <select id="ddlDomainSelect" name="domainselect" class="form-control option-directory-select" ';$output .= $stash->get('selected_option')eq 'domainrootselect' ? '' : 'disabled';$output .= '>
+                        ';if ($stash->get(['domains_list',0,'size',0])){$output .= '
+                           ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get('domains_list');unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'item'}=$_tt_value;$output .= '
+                                <option value="';$output .= $stash->get(['item',0,'domain',0,'html',0]);$output .= '" ';if ($stash->get('selected_option')eq 'domainrootselect' && $stash->get('domain')eq $stash->get(['item',0,'domain',0,'html',0])){$output .= ' selected="true"'}$output .= '>
+                                    ';$output .= $stash->get(['item',0,'domain',0,'html',0]);$output .= '
+                                </option>
+                            ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                        '}$output .= '
+                    </select>
+                </div>
+
+                <div class="settings-select-extras">
+                    <div class="checkbox">
+                        <label for="settings_saved">
+                            <input type="checkbox" id="settings_saved" name="saveoption" ';$output .= $stash->get('always_open_dir')eq '1' ? 'checked' : '';$output .= ' />
+                            <span id="lblOpenDirectoryTxt">
+                                ';$output .= $stash->get(['locale',0,'maketext',['Always open this directory in the future' ]]);$output .= '
+                            </span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnSettingsCancel" type="button" class="btn btn-default" data-dismiss="modal">';$output .= $stash->get(['locale',0,'maketext',['Close' ]]);$output .= '</button>
+                <button id="btnSettingsSave" type="submit" class="btn btn-primary">';$output .= $stash->get(['locale',0,'maketext',['Save Changes' ]]);$output .= '</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+var PAGE = {
+    homeFolder: ';$output .= $stash->get(['CPANEL',0,'homedir',0,'json',0]);$output .= ',
+    pubHtmlFolder: ';$stash->set('pub_html_dir',$stash->get(['CPANEL',0,'homedir',0]).'/public_html');$output .= $stash->get(['pub_html_dir',0,'json',0]);$output .= '
+};
+</script>
+';$context->include('_assets/master.html.tt',{'app_key'=>'leech_protection','use_master_bootstrap'=>0,'page_stylesheets'=>['cpanelpro/imagemanager.css','htaccess/leechprotect/leechprotect.css' ],'content',$output })};$output .= '
+
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

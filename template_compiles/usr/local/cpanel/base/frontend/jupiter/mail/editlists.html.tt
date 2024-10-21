@@ -1,0 +1,42 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/base/frontend/jupiter/mail/editlists.html.tt','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$stash->set(['CPANEL',0,'CPVAR',0,'dprefix',0],'../');if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')&&!$stash->get(['FORM',0,'item',['account' ]])){$stash->set(['FORM',0,'item',['account' ]],$stash->get(['CPANEL',0,'authuser',0]))}$output .= '
+';$output .= do {my$output='';$output .= '
+
+<div class="body-content">
+
+    ';if (($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail' &&!($stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0])))){$output .= '
+    <div id="deniedEditText" class="alert alert-danger">
+        ';$output .= $stash->get(['locale',0,'maketext',['You are not allowed to change settings for the user “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '
+    </div>
+    '}$output .= '
+
+
+    ';if ((!($stash->get(['ExpVar',0,'expand',['$appname' ]])eq 'webmail')|| $stash->get(['FORM',0,'item',['account' ]])eq $stash->get(['CPANEL',0,'authuser',0]))){$output .= '
+    <div class="section">
+        <h2 id="hdrBoxtrapperList">';$output .= $stash->get(['locale',0,'maketext',['[asis,BoxTrapper] lists for “[output,class,_1,status]”.',$stash->get(['FORM',0,'item',['account' ]])]]);$output .= '</h2>
+
+        <p>
+            <form method="post" action="whitelist.html">
+                <input type="hidden" name="account"  value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                <button id="lnkEditWhitelist" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Edit Whitelist' ]]);$output .= '</button>
+            </form>
+        </p>
+        <p>
+            <form method="post" action="ignorelist.html">
+                <input type="hidden" name="account"  value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                <button id="lnkEditIgnorelist" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Edit Ignore List' ]]);$output .= '</button>
+            </form>
+        </p>
+        <p>
+            <form method="post" action="blacklist.html">
+                <input type="hidden" name="account"  value="';$output .= $stash->get(['FORM',0,'item',['account' ]]);$output .= '">
+                <button id="lnkEditBlacklist" class="btn btn-link">';$output .= $stash->get(['locale',0,'maketext',['Edit Blacklist' ]]);$output .= '</button>
+            </form>
+        </p>
+    </div>
+    '}$output .= '
+
+    ';$output .= $context->include('_assets/return_link.html.tt',{'return_location'=>'manage.html','post'=>'1','formdata'=>$stash->get('FORM'),'return_link_text'=>$stash->get(['locale',0,'maketext',['Go Back' ]])});$output .= '
+</div>
+
+';$context->include('_assets/master.html.tt',{'app_key'=>'boxtrapper','page_stylesheets'=>['mail/boxtrapper.css' ],'content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

@@ -1,0 +1,129 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/_sshkey_selection.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= '
+';$output .= '
+            <fieldset>
+                <legend>
+                      ';$output .= $stash->get(['locale',0,'maketext',['Remote Server Information' ]]);$output .= '
+                </legend>
+                <div class="form-group">
+                    <label for="host">';$output .= $stash->get(['locale',0,'maketext',['Remote Server Address' ]]);$output .= ':</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" id="host" name="host" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="server_port">';$output .= $stash->get(['locale',0,'maketext',['Remote SSH Port' ]]);$output .= ':</label>
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <input type="text" value="22" id="server_port" name="server_port" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    ';$output .= $stash->get(['locale',0,'maketext',['Authentication' ]]);$output .= '
+                </legend>
+                <label>';$output .= $stash->get(['locale',0,'maketext',['Login:' ]]);$output .= '</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="auth_root" value="root" name="auth" checked="checked">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Root (default)' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" id="auth_user" value="user" name="auth">
+                        ';$output .= $stash->get(['locale',0,'maketext',['User' ]]);$output .= '
+                    </label>
+                </div>
+                <div id="authuser_wrapper" class="form-group">
+                    <label>';$output .= $stash->get(['locale',0,'maketext',['Username:' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="text" id="authuser" name="authuser" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <label>';$output .= $stash->get(['locale',0,'maketext',['Authentication Method:' ]]);$output .= '</label>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="authtype" value="password" id="authtype_password" checked="checked">
+                        ';$output .= $stash->get(['locale',0,'maketext',['Password (default)' ]]);$output .= '
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="authtype" value="publickey" id="authtype_publickey" ';$output .=!$stash->get(['data',0,'key_list',0,'size',0])&& 'disabled';$output .= '>
+                        ';$output .= $stash->get(['locale',0,'maketext',['SSH Public Key' ]]);$output .= '
+                    </label>
+
+                    <span class="help-block">
+                        ';if (!$stash->get(['data',0,'key_list',0,'size',0])){$output .= '                            ';$output .= $stash->get(['locale',0,'maketext',['You have no SSH keys registered on your server.' ]]);$output .= '
+                        '}$output .= '                        ';$output .= $stash->get(['locale',0,'maketext',['Click [output,url,_1,here,target,_blank] if you need to add an SSH key.','../scripts2/sshkeys' ]]);$output .= '
+                    </span>
+                </div>
+                <div id="public_key_options">
+                    <div class="form-group">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['SSH Key:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <select name="sshkey" id="sshkey_selector" class="form-control">
+                                    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'key_list',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'key'}=$_tt_value;$output .= '
+                                        ';if ($stash->get(['key',0,'selected',0])eq 'true'){$output .= '
+                                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'key',0]);&$_tt_filter($output)};$output .= '" selected="selected">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'key',0]);&$_tt_filter($output)};$output .= '</option>
+                                        '}else {$output .= '
+                                            <option value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'key',0]);&$_tt_filter($output)};$output .= '">';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['key',0,'key',0]);&$_tt_filter($output)};$output .= '</option>
+                                        '}$output .= '
+                                    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="public_key_password" class="form-group">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['SSH Key Passphrase:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input id="sshkeypass" name="sshkeypass" type="password" class="form-control" disabled="disabled"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="user_password" class="form-group">
+                    <label id="user_password_label">';$output .= $stash->get(['locale',0,'maketext',['Login Password:' ]]);$output .= '</label>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <input type="password" id="authpass" name="authpass" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div id="esc_options">
+                    <div>
+                        <div class="form-group">
+                            <label>';$output .= $stash->get(['locale',0,'maketext',['Root Escalation Method:' ]]);$output .= '</label>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="escmeth" id="escmeth_su" value="su" checked="checked">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,su][comment,run a shell with substitute user and group IDs]' ]]);$output .= '
+                                </label>
+                            </div>
+                            <div class="radio">
+                                <label>
+                                    <input type="radio" name="escmeth" id="escmeth_sudo" value="sudo">
+                                    ';$output .= $stash->get(['locale',0,'maketext',['[asis,sudo][comment,execute a command as another user]' ]]);$output .= '
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" id="su_pass">
+                        <label>';$output .= $stash->get(['locale',0,'maketext',['Root Password:' ]]);$output .= '</label>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <input type="password" id="rootpass" name="rootpass" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});

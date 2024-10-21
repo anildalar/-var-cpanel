@@ -1,0 +1,53 @@
+Template::Document->new({METADATA=>{'name'=>'/usr/local/cpanel/whostmgr/docroot/templates/restoreoverwritedb.tmpl','modtime'=>'1728930269',},BLOCK=>sub {my$context=shift || die "template sub called without context\n";my$stash=$context->stash;my$output='';my$_tt_error;eval {BLOCK: {$output .= do {my$output='';$output .= '
+<h3>';$output .= $stash->get(['locale',0,'maketext',['Ready To Restore' ]]);$output .= '</h3>
+
+<form action="';$output .= $stash->get('cp_security_token');$output .= '/scripts5/dobackuprestore">
+    <input type="hidden" name="jsstatus" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'jsstatus',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoretype" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoretype',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="user" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'user',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoreall" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoreall',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoreip" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoreip',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoremail" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoremail',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoremysql" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoremysql',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restorepsql" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restorepsql',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restorebwdata" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restorebwdata',0]);&$_tt_filter($output)};$output .= '">
+    <input type="hidden" name="restoresubs" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['data',0,'restoresubs',0]);&$_tt_filter($output)};$output .= '">
+
+';if ($stash->get(['data',0,'mysql_databases',0])&& $stash->get(['data',0,'mysql_databases',0,'size',0])){$output .= '
+    <h4>';$output .= $stash->get(['locale',0,'maketext',['Select databases to overwrite with the backup.' ]]);$output .= '</h4>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'mysql_databases',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$output .= '
+    <input type="checkbox" name="mysql_db" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['db',0,'name',0]);&$_tt_filter($output)};$output .= '" ';if (!$stash->get(['db',0,'dbexists',0])){$output .= 'checked="checked"'}$output .= ' value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['db',0,'name',0]);&$_tt_filter($output)};$output .= '">
+        ';if ($stash->get(['db',0,'dbexists',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Overwrite “[output,strong,_1]”',$stash->get(['db',0,'name',0,'html',0])]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Restore “[output,strong,_1]”',$stash->get(['db',0,'name',0,'html',0])]]);$output .= '
+        '}$output .= '
+     ';if ($stash->get(['db',0,'dbexists',0])&& $stash->get(['db',0,'owner',0])){$output .= '
+        <div class="info-block">';$output .= $stash->get(['locale',0,'maketext',['“[output,strong,_1]” is owned by “[output,strong,_2]”.',$stash->get(['db',0,'name',0,'html',0]),$stash->get(['db',0,'owner',0,'html',0])]]);$output .= '</div>
+     '}$output .= '
+     <br />
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+
+';if ($stash->get(['data',0,'pgsql_databases',0])&& $stash->get(['data',0,'pgsql_databases',0,'size',0])){$output .= '
+    <h4>';$output .= $stash->get(['locale',0,'maketext',['Select PostgreSQL databases to be overwritten from the backup.' ]]);$output .= '</h4>
+    ';do {my ($_tt_value,$_tt_error,$_tt_oldloop);my$_tt_list=$stash->get(['data',0,'pgsql_databases',0]);unless (UNIVERSAL::isa($_tt_list,'Template::Iterator')){$_tt_list=Template::Config->iterator($_tt_list)|| die$Template::Config::ERROR,"\n"}($_tt_value,$_tt_error)=$_tt_list->get_first();eval {$_tt_oldloop=$stash->get('loop')};$stash->set('loop',$_tt_list);eval {FOR1: while (!$_tt_error){$stash->{'db'}=$_tt_value;$output .= '
+    <input type="checkbox" name="pgsql_db" value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['db',0,'name',0]);&$_tt_filter($output)};$output .= '" ';if (!$stash->get(['db',0,'dbexists',0])){$output .= 'checked="checked"'}$output .= ' value="';$output .= do {my$output='';my$_tt_filter=$context->filter('html')|| $context->throw($context->error);$output .= $stash->get(['db',0,'name',0]);&$_tt_filter($output)};$output .= '">
+        ';if ($stash->get(['db',0,'dbexists',0])){$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Overwrite “[output,strong,_1]”',$stash->get(['db',0,'name',0,'html',0])]]);$output .= '
+        '}else {$output .= '
+            ';$output .= $stash->get(['locale',0,'maketext',['Restore “[output,strong,_1]”',$stash->get(['db',0,'name',0,'html',0])]]);$output .= '
+        '}$output .= '
+     ';if ($stash->get(['db',0,'dbexists',0])&& $stash->get(['db',0,'owner',0])){$output .= '
+        <div class="info-block">';$output .= $stash->get(['locale',0,'maketext',['“[output,strong,_1]” is owned by “[output,strong,_2]”.',$stash->get(['db',0,'name',0,'html',0]),$stash->get(['db',0,'owner',0,'html',0])]]);$output .= '</div>
+     '}$output .= '
+     <br />
+    ';;($_tt_value,$_tt_error)=$_tt_list->get_next()}};$stash->set('loop',$_tt_oldloop);die $@ if $@;$_tt_error=0 if$_tt_error && $_tt_error eq Template::Constants::STATUS_DONE;die$_tt_error if$_tt_error};$output .= '
+'}$output .= '
+
+
+    <input type="submit" name="Submit" value="';$output .= $stash->get(['locale',0,'maketext',['Continue' ]]);$output .= '" class="btn btn-primary" />
+</form>
+
+';$context->include('master_templates/master.tmpl',{'breadcrumburl'=>'/scripts5/backuprestore','theme'=>'bootstrap','content',$output })};$output .= '
+'}};if ($@){$_tt_error=$context->catch($@,\$output);die$_tt_error unless$_tt_error->type eq 'return'}return$output},DEFBLOCKS=>{},});
